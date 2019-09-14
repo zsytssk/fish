@@ -1,0 +1,2 @@
+component base
+mvc
