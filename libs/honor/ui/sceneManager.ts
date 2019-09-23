@@ -5,7 +5,10 @@ export type SceneChangeListener = (
     cur1: string,
     cur2: string,
 ) => boolean | void;
-export type SceneChangeData = { cur: string; prev: string };
+export type SceneChangeData = {
+    cur: string | undefined;
+    prev: string | undefined;
+};
 export type SceneClassMap = { [key: string]: HonorScene };
 
 export type SceneRefUrl = string | Ctor<HonorScene> | HonorScene;
@@ -18,7 +21,7 @@ export class SceneManagerCtor {
     private cur_scene: HonorScene;
     private dialog_manager = new Laya.DialogManager();
     constructor() {}
-    public onResize(width, height) {
+    public onResize(width: number, height: number) {
         if (this.cur_scene) {
             this.cur_scene.size(width, height);
             if (this.cur_scene.onResize) {
@@ -37,7 +40,7 @@ export class SceneManagerCtor {
         scene.size(width, height);
 
         const old_scene = this.cur_scene;
-        const prev = old_scene ? old_scene.url : null;
+        const prev = old_scene ? old_scene.url : undefined;
 
         this.cur_scene = scene;
         if (scene.onMounted) {
@@ -46,7 +49,7 @@ export class SceneManagerCtor {
         scene.open(true);
 
         if (old_scene && !old_scene.destroyed) {
-            scene_pool.set(prev, old_scene);
+            scene_pool.set(prev as string, old_scene);
         }
 
         const cur = scene.url;
@@ -57,9 +60,9 @@ export class SceneManagerCtor {
     }
     private callChangeListener(
         type: 'after' | 'before',
-        ...params: any[]
-    ): boolean {
-        let listener;
+        ...params: [any, any]
+    ): boolean | undefined {
+        let listener: SceneChangeListener[] = [];
         if (type === 'before') {
             listener = this.sceneChangeBeforeListener;
         } else if (type === 'after') {
@@ -74,7 +77,7 @@ export class SceneManagerCtor {
         }
     }
     /** 运行场景 */
-    public runScene(url: SceneRefUrl, ...params): Promise<Laya.Scene> {
+    public runScene(url: SceneRefUrl, ...params: any[]): Promise<Laya.Scene> {
         return new Promise(async (resolve, reject) => {
             /** 场景切换前执行, 如果被截取 就不进入场景 */
             const before_handle = this.callChangeListener(
@@ -88,7 +91,7 @@ export class SceneManagerCtor {
                 );
             }
 
-            let scene: HonorScene = this.scene_pool.get(url);
+            let scene: HonorScene | undefined = this.scene_pool.get(url);
             if (!scene) {
                 if (typeof url === 'string') {
                     scene = (await loaderManager.loadScene(
@@ -107,7 +110,7 @@ export class SceneManagerCtor {
                 }
             }
 
-            const change_data = this.switchScene(params, scene);
+            const change_data = this.switchScene(params, scene as HonorScene);
             this.callChangeListener('after', change_data.cur, change_data.prev);
             return resolve(scene);
         });

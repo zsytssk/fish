@@ -12,7 +12,7 @@ export class LoaderManagerCtor {
             const ctor = type === 'Scene' ? Laya.Scene : Laya.Dialog;
             ctor.load(
                 url,
-                Laya.Handler.create(this, _scene => {
+                Laya.Handler.create(this, (_scene: HonorView) => {
                     resolve(_scene);
                     this.toggleLoading(type, false);
                 }),

@@ -9,10 +9,11 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "noEmitHelpers": false,
+        "noEmit": true,
         "sourceMap": true,
         "watch": true,
         "baseUrl": "./",
-        "outDir": "dist",
+        "strict": true,
         "paths": {
             "*": ["node_modules/*", "libs/*", "src/*"]
         }
