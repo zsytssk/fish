@@ -1,7 +1,6 @@
 import * as SAT from 'sat';
 import { Line } from './line';
-import { timeToFrame } from 'utils/mathUtils';
-import { stage_width, stage_height } from './displaceUtil';
+import { stage_width, stage_height, timeToFrame } from './displaceUtil';
 import { getSpriteInfo, getShapeInfo } from 'utils/dataUtil';
 
 export type Curve = {
@@ -48,132 +47,64 @@ export class Displace {
     protected fish_type: string;
     /** 当前曲线信息 */
     protected cur_curve_info = {} as CurCurveInfo;
+    /** 是否反转 */
+    private is_reverse: boolean = false;
     /**
      * 获取鱼的路径
      * @param path_id 鱼的路径
      * @param total_time total_time 鱼总共游多长时间
      * @param used_time 鱼已经游了多长时间
      */
-    constructor(fish_type: string, total_time: number, used_time: number) {
+    constructor(
+        total_time: number,
+        used_time: number,
+        curve_list: CurveInfo[],
+        reverse?: boolean,
+    ) {
         this.total_frame = timeToFrame(total_time);
         this.used_frame = timeToFrame(used_time);
-        this.fish_type = fish_type;
+        this.curve_list = curve_list;
+        this.is_reverse = reverse;
     }
     public getDisplaceRadio() {
         return this.used_frame / this.total_frame;
     }
-    protected createLine(path_info) {
-        // 直线
-        const start_pos = {
-            x: path_info[0],
-            y: path_info[1],
-        };
-        const end_pos = {
-            x: path_info[2],
-            y: path_info[3],
-        };
-        const curve = new Line(start_pos, end_pos);
-        const curve_info = {} as CurveInfo;
-        curve_info.curve = curve;
-        curve_info.length = curve.length(1);
-        return curve_info;
-    }
-    /** 鱼游动的路程是 路径的长度+鱼的长度, 路径前后分别添加半个鱼的长度作为进入+离开, 不会突然出现 */
-    protected createSpace(
-        position: 'before' | 'after',
-        start_pos: Point,
-        derivative: Point,
-    ) {
-        const sprite_info = getSpriteInfo('fish', this.fish_type);
-        const shape_info = getShapeInfo('fish', this.fish_type);
-        const shape_direction = shape_info.shape_direction;
-
-        let fish_len: number;
-        let direction: SAT.Vector;
-        if (
-            sprite_info.offset &&
-            (shape_direction === 'fix' ||
-                shape_direction === 'turn' ||
-                shape_direction === 'upsidedown')
-        ) {
-            const info = this.calcFixLen(position, start_pos);
-            fish_len = info.fish_len;
-            direction = info.derivative;
-        } else {
-            fish_len = this.calcNormalLen(position);
-            direction = new SAT.Vector(derivative.x, derivative.y).normalize();
-            if (position == 'before') {
-                direction = direction.reverse();
-            }
-        }
-
-        const d_len = direction.scale(fish_len, fish_len);
-        const end_pos = {
-            x: start_pos.x + d_len.x,
-            y: start_pos.y + d_len.y,
-        };
-        let line;
-        if (position === 'before') {
-            // 如果在前面添加距离, 起点end_pos为起点加上距离, 终点为起点
-            line = new Line(end_pos, start_pos);
-        } else {
-            // 如果在前面添加距离, 起点为start_pos end_pos为起点加上距离
-            line = new Line(start_pos, end_pos);
-        }
-
-        return {
-            curve: line,
-            length: fish_len,
-        };
-    }
-    /** 计算鱼游入游出需要额外加的距离 */
-    protected calcNormalLen(position: 'before' | 'after') {
-        let fish_len: number;
-        const offset = getSpriteInfo('fish', this.fish_type).offset;
-
-        if (!offset) {
-            // zutil.logErr("can't find fish sprite offset");
-        }
-        if (position === 'before') {
-            fish_len = offset[0];
-        } else {
-            fish_len = offset[2];
-        }
-        return fish_len;
-    }
-    /** 直立行走鱼的边缘路径直接垂直与边框就可以了 */
-    protected calcFixLen(position: 'before' | 'after', start_pos: Point) {
-        const sprite_info = getSpriteInfo('fish', this.fish_type);
-
-        let fish_len: number;
-        let derivative: SAT.Vector;
-        if (start_pos.y <= 0) {
-            /** 上 */
-            fish_len = Math.max(sprite_info.offset[0], sprite_info.offset[2]);
-            derivative = new SAT.Vector(0, -1);
-        } else if (start_pos.x >= stage_width) {
-            /* 右 */
-            fish_len = Math.max(sprite_info.offset[1], sprite_info.offset[3]);
-            derivative = new SAT.Vector(1, 0);
-        } else if (start_pos.y >= stage_height) {
-            /** 下 */
-            fish_len = Math.max(sprite_info.offset[0], sprite_info.offset[2]);
-            derivative = new SAT.Vector(0, 1);
-        } else {
-            /** 左 */
-            fish_len = Math.max(sprite_info.offset[1], sprite_info.offset[3]);
-            derivative = new SAT.Vector(-1, 0);
-        }
-        return {
-            fish_len,
-            derivative,
-        };
-    }
+    /**
+     * 更新path的时间, 通过这个计算现在的位置
+     * @param update_frame 更新的帧数
+     */
     public update(update_frame: number): DisplaceInfo {
+        const used_frame = (this.used_frame = this.used_frame + update_frame);
+        let used_radio = used_frame / this.total_frame;
+        let is_complete: boolean = false;
+        if (used_radio <= 0) {
+            return {
+                out_stage: true,
+            };
+        }
+
+        if (used_radio >= 1) {
+            is_complete = true;
+            return {
+                is_complete,
+            };
+        }
+
+        if (this.is_reverse) {
+            used_radio = 1 - used_radio;
+        }
+
+        const point_info = this.getPointAtRadio(used_radio);
+        const position = point_info.position;
+        let direction = point_info.direction;
+        if (this.is_reverse) {
+            direction = direction.reverse();
+        }
+
         return {
-            is_complete: false,
-            pos: new Laya.Point(0, 0),
-            direction: new SAT.Vector(0, 0),
+            pos: position,
+            direction,
+            is_complete,
         };
     }
     protected getPointAtRadio(

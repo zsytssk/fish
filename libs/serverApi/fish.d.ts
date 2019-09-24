@@ -9,4 +9,6 @@ type ServerFishInfo = {
     totalTime?: number;
     usedTime?: number;
     reverse?: boolean;
+    funNo?: string;
+    funList?: any[];
 };

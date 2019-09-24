@@ -1,9 +1,12 @@
-import { DisplaceInfo } from 'utils/displace/displace';
+import { DisplaceInfo, Displace, CurveInfo } from 'utils/displace/displace';
 import { MoveCom } from './com/moveCom';
 import { EventCom } from 'comMan/eventCom';
 import { ComponentManager } from 'comMan/component';
-import { DisplacePath } from 'utils/displace/displacePath';
 import { GameModel } from './gameModel';
+import {
+    createCurvesByPath,
+    createCurvesByFun,
+} from 'utils/displace/displaceUtil';
 
 export const FishEvent = {
     move: 'move',
@@ -56,16 +59,27 @@ export class FishModel extends ComponentManager {
     public destroy() {
         const event_com = this.getCom(EventCom);
         this.game.removeFish(this);
-        super.destroy();
-
         event_com.emit(FishEvent.destroy);
+        super.destroy();
     }
 }
 
 function createFishDisplace(data: ServerFishInfo) {
-    const { typeId, displaceType, pathNo, usedTime, totalTime, reverse } = data;
+    const {
+        typeId,
+        displaceType,
+        pathNo,
+        usedTime,
+        totalTime,
+        reverse,
+        funList,
+    } = data;
 
+    let curve_list: CurveInfo[];
     if (displaceType === 'path') {
-        return new DisplacePath(pathNo, typeId, totalTime, usedTime, reverse);
+        curve_list = createCurvesByPath(pathNo, typeId);
+    } else if (displaceType === 'fun') {
+        curve_list = createCurvesByFun(funList, typeId);
     }
+    return new Displace(totalTime, usedTime, curve_list, reverse);
 }
