@@ -1,9 +1,10 @@
+import * as SAT from 'sat';
 /** 直线方程 */
 export class Line {
     /** 方向 */
     private direction: SAT.Vector;
     /** 是否是静止 */
-    private is_static: boolean = false;
+    public is_static: boolean = false;
     /** 长度 */
     private len: number;
     private start_pos: Point;
@@ -39,10 +40,10 @@ export class Line {
             y: y + direction.y,
         };
     }
-    public derivative(x: number) {
+    public derivative(t: number) {
         return this.direction;
     }
-    public length() {
+    public length(t: number) {
         return this.len;
     }
 }

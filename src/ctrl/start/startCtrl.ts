@@ -1,6 +1,5 @@
-import honor from 'honor';
+import { GameCtrl } from '../game/gameCtrl';
 import Start from 'view/scenes/start';
-import { LoginCtrl } from './loginCtrl';
 
 export class StartCtrl {
     private view: Start;
@@ -17,7 +16,7 @@ export class StartCtrl {
         const { CLICK } = Laya.Event;
 
         btn_back.on(CLICK, this, () => {
-            LoginCtrl.preEnter();
+            GameCtrl.preEnter();
         });
     }
 }

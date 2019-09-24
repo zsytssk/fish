@@ -1,9 +1,8 @@
-import { Test, mapTest } from 'testBuilder';
+import { Honor } from 'honor';
+import { mapTest, Test } from 'testBuilder';
 import { TestBuilderCtor } from 'testBuilder/testBuilder';
 import { getTestEnable, getTestIgnore } from './utils/testUtils';
-import dialogSpec from './dialog.spec';
-import sceneSpec from './scene.spec';
-import { Honor } from 'honor';
+import { game_test } from './game/game.spec';
 declare global {
     interface Window {
         test: typeof test;
@@ -12,7 +11,7 @@ declare global {
 }
 
 const testScope = new Test('top');
-testScope.addChild(dialogSpec, sceneSpec);
+testScope.addChild(game_test);
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
 testBuilder.init();

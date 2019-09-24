@@ -1,5 +1,4 @@
 import { createSkeleton } from './createSkeleton';
-import { extend } from './extends';
 import { cutStr } from './cutStr';
 import { getStringLength } from './getStringLength';
 import { formatTime, formatTimeLight } from './formatTime';
@@ -9,7 +8,6 @@ import { loadRes } from './loadRes';
 
 export const utils = {
     createSkeleton,
-    extend,
     cutStr,
     getStringLength,
     formatTime,

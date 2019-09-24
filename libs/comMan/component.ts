@@ -3,18 +3,18 @@ export interface Component {
 }
 
 export class ComponentManager {
-    private components: Set<Component>;
-    public add(...com_list: Component[]) {
+    private components: Set<Component> = new Set();
+    public addCom(...com_list: Component[]) {
         for (const com of com_list) {
             this.components.add(com);
         }
     }
-    public delete(...com_list: Component[]) {
+    public delCom(...com_list: Component[]) {
         for (const com of com_list) {
             this.components.delete(com);
         }
     }
-    public get(ctor: Ctor<Component>) {
+    public getCom<T extends Component>(ctor: Ctor<T>): T {
         for (const com of this.components) {
             if (com instanceof ctor) {
                 return com;

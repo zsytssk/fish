@@ -1,3 +1,6 @@
+const temple_pool: {
+    [key: string]: Laya.Templet;
+} = {};
 /**
  * @public
  * 创建骨骼动画
@@ -12,10 +15,18 @@ export function createSkeleton(path, rate?, type?) {
     type = type || 0;
     const png = Laya.loader.getRes(path + '.png');
     const sk = Laya.loader.getRes(path + '.sk');
-    if (!png || !sk) {
-        return null;
-    }
 
+    if (!png || !sk) {
+        return undefined;
+    }
+    let temple: Laya.Templet;
+    if (temple_pool[path]) {
+        temple = temple_pool[path];
+    } else {
+        temple = new Laya.Templet();
+        temple.parseData(png, sk, 24);
+        temple_pool[path] = temple;
+    }
     const templet = new Laya.Templet();
     templet.parseData(png, sk, rate);
 

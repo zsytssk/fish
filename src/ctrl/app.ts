@@ -1,12 +1,12 @@
 import { config } from 'data/config';
 import GameConfig from 'GameConfig';
 import honor from 'honor';
-import { LoginCtrl } from './start/loginCtrl';
+import { StartCtrl } from './start/startCtrl';
 
 export class AppCtrl {
     constructor() {
         this.startHonor().then(() => {
-            LoginCtrl.preEnter();
+            StartCtrl.preEnter();
         });
     }
     /** 初始化 honor */

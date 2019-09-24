@@ -1,6 +1,6 @@
-import * as Bezier from 'bezier-js';
+import Bezier from 'bezier-js';
 import { PATH } from '../../data/path';
-import { Displace, CurveInfo, Curve, t_fish_displace_pos } from './displace';
+import { Displace, CurveInfo, Curve, DisplaceInfo } from './displace';
 
 type PathFrom = 'left' | 'right';
 
@@ -21,13 +21,11 @@ export class DisplacePath extends Displace {
         fish_type: string,
         total_time: number,
         used_time: number,
-        from?: PathFrom,
+        reverse?: boolean,
     ) {
         super(fish_type, total_time, used_time);
         this.path_id = path_id;
-        if (from === 'right') {
-            this.is_reverse = true;
-        }
+        this.is_reverse = reverse;
         this.initPath();
     }
     private initPath() {
@@ -98,7 +96,7 @@ export class DisplacePath extends Displace {
      * 更新path的时间, 通过这个计算现在的位置
      * @param update_frame 更新的帧数
      */
-    public update(update_frame: number): t_fish_displace_pos {
+    public update(update_frame: number): DisplaceInfo {
         const used_frame = (this.used_frame = this.used_frame + update_frame);
         let used_radio = used_frame / this.total_frame;
         let is_complete: boolean = false;
@@ -120,7 +118,7 @@ export class DisplacePath extends Displace {
         }
 
         return {
-            position,
+            pos: position,
             direction,
             is_complete,
         };

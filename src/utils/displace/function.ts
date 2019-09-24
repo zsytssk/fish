@@ -1,16 +1,11 @@
+import { Curve } from './displace';
 import { Line } from './line';
 
-export type DisplaceFunUtil = {
-    get(t: number): Point;
-    derivative(t: number): Point;
-    len?(t: number): number;
-    is_static?: boolean;
-};
 /**
  * 位移控制器 -- 方程
  */
 type t_displace_fun_obj = {
-    [key: string]: (...params: any[]) => DisplaceFunUtil | Line;
+    [key: string]: (...params: any[]) => Curve;
 };
 export let FUNCTION: t_displace_fun_obj = {
     /**

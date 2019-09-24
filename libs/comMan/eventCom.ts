@@ -28,6 +28,7 @@ export class EventCom {
         if (this.events.has(event)) {
             events = this.events.get(event);
         } else {
+            events = new Set();
             this.events.set(event, events);
         }
 
