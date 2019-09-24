@@ -1,31 +1,24 @@
-import { FUNCTION } from '../data/function';
-import { CONFIG } from '../data/config';
-import { Displace, Line, t_curve_info, t_fish_displace_pos } from './displace';
-import { timeToFrame, getLineOutPoint } from './utils';
+import { FUNCTION } from './function';
+import { Displace, Line, CurveInfo, t_fish_displace_pos } from './displace';
+import { getLineOutPoint } from '../utils';
 
-export type t_displace_fun = {
-    get(t: number): t_point;
-    derivative(t: number): t_point;
-    len?(t: number): number;
-    is_static?: boolean;
-};
 export type t_displace_fun_info = {
     funNo: string;
     funParam: any[];
     radio?: number;
     len?: number;
-    /**poker水母直接出现在屏幕中间无需添加额外曲线 */
+    /** poker水母直接出现在屏幕中间无需添加额外曲线 */
     no_enter_leave?: boolean;
-    /**poseidon椭圆进入页面需要额外添加直线 */
+    /** poseidon椭圆进入页面需要额外添加直线 */
     enter?: boolean;
-    /**poseidon椭圆离开页面需要额外添加直线 */
+    /** poseidon椭圆离开页面需要额外添加直线 */
     leave?: boolean;
 };
 
 type AddLineType = 'start' | 'end';
 
-/**位移控制函数 */
-export class DisplaceFunction extends Displace {
+/** 位移控制函数 */
+export class DisplaceFun extends Displace {
     constructor(
         fun_list: t_displace_fun_info[],
         fish_type: string,
@@ -37,10 +30,10 @@ export class DisplaceFunction extends Displace {
     }
     private initFun(fun_list: t_displace_fun_info[]) {
         let all_length = 0;
-        let curves = [] as t_curve_info[];
+        const curves = [] as CurveInfo[];
         let debug = false;
         for (let i = 0; i < fun_list.length; i++) {
-            let curve_item = {} as t_curve_info;
+            let curve_item = {} as CurveInfo;
             let fun_no = fun_list[i].funNo;
             let fun_param = fun_list[i].funParam;
             /** 直接显示在页面中的鱼不需要添加额外路线 */
@@ -64,7 +57,7 @@ export class DisplaceFunction extends Displace {
                         'before',
                         curve.get(0),
                         curve.derivative(0),
-                    ) as t_curve_info;
+                    ) as CurveInfo;
                     curves.unshift(curve_before);
                     all_length += curve_before.length;
                 }
@@ -89,7 +82,7 @@ export class DisplaceFunction extends Displace {
                     'after',
                     curve.get(1),
                     curve.derivative(1),
-                ) as t_curve_info;
+                ) as CurveInfo;
                 curves.push(curve_after);
                 all_length += curve_after.length;
             }
@@ -105,7 +98,7 @@ export class DisplaceFunction extends Displace {
         this.curve_list = curves;
     }
     /**创建额外的 进入路线 离开路线 */
-    createOffsetLine(curve_info: t_curve_info, type: AddLineType) {
+    createOffsetLine(curve_info: CurveInfo, type: AddLineType) {
         let cur_len = curve_info.length;
 
         let p_radio = 0;

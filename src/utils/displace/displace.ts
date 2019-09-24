@@ -1,4 +1,6 @@
-import { CONFIG } from '../data/config';
+import * as Bezier from 'bezier-js';
+import { Line } from './line';
+import { CONFIG } from '../../data/config';
 import { zutil } from '../utils/zutil';
 import {
     timeToFrame,
@@ -6,32 +8,32 @@ import {
     getShapeInfo,
     vectorToAngle,
     frameToTime,
-} from './utils';
+} from '../utils';
 
-import { t_displace_fun } from './displaceFunction';
+import { t_displace_fun } from './displaceFun';
 import { t_body_direction } from '../model/core/body';
 
-export type t_curve = Bezier | Line | t_displace_fun;
-export type t_curve_info = {
-    curve: t_curve;
+export type Curve = Bezier | Line | t_displace_fun;
+export type CurveInfo = {
+    curve: Curve;
     length: number;
     radio?: number;
     radio_len?: number;
 };
-/**当前曲线信息 */
+/** 当前曲线信息 */
 export type CurCurveInfo = {
-    /**当前curve在所有curve_list中的index */
+    /** 当前curve在所有curve_list中的index */
     index: number;
-    /**当前curve在所有curve_list中的radio */
+    /** 当前curve在所有curve_list中的radio */
     start_radio: number;
     end_radio: number;
-    /**当前curve */
-    curve: t_curve_info;
-    /**当前radio在当前中curve中的radio */
+    /** 当前curve */
+    curve: CurveInfo;
+    /** 当前radio在当前中curve中的radio */
     radio_in_curve: number;
 };
 export type t_fish_displace_pos = {
-    position?: t_point;
+    position?: Point;
     direction?: SAT.Vector;
     out_stage?: boolean;
     is_complete?: boolean;
@@ -39,14 +41,14 @@ export type t_fish_displace_pos = {
 };
 
 type t_path_type = 'curve' | 'line';
-/**鱼进入离开的方向, 用来确定加如边距 以sprite-->offset中哪一个为依据*/
+/** 鱼进入离开的方向, 用来确定加如边距 以sprite-->offset中哪一个为依据 */
 type t_start_direction = 'left' | 'right' | 'top' | 'bottom';
 /**
  * 位移控制器
  */
 export class Displace {
     /**使用的时间*/
-    protected curve_list: t_curve_info[] = [];
+    protected curve_list: CurveInfo[] = [];
     protected used_frame: number;
     /**总共的时间*/
     protected total_frame: number;
@@ -83,7 +85,7 @@ export class Displace {
             y: path_info[3],
         };
         let curve = new Line(start_pos, end_pos);
-        let curve_info = {} as t_curve_info;
+        let curve_info = {} as CurveInfo;
         curve_info.curve = curve;
         curve_info.length = curve.length();
         return curve_info;
@@ -91,8 +93,8 @@ export class Displace {
     /**鱼游动的路程是 路径的长度+鱼的长度, 路径前后分别添加半个鱼的长度作为进入+离开, 不会突然出现*/
     protected createSpace(
         position: 'before' | 'after',
-        start_pos: t_point,
-        derivative: t_point,
+        start_pos: Point,
+        derivative: Point,
     ) {
         let sprite_info = getSpriteInfo('fish', this.fish_type);
         let shape_info = getShapeInfo('fish', this.fish_type);
@@ -151,7 +153,7 @@ export class Displace {
         return fish_len;
     }
     /**直立行走鱼的边缘路径直接垂直与边框就可以了 */
-    protected calcFixLen(position: 'before' | 'after', start_pos: t_point) {
+    protected calcFixLen(position: 'before' | 'after', start_pos: Point) {
         let sprite_info = getSpriteInfo('fish', this.fish_type);
         let shape_info = getShapeInfo('fish', this.fish_type);
         let shape_direction = shape_info.shape_direction as t_body_direction;
@@ -189,7 +191,7 @@ export class Displace {
     }
     protected getPointAtRadio(
         radio: number,
-    ): { position: t_point; direction: SAT.Vector } {
+    ): { position: Point; direction: SAT.Vector } {
         let cur_curve_info = this.calcCurCurveInfo(radio);
         let cur_curve = cur_curve_info.curve;
         let cur_radio = cur_curve_info.radio_in_curve;
@@ -231,10 +233,10 @@ export class Displace {
         } else {
             /**如果进入下一个曲线 */
             let cur_idx = 0;
-            let cur_curve: t_curve_info;
+            let cur_curve: CurveInfo;
             let curve_list = this.curve_list;
             let prev_radio: number;
-            let curve: t_curve_info;
+            let curve: CurveInfo;
 
             for (let i = 0; i < curve_list.length; i++) {
                 curve = curve_list[i];
@@ -264,54 +266,5 @@ export class Displace {
     }
     public getCurCurveInfo() {
         return this.cur_curve_info;
-    }
-}
-
-/**直线方程 */
-export class Line {
-    /**方向*/
-    direction: SAT.Vector;
-    /**是否是静止*/
-    is_static: boolean = false;
-    /**长度*/
-    len: number;
-    start_pos: t_point;
-    end_pos: t_point;
-    constructor(start_pos: t_point, end_pos: t_point) {
-        if (start_pos.x == end_pos.x && start_pos.y == end_pos.y) {
-            this.is_static = true;
-            this.len = 0;
-            this.direction = new SAT.Vector(0, 0);
-        }
-
-        let x1 = start_pos.x,
-            y1 = start_pos.y,
-            x2 = end_pos.x,
-            y2 = end_pos.y;
-        let dy = y2 - y1;
-        let dx = x2 - x1;
-        let len = Math.sqrt(dx * dx + dy * dy);
-
-        this.start_pos = start_pos;
-        this.end_pos = end_pos;
-        this.direction = new SAT.Vector(dx, dy).normalize();
-        this.len = len;
-    }
-    get(t: number) {
-        let tlen = t * this.len;
-        let tdirection = this.direction.clone().scale(tlen, tlen);
-        let x = this.start_pos.x;
-        let y = this.start_pos.y;
-
-        return {
-            x: x + tdirection.x,
-            y: y + tdirection.y,
-        };
-    }
-    derivative(x: number) {
-        return this.direction;
-    }
-    length() {
-        return this.len;
     }
 }

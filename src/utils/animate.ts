@@ -1,4 +1,5 @@
-import { zTimer } from './zTimer';
+import * as zTimer from './zTimer';
+
 export function fade_in(sprite: Laya.Sprite, time?: number, ease_fn?: string) {
     completeAni(sprite);
     const start_props = {

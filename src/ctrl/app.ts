@@ -1,4 +1,4 @@
-import { config } from 'config/config';
+import { config } from 'data/config';
 import GameConfig from 'GameConfig';
 import honor from 'honor';
 import { LoginCtrl } from './start/loginCtrl';

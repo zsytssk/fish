@@ -26,6 +26,9 @@
         "webpack-dev-server": "^3.7.2"
     },
     "dependencies": {
+        "@types/bezier-js": "0.0.8",
+        "@types/sat": "0.0.30",
+        "bezier-js": "^2.4.4",
         "es6-promise": "^4.2.8",
         "rxjs": "^6.5.3",
         "sat": "^0.8.0",
