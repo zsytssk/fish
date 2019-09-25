@@ -7,6 +7,17 @@
 
 ## 2019-09-25 09:15:11
 
+-   @todo 有些动画是不需要放在 sprite 里面的
+
+-   mac shortcut f11 是干什么的
+-   @ques 鱼的站立动画如何处理
+
+-   @ques data/sprite.ts 到底有什么意义 能不能删除掉
+
+    -   难道要我去建立那么多的 ui, fish 1-40 other/...
+
+-   @todo 一个星期之后试试 鼠标操作
+
 -   @ques mac 文件夹 自动排序
 
 -   @ques 知乎 typescript
