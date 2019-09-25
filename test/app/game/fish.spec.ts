@@ -4,10 +4,12 @@ import { BodyCom, Shape, ShapeInfo } from 'model/com/bodyCom';
 import { injectProto } from 'honor/utils/tool';
 import { clonePolygon } from 'model/com/bodyComUtil';
 import { state } from 'ctrl/state';
+import { Honor } from 'honor';
+import Game from 'view/scenes/game';
 
 export const fish_test = new Test('fish', runner => {
     let init_show_shape = false;
-    runner.describe('show_shape', (i: number) => {
+    runner.describe('show_shape', (...params) => {
         if (!init_show_shape) {
             init_show_shape = true;
             const sprite_map = new Map() as Map<BodyCom, Laya.Sprite>;
@@ -16,13 +18,13 @@ export const fish_test = new Test('fish', runner => {
                 let sprite = sprite_map.get(obj);
                 if (!sprite) {
                     sprite = new Laya.Sprite();
-                    Laya.stage.addChild(sprite);
+                    const game_view = Honor.director.runningScene as Game;
+                    sprite.zOrder = 10;
+                    game_view.pool.addChild(sprite);
                     sprite_map.set(obj, sprite);
                     sprite.alpha = 0.5;
                 }
                 sprite.graphics.clear();
-                // const { x, y } = obj['pos']; // tslint:disable-line
-                // sprite.graphics.drawCircle(x, y, 20, 'blue');
                 // tslint:disable-next-line
                 drawShape(sprite, obj['shapes'], obj['angle']);
             });
@@ -36,17 +38,19 @@ export const fish_test = new Test('fish', runner => {
             });
         }
 
-        fish_test.runTest('add_fish', [i]);
+        fish_test.runTest('add_fish', [...params]);
     });
 
-    runner.describe('add_fish', (i: number) => {
+    runner.describe('add_fish', (i: number, j: number, t: number) => {
         i = i || 1;
+        j = j || 1;
+        t = t || 15;
         const fish_data = {
             fishId: '00' + i,
             typeId: `${i + 1}`,
             displaceType: 'path',
-            pathNo: `${1}`,
-            totalTime: 10,
+            pathNo: `${j}`,
+            totalTime: t,
             usedTime: 0,
         } as ServerFishInfo;
         state.game_model.addFish(fish_data);

@@ -8,6 +8,7 @@ import { res } from 'data/res';
 import { state } from 'ctrl/state';
 import { AppPath } from 'model/appModel';
 
+/** 游戏ctrl */
 export class GameCtrl {
     private view: Game;
     private model: GameModel;

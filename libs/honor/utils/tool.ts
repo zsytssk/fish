@@ -1,5 +1,7 @@
+import { never } from 'rxjs';
+
 /** 在class的fun执行之后执行fun */
-export function injectAfter(instance: any, fun_name: string, func: Func<any>) {
+export function injectAfter<T>(instance: T, fun_name: string, func: Func<any>) {
     const ori_fun = instance[fun_name];
     instance[fun_name] = function(...params) {
         const result = ori_fun.apply(this, [...params]);
@@ -13,9 +15,10 @@ export function injectAfter(instance: any, fun_name: string, func: Func<any>) {
         return result;
     };
 }
-export function injectProto(
-    ctor: any,
-    fun_name: string,
+
+export function injectProto<T extends {}, K extends keyof T>(
+    ctor: Ctor<T>,
+    fun_name: K,
     func: Func<any>,
     once?: boolean,
 ) {

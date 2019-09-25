@@ -18,7 +18,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,pool",
-            "props":{"var":"pool","top":0,"right":0,"left":0,"bottom":0},
+            "props":{"width":1334,"var":"pool","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"pool",
             "isDirectory":false,

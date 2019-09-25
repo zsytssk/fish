@@ -7,12 +7,14 @@ import { state } from './state';
 
 export class AppCtrl {
     private model = new AppModel();
+    private view = Laya.stage;
     constructor() {
         this.startApp();
     }
     public startApp() {
         state.app_ctrl = this;
         state.app_model = this.model;
+
         return this.startHonor().then(() => {
             HallCtrl.preEnter();
         });

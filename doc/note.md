@@ -6,44 +6,63 @@
 
 ## 2019-09-25 09:15:11
 
--   @note 圆比矩形更适合做形状
+-   @ques 出屏幕的路线和屏幕的角度越小 越难处理....
 
--   @ques body 的位置不对...
+    -   可能会导致 沿着线方向 离开了, 但是侧边没有离开
+    -   叫设计将出屏幕的路线全部变成直角
+
+-   ## @todo 鱼一开始 隐藏 进入页面之后才显示...
+
+    -   离开隐藏
+
+-   @ques MoveCom 等到做子弹之后再看
+    -   检测碰撞 减少计算... 最好变成 component 只做需要的计算
+
+*   捕鱼的工具全部放到一起...
+
+    -   生成鱼群
+    -   生成路径
+
+*   @note 圆比矩形更适合做形状
+
+*   @ques body 的位置不对...
 
     -   是鱼的位置不对, 还是 body 的位置不对...
     -   圆心点的位置不一致
     -   画一个不动的鱼, 去调整他的角度..
 
--   @bug 鱼还没完全离开页面 就消失了...
+*   @bug 鱼还没完全离开页面 就消失了...
 
--   @ques 有没有更好的方式去组织 shape 信息
+*   @ques 有没有更好的方式去组织 shape 信息
 
--   @ques 形状的可视化 -> 放在 test 中...
+    -   鱼的 sprite 可以放在 ui 编辑器中
 
--   @ui 鱼的动画全部放在中间...
+*   @ques 形状的可视化 -> 放在 test 中...
 
--   @todo 将 生成形状的原始数据 放在外面 精简 里面的逻辑
+*   @ui 鱼的动画全部放在中间...
+
+*   @todo 将 生成形状的原始数据 放在外面 精简 里面的逻辑
 
     -   也许可以缓存这些数据..
     -   @ques body fix_direction 是否可以放在外边处理...
     -   将所有的代码可以可感觉, 而不是一大坨...
     -   `angle + Math.PI / 2;` 这种代码最好清理掉
 
--   @todo detectCollision
+*   @todo detectCollision
 
-*   @bug test 中无法 run 自己
+-   @bug test 中无法 run 自己
 
--   game_test
+*   game_test
 
--   全局 state 数据类...
--   叠高 mac + 键盘..
--   mac 系统快捷键
+*   全局 state 数据类...
+*   叠高 mac + 键盘..
+*   mac 系统快捷键
 
--   @ques mac touch bar f12 怎么找
+*   @ques mac touch bar f12 怎么找
 
--   @ques ts object function keys injectAfter..
+*   @ques ts object function keys injectAfter..
 
--   @ques prettier width
+*   @ques prettier width
 
 ## 2019-09-24 11:55:04
 

@@ -156,6 +156,7 @@ export function calcFixLen(
         fish_len = Math.max(sprite_info.offset[1], sprite_info.offset[3]);
         derivative = new SAT.Vector(-1, 0);
     }
+
     return {
         fish_len,
         derivative,

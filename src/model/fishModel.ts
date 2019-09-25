@@ -23,6 +23,7 @@ export class FishModel extends ComponentManager {
     public pos: Point;
     /** 方向 */
     public direction: SAT.Vector;
+    /** 鱼的状态 */
     private game: GameModel;
     constructor(data: ServerFishInfo, game: GameModel) {
         super();
