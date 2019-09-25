@@ -3,7 +3,13 @@ export function injectAfter(instance: any, fun_name: string, func: Func<any>) {
     const ori_fun = instance[fun_name];
     instance[fun_name] = function(...params) {
         const result = ori_fun.apply(this, [...params]);
-        func(...params);
+        if (result instanceof Promise) {
+            result.then(() => {
+                func(this, result, ...params);
+            });
+        } else {
+            func(this, result, ...params);
+        }
         return result;
     };
 }
@@ -16,7 +22,13 @@ export function injectProto(
     const ori_fun = ctor.prototype[fun_name];
     ctor.prototype[fun_name] = function(...params) {
         const result = ori_fun.apply(this, [...params]);
-        func(...params);
+        if (result instanceof Promise) {
+            result.then(() => {
+                func(this, result, ...params);
+            });
+        } else {
+            func(this, result, ...params);
+        }
         if (once) {
             ctor.prototype[fun_name] = ori_fun;
         }
@@ -51,5 +63,5 @@ export function createScene<T extends Laya.Scene>(ctor: Ctor<T>): Promise<T> {
 }
 
 export function nodeIsReady(node: Laya.Node) {
-    return node._getBit(/*laya.Const.NOT_READY*/ 0x08);
+    return (node as any)._getBit(/*laya.Const.NOT_READY*/ 0x08);
 }

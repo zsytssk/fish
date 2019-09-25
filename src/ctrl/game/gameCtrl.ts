@@ -5,11 +5,8 @@ import { FishModel } from 'model/fishModel';
 import { setProps } from 'utils/utils';
 import honor from 'honor';
 import { res } from 'data/res';
-
-export const state = {} as {
-    game_ctrl: GameCtrl;
-    game_model: GameModel;
-};
+import { state } from 'ctrl/state';
+import { AppPath } from 'model/appModel';
 
 export class GameCtrl {
     private view: Game;
@@ -22,8 +19,9 @@ export class GameCtrl {
     public static async preEnter() {
         const view = (await Game.preEnter()) as Game;
         await honor.director.load(res.game);
-        const game_model = new GameModel();
+        const game_model = state.app_model.enterGame();
         const game_ctrl = new GameCtrl(view, game_model);
+        state.app_model.changePath(AppPath.Game);
 
         setProps(state, { game_ctrl, game_model });
     }

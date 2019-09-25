@@ -7,6 +7,8 @@ import {
     createCurvesByPath,
     createCurvesByFun,
 } from 'utils/displace/displaceUtil';
+import { getShapes } from './com/bodyComUtil';
+import { BodyCom } from './com/bodyCom';
 
 export const FishEvent = {
     move: 'move',
@@ -39,10 +41,14 @@ export class FishModel extends ComponentManager {
 
         const displace = createFishDisplace(data);
         const move_com = new MoveCom(displace, this.onDisplaceChange);
-        this.addCom(move_com);
+        const shapes = getShapes('fish', Number(typeId));
+        const body_com = new BodyCom(shapes);
+
+        this.addCom(move_com, body_com);
     }
     private onDisplaceChange = (displace_info: DisplaceInfo) => {
         const event_com = this.getCom(EventCom);
+        const body_com = this.getCom(BodyCom);
         const { pos, direction, is_complete, out_stage } = displace_info;
         if (is_complete) {
             return this.destroy();
@@ -50,6 +56,7 @@ export class FishModel extends ComponentManager {
         if (out_stage) {
             return;
         }
+        body_com.update(pos, direction);
 
         event_com.emit(FishEvent.move, {
             pos,

@@ -1,10 +1,4 @@
-import {
-    TestEntity,
-    TestFun,
-    TestScopeFun,
-    TestUtil,
-    TestItem,
-} from './interface';
+import { TestEntity, TestFun, TestScopeFun, TestUtil } from './interface';
 import { TestEntityCtor } from './testEntity';
 import { asyncRunTestFun, asyncRunTestFunArr } from './utils';
 
@@ -57,7 +51,7 @@ function beforeEach(fun: TestFun) {
     cur_test_entity.beforeEach.push(fun);
 }
 
-export async function parseTestEntity(entity: TestEntity, params?: any[]) {
+export async function parseTestEntity(entity: TestEntity, params: any[] = []) {
     const { fun } = entity;
 
     console.group(`TestBuilder:>`, entity.msg);
@@ -73,6 +67,7 @@ export async function parseTestEntity(entity: TestEntity, params?: any[]) {
     console.groupEnd();
 }
 export async function runTestEntity(entity: TestEntity, params?: any[]) {
+    // tslint:disable-next-line
     const { afterAll, afterEach, beforeAll, beforeEach, itemList } = entity;
     await asyncRunTestFunArr(beforeAll, 'concurrent');
     for (const item of itemList) {
