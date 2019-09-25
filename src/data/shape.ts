@@ -79,26 +79,25 @@ export let SHAPE: ShapeOriData = {
         '1': {
             shape_list: [
                 {
-                    type: 'Box',
-                    width: 19,
-                    height: 32,
-                    pivot: {
-                        x: 10,
-                        y: 10,
-                    },
+                    type: 'Circle',
+                    radius: 19,
                 },
+                // {
+                //     type: 'Box',
+                //     width: 19,
+                //     height: 32,
+                //     pivot: {
+                //         x: 10,
+                //         y: 10,
+                //     },
+                // },
             ],
         },
         '2': {
             shape_list: [
                 {
-                    type: 'Box',
-                    width: 26,
-                    height: 38,
-                    pivot: {
-                        x: 12,
-                        y: 17,
-                    },
+                    type: 'Circle',
+                    radius: 19,
                 },
             ],
         },
