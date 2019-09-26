@@ -1,11 +1,60 @@
 -   @todo 基本功能 全部完成
-
     -   形状 + 可视化
     -   鱼群
     -   炮台发射子弹 网
     -   碰撞检测
 
+## 2019-09-26 15:05:32
+
+-   @todo addPlayer
+
+## 2019-09-26 11:07:39
+
+-   @ques 碰撞检测每一条鱼 怎么处理
+
+    -   在子弹的更新里面处理??
+
+-   gun: pos 有什么用...
+
+    -   瞄准时自动旋转炮口...
+
+-   @ques
+
+    -   所有移动组件 公用一套 interface, 这样其实停难的
+    -   DisplaceInfo
+        -> moveInfo moveCom
+
+-   @todo 先只把用户加进去, 最简单的实现基本逻辑...
+
+    -   bulletGroup | netGroup 还有没有必要存在...
+    -   可以先删除掉, 后面再加也可以...
+
+-   @ques 炮台的位置 有没有比 Coordinates 更好的方式
+
+    -   普通场 + 竞技场的区别
+
+-   @ques 现在的炮台也许只有一个炮口...
+
+-   @note net 可以放在 bullet 下面, gun 监听 bullet cast_fish...
+
+    -   这样就不需要维护 gun:net 属性了
+
+-   @ques bullet tract 如何做成一个 com
+
+    -   改变 bullet 的位置 方向 + 触发击中逻辑:> 改变原来的移动逻辑
+    -   moveVelocityCom moveTrack MoveDisplace 这里面调用 tick 命令
+
+-   fish.body:> 测试碰撞...
+
 ## 2019-09-25 09:15:11
+
+-   @todo bulletGroup fishGroup
+
+    -   gun>bullet|group 他们提供相同的 api, group 里面可以是 bullet
+
+-   @ques gunModel netModel 有没有必要存在...
+
+    -   去掉有什么优点, 保留有什么缺点...
 
 -   @todo 有些动画是不需要放在 sprite 里面的
 

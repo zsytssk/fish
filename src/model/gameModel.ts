@@ -16,12 +16,20 @@ export class GameModel extends ComponentManager {
     public get event() {
         return this.getCom(EventCom);
     }
-    public addFish(data: ServerFishInfo) {
-        const fish = new FishModel(data, this);
+    public addFish(fish_info: ServerFishInfo) {
+        const fish = new FishModel(fish_info, this);
         this.fish_list.add(fish);
         this.getCom(EventCom).emit(GameEvent.addFish, fish);
     }
     public removeFish(fish: FishModel) {
+        this.fish_list.delete(fish);
+    }
+    public addPlayer(data: ServerFishInfo) {
+        const fish = new PlayerModel(data, this);
+        this.fish_list.add(fish);
+        this.getCom(EventCom).emit(GameEvent.addFish, fish);
+    }
+    public removePlayer(fish: FishModel) {
         this.fish_list.delete(fish);
     }
 }

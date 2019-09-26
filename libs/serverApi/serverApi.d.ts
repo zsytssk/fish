@@ -12,3 +12,13 @@ type ServerFishInfo = {
     funNo?: string;
     funList?: any[];
 };
+
+type ServerPlayerInfo = {
+    userId: string;
+    serverIndex: number;
+    level: number;
+    gold: number;
+    gunSkin: string;
+    nickname: string;
+    avatar: string;
+};

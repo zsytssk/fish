@@ -3,8 +3,8 @@ import { clearAll, loop } from 'utils/zTimer';
 
 type MoveUpdateFn = (displace_info: DisplaceInfo) => void;
 
-/** 移动控制component */
-export class MoveCom {
+/** 固定路径 移动控制 */
+export class MoveDisplaceCom {
     private displace: Displace;
     constructor(displace: Displace, update_fn: MoveUpdateFn) {
         this.displace = displace;

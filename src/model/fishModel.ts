@@ -1,5 +1,5 @@
 import { DisplaceInfo, Displace, CurveInfo } from 'utils/displace/displace';
-import { MoveCom } from './com/moveCom';
+import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
 import { EventCom } from 'comMan/eventCom';
 import { ComponentManager } from 'comMan/component';
 import { GameModel } from './gameModel';
@@ -9,10 +9,10 @@ import {
 } from 'utils/displace/displaceUtil';
 import { getShapes } from './com/bodyComUtil';
 import { BodyCom } from './com/bodyCom';
+import { ModelEvent } from './modelEvent';
 
 export const FishEvent = {
     move: 'move',
-    destroy: 'destroy',
 };
 export class FishModel extends ComponentManager {
     /** 唯一标示 */
@@ -28,7 +28,6 @@ export class FishModel extends ComponentManager {
     constructor(data: ServerFishInfo, game: GameModel) {
         super();
 
-        this.addCom(new EventCom());
         this.game = game;
         this.init(data);
     }
@@ -41,14 +40,13 @@ export class FishModel extends ComponentManager {
         this.id = fishId;
 
         const displace = createFishDisplace(data);
-        const move_com = new MoveCom(displace, this.onDisplaceChange);
+        const move_com = new MoveDisplaceCom(displace, this.onMoveChange);
         const shapes = getShapes('fish', Number(typeId));
         const body_com = new BodyCom(shapes);
 
-        this.addCom(move_com, body_com);
+        this.addCom(new EventCom(), move_com, body_com);
     }
-    private onDisplaceChange = (displace_info: DisplaceInfo) => {
-        const event_com = this.getCom(EventCom);
+    private onMoveChange = (displace_info: DisplaceInfo) => {
         const body_com = this.getCom(BodyCom);
         const { pos, direction, is_complete, out_stage } = displace_info;
         if (is_complete) {
@@ -59,15 +57,14 @@ export class FishModel extends ComponentManager {
         }
         body_com.update(pos, direction);
 
-        event_com.emit(FishEvent.move, {
+        this.event.emit(FishEvent.move, {
             pos,
             direction,
         });
     }; // tslint:disable-line: semicolon
     public destroy() {
-        const event_com = this.getCom(EventCom);
         this.game.removeFish(this);
-        event_com.emit(FishEvent.destroy);
+        this.event.emit(ModelEvent.Destroy);
         super.destroy();
     }
 }
