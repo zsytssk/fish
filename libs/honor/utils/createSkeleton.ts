@@ -10,7 +10,7 @@ const temple_pool: {
  *
  * @return 骨骼动画
  */
-export function createSkeleton(path, rate?, type?) {
+export function createSkeleton(path: string, rate?: number, type?: number) {
     rate = rate || 30;
     type = type || 0;
     const png = Laya.loader.getRes(path + '.png');
@@ -31,4 +31,30 @@ export function createSkeleton(path, rate?, type?) {
     templet.parseData(png, sk, rate);
 
     return templet.buildArmature(type);
+}
+
+/**
+ * 创建帧动画
+ * @param path 动画的路径
+ */
+export function createAnimation(path: string): Laya.Animation {
+    const ani = new Laya.Animation();
+    ani.loadAtlas(path + '.json');
+    ani.interval = 120;
+    ani.index = 1;
+    ani.play();
+
+    const bounds = ani.getGraphicBounds();
+    ani.pivot(bounds.width / 2, bounds.height / 2);
+    return ani;
+}
+
+/**
+ * 创建帧动画
+ * @param path 动画的路径
+ */
+export function createImg(path: string): Laya.Sprite {
+    const sprite = new Laya.Image();
+    sprite.loadImage(path + '.png');
+    return sprite;
 }

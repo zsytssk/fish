@@ -1,10 +1,9 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { BulletModel } from './bulletModel';
-import { NetGroupModel } from './netModel';
 import { getBulletStartPos } from 'utils/dataUtil';
-import { PlayerModel } from './playerModel';
+import { BulletModel } from './bulletModel';
 import { TrackTarget } from './com/moveCom/moveTrackCom';
+import { PlayerModel } from './playerModel';
 
 export const GunEvent = {
     AddBullet: 'addBullet',
@@ -14,11 +13,11 @@ export class GunModel extends ComponentManager {
     /** 炮口的方向 */
     private direction: SAT.Vector;
     /** 位置 */
-    private pos: Point;
+    public readonly pos: Point;
     /** 炮等级 */
     public level: number;
     /** 炮皮肤 */
-    private skin: string;
+    public readonly skin: string;
     /** 子弹列表 */
     private bullet_list: Set<BulletModel> = new Set();
     /** 炮口的方向 */
@@ -27,6 +26,7 @@ export class GunModel extends ComponentManager {
         super();
 
         this.level = player.level;
+        this.pos = pos;
         this.skin = skin;
         this.player = player;
         this.init();
@@ -38,7 +38,7 @@ export class GunModel extends ComponentManager {
     public get event() {
         return this.getCom(EventCom);
     }
-    public addBullet(velocity: SAT.Vector, track: TrackTarget) {
+    public addBullet(velocity: SAT.Vector, track?: TrackTarget) {
         velocity = velocity.clone().normalize();
         this.direction = velocity;
 

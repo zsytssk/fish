@@ -6,6 +6,7 @@ import { getShapes } from './com/bodyComUtil';
 import { BodyCom } from './com/bodyCom';
 import { GunModel } from './gunModel';
 import { ModelEvent } from './modelEvent';
+import { config } from 'data/config';
 
 export const BulletEvent = {
     move: 'move',
@@ -15,6 +16,8 @@ export const BulletEvent = {
 export class BulletModel extends ComponentManager {
     /** 等级 */
     public level: number;
+    /** 等级 */
+    public skin: string;
     /** 位置 */
     public pos: Point;
     /** 速度 */
@@ -29,8 +32,9 @@ export class BulletModel extends ComponentManager {
         super();
 
         this.level = gun.level;
+        this.skin = gun.skin;
         this.pos = pos;
-        this.velocity = velocity;
+        this.velocity = velocity.scale(config.bullet_speed);
         this.gun = gun;
         this.init(track);
     }
@@ -39,7 +43,7 @@ export class BulletModel extends ComponentManager {
     }
     private init(track?: TrackTarget) {
         const { pos, velocity, level } = this;
-        let move_com;
+        let move_com: MoveCom;
         if (track) {
             move_com = new MoveTrackCom(
                 pos,
@@ -61,14 +65,15 @@ export class BulletModel extends ComponentManager {
 
         this.addCom(new EventCom(), body_com, move_com);
     }
-    private onMoveChange(pos: Point, direction: SAT.Vector) {
+    private onMoveChange(move_info: MoveInfo) {
+        const { pos, direction } = move_info;
         const body_com = this.getCom(BodyCom);
         body_com.update(pos, direction);
 
         this.event.emit(BulletEvent.move, {
             pos,
             direction,
-        });
+        } as MoveInfo);
     }
     private onHit(track: TrackTarget) {
         console.log(track);

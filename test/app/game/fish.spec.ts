@@ -5,7 +5,7 @@ import { injectProto } from 'honor/utils/tool';
 import { clonePolygon } from 'model/com/bodyComUtil';
 import { state } from 'ctrl/state';
 import { Honor } from 'honor';
-import Game from 'view/scenes/game';
+import Game from 'view/scenes/game/game';
 
 export const fish_test = new Test('fish', runner => {
     let init_show_shape = false;

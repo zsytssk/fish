@@ -4,9 +4,54 @@
     -   炮台发射子弹 网
     -   碰撞检测
 
+## 2019-09-26 16:17:18
+
+-   @todo 子弹碰撞鱼 追踪子弹无需这个功能, 而且网也需要这个功能
+
+    -   collisionFishCom, 怎么获取所有的鱼...
+
+-   @ques 假设碰撞只是形状之间的, 我又怎么知道 到底是碰到了什么
+
+    -   难道我再去这个形状对应是哪个 fish 或者什么东西
+    -   只做 body 的碰撞是可以的...
+    -   有没有更好的方式...
+
+-   @ques 所有的形状|sprite 的位置匹配太麻烦了, 有没有更好的方式
+
+-   @todo MoveVelocity 一卡一卡的 Laya.timer.once 频繁创建导致的
+
+    -   FrameInterval 删掉算了 timerLoop 又不会出现 timer 次数的变化, 这一切都没有意义的
+
+-   @todo
+
+-   @todo MoveCom 我希望是在一个地方 新建一个 loop, 每一地方要用就会在这里添加一个函数
+
+-   @ques 添加子弹到页面上
+
+    -   撞墙反弹
+    -   zTimer 变化太大了, 不太适合做动画
+
+-   @todo 建立新的 git 库 将 fish 放上去
+
+*   @ques track fish destroy 怎么处理
+
+    -   trackCom + recover...
+
+*   @todo createSprite
+
+*   mvc 最可能出现问题的地方到了 view 的关系组织
+
+*   @todo 发射子弹...
+
+*   @todo 鱼+子弹的位置更新能不能写成 通用的...
+
+*   @bug 鱼离开没有 destroy 绑定的事件不一致...
+
 ## 2019-09-26 15:05:32
 
 -   @todo addPlayer
+
+-   动画 + sprite 应该如何创建..
 
 ## 2019-09-26 11:07:39
 

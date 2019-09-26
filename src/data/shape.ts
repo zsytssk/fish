@@ -64,6 +64,10 @@ export let SHAPE: ShapeOriData = {
                 type: 'Box',
                 width: 20,
                 height: 50,
+                pivot: {
+                    x: 10,
+                    y: 50,
+                },
             },
         ],
     },

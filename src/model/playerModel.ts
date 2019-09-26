@@ -18,7 +18,7 @@ export class PlayerModel extends ComponentManager {
     /** 图像地址 */
     public avatar: string;
     /** 炮台 */
-    private gun: GunModel;
+    public gun: GunModel;
     /** game 引用 */
     private game: GameModel;
     constructor(player_info: ServerPlayerInfo, game: GameModel) {
@@ -41,11 +41,12 @@ export class PlayerModel extends ComponentManager {
         this.server_index = serverIndex;
         this.nickname = nickname;
         this.gold = gold;
+        this.level = level;
         this.avatar = avatar;
         this.gold = gold;
 
         const { pos } = getGunInfo(serverIndex);
-        const gun = new GunModel(pos, level, gunSkin);
+        const gun = new GunModel(pos, gunSkin, this);
         this.gun = gun;
     }
 }

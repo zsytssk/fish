@@ -1,8 +1,14 @@
+import SAT from 'sat';
 import { Coordinates } from 'data/coordinate';
-import { SpriteType } from 'data/sprite';
+import { SpriteType, SpriteInfo } from 'data/sprite';
 import { SPRITE } from 'data/sprite';
 import { SHAPE } from 'data/shape';
 import { vectorToAngle } from './mathUtils';
+import {
+    createSkeleton,
+    createAnimation,
+    createImg,
+} from 'honor/utils/createSkeleton';
 
 export function getGunInfo(server_index: number) {
     const pos = Coordinates.gun_global_pos[server_index];
@@ -11,8 +17,8 @@ export function getGunInfo(server_index: number) {
     };
 }
 /** 获取sprite的信息 */
-export function getSpriteInfo(type: SpriteType, level?: number | string) {
-    let sprite_info = SPRITE[type][level] || SPRITE[type]['1'] || SPRITE[type];
+export function getSpriteInfo(type: SpriteType, sub_type: string): SpriteInfo {
+    let sprite_info = SPRITE[type][sub_type];
     if (sprite_info.as) {
         sprite_info = SPRITE[type][sprite_info.as];
     }
@@ -36,9 +42,9 @@ export function getBulletStartPos(
     server_index: number,
     direction: SAT.Vector,
 ): Point {
-    const server_client_index = server_index - 1;
+    const server_client_index = server_index;
     const gun_global_pos: Point =
-        Coordinates.gun_global_pos[server_client_index].pos;
+        Coordinates.gun_global_pos[server_client_index];
     const gun_origin_pos: Point = Coordinates.guns_inside_pos.origin_point;
     const gun_start_point: Point = Coordinates.guns_inside_pos.start_point;
     let x: number;
@@ -66,4 +72,47 @@ export function getBulletStartPos(
     x = gun_global_pos.x + vector.x;
     y = gun_global_pos.y + vector.y;
     return { x, y };
+}
+
+/**
+ * 创建sprite
+ * @param type 精灵的类型
+ * @param level type的等级
+ * @param callback 创建之后扔给的异步函数
+ */
+export function createSprite(
+    sprite_type: SpriteType,
+    sub_type: string,
+): Laya.Sprite {
+    const sprite_info = getSpriteInfo(sprite_type, sub_type);
+    const { type, path } = sprite_info;
+    let pivot = sprite_info.pivot || { x: 0, y: 0 };
+
+    let fish_animate: Laya.Sprite;
+    if (type === 'DragonBone') {
+        fish_animate = createSkeleton(path);
+    } else if (type === 'Frame') {
+        fish_animate = createAnimation(path);
+    } else {
+        fish_animate = createImg(path);
+
+        if (!pivot.x && !pivot.y) {
+            const bounds = fish_animate.getBounds();
+            pivot = {
+                x: bounds.width / 2,
+                y: bounds.height / 2,
+            };
+        }
+    }
+
+    fish_animate.pivot(pivot.x, pivot.y);
+    if (sprite_info.width) {
+        fish_animate.width = sprite_info.width;
+        fish_animate.height = sprite_info.height;
+    } else {
+        fish_animate.width = pivot.x * 2;
+        fish_animate.height = pivot.y * 2;
+    }
+
+    return fish_animate;
 }

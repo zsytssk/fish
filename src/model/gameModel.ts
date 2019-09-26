@@ -5,6 +5,7 @@ import { PlayerModel } from './playerModel';
 
 export const GameEvent = {
     addFish: 'add_fish',
+    addPlayer: 'add_player',
 };
 export class GameModel extends ComponentManager {
     private fish_list: Set<FishModel> = new Set();
@@ -19,17 +20,17 @@ export class GameModel extends ComponentManager {
     public addFish(fish_info: ServerFishInfo) {
         const fish = new FishModel(fish_info, this);
         this.fish_list.add(fish);
-        this.getCom(EventCom).emit(GameEvent.addFish, fish);
+        this.event.emit(GameEvent.addFish, fish);
     }
     public removeFish(fish: FishModel) {
         this.fish_list.delete(fish);
     }
-    public addPlayer(data: ServerFishInfo) {
-        const fish = new PlayerModel(data, this);
-        this.fish_list.add(fish);
-        this.getCom(EventCom).emit(GameEvent.addFish, fish);
+    public addPlayer(data: ServerPlayerInfo) {
+        const player = new PlayerModel(data, this);
+        this.player_list.add(player);
+        this.event.emit(GameEvent.addPlayer, player);
     }
-    public removePlayer(fish: FishModel) {
-        this.fish_list.delete(fish);
+    public removePlayer(player: PlayerModel) {
+        this.player_list.delete(player);
     }
 }

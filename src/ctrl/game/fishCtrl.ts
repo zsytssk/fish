@@ -1,6 +1,6 @@
 import { FishEvent, FishModel } from 'model/fishModel';
-import { DisplaceInfo } from 'utils/displace/displace';
 import { vectorToDegree } from 'utils/mathUtils';
+import { ModelEvent } from 'model/modelEvent';
 /** 鱼的控制器 */
 export class FishCtrl {
     /**
@@ -18,13 +18,13 @@ export class FishCtrl {
     private initEvent() {
         const event = this.model.event;
         const { view } = this;
-        event.on(FishEvent.move, (displace_info: DisplaceInfo) => {
+        event.on(FishEvent.move, (displace_info: MoveInfo) => {
             const { pos, direction } = displace_info;
             const angle = vectorToDegree(direction) + 90;
             view.rotation = angle;
             view.pos(pos.x, pos.y);
         });
-        event.on(FishEvent.destroy, () => {
+        event.on(ModelEvent.Destroy, () => {
             view.destroy();
         });
     }

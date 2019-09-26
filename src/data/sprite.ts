@@ -5,28 +5,19 @@ type BelongScene = 'room_normal' | 'room_poker';
  * shape 里面是形状+pivot
  */
 
-type SpriteInfo = {
+export type SpriteInfo = {
     as?: string;
     /** 动画类型龙骨动画 帧动画 直接图片 */
-    sprite_type?: 'DragonBone' | 'Frame' | 'Img';
+    type?: 'DragonBone' | 'Frame' | 'Img';
     /** 图片的地址 */
-    src?: string;
-    /** 图片的名称 @ques 干什么的 */
-    file_name?: string;
+    path?: string;
     /** 图片的中心点 */
     pivot?: Point;
     /** 宽 */
     width?: number;
     /** 高 */
     height?: number;
-    belong_scence?: BelongScene;
-};
-
-type GunSpriteInfo = SpriteInfo & {
-    /** 炮台的类型 只有三种 单-0|双-1|三-2 */
-    hole_num?: 1 | 2 | 3;
-    /** 炮火距离原本位置偏移 */
-    fire_offset?: number;
+    belong_scene?: BelongScene;
 };
 
 type FishSpriteInfo = SpriteInfo & {
@@ -46,10 +37,8 @@ type FishSpriteInfo = SpriteInfo & {
 export interface GameSprite {
     /** 枪 */
     gun: {
-        [key: string]: GunSpriteInfo;
+        [key: string]: SpriteInfo;
     };
-    gun_fire?: SpriteInfo;
-    coin?: SpriteInfo;
     /** 子弹 */
     bullet: {
         [key: string]: SpriteInfo;
@@ -69,15 +58,6 @@ export interface GameSprite {
     /** 鱼 */
     fish: {
         [key: string]: FishSpriteInfo;
-    };
-    /** 技能 */
-    skill: {
-        [key: string]: {
-            as?: string;
-            big?: string;
-            small?: string;
-            treasure?: string;
-        };
     };
     /** 技能 */
     other: {
@@ -102,29 +82,40 @@ export type SpriteType =
 export let SPRITE: GameSprite = {
     gun: {
         '1': {
-            sprite_type: 'DragonBone',
+            type: 'DragonBone',
             pivot: {
                 x: 105,
                 y: 140,
             },
-            hole_num: 1,
-            fire_offset: 10,
+            path: 'ani/gun/gun1',
         },
     },
     bullet: {
         '1': {
-            sprite_type: 'Img',
-            src: 'images/room/bullet1.png',
+            type: 'Img',
+            path: 'image/game/bullet1',
             pivot: {
                 x: 33,
-                y: 47,
+                y: 20,
             },
+            width: 66,
+            height: 94,
+        },
+        '2': {
+            type: 'Img',
+            path: 'image/game/bulletvip1',
+            pivot: {
+                x: 33,
+                y: 20,
+            },
+            width: 66,
+            height: 94,
         },
     },
     net: {
         '1': {
-            sprite_type: 'Img',
-            src: 'images/room/net.png',
+            type: 'Img',
+            path: 'images/game/net',
             pivot: {
                 x: 69,
                 y: 70,
@@ -133,69 +124,41 @@ export let SPRITE: GameSprite = {
     },
     fish_shadow: {
         '1': {
-            sprite_type: 'Img',
-            src: 'images/room/fish_shadow1.png',
-        },
-        '39': {
-            sprite_type: 'DragonBone',
-            pivot: {
-                x: 83,
-                y: 355,
-            },
+            type: 'Img',
+            path: 'images/game/fish_shadow1',
         },
     },
     fish: {
         '1': {
-            sprite_type: 'DragonBone',
+            type: 'DragonBone',
             offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish1',
         },
         '2': {
-            sprite_type: 'DragonBone',
+            type: 'DragonBone',
             offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish2',
         },
     },
     fish_icon: {
         '1': {
-            sprite_type: 'Img',
-            src: 'images/room/normal/icon_fish1.png',
+            type: 'Img',
+            path: 'images/game/normal/icon_fish1',
         },
         '2': {
-            sprite_type: 'Img',
-            src: 'images/room/normal/icon_fish2.png',
-        },
-    },
-    skill: {
-        '1001': {
-            small: 'images/component/icon_gold.png',
+            type: 'Img',
+            path: 'images/game/normal/icon_fish2',
         },
     },
     other: {
         coin: {
-            sprite_type: 'Frame',
+            type: 'Frame',
             pivot: {
                 x: 44 / 2,
                 y: 46 / 2,
             },
             width: 44,
             height: 46,
-        },
-        coins: {
-            sprite_type: 'DragonBone',
-            pivot: {
-                x: 126 / 2,
-                y: 122 / 2,
-            },
-            width: 126,
-            height: 122,
-        },
-        diamonds: {
-            sprite_type: 'DragonBone',
-            pivot: {
-                x: 126 / 2,
-                y: 122 / 2,
-            },
-            width: 126,
-            height: 122,
         },
     },
 };

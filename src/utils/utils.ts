@@ -76,3 +76,30 @@ export function onNode(
             callback(_event);
         });
 }
+
+/** 停止骨骼动画, 如果是拖到页面上的 一开始无法停止 需要特殊处理` */
+export function stopSkeleton(ani: Laya.Skeleton) {
+    if (ani.player) {
+        ani.stop();
+        return;
+    }
+    ani.once(Laya.Event.PLAYED, ani, () => {
+        setTimeout(() => {
+            ani.stop();
+        });
+    });
+}
+/** 播放骨骼动画, 如果是拖到页面上的 一开始播放 需要特殊处理` */
+type Params = [any, boolean, boolean?, number?, number?, boolean?];
+
+export function playSkeleton(ani: Laya.Skeleton, ...params: Params) {
+    if (ani.player) {
+        ani.play(...params);
+        return;
+    }
+    ani.once(Laya.Event.PLAYED, ani, () => {
+        setTimeout(() => {
+            ani.play(...params);
+        });
+    });
+}
