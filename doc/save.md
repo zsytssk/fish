@@ -1,4 +1,4 @@
--   @ques@imp js createTimeout 会不会重复
+-   @ques@imp js createTimeout 返回的 index 会不会重复
 -   @ques model com 能不能缓存 这样可以减小很多的消耗
 
 -   @todo 鱼死亡 自动瞄准
@@ -27,3 +27,14 @@
 -   @todo 有没有必要将所有 ctrl 监听 model 事件做成异步 且放在一个函数中处理...
 
 ## 生成鱼群工具
+
+## 链式引用
+
+player -> gun -> bullet -> net
+net 需要访问 player, 怎么处理?
+
+一级一级的往下传递数据
+
+或者建立一个由上往下的通道 tunnel
+player -> gun(top:player) -> .. (top queryTop(name|class))
+代价很大 必须有一个基类, 灵活易用

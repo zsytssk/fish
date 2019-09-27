@@ -6,6 +6,8 @@ import { FishModel } from './fishModel';
 import { ModelEvent } from './modelEvent';
 import { getCollisionAllFish } from './modelState';
 import { TimeoutCom } from 'comMan/timeoutCom';
+import { BulletModel } from './bulletModel';
+import { PlayerModel } from './playerModel';
 
 export const NetEvent = {
     CastFish: 'cast_fish',
@@ -15,16 +17,18 @@ export class NetModel extends ComponentManager {
     /** 炮口的方向 */
     private cast_fish_list: FishModel[] = [];
     /** 位置 */
-    public pos: Point;
+    public readonly pos: Point;
     /** 炮等级 */
     public readonly level: number;
     /** 炮皮肤 */
     public readonly skin: string;
-    constructor(pos: Point, cast_fish: FishModel, level: number, skin: string) {
+    public player: PlayerModel;
+    constructor(pos: Point, cast_fish: FishModel, bullet: BulletModel) {
         super();
 
-        this.level = level;
-        this.skin = skin;
+        this.level = bullet.level;
+        this.skin = bullet.skin;
+        this.player = bullet.player;
         this.pos = pos;
         this.cast_fish_list.push(cast_fish);
         this.init();
@@ -36,15 +40,22 @@ export class NetModel extends ComponentManager {
         return this.getCom(EventCom);
     }
     private init() {
-        const { level } = this;
+        const { level, player } = this;
         const shapes = getShapes('net', level);
         const body_com = new BodyCom(shapes);
         body_com.update(this.pos);
         const timeout_com = new TimeoutCom();
         this.addCom(new EventCom(), new TimeoutCom(), body_com);
-
-        const fish_list = getCollisionAllFish(body_com);
-        this.event.emit(NetEvent.CastFish, fish_list);
+        if (player.is_cur_player) {
+            /** 做成异步, 不然信息 netCtrl 无法接受到 */
+            timeout_com.createTimeout(() => {
+                const fish_list = getCollisionAllFish(body_com);
+                for (const fish of fish_list) {
+                    fish.beCast();
+                }
+                this.event.emit(NetEvent.CastFish, fish_list);
+            }, 0);
+        }
         timeout_com.createTimeout(() => {
             this.destroy();
         }, 300);

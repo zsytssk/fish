@@ -10,6 +10,7 @@ import { GunModel } from './gunModel';
 import { ModelEvent } from './modelEvent';
 import { getCollisionFish } from './modelState';
 import { NetModel } from './netModel';
+import { PlayerModel } from './playerModel';
 
 export const BulletEvent = {
     Move: 'move',
@@ -27,6 +28,7 @@ export class BulletModel extends ComponentManager {
     /** 速度 */
     public velocity: SAT.Vector;
     private gun: GunModel;
+    public player: PlayerModel;
     constructor(
         pos: Point,
         velocity: SAT.Vector,
@@ -40,6 +42,7 @@ export class BulletModel extends ComponentManager {
         this.pos = pos;
         this.velocity = velocity.scale(config.bullet_speed);
         this.gun = gun;
+        this.player = gun.player;
         this.init(track);
     }
     public get event() {
@@ -92,7 +95,7 @@ export class BulletModel extends ComponentManager {
         }
     }
     private onHit(track: FishModel) {
-        const net = new NetModel(this.pos, track, this.level, this.skin);
+        const net = new NetModel(this.pos, track, this);
         this.event.emit(BulletEvent.AddNet, net);
         this.destroy();
     }

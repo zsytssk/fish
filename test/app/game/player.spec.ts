@@ -1,5 +1,6 @@
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
+import { PlayerInfo } from 'model/playerModel';
 
 export const player_test = new Test('player', runner => {
     runner.describe('add_player', () => {
@@ -11,7 +12,8 @@ export const player_test = new Test('player', runner => {
             gunSkin: '2',
             nickname: 'test',
             avatar: 'test',
-        } as ServerPlayerInfo;
+            isCurPlayer: true,
+        } as PlayerInfo;
         modelState.game.addPlayer(player_data);
     });
 });

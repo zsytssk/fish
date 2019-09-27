@@ -12,7 +12,12 @@ import { BodyCom } from './com/bodyCom';
 import { ModelEvent } from './modelEvent';
 
 export const FishEvent = {
-    move: 'move',
+    /** 移动 */
+    Move: 'move',
+    /** 被网住 */
+    BeCast: 'be_cast',
+    /** 被捕获 */
+    BeCapture: 'be_capture',
 };
 export class FishModel extends ComponentManager {
     /** 唯一标示 */
@@ -60,11 +65,19 @@ export class FishModel extends ComponentManager {
         }
         body_com.update(pos, direction);
 
-        this.event.emit(FishEvent.move, {
+        this.event.emit(FishEvent.Move, {
             pos,
             direction,
         });
     }; // tslint:disable-line: semicolon
+    /** 被网住 */
+    public beCast() {
+        this.event.emit(FishEvent.BeCast);
+    }
+    /** 被网住 */
+    public beCapture() {
+        this.event.emit(FishEvent.BeCapture);
+    }
     public destroy() {
         this.game.removeFish(this);
         this.event.emit(ModelEvent.Destroy);

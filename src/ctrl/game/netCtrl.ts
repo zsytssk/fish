@@ -1,5 +1,6 @@
 import { ModelEvent } from 'model/modelEvent';
-import { NetModel } from 'model/netModel';
+import { NetModel, NetEvent } from 'model/netModel';
+import { FishModel } from 'model/fishModel';
 
 /** 子弹的控制器 */
 export class NetCtrl {
@@ -25,6 +26,9 @@ export class NetCtrl {
             setTimeout(() => {
                 view.destroy();
             }, 1000);
+        });
+        event.on(NetEvent.CastFish, (fish_list: FishModel[]) => {
+            console.log(fish_list);
         });
     }
 }

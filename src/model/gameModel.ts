@@ -2,7 +2,7 @@ import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { FishModel } from './fishModel';
 import { clearModelState, modelState } from './modelState';
-import { PlayerModel } from './playerModel';
+import { PlayerModel, PlayerInfo } from './playerModel';
 
 export const GameEvent = {
     addFish: 'add_fish',
@@ -31,7 +31,19 @@ export class GameModel extends ComponentManager {
     public removeFish(fish: FishModel) {
         this.fish_list.delete(fish);
     }
-    public addPlayer(data: ServerPlayerInfo) {
+    public getFishById(id: string) {
+        const { fish_list } = this;
+        for (const fish of fish_list) {
+            if (fish.id === id) {
+                return fish;
+            }
+        }
+    }
+    public captureFish(fish_info: CaptureFishInfo) {
+        const fish = this.getFishById(fish_info.fishId);
+        fish.beCapture();
+    }
+    public addPlayer(data: PlayerInfo) {
         const player = new PlayerModel(data, this);
         this.player_list.add(player);
         this.event.emit(GameEvent.addPlayer, player);

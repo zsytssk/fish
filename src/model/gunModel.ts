@@ -21,7 +21,7 @@ export class GunModel extends ComponentManager {
     /** 子弹列表 */
     private bullet_list: Set<BulletModel> = new Set();
     /** 炮口的方向 */
-    private player: PlayerModel;
+    public player: PlayerModel;
     constructor(pos: Point, skin: string, player: PlayerModel) {
         super();
 

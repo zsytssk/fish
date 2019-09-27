@@ -1,4 +1,12 @@
+## 2019-09-27 20:15:47
+
+-   @todo CaptureFish castFish
+
 -   CountFn, cur_rate
+
+-   两屏展示 - 总 + 分
+
+-   @todo is_cur_player 的传递
 
 *   @todo 当前用户检测 net 不去做碰撞检测 直接删除...
 

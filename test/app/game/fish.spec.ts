@@ -4,7 +4,7 @@ import { body_test } from './body.spec';
 
 export const fish_test = new Test('fish', runner => {
     runner.describe('add_fish', (i: number, j: number, t: number) => {
-        body_test.runTest('show_shape');
+        // body_test.runTest('show_shape');
         for (let j = 0; j < 38; j++) {
             i = i || 1;
             j = j || 1;

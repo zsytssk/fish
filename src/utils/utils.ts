@@ -103,3 +103,19 @@ export function playSkeleton(ani: Laya.Skeleton, ...params: Params) {
         });
     });
 }
+
+export function createRedFilter() {
+    // prettier-ignore
+    const redMat = [
+        0.5, 0.5, 0.5, 0, 0, // R
+        0, 0, 0, 0, 0, // G
+        0, 0, 0, 0, 0, // B
+        0, 0, 0, 1, 0, // A
+    ];
+
+    // 创建一个颜色滤镜对象,红色
+    return new Laya.ColorFilter(redMat);
+}
+export function createGLowRedFilter() {
+    return new Laya.GlowFilter('#ff0000', 10, 0, 0);
+}

@@ -12,6 +12,10 @@ type ServerFishInfo = {
     funNo?: string;
     funList?: any[];
 };
+type CaptureFishInfo = {
+    fishId: string;
+    award: number;
+};
 
 type ServerPlayerInfo = {
     userId: string;
