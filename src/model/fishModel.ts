@@ -34,6 +34,9 @@ export class FishModel extends ComponentManager {
     public get event() {
         return this.getCom(EventCom);
     }
+    public get body() {
+        return this.getCom(BodyCom);
+    }
     private init(data: ServerFishInfo) {
         const { typeId, fishId } = data;
         this.type = typeId;

@@ -2,7 +2,7 @@ import { state } from 'ctrl/state';
 import { Test } from 'testBuilder';
 
 export const player_test = new Test('player', runner => {
-    runner.describe('add_player', (...params) => {
+    runner.describe('add_player', () => {
         const player_data = {
             userId: 'xxxx',
             serverIndex: 1,

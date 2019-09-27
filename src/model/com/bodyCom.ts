@@ -14,7 +14,7 @@ export class BodyCom {
     /** 角度 */
     private pos = {} as Point;
     /** 形状信息 */
-    private shapes: ShapeInfo[];
+    public shapes: ShapeInfo[];
     constructor(shapes: ShapeInfo[]) {
         this.shapes = shapes;
     }
@@ -33,10 +33,11 @@ export class BodyCom {
         }
 
         const { shapes } = this;
-        for (const shape of shapes) {
+        for (const shape_info of shapes) {
+            const { shape, pos: rel_pos } = shape_info;
             if (shape instanceof SAT.Circle) {
                 const { angle } = this;
-                const new_pos = shape.pos.clone().rotate(angle);
+                const new_pos = rel_pos.clone().rotate(angle);
                 shape.pos = new SAT.Vector(x + new_pos.x, y + new_pos.y);
             } else {
                 shape.pos = new SAT.Vector(pos.x, pos.y);
@@ -58,61 +59,6 @@ export class BodyCom {
             shape.setAngle(angle);
         }
         this.angle = angle;
-    }
-    /** 检测和其他的bodyCom是否碰撞 */
-    public detectCollision(other_body: BodyCom) {
-        const { shapes: my_shapes } = this;
-        const { shapes: other_shapes } = other_body;
-        for (const my_shape of my_shapes) {
-            for (const other_shape of other_shapes) {
-                const response = new SAT.Response();
-                let is_collision: boolean = false;
-                if (
-                    my_shape instanceof SAT.Polygon &&
-                    other_shape instanceof SAT.Polygon
-                ) {
-                    is_collision = SAT.testPolygonPolygon(
-                        my_shape,
-                        other_shape,
-                        response,
-                    );
-                }
-                if (
-                    my_shape instanceof SAT.Circle &&
-                    other_shape instanceof SAT.Polygon
-                ) {
-                    is_collision = SAT.testCirclePolygon(
-                        my_shape,
-                        other_shape,
-                        response,
-                    );
-                }
-                if (
-                    my_shape instanceof SAT.Polygon &&
-                    other_shape instanceof SAT.Circle
-                ) {
-                    is_collision = SAT.testCirclePolygon(
-                        other_shape,
-                        my_shape,
-                        response,
-                    );
-                }
-                if (
-                    my_shape instanceof SAT.Circle &&
-                    other_shape instanceof SAT.Circle
-                ) {
-                    is_collision = SAT.testCircleCircle(
-                        other_shape,
-                        my_shape,
-                        response,
-                    );
-                }
-                if (is_collision) {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
     public destroy() {
         this.shapes = undefined;

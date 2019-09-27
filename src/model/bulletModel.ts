@@ -7,6 +7,7 @@ import { BodyCom } from './com/bodyCom';
 import { GunModel } from './gunModel';
 import { ModelEvent } from './modelEvent';
 import { config } from 'data/config';
+import { getModelState, getCollisionFish } from './modelState';
 
 export const BulletEvent = {
     move: 'move',
@@ -41,39 +42,51 @@ export class BulletModel extends ComponentManager {
     public get event() {
         return this.getCom(EventCom);
     }
+    public get body() {
+        return this.getCom(BodyCom);
+    }
     private init(track?: TrackTarget) {
         const { pos, velocity, level } = this;
-        let move_com: MoveCom;
+        const com_list: MoveCom[] = [new EventCom()];
         if (track) {
-            move_com = new MoveTrackCom(
+            const move_com = new MoveTrackCom(
                 pos,
                 velocity,
                 track,
                 this.onMoveChange.bind(this),
                 this.onHit.bind(this),
             );
+
+            com_list.push(move_com);
         } else {
-            move_com = new MoveVelocityCom(
+            const move_com = new MoveVelocityCom(
                 pos,
                 velocity,
                 this.onMoveChange.bind(this),
             );
+
+            const shapes = getShapes('fish', level);
+            const body_com = new BodyCom(shapes);
+
+            com_list.push(move_com, body_com);
         }
 
-        const shapes = getShapes('fish', level);
-        const body_com = new BodyCom(shapes);
-
-        this.addCom(new EventCom(), body_com, move_com);
+        this.addCom(...com_list);
     }
     private onMoveChange(move_info: MoveInfo) {
         const { pos, direction } = move_info;
-        const body_com = this.getCom(BodyCom);
+        const body_com = this.body;
         body_com.update(pos, direction);
 
         this.event.emit(BulletEvent.move, {
             pos,
             direction,
         } as MoveInfo);
+
+        const fish = getCollisionFish(body_com);
+        if (fish) {
+            this.onHit(fish);
+        }
     }
     private onHit(track: TrackTarget) {
         console.log(track);

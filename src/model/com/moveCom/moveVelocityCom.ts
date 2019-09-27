@@ -1,7 +1,6 @@
 import SAT from 'sat';
-import { Displace, DisplaceInfo } from 'utils/displace/displace';
-import { clearAll, loop } from 'utils/zTimer';
-import { createTick, clearTick } from '../../../utils/tick';
+import { DisplaceInfo } from 'utils/displace/displace';
+import { clearTick, createTick } from '../../../utils/tick';
 
 type MoveUpdateFn = (displace_info: DisplaceInfo) => void;
 

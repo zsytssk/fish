@@ -1,17 +1,25 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { FishModel } from './fishModel';
+import { clearModelState, setModelState } from './modelState';
 import { PlayerModel } from './playerModel';
+import { BodyCom } from './com/bodyCom';
+import { detectCollision } from './com/bodyComUtil';
 
 export const GameEvent = {
     addFish: 'add_fish',
     addPlayer: 'add_player',
 };
 export class GameModel extends ComponentManager {
-    private fish_list: Set<FishModel> = new Set();
+    public fish_list: Set<FishModel> = new Set();
     private player_list: Set<PlayerModel> = new Set();
     constructor() {
         super();
+
+        this.init();
+        setModelState('game', this);
+    }
+    private init() {
         this.addCom(new EventCom());
     }
     public get event() {
@@ -32,5 +40,8 @@ export class GameModel extends ComponentManager {
     }
     public removePlayer(player: PlayerModel) {
         this.player_list.delete(player);
+    }
+    public destroy() {
+        clearModelState();
     }
 }
