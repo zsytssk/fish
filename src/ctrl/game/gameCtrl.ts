@@ -13,7 +13,7 @@ import { ResItem } from 'honor/utils/loadRes';
 
 /** 游戏ctrl */
 export class GameCtrl {
-    private view: Game;
+    public view: Game;
     private model: GameModel;
     constructor(view: Game, model: GameModel) {
         this.view = view;

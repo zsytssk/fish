@@ -1,8 +1,7 @@
 import SAT from 'sat';
-import { DisplaceInfo } from 'utils/displace/displace';
 import { clearTick, createTick } from '../../../utils/tick';
 
-type MoveUpdateFn = (displace_info: DisplaceInfo) => void;
+type MoveUpdateFn = (move_info: MoveInfo) => void;
 
 /** 速度 移动控制 */
 export class MoveVelocityCom {

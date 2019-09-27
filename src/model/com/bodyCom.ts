@@ -10,7 +10,7 @@ export type ShapeInfo = {
 
 export class BodyCom {
     /** 角度 */
-    private angle: number;
+    private angle: number = 0;
     /** 角度 */
     private pos = {} as Point;
     /** 形状信息 */

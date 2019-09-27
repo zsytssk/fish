@@ -33,14 +33,20 @@ export function getCollisionFish(ori_body: BodyCom) {
     }
 }
 /** 检测碰撞到鱼:所有的 */
-export function getCollisionAllFish(ori_body: BodyCom) {
+export function getCollisionAllFish(
+    ori_body: BodyCom,
+    contain_list: FishModel[] = [],
+) {
     const { fish_list } = getModelState('game');
-    const result = [] as FishModel[];
     for (const fish of fish_list) {
+        if (contain_list.indexOf(fish) !== -1) {
+            continue;
+        }
         const { body } = fish;
+
         if (detectCollision(ori_body, body)) {
-            result.push(fish);
+            contain_list.push(fish);
         }
     }
-    return result;
+    return contain_list;
 }

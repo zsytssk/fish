@@ -115,12 +115,13 @@ export let SPRITE: GameSprite = {
     net: {
         '1': {
             type: 'Img',
-            path: 'images/game/net',
+            path: 'image/game/net',
             pivot: {
                 x: 69,
                 y: 70,
             },
         },
+        '2': { as: '1' },
     },
     fish_shadow: {
         '1': {

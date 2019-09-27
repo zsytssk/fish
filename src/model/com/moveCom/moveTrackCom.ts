@@ -1,4 +1,4 @@
-import { clearAll, loop } from 'utils/zTimer';
+import { clearTick, createTick } from 'utils/tick';
 
 type MoveUpdateFn = (pos: Point, velocity: SAT.Vector) => void;
 export interface TrackTarget {
@@ -12,6 +12,7 @@ export class MoveTrackCom {
     private velocity: SAT.Vector;
     private update_fn: MoveUpdateFn;
     private on_hit: OnHit;
+    private tick_index: number;
     constructor(
         pos: Point,
         velocity: SAT.Vector,
@@ -25,12 +26,12 @@ export class MoveTrackCom {
         this.update_fn = update_fn;
         this.on_hit = on_hit;
 
-        loop(this.update.bind(this), 30, this);
+        this.tick_index = createTick(this.update.bind(this));
     }
     private update(t: number) {
         console.log('update');
     }
     public destroy() {
-        clearAll(this);
+        clearTick(this.tick_index);
     }
 }

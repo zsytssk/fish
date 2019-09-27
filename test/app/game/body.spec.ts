@@ -54,9 +54,9 @@ function drawShape(node: Laya.Sprite, shapes: ShapeInfo[], angle: number) {
             for (const p of ori_points) {
                 points.push(p.x, p.y);
             }
-            node.graphics.drawPoly(pos.x, pos.y, points, 'red');
+            node.graphics.drawPoly(pos.x, pos.y, points, 'yellow');
         } else if (shape instanceof SAT.Circle) {
-            node.graphics.drawCircle(pos.x, pos.y, shape.r, 'red');
+            node.graphics.drawCircle(pos.x, pos.y, shape.r, 'yellow');
         }
     }
 }

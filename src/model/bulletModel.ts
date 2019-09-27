@@ -1,16 +1,19 @@
 import { ComponentManager } from 'comMan/component';
-import { TrackTarget, MoveTrackCom } from './com/moveCom/moveTrackCom';
-import { MoveVelocityCom } from './com/moveCom/moveVelocityCom';
 import { EventCom } from 'comMan/eventCom';
-import { getShapes } from './com/bodyComUtil';
+import { config } from 'data/config';
 import { BodyCom } from './com/bodyCom';
+import { getShapes } from './com/bodyComUtil';
+import { MoveTrackCom, TrackTarget } from './com/moveCom/moveTrackCom';
+import { MoveVelocityCom } from './com/moveCom/moveVelocityCom';
+import { FishModel } from './fishModel';
 import { GunModel } from './gunModel';
 import { ModelEvent } from './modelEvent';
-import { config } from 'data/config';
-import { getModelState, getCollisionFish } from './modelState';
+import { getCollisionFish } from './modelState';
+import { NetModel } from './netModel';
 
 export const BulletEvent = {
-    move: 'move',
+    Move: 'move',
+    AddNet: 'add_net',
 };
 
 /** 子弹数据类 */
@@ -78,7 +81,7 @@ export class BulletModel extends ComponentManager {
         const body_com = this.body;
         body_com.update(pos, direction);
 
-        this.event.emit(BulletEvent.move, {
+        this.event.emit(BulletEvent.Move, {
             pos,
             direction,
         } as MoveInfo);
@@ -88,8 +91,10 @@ export class BulletModel extends ComponentManager {
             this.onHit(fish);
         }
     }
-    private onHit(track: TrackTarget) {
-        console.log(track);
+    private onHit(track: FishModel) {
+        const net = new NetModel(this.pos, track, this.level, this.skin);
+        this.event.emit(BulletEvent.AddNet, net);
+        this.destroy();
     }
     public destroy() {
         this.gun.removeBullet(this);
