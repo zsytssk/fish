@@ -1,8 +1,7 @@
-import { createSprite } from 'utils/dataUtil';
 import { vectorToDegree } from 'utils/mathUtils';
 import { stopSkeleton } from 'utils/utils';
 import { ui } from '../../../ui/layaMaxUI';
-import { addBullet } from 'ctrl/state';
+import { addBullet } from '../../viewState';
 
 export default class GunBox extends ui.scenes.game.gunBoxUI {
     private gun_skin: string;

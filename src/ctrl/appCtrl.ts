@@ -3,17 +3,16 @@ import GameConfig from 'GameConfig';
 import honor from 'honor';
 import { HallCtrl } from './start/hallCtrl';
 import { AppModel } from 'model/appModel';
-import { state } from './state';
+import { ctrlState } from './ctrlState';
 
 export class AppCtrl {
-    private model = new AppModel();
+    public model = new AppModel();
     private view = Laya.stage;
     constructor() {
         this.startApp();
     }
     public startApp() {
-        state.app_ctrl = this;
-        state.app_model = this.model;
+        ctrlState.app = this;
 
         return this.startHonor().then(() => {
             HallCtrl.preEnter();
@@ -30,5 +29,8 @@ export class AppCtrl {
         );
         // const task2 = honor.director.setLoadPageForDialog('scenes/loading.scene');
         await Promise.all([task1]);
+    }
+    public enterGame() {
+        return this.model.enterGame();
     }
 }

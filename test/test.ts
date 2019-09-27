@@ -7,6 +7,8 @@ import { app_test } from './app/app.spec';
 import { fish_test } from './app/game/fish.spec';
 import { player_test } from './app/game/player.spec';
 import { body_test } from './app/game/body.spec';
+import { startCount } from 'utils/count';
+import { count_test } from './count.spec';
 declare global {
     interface Window {
         test: typeof test;
@@ -15,7 +17,14 @@ declare global {
 }
 
 const testScope = new Test('top');
-testScope.addChild(game_test, app_test, fish_test, player_test, body_test);
+testScope.addChild(
+    game_test,
+    app_test,
+    fish_test,
+    player_test,
+    body_test,
+    count_test,
+);
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
 testBuilder.init();

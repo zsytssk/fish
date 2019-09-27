@@ -1,9 +1,9 @@
 import { BulletEvent, BulletModel } from 'model/bulletModel';
 import { vectorToDegree } from 'utils/mathUtils';
 import { NetModel } from 'model/netModel';
-import { addNet } from 'ctrl/state';
 import { NetCtrl } from './netCtrl';
 import { ModelEvent } from 'model/modelEvent';
+import { addNet } from 'view/viewState';
 
 /** 子弹的控制器 */
 export class BulletCtrl {

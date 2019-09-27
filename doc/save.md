@@ -18,9 +18,12 @@
 -   @note moveVelocity 可以再优化 将碰墙去掉
 -   @note `angle + Math.PI / 2;` 这种代码最好清理掉
 
--   @note countDown 能不能做成工具函数, 不需要 new..
 -   @todo BackgroundMonitor 测试环境禁用
 
     -   提供接口禁用 也做成工具函数类型
+
+-   @todo fish_view|net 要不要创建 class 控制(根据需要)
+
+-   @todo 有没有必要将所有 ctrl 监听 model 事件做成异步 且放在一个函数中处理...
 
 ## 生成鱼群工具

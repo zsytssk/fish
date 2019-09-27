@@ -4,6 +4,7 @@ import { GunEvent } from 'model/gunModel';
 import { PlayerModel } from 'model/playerModel';
 import GunBox from 'view/scenes/game/gunBox';
 import { BulletCtrl } from './bulletCtrl';
+import { getPoolMousePos } from 'view/viewState';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -44,7 +45,7 @@ export class PlayerCtrl {
 
         Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             const gun_pos = gun.pos;
-            const click_pos = { x: e.stageX, y: e.stageY };
+            const click_pos = getPoolMousePos();
             const direction = new SAT.Vector(
                 click_pos.x - gun_pos.x,
                 click_pos.y - gun_pos.y,

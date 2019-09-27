@@ -1,4 +1,4 @@
-import { state } from 'ctrl/state';
+import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 
 export const game_test = new Test('game', runner => {
@@ -12,7 +12,7 @@ export const game_test = new Test('game', runner => {
                 totalTime: 10,
                 usedTime: 0,
             } as ServerFishInfo;
-            state.game_model.addFish(fish_data);
+            modelState.game.addFish(fish_data);
         }
     });
 });

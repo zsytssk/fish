@@ -1,4 +1,4 @@
-import { AppCtrl } from 'ctrl/app';
+import { AppCtrl } from 'ctrl/appCtrl';
 
 async function main() {
     const app = new AppCtrl();

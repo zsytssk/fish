@@ -1,10 +1,8 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { FishModel } from './fishModel';
-import { clearModelState, setModelState } from './modelState';
+import { clearModelState, modelState } from './modelState';
 import { PlayerModel } from './playerModel';
-import { BodyCom } from './com/bodyCom';
-import { detectCollision } from './com/bodyComUtil';
 
 export const GameEvent = {
     addFish: 'add_fish',
@@ -17,7 +15,7 @@ export class GameModel extends ComponentManager {
         super();
 
         this.init();
-        setModelState('game', this);
+        modelState.game = this;
     }
     private init() {
         this.addCom(new EventCom());

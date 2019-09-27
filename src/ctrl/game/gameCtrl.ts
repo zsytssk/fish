@@ -1,15 +1,14 @@
-import { FishCtrl } from './fishCtrl';
-import Game from 'view/scenes/game/game';
-import { GameModel, GameEvent } from 'model/gameModel';
-import { FishModel } from 'model/fishModel';
-import { setProps } from 'utils/utils';
-import honor from 'honor';
+import { ctrlState } from 'ctrl/ctrlState';
 import { res } from 'data/res';
-import { state } from 'ctrl/state';
-import { AppPath } from 'model/appModel';
-import { PlayerCtrl } from './playerCtrl';
-import { PlayerModel } from 'model/playerModel';
+import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
+import { FishModel } from 'model/fishModel';
+import { GameEvent, GameModel } from 'model/gameModel';
+import { PlayerModel } from 'model/playerModel';
+import { setProps } from 'utils/utils';
+import Game from 'view/scenes/game/game';
+import { FishCtrl } from './fishCtrl';
+import { PlayerCtrl } from './playerCtrl';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -23,11 +22,10 @@ export class GameCtrl {
     public static async preEnter() {
         const view = (await Game.preEnter()) as Game;
         await honor.director.load(res.game as ResItem[]);
-        const game_model = state.app_model.enterGame();
+        const game_model = ctrlState.app.enterGame();
         const game_ctrl = new GameCtrl(view, game_model);
-        state.app_model.changePath(AppPath.Game);
 
-        setProps(state, { game_ctrl, game_model });
+        setProps(ctrlState, { game: game_ctrl });
     }
     private init() {
         this.initEvent();

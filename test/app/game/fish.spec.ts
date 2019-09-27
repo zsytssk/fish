@@ -1,4 +1,4 @@
-import { state } from 'ctrl/state';
+import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { body_test } from './body.spec';
 
@@ -17,7 +17,7 @@ export const fish_test = new Test('fish', runner => {
                 totalTime: t,
                 usedTime: 0,
             } as ServerFishInfo;
-            state.game_model.addFish(fish_data);
+            modelState.game.addFish(fish_data);
         }
     });
 });

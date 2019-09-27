@@ -1,3 +1,32 @@
+-   CountFn, cur_rate
+
+-   count.spec.ts 可以用 Laya.timer.loop 来处理
+
+    -   节省效率
+    -   最好是很方便的清理...
+
+-   @ques 鱼在屏幕之外 或者已经被击杀 就不用做碰撞检测了...
+
+## 2019-09-27 17:37:04
+
+-   @todo ctrl 中对 view 的控制移动到其他地方
+
+-   @todo playerCtrl 点击的位置..
+
+    -   当前玩家的判断...
+
+-   @note countDown 能不能做成工具函数, 不需要 new..
+
+    -   应用场景 是怎样
+        -   技能的冷却, 倒计时
+    -   CountDown 的逻辑太复杂了
+    -   能不能简化下,
+    -   能不能用 setInterval 去处理这个问题
+
+-   @ques gameCtrl -> appCtrl --> appModel --> gameModel
+
+-   @todo view 层全部命名 `_view`
+
 ## 2019-09-27 15:39:08
 
 -   @todo 基本功能 全部完成

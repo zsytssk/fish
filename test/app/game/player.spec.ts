@@ -1,4 +1,4 @@
-import { state } from 'ctrl/state';
+import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 
 export const player_test = new Test('player', runner => {
@@ -12,6 +12,6 @@ export const player_test = new Test('player', runner => {
             nickname: 'test',
             avatar: 'test',
         } as ServerPlayerInfo;
-        state.game_model.addPlayer(player_data);
+        modelState.game.addPlayer(player_data);
     });
 });
