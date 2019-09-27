@@ -29,7 +29,9 @@
         "@types/bezier-js": "0.0.8",
         "@types/sat": "0.0.30",
         "bezier-js": "^2.4.4",
+        "es6-map": "^0.1.5",
         "es6-promise": "^4.2.8",
+        "es6-set": "^0.1.5",
         "rxjs": "^6.5.3",
         "sat": "^0.8.0",
         "tslint": "^5.18.0"

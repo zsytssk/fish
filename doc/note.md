@@ -1,11 +1,17 @@
 -   CountFn, cur_rate
 
--   count.spec.ts 可以用 Laya.timer.loop 来处理
+*   @todo 当前用户检测 net 不去做碰撞检测 直接删除...
+
+-   es6-set|map git 提交...
+
+*   count.spec.ts 可以用 Laya.timer.loop 来处理
 
     -   节省效率
     -   最好是很方便的清理...
 
--   @ques 鱼在屏幕之外 或者已经被击杀 就不用做碰撞检测了...
+*   @ques 鱼在屏幕之外 或者已经被击杀 就不用做碰撞检测了...
+
+*   @ques 如何检测是否是当前用户..., player.is_cur_player...
 
 ## 2019-09-27 17:37:04
 
