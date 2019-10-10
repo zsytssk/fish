@@ -4,25 +4,27 @@
 var origUnits = app.preferences.rulerUnits;
 app.preferences.rulerUnits = Units.PIXELS;
 
-var activeDoc = app.activeDocument;
+var doc = app.activeDocument;
 var path_data = {};
-for (var k = 0; k < activeDoc.layers.length; k++)  {
-  activeDoc.activeLayer = activeDoc.layers[k];
-  var activeLayer = activeDoc.layers[k];
-  for (var i = 0; i < activeDoc.pathItems.length; i++) {
-    var myPathItem = activeDoc.pathItems[i];
+var layers = getAllLayers(doc);
+for (var k = 0; k < layers.length; k++)  {
+  var activeLayer = layers[k];
+  doc.activeLayer = activeLayer;
+  var layerName = activeLayer.name;
+  if (!doc.pathItems) {
+    continue;
+  }
+
+  /** 只能处理一个图层只有一个路径 */
+  for (var i = 0; i < doc.pathItems.length; i++) {
+    var myPathItem = doc.pathItems[i];
     for (var j = 0; j < myPathItem.subPathItems.length; j++) {
       var mySubPathItem = myPathItem.subPathItems[j];
       var sub_path_info = getSubPathInfo(mySubPathItem);
-      path_data[activeLayer.name] = sub_path_info;
-      alert(sub_path_info)
-      // f.writeln('"' + activeLayer.name + '":');
-      // f.writeln(JSON.stringify(sub_path_info));
-      // f.writeln(',');
+      path_data[layerName] = sub_path_info;
     }
   }
 }
-alert(path_data)
 
 var filePath = (new File($.fileName)).parent.parent.parent + '/src/data/path.ts';
 var f = new File(filePath);
@@ -80,6 +82,20 @@ function roundCoordinate(coor_arr) {
      continue;
     }
     result.y = Math.round(coor_arr[i]);
+  }
+  return result;
+}
+
+/** 获得没有子类的图层 */
+function getAllLayers(doc) {
+  var result = [];
+  for (var k = 0; k < doc.layers.length; k++)  {
+    var activeLayer = doc.layers[k];
+    if(!activeLayer.layers || !activeLayer.layers.length) {
+      result.push(activeLayer);
+    } else {
+      result = result.concat(getAllLayers(activeLayer));
+    }
   }
   return result;
 }
