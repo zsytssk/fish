@@ -71,7 +71,7 @@ export class BulletModel extends ComponentManager {
                 this.onMoveChange.bind(this),
             );
 
-            const shapes = getShapes('fish', level);
+            const shapes = getShapes('bullet', level);
             const body_com = new BodyCom(shapes);
 
             com_list.push(move_com, body_com);

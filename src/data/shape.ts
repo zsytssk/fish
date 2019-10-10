@@ -61,13 +61,8 @@ export let SHAPE: ShapeOriData = {
     bullet: {
         shape_list: [
             {
-                type: 'Box',
-                width: 20,
-                height: 50,
-                pivot: {
-                    x: 10,
-                    y: 50,
-                },
+                type: 'Circle',
+                radius: 20,
             },
         ],
     },
@@ -100,14 +95,6 @@ export let SHAPE: ShapeOriData = {
         '2': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
-                },
-            ],
-        },
-        '3': {
-            shape_list: [
-                {
                     type: 'Box',
                     width: 25,
                     height: 47,
@@ -118,95 +105,11 @@ export let SHAPE: ShapeOriData = {
                 },
             ],
         },
-        '4': {
+        '17': {
             shape_list: [
                 {
-                    type: 'Box',
-                    width: 29,
-                    height: 51,
-                    pivot: {
-                        x: 15,
-                        y: 23,
-                    },
-                },
-            ],
-        },
-        '5': {
-            shape_list: [
-                {
-                    type: 'Box',
-                    width: 42,
-                    height: 55,
-                    pivot: {
-                        x: 22,
-                        y: 23,
-                    },
-                },
-            ],
-        },
-        '6': {
-            shape_list: [
-                {
-                    type: 'Box',
-                    width: 30,
-                    height: 100,
-                    pivot: {
-                        x: 13,
-                        y: 47,
-                    },
-                },
-            ],
-        },
-        '7': {
-            shape_list: [
-                {
-                    type: 'Box',
-                    width: 29,
-                    height: 53,
-                    pivot: {
-                        x: 16,
-                        y: 25,
-                    },
-                },
-            ],
-        },
-        '8': {
-            shape_list: [
-                {
-                    type: 'Box',
-                    width: 34,
-                    height: 58,
-                    pivot: {
-                        x: 18,
-                        y: 30,
-                    },
-                },
-            ],
-        },
-        '9': {
-            shape_list: [
-                {
-                    type: 'Box',
-                    width: 48,
-                    height: 58,
-                    pivot: {
-                        x: 24,
-                        y: 33,
-                    },
-                },
-            ],
-            shape_direction: 'fix',
-        },
-        '10': {
-            shape_list: [
-                {
-                    type: 'Box',
-                    width: 43,
-                    height: 70,
-                    pivot: {
-                        x: 21,
-                        y: 45,
-                    },
+                    type: 'Circle',
+                    radius: 60,
                 },
             ],
         },

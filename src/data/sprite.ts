@@ -20,7 +20,7 @@ export type SpriteInfo = {
     belong_scene?: BelongScene;
 };
 
-type FishSpriteInfo = SpriteInfo & {
+export type FishSpriteInfo = SpriteInfo & {
     /** 有没有转向动画 */
     has_turn_animate?: boolean;
     /** 有没有死亡动画 */
@@ -96,20 +96,20 @@ export let SPRITE: GameSprite = {
             path: 'image/game/bullet1',
             pivot: {
                 x: 33,
-                y: 20,
+                y: 18,
             },
             width: 66,
-            height: 94,
+            height: 150,
         },
         '2': {
             type: 'Img',
             path: 'image/game/bulletvip1',
             pivot: {
                 x: 33,
-                y: 20,
+                y: 22,
             },
             width: 66,
-            height: 94,
+            height: 150,
         },
     },
     net: {
@@ -139,6 +139,11 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             offset: [24, 22, 39, 22],
             path: 'ani/fish/fish2',
+        },
+        '17': {
+            type: 'DragonBone',
+            offset: [240, 175, 354, 175],
+            path: 'ani/fish/fish17',
         },
     },
     fish_icon: {

@@ -6,6 +6,7 @@ import { getShapeInfo, getSpriteInfo } from 'utils/dataUtil';
 import { Curve, CurveInfo } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
+import { FishSpriteInfo } from 'data/sprite';
 
 export const stage_width = GameConfig.width;
 export const stage_height = GameConfig.height;
@@ -72,8 +73,8 @@ export function createSpace(
     derivative: Point,
     fish_type: string,
 ) {
-    const sprite_info = getSpriteInfo('fish', fish_type);
-    const shape_info = getShapeInfo('fish', fish_type);
+    const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
+    const shape_info = getShapeInfo('fish', fish_type) as FishSpriteInfo;
     const shape_direction = shape_info.shape_direction;
 
     let fish_len: number;

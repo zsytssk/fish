@@ -4,14 +4,15 @@ import { body_test } from './body.spec';
 
 export const fish_test = new Test('fish', runner => {
     runner.describe('add_fish', (i: number, j: number, t: number) => {
-        // body_test.runTest('show_shape');
-        for (let j = 0; j < 38; j++) {
-            i = i || 1;
+        body_test.runTest('show_shape');
+        const num = 1;
+        for (let _j = 0; _j < num; _j++) {
+            i = i || 16;
             j = j || 1;
             t = t || 15;
             const fish_data = {
                 fishId: '00' + i,
-                typeId: `${i + 1}`,
+                typeId: `${i}`,
                 displaceType: 'path',
                 pathNo: `${j}`,
                 totalTime: t,

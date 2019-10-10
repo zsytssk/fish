@@ -5,12 +5,7 @@ var origUnits = app.preferences.rulerUnits;
 app.preferences.rulerUnits = Units.PIXELS;
 
 var activeDoc = app.activeDocument;
-
-var filePath = (new File($.fileName)).parent + '/path_coords.txt';
-var f = new File(filePath);
-f.encoding = 'UTF8';
-f.open('w');
-
+var path_data = {};
 for (var k = 0; k < activeDoc.layers.length; k++)  {
   activeDoc.activeLayer = activeDoc.layers[k];
   var activeLayer = activeDoc.layers[k];
@@ -19,13 +14,23 @@ for (var k = 0; k < activeDoc.layers.length; k++)  {
     for (var j = 0; j < myPathItem.subPathItems.length; j++) {
       var mySubPathItem = myPathItem.subPathItems[j];
       var sub_path_info = getSubPathInfo(mySubPathItem);
-      f.writeln('"' + activeLayer.name + '":');
-      f.writeln(JSON.stringify(sub_path_info));
-      f.writeln(',');
+      path_data[activeLayer.name] = sub_path_info;
+      alert(sub_path_info)
+      // f.writeln('"' + activeLayer.name + '":');
+      // f.writeln(JSON.stringify(sub_path_info));
+      // f.writeln(',');
     }
   }
 }
+alert(path_data)
 
+var filePath = (new File($.fileName)).parent.parent.parent + '/src/data/path.ts';
+var f = new File(filePath);
+f.encoding = 'UTF8';
+f.open('w');
+f.writeln('export const PATH = ');
+f.writeln(JSON.stringify(path_data));
+f.writeln(';');
 
 f.close('w');
 app.preferences.rulerUnits = origUnits;

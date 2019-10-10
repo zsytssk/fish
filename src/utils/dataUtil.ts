@@ -88,16 +88,16 @@ export function createSprite(
     const { type, path } = sprite_info;
     let pivot = sprite_info.pivot || { x: 0, y: 0 };
 
-    let fish_animate: Laya.Sprite;
+    let sprite: Laya.Sprite;
     if (type === 'DragonBone') {
-        fish_animate = createSkeleton(path);
+        sprite = createSkeleton(path);
     } else if (type === 'Frame') {
-        fish_animate = createAnimation(path);
+        sprite = createAnimation(path);
     } else {
-        fish_animate = createImg(path);
+        sprite = createImg(path);
 
         if (!pivot.x && !pivot.y) {
-            const bounds = fish_animate.getBounds();
+            const bounds = sprite.getBounds();
             pivot = {
                 x: bounds.width / 2,
                 y: bounds.height / 2,
@@ -105,14 +105,14 @@ export function createSprite(
         }
     }
 
-    fish_animate.pivot(pivot.x, pivot.y);
-    if (sprite_info.width) {
-        fish_animate.width = sprite_info.width;
-        fish_animate.height = sprite_info.height;
-    } else {
-        fish_animate.width = pivot.x * 2;
-        fish_animate.height = pivot.y * 2;
-    }
+    sprite.pivot(pivot.x, pivot.y);
+    // if (sprite_info.width) {
+    //     sprite.width = sprite_info.width;
+    //     sprite.height = sprite_info.height;
+    // } else {
+    //     sprite.width = pivot.x * 2;
+    //     sprite.height = pivot.y * 2;
+    // }
 
-    return fish_animate;
+    return sprite;
 }

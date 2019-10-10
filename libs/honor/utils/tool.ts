@@ -1,5 +1,3 @@
-import { never } from 'rxjs';
-
 /** 在class的fun执行之后执行fun */
 export function injectAfter<T>(instance: T, fun_name: string, func: Func<any>) {
     const ori_fun = instance[fun_name];
