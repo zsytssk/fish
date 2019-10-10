@@ -1,7 +1,7 @@
 import honor from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ui } from 'ui/layaMaxUI';
-import GunBox from './gunBox';
+import GunBox from './gunBoxView';
 import { createSprite } from 'utils/dataUtil';
 import { viewState } from '../../viewState';
 

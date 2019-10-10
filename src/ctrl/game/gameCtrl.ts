@@ -6,7 +6,7 @@ import { FishModel } from 'model/fishModel';
 import { GameEvent, GameModel } from 'model/gameModel';
 import { PlayerModel } from 'model/playerModel';
 import { setProps } from 'utils/utils';
-import Game from 'view/scenes/game/game';
+import Game from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import { PlayerCtrl } from './playerCtrl';
 

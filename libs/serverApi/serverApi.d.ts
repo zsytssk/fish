@@ -1,5 +1,14 @@
 type DisplaceType = 'path' | 'fun';
 
+/** 鱼群的信息 */
+type ServerShoalInfo = {
+    shoalId: string;
+    totalTime: number;
+    usedTime: number;
+    fishList: ServerFishInfo[];
+    revert?: boolean;
+};
+
 type ServerFishInfo = {
     fishId: string;
     typeId: string;
@@ -26,3 +35,6 @@ type ServerPlayerInfo = {
     nickname: string;
     avatar: string;
 };
+
+/** 复盘的信息 */
+type ReplayInfo = {};

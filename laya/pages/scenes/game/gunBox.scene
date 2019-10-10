@@ -1,10 +1,9 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":4,
-    "selecteID":3,
+    "selectedBox":2,
     "searchKey":"View",
-    "props":{"y":120,"x":60,"width":120,"sceneColor":"#000000","runtime":"view/scenes/game/gunBox.ts","height":120,"anchorY":1,"anchorX":0.5},
+    "props":{"y":120,"x":60,"width":120,"sceneColor":"#000000","runtime":"view/scenes/game/gunBoxView.ts","height":120,"anchorY":1,"anchorX":0.5},
     "nodeParent":-1,
     "maxID":7,
     "label":"View",

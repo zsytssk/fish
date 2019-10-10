@@ -1,4 +1,4 @@
-import Start from 'view/scenes/start';
+import Start from 'view/scenes/startView';
 import { GameCtrl } from '../game/gameCtrl';
 
 export class HallCtrl {

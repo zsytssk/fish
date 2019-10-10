@@ -2,7 +2,7 @@ import SAT from 'sat';
 import { BulletModel } from 'model/bulletModel';
 import { GunEvent } from 'model/gunModel';
 import { PlayerModel } from 'model/playerModel';
-import GunBox from 'view/scenes/game/gunBox';
+import GunBox from 'view/scenes/game/gunBoxView';
 import { BulletCtrl } from './bulletCtrl';
 import { getPoolMousePos } from 'view/viewState';
 

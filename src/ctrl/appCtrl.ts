@@ -6,13 +6,14 @@ import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
 
 export class AppCtrl {
-    public model = new AppModel();
+    public model: AppModel;
     private view = Laya.stage;
     constructor() {
         this.startApp();
     }
     public startApp() {
         ctrlState.app = this;
+        this.model = new AppModel();
 
         return this.startHonor().then(() => {
             HallCtrl.preEnter();

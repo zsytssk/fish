@@ -1,4 +1,4 @@
-import Game from './scenes/game/game';
+import Game from './scenes/game/gameView';
 
 type ViewState = {
     game: Game;

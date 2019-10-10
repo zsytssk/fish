@@ -3,7 +3,7 @@
     "type":"Scene",
     "selectedBox":2,
     "searchKey":"Scene",
-    "props":{"width":1334,"sceneColor":"#000000","runtime":"view/scenes/start.ts","height":750,"autoDestroyAtClosed":true},
+    "props":{"width":1334,"sceneColor":"#000000","runtime":"view/scenes/startView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
     "maxID":6,
     "label":"Scene",

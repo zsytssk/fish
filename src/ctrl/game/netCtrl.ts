@@ -28,7 +28,7 @@ export class NetCtrl {
             }, 1000);
         });
         event.on(NetEvent.CastFish, (fish_list: FishModel[]) => {
-            console.log(fish_list);
+            console.log(`网住的鱼`, fish_list);
         });
     }
 }

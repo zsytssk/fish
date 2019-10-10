@@ -4,7 +4,7 @@ import { BodyCom, ShapeInfo } from 'model/com/bodyCom';
 import { clonePolygon } from 'model/com/bodyComUtil';
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
-import Game from 'view/scenes/game/game';
+import Game from 'view/scenes/game/gameView';
 
 export const body_test = new Test('body', runner => {
     let init_show_shape = false;
