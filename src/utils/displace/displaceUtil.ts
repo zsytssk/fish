@@ -1,5 +1,4 @@
 import Bezier from 'bezier-js';
-import { PATH } from 'data/path';
 import GameConfig from 'GameConfig';
 import SAT from 'sat';
 import { getShapeInfo, getSpriteInfo } from 'utils/dataUtil';
@@ -7,6 +6,7 @@ import { Curve, CurveInfo } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
 import { FishSpriteInfo } from 'data/sprite';
+import { PATH } from 'data/path';
 
 export const stage_width = GameConfig.width;
 export const stage_height = GameConfig.height;
@@ -118,7 +118,7 @@ export function createSpace(
 /** 计算鱼游入游出需要额外加的距离 */
 export function calcNormalLen(position: OffsetPos, fish_type: string) {
     let fish_len: number;
-    const offset = getSpriteInfo('fish', fish_type).offset;
+    const offset = (getSpriteInfo('fish', fish_type) as FishSpriteInfo).offset;
 
     if (!offset) {
         // zutil.logErr("can't find fish sprite offset");
@@ -136,7 +136,7 @@ export function calcFixLen(
     start_pos: Point,
     fish_type: string,
 ) {
-    const sprite_info = getSpriteInfo('fish', fish_type);
+    const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
 
     let fish_len: number;
     let derivative: SAT.Vector;

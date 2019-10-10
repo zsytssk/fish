@@ -1,5 +1,7 @@
 -   @todo 排期
 
+-   @todo shape_direction
+
 -   @ques 新的鱼动画 形状添加到页面中
 
 -   @ques 新的路径能不能处理
