@@ -1,5 +1,6 @@
 import SAT from 'sat';
 import { clearTick, createTick } from '../../../utils/tick';
+import { config } from 'data/config';
 
 type MoveUpdateFn = (move_info: MoveInfo) => void;
 
@@ -24,13 +25,14 @@ export class MoveVelocityCom {
         this.update_fn({ pos, direction: velocity });
     }
     public detectHitWall() {
+        const { pool_height, pool_width } = config;
         const velocity = this.velocity;
         const pos = this.pos;
         let { x, y } = velocity;
         // 如果x<0 || x>1334 velocity x 改变方向
-        if (pos.x > 1334 || pos.x < 0) {
-            if (pos.x > 1334) {
-                pos.x = 1334 - (pos.x - 1334);
+        if (pos.x > pool_width || pos.x < 0) {
+            if (pos.x > pool_width) {
+                pos.x = pool_width - (pos.x - pool_width);
                 x = -Math.abs(velocity.x);
             }
             if (pos.x < 0) {
@@ -39,9 +41,9 @@ export class MoveVelocityCom {
             }
         }
         // 如果y<0 || y>750 velocity y 改变方向
-        if (pos.y > 750 || pos.y < 0) {
-            if (pos.y > 750) {
-                pos.y = 750 - (pos.y - 750);
+        if (pos.y > pool_height || pos.y < 0) {
+            if (pos.y > pool_height) {
+                pos.y = pool_height - (pos.y - pool_height);
                 y = -Math.abs(velocity.y);
             }
             if (pos.y < 0) {
