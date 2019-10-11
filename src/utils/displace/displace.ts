@@ -30,7 +30,7 @@ export type CurCurveInfo = {
 };
 export type DisplaceInfo = {
     pos?: Point;
-    direction?: SAT.Vector;
+    velocity?: SAT.Vector;
     out_stage?: boolean;
     is_complete?: boolean;
 };
@@ -96,14 +96,14 @@ export class Displace {
 
         const point_info = this.getPointAtRadio(used_radio);
         const position = point_info.position;
-        let direction = point_info.direction;
+        let velocity = point_info.direction;
         if (this.is_reverse) {
-            direction = direction.reverse();
+            velocity = velocity.reverse();
         }
 
         return {
             pos: position,
-            direction,
+            velocity,
             is_complete,
         };
     }

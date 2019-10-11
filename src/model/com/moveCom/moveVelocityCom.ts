@@ -2,8 +2,6 @@ import SAT from 'sat';
 import { clearTick, createTick } from '../../../utils/tick';
 import { config } from 'data/config';
 
-type MoveUpdateFn = (move_info: MoveInfo) => void;
-
 /** 速度 移动控制 */
 export class MoveVelocityCom {
     private pos: Point;
@@ -22,7 +20,7 @@ export class MoveVelocityCom {
         pos.x += velocity.x * t;
         pos.y += velocity.y * t;
         this.detectHitWall();
-        this.update_fn({ pos, direction: velocity });
+        this.update_fn({ pos, velocity });
     }
     public detectHitWall() {
         const { pool_height, pool_width } = config;

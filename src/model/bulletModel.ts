@@ -54,17 +54,7 @@ export class BulletModel extends ComponentManager {
     private init(track?: TrackTarget) {
         const { pos, velocity, level } = this;
         const com_list: MoveCom[] = [new EventCom()];
-        if (track) {
-            const move_com = new MoveTrackCom(
-                pos,
-                velocity,
-                track,
-                this.onMoveChange.bind(this),
-                this.onHit.bind(this),
-            );
-
-            com_list.push(move_com);
-        } else {
+        if (!track) {
             const move_com = new MoveVelocityCom(
                 pos,
                 velocity,
@@ -75,24 +65,43 @@ export class BulletModel extends ComponentManager {
             const body_com = new BodyCom(shapes);
 
             com_list.push(move_com, body_com);
+        } else {
+            const move_com = new MoveTrackCom(
+                pos,
+                velocity,
+                track,
+                this.onTrackMoveChange.bind(this),
+                this.onHit.bind(this),
+            );
+
+            com_list.push(move_com);
         }
 
         this.addCom(...com_list);
     }
     private onMoveChange(move_info: MoveInfo) {
-        const { pos, direction } = move_info;
+        const { pos, velocity: direction } = move_info;
         const body_com = this.body;
         body_com.update(pos, direction);
 
         this.event.emit(BulletEvent.Move, {
             pos,
-            direction,
+            velocity: direction,
         } as MoveInfo);
 
         const fish = getCollisionFish(body_com);
         if (fish) {
             this.onHit(fish);
         }
+    }
+    /** 追踪鱼不需要进行碰撞检测, 不需要body */
+    private onTrackMoveChange(move_info: MoveInfo) {
+        const { pos, velocity: direction } = move_info;
+
+        this.event.emit(BulletEvent.Move, {
+            pos,
+            velocity: direction,
+        } as MoveInfo);
     }
     private onHit(track: FishModel) {
         const net = new NetModel(this.pos, track, this);

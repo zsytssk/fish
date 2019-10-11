@@ -7,9 +7,9 @@ import { ShoalCom } from './com/shoalCom';
 
 export const GameEvent = {
     /** 添加鱼 */
-    addFish: 'add_fish',
+    AddFish: 'add_fish',
     /** 添加用户 */
-    addPlayer: 'add_player',
+    AddPlayer: 'add_player',
 };
 
 export class GameModel extends ComponentManager {
@@ -30,7 +30,7 @@ export class GameModel extends ComponentManager {
     public addFish(fish_info: ServerFishInfo) {
         const fish = new FishModel(fish_info, this);
         this.fish_list.add(fish);
-        this.event.emit(GameEvent.addFish, fish);
+        this.event.emit(GameEvent.AddFish, fish);
     }
     public removeFish(fish: FishModel) {
         this.fish_list.delete(fish);
@@ -60,7 +60,15 @@ export class GameModel extends ComponentManager {
     public addPlayer(data: PlayerInfo) {
         const player = new PlayerModel(data, this);
         this.player_list.add(player);
-        this.event.emit(GameEvent.addPlayer, player);
+        this.event.emit(GameEvent.AddPlayer, player);
+    }
+    public getPlayerById(id: string) {
+        const { player_list } = this;
+        for (const player of player_list) {
+            if (player.user_id === id) {
+                return player;
+            }
+        }
     }
     /** 移除用户 */
     public removePlayer(player: PlayerModel) {

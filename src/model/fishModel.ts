@@ -1,3 +1,4 @@
+import * as SAT from 'sat';
 import { DisplaceInfo, Displace, CurveInfo } from 'utils/displace/displace';
 import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
 import { EventCom } from 'comMan/eventCom';
@@ -19,6 +20,10 @@ export const FishEvent = {
     /** 被捕获 */
     BeCapture: 'be_capture',
 };
+export type FishMoveData = {
+    pos: Point;
+    velocity: SAT.Vector;
+};
 export class FishModel extends ComponentManager {
     /** 唯一标示 */
     public id: string;
@@ -27,7 +32,7 @@ export class FishModel extends ComponentManager {
     /** 位置 */
     public pos: Point;
     /** 方向 */
-    public direction: SAT.Vector;
+    public velocity: SAT.Vector;
     /** 鱼的状态 */
     private game: GameModel;
     constructor(data: ServerFishInfo, game: GameModel) {
@@ -56,18 +61,21 @@ export class FishModel extends ComponentManager {
     }
     private onMoveChange = (displace_info: DisplaceInfo) => {
         const body_com = this.getCom(BodyCom);
-        const { pos, direction, is_complete, out_stage } = displace_info;
+        const { pos, velocity, is_complete, out_stage } = displace_info;
         if (is_complete) {
             return this.destroy();
         }
         if (out_stage) {
             return;
         }
-        body_com.update(pos, direction);
 
+        this.pos = pos;
+        this.velocity = velocity;
+
+        body_com.update(pos, velocity);
         this.event.emit(FishEvent.Move, {
             pos,
-            direction,
+            velocity,
         });
     }; // tslint:disable-line: semicolon
     /** 被网住 */

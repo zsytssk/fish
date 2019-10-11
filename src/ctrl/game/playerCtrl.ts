@@ -31,7 +31,7 @@ export class PlayerCtrl {
     private initEvent() {
         const {
             view,
-            model: { gun },
+            model: { gun, is_cur_player },
         } = this;
         const { event } = gun;
 
@@ -42,7 +42,21 @@ export class PlayerCtrl {
             ) as Laya.Image;
             const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
         });
+        event.on(GunEvent.DirectionChange, (direction: SAT.Vector) => {
+            view.setDirection(direction);
+        });
+        event.on(GunEvent.AddBullet, (bullet: BulletModel) => {
+            const bullet_view = view.addBullet(
+                bullet.skin,
+                bullet.velocity,
+            ) as Laya.Image;
+            const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
+        });
 
+        /** 当前用户的处理 */
+        if (!is_cur_player) {
+            return;
+        }
         Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             const gun_pos = gun.pos;
             const click_pos = getPoolMousePos();
@@ -50,7 +64,7 @@ export class PlayerCtrl {
                 click_pos.x - gun_pos.x,
                 click_pos.y - gun_pos.y,
             );
-            gun.addBullet(direction);
+            gun.preAddBullet(direction);
         });
     }
 }

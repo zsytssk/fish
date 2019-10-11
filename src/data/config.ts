@@ -9,4 +9,6 @@ export const config = {
     bullet_speed: 15,
     pool_width: 1625,
     pool_height: 750,
+    /** 自动攻击的间隔 500ms */
+    launch_space: 500,
 };

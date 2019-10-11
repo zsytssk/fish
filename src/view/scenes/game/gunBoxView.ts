@@ -1,5 +1,5 @@
 import { vectorToDegree } from 'utils/mathUtils';
-import { stopSkeleton } from 'utils/utils';
+import { stopSkeleton, playSkeleton } from 'utils/utils';
 import { ui } from '../../../ui/layaMaxUI';
 import { addBullet } from '../../viewState';
 
@@ -14,10 +14,13 @@ export default class GunBox extends ui.scenes.game.gunBoxUI {
         const { ani } = this;
         stopSkeleton(ani);
     }
+    public setDirection(direction: SAT.Vector) {
+        this.rotation = vectorToDegree(direction) + 90;
+    }
     public addBullet(skin: string, direction: SAT.Vector) {
         const { ani } = this;
-        ani.play(0, false);
-        this.rotation = vectorToDegree(direction) + 90;
+        playSkeleton(ani, 0, false);
+        this.setDirection(direction);
         return addBullet(skin);
     }
 }

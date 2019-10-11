@@ -22,7 +22,7 @@ export class BulletCtrl {
         const { event } = this.model;
 
         event.on(BulletEvent.Move, (displace_info: MoveInfo) => {
-            const { pos, direction } = displace_info;
+            const { pos, velocity: direction } = displace_info;
             const angle = vectorToDegree(direction) + 90;
             view.rotation = angle;
             view.pos(pos.x, pos.y);

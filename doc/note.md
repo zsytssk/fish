@@ -1,6 +1,61 @@
+-   @todo test modelState ctrlState
+
+*   @ques 页面上的动画如何处理...
+
+    -   狂暴[加速发射]... 追踪子弹... ani_ctrl 冰冻
+
+*   @todo 游戏中添加 socket 的处理...
+
+*   @todo 锁定第一个子弹的发射角度有问题..
+
+*   @todo 追踪子弹
+
+    -   自动发射 + 追踪子弹
+
+*   @todo 所有的 event 全部首字母大写 时间 用下划线
+
+*   com 要不要和对应的 compMan 放在一起... 公共的放在一起..
+
+*   @ques fish_list player_list 的处理能不能做成一个 comp 这需要思考下
+
+*   @ques 自动追踪 的鱼离开页面, 需要将用户的子弹还原怎么处理
+
+    -   子弹需要记录自己的炮台...
+
+*   @ques com 的交互 自动攻击
+
+    -   trackCom -> autoLaunchCom -> gunBox 这怎么处理
+
+*   @todo 可以计算前后端的时间差 这样就可以 避免延迟导致的 位置不同步
+
+    -   鱼 + 子弹 子弹的发射 技能的释放带 作用时间... (这样有点问题)
+
+*   @ques 自动攻击..., 的显示效果怎么处理...
+
+*   @todo 自动攻击时 点击页面只会 改变炮台的方向 而不是发射子弹
+
+    -   在 trackfish 的时候点击页面不做任何处理...
+    -   这时候只需要改变炮台的方向...
+
+*   @todo 炮台的 pos initDirection 数据可以在外面处理好了再发过来
+*   @todo 游戏中 大的鱼层级高些 ...
+
+*   @ques trackFish 的子弹和炮台能不能放在一起处理... trackFishCom
+
+*   @ques 如果 trackFishCom 比加上 trackFish 属性 更复杂那么就放在属性上面
+
+*   @todo setStatus + addBullet
+
+*   @todo gun 的开枪间隔
+*   @todo 鱼有多少种状态... out_stage...
+
+## 2019-10-11 09:27:40
+
 -   @todo 排期
 
 -   @todo shape_direction
+
+    -   各种特殊的鱼
 
 -   @ques 新的鱼动画 形状添加到页面中
 
@@ -14,14 +69,17 @@
 
     -   可能是电脑卡了...
 
+-   @bug 高阳的路径的背景的长宽
+    -   1625x750
+
 *   @sheji
     -   子弹不能有空白区域
     -   路径在 1334x750 上面设置
         -   设计模式是 1334x750 还是多少...
-        -   1920x750
+        -   高阳的 的太大了
     -   贝塞尔不能离开页面
 
--   @ques 自己生成贝塞尔曲线
+-   @ques 自己生成贝塞尔曲线 后面再去做...
     -   本地支持贝塞尔支持参数
     -   三个点控制的贝塞尔 [start, end, 垂直偏移, 正偏移]
     -   他怎么知道 曲线的样式
@@ -55,10 +113,6 @@
     -   event -> event_com ???
     -   需不需要 ShoalModel 对象
         -   看实际的需要, 合不合理
-
--   @ques 页面上的动画如何处理...
-
-    -   ani_ctrl 冰冻 追踪子弹...
 
 -   git 的权限 @xuyujun
 

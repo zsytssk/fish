@@ -33,11 +33,11 @@ export class GameCtrl {
     private initEvent() {
         const event = this.model.event;
         const { view } = this;
-        event.on(GameEvent.addFish, (fish: FishModel) => {
+        event.on(GameEvent.AddFish, (fish: FishModel) => {
             const fish_view = view.addFish(fish.type);
             const ctrl = new FishCtrl(fish_view, fish);
         });
-        event.on(GameEvent.addPlayer, (player: PlayerModel) => {
+        event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
             const player_view = view.addGun(player.gun.skin);
             const ctrl = new PlayerCtrl(player_view, player);
         });

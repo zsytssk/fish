@@ -1,7 +1,9 @@
 interface MoveInfo {
     pos: Point;
-    direction: SAT.Vector;
+    velocity: SAT.Vector;
 }
 interface MoveCom {
     destroy(): void;
 }
+
+type MoveUpdateFn = (move_info: MoveInfo) => void;

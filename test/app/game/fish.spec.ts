@@ -7,7 +7,7 @@ export const fish_test = new Test('fish', runner => {
         body_test.runTest('show_shape');
         const num = 1;
         for (let _j = 0; _j < num; _j++) {
-            i = i || 16;
+            i = i || 17;
             j = j || 1;
             t = t || 15;
             const fish_data = {

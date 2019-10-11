@@ -7,12 +7,15 @@ import { app_test } from './app/app.spec';
 import { fish_test } from './app/game/fish.spec';
 import { player_test } from './app/game/player.spec';
 import { body_test } from './app/game/body.spec';
-import { startCount } from 'utils/count';
 import { count_test } from './count.spec';
+import { modelState } from 'model/modelState';
+import { ctrlState } from 'ctrl/ctrlState';
 declare global {
     interface Window {
         test: typeof test;
         Honor: typeof Honor;
+        modelState: typeof modelState;
+        ctrlState: typeof ctrlState;
     }
 }
 
@@ -31,4 +34,7 @@ testBuilder.init();
 
 export const test = mapTest(testBuilder.top_scope);
 window.test = test;
+window.test = test;
+window.modelState = modelState;
+window.ctrlState = ctrlState;
 window.Honor = Honor;
