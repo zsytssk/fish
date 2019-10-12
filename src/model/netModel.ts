@@ -15,7 +15,7 @@ export const NetEvent = {
 /** 鱼网数据类 */
 export class NetModel extends ComponentManager {
     /** 炮口的方向 */
-    private cast_fish_list: FishModel[] = [];
+    private cast_fish: FishModel;
     /** 位置 */
     public readonly pos: Point;
     /** 炮等级 */
@@ -30,7 +30,7 @@ export class NetModel extends ComponentManager {
         this.skin = bullet.skin;
         this.player = bullet.player;
         this.pos = pos;
-        this.cast_fish_list.push(cast_fish);
+        this.cast_fish = cast_fish;
         this.init();
     }
     public get body() {
@@ -46,6 +46,7 @@ export class NetModel extends ComponentManager {
         body_com.update(this.pos);
         const timeout_com = new TimeoutCom();
         this.addCom(new EventCom(), new TimeoutCom(), body_com);
+
         if (player.is_cur_player) {
             /** 做成异步, 不然信息 netCtrl 无法接受到 */
             timeout_com.createTimeout(() => {
@@ -53,7 +54,7 @@ export class NetModel extends ComponentManager {
                 for (const fish of fish_list) {
                     fish.beCast();
                 }
-                this.event.emit(NetEvent.CastFish, fish_list);
+                this.event.emit(NetEvent.CastFish, this.cast_fish);
             }, 0);
         }
         timeout_com.createTimeout(() => {

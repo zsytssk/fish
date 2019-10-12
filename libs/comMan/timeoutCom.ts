@@ -10,6 +10,7 @@ export class TimeoutCom implements Component {
             this.timeout_list.delete(timeout);
         }, time) as any;
         this.timeout_list.add(timeout);
+        return timeout;
     }
     public createInterval(fn: TimeoutFn, time: number) {
         const timeout: number = setInterval(() => {
@@ -17,6 +18,18 @@ export class TimeoutCom implements Component {
             this.interval_list.delete(timeout);
         }, time) as any;
         this.interval_list.add(timeout);
+        return timeout;
+    }
+    public clear(timeout: number) {
+        const { timeout_list, interval_list } = this;
+        if (timeout_list.has(timeout)) {
+            timeout_list.delete(timeout);
+            clearTimeout(timeout);
+        }
+        if (interval_list.has(timeout)) {
+            interval_list.delete(timeout);
+            clearInterval(timeout);
+        }
     }
     public destroy() {
         const { timeout_list, interval_list } = this;

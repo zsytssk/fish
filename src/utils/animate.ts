@@ -1,6 +1,14 @@
 import * as zTimer from './zTimer';
 
-export function fade_in(sprite: Laya.Sprite, time?: number, ease_fn?: string) {
+type EaseFn = Func<void> | string;
+type Sprite = Laya.Sprite & {
+    tween: Laya.Tween;
+    is_stop: boolean;
+    time_out: any;
+};
+type Props<T> = { [k in keyof T]?: T[k] };
+
+export function fade_in(sprite: Sprite, time?: number, ease_fn?: string) {
     completeAni(sprite);
     const start_props = {
         alpha: 0,
@@ -19,7 +27,7 @@ export function fade_in(sprite: Laya.Sprite, time?: number, ease_fn?: string) {
         time,
     });
 }
-export function fade_out(sprite: Laya.Sprite, time?: number, ease_fn?: string) {
+export function fade_out(sprite: Sprite, time?: number, ease_fn?: string) {
     completeAni(sprite);
     time = time ? time : 700;
     ease_fn = ease_fn || 'circleOut';
@@ -36,7 +44,7 @@ export function fade_out(sprite: Laya.Sprite, time?: number, ease_fn?: string) {
         sprite.alpha = 1;
     });
 }
-export function scale_in(sprite, time, ease_fn) {
+export function scale_in(sprite: Sprite, time: number, ease_fn: EaseFn) {
     completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 400;
@@ -53,7 +61,7 @@ export function scale_in(sprite, time, ease_fn) {
     };
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
-export function scale_out(sprite, time, ease_fn) {
+export function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
     completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 400;
@@ -67,7 +75,7 @@ export function scale_out(sprite, time, ease_fn) {
     });
 }
 export function slide_up_in(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -107,7 +115,7 @@ export function slide_up_in(
     });
 }
 export function slide_up_out(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -129,7 +137,7 @@ export function slide_up_out(
     });
 }
 export function slide_down_in(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -154,7 +162,7 @@ export function slide_down_in(
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
 export function slide_down_out(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -184,7 +192,7 @@ export function slide_down_out(
     });
 }
 export function slide_left_in(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -209,7 +217,7 @@ export function slide_left_in(
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
 export function slide_left_out(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -233,7 +241,7 @@ export function slide_left_out(
     });
 }
 export function slide_right_in(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
@@ -257,7 +265,12 @@ export function slide_right_in(
     };
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
-export function slide_right_out(sprite, time, ease_fn, space) {
+export function slide_right_out(
+    sprite: Sprite,
+    time: number,
+    ease_fn: EaseFn,
+    space: number,
+) {
     if (!space) {
         const width = sprite.getBounds().width;
         space = width > 50 ? 50 : width;
@@ -276,7 +289,12 @@ export function slide_right_out(sprite, time, ease_fn, space) {
         sprite.x = ori_x;
     });
 }
-export function rotate(sprite, angle, time, ease_fn) {
+export function rotate(
+    sprite: Sprite,
+    angle: number,
+    time: number,
+    ease_fn: EaseFn,
+) {
     const ori_angle = Number(sprite.rotation);
     if (ori_angle !== ori_angle) {
         sprite.rotation = 0;
@@ -286,7 +304,7 @@ export function rotate(sprite, angle, time, ease_fn) {
     };
     return tween({ sprite, end_props, time, ease_fn });
 }
-export function blink(sprite, time) {
+export function blink(sprite: Sprite, time: number) {
     tweenLoop({
         sprite,
         props_arr: [{ alpha: 1 }, { alpha: 0.3 }],
@@ -294,7 +312,7 @@ export function blink(sprite, time) {
     });
 }
 export function move(
-    sprite: Laya.Sprite,
+    sprite: Sprite,
     start_pos: Point,
     end_pos: Point,
     time: number,
@@ -310,7 +328,15 @@ export function move(
         ease_fn,
     });
 }
-export function tween(data) {
+
+type TweenData = {
+    sprite: Sprite;
+    start_props?: Props<Sprite>;
+    end_props: Props<Sprite>;
+    time: number;
+    ease_fn?: EaseFn;
+};
+export function tween(data: TweenData) {
     return new Promise((resolve, reject) => {
         const { sprite, start_props, end_props } = data;
         if (sprite.destroyed) {
@@ -323,7 +349,7 @@ export function tween(data) {
         const Ease = Laya.Ease;
         ease_fn = ease_fn || Ease.linearNone;
         if (typeof ease_fn === 'string') {
-            ease_fn = Ease[ease_fn];
+            ease_fn = Ease[ease_fn as keyof typeof Ease] as Func<void>;
         }
         setStyle(sprite, start_props);
         if (time === 0 || sprite.is_stop) {
@@ -356,7 +382,7 @@ export function tween(data) {
         );
     });
 }
-export function setStyle(sprite, props) {
+export function setStyle(sprite: Props<Sprite>, props: Props<Sprite>) {
     if (!props) {
         return;
     }
@@ -367,7 +393,7 @@ export function setStyle(sprite, props) {
         sprite[key] = props[key];
     }
 }
-function jump(sprite, props, time_num) {
+function jump(sprite: Sprite, props: {}, time_num: number) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             setStyle(sprite, props);
@@ -415,12 +441,11 @@ export function stepAni({
     };
 }
 
-type SpritePlus = Laya.Sprite & { time_out: any };
 type TweenLoopParam = {
-    sprite: Laya.Sprite;
+    sprite: Sprite;
     props_arr: AnyObj[];
     time: number;
-    ease_fn?: string | Function;
+    ease_fn?: EaseFn;
     is_jump?: boolean;
     end_jump?: boolean;
 };
@@ -466,11 +491,16 @@ export async function tweenLoop({
         if (i >= len) {
             i = 0;
         }
-        (sprite as SpritePlus).time_out = setTimeout(runItem, time);
+        (sprite as Sprite).time_out = setTimeout(runItem, time);
     }
     runItem();
 }
-export function countDown(caller, count, on_step, on_complete) {
+export function countDown(
+    caller: any,
+    count: number,
+    on_step: Func<void>,
+    on_complete: Func<void>,
+) {
     const start_props = {
         x: count,
     };
@@ -479,7 +509,7 @@ export function countDown(caller, count, on_step, on_complete) {
     };
     const time = count * 1000;
     const step = count + 1;
-    const step_fun = step_props => {
+    const step_fun = (step_props: { x: number }) => {
         on_step(Math.floor(step_props.x));
     };
     return tweenProps({
@@ -496,19 +526,25 @@ export function countDown(caller, count, on_step, on_complete) {
 type TweenFunParam = {
     callback: FuncVoid;
     caller: any;
-    start_props: AnyObj;
-    end_props: AnyObj;
+    start_props: Props<Sprite>;
+    end_props: Props<Sprite>;
     time: number;
-    time_fun?: string | Function;
-    step_fun?: (step_props: AnyObj, time: number) => void;
+    time_fun?: EaseFn;
+    step_fun?: (step_props: Props<Sprite>, time: number) => void;
     step: number;
 };
+type TweenTmpItem = {
+    caller: any;
+    off: FuncVoid;
+    callback: FuncVoid;
+    step_fun: Func<void>;
+};
 export const tweenProps = (() => {
-    const tmp = [];
-    function getVal(v1, v2, t) {
+    const tmp: TweenTmpItem[] = [];
+    function getVal(v1: number, v2: number, t: number) {
         return v1 + (v2 - v1) * t;
     }
-    function completeNodeListener(caller, run?) {
+    function completeNodeListener(caller: any, run?: boolean) {
         for (let i = tmp.length - 1; i >= 0; i--) {
             const caller_item = tmp[i].caller;
             const off = tmp[i].off;
@@ -538,9 +574,11 @@ export const tweenProps = (() => {
         const time_step = step ? time / step : 1000 / 60;
         const total_step = time / time_step;
 
-        let ease_fn: (a: number, b, c: number, d: number) => number;
+        let ease_fn: (a: number, b: number, c: number, d: number) => number;
         if (typeof time_fun === 'string') {
-            ease_fn = Laya.Ease[time_fun];
+            ease_fn = Laya.Ease[time_fun as keyof typeof Laya.Ease] as Func<
+                number
+            >;
         }
         if (!ease_fn) {
             ease_fn = Laya.Ease.linearNone;
@@ -552,7 +590,7 @@ export const tweenProps = (() => {
                 start_props[key] = caller[key] || 0;
             }
         }
-        const calc_keys = [];
+        const calc_keys: string[] = [];
         for (const key of Object.keys(end_props)) {
             if (start_props[key] === end_props[key]) {
                 continue;
@@ -574,14 +612,14 @@ export const tweenProps = (() => {
             step_fun,
         });
         let cur_step = 0;
-        function moveLoop(times) {
+        function moveLoop(times: number) {
             /** 如果node已经被清除, 直接注销绑定 */
             if (caller.destroyed || caller.is_stop) {
                 return completeNodeListener(caller);
             } else if (cur_step >= total_step) {
                 return completeNodeListener(caller, true);
             }
-            const temp_obj = {};
+            const temp_obj: Props<Sprite> = {};
             let t = cur_step / total_step;
             if (!time_fun) {
                 t = ease_fn(t, 0, 1, 1);
@@ -608,28 +646,28 @@ export const tweenProps = (() => {
             cur_step += times;
         }
         moveLoop(1);
-        return run => {
+        return (run: boolean) => {
             completeNodeListener(caller, run);
         };
     }
     return tweenFun;
 })();
-export function stopAni(sprite) {
+export function stopAni(sprite: Sprite | FuncVoid) {
     if (!sprite) {
         return;
     }
     if (typeof sprite === 'function') {
-        sprite();
+        return sprite();
     }
     if (sprite.time_out) {
-        clearTimeout(sprite.time_out);
+        return clearTimeout(sprite.time_out);
     }
     if (sprite.tween) {
         sprite.tween.complete();
         sprite.tween.clear();
     }
 }
-export function completeAni(sprite) {
+export function completeAni(sprite: Sprite) {
     if (!sprite) {
         return;
     }

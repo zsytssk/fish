@@ -20,18 +20,16 @@ export type SpriteInfo = {
     belong_scene?: BelongScene;
 };
 
+/** 鱼动画类型 正常 | 水平翻转 */
+export type FishAniType = 'normal' | 'horizon_turn';
 export type FishSpriteInfo = SpriteInfo & {
     /** 有没有转向动画 */
-    has_turn_animate?: boolean;
-    /** 有没有死亡动画 */
-    has_death_animate?: boolean;
-    /** 有没有颠倒动画 */
-    has_upsidedown_animate?: boolean;
+    ani_type?: FishAniType;
     group?: Array<{
         typeId: string;
         pos: Point;
     }>;
-    /** offset 是为了处理骨骼动画的中心点位置不是sprite的中心点情况 */
+    /** 为了在边界给鱼添加额外的路径, 慢慢的进入|退出 */
     offset?: number[];
 };
 export interface GameSprite {
@@ -134,16 +132,110 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             offset: [20, 26, 32, 29],
             path: 'ani/fish/fish1',
+            ani_type: 'horizon_turn',
         },
         '2': {
             type: 'DragonBone',
             offset: [24, 22, 39, 22],
             path: 'ani/fish/fish2',
         },
+        '3': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish3',
+            ani_type: 'horizon_turn',
+        },
+        '4': {
+            type: 'DragonBone',
+            offset: [44, 22, 39, 22],
+            path: 'ani/fish/fish4',
+        },
+        '5': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish5',
+        },
+        '6': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish6',
+            ani_type: 'horizon_turn',
+        },
+        '7': {
+            type: 'DragonBone',
+            offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish7',
+            ani_type: 'horizon_turn',
+        },
+        '8': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish8',
+        },
+        '9': {
+            type: 'DragonBone',
+            offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish9',
+        },
+        '10': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish10',
+        },
+        '11': {
+            type: 'DragonBone',
+            offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish11',
+            ani_type: 'horizon_turn',
+        },
+        '12': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish12',
+        },
+        '13': {
+            type: 'DragonBone',
+            offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish13',
+        },
+        '14': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish14',
+        },
+        '15': {
+            type: 'DragonBone',
+            offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish15',
+        },
+        '16': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish16',
+            ani_type: 'horizon_turn',
+        },
         '17': {
             type: 'DragonBone',
-            offset: [240, 175, 354, 175],
+            offset: [24, 22, 39, 22],
             path: 'ani/fish/fish17',
+        },
+        '18': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish18',
+            ani_type: 'horizon_turn',
+        },
+        '19': {
+            type: 'DragonBone',
+            offset: [24, 22, 39, 22],
+            path: 'ani/fish/fish19',
+            ani_type: 'horizon_turn',
+        },
+        '20': {
+            type: 'DragonBone',
+            offset: [20, 26, 32, 29],
+            path: 'ani/fish/fish20',
+            ani_type: 'horizon_turn',
         },
     },
     fish_icon: {

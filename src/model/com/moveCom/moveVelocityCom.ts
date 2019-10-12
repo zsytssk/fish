@@ -8,6 +8,8 @@ export class MoveVelocityCom {
     private velocity: SAT.Vector;
     private update_fn: MoveUpdateFn;
     private tick_index: number;
+    /** 停止 */
+    private is_stop = false;
     constructor(pos: Point, velocity: SAT.Vector, update_fn: MoveUpdateFn) {
         this.pos = pos;
         this.velocity = velocity;
@@ -16,7 +18,11 @@ export class MoveVelocityCom {
         this.tick_index = createTick(this.update.bind(this));
     }
     public update(t: number) {
-        const { pos, velocity } = this;
+        const { pos, velocity, is_stop } = this;
+        if (is_stop) {
+            return;
+        }
+
         pos.x += velocity.x * t;
         pos.y += velocity.y * t;
         this.detectHitWall();
@@ -51,6 +57,13 @@ export class MoveVelocityCom {
         }
         this.velocity = new SAT.Vector(x, y);
         this.pos = pos;
+    }
+
+    public stop() {
+        this.is_stop = true;
+    }
+    public start() {
+        this.is_stop = false;
     }
 
     public destroy() {

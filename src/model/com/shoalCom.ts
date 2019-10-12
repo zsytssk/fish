@@ -4,7 +4,7 @@ import { EventCom } from 'comMan/eventCom';
 
 export const ShoalEvent = {
     /** 添加鱼群前的清理 */
-    preAddShoal: 'pre_add_shoal',
+    PreAddShoal: 'pre_add_shoal',
 };
 
 /** 鱼群的处理逻辑 */

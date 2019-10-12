@@ -1,3 +1,4 @@
+type GunGlobalPos = { [key: string]: Point };
 /** 坐标 */
 export let Coordinates = {
     /** 桌面上四个炮的坐标坐标, 用来计算每一个炮的子弹的发射点 */
@@ -18,7 +19,7 @@ export let Coordinates = {
             x: 404, // 1334 - 404
             y: 19,
         },
-    },
+    } as GunGlobalPos,
     /** 炮的种类对应每一个炮的开始发射点, 用来计算子弹的运动的开始位置 */
     guns_inside_pos: {
         /** 枪发射的位置 */

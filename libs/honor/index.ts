@@ -68,7 +68,7 @@ async function run(
 
     let { defaultVersion } = extern_config;
     defaultVersion = defaultVersion || '0';
-    Laya.URL.customFormat = url => {
+    Laya.URL.customFormat = (url: string) => {
         const version_map = Laya.URL.version || {};
         if (url.indexOf('data:image') < 0) {
             if (url.indexOf('?') < 0 && url.indexOf('?v=') < 0) {

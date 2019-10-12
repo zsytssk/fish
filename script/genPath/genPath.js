@@ -30,7 +30,7 @@ var filePath = (new File($.fileName)).parent.parent.parent + '/src/data/path.ts'
 var f = new File(filePath);
 f.encoding = 'UTF8';
 f.open('w');
-f.writeln('export const PATH = ');
+f.writeln('export const PATH : {[key: string]: number[][];}= ');
 f.writeln(JSON.stringify(path_data));
 f.writeln(';');
 

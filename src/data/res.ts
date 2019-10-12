@@ -11,7 +11,7 @@ export const res = {
     ],
 };
 
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= 20; i++) {
     res.game.push(
         {
             url: `ani/fish/fish${i}.sk`,
@@ -35,14 +35,3 @@ for (let i = 1; i <= 2; i++) {
         },
     );
 }
-
-res.game.push(
-    {
-        url: `ani/fish/fish17.sk`,
-        type: Laya.Loader.BUFFER,
-    },
-    {
-        url: `ani/fish/fish17.png`,
-        type: Laya.Loader.IMAGE,
-    },
-);

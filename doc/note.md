@@ -1,53 +1,118 @@
+-   @todo 形状 scaleX 有没有用...
+
+-   @todo 18 号鱼颠倒形状
+    -   颠倒之后形状是对的,的但是就无法击中了, 点不在是逆时针了
+
+## 2019-10-12 20:10:44
+
+-   @ques 将 bodyCom 上面的 shape pos 全部删除
+
+    -   shape.pos 和 shapeInfo.pos 的区别是什么...
+    -   这里面好像哪里有问题
+        -   drawShape:>rotationShape
+
+-   @ques 站立 body 的形状
+    -   形状 能不能 scaleX -1
+        -   自己写一个方法去翻转
+    -   其他鱼的颠倒
+
+*   @todo 游戏中添加 socket 的处理...
+*   @todo tsc·
+*   @todo 本地模拟 socket @ques socket 到底如何建立
+
+*   @ques 站立鱼的 形状和动画如何处理
+
+    -   body fix_direction 是否可以放在外边处理...
+
+*   @todo injectAfter
+
+*   @play 个人所得税:> 租房抵扣
+*   @play 移动流量
+
+*   tslint unessary semicolon
+
+    -   tslint vacode semicolon ignore-bound-class-methods
+
+*   @todo 其他用户自动发射子弹
+
+*   @todo genVersion ...
+
+## 2019-10-12 10:07:55
+
+-   @ques photoshop js 怎么创建 layer
+
+    -   https://www.adobe.com/content/dam/acom/en/devnet/photoshop/scripting/Photoshop-CS6-JavaScript-Ref.pdf
+    -   创建图层, 创建新的 pathItem 创建 subPathInfo
+    -   没搞出来...
+
+-   14-26 27-39(30) 40-51(40) 52-63(52) 64-75
+
+skill-test freezing
+
+-   炮台转动不灵敏
+
+-   @todo FishStatus emit...
+
+-   @opt 性能优化
+
+```ts
+public get event() {
+    return this.getCom(EventCom);
+}
+this.event = this.getCom(EventCom);
+```
+
+## 2019-10-11 16:09:15
+
 -   @todo test modelState ctrlState
 
 *   @ques 页面上的动画如何处理...
 
-    -   狂暴[加速发射]... 追踪子弹... ani_ctrl 冰冻
+    -   炸弹
+    -   狂暴[加速发射] + 冰冻; ... 追踪子弹... ani_ctrl 冰冻
 
-*   @todo 游戏中添加 socket 的处理...
+-   @todo 锁定第一个子弹的发射角度有问题..
 
-*   @todo 锁定第一个子弹的发射角度有问题..
-
-*   @todo 追踪子弹
+-   @todo 追踪子弹
 
     -   自动发射 + 追踪子弹
 
-*   @todo 所有的 event 全部首字母大写 时间 用下划线
+-   @todo 所有的 event 全部首字母大写 时间 用下划线
 
-*   com 要不要和对应的 compMan 放在一起... 公共的放在一起..
+-   @ques com 要不要和对应的 compMan 放在一起... 公共的放在一起..
 
-*   @ques fish_list player_list 的处理能不能做成一个 comp 这需要思考下
+-   @ques fish_list player_list 的处理能不能做成一个 comp 这需要思考下
 
-*   @ques 自动追踪 的鱼离开页面, 需要将用户的子弹还原怎么处理
+-   @ques 自动追踪 的鱼离开页面, 需要将用户的子弹还原怎么处理
 
     -   子弹需要记录自己的炮台...
 
-*   @ques com 的交互 自动攻击
+-   @ques com 的交互 自动攻击
 
     -   trackCom -> autoLaunchCom -> gunBox 这怎么处理
 
-*   @todo 可以计算前后端的时间差 这样就可以 避免延迟导致的 位置不同步
+-   @todo 可以计算前后端的时间差 这样就可以 避免延迟导致的 位置不同步
 
     -   鱼 + 子弹 子弹的发射 技能的释放带 作用时间... (这样有点问题)
 
-*   @ques 自动攻击..., 的显示效果怎么处理...
+-   @ques 自动攻击..., 的显示效果怎么处理...
 
-*   @todo 自动攻击时 点击页面只会 改变炮台的方向 而不是发射子弹
+-   @todo 自动攻击时 点击页面只会 改变炮台的方向 而不是发射子弹
 
     -   在 trackfish 的时候点击页面不做任何处理...
     -   这时候只需要改变炮台的方向...
 
-*   @todo 炮台的 pos initDirection 数据可以在外面处理好了再发过来
-*   @todo 游戏中 大的鱼层级高些 ...
+-   @todo 炮台的 pos initDirection 数据可以在外面处理好了再发过来
+-   @todo 游戏中 大的鱼层级高些 ...
 
-*   @ques trackFish 的子弹和炮台能不能放在一起处理... trackFishCom
+-   @ques trackFish 的子弹和炮台能不能放在一起处理... trackFishCom
 
-*   @ques 如果 trackFishCom 比加上 trackFish 属性 更复杂那么就放在属性上面
+-   @ques 如果 trackFishCom 比加上 trackFish 属性 更复杂那么就放在属性上面
 
-*   @todo setStatus + addBullet
+-   @todo setStatus + addBullet
 
-*   @todo gun 的开枪间隔
-*   @todo 鱼有多少种状态... out_stage...
+-   @todo gun 的开枪间隔
+-   @todo 鱼有多少种状态... out_stage...
 
 ## 2019-10-11 09:27:40
 
@@ -78,14 +143,6 @@
         -   设计模式是 1334x750 还是多少...
         -   高阳的 的太大了
     -   贝塞尔不能离开页面
-
--   @ques 自己生成贝塞尔曲线 后面再去做...
-    -   本地支持贝塞尔支持参数
-    -   三个点控制的贝塞尔 [start, end, 垂直偏移, 正偏移]
-    -   他怎么知道 曲线的样式
-    -   我本地写一个函数... 试一试 能不能用...
-    -   让产品来确定参数的阈值, 如果可以以后就不用前端来记录这些信息了
-    -   有没有可能固定一条曲线 用正负偏差来生成新的路径
 
 ## 2019-10-10 11:28:22
 
@@ -130,8 +187,6 @@
 -   取消 10 号的请假
 
     -   问下人事
-
--   个人所得税:> 租房抵扣
 
 ## 2019-09-27 20:15:47
 

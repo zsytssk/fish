@@ -191,7 +191,7 @@ export class DialogManagerCtor {
                 });
             } else if (typeof url === 'function') {
                 createScene(url).then(dialog => {
-                    return resolve(dialog);
+                    return resolve(dialog as Laya.Dialog);
                 });
             } else if (url instanceof Laya.Dialog) {
                 return resolve(url);
@@ -293,10 +293,10 @@ export class DialogManagerCtor {
     public closeAllDialogs() {
         this.dialog_manager.closeAll();
     }
-    public getDialogsByGroup(group) {
+    public getDialogsByGroup(group: string) {
         this.dialog_manager.getDialogsByGroup(group);
     }
-    public closeDialogsByGroup(group) {
+    public closeDialogsByGroup(group: string) {
         this.dialog_manager.closeByGroup(group);
     }
     public getDialogByName(name: string) {
@@ -318,7 +318,7 @@ export class DialogManagerCtor {
         }
     }
     /** 隐藏遮罩 */
-    public hideMask(visible) {
+    public hideMask(visible: boolean) {
         const { dialog_manager } = this;
         const { maskLayer } = dialog_manager;
         maskLayer.visible = visible;

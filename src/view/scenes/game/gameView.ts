@@ -29,7 +29,7 @@ export default class Game extends ui.scenes.game.gameUI {
         const { pool } = this;
         const bullet = createSprite('bullet', skin);
         pool.addChild(bullet);
-
+        bullet.visible = false;
         return bullet;
     }
     public addNet(skin: string) {

@@ -12,7 +12,7 @@ export const game_test = new Test('game', runner => {
                 totalTime: 10,
                 usedTime: 0,
             } as ServerFishInfo;
-            modelState.game.addFish(fish_data);
+            modelState.app.game.addFish(fish_data);
         }
     });
 });

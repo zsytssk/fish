@@ -2,7 +2,7 @@ import Bezier from 'bezier-js';
 import GameConfig from 'GameConfig';
 import SAT from 'sat';
 import { getShapeInfo, getSpriteInfo } from 'utils/dataUtil';
-import { Curve, CurveInfo } from './displace';
+import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
 import { FishSpriteInfo } from 'data/sprite';
@@ -172,7 +172,7 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
     for (let i = 0; i < path_info.length; i++) {
         let curve_info: CurveInfo;
         let curve: Curve;
-        const path_item_info = path_info[i];
+        const path_item_info = path_info[i] as [number, number, number, number];
         if (path_item_info.length >= 6) {
             // 贝塞尔曲线
             curve_info = createBezier(path_item_info);
@@ -353,4 +353,24 @@ export function createLine(path_info: [number, number, number, number]) {
         curve,
         length: curve.length(1),
     };
+}
+
+export function createFishDisplace(data: ServerFishInfo) {
+    const {
+        typeId,
+        displaceType,
+        pathNo,
+        usedTime,
+        totalTime,
+        reverse,
+        funList,
+    } = data;
+
+    let curve_list: CurveInfo[];
+    if (displaceType === 'path') {
+        curve_list = createCurvesByPath(pathNo, typeId);
+    } else if (displaceType === 'fun') {
+        curve_list = createCurvesByFun(funList, typeId);
+    }
+    return new Displace(totalTime, usedTime, curve_list, reverse);
 }

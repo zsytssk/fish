@@ -1,16 +1,15 @@
-import * as SAT from 'sat';
-import { DisplaceInfo, Displace, CurveInfo } from 'utils/displace/displace';
-import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
-import { EventCom } from 'comMan/eventCom';
 import { ComponentManager } from 'comMan/component';
-import { GameModel } from './gameModel';
-import {
-    createCurvesByPath,
-    createCurvesByFun,
-} from 'utils/displace/displaceUtil';
-import { getShapes } from './com/bodyComUtil';
+import { EventCom } from 'comMan/eventCom';
+import * as SAT from 'sat';
+import { DisplaceInfo } from 'utils/displace/displace';
+import { createFishDisplace } from 'utils/displace/displaceUtil';
 import { BodyCom } from './com/bodyCom';
+import { getShapes } from './com/bodyComUtil';
+import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
+import { GameModel } from './gameModel';
 import { ModelEvent } from './modelEvent';
+import { getSpriteInfo } from 'utils/dataUtil';
+import { FishSpriteInfo } from 'data/sprite';
 
 export const FishEvent = {
     /** 移动 */
@@ -19,11 +18,21 @@ export const FishEvent = {
     BeCast: 'be_cast',
     /** 被捕获 */
     BeCapture: 'be_capture',
+    /** 状态改变 */
+    StatusChange: 'status_change',
 };
 export type FishMoveData = {
     pos: Point;
     velocity: SAT.Vector;
 };
+
+/** 鱼的状态 */
+export enum FishStatus {
+    Normal,
+    Freezed,
+    QuickLeave,
+    Dead,
+}
 export class FishModel extends ComponentManager {
     /** 唯一标示 */
     public id: string;
@@ -34,6 +43,11 @@ export class FishModel extends ComponentManager {
     /** 方向 */
     public velocity: SAT.Vector;
     /** 鱼的状态 */
+    private status = FishStatus.Normal;
+    /** 是否水平翻转 */
+    public horizon_turn = false;
+    /** 移动控制器 */
+    private move_com: MoveCom;
     private game: GameModel;
     constructor(data: ServerFishInfo, game: GameModel) {
         super();
@@ -54,9 +68,16 @@ export class FishModel extends ComponentManager {
 
         const displace = createFishDisplace(data);
         const move_com = new MoveDisplaceCom(displace, this.onMoveChange);
+        const sprite_info = getSpriteInfo('fish', typeId) as FishSpriteInfo;
+        let horizon_turn = false;
+        if (sprite_info.ani_type === 'horizon_turn') {
+            horizon_turn = true;
+        }
         const shapes = getShapes('fish', Number(typeId));
-        const body_com = new BodyCom(shapes);
+        const body_com = new BodyCom(shapes, horizon_turn);
 
+        this.horizon_turn = horizon_turn;
+        this.move_com = move_com;
         this.addCom(new EventCom(), move_com, body_com);
     }
     private onMoveChange = (displace_info: DisplaceInfo) => {
@@ -76,9 +97,22 @@ export class FishModel extends ComponentManager {
         this.event.emit(FishEvent.Move, {
             pos,
             velocity,
-        });
+        } as MoveInfo);
     }; // tslint:disable-line: semicolon
     /** 被网住 */
+    public setStatus(status: FishStatus) {
+        if (status === this.status) {
+            return;
+        }
+        this.status = status;
+        this.event.emit(FishEvent.StatusChange, status);
+
+        if (status === FishStatus.Freezed) {
+            this.move_com.stop();
+        } else {
+            this.move_com.start();
+        }
+    }
     public beCast() {
         this.event.emit(FishEvent.BeCast);
     }
@@ -91,24 +125,4 @@ export class FishModel extends ComponentManager {
         this.event.emit(ModelEvent.Destroy);
         super.destroy();
     }
-}
-
-function createFishDisplace(data: ServerFishInfo) {
-    const {
-        typeId,
-        displaceType,
-        pathNo,
-        usedTime,
-        totalTime,
-        reverse,
-        funList,
-    } = data;
-
-    let curve_list: CurveInfo[];
-    if (displaceType === 'path') {
-        curve_list = createCurvesByPath(pathNo, typeId);
-    } else if (displaceType === 'fun') {
-        curve_list = createCurvesByFun(funList, typeId);
-    }
-    return new Displace(totalTime, usedTime, curve_list, reverse);
 }

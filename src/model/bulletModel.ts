@@ -1,4 +1,4 @@
-import { ComponentManager } from 'comMan/component';
+import { ComponentManager, Component } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { config } from 'data/config';
 import { BodyCom } from './com/bodyCom';
@@ -53,12 +53,12 @@ export class BulletModel extends ComponentManager {
     }
     private init(track?: TrackTarget) {
         const { pos, velocity, level } = this;
-        const com_list: MoveCom[] = [new EventCom()];
+        const com_list: Component[] = [new EventCom()];
         if (!track) {
             const move_com = new MoveVelocityCom(
                 pos,
                 velocity,
-                this.onMoveChange.bind(this),
+                this.onMoveChange,
             );
 
             const shapes = getShapes('bullet', level);
@@ -70,8 +70,8 @@ export class BulletModel extends ComponentManager {
                 pos,
                 velocity,
                 track,
-                this.onTrackMoveChange.bind(this),
-                this.onHit.bind(this),
+                this.onTrackMoveChange,
+                this.onHit,
             );
 
             com_list.push(move_com);
@@ -79,35 +79,34 @@ export class BulletModel extends ComponentManager {
 
         this.addCom(...com_list);
     }
-    private onMoveChange(move_info: MoveInfo) {
-        const { pos, velocity: direction } = move_info;
+    private onMoveChange = (move_info: MoveInfo) => {
+        const { pos, velocity } = move_info;
         const body_com = this.body;
-        body_com.update(pos, direction);
+        body_com.update(pos, velocity);
 
-        this.event.emit(BulletEvent.Move, {
-            pos,
-            velocity: direction,
-        } as MoveInfo);
+        this.pos = pos;
+        this.velocity = velocity;
+        this.event.emit(BulletEvent.Move, { pos, velocity } as MoveInfo);
 
         const fish = getCollisionFish(body_com);
         if (fish) {
             this.onHit(fish);
         }
-    }
+    }; // tslint:disable-line
     /** 追踪鱼不需要进行碰撞检测, 不需要body */
-    private onTrackMoveChange(move_info: MoveInfo) {
+    private onTrackMoveChange = (move_info: MoveInfo) => {
         const { pos, velocity: direction } = move_info;
 
         this.event.emit(BulletEvent.Move, {
             pos,
             velocity: direction,
         } as MoveInfo);
-    }
-    private onHit(track: FishModel) {
+    }; // tslint:disable-line
+    private onHit = (track: FishModel) => {
         const net = new NetModel(this.pos, track, this);
         this.event.emit(BulletEvent.AddNet, net);
         this.destroy();
-    }
+    }; // tslint:disable-line
     public destroy() {
         this.gun.removeBullet(this);
         this.event.emit(ModelEvent.Destroy);

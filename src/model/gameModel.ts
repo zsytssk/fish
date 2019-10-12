@@ -1,31 +1,44 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { FishModel } from './fishModel';
-import { clearModelState, modelState } from './modelState';
-import { PlayerModel, PlayerInfo } from './playerModel';
+import { TimeoutCom } from 'comMan/timeoutCom';
+import { FreezingCom } from './com/freezingCom';
 import { ShoalCom } from './com/shoalCom';
+import { FishModel } from './fishModel';
+import { PlayerInfo, PlayerModel } from './playerModel';
 
 export const GameEvent = {
     /** 添加鱼 */
     AddFish: 'add_fish',
     /** 添加用户 */
     AddPlayer: 'add_player',
+    /** 冰冻 */
+    Freezing: 'freezing',
 };
 
 export class GameModel extends ComponentManager {
     public fish_list: Set<FishModel> = new Set();
     private player_list: Set<PlayerModel> = new Set();
+    /** 冰冻等级 用来控制多个冰冻技能叠加的效果 */
+    private freezing_timeout: number;
     constructor() {
         super();
 
         this.init();
-        modelState.game = this;
     }
     private init() {
-        this.addCom(new EventCom());
+        this.addCom(new EventCom(), new TimeoutCom());
     }
     public get event() {
         return this.getCom(EventCom);
+    }
+    /** 冰冻的处理  */
+    public get freezing_com() {
+        let freezing_com = this.getCom(FreezingCom);
+        if (!freezing_com) {
+            freezing_com = new FreezingCom(this);
+            this.addCom(freezing_com);
+        }
+        return freezing_com;
     }
     public addFish(fish_info: ServerFishInfo) {
         const fish = new FishModel(fish_info, this);
@@ -61,6 +74,7 @@ export class GameModel extends ComponentManager {
         const player = new PlayerModel(data, this);
         this.player_list.add(player);
         this.event.emit(GameEvent.AddPlayer, player);
+        return player;
     }
     public getPlayerById(id: string) {
         const { player_list } = this;
@@ -74,7 +88,8 @@ export class GameModel extends ComponentManager {
     public removePlayer(player: PlayerModel) {
         this.player_list.delete(player);
     }
+
     public destroy() {
-        clearModelState();
+        // 离开游戏销毁...
     }
 }

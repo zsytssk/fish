@@ -3,6 +3,8 @@ interface MoveInfo {
     velocity: SAT.Vector;
 }
 interface MoveCom {
+    start(): void;
+    stop(): void;
     destroy(): void;
 }
 

@@ -1,4 +1,5 @@
 import * as SAT from 'sat';
+import { cloneShapeInfos, scaleXShapeInfos } from './bodyComUtil';
 
 export type Shape = SAT.Polygon | SAT.Circle;
 export type ShapeInfo = {
@@ -13,10 +14,13 @@ export class BodyCom {
     private angle: number = 0;
     /** 角度 */
     private pos = {} as Point;
+    /** 是否水平翻转 */
+    public horizon_turn = false;
     /** 形状信息 */
     public shapes: ShapeInfo[];
-    constructor(shapes: ShapeInfo[]) {
+    constructor(shapes: ShapeInfo[], horizon_turn: boolean) {
         this.shapes = shapes;
+        this.horizon_turn = horizon_turn;
     }
     public update(pos: Point, direction?: SAT.Vector) {
         if (direction) {
@@ -52,12 +56,21 @@ export class BodyCom {
         const shapes = this.shapes;
 
         angle = angle + Math.PI / 2;
-        for (const shape of shapes) {
-            if (!(shape instanceof SAT.Polygon)) {
-                continue;
+        if (this.horizon_turn) {
+            /** 方向改变 翻转形状 */
+            if (this.angle * angle < 0) {
+                this.shapes = scaleXShapeInfos(this.shapes);
             }
-            shape.setAngle(angle);
+        } else {
+            for (const item of shapes) {
+                const { shape } = item;
+                if (!(shape instanceof SAT.Polygon)) {
+                    continue;
+                }
+                shape.setAngle(angle);
+            }
         }
+
         this.angle = angle;
     }
     public destroy() {

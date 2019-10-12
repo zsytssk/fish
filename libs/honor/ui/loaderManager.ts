@@ -1,4 +1,4 @@
-import { ViewType, HonorLoadScene } from './view';
+import { ViewType, HonorLoadScene, HonorView } from './view';
 import { ResItem, loadRes } from 'honor/utils/loadRes';
 
 type LoadingMap = Map<ViewType, HonorLoadScene>;
@@ -50,17 +50,21 @@ export class LoaderManagerCtor {
         if (status === false) {
             time = 1000;
         }
-        clearTimeout(this[`${type}_timeout_${status}`]);
-        this[`${type}_timeout_${status}`] = setTimeout(() => {
+        clearTimeout(this[
+            `${type}_timeout_${status}` as keyof LoaderManagerCtor
+        ] as any);
+        this[
+            `${type}_timeout_${status}` as keyof LoaderManagerCtor
+        ] = setTimeout(() => {
             this.setLoadViewVisible(type, status);
-        }, time);
+        }, time) as any;
     }
     public async setLoadView(type: ViewType, url: string) {
         const ctor = type === 'Scene' ? Laya.Scene : Laya.Dialog;
         const scene: HonorLoadScene = await new Promise((resolve, reject) => {
             ctor.load(
                 url,
-                Laya.Handler.create(null, _scene => {
+                Laya.Handler.create(null, (_scene: HonorLoadScene) => {
                     resolve(_scene);
                 }),
             );

@@ -1,4 +1,6 @@
-const calcGcd = (x: number, y: number) => (!y ? x : calcGcd(y, x % y));
+const calcGcd: (x: number, y: number) => number = (x: number, y: number) => {
+    return !y ? x : calcGcd(y, x % y);
+};
 const calcGcdArr = (arr: number[]) => {
     let result;
     for (const item of arr) {

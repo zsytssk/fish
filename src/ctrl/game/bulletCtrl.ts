@@ -15,18 +15,19 @@ export class BulletCtrl {
         this.init();
     }
     private init() {
+        this.initView();
         this.initEvent();
+    }
+    private initView() {
+        const { view } = this;
+        this.syncPos();
+        view.visible = true;
     }
     private initEvent() {
         const { view } = this;
         const { event } = this.model;
 
-        event.on(BulletEvent.Move, (displace_info: MoveInfo) => {
-            const { pos, velocity: direction } = displace_info;
-            const angle = vectorToDegree(direction) + 90;
-            view.rotation = angle;
-            view.pos(pos.x, pos.y);
-        });
+        event.on(BulletEvent.Move, this.syncPos);
         event.on(BulletEvent.AddNet, (net_model: NetModel) => {
             const net_view = addNet(net_model.skin) as Laya.Image;
             const net_ctrl = new NetCtrl(net_view, net_model);
@@ -35,4 +36,12 @@ export class BulletCtrl {
             view.destroy();
         });
     }
+    private syncPos = () => {
+        const { view } = this;
+        const { pos, velocity } = this.model;
+
+        const angle = vectorToDegree(velocity) + 90;
+        view.rotation = angle;
+        view.pos(pos.x, pos.y);
+    }; // tslint:disable-line
 }

@@ -10,12 +10,15 @@ import { body_test } from './app/game/body.spec';
 import { count_test } from './count.spec';
 import { modelState } from 'model/modelState';
 import { ctrlState } from 'ctrl/ctrlState';
+import { skill_test } from './app/game/skill.spec';
+import { viewState } from 'view/viewState';
 declare global {
     interface Window {
         test: typeof test;
         Honor: typeof Honor;
         modelState: typeof modelState;
         ctrlState: typeof ctrlState;
+        viewState: typeof viewState;
     }
 }
 
@@ -27,6 +30,7 @@ testScope.addChild(
     player_test,
     body_test,
     count_test,
+    skill_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -37,4 +41,5 @@ window.test = test;
 window.test = test;
 window.modelState = modelState;
 window.ctrlState = ctrlState;
+window.viewState = viewState;
 window.Honor = Honor;

@@ -9,18 +9,18 @@ export function vectorToDegree(vector: SAT.Vector) {
     return degree;
 }
 /** 角度转化为弧度 */
-export function degreeToAngle(degrees) {
+export function degreeToAngle(degrees: number) {
     return (degrees * Math.PI) / 180;
 }
 /** 弧度转化为角度 */
-export function angleToDegree(angle) {
+export function angleToDegree(angle: number) {
     return (angle * 180) / Math.PI;
 }
 /** 将时间秒转化为帧, 一秒 = 60帧 */
-export function timeToFrame(time) {
+export function timeToFrame(time: number) {
     return Math.ceil(time * 60);
 }
 /** 将帧 -->秒, 一秒 = 60帧 */
-export function frameToTime(frame) {
+export function frameToTime(frame: number) {
     return Math.ceil(frame / 60);
 }

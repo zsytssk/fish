@@ -130,7 +130,7 @@ export class DirectorCtor {
         );
     }
     /** 隐藏遮罩 */
-    public hideDialog(visible) {
+    public hideDialog(visible: boolean) {
         dialogManager.hideMask(visible);
     }
 }

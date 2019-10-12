@@ -14,6 +14,7 @@ export const GunEvent = {
     AddBullet: 'add_bullet',
     DirectionChange: 'direction_change',
     SwitchOn: 'switch_on',
+    SpeedUpStatus: 'speed_up_status',
 };
 export enum GunStatus {
     Normal,
@@ -38,6 +39,10 @@ export class GunModel extends ComponentManager {
     public track_fish: FishModel;
     /** 炮台的状态 */
     public status = GunStatus.Normal;
+    /** 是否加速  */
+    public is_speedup = false;
+    /** 是否加速  */
+    public launch_space = config.launch_space;
     /** 枪是否打开, 用来控制发射子弹的间隔 */
     private is_on = true;
     constructor(pos: Point, skin: string, player: PlayerModel) {
@@ -69,6 +74,20 @@ export class GunModel extends ComponentManager {
         }
         this.status = status;
     }
+    public toggleSpeedUp(is_speedup: boolean) {
+        if (is_speedup === this.is_speedup) {
+            return;
+        }
+        this.is_speedup = is_speedup;
+        this.event.emit(GunEvent.SpeedUpStatus, is_speedup);
+        if (is_speedup === true) {
+            /** 开启 */
+            this.launch_space = config.launch_space / 2;
+        } else {
+            /** 禁用 */
+            this.launch_space = config.launch_space;
+        }
+    }
     /** 自动发射的处理 */
     public get autoLaunch() {
         let auto_launch = this.getCom(AutoLaunchCom);
@@ -87,24 +106,29 @@ export class GunModel extends ComponentManager {
         return track_fish;
     }
     public preAddBullet(velocity: SAT.Vector, force = false) {
-        const timeout = this.getCom(TimeoutCom);
-        if (!force && this.status !== GunStatus.Normal) {
-            velocity = velocity.clone().normalize();
-            this.setDirection(velocity);
+        if (!force && this.status === GunStatus.TrackFish) {
+            return;
+        }
+        velocity = velocity.clone().normalize();
+        this.setDirection(velocity);
+
+        if (!force && this.status === GunStatus.AutoLaunch) {
             return;
         }
 
         if (!this.is_on) {
             return;
         }
+
         this.addBullet(velocity);
 
         /** 枪隔一段时间才会打开 */
         this.is_on = false;
+        const timeout = this.getCom(TimeoutCom);
         timeout.createTimeout(() => {
             this.is_on = true;
             this.event.emit(GunEvent.SwitchOn);
-        }, config.launch_space);
+        }, this.launch_space);
     }
     public addBullet(velocity: SAT.Vector) {
         velocity = velocity.clone().normalize();

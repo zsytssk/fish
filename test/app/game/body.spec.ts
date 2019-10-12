@@ -1,7 +1,7 @@
 import { Honor } from 'honor';
 import { injectProto } from 'honor/utils/tool';
 import { BodyCom, ShapeInfo } from 'model/com/bodyCom';
-import { clonePolygon } from 'model/com/bodyComUtil';
+import { cloneShape } from 'model/com/bodyComUtil';
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
 import Game from 'view/scenes/game/gameView';
@@ -25,7 +25,7 @@ export const body_test = new Test('body', runner => {
                 }
                 sprite.graphics.clear();
                 // tslint:disable-next-line
-                drawShape(sprite, obj['shapes'], obj['angle']);
+                drawShape(sprite, obj['shapes']);
             });
             /** 清除 绘制的形状 */
             injectProto(BodyCom, 'destroy', (obj: BodyCom) => {
@@ -37,18 +37,24 @@ export const body_test = new Test('body', runner => {
             });
         }
     });
+
+    runner.describe('test_sat', () => {
+        const a = new SAT.Box(new SAT.Vector(100, 100), 300, 300).toPolygon();
+        const b = new SAT.Box(new SAT.Vector(0, 0), 300, 300).toPolygon();
+        b.translate(100, 100);
+        console.log(`test:>`, a, b);
+    });
 });
 
 /** 绘制形状 */
-function drawShape(node: Laya.Sprite, shapes: ShapeInfo[], angle: number) {
+function drawShape(node: Laya.Sprite, shapes: ShapeInfo[]) {
     node.graphics.clear();
 
     for (const item of shapes) {
-        let { shape } = item;
+        const { shape } = item;
         const { pos } = shape;
 
         if (shape instanceof SAT.Polygon) {
-            shape = rotationShape(shape, angle);
             const points = [];
             const ori_points = (shape as SAT.Polygon).calcPoints;
             for (const p of ori_points) {
@@ -59,9 +65,4 @@ function drawShape(node: Laya.Sprite, shapes: ShapeInfo[], angle: number) {
             node.graphics.drawCircle(pos.x, pos.y, shape.r, 'black');
         }
     }
-}
-function rotationShape(shape: SAT.Polygon, angle: number) {
-    const new_shape = clonePolygon(shape);
-    new_shape.setAngle(angle);
-    return new_shape;
 }

@@ -1,6 +1,6 @@
 import { loaderManager } from 'honor/state';
+import { createScene } from '../utils/tool';
 import { HonorScene } from './view';
-import { nodeIsReady, createScene } from '../utils/tool';
 export type SceneChangeListener = (
     cur1: string,
     cur2: string,
@@ -19,8 +19,6 @@ export class SceneManagerCtor {
     public sceneClassMap: SceneClassMap = {};
     public scene_pool = new Map() as SceneMap;
     private cur_scene: HonorScene;
-    private dialog_manager = new Laya.DialogManager();
-    constructor() {}
     public onResize(width: number, height: number) {
         if (this.cur_scene) {
             this.cur_scene.size(width, height);

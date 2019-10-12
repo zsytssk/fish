@@ -5,6 +5,6 @@
  *
  * @return 字符串长度
  */
-export function getStringLength(str) {
+export function getStringLength(str: string) {
     return ('' + str.replace(/[^\x00-\xff]/gi, 'ox')).length;
 }

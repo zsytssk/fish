@@ -7,7 +7,7 @@ export interface TrackTarget {
 }
 export type OnHit = (target: TrackTarget) => void;
 /** 追踪目标 移动控制 */
-export class MoveTrackCom {
+export class MoveTrackCom implements MoveCom {
     private target: TrackTarget;
     private pos: Point;
     /** 初始位置, 为了计算追踪子弹有没有击中目标 */
@@ -16,6 +16,8 @@ export class MoveTrackCom {
     private update_fn: MoveUpdateFn;
     private on_hit: OnHit;
     private tick_index: number;
+    /** 停止 */
+    private is_stop = false;
     constructor(
         pos: Point,
         velocity: SAT.Vector,
@@ -33,7 +35,10 @@ export class MoveTrackCom {
         this.tick_index = createTick(this.update.bind(this));
     }
     private update(t: number) {
-        const { target, pos } = this;
+        const { target, pos, is_stop } = this;
+        if (is_stop) {
+            return;
+        }
         const { x, y } = pos;
         const { x: tx, y: ty } = target.pos;
         const velocity = new SAT.Vector(tx - x, ty - y)
@@ -71,6 +76,12 @@ export class MoveTrackCom {
         }
         this.pos = track_pos;
         return true;
+    }
+    public stop() {
+        this.is_stop = true;
+    }
+    public start() {
+        this.is_stop = false;
     }
     public destroy() {
         clearTick(this.tick_index);
