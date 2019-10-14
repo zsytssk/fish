@@ -1,3 +1,19 @@
+-   @todo 所有的形状
+
+-   shape circle pos box pivot
+
+-   @todo 龙虾三个形状 旋转
+
+-   @todo 碰撞形状能不能让设计去设置, 我在 psd 中转一下...
+
+-   @todo 螃蟹的形状 网的形状不太对...
+
+-   @todo lodash 的脚本
+
+-   @todo 登陆 张笑 (和后端没有关系)
+
+## 2019-10-14 10:08:43
+
 -   @todo 形状 scaleX 有没有用...
 
 -   @todo 18 号鱼颠倒形状

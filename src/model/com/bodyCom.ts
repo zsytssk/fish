@@ -1,5 +1,5 @@
 import * as SAT from 'sat';
-import { cloneShapeInfos, scaleXShapeInfos } from './bodyComUtil';
+import { scaleXShapeInfos } from './bodyComUtil';
 
 export type Shape = SAT.Polygon | SAT.Circle;
 export type ShapeInfo = {
@@ -39,12 +39,14 @@ export class BodyCom {
         const { shapes } = this;
         for (const shape_info of shapes) {
             const { shape, pos: rel_pos } = shape_info;
-            if (shape instanceof SAT.Circle) {
-                const { angle } = this;
-                const new_pos = rel_pos.clone().rotate(angle);
-                shape.pos = new SAT.Vector(x + new_pos.x, y + new_pos.y);
+            const { angle } = this;
+            if (this.horizon_turn) {
+                /** 方向改变 翻转形状 */
+                const { x: nx, y: ny } = rel_pos;
+                shape.pos = new SAT.Vector(x + nx, y + ny);
             } else {
-                shape.pos = new SAT.Vector(pos.x, pos.y);
+                const { x: nx, y: ny } = rel_pos.clone().rotate(angle);
+                shape.pos = new SAT.Vector(x + nx, y + ny);
             }
         }
 

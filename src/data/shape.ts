@@ -82,11 +82,11 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Box',
-                    width: 50,
-                    height: 50,
+                    width: 30,
+                    height: 80,
                     pivot: {
-                        x: 25,
-                        y: 30,
+                        x: 15,
+                        y: 50,
                     },
                 },
             ],
@@ -95,7 +95,7 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 30,
                 },
             ],
         },
@@ -103,15 +103,20 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 45,
                 },
             ],
         },
         '5': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 50,
+                    height: 100,
+                    pivot: {
+                        x: 25,
+                        y: 100,
+                    },
                 },
             ],
         },
@@ -119,7 +124,7 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 25,
                 },
             ],
         },
@@ -127,15 +132,24 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 30,
+                    position: {
+                        x: -10,
+                        y: 0,
+                    },
                 },
             ],
         },
         '8': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 40,
+                    height: 80,
+                    pivot: {
+                        x: 20,
+                        y: 30,
+                    },
                 },
             ],
         },
@@ -143,55 +157,145 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 59,
                 },
             ],
         },
         '10': {
             shape_list: [
                 {
+                    type: 'Box',
+                    width: 40,
+                    height: 100,
+                    pivot: {
+                        x: 20,
+                        y: 50,
+                    },
+                },
+                {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 20,
+                    position: {
+                        x: -50,
+                        y: -40,
+                    },
+                },
+                {
+                    type: 'Circle',
+                    radius: 20,
+                    position: {
+                        x: 55,
+                        y: -45,
+                    },
                 },
             ],
         },
         '11': {
             shape_list: [
                 {
+                    type: 'Box',
+                    width: 60,
+                    height: 50,
+                    pivot: {
+                        x: 30,
+                        y: -10,
+                    },
+                },
+                {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 40,
+                    position: {
+                        x: 10,
+                        y: -35,
+                    },
                 },
             ],
         },
         '12': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 70,
+                    height: 150,
+                    pivot: {
+                        x: 35,
+                        y: 100,
+                    },
                 },
             ],
         },
         '13': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 70,
+                    height: 250,
+                    pivot: {
+                        x: 35,
+                        y: 100,
+                    },
+                },
+                {
+                    type: 'Box',
+                    width: 90,
+                    height: 30,
+                    position: {
+                        x: 0,
+                        y: 190,
+                    },
                 },
             ],
         },
         '14': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 50,
+                    height: 230,
+                    pivot: {
+                        x: 25,
+                        y: 80,
+                    },
+                },
+                {
+                    type: 'Box',
+                    width: 160,
+                    height: 30,
+                    position: {
+                        x: 0,
+                        y: -100,
+                    },
                 },
             ],
         },
         '15': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 150,
+                    height: 350,
+                    pivot: {
+                        x: 75,
+                        y: 180,
+                    },
+                },
+                {
+                    type: 'Box',
+                    width: 50,
+                    height: 90,
+                    position: {
+                        x: 0,
+                        y: 215,
+                    },
+                },
+                {
+                    type: 'Box',
+                    width: 150,
+                    height: 50,
+                    position: {
+                        x: 0,
+                        y: 290,
+                    },
                 },
             ],
         },
@@ -199,7 +303,35 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 60,
+                    position: {
+                        x: 0,
+                        y: -10,
+                    },
+                },
+                {
+                    type: 'Circle',
+                    radius: 60,
+                    position: {
+                        x: 0,
+                        y: -10,
+                    },
+                },
+                {
+                    type: 'Circle',
+                    radius: 30,
+                    position: {
+                        x: -90,
+                        y: -90,
+                    },
+                },
+                {
+                    type: 'Circle',
+                    radius: 35,
+                    position: {
+                        x: 90,
+                        y: -100,
+                    },
                 },
             ],
         },
@@ -207,7 +339,7 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 70,
                 },
             ],
         },
@@ -222,13 +354,26 @@ export let SHAPE: ShapeOriData = {
                         y: 80,
                     },
                 },
+                {
+                    type: 'Circle',
+                    radius: 25,
+                    position: {
+                        x: 80,
+                        y: -40,
+                    },
+                },
             ],
         },
         '19': {
             shape_list: [
                 {
-                    type: 'Circle',
-                    radius: 19,
+                    type: 'Box',
+                    width: 90,
+                    height: 150,
+                    pivot: {
+                        x: 45,
+                        y: 120,
+                    },
                 },
             ],
         },
@@ -241,6 +386,15 @@ export let SHAPE: ShapeOriData = {
                     pivot: {
                         x: 90,
                         y: 50,
+                    },
+                },
+                {
+                    type: 'Box',
+                    width: 20,
+                    height: 100,
+                    pivot: {
+                        x: 140,
+                        y: 70,
                     },
                 },
             ],

@@ -1,7 +1,6 @@
 import { Honor } from 'honor';
 import { injectProto } from 'honor/utils/tool';
 import { BodyCom, ShapeInfo } from 'model/com/bodyCom';
-import { cloneShape } from 'model/com/bodyComUtil';
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
 import Game from 'view/scenes/game/gameView';
@@ -60,9 +59,9 @@ function drawShape(node: Laya.Sprite, shapes: ShapeInfo[]) {
             for (const p of ori_points) {
                 points.push(p.x, p.y);
             }
-            node.graphics.drawPoly(pos.x, pos.y, points, 'black');
+            node.graphics.drawPoly(pos.x, pos.y, points, 'green');
         } else if (shape instanceof SAT.Circle) {
-            node.graphics.drawCircle(pos.x, pos.y, shape.r, 'black');
+            node.graphics.drawCircle(pos.x, pos.y, shape.r, 'green');
         }
     }
 }

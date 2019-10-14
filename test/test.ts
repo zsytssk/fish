@@ -12,6 +12,8 @@ import { modelState } from 'model/modelState';
 import { ctrlState } from 'ctrl/ctrlState';
 import { skill_test } from './app/game/skill.spec';
 import { viewState } from 'view/viewState';
+import { injectAfter } from 'honor/utils/tool';
+import { GameCtrl } from 'ctrl/game/gameCtrl';
 declare global {
     interface Window {
         test: typeof test;
@@ -43,3 +45,13 @@ window.modelState = modelState;
 window.ctrlState = ctrlState;
 window.viewState = viewState;
 window.Honor = Honor;
+
+let running = false;
+injectAfter(GameCtrl, 'preEnter', () => {
+    if (running) {
+        return;
+    }
+    running = true;
+    player_test.runTest('add_cur_player');
+    fish_test.runTest('fish_ani');
+});
