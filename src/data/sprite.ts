@@ -115,8 +115,8 @@ export let SPRITE: GameSprite = {
             type: 'Img',
             path: 'image/game/net',
             pivot: {
-                x: 69,
-                y: 70,
+                x: 76,
+                y: 79,
             },
         },
         '2': { as: '1' },

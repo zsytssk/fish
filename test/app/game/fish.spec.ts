@@ -1,7 +1,7 @@
+import { range } from 'lodash';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { body_test } from './body.spec';
-import { range } from 'lodash';
 
 export const fish_test = new Test('fish', runner => {
     runner.describe(
@@ -47,7 +47,8 @@ export const fish_test = new Test('fish', runner => {
 
     runner.describe('fish_ani', () => {
         body_test.runTest('show_shape');
-        for (const i of range(11, 12)) {
+        const n = 2;
+        for (const i of range(n, n + 1)) {
             const typeId = i;
             const pathId = i;
             const time = 40;

@@ -18,8 +18,6 @@ export const GameEvent = {
 export class GameModel extends ComponentManager {
     public fish_list: Set<FishModel> = new Set();
     private player_list: Set<PlayerModel> = new Set();
-    /** 冰冻等级 用来控制多个冰冻技能叠加的效果 */
-    private freezing_timeout: number;
     constructor() {
         super();
 
@@ -90,6 +88,7 @@ export class GameModel extends ComponentManager {
     }
 
     public destroy() {
+        super.destroy();
         // 离开游戏销毁...
     }
 }

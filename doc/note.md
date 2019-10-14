@@ -2,13 +2,17 @@
 
 -   shape circle pos box pivot
 
+    -   5..2
+
 -   @todo 龙虾三个形状 旋转
 
 -   @todo 碰撞形状能不能让设计去设置, 我在 psd 中转一下...
 
 -   @todo 螃蟹的形状 网的形状不太对...
 
--   @todo lodash 的脚本
+-   @todo 布局 渔网 子弹 炮台 什么时候给我...
+
+-   ## @todo 登陆 张笑 (和后端没有关系) + socket
 
 -   @todo 登陆 张笑 (和后端没有关系)
 

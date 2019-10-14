@@ -15,10 +15,10 @@ export class BodyCom {
     /** 角度 */
     private pos = {} as Point;
     /** 是否水平翻转 */
-    public horizon_turn = false;
+    public horizon_turn: boolean;
     /** 形状信息 */
     public shapes: ShapeInfo[];
-    constructor(shapes: ShapeInfo[], horizon_turn: boolean) {
+    constructor(shapes: ShapeInfo[], horizon_turn = false) {
         this.shapes = shapes;
         this.horizon_turn = horizon_turn;
     }

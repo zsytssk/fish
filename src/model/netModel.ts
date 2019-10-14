@@ -55,11 +55,11 @@ export class NetModel extends ComponentManager {
                     fish.beCast();
                 }
                 this.event.emit(NetEvent.CastFish, this.cast_fish);
-            }, 0);
+            }, 10000);
         }
         timeout_com.createTimeout(() => {
             this.destroy();
-        }, 300);
+        }, 10000);
     }
     public destroy() {
         this.event.emit(ModelEvent.Destroy);
