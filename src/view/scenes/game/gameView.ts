@@ -1,11 +1,12 @@
-import honor from 'honor';
+import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ui } from 'ui/layaMaxUI';
-import GunBox from './gunBoxView';
-import { createSprite } from 'utils/dataUtil';
+import { createSprite, getSpriteInfo } from 'utils/dataUtil';
 import { viewState } from '../../viewState';
+import GunBox from './gunBoxView';
+import { SpriteInfo } from 'data/sprite';
 
-export default class Game extends ui.scenes.game.gameUI {
+export default class Game extends ui.scenes.game.gameUI implements HonorScene {
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
@@ -15,9 +16,10 @@ export default class Game extends ui.scenes.game.gameUI {
         viewState.game = game;
         return game;
     }
-    public onEnable() {
-        const { pool } = this;
-        pool.graphics.drawRect(0, 0, pool.width, pool.height, '#fff');
+    public onResize(width: number, height: number) {
+        const { width: tw, height: th } = this;
+        this.x = (width - tw) / 2;
+        this.y = (height - th) / 2;
     }
     public addFish(type: string) {
         const { pool } = this;
@@ -25,9 +27,15 @@ export default class Game extends ui.scenes.game.gameUI {
         pool.addChild(fish);
         return fish;
     }
-    public addBullet(skin: string) {
+    public addBullet(skin: string, rage = false) {
         const { pool } = this;
-        const bullet = createSprite('bullet', skin);
+        const { path } = getSpriteInfo('bullet', skin) as SpriteInfo;
+        let bullet: Laya.Skeleton;
+        if (!rage) {
+            bullet = createSkeleton(path);
+        } else {
+            bullet = createSkeleton(`${path}_rage`);
+        }
         pool.addChild(bullet);
         bullet.visible = false;
         return bullet;
@@ -39,9 +47,9 @@ export default class Game extends ui.scenes.game.gameUI {
         return net;
     }
     public addGun(level: string) {
-        const { pool } = this;
+        const { ctrl_box } = this;
         const gun = new GunBox(level);
-        pool.addChild(gun);
+        ctrl_box.addChild(gun);
         return gun;
     }
     public getPoolMousePos() {

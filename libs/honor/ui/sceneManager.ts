@@ -21,9 +21,10 @@ export class SceneManagerCtor {
     private cur_scene: HonorScene;
     public onResize(width: number, height: number) {
         if (this.cur_scene) {
-            this.cur_scene.size(width, height);
             if (this.cur_scene.onResize) {
                 this.cur_scene.onResize(width, height);
+            } else {
+                this.cur_scene.size(width, height);
             }
         }
     }
@@ -35,7 +36,6 @@ export class SceneManagerCtor {
     public switchScene(params: any[], scene: HonorScene): SceneChangeData {
         const { scene_pool } = this;
         const { width, height } = Laya.stage;
-        scene.size(width, height);
 
         const old_scene = this.cur_scene;
         const prev = old_scene ? old_scene.url : undefined;
@@ -45,6 +45,7 @@ export class SceneManagerCtor {
             scene.onMounted.apply(scene, params);
         }
         scene.open(true);
+        this.onResize(width, height);
 
         if (old_scene && !old_scene.destroyed) {
             scene_pool.set(prev as string, old_scene);

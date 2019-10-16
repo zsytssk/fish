@@ -14,6 +14,8 @@ import { skill_test } from './app/game/skill.spec';
 import { viewState } from 'view/viewState';
 import { injectAfter } from 'honor/utils/tool';
 import { GameCtrl } from 'ctrl/game/gameCtrl';
+import { socket_test } from './app/socket.spec';
+import { sat_test } from './sat.spec';
 declare global {
     interface Window {
         test: typeof test;
@@ -33,6 +35,8 @@ testScope.addChild(
     body_test,
     count_test,
     skill_test,
+    socket_test,
+    sat_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -53,5 +57,6 @@ injectAfter(GameCtrl, 'preEnter', () => {
     }
     running = true;
     player_test.runTest('add_cur_player');
-    fish_test.runTest('fish_ani');
+    // fish_test.runTest('fish_ani');
+    // socket_test.runTest('connect');
 });

@@ -1,6 +1,6 @@
 import SAT from 'sat';
 import { Coordinates } from 'data/coordinate';
-import { SpriteType, SpriteInfo } from 'data/sprite';
+import { SpriteType, SpriteInfo, GunSpriteInfo } from 'data/sprite';
 import { SPRITE } from 'data/sprite';
 import { SHAPE } from 'data/shape';
 import { vectorToAngle } from './mathUtils';
@@ -17,7 +17,10 @@ export function getGunInfo(server_index: number) {
     };
 }
 /** 获取sprite的信息 */
-export function getSpriteInfo(type: SpriteType, sub_type: string): SpriteInfo {
+export function getSpriteInfo(
+    type: SpriteType,
+    sub_type: string,
+): SpriteInfo | GunSpriteInfo {
     let sprite_info = SPRITE[type][sub_type];
     if (sprite_info.as) {
         sprite_info = SPRITE[type][sprite_info.as];
@@ -41,37 +44,49 @@ export function getShapeInfo(type: SpriteType, level?: number | string) {
 export function getBulletStartPos(
     server_index: number,
     direction: SAT.Vector,
-): Point {
-    const server_client_index = server_index;
-    const gun_global_pos: Point =
-        Coordinates.gun_global_pos[server_client_index];
-    const gun_origin_pos: Point = Coordinates.guns_inside_pos.origin_point;
-    const gun_start_point: Point = Coordinates.guns_inside_pos.start_point;
-    let x: number;
-    let y: number;
+    skin: string,
+): Point[] {
+    const { hole_num } = getSpriteInfo('gun', skin) as GunSpriteInfo;
+    const offsets = Coordinates.bullet_offset[hole_num];
+    const result: Point[] = [];
+    const offset_v = direction
+        .clone()
+        .normalize()
+        .rotate(Math.PI / 2);
+    for (const offset of offsets) {
+        const nv = offset_v.clone().scale(offset, offset);
+        const server_client_index = server_index;
+        const gun_global_pos: Point =
+            Coordinates.gun_global_pos[server_client_index];
+        const gun_origin_pos: Point = Coordinates.guns_inside_pos.origin_point;
+        const gun_start_point: Point = Coordinates.guns_inside_pos.start_point;
+        let x: number;
+        let y: number;
 
-    if (server_client_index <= 1) {
-        x = gun_start_point.x - gun_origin_pos.x;
-        y = gun_start_point.y - gun_origin_pos.y;
-    } else {
-        // 上面的炮台的位置 子弹gun_start_point相对于gun_origin_pos的位置正好是与底下的相反
-        x = gun_origin_pos.x - gun_start_point.x;
-        y = gun_origin_pos.y - gun_start_point.y;
+        if (server_client_index <= 1) {
+            x = gun_start_point.x - gun_origin_pos.x;
+            y = gun_start_point.y - gun_origin_pos.y;
+        } else {
+            // 上面的炮台的位置 子弹gun_start_point相对于gun_origin_pos的位置正好是与底下的相反
+            x = gun_origin_pos.x - gun_start_point.x;
+            y = gun_origin_pos.y - gun_start_point.y;
+        }
+        let vector = new SAT.Vector(x, y);
+        /** 向量需要转动的角度 */
+        let angle: number;
+        if (server_client_index <= 1) {
+            // 底下的gun的大炮的初始角度是-Math.PI / 2
+            angle = vectorToAngle(direction) + Math.PI / 2;
+        } else {
+            // 底下的gun的大炮的初始角度是Math.PI / 2
+            angle = vectorToAngle(direction) - Math.PI / 2;
+        }
+        vector = vector.rotate(angle);
+        x = gun_global_pos.x + vector.x + nv.x;
+        y = gun_global_pos.y + vector.y + nv.y;
+        result.push({ x, y });
     }
-    let vector = new SAT.Vector(x, y);
-    /** 向量需要转动的角度 */
-    let angle: number;
-    if (server_client_index <= 1) {
-        // 底下的gun的大炮的初始角度是-Math.PI / 2
-        angle = vectorToAngle(direction) + Math.PI / 2;
-    } else {
-        // 底下的gun的大炮的初始角度是Math.PI / 2
-        angle = vectorToAngle(direction) - Math.PI / 2;
-    }
-    vector = vector.rotate(angle);
-    x = gun_global_pos.x + vector.x;
-    y = gun_global_pos.y + vector.y;
-    return { x, y };
+    return result;
 }
 
 /**
@@ -84,7 +99,7 @@ export function createSprite(
     sprite_type: SpriteType,
     sub_type: string,
 ): Laya.Sprite {
-    const sprite_info = getSpriteInfo(sprite_type, sub_type);
+    const sprite_info = getSpriteInfo(sprite_type, sub_type) as SpriteInfo;
     const { type, path } = sprite_info;
     let pivot = sprite_info.pivot || { x: 0, y: 0 };
 
@@ -106,13 +121,21 @@ export function createSprite(
     }
 
     sprite.pivot(pivot.x, pivot.y);
-    // if (sprite_info.width) {
-    //     sprite.width = sprite_info.width;
-    //     sprite.height = sprite_info.height;
-    // } else {
-    //     sprite.width = pivot.x * 2;
-    //     sprite.height = pivot.y * 2;
-    // }
 
     return sprite;
+}
+
+export function createGunBox(level: number) {
+    const gun_box = new Laya.Box();
+    const gun_inner = new Laya.Box();
+
+    gun_box.size(149, 149);
+    gun_inner.pos(74, 77);
+    gun_box.addChild(gun_inner);
+
+    const base = createSkeleton(`ani/gun/gun${level}/base`);
+    const light = createSkeleton(`ani/gun/gun${level}/light`);
+    const gun = createSkeleton(`ani/gun/gun${level}/gun`);
+
+    gun_inner.addChildren(base, light, gun);
 }

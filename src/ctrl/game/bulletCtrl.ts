@@ -1,9 +1,10 @@
-import { BulletEvent, BulletModel } from 'model/bulletModel';
+import { BulletEvent, BulletModel } from 'model/gun/bulletModel';
 import { vectorToDegree } from 'utils/mathUtils';
-import { NetModel } from 'model/netModel';
+import { NetModel } from 'model/gun/netModel';
 import { NetCtrl } from './netCtrl';
 import { ModelEvent } from 'model/modelEvent';
 import { addNet } from 'view/viewState';
+import { playSkeleton } from 'utils/utils';
 
 /** 子弹的控制器 */
 export class BulletCtrl {
@@ -11,7 +12,7 @@ export class BulletCtrl {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
-    constructor(private view: Laya.Image, private model: BulletModel) {
+    constructor(private view: Laya.Skeleton, private model: BulletModel) {
         this.init();
     }
     private init() {
@@ -22,6 +23,7 @@ export class BulletCtrl {
         const { view } = this;
         this.syncPos();
         view.visible = true;
+        playSkeleton(view, 0, true);
     }
     private initEvent() {
         const { view } = this;
@@ -29,7 +31,7 @@ export class BulletCtrl {
 
         event.on(BulletEvent.Move, this.syncPos);
         event.on(BulletEvent.AddNet, (net_model: NetModel) => {
-            const net_view = addNet(net_model.skin) as Laya.Image;
+            const net_view = addNet(net_model.skin) as Laya.Skeleton;
             const net_ctrl = new NetCtrl(net_view, net_model);
         });
         event.on(ModelEvent.Destroy, () => {
@@ -37,6 +39,14 @@ export class BulletCtrl {
         });
     }
     private syncPos = () => {
+        const { view } = this;
+        const { pos, velocity } = this.model;
+
+        const angle = vectorToDegree(velocity) + 90;
+        view.rotation = angle;
+        view.pos(pos.x, pos.y);
+    }; // tslint:disable-line
+    private rage = () => {
         const { view } = this;
         const { pos, velocity } = this.model;
 

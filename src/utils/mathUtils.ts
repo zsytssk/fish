@@ -1,6 +1,12 @@
+import * as SAT from 'sat';
+
 /** 向量转化为弧度 */
 export function vectorToAngle(vector: SAT.Vector) {
     return Math.atan2(vector.y, vector.x);
+}
+/** 弧度转化为向量 */
+export function angleToVector(angle: number) {
+    return new SAT.Vector(Math.cos(angle), Math.sin(angle));
 }
 /** 向量转化为角度 */
 export function vectorToDegree(vector: SAT.Vector) {

@@ -54,7 +54,9 @@ export class FishCtrl extends ComponentManager {
         const { pos, velocity, horizon_turn } = this.model;
         const angle = vectorToDegree(velocity) + 90;
         if (horizon_turn) {
-            view.scaleX = angle < 0 ? 1 : -1;
+            /** angle(-90 - 90) + 90 = 0-180 */
+            const need_scale_x = angle > 0 && angle < 180;
+            view.scaleX = need_scale_x ? -1 : 1;
         } else {
             view.rotation = angle;
         }

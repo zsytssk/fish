@@ -1,10 +1,11 @@
-import SAT from 'sat';
-import { BulletModel } from 'model/bulletModel';
-import { GunEvent } from 'model/gunModel';
+import { FishModel } from 'model/fishModel';
+import { BulletGroup } from 'model/gun/bulletGroup';
+import { GunEvent } from 'model/gun/gunModel';
 import { PlayerModel } from 'model/playerModel';
+import SAT from 'sat';
 import GunBox from 'view/scenes/game/gunBoxView';
-import { BulletCtrl } from './bulletCtrl';
 import { getPoolMousePos } from 'view/viewState';
+import { BulletCtrl } from './bulletCtrl';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -26,7 +27,7 @@ export class PlayerCtrl {
         if (server_index > 2) {
             view.rotation = 180;
         }
-        view.pos(pos.x, pos.y);
+        view.setPos(pos.x, pos.y);
     }
     private initEvent() {
         const {
@@ -35,28 +36,31 @@ export class PlayerCtrl {
         } = this;
         const { event } = gun;
 
-        event.on(GunEvent.AddBullet, (bullet: BulletModel) => {
-            const bullet_view = view.addBullet(
-                bullet.skin,
-                bullet.velocity,
-            ) as Laya.Image;
-            const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
-        });
+        event.on(
+            GunEvent.AddBullet,
+            (bullet_group: BulletGroup, velocity: SAT.Vector) => {
+                const { rage } = gun;
+                view.fire(velocity);
+                for (const bullet of bullet_group.bullet_list) {
+                    const bullet_view = view.addBullet(
+                        bullet.skin,
+                        rage,
+                    ) as Laya.Skeleton;
+                    const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
+                }
+            },
+        );
         event.on(GunEvent.DirectionChange, (direction: SAT.Vector) => {
             view.setDirection(direction);
-        });
-        event.on(GunEvent.AddBullet, (bullet: BulletModel) => {
-            const bullet_view = view.addBullet(
-                bullet.skin,
-                bullet.velocity,
-            ) as Laya.Image;
-            const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
         });
 
         /** 当前用户的处理 */
         if (!is_cur_player) {
             return;
         }
+        event.on(GunEvent.CastFish, (fish: FishModel) => {
+            console.log(`cast fish:`, fish);
+        });
         Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             const gun_pos = gun.pos;
             const click_pos = getPoolMousePos();

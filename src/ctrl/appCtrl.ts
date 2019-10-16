@@ -4,6 +4,7 @@ import honor from 'honor';
 import { HallCtrl } from './start/hallCtrl';
 import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
+import { res, font_list } from 'data/res';
 
 export class AppCtrl {
     public model: AppModel;
@@ -29,7 +30,10 @@ export class AppCtrl {
             'scenes/loading.scene',
         );
         // const task2 = honor.director.setLoadPageForDialog('scenes/loading.scene');
-        await Promise.all([task1]);
+        const task2 = honor.director.load(res.font).then(() => {
+            honor.utils.registerFontSize(font_list);
+        });
+        await Promise.all([task1, task2]);
     }
     public enterGame() {
         return this.model.enterGame();

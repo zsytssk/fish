@@ -1,5 +1,5 @@
 import { ComponentManager } from 'comMan/component';
-import { GunModel } from './gunModel';
+import { GunModel } from './gun/gunModel';
 import { getGunInfo } from 'utils/dataUtil';
 import { GameModel } from './gameModel';
 

@@ -392,18 +392,5 @@ export let SHAPE: ShapeOriData = {
                 },
             ],
         },
-        // '2': {
-        //     shape_list: [
-        //         {
-        //             type: 'Box',
-        //             width: 25,
-        //             height: 47,
-        //             pivot: {
-        //                 x: 13,
-        //                 y: 19,
-        //             },
-        //         },
-        //     ],
-        // },
     },
 };

@@ -38,3 +38,54 @@ type ServerPlayerInfo = {
 
 /** 复盘的信息 */
 type ReplayInfo = {};
+
+type ServerShoalInfo = {
+    shoalId: string;
+    totalTime: number;
+    usedTime: number;
+    reverse?: boolean;
+    fish: ServerFishInfo[];
+};
+
+type ServerFishInfo = {
+    fishId: string;
+    typeId: string;
+    centerFishTypeId?: string;
+    isSpecial?: boolean;
+    displaceType: 'fun' | 'path';
+    pathNo?: string;
+    usedTime?: number;
+    totalTime?: number;
+    funNo?: string;
+    funPrams?: any[];
+    startTimeRadio?: number;
+    endTimeRadio?: number;
+    reverse?: boolean;
+};
+
+/**服务器数据结构*/
+type ServerGameInfo = {
+    userId: string;
+    roomId: string;
+    tableId: string;
+    fish: ServerFishInfo[];
+    shoal: ServerShoalInfo;
+    items: ServerItemData[];
+    userItems: ServerItemInfo;
+    users: ServerPlayerInfo[];
+};
+
+type ServerItemData = {
+    status?: 1 | 0; // 成功使用
+    itemId: string;
+    userId?: string;
+    usedTime?: number;
+    fish?: ServerFishInfo[];
+};
+
+type ServerItemInfo = {
+    [key: string]: {
+        count?: 50;
+        coolTime?: 10;
+    };
+};

@@ -1,6 +1,6 @@
+import { NetModel } from 'model/gun/netModel';
 import { ModelEvent } from 'model/modelEvent';
-import { NetModel, NetEvent } from 'model/netModel';
-import { FishModel } from 'model/fishModel';
+import { playSkeleton } from 'utils/utils';
 
 /** 子弹的控制器 */
 export class NetCtrl {
@@ -8,14 +8,14 @@ export class NetCtrl {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
-    constructor(private view: Laya.Image, private model: NetModel) {
+    constructor(private view: Laya.Skeleton, private model: NetModel) {
         this.init();
     }
     private init() {
         const { view, model } = this;
         const { x, y } = model.pos;
         view.pos(x, y);
-
+        playSkeleton(view, 0, false);
         this.initEvent();
     }
     private initEvent() {
@@ -26,9 +26,6 @@ export class NetCtrl {
             setTimeout(() => {
                 view.destroy();
             }, 1000);
-        });
-        event.on(NetEvent.CastFish, (fish_list: FishModel[]) => {
-            console.log(`网住的鱼`, fish_list);
         });
     }
 }

@@ -11,13 +11,13 @@ export const player_test = new Test('player', runner => {
             return;
         }
 
-        body_test.runTest('show_shape');
+        // body_test.runTest('show_shape');
         const player_data = {
             userId: player_id,
             serverIndex: 1,
             level: 10,
             gold: 10000,
-            gunSkin: '2',
+            gunSkin: '1',
             nickname: 'test',
             avatar: 'test',
             isCurPlayer: true,
@@ -28,7 +28,7 @@ export const player_test = new Test('player', runner => {
         const other_id = '----';
         let other_player = modelState.app.game.getPlayerById(other_id);
         if (!other_player) {
-            body_test.runTest('show_shape');
+            // body_test.runTest('show_shape');
             const player_data = {
                 userId: other_id,
                 serverIndex: 3,

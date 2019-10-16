@@ -1,5 +1,5 @@
 import { ComponentManager } from 'comMan/component';
-import { GunEvent, GunModel, GunStatus } from 'model/gunModel';
+import { GunEvent, GunModel, GunStatus } from 'model/gun/gunModel';
 
 /** 自动攻击 */
 export class AutoLaunchCom extends ComponentManager {

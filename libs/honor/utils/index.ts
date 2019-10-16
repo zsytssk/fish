@@ -3,6 +3,7 @@ import { cutStr } from './cutStr';
 import { getStringLength } from './getStringLength';
 import { formatTime, formatTimeLight } from './formatTime';
 import { loadRes } from './loadRes';
+import { registerFontSize } from './registerFont';
 
 export const utils = {
     createSkeleton,
@@ -11,4 +12,5 @@ export const utils = {
     formatTime,
     formatTimeLight,
     loadRes,
+    registerFontSize,
 };

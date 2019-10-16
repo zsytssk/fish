@@ -1,3 +1,148 @@
+-   @todo 晚上排期
+    -   购买子弹界面 1
+
+## 2019-10-16 20:12:32
+
+-   @ques 怎么发双炮... + 狂暴子弹 + 网的效果
+
+    -   removeBullet(group)
+    -   子弹的狂暴...
+
+*   @todo 界面
+
+    -   炮台的分数...
+    -   子弹 动画 + 发射的位置
+    -   用户的 score
+
+*   @save 狂暴 子弹三要大些
+
+-   @save sdk 更新了
+
+-   @save 服务端的接口 更新...
+
+-   @ques [自动] == 挂机 自动打鱼
+
+-   @ques 鱼潮被冰冻住了怎么处理...
+-   @ques 萌哥 我搬到楼上了
+
+### complete
+
+-   @todo skillBox..
+
+-   innerHtml 样式
+-   @save 群免打扰...
+-   @save font 怎么初始化
+
+    -   font 没有显示
+
+## 2019-10-16 10:32:57
+
+-   @todo node 脚本
+
+    -   messages.json @zhanglaosi
+
+-   @todo 子弹发射的位置...
+
+## 2019-10-15 17:25:58
+
+-   @todo jiang 自己的 script 发到 npm 上面
+
+    -   es6 模块 像 ldash 一样
+
+-   @todo createGun...
+-   @todo gun 的位置, 切换 ui..
+
+-   @todo angleToVector...
+
+*   鱼组..
+
+*   背景
+
+    -   炮台
+
+    -   背景要 1920 x 1920
+
+*   高适配 + gmStart 的源码没有了
+
+*   @todo 投影的大小 @设计
+
+*   @ques 多语言怎么处理???
+
+    -   语言.json
+    -   全局发送命令...
+    -   @张笑
+
+*   @ques 鱼的影子能不能不一样?
+
+    -   这样体验是不是好些...
+
+*   @todo index.html 如何处理 coingame...
+
+*   @ques 炮台的资源 如何处理
+
+## 2019-10-15 11:48:04
+
+-   @todo gameScene 没有剧中
+
+## 2019-10-15 10:20:35
+
+-   ts-node --files Cannot find module 'utils/mathUtils'
+
+-   @todo 排期的技术点...
+
+    -   页面布局
+        -   大厅、房间、帮助、声音、抽奖、商店
+    -   所有的技能
+        -   技能的基本逻辑 倒计时
+        -   冰冻 + 锁定
+        -   炸弹 + 炸弹鱼
+        -   超级技能 = 加速
+    -   鱼群
+        -   生成鱼群脚本
+        -   鱼群进入页面的逻辑...
+    -   鱼组..
+    -   炮台的位置
+    -   炮台+子弹+网的皮肤
+    -   双口炮 两个 子弹 两个网
+    -   上下颠倒同步...
+    -   版本号
+
+-   首页
+-   选择游戏模式
+-   用户炮台弹出层
+-   抽奖
+
+-   游戏里面有没有 ajax 请求...
+
+-   总共有哪些弹出层 @ques 产品
+
+    -   设计稿什么时候能给
+
+-   @ques 游戏的宽高... @产品
+
+-   排期给服务端吗
+
+## 2019-10-14 15:29:13
+
+-   @todo socket.io ...
+    -   添加 wrap, 可以扩展功能...
+    -   断线重连...
+
+```ts
+var decodeData = Base64.decode(data);
+var parsedData = JSON.parse(decodeData);
+```
+
+-   @ques 萌哥的 socket 到底是怎么使用的...
+
+    -   有用 base64 吗? 有用 token 吗
+
+-   @todo game-sdk
+
+-   双口炮 发送两个
+
+## 2019-10-14 13:53:21
+
 -   @todo 所有的形状
 
 -   shape circle pos box pivot
@@ -8,11 +153,15 @@
 
 -   @todo 碰撞形状能不能让设计去设置, 我在 psd 中转一下...
 
+    -   春明 顺时针画
+
 -   @todo 螃蟹的形状 网的形状不太对...
 
 -   @todo 布局 渔网 子弹 炮台 什么时候给我...
 
--   ## @todo 登陆 张笑 (和后端没有关系) + socket
+-   @todo 登陆 张笑 (和后端没有关系) + socket.io
+
+    -   有没有库可以参考下
 
 -   @todo 登陆 张笑 (和后端没有关系)
 
@@ -569,4 +718,4 @@ frameLoop 可以删除了 -> zTimer
 
 *   @ques Set 在 for del item 的时候会不会出错
 
-*   @ques glory animate rxjs
+-   @ques glory animate rxjs

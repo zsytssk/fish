@@ -20,6 +20,10 @@ export type SpriteInfo = {
     belong_scene?: BelongScene;
 };
 
+export type GunSpriteInfo = {
+    hole_num?: number;
+    as?: string;
+};
 /** 鱼动画类型 正常 | 水平翻转 */
 export type FishAniType = 'normal' | 'horizon_turn';
 export type FishSpriteInfo = SpriteInfo & {
@@ -35,7 +39,7 @@ export type FishSpriteInfo = SpriteInfo & {
 export interface GameSprite {
     /** 枪 */
     gun: {
-        [key: string]: SpriteInfo;
+        [key: string]: GunSpriteInfo;
     };
     /** 子弹 */
     bullet: {
@@ -80,46 +84,34 @@ export type SpriteType =
 export let SPRITE: GameSprite = {
     gun: {
         '1': {
-            type: 'DragonBone',
-            pivot: {
-                x: 105,
-                y: 140,
-            },
-            path: 'ani/gun/gun1',
+            hole_num: 1,
+        },
+        '2': {
+            hole_num: 2,
+        },
+        '3': {
+            as: '2',
         },
     },
     bullet: {
         '1': {
-            type: 'Img',
-            path: 'image/game/bullet1',
-            pivot: {
-                x: 33,
-                y: 18,
-            },
-            width: 66,
-            height: 150,
+            type: 'DragonBone',
+            path: 'ani/gun/bullet1',
         },
         '2': {
-            type: 'Img',
-            path: 'image/game/bulletvip1',
-            pivot: {
-                x: 33,
-                y: 22,
-            },
-            width: 66,
-            height: 150,
+            as: '1',
+        },
+        '3': {
+            as: '1',
         },
     },
     net: {
         '1': {
-            type: 'Img',
-            path: 'image/game/net',
-            pivot: {
-                x: 76,
-                y: 79,
-            },
+            type: 'DragonBone',
+            path: 'ani/gun/net1',
         },
         '2': { as: '1' },
+        '3': { as: '1' },
     },
     fish_shadow: {
         '1': {
