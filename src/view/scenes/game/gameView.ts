@@ -1,12 +1,14 @@
+import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ui } from 'ui/layaMaxUI';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
 import { viewState } from '../../viewState';
-import GunBox from './gunBoxView';
-import { SpriteInfo } from 'data/sprite';
+import GunBoxView from './gunBoxView';
 
 export default class Game extends ui.scenes.game.gameUI implements HonorScene {
+    /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
+    public upside_down: boolean;
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
@@ -14,6 +16,7 @@ export default class Game extends ui.scenes.game.gameUI implements HonorScene {
             '参数2',
         )) as Game;
         viewState.game = game;
+        viewState.ani_wrap = game.ani_wrap;
         return game;
     }
     public onResize(width: number, height: number) {
@@ -21,9 +24,19 @@ export default class Game extends ui.scenes.game.gameUI implements HonorScene {
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
     }
-    public addFish(type: string) {
-        const { pool } = this;
+    /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
+    public upSideDown() {
+        const { pool, gun_wrap, ani_wrap } = this;
+        pool.scaleY = gun_wrap.scaleY = ani_wrap.scaleY = -1;
+        this.upside_down = true;
+    }
+    public addFish(type: string, horizon_turn: boolean) {
+        const { pool, upside_down } = this;
         const fish = createSkeleton('ani/fish/fish' + type);
+        /** 水平翻转移动的鱼需要垂直颠倒 */
+        if (horizon_turn && upside_down) {
+            fish.scaleY = -1;
+        }
         pool.addChild(fish);
         return fish;
     }
@@ -47,9 +60,9 @@ export default class Game extends ui.scenes.game.gameUI implements HonorScene {
         return net;
     }
     public addGun(level: string) {
-        const { ctrl_box } = this;
-        const gun = new GunBox(level);
-        ctrl_box.addChild(gun);
+        const { gun_wrap } = this;
+        const gun = new GunBoxView(level);
+        gun_wrap.addChild(gun);
         return gun;
     }
     public getPoolMousePos() {

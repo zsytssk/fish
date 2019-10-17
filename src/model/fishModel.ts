@@ -113,12 +113,17 @@ export class FishModel extends ComponentManager {
             this.move_com.start();
         }
     }
-    public beCast() {
-        this.event.emit(FishEvent.BeCast);
-    }
     /** 被网住 */
+    public beCast() {
+        if (this.event) {
+            this.event.emit(FishEvent.BeCast);
+        }
+    }
+    /** 被捉住 */
     public beCapture() {
-        this.event.emit(FishEvent.BeCapture);
+        if (this.event) {
+            this.event.emit(FishEvent.BeCast);
+        }
     }
     public destroy() {
         this.game.removeFish(this);

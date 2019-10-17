@@ -12,11 +12,11 @@ export let Coordinates = {
             y: 696,
         },
         '2': {
-            x: 1004,
+            x: 1300,
             y: 54,
         },
         '3': {
-            x: 330,
+            x: 620,
             y: 54,
         },
     } as GunGlobalPos,
@@ -24,13 +24,13 @@ export let Coordinates = {
     guns_inside_pos: {
         /** 枪发射的位置 */
         start_point: {
-            x: 82,
-            y: 50,
+            x: 74.5,
+            y: 20,
         },
         /** 中心点 */
         origin_point: {
-            x: 82,
-            y: 140,
+            x: 74.5,
+            y: 74.5,
         },
     },
     /** 炮的种类对应每一个炮的开始发射点, 用来计算子弹的运动的开始位置 */

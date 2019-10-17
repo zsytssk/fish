@@ -3,7 +3,7 @@ type FunItem = {
     fn: Listener;
     index: number;
 };
-const tick_time = 1000 / 60;
+const tick_time = 1000 / 30;
 
 const fun_list: Set<FunItem> = new Set();
 let looping = false;
@@ -11,7 +11,7 @@ let index = 0;
 
 function update() {
     for (const item of fun_list) {
-        item.fn(1);
+        item.fn(2);
     }
 }
 

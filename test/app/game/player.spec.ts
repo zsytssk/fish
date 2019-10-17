@@ -1,20 +1,19 @@
 import { modelState } from 'model/modelState';
-import { PlayerInfo } from 'model/playerModel';
+import { PlayerInfo, PlayerModel } from 'model/playerModel';
 import { Test } from 'testBuilder';
-import { body_test } from './body.spec';
 
 export const player_id = 'xxxx';
+/** @type {PlayerModel} 的测试 */
 export const player_test = new Test('player', runner => {
     runner.describe('add_cur_player', () => {
         const player = modelState.app.game.getPlayerById(player_id);
         if (player) {
             return;
         }
-
         // body_test.runTest('show_shape');
         const player_data = {
             userId: player_id,
-            serverIndex: 1,
+            serverIndex: 0,
             level: 10,
             gold: 10000,
             gunSkin: '1',
@@ -24,6 +23,7 @@ export const player_test = new Test('player', runner => {
         } as PlayerInfo;
         modelState.app.game.addPlayer(player_data);
     });
+
     runner.describe('add_other_player', () => {
         const other_id = '----';
         let other_player = modelState.app.game.getPlayerById(other_id);
@@ -31,7 +31,7 @@ export const player_test = new Test('player', runner => {
             // body_test.runTest('show_shape');
             const player_data = {
                 userId: other_id,
-                serverIndex: 3,
+                serverIndex: 1,
                 level: 10,
                 gold: 10000,
                 gunSkin: '2',

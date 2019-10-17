@@ -1,8 +1,8 @@
 import { range } from 'lodash';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
-import { body_test } from './body.spec';
-
+import { FishModel } from 'model/fishModel';
+/** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
         'add_fish',

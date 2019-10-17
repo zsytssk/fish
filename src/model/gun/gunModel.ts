@@ -11,11 +11,20 @@ import { PlayerModel } from '../playerModel';
 import { BulletGroup } from './bulletGroup';
 
 export const GunEvent = {
+    /** 添加子弹 */
     AddBullet: 'add_bullet',
+    /** 方向改变 */
     DirectionChange: 'direction_change',
+    /** 开关 */
     SwitchOn: 'switch_on',
+    /** 加速状态 */
     SpeedUpStatus: 'speed_up_status',
+    /** 网道鱼 */
     CastFish: 'cast_fish',
+    /** 开始追踪 */
+    StartTrack: 'start_track',
+    /** 停止追踪 */
+    StopTrack: 'stop_track',
 };
 export enum GunStatus {
     Normal,
@@ -60,6 +69,18 @@ export class GunModel extends ComponentManager {
     private init() {
         this.addCom(new EventCom());
         this.addCom(new TimeoutCom());
+
+        this.initDirection();
+    }
+    private initDirection() {
+        const { server_index } = this.player;
+        if (server_index < 2) {
+            /** 炮台在下面, 方向为向上 */
+            this.setDirection(new SAT.Vector(0, -1));
+        } else {
+            this.setDirection(new SAT.Vector(0, 1));
+            /** 炮台在下面, 方向为向下 */
+        }
     }
     public setDirection(direction: SAT.Vector) {
         if (direction === this.direction) {

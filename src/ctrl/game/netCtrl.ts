@@ -14,6 +14,7 @@ export class NetCtrl {
     private init() {
         const { view, model } = this;
         const { x, y } = model.pos;
+        view.scale(1.3, 1.3);
         view.pos(x, y);
         playSkeleton(view, 0, false);
         this.initEvent();

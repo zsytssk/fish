@@ -3,13 +3,7 @@ import { FishModel, FishEvent, FishMoveData } from 'model/fishModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { GunModel, GunEvent, GunStatus } from 'model/gun/gunModel';
-
-export const TrackComEvent = {
-    /** 开始追踪 */
-    StartTrack: 'start_track',
-    /** 停止追踪 */
-    StopTrack: 'stop_track',
-};
+import { ModelEvent } from 'model/modelEvent';
 
 /** 追踪鱼 */
 export class TrackFishCom extends ComponentManager {
@@ -31,27 +25,35 @@ export class TrackFishCom extends ComponentManager {
     /**
      * 追踪的鱼
      * @param fish 追踪的鱼
+     * @param fire 是否开火, 不开火时只提示用户选中鱼
      */
-    public track(fish: FishModel) {
-        this.unTrack();
+    public track(fish: FishModel, fire: boolean) {
         const { gun } = this;
         const { event } = gun;
-        event.on(
-            GunEvent.SwitchOn,
-            () => {
-                gun.preAddBullet(gun.direction, true);
-            },
-            this,
-        );
 
-        this.fish = fish;
-        this.setGunDirection();
-        fish.event.on(FishEvent.Move, this.setGunDirection, this);
-        gun.setStatus(GunStatus.TrackFish);
-        gun.track_fish = fish;
-        gun.preAddBullet(gun.direction, true);
+        this.unTrack();
+
+        if (fire) {
+            this.fish = fish;
+            gun.track_fish = fish;
+            this.onTrack();
+            fish.event.on(FishEvent.Move, this.onTrack, this);
+            fish.event.on(ModelEvent.Destroy, this.unTrack, this);
+            gun.setStatus(GunStatus.TrackFish);
+            gun.preAddBullet(gun.direction, true);
+
+            event.on(
+                GunEvent.SwitchOn,
+                () => {
+                    gun.preAddBullet(gun.direction, true);
+                },
+                this,
+            );
+        }
+
+        gun.event.emit(GunEvent.StartTrack, fish, fire);
     }
-    private setGunDirection = () => {
+    private onTrack = () => {
         const { gun, fish } = this;
         const { x, y } = fish.pos;
         const { x: gx, y: gy } = gun.pos;
@@ -62,6 +64,7 @@ export class TrackFishCom extends ComponentManager {
         if (!fish) {
             return;
         }
+        gun.event.emit(GunEvent.StopTrack);
         gun.setStatus(GunStatus.Normal);
         gun.track_fish = undefined;
         gun.event.offAllCaller(this);

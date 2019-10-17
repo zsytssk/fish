@@ -18,14 +18,23 @@ export const skill_test = new Test('skill', runner => {
         fish_test.runTest('add_fish');
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);
+        /** 提示锁定不攻击 */
         setTimeout(() => {
             const fish = [...modelState.app.game.fish_list][0];
-            player.gun.trackFish.track(fish);
+            player.gun.trackFish.track(fish, false);
         }, 1000);
 
+        /** 锁定+攻击 */
         setTimeout(() => {
+            const fish = [...modelState.app.game.fish_list][0];
+            player.gun.trackFish.track(fish, true);
+        }, 3000);
+
+        /** 取消锁定 */
+        setTimeout(() => {
+            const fish = [...modelState.app.game.fish_list][0];
             player.gun.trackFish.unTrack();
-        }, 5000);
+        }, 7000);
     });
 
     runner.describe('speed_up', () => {
@@ -34,7 +43,7 @@ export const skill_test = new Test('skill', runner => {
         const player = modelState.app.game.getPlayerById(player_id);
         setTimeout(() => {
             const fish = [...modelState.app.game.fish_list][0];
-            player.gun.trackFish.track(fish);
+            player.gun.trackFish.track(fish, false);
 
             player.gun.toggleSpeedUp(true);
         }, 1000);

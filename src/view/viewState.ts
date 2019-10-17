@@ -2,6 +2,8 @@ import Game from './scenes/game/gameView';
 
 type ViewState = {
     game: Game;
+    /** 所有的动画的芙父容器 */
+    ani_wrap: Laya.Box;
 };
 
 export const viewState = {} as ViewState;

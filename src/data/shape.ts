@@ -74,7 +74,7 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 19,
+                    radius: 25,
                 },
             ],
         },
@@ -210,7 +210,7 @@ export let SHAPE: ShapeOriData = {
                     type: 'Circle',
                     radius: 40,
                     position: {
-                        x: 10,
+                        x: 0,
                         y: -35,
                     },
                 },
@@ -341,19 +341,7 @@ export let SHAPE: ShapeOriData = {
                 {
                     type: 'Box',
                     width: 70,
-                    height: 100,
-                    position: {
-                        x: 0,
-                        y: -30,
-                    },
-                },
-                {
-                    type: 'Circle',
-                    radius: 25,
-                    position: {
-                        x: 80,
-                        y: -40,
-                    },
+                    height: 150,
                 },
             ],
         },
@@ -362,11 +350,7 @@ export let SHAPE: ShapeOriData = {
                 {
                     type: 'Box',
                     width: 90,
-                    height: 150,
-                    position: {
-                        x: 0,
-                        y: -50,
-                    },
+                    height: 210,
                 },
             ],
         },
@@ -376,18 +360,14 @@ export let SHAPE: ShapeOriData = {
                     type: 'Box',
                     width: 180,
                     height: 80,
-                    position: {
-                        x: 0,
-                        y: -10,
-                    },
                 },
                 {
                     type: 'Box',
                     width: 20,
-                    height: 100,
+                    height: 80,
                     position: {
                         x: -130,
-                        y: -20,
+                        y: 0,
                     },
                 },
             ],

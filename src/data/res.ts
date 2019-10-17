@@ -1,3 +1,5 @@
+import { SPRITE } from './sprite';
+
 export const res = {
     font: [],
     game: [
@@ -19,19 +21,30 @@ export const res = {
         },
     ],
 };
-
-/** fish */
-for (let i = 1; i <= 20; i++) {
-    res.game.push(
-        {
-            url: `ani/fish/fish${i}.sk`,
-            type: Laya.Loader.BUFFER,
-        },
-        {
-            url: `ani/fish/fish${i}.png`,
-            type: Laya.Loader.IMAGE,
-        },
-    );
+for (const top_type in SPRITE) {
+    if (!SPRITE.hasOwnProperty(top_type)) {
+        continue;
+    }
+    const item_map = SPRITE[top_type];
+    for (const sub_type in item_map) {
+        if (!item_map.hasOwnProperty(sub_type)) {
+            continue;
+        }
+        const item = item_map[sub_type];
+        if (item.type === 'DragonBone') {
+            const path = item.path;
+            res.game.push(
+                {
+                    url: `${path}.sk`,
+                    type: Laya.Loader.BUFFER,
+                },
+                {
+                    url: `${path}.png`,
+                    type: Laya.Loader.IMAGE,
+                },
+            );
+        }
+    }
 }
 
 /** gun */
@@ -68,31 +81,11 @@ for (let i = 1; i <= 3; i++) {
 for (let i = 1; i <= 1; i++) {
     res.game.push(
         {
-            url: `ani/gun/bullet${i}.sk`,
-            type: Laya.Loader.BUFFER,
-        },
-        {
-            url: `ani/gun/bullet${i}.png`,
-            type: Laya.Loader.IMAGE,
-        },
-        {
             url: `ani/gun/bullet${i}_rage.sk`,
             type: Laya.Loader.BUFFER,
         },
         {
             url: `ani/gun/bullet${i}_rage.png`,
-            type: Laya.Loader.IMAGE,
-        },
-    );
-}
-for (let i = 1; i <= 1; i++) {
-    res.game.push(
-        {
-            url: `ani/gun/net${i}.sk`,
-            type: Laya.Loader.BUFFER,
-        },
-        {
-            url: `ani/gun/net${i}.png`,
             type: Laya.Loader.IMAGE,
         },
     );

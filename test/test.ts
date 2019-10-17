@@ -16,6 +16,7 @@ import { injectAfter } from 'honor/utils/tool';
 import { GameCtrl } from 'ctrl/game/gameCtrl';
 import { socket_test } from './app/socket.spec';
 import { sat_test } from './sat.spec';
+import { ani_wrap } from './app/game/aniWrap.spec';
 declare global {
     interface Window {
         test: typeof test;
@@ -37,6 +38,7 @@ testScope.addChild(
     skill_test,
     socket_test,
     sat_test,
+    ani_wrap,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -57,6 +59,6 @@ injectAfter(GameCtrl, 'preEnter', () => {
     }
     running = true;
     player_test.runTest('add_cur_player');
-    // fish_test.runTest('fish_ani');
+    fish_test.runTest('add_fish', ['20']);
     // socket_test.runTest('connect');
 });

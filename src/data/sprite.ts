@@ -241,6 +241,26 @@ export let SPRITE: GameSprite = {
         },
     },
     other: {
+        freezing: {
+            type: 'DragonBone',
+            path: 'ani/other/freezing',
+        },
+        exploding: {
+            type: 'DragonBone',
+            path: 'ani/other/exploding',
+        },
+        shoal_wave: {
+            type: 'DragonBone',
+            path: 'ani/other/shoal_wave',
+        },
+        pos_tip: {
+            type: 'DragonBone',
+            path: 'ani/other/pos_tip',
+        },
+        aim: {
+            type: 'DragonBone',
+            path: 'ani/other/aim',
+        },
         coin: {
             type: 'Frame',
             pivot: {

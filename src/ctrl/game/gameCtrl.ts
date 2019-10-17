@@ -24,7 +24,6 @@ export class GameCtrl {
         await honor.director.load(res.game as ResItem[]);
         const game_model = ctrlState.app.enterGame();
         const game_ctrl = new GameCtrl(view, game_model);
-
         setProps(ctrlState, { game: game_ctrl });
     }
     private init() {
@@ -34,10 +33,13 @@ export class GameCtrl {
         const event = this.model.event;
         const { view } = this;
         event.on(GameEvent.AddFish, (fish: FishModel) => {
-            const fish_view = view.addFish(fish.type);
+            const fish_view = view.addFish(fish.type, fish.horizon_turn);
             const ctrl = new FishCtrl(fish_view, fish);
         });
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
+            if (player.is_cur_player && player.server_index > 1) {
+                view.upSideDown();
+            }
             const player_view = view.addGun(player.gun.skin);
             const ctrl = new PlayerCtrl(player_view, player);
         });

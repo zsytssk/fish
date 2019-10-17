@@ -3,7 +3,8 @@ import { BulletGroup } from 'model/gun/bulletGroup';
 import { GunEvent } from 'model/gun/gunModel';
 import { PlayerModel } from 'model/playerModel';
 import SAT from 'sat';
-import GunBox from 'view/scenes/game/gunBoxView';
+import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
+import GunBoxView from 'view/scenes/game/gunBoxView';
 import { getPoolMousePos } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
 
@@ -13,7 +14,7 @@ export class PlayerCtrl {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
-    constructor(private view: GunBox, private model: PlayerModel) {
+    constructor(private view: GunBoxView, private model: PlayerModel) {
         this.init();
     }
     private init() {
@@ -34,13 +35,14 @@ export class PlayerCtrl {
             view,
             model: { gun, is_cur_player },
         } = this;
-        const { event } = gun;
+        const { event, direction, pos: gun_pos } = gun;
 
         event.on(
             GunEvent.AddBullet,
             (bullet_group: BulletGroup, velocity: SAT.Vector) => {
                 const { rage } = gun;
                 view.fire(velocity);
+                view.stopPosTip();
                 for (const bullet of bullet_group.bullet_list) {
                     const bullet_view = view.addBullet(
                         bullet.skin,
@@ -50,8 +52,10 @@ export class PlayerCtrl {
                 }
             },
         );
-        event.on(GunEvent.DirectionChange, (direction: SAT.Vector) => {
-            view.setDirection(direction);
+
+        view.setDirection(direction);
+        event.on(GunEvent.DirectionChange, (_direction: SAT.Vector) => {
+            view.setDirection(_direction);
         });
 
         /** 当前用户的处理 */
@@ -61,14 +65,24 @@ export class PlayerCtrl {
         event.on(GunEvent.CastFish, (fish: FishModel) => {
             console.log(`cast fish:`, fish);
         });
+        event.on(
+            GunEvent.StartTrack,
+            (fish: FishModel, show_point: boolean) => {
+                activeAim(fish, show_point, gun.pos);
+            },
+        );
+        event.on(GunEvent.StopTrack, () => {
+            stopAim();
+        });
         Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
-            const gun_pos = gun.pos;
             const click_pos = getPoolMousePos();
-            const direction = new SAT.Vector(
+            const _direction = new SAT.Vector(
                 click_pos.x - gun_pos.x,
                 click_pos.y - gun_pos.y,
             );
-            gun.preAddBullet(direction);
+            gun.preAddBullet(_direction);
         });
+
+        view.activePosTip();
     }
 }

@@ -53,7 +53,7 @@ export function createAnimation(path: string): Laya.Animation {
  * 创建帧动画
  * @param path 动画的路径
  */
-export function createImg(path: string): Laya.Sprite {
+export function createImg(path: string): Laya.Image {
     const sprite = new Laya.Image();
     sprite.loadImage(path + '.png');
     return sprite;
