@@ -16,7 +16,6 @@ export function startCount(time: number, delta: number, fn: CountFn) {
         i++;
         if (i >= count) {
             fn(0);
-            console.log(`test:`, cur_count_index);
             return clearCount(cur_count_index);
         }
         fn((count - i) / count);

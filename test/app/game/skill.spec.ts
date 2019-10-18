@@ -2,7 +2,11 @@ import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { fish_test } from './fish.spec';
 import { player_id, player_test } from './player.spec';
+import { viewState } from 'view/viewState';
+import SkillItem from 'view/scenes/game/skillItem';
+import { startCount } from 'utils/count';
 
+/** 技能的测试 */
 export const skill_test = new Test('skill', runner => {
     runner.describe('auto_launch', () => {
         player_test.runTest('add_player');
@@ -63,5 +67,36 @@ export const skill_test = new Test('skill', runner => {
         setTimeout(() => {
             modelState.app.game.freezing_com.freezing(5);
         }, 5000);
+    });
+
+    runner.describe('ui_set_num', () => {
+        const skill_item = viewState.game.skill_box.skill_list.getChildAt(
+            0,
+        ) as SkillItem;
+        skill_item.setId('2');
+        skill_item.setNum(2);
+        startCount(10, 0.1, (t: number) => {
+            skill_item.showCoolTime(1 - t);
+        });
+    });
+    runner.describe('ui_set_num2', () => {
+        const skill_item = viewState.game.skill_box.skill_list.getChildAt(
+            0,
+        ) as SkillItem;
+        skill_item.showCoolTime(0.5);
+        setTimeout(() => {
+            skill_item.showCoolTime(1);
+        }, 1000);
+    });
+    runner.describe('energy', () => {
+        const game_view = viewState.game;
+        startCount(10, 0.1, (t: number) => {
+            game_view.setEnergyRadio(1 - t);
+            if (1 - t === 1) {
+                game_view.energyLight().then(() => {
+                    skill_test.runTest('energy');
+                });
+            }
+        });
     });
 });

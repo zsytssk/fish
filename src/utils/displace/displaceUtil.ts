@@ -74,18 +74,13 @@ export function createSpace(
     fish_type: string,
 ) {
     const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
-    const shape_info = getShapeInfo('fish', fish_type) as FishSpriteInfo;
-    const shape_direction = shape_info.shape_direction;
+    const ani_type = sprite_info.ani_type;
 
+    /** 鱼的长度 */
     let fish_len: number;
     let direction: SAT.Vector;
-    if (
-        sprite_info.offset &&
-        (shape_direction === 'fix' ||
-            shape_direction === 'turn' ||
-            shape_direction === 'upsidedown')
-    ) {
-        const info = calcFixLen(position, start_pos, fish_type);
+    if (sprite_info.offset && ani_type === 'horizon_turn') {
+        const info = calcFixLen(start_pos, fish_type);
         fish_len = info.fish_len;
         direction = info.derivative;
     } else {
@@ -121,7 +116,7 @@ export function calcNormalLen(position: OffsetPos, fish_type: string) {
     const offset = (getSpriteInfo('fish', fish_type) as FishSpriteInfo).offset;
 
     if (!offset) {
-        // zutil.logErr("can't find fish sprite offset");
+        console.error("can't find fish sprite offset"); // tslint:disable-line
     }
     if (position === 'before') {
         fish_len = offset[0];
@@ -131,11 +126,7 @@ export function calcNormalLen(position: OffsetPos, fish_type: string) {
     return fish_len;
 }
 /** 直立行走鱼的边缘路径直接垂直与边框就可以了 */
-export function calcFixLen(
-    position: OffsetPos,
-    start_pos: Point,
-    fish_type: string,
-) {
+export function calcFixLen(start_pos: Point, fish_type: string) {
     const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
 
     let fish_len: number;

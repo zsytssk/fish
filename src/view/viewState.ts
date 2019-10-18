@@ -1,7 +1,7 @@
-import Game from './scenes/game/gameView';
+import GameView from './scenes/game/gameView';
 
 type ViewState = {
-    game: Game;
+    game: GameView;
     /** 所有的动画的芙父容器 */
     ani_wrap: Laya.Box;
 };

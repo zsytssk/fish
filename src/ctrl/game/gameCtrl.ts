@@ -6,21 +6,21 @@ import { FishModel } from 'model/fishModel';
 import { GameEvent, GameModel } from 'model/gameModel';
 import { PlayerModel } from 'model/playerModel';
 import { setProps } from 'utils/utils';
-import Game from 'view/scenes/game/gameView';
+import GameView from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import { PlayerCtrl } from './playerCtrl';
 
 /** 游戏ctrl */
 export class GameCtrl {
-    public view: Game;
+    public view: GameView;
     private model: GameModel;
-    constructor(view: Game, model: GameModel) {
+    constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
         this.init();
     }
     public static async preEnter() {
-        const view = (await Game.preEnter()) as Game;
+        const view = (await GameView.preEnter()) as GameView;
         await honor.director.load(res.game as ResItem[]);
         const game_model = ctrlState.app.enterGame();
         const game_ctrl = new GameCtrl(view, game_model);

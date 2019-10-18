@@ -1,8 +1,7 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":7,
-    "selecteID":13,
+    "selectedBox":2,
     "searchKey":"View",
     "props":{"y":74,"x":74,"width":149,"sceneColor":"#000000","runtime":"view/scenes/game/gunBoxView.ts","height":149,"anchorY":0.5,"anchorX":0.5},
     "nodeParent":-1,
@@ -34,13 +33,14 @@
                     "props":{"y":77.5,"x":74,"width":59,"var":"gun_box","height":45},
                     "nodeParent":7,
                     "label":"gun_box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":8,
                     "child":[
                         {
+                            "x":45,
                             "type":"SkeletonPlayer",
                             "searchKey":"SkeletonPlayer,base",
                             "props":{"var":"base","url":"ani/gun/gun1/base.sk"},
@@ -55,6 +55,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"SkeletonPlayer",
                             "searchKey":"SkeletonPlayer,gun",
                             "props":{"var":"gun","url":"ani/gun/gun1/gun.sk"},
@@ -69,6 +70,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"SkeletonPlayer",
                             "searchKey":"SkeletonPlayer,light",
                             "props":{"y":0,"x":0,"var":"light","url":"ani/gun/gun1/light.sk"},

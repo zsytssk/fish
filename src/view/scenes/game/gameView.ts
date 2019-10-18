@@ -5,8 +5,10 @@ import { ui } from 'ui/layaMaxUI';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
 import { viewState } from '../../viewState';
 import GunBoxView from './gunBoxView';
+import { playSkeleton } from 'utils/utils';
 
-export default class Game extends ui.scenes.game.gameUI implements HonorScene {
+export default class GameView extends ui.scenes.game.gameUI
+    implements HonorScene {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
     public static async preEnter() {
@@ -14,7 +16,7 @@ export default class Game extends ui.scenes.game.gameUI implements HonorScene {
             'scenes/game/game.scene',
             '参数1',
             '参数2',
-        )) as Game;
+        )) as GameView;
         viewState.game = game;
         viewState.ani_wrap = game.ani_wrap;
         return game;
@@ -64,6 +66,28 @@ export default class Game extends ui.scenes.game.gameUI implements HonorScene {
         const gun = new GunBoxView(level);
         gun_wrap.addChild(gun);
         return gun;
+    }
+    public setEnergyRadio(radio: number) {
+        const { energy_bar } = this.skill_box;
+        let { mask } = energy_bar;
+        const { width, height } = energy_bar;
+        if (!mask) {
+            mask = new Laya.Sprite();
+            energy_bar.mask = mask;
+        }
+        energy_bar.mask.graphics.clear();
+        energy_bar.mask.graphics.drawRect(0, 0, width * radio, height, '#fff');
+    }
+    public energyLight() {
+        const { energy_light } = this.skill_box;
+        return new Promise((resolve, reject) => {
+            energy_light.visible = true;
+            energy_light.on(Laya.Event.STOPPED, energy_light, () => {
+                energy_light.visible = false;
+                resolve();
+            });
+            playSkeleton(energy_light, 0, false);
+        });
     }
     public getPoolMousePos() {
         const { pool } = this;

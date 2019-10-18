@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":37,
+    "selectedBox":11,
+    "selecteID":32,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -142,13 +142,14 @@
             "props":{"y":0,"x":321,"width":1278,"var":"ctrl_box","height":750},
             "nodeParent":2,
             "label":"ctrl_box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":11,
             "child":[
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_leave",
                     "props":{"y":10,"x":0,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png"},
@@ -162,6 +163,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_gift",
                     "props":{"y":10,"x":100,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png"},
@@ -175,6 +177,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_voice",
                     "props":{"y":10,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":100},
@@ -188,6 +191,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_help",
                     "props":{"y":10,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":0},
@@ -201,6 +205,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":653,"x":-55,"width":286,"skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92},
@@ -213,6 +218,7 @@
                     "compId":26,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":45,"x":38,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
@@ -239,6 +245,7 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement",
                             "props":{"y":16,"x":70,"width":176,"innerHTML":"<div style=\"width: 192px;height: 32px;font-size: 20px;color:#fff;\"><span>1 底分</span> = <span color=\"#ffdd76\">0.0035</span> <span>币</span> </div>","height":29},
@@ -253,12 +260,13 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"scenes/game/skillBox.scene",
-                    "searchKey":"UIView",
-                    "props":{"y":648,"x":434},
+                    "searchKey":"UIView,skill_box",
+                    "props":{"y":648,"x":434,"var":"skill_box"},
                     "nodeParent":11,
-                    "label":"UIView",
+                    "label":"skill_box",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,

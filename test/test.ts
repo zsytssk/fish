@@ -17,6 +17,7 @@ import { GameCtrl } from 'ctrl/game/gameCtrl';
 import { socket_test } from './app/socket.spec';
 import { sat_test } from './sat.spec';
 import { ani_wrap } from './app/game/aniWrap.spec';
+import { path_test } from './app/path.spec';
 declare global {
     interface Window {
         test: typeof test;
@@ -39,6 +40,7 @@ testScope.addChild(
     socket_test,
     sat_test,
     ani_wrap,
+    path_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -59,6 +61,6 @@ injectAfter(GameCtrl, 'preEnter', () => {
     }
     running = true;
     player_test.runTest('add_cur_player');
-    fish_test.runTest('add_fish', ['20']);
+    fish_test.runTest('add_fish', ['2', '1']);
     // socket_test.runTest('connect');
 });

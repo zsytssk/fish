@@ -1,7 +1,6 @@
 import { range } from 'lodash';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
-import { FishModel } from 'model/fishModel';
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
@@ -18,6 +17,7 @@ export const fish_test = new Test('fish', runner => {
                 pathNo: `${pathId}`,
                 totalTime: time,
                 usedTime: 0,
+                reverse: true,
             } as ServerFishInfo;
             modelState.app.game.addFish(fish_data);
         },
