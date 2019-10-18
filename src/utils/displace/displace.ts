@@ -45,7 +45,7 @@ export class Displace {
     protected total_frame: number;
     /** 鱼的类型 用来获取鱼的长度 */
     protected fish_type: string;
-    /** 当前曲线信息 */
+    /** 当前所在的曲线信息, 如果在同一条曲线上就不用重复计算 cur_curve */
     protected cur_curve_info = {} as CurCurveInfo;
     /** 是否反转 */
     private is_reverse: boolean = false;
@@ -65,9 +65,6 @@ export class Displace {
         this.used_frame = timeToFrame(used_time);
         this.curve_list = curve_list;
         this.is_reverse = reverse;
-    }
-    public getDisplaceRadio() {
-        return this.used_frame / this.total_frame;
     }
     /**
      * 更新path的时间, 通过这个计算现在的位置
@@ -140,49 +137,48 @@ export class Displace {
     }
     /** 通过radio获取当前曲线信息 */
     protected calcCurCurveInfo(radio: number): CurCurveInfo {
-        const { cur_curve_info, curve_list } = this;
+        const { cur_curve_info, curve_list, is_reverse } = this;
+        let { end_radio, start_radio } = cur_curve_info;
         let cur_radio = 0;
 
+        /** 颠倒的曲线需要颠倒end_radio+start_radio */
+        if (is_reverse) {
+            end_radio = 1 - start_radio;
+            start_radio = 1 - end_radio;
+        }
         /** 如果当前的radio变化还在一个曲线中 */
-        if (cur_curve_info.end_radio && radio < cur_curve_info.end_radio) {
-            cur_radio =
-                (radio - cur_curve_info.start_radio) /
-                (cur_curve_info.end_radio - cur_curve_info.start_radio);
+        if (start_radio && radio < end_radio) {
+            cur_radio = (radio - start_radio) / (end_radio - start_radio);
             cur_curve_info.radio_in_curve = cur_radio;
-        } else {
-            /** 如果进入下一个曲线 */
-            let cur_idx = 0;
-            let cur_curve: CurveInfo;
-            let prev_radio: number;
-            let curve: CurveInfo;
-
-            for (let i = 0; i < curve_list.length; i++) {
-                curve = curve_list[i];
-                if (radio > curve.radio) {
-                    continue;
-                }
-                cur_idx = i;
-                cur_curve = curve;
-                if (cur_idx === 0) {
-                    prev_radio = 0;
-                    cur_radio = radio / curve.radio;
-                } else {
-                    prev_radio = curve_list[i - 1].radio;
-                    cur_radio =
-                        (radio - prev_radio) / (curve.radio - prev_radio);
-                }
-                break;
-            }
-            cur_curve_info.radio_in_curve = cur_radio;
-            cur_curve_info.index = cur_idx;
-            cur_curve_info.start_radio = prev_radio;
-            cur_curve_info.end_radio = curve.radio;
-            cur_curve_info.curve = curve;
+            return cur_curve_info;
         }
 
+        /** 如果进入下一个曲线 */
+        let cur_idx = 0;
+        let prev_radio: number;
+        let curve: CurveInfo;
+
+        for (let i = 0; i < curve_list.length; i++) {
+            curve = curve_list[i];
+            if (radio > curve.radio) {
+                continue;
+            }
+            cur_idx = i;
+            if (cur_idx === 0) {
+                prev_radio = 0;
+                cur_radio = radio / curve.radio;
+            } else {
+                prev_radio = curve_list[i - 1].radio;
+                cur_radio = (radio - prev_radio) / (curve.radio - prev_radio);
+            }
+            break;
+        }
+        cur_curve_info.radio_in_curve = cur_radio;
+        cur_curve_info.index = cur_idx;
+        cur_curve_info.start_radio = prev_radio;
+        cur_curve_info.end_radio = curve.radio;
+        cur_curve_info.curve = curve;
+
         return cur_curve_info;
-    }
-    public getCurCurveInfo() {
-        return this.cur_curve_info;
     }
 }
