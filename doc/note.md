@@ -24,6 +24,9 @@
 
 -   @todo 优化 Displace 逻辑...
 
+-   @bug `test.fish.run(0, '17', '2')` 会跳一段距离
+    - reverse
+
 ## 2019-10-18 13:34:50
 
 -   前端仓库... @hujianxin @mengge
