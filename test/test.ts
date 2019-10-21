@@ -61,6 +61,7 @@ injectAfter(GameCtrl, 'preEnter', () => {
     }
     running = true;
     player_test.runTest('add_cur_player');
-    fish_test.runTest('add_fish', ['2', '1']);
+    // fish_test.runTest('add_fish_group', ['21', '1']);
+    fish_test.runTest('add_fish_group', ['20', '1']);
     // socket_test.runTest('connect');
 });

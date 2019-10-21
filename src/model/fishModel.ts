@@ -1,6 +1,8 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
+import { FishSpriteInfo } from 'data/sprite';
 import * as SAT from 'sat';
+import { getSpriteInfo } from 'utils/dataUtil';
 import { DisplaceInfo } from 'utils/displace/displace';
 import { createFishDisplace } from 'utils/displace/displaceUtil';
 import { BodyCom } from './com/bodyCom';
@@ -8,8 +10,6 @@ import { getShapes } from './com/bodyComUtil';
 import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
 import { GameModel } from './gameModel';
 import { ModelEvent } from './modelEvent';
-import { getSpriteInfo } from 'utils/dataUtil';
-import { FishSpriteInfo } from 'data/sprite';
 
 export const FishEvent = {
     /** 移动 */
@@ -26,6 +26,11 @@ export type FishMoveData = {
     velocity: SAT.Vector;
 };
 
+export type FishData = {
+    typeId: string;
+    fishId: string;
+    move_com: MoveCom;
+};
 /** 鱼的状态 */
 export enum FishStatus {
     Normal,
@@ -46,10 +51,10 @@ export class FishModel extends ComponentManager {
     private status = FishStatus.Normal;
     /** 是否水平翻转 */
     public horizon_turn = false;
-    /** 移动控制器 */
+    /** 移动控制器, */
     private move_com: MoveCom;
     private game: GameModel;
-    constructor(data: ServerFishInfo, game: GameModel) {
+    constructor(data: FishData, game: GameModel) {
         super();
 
         this.game = game;
@@ -61,13 +66,12 @@ export class FishModel extends ComponentManager {
     public get body() {
         return this.getCom(BodyCom);
     }
-    private init(data: ServerFishInfo) {
-        const { typeId, fishId } = data;
+    private init(data: FishData) {
+        const { typeId, fishId, move_com } = data;
         this.type = typeId;
         this.id = fishId;
 
-        const displace = createFishDisplace(data);
-        const move_com = new MoveDisplaceCom(displace, this.onMoveChange);
+        move_com.onUpdate(this.onMoveChange);
         const sprite_info = getSpriteInfo('fish', typeId) as FishSpriteInfo;
         let horizon_turn = false;
         if (sprite_info.ani_type === 'horizon_turn') {

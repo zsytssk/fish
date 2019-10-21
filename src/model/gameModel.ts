@@ -5,6 +5,7 @@ import { FreezingCom } from './com/freezingCom';
 import { ShoalCom } from './com/shoalCom';
 import { FishModel } from './fishModel';
 import { PlayerInfo, PlayerModel } from './playerModel';
+import { createFish, createFishGroup } from './modelState';
 
 export const GameEvent = {
     /** 添加鱼 */
@@ -39,9 +40,20 @@ export class GameModel extends ComponentManager {
         return freezing_com;
     }
     public addFish(fish_info: ServerFishInfo) {
-        const fish = new FishModel(fish_info, this);
-        this.fish_list.add(fish);
-        this.event.emit(GameEvent.AddFish, fish);
+        const { group } = fish_info;
+        if (!group) {
+            /** 创建单个鱼 */
+            const fish = createFish(fish_info, this);
+            this.fish_list.add(fish);
+            this.event.emit(GameEvent.AddFish, fish);
+        } else {
+            /** 创建鱼组 */
+            const fish_list = createFishGroup(fish_info, this);
+            for (const fish of fish_list) {
+                this.fish_list.add(fish);
+                this.event.emit(GameEvent.AddFish, fish);
+            }
+        }
     }
     public removeFish(fish: FishModel) {
         this.fish_list.delete(fish);

@@ -1,8 +1,44 @@
+-   @ques 如果 fishGroup 中一个鱼被击杀了, 那么这个鱼到底怎么同步
+
+    -   添加一个 index 或者, 按照数组的排列...
+
+-   @ques calcCurCurveInfo 实在是太恶心了
+
+## 2019-10-21 10:43:26
+
+-   @ques 怎么将鱼组中的鱼 的路径... createSpace... 怎么处理..
+
+    -   能不能将原来的路径方法扩展一下
+    -   和普通鱼的不同
+    -   @设计 能不能画在正常的后面...
+    -   @ques 平移之后 贝塞尔曲线 起始点 还能出屏幕吗...
+
+-   @ques 要不先画出来再说...
+
+-   @ques 能不能几条鱼 全部使用一个 disPlace 这样可以节省性能...
+
+    -   直接传入 MoveCom... onTick start stop... destroy
+    -   destroy 要清除三个
+    -   createFishModel()
+    -   createFishGroup()
+
+-   @ques 游动到屏幕外面 在现在的 displace 中怎么处理...
+
+-   @todo 鱼组 被冰冻的时候所有的鱼都被冻住了...
+
 -   @todo 技能的渲染 + 倒计时 + 狂暴技能动画
 
     -   直接添加在 ui 中的动画能不能停止播放 visible = false
     -   冰冻... 真实的技能的控制...
     -   检测所有有问题的路径 开始两个 结束两个...
+
+-   @todo FishGroup..., 提供和 fish 一样的接口...
+
+    -   bulletGroup 能不能也一样...
+
+-   @test 能不能在 game_test 下面添加子 test. runAll...
+
+-   @todo 子弹的动画看的不流畅 是否是他的帧数 和 刷新的帧数不一致...
 
 *   getDomain http...
 
@@ -25,7 +61,7 @@
 -   @todo 优化 Displace 逻辑...
 
 -   @bug `test.fish.run(0, '17', '2')` 会跳一段距离
-    - reverse
+    -   reverse
 
 ## 2019-10-18 13:34:50
 

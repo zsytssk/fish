@@ -138,16 +138,14 @@ export class Displace {
     /** 通过radio获取当前曲线信息 */
     protected calcCurCurveInfo(radio: number): CurCurveInfo {
         const { cur_curve_info, curve_list, is_reverse } = this;
-        let { end_radio, start_radio } = cur_curve_info;
+        const { end_radio, start_radio } = cur_curve_info;
         let cur_radio = 0;
 
-        /** 颠倒的曲线需要颠倒end_radio+start_radio */
-        if (is_reverse) {
-            end_radio = 1 - start_radio;
-            start_radio = 1 - end_radio;
-        }
         /** 如果当前的radio变化还在一个曲线中 */
-        if (start_radio && radio < end_radio) {
+        if (
+            (!is_reverse && (end_radio && radio < end_radio)) ||
+            (is_reverse && (start_radio && radio > start_radio))
+        ) {
             cur_radio = (radio - start_radio) / (end_radio - start_radio);
             cur_curve_info.radio_in_curve = cur_radio;
             return cur_curve_info;

@@ -20,6 +20,9 @@ type ServerFishInfo = {
     reverse?: boolean;
     funNo?: string;
     funList?: any[];
+    group?: Array<{
+        fishId: string;
+    }>;
 };
 type CaptureFishInfo = {
     fishId: string;

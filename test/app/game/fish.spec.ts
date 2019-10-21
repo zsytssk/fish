@@ -60,4 +60,33 @@ export const fish_test = new Test('fish', runner => {
             modelState.app.game.addFish(fish_data);
         }
     });
+
+    /** 鱼组的测试 */
+    runner.describe('add_fish_group', () => {
+        // body_test.runTest('show_shape');
+        const typeId = 21;
+        const pathId = 17;
+        const time = 15;
+        const fish_data = {
+            fishId: '00' + typeId,
+            typeId: `${typeId}`,
+            displaceType: 'path',
+            pathNo: `${pathId}`,
+            totalTime: time,
+            usedTime: 0,
+            reverse: true,
+            group: [
+                {
+                    fishId: `00g1`,
+                },
+                {
+                    fishId: `00g2`,
+                },
+                {
+                    fishId: `00g3`,
+                },
+            ],
+        } as ServerFishInfo;
+        modelState.app.game.addFish(fish_data);
+    });
 });

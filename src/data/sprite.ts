@@ -229,6 +229,32 @@ export let SPRITE: GameSprite = {
             path: 'ani/fish/fish20',
             ani_type: 'horizon_turn',
         },
+        '21': {
+            group: [
+                {
+                    typeId: '1',
+                    pos: {
+                        x: -135,
+                        y: -46,
+                    },
+                },
+                {
+                    typeId: '1',
+                    pos: {
+                        x: -28,
+                        y: -48,
+                    },
+                },
+                {
+                    typeId: '1',
+                    pos: {
+                        x: 23,
+                        y: 47,
+                    },
+                },
+            ],
+            offset: [110, 183, 54, 138],
+        },
     },
     fish_icon: {
         '1': {
