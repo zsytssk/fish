@@ -1,13 +1,10 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
+import { TimeoutCom } from 'comMan/timeoutCom';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
-import { FishModel } from '../fishModel';
 import { ModelEvent } from '../modelEvent';
-import { getCollisionAllFish } from '../modelState';
-import { TimeoutCom } from 'comMan/timeoutCom';
 import { BulletModel } from './bulletModel';
-import { PlayerModel } from '../playerModel';
 
 export const NetEvent = {
     CastFish: 'cast_fish',
@@ -20,11 +17,14 @@ export class NetModel extends ComponentManager {
     public readonly level: number;
     /** 炮皮肤 */
     public readonly skin: string;
+    /** 炮皮肤 */
+    public readonly level_skin: string;
     constructor(pos: Point, bullet: BulletModel) {
         super();
 
         this.level = bullet.level;
         this.skin = bullet.skin;
+        this.level_skin = bullet.level_skin;
         this.pos = pos;
         this.init();
     }

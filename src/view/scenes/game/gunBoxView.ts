@@ -1,11 +1,11 @@
+import { GunSpriteInfo } from 'data/sprite';
+import { LevelInfo } from 'model/gun/gunModel';
+import { getSpriteInfo } from 'utils/dataUtil';
 import { vectorToDegree } from 'utils/mathUtils';
-import { playSkeleton, stopSkeleton } from 'utils/utils';
+import { playSkeleton, stopSkeleton, utilSkeletonLoadUrl } from 'utils/utils';
 import { ui } from '../../../ui/layaMaxUI';
 import { addBullet, viewState } from '../../viewState';
 import { activePosTip, stopPosTip } from './ani_wrap/posTip';
-import { LevelInfo } from 'model/gun/gunModel';
-import { getSpriteInfo } from 'utils/dataUtil';
-import { GunSpriteInfo } from 'data/sprite';
 
 /** 炮台的view */
 export default class GunBoxView extends ui.scenes.game.gunBoxUI {
@@ -36,14 +36,15 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         score_label.text = level + '';
         const gun_skin = `${skin}${level_skin}`;
         light.url = `ani/gun/light${gun_skin}.sk`;
-        gun.url = `ani/gun/gun${gun_skin}.sk`;
         if (has_base) {
             base.visible = true;
             base.url = `ani/gun/base${gun_skin}.sk`;
         } else {
             base.visible = false;
         }
-        playSkeleton(gun, 'standby', true);
+        utilSkeletonLoadUrl(gun, `ani/gun/gun${gun_skin}.sk`).then(() => {
+            playSkeleton(gun, 'standby', true);
+        });
     }
     public setDirection(direction: SAT.Vector) {
         this.rotation = vectorToDegree(direction) + 90;

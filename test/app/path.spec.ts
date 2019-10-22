@@ -30,8 +30,7 @@ export const path_test = new Test('path', runner => {
         }
     });
 
-    /**  */
-    runner.describe('correct', () => {
+    runner.describe('sprite_offset', () => {
         const fish = SPRITE.fish;
         for (const key in fish) {
             if (!fish.hasOwnProperty(key)) {

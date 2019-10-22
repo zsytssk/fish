@@ -51,6 +51,8 @@ export class GunModel extends ComponentManager {
     /** 炮皮肤 */
     public readonly skin: string;
     /** 炮皮肤 */
+    public level_skin: string;
+    /** 炮皮肤 */
     public hole_num: number;
     /** 子弹列表 */
     private bullet_list: Set<BulletGroup> = new Set();
@@ -108,6 +110,7 @@ export class GunModel extends ComponentManager {
         const { skin } = this;
         const { level_skin, hole_num } = getGunLevelSkinInfo(level);
         this.level = level;
+        this.level_skin = level_skin;
         this.hole_num = hole_num;
 
         const timeout = this.getCom(TimeoutCom);
@@ -210,7 +213,6 @@ export class GunModel extends ComponentManager {
         this.event.emit(GunEvent.AddBullet, bullet_group, velocity);
     }
     public castFish(fish: FishModel) {
-        fish.beCast();
         this.event.emit(GunEvent.CastFish, fish);
     }
     public removeBullet(bullet: BulletGroup) {

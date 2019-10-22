@@ -24,13 +24,14 @@ export class BulletGroup extends ComponentManager {
         velocity: SAT.Vector,
         track?: TrackTarget,
     ) {
-        const { skin, level } = this.gun;
+        const { skin, level, level_skin } = this.gun;
         for (const pos of bullets_pos) {
             const bullet_props = {
                 skin,
                 pos,
                 level,
                 track,
+                level_skin,
                 velocity: velocity.clone(),
                 cast_fn: this.castFn,
             } as BulletProps;
@@ -39,7 +40,7 @@ export class BulletGroup extends ComponentManager {
         }
     }
     private castFn = (fish: FishModel) => {
-        const { gun, casted } = this;
+        const { gun, casted, bullet_list } = this;
         if (casted) {
             return;
         }
@@ -47,6 +48,9 @@ export class BulletGroup extends ComponentManager {
         gun.castFish(fish);
         gun.removeBullet(this);
         this.gun = undefined;
-        this.bullet_list.clear();
+        for (const bullet of bullet_list) {
+            bullet.addNet();
+        }
+        bullet_list.clear();
     }; //tslint:disable-line
 }

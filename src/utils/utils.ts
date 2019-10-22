@@ -103,6 +103,17 @@ export function playSkeleton(ani: Laya.Skeleton, ...params: Params) {
         });
     });
 }
+/** 改变骨骼动画的url */
+export function utilSkeletonLoadUrl(ani: Laya.Skeleton, url: string) {
+    return new Promise((resolve, reject) => {
+        ani.load(
+            url,
+            new Laya.Handler(ani, () => {
+                resolve();
+            }),
+        );
+    });
+}
 
 export function createRedFilter() {
     // prettier-ignore

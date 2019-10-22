@@ -1,4 +1,4 @@
-import { ComponentManager, Component } from 'comMan/component';
+import { Component, ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { config } from 'data/config';
 import { BodyCom } from '../com/bodyCom';
@@ -6,11 +6,9 @@ import { getShapes } from '../com/bodyComUtil';
 import { MoveTrackCom, TrackTarget } from '../com/moveCom/moveTrackCom';
 import { MoveVelocityCom } from '../com/moveCom/moveVelocityCom';
 import { FishModel } from '../fishModel';
-import { GunModel } from './gunModel';
 import { ModelEvent } from '../modelEvent';
 import { getCollisionFish } from '../modelState';
 import { NetModel } from './netModel';
-import { PlayerModel } from '../playerModel';
 
 export const BulletEvent = {
     Move: 'move',
@@ -21,12 +19,15 @@ export type BulletProps = {
     pos: Point;
     velocity: SAT.Vector;
     level: number;
+    level_skin: string;
     skin: string;
     track?: TrackTarget;
     cast_fn?: CastFn;
 };
 /** 子弹数据类 */
 export class BulletModel extends ComponentManager {
+    /** 等级 */
+    public level_skin: string;
     /** 等级 */
     public level: number;
     /** 等级 */
@@ -40,6 +41,7 @@ export class BulletModel extends ComponentManager {
         super();
 
         this.level = props.level;
+        this.level_skin = props.level_skin;
         this.skin = props.skin;
         this.pos = props.pos;
         this.cast_fn = props.cast_fn;
@@ -106,6 +108,9 @@ export class BulletModel extends ComponentManager {
     private onHit = (fish: FishModel) => {
         const { cast_fn } = this;
         cast_fn(fish);
+    }; // tslint:disable-line
+    /** 创建鱼网... */
+    public addNet = () => {
         const net = new NetModel(this.pos, this);
         this.event.emit(BulletEvent.AddNet, net);
         this.destroy();

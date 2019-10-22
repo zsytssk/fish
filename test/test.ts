@@ -1,4 +1,4 @@
-import { Honor } from 'honor';
+import honor from 'honor';
 import { mapTest, Test } from 'testBuilder';
 import { TestBuilderCtor } from 'testBuilder/testBuilder';
 import { getTestEnable, getTestIgnore } from './utils/testUtils';
@@ -21,7 +21,7 @@ import { path_test } from './app/path.spec';
 declare global {
     interface Window {
         test: typeof test;
-        Honor: typeof Honor;
+        Honor: typeof honor;
         modelState: typeof modelState;
         ctrlState: typeof ctrlState;
         viewState: typeof viewState;
@@ -52,7 +52,7 @@ window.test = test;
 window.modelState = modelState;
 window.ctrlState = ctrlState;
 window.viewState = viewState;
-window.Honor = Honor;
+window.Honor = honor;
 
 let running = false;
 injectAfter(GameCtrl, 'preEnter', () => {
@@ -64,4 +64,5 @@ injectAfter(GameCtrl, 'preEnter', () => {
     // fish_test.runTest('add_fish_group', ['21', '1']);
     fish_test.runTest('add_fish_group', ['20', '1']);
     // socket_test.runTest('connect');
+    // path_test.runTest('sprite_offset');
 });
