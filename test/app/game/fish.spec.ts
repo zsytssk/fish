@@ -13,7 +13,7 @@ export const fish_test = new Test('fish', runner => {
             const fish_data = {
                 fishId: '00' + typeId,
                 typeId: `${typeId}`,
-                displaceType: 'path',
+
                 pathNo: `${pathId}`,
                 totalTime: time,
                 usedTime: 0,
@@ -65,8 +65,8 @@ export const fish_test = new Test('fish', runner => {
     runner.describe('add_fish_group', () => {
         // body_test.runTest('show_shape');
         const typeId = 21;
-        const pathId = 17;
-        const time = 15;
+        const pathId = 90;
+        const time = 50;
         const fish_data = {
             fishId: '00' + typeId,
             typeId: `${typeId}`,

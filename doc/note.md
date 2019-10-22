@@ -1,8 +1,45 @@
+-   @ques 我代码怎么发布到测试环境...
+
+## 2019-10-22 09:23:42
+
 -   @ques 如果 fishGroup 中一个鱼被击杀了, 那么这个鱼到底怎么同步
 
     -   添加一个 index 或者, 按照数组的排列...
 
+-   @bug 默认炮台播放动画 + 所有的子弹的皮肤都一样
+
+    -   12 13 gun 动画搞错了
+
+-   @bug @设计 net2 动画太慢了
+
+    -   gun3 炮口太窄了
+
+-   @ques 一号炮台 为什么 base 和 gun 能不能放在一起...
+
+-   @ques 2 网有四种状态...
+
+    -   怎么有四种 分别是做什么的...
+
+-   @ques 光底座是不是都是一样的
+
+-   @todo getHoleNum(level)
+
+    -   改变炮台的等级... score
+    -   接口的 md 地址... @后端...
+
 -   @ques calcCurCurveInfo 实在是太恶心了
+
+-   @todo 鱼群来了 清理鱼 fishModel 的原来的 move_com 需要 destroy...
+
+-   @todo 炮台的等级...
+-   @todo 优化 displace
+
+-   @ques gun skin level 如何区分...
+
+-   @todo 鱼 长宽 屏幕长宽
+    -   1920x750
+
+*   snippets const state let state
 
 ## 2019-10-21 10:43:26
 

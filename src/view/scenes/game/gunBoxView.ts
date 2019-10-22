@@ -3,29 +3,47 @@ import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { ui } from '../../../ui/layaMaxUI';
 import { addBullet, viewState } from '../../viewState';
 import { activePosTip, stopPosTip } from './ani_wrap/posTip';
+import { LevelInfo } from 'model/gun/gunModel';
+import { getSpriteInfo } from 'utils/dataUtil';
+import { GunSpriteInfo } from 'data/sprite';
 
 /** 炮台的view */
 export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     private gun_skin: string;
-    constructor(gun_skin: string) {
+    constructor() {
         super();
-        this.gun_skin = gun_skin;
         this.init();
     }
     private init() {
-        const { light, gun, base, gun_skin, score_box } = this;
+        const { light, gun, base, score_box } = this;
         const { upside_down } = viewState.game;
 
         stopSkeleton(light);
         stopSkeleton(base);
         playSkeleton(gun, 'standby', true);
         light.visible = false;
-        base.url = `ani/gun/gun${gun_skin}/base.sk`;
-        light.url = `ani/gun/gun${gun_skin}/light.sk`;
-        gun.url = `ani/gun/gun${gun_skin}/gun.sk`;
+
         if (upside_down) {
             score_box.scaleX = -1;
         }
+    }
+
+    public setLevel(level_info: LevelInfo) {
+        const { skin, level_skin, level } = level_info;
+        const { light, gun, base, score_label } = this;
+        const { has_base } = getSpriteInfo('gun', skin) as GunSpriteInfo;
+
+        score_label.text = level + '';
+        const gun_skin = `${skin}${level_skin}`;
+        light.url = `ani/gun/light${gun_skin}.sk`;
+        gun.url = `ani/gun/gun${gun_skin}.sk`;
+        if (has_base) {
+            base.visible = true;
+            base.url = `ani/gun/base${gun_skin}.sk`;
+        } else {
+            base.visible = false;
+        }
+        playSkeleton(gun, 'standby', true);
     }
     public setDirection(direction: SAT.Vector) {
         this.rotation = vectorToDegree(direction) + 90;

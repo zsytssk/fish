@@ -11,6 +11,9 @@ export function activePosTip() {
 }
 
 export function stopPosTip() {
+    if (!pop_tip_ani) {
+        return;
+    }
     pop_tip_ani.stop();
     pop_tip_ani.removeSelf();
 }

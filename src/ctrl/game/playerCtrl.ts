@@ -1,6 +1,6 @@
 import { FishModel } from 'model/fishModel';
 import { BulletGroup } from 'model/gun/bulletGroup';
-import { GunEvent } from 'model/gun/gunModel';
+import { GunEvent, LevelInfo } from 'model/gun/gunModel';
 import { PlayerModel } from 'model/playerModel';
 import SAT from 'sat';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
@@ -57,6 +57,9 @@ export class PlayerCtrl {
         event.on(GunEvent.DirectionChange, (_direction: SAT.Vector) => {
             view.setDirection(_direction);
         });
+        event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
+            view.setLevel(level_info);
+        });
 
         /** 当前用户的处理 */
         if (!is_cur_player) {
@@ -83,6 +86,6 @@ export class PlayerCtrl {
             gun.preAddBullet(_direction);
         });
 
-        view.activePosTip();
+        // view.activePosTip();
     }
 }

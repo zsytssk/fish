@@ -21,8 +21,7 @@ export type SpriteInfo = {
 };
 
 export type GunSpriteInfo = {
-    hole_num?: number;
-    as?: string;
+    has_base: boolean;
 };
 /** 鱼动画类型 正常 | 水平翻转 */
 export type FishAniType = 'normal' | 'horizon_turn';
@@ -84,14 +83,10 @@ export type SpriteType =
 export let SPRITE: GameSprite = {
     gun: {
         '1': {
-            hole_num: 1,
+            has_base: true,
         },
-        '2': {
-            hole_num: 2,
-        },
-        '3': {
-            as: '2',
-        },
+        '2': {},
+        '3': {},
     },
     bullet: {
         '1': {
@@ -99,10 +94,12 @@ export let SPRITE: GameSprite = {
             path: 'ani/gun/bullet1',
         },
         '2': {
-            as: '1',
+            type: 'DragonBone',
+            path: 'ani/gun/bullet2',
         },
         '3': {
-            as: '1',
+            type: 'DragonBone',
+            path: 'ani/gun/bullet3',
         },
     },
     net: {
@@ -110,8 +107,8 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             path: 'ani/gun/net1',
         },
-        '2': { as: '1' },
-        '3': { as: '1' },
+        '2': { type: 'DragonBone', path: 'ani/gun/net2' },
+        '3': { type: 'DragonBone', path: 'ani/gun/net3' },
     },
     fish_shadow: {
         '1': {

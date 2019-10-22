@@ -9,11 +9,29 @@ import {
     createAnimation,
     createImg,
 } from 'honor/utils/createSkeleton';
+import { GunInfo } from 'data/gun';
 
 export function getGunInfo(server_index: number) {
     const pos = Coordinates.gun_global_pos[server_index];
     return {
         pos,
+    };
+}
+export function getGunLevelSkinInfo(level: number) {
+    const { LevelUp: level_up, HoleNum: hole_num } = GunInfo;
+    for (let i = 0; i < level_up.length; i++) {
+        const item = level_up[i];
+        if (level < item) {
+            return {
+                level_skin: `${i + 1}`,
+                hole_num: hole_num[i],
+            };
+        }
+    }
+
+    return {
+        level_skin: `${3}`,
+        hole_num: hole_num[2],
     };
 }
 /** 获取sprite的信息 */
@@ -44,9 +62,8 @@ export function getShapeInfo(type: SpriteType, level?: number | string) {
 export function getBulletStartPos(
     server_index: number,
     direction: SAT.Vector,
-    skin: string,
+    hole_num: number,
 ): Point[] {
-    const { hole_num } = getSpriteInfo('gun', skin) as GunSpriteInfo;
     const offsets = Coordinates.bullet_offset[hole_num];
     const result: Point[] = [];
     const offset_v = direction

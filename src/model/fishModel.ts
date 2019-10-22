@@ -4,10 +4,8 @@ import { FishSpriteInfo } from 'data/sprite';
 import * as SAT from 'sat';
 import { getSpriteInfo } from 'utils/dataUtil';
 import { DisplaceInfo } from 'utils/displace/displace';
-import { createFishDisplace } from 'utils/displace/displaceUtil';
 import { BodyCom } from './com/bodyCom';
 import { getShapes } from './com/bodyComUtil';
-import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
 import { GameModel } from './gameModel';
 import { ModelEvent } from './modelEvent';
 
@@ -86,7 +84,7 @@ export class FishModel extends ComponentManager {
     }
     private onMoveChange = (displace_info: DisplaceInfo) => {
         const body_com = this.getCom(BodyCom);
-        const { pos, velocity, is_complete, out_stage } = displace_info;
+        const { pos, velocity, is_end: is_complete, out_stage } = displace_info;
         if (is_complete) {
             return this.destroy();
         }

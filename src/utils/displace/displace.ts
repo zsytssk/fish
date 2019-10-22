@@ -1,7 +1,6 @@
 import * as SAT from 'sat';
+import { timeToFrame } from './displaceUtil';
 import { Line } from './line';
-import { stage_width, stage_height, timeToFrame } from './displaceUtil';
-import { getSpriteInfo, getShapeInfo } from 'utils/dataUtil';
 
 export type Curve = {
     get(t: number): Point;
@@ -18,10 +17,11 @@ export type CurveInfo = {
 };
 /** 当前曲线信息 */
 export type CurCurveInfo = {
-    /** 当前curve在所有curve_list中的index */
+    /** 当前 curve 在所有curve_list中的index */
     index: number;
-    /** 当前curve在所有curve_list中的radio */
+    /** 当前 curve 在所有 curve_list 中的开始所在的 radio */
     start_radio: number;
+    /** 当前 curve 在所有 curve_list 中的结束所在的 end_radio */
     end_radio: number;
     /** 当前curve */
     curve: CurveInfo;
@@ -29,23 +29,26 @@ export type CurCurveInfo = {
     radio_in_curve: number;
 };
 export type DisplaceInfo = {
+    /** 位置 */
     pos?: Point;
+    /** 速度 */
     velocity?: SAT.Vector;
+    /** 是否离开页面 */
     out_stage?: boolean;
-    is_complete?: boolean;
+    /** 是否结束 */
+    is_end?: boolean;
 };
 /**
  * 位移控制器
  */
 export class Displace {
-    /** 使用的时间 */
+    /** 所有的曲线信息 */
     protected curve_list: CurveInfo[] = [];
+    /** 使用的时间-单位帧数 */
     protected used_frame: number;
-    /** 总共的时间 */
+    /** 总共的时间-单位帧数 */
     protected total_frame: number;
-    /** 鱼的类型 用来获取鱼的长度 */
-    protected fish_type: string;
-    /** 当前所在的曲线信息, 如果在同一条曲线上就不用重复计算 cur_curve */
+    /** 当前所在的曲线信息, 如果在同一分段曲线上就不用重复计算 cur_curve */
     protected cur_curve_info = {} as CurCurveInfo;
     /** 是否反转 */
     private is_reverse: boolean = false;
@@ -71,6 +74,7 @@ export class Displace {
      * @param update_frame 更新的帧数
      */
     public update(update_frame: number): DisplaceInfo {
+        const { is_reverse } = this;
         const used_frame = (this.used_frame = this.used_frame + update_frame);
         let used_radio = used_frame / this.total_frame;
         let is_complete: boolean = false;
@@ -83,34 +87,36 @@ export class Displace {
         if (used_radio >= 1) {
             is_complete = true;
             return {
-                is_complete,
+                is_end: is_complete,
             };
         }
 
-        if (this.is_reverse) {
+        if (is_reverse) {
             used_radio = 1 - used_radio;
         }
 
         const point_info = this.getPointAtRadio(used_radio);
         const position = point_info.position;
         let velocity = point_info.direction;
-        if (this.is_reverse) {
+        if (is_reverse) {
             velocity = velocity.reverse();
         }
 
         return {
             pos: position,
             velocity,
-            is_complete,
+            is_end: is_complete,
         };
     }
     protected getPointAtRadio(
         radio: number,
     ): { position: Point; direction: SAT.Vector } {
         const cur_curve_info = this.calcCurCurveInfo(radio);
-        const cur_curve = cur_curve_info.curve;
-        const cur_radio = cur_curve_info.radio_in_curve;
-        const cur_idx = cur_curve_info.index;
+        const {
+            curve: cur_curve,
+            radio_in_curve: cur_radio,
+            index: cur_idx,
+        } = cur_curve_info;
 
         const position = cur_curve.curve.get(cur_radio);
         let direction = cur_curve.curve.derivative(cur_radio);
@@ -131,7 +137,7 @@ export class Displace {
             direction = other_fun.derivative(other_radio);
         }
         return {
-            position: new Laya.Point(position.x, position.y),
+            position,
             direction: new SAT.Vector(direction.x, direction.y),
         };
     }

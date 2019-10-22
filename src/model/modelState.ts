@@ -83,7 +83,7 @@ export function createFishGroup(
     /**  onUpdate + destroy 需要提前处理,
      * onUpdate 在原来的update基础上需要加上相对的 pos
      * destroy 只有所有的鱼个都 destroy 就把原来的 move_com destroy
-     **/
+     */
     const update_fn_list: Set<FishGroupItemUpdate> = new Set();
     const createUpdateFn = (fn: MoveUpdateComposeFn, index: number) => {
         return [

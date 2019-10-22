@@ -1,8 +1,10 @@
 import { PATH } from 'data/path';
 import { Test } from 'testBuilder';
 import { stage_width, stage_height } from 'utils/displace/displaceUtil';
+import { SPRITE } from 'data/sprite';
 
 export const path_test = new Test('path', runner => {
+    /** 检测有问题的路径 */
     runner.describe('correct', () => {
         for (const key in PATH) {
             if (!PATH.hasOwnProperty(key)) {
@@ -25,6 +27,24 @@ export const path_test = new Test('path', runner => {
             if (!fr || !er) {
                 console.log(`${key}: first:${fr}, end:${er}`, end);
             }
+        }
+    });
+
+    /**  */
+    runner.describe('correct', () => {
+        const fish = SPRITE.fish;
+        for (const key in fish) {
+            if (!fish.hasOwnProperty(key)) {
+                continue;
+            }
+            const item = fish[key];
+            const { offset } = item;
+            const [top, right, bottom, left] = offset;
+            console.log(
+                key,
+                `width: ${left + right}`,
+                `height:${top + bottom}`,
+            );
         }
     });
 });

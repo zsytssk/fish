@@ -37,6 +37,7 @@ async function run(
     } else {
         Laya.init(game_config.width, game_config.height, Laya.WebGL);
     }
+    Laya.stage.frameRate = Laya.Stage.FRAME_SLOW;
     if (Laya.Physics) {
         Laya.Physics.enable();
     }
@@ -108,14 +109,4 @@ async function run(
     initState();
 }
 
-export const Honor = {
-    name,
-    version,
-    run,
-    director,
-    utils,
-    DEBUG_MODE,
-};
-
-export { name, version, run, director, utils, DEBUG_MODE };
 export default { name, version, run, director, utils, DEBUG_MODE };

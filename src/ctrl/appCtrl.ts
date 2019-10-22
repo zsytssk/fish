@@ -1,10 +1,11 @@
 import { config } from 'data/config';
 import GameConfig from 'GameConfig';
-import honor from 'honor';
+// import honor from 'honor';
 import { HallCtrl } from './start/hallCtrl';
 import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
 import { res, font_list } from 'data/res';
+import honor from 'honor';
 
 export class AppCtrl {
     public model: AppModel;

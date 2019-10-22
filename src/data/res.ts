@@ -49,46 +49,59 @@ for (const top_type in SPRITE) {
 
 /** gun */
 for (let i = 1; i <= 3; i++) {
+    for (let j = 1; j <= 3; j++) {
+        res.game.push(
+            {
+                url: `ani/gun/light${i}${j}.sk`,
+                type: Laya.Loader.BUFFER,
+            },
+            {
+                url: `ani/gun/light${i}${j}.png`,
+                type: Laya.Loader.IMAGE,
+            },
+            {
+                url: `ani/gun/gun${i}${j}.sk`,
+                type: Laya.Loader.BUFFER,
+            },
+            {
+                url: `ani/gun/gun${i}${j}.png`,
+                type: Laya.Loader.IMAGE,
+            },
+        );
+        if (SPRITE.gun[i].has_base) {
+            res.game.push(
+                {
+                    url: `ani/gun/base${i}${j}.sk`,
+                    type: Laya.Loader.BUFFER,
+                },
+                {
+                    url: `ani/gun/base${i}${j}.png`,
+                    type: Laya.Loader.IMAGE,
+                },
+            );
+        }
+    }
     res.game.push(
         {
-            url: `ani/gun/gun${i}/light.sk`,
+            url: `ani/gun/bullet${i}.sk`,
             type: Laya.Loader.BUFFER,
         },
         {
-            url: `ani/gun/gun${i}/light.png`,
-            type: Laya.Loader.IMAGE,
-        },
-        {
-            url: `ani/gun/gun${i}/base.sk`,
-            type: Laya.Loader.BUFFER,
-        },
-        {
-            url: `ani/gun/gun${i}/base.png`,
-            type: Laya.Loader.IMAGE,
-        },
-        {
-            url: `ani/gun/gun${i}/gun.sk`,
-            type: Laya.Loader.BUFFER,
-        },
-        {
-            url: `ani/gun/gun${i}/gun.png`,
+            url: `ani/gun/bullet${i}.png`,
             type: Laya.Loader.IMAGE,
         },
     );
-}
 
-/** bullet */
-for (let i = 1; i <= 1; i++) {
-    res.game.push(
-        {
-            url: `ani/gun/bullet${i}_rage.sk`,
-            type: Laya.Loader.BUFFER,
-        },
-        {
-            url: `ani/gun/bullet${i}_rage.png`,
-            type: Laya.Loader.IMAGE,
-        },
-    );
+    // res.game.push(
+    //     {
+    //         url: `ani/gun/bullet${i}_rage.sk`,
+    //         type: Laya.Loader.BUFFER,
+    //     },
+    //     {
+    //         url: `ani/gun/bullet${i}_rage.png`,
+    //         type: Laya.Loader.IMAGE,
+    //     },
+    // );
 }
 
 export const font_list = ['font/score_num'];

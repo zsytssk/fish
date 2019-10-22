@@ -61,9 +61,9 @@ export default class GameView extends ui.scenes.game.gameUI
         pool.addChild(net);
         return net;
     }
-    public addGun(level: string) {
+    public addGun() {
         const { gun_wrap } = this;
-        const gun = new GunBoxView(level);
+        const gun = new GunBoxView();
         gun_wrap.addChild(gun);
         return gun;
     }

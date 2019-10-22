@@ -14,7 +14,7 @@ export const player_test = new Test('player', runner => {
         const player_data = {
             userId: player_id,
             serverIndex: 0,
-            level: 10,
+            level: 101,
             gold: 10000,
             gunSkin: '1',
             nickname: 'test',

@@ -3,7 +3,7 @@ import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
 import { config } from 'data/config';
 import * as SAT from 'sat';
-import { getBulletStartPos } from 'utils/dataUtil';
+import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
 import { AutoLaunchCom } from '../com/autoLaunchCom';
 import { TrackFishCom } from '../com/trackFishCom';
 import { FishModel } from '../fishModel';
@@ -25,6 +25,15 @@ export const GunEvent = {
     StartTrack: 'start_track',
     /** 停止追踪 */
     StopTrack: 'stop_track',
+    /** 等级修改 */
+    LevelChange: 'level_change',
+};
+
+export type LevelInfo = {
+    level: number;
+    skin: string;
+    level_skin: string;
+    hole_num: number;
 };
 export enum GunStatus {
     Normal,
@@ -41,6 +50,8 @@ export class GunModel extends ComponentManager {
     public level: number;
     /** 炮皮肤 */
     public readonly skin: string;
+    /** 炮皮肤 */
+    public hole_num: number;
     /** 子弹列表 */
     private bullet_list: Set<BulletGroup> = new Set();
     /** 所属的玩家 */
@@ -60,17 +71,18 @@ export class GunModel extends ComponentManager {
     constructor(pos: Point, skin: string, player: PlayerModel) {
         super();
 
-        this.level = player.level;
         this.pos = pos;
         this.skin = skin;
         this.player = player;
         this.init();
     }
     private init() {
-        this.addCom(new EventCom());
-        this.addCom(new TimeoutCom());
-
+        this.addCom(new EventCom(), new TimeoutCom());
         this.initDirection();
+        this.setLevel(this.player.level);
+    }
+    public get event() {
+        return this.getCom(EventCom);
     }
     private initDirection() {
         const { server_index } = this.player;
@@ -89,8 +101,24 @@ export class GunModel extends ComponentManager {
         this.direction = direction;
         this.event.emit(GunEvent.DirectionChange, direction);
     }
-    public get event() {
-        return this.getCom(EventCom);
+    public setLevel(level: number) {
+        if (level === this.level) {
+            return;
+        }
+        const { skin } = this;
+        const { level_skin, hole_num } = getGunLevelSkinInfo(level);
+        this.level = level;
+        this.hole_num = hole_num;
+
+        const timeout = this.getCom(TimeoutCom);
+        timeout.createTimeout(() => {
+            this.event.emit(GunEvent.LevelChange, {
+                level,
+                skin,
+                level_skin,
+                hole_num,
+            } as LevelInfo);
+        }, this.launch_space);
     }
     public setStatus(status: GunStatus) {
         if (status === this.status) {
@@ -169,7 +197,7 @@ export class GunModel extends ComponentManager {
         const bullets_pos = getBulletStartPos(
             this.player.server_index,
             velocity.clone(),
-            this.skin,
+            this.hole_num,
         );
         const bullet_group = new BulletGroup(
             bullets_pos,
