@@ -56,3 +56,7 @@ player -> gun(top:player) -> .. (top queryTop(name|class))
     -   我本地写一个函数... 试一试 能不能用...
     -   让产品来确定参数的阈值, 如果可以以后就不用前端来记录这些信息了
     -   有没有可能固定一条曲线 用正负偏差来生成新的路径
+
+## api
+
+http://gitlab.intranet.huiyin.com/springfans/game/game-bitfish-server/blob/docker/API.md

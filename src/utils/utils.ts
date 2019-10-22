@@ -103,6 +103,25 @@ export function playSkeleton(ani: Laya.Skeleton, ...params: Params) {
         });
     });
 }
+
+export function playSkeletonOnce(ani: Laya.Skeleton, ani_name: string) {
+    return new Promise((resolve, reject) => {
+        ani.once(Laya.Event.STOPPED, ani, () => {
+            resolve();
+        });
+        if (ani.player) {
+            ani.play(ani_name, false);
+            return;
+        }
+
+        ani.once(Laya.Event.PLAYED, ani, () => {
+            setTimeout(() => {
+                ani.play(ani_name, false);
+            });
+        });
+    });
+}
+
 /** 改变骨骼动画的url */
 export function utilSkeletonLoadUrl(ani: Laya.Skeleton, url: string) {
     return new Promise((resolve, reject) => {

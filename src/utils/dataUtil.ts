@@ -62,9 +62,9 @@ export function getShapeInfo(type: SpriteType, level?: number | string) {
 export function getBulletStartPos(
     server_index: number,
     direction: SAT.Vector,
-    hole_num: number,
+    skin: string,
 ): Point[] {
-    const offsets = Coordinates.bullet_offset[hole_num];
+    const offsets = Coordinates.bullet_offset[skin];
     const result: Point[] = [];
     const offset_v = direction
         .clone()

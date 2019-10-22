@@ -16,7 +16,7 @@ export const player_test = new Test('player', runner => {
             serverIndex: 0,
             level: 101,
             gold: 10000,
-            gunSkin: '3',
+            gunSkin: '1',
             nickname: 'test',
             avatar: 'test',
             isCurPlayer: true,

@@ -33,15 +33,16 @@ export class PlayerCtrl {
     private initEvent() {
         const {
             view,
-            model: { gun, is_cur_player },
+            model: { nickname, gun, is_cur_player },
         } = this;
         const { event, direction, pos: gun_pos } = gun;
+        const { ctrl_box, btn_minus, btn_add } = view;
 
         event.on(
             GunEvent.AddBullet,
             (bullet_group: BulletGroup, velocity: SAT.Vector) => {
                 const { rage } = gun;
-                view.fire(velocity);
+                view.fire(velocity, nickname);
                 view.stopPosTip();
                 for (const bullet of bullet_group.bullet_list) {
                     const bullet_view = view.addBullet(
@@ -86,6 +87,12 @@ export class PlayerCtrl {
             gun.preAddBullet(_direction);
         });
 
-        // view.activePosTip();
+        ctrl_box.visible = true;
+        btn_minus.on(Laya.Event.CLICK, btn_minus, () => {
+            console.log(`btn_minus`);
+        });
+        btn_add.on(Laya.Event.CLICK, btn_minus, () => {
+            console.log(`btn_add`);
+        });
     }
 }

@@ -8,7 +8,7 @@ import { AutoLaunchCom } from '../com/autoLaunchCom';
 import { TrackFishCom } from '../com/trackFishCom';
 import { FishModel } from '../fishModel';
 import { PlayerModel } from '../playerModel';
-import { BulletGroup } from './bulletGroup';
+import { BulletGroup, BulletGroupInfo } from './bulletGroup';
 
 export const GunEvent = {
     /** 添加子弹 */
@@ -194,22 +194,22 @@ export class GunModel extends ComponentManager {
         }, this.launch_space);
     }
     public addBullet(velocity: SAT.Vector) {
+        const { skin, level_skin } = this;
+
         velocity = velocity.clone().normalize();
         this.setDirection(velocity);
-
         const bullets_pos = getBulletStartPos(
             this.player.server_index,
             velocity.clone(),
-            this.hole_num,
+            `${skin}${level_skin}`,
         );
-        const bullet_group = new BulletGroup(
+        const info: BulletGroupInfo = {
             bullets_pos,
             velocity,
-            this,
-            this.track_fish,
-        );
+            track: this.track_fish,
+        };
+        const bullet_group = new BulletGroup(info, this);
         this.bullet_list.add(bullet_group);
-
         this.event.emit(GunEvent.AddBullet, bullet_group, velocity);
     }
     public castFish(fish: FishModel) {

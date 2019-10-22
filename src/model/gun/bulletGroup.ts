@@ -1,30 +1,28 @@
 import { ComponentManager } from 'comMan/component';
-import { BulletModel, BulletProps } from './bulletModel';
+import { BulletModel, BulletInfo } from './bulletModel';
 import { GunModel } from './gunModel';
 import { TrackTarget } from 'model/com/moveCom/moveTrackCom';
 import { FishModel } from 'model/fishModel';
 
+export type BulletGroupInfo = {
+    bullets_pos: Point[];
+    velocity: SAT.Vector;
+    track?: TrackTarget;
+};
 export class BulletGroup extends ComponentManager {
     public bullet_list: Set<BulletModel> = new Set();
     private gun: GunModel;
     /** 是否已经捕捉到了, 只处理第一个bulletModel捕的鱼 */
     private casted = false;
-    constructor(
-        bullets_pos: Point[],
-        velocity: SAT.Vector,
-        gun: GunModel,
-        track?: TrackTarget,
-    ) {
+    constructor(info: BulletGroupInfo, gun: GunModel) {
         super();
         this.gun = gun;
-        this.initBullet(bullets_pos, velocity, track);
+        this.initBullet(info);
     }
-    private initBullet(
-        bullets_pos: Point[],
-        velocity: SAT.Vector,
-        track?: TrackTarget,
-    ) {
+    private initBullet(info: BulletGroupInfo) {
+        const { bullets_pos, track, velocity } = info;
         const { skin, level, level_skin } = this.gun;
+
         for (const pos of bullets_pos) {
             const bullet_props = {
                 skin,
@@ -34,22 +32,25 @@ export class BulletGroup extends ComponentManager {
                 level_skin,
                 velocity: velocity.clone(),
                 cast_fn: this.castFn,
-            } as BulletProps;
+            } as BulletInfo;
             const bullet = new BulletModel(bullet_props);
             this.bullet_list.add(bullet);
         }
     }
     private castFn = (fish: FishModel) => {
         const { gun, casted, bullet_list } = this;
+        const { is_cur_player } = gun.player;
         if (casted) {
             return;
         }
         this.casted = true;
-        gun.castFish(fish);
+        if (is_cur_player) {
+            gun.castFish(fish);
+        }
         gun.removeBullet(this);
         this.gun = undefined;
         for (const bullet of bullet_list) {
-            bullet.addNet();
+            bullet.addNet(is_cur_player);
         }
         bullet_list.clear();
     }; //tslint:disable-line

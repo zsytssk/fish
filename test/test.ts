@@ -1,7 +1,7 @@
 import honor from 'honor';
 import { mapTest, Test } from 'testBuilder';
 import { TestBuilderCtor } from 'testBuilder/testBuilder';
-import { getTestEnable, getTestIgnore } from './utils/testUtils';
+import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
 import { game_test } from './app/game/game.spec';
 import { app_test } from './app/app.spec';
 import { fish_test } from './app/game/fish.spec';
@@ -48,7 +48,7 @@ testBuilder.init();
 
 export const test = mapTest(testBuilder.top_scope);
 window.test = test;
-window.test = test;
+window.stageClick = stageClick;
 window.modelState = modelState;
 window.ctrlState = ctrlState;
 window.viewState = viewState;

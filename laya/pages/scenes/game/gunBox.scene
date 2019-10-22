@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":13,
-    "selecteID":14,
+    "selectedBox":2,
+    "selecteID":17,
     "searchKey":"View",
-    "props":{"y":74,"x":74,"width":149,"sceneColor":"#000000","runtime":"view/scenes/game/gunBoxView.ts","height":149,"anchorY":0.5,"anchorX":0.5},
+    "props":{"y":111,"x":111,"width":223,"sceneColor":"#000000","runtime":"view/scenes/game/gunBoxView.ts","height":223,"anchorY":0.5,"anchorX":0.5},
     "nodeParent":-1,
-    "maxID":15,
+    "maxID":18,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -18,7 +18,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box",
-            "props":{"y":0,"x":0,"width":149,"height":149},
+            "props":{"y":37,"x":37,"width":149,"height":149},
             "nodeParent":2,
             "label":"Box",
             "isOpen":true,
@@ -104,7 +104,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,score_label",
-                            "props":{"y":2,"x":13,"width":124,"var":"score_label","valign":"middle","text":"12312312","height":44,"font":"score_num","align":"center"},
+                            "props":{"y":2,"x":13,"width":124,"var":"score_label","valign":"middle","height":44,"font":"score_num","align":"center"},
                             "nodeParent":13,
                             "label":"score_label",
                             "isDirectory":false,
@@ -116,6 +116,48 @@
                         }]
                 }],
             "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"Sprite",
+            "searchKey":"Sprite,ctrl_box",
+            "props":{"y":111.5,"x":-2,"visible":false,"var":"ctrl_box"},
+            "nodeParent":2,
+            "label":"ctrl_box",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":17,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Button",
+                    "searchKey":"Button,btn_minus",
+                    "props":{"y":0,"x":1,"var":"btn_minus","stateNum":"1","skin":"image/game/btn_minus.png"},
+                    "nodeParent":17,
+                    "label":"btn_minus",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":16,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Button",
+                    "searchKey":"Button,btn_add",
+                    "props":{"y":0,"x":176,"var":"btn_add","stateNum":"1","skin":"image/game/btn_add.png"},
+                    "nodeParent":17,
+                    "label":"btn_add",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":15,
+                    "child":[
+                        ]
+                }]
         }],
     "animations":[
         {

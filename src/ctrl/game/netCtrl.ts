@@ -16,7 +16,6 @@ export class NetCtrl {
         const { level_skin } = model;
 
         const { x, y } = model.pos;
-        view.scale(1.3, 1.3);
         view.pos(x, y);
         playSkeleton(view, level_skin, false);
         this.initEvent();

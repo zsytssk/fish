@@ -15,7 +15,7 @@ export const BulletEvent = {
     AddNet: 'add_net',
 };
 export type CastFn = (fish: FishModel) => void;
-export type BulletProps = {
+export type BulletInfo = {
     pos: Point;
     velocity: SAT.Vector;
     level: number;
@@ -37,7 +37,7 @@ export class BulletModel extends ComponentManager {
     /** 速度 */
     public velocity: SAT.Vector;
     public cast_fn: CastFn;
-    constructor(props: BulletProps) {
+    constructor(props: BulletInfo) {
         super();
 
         this.level = props.level;
@@ -110,8 +110,15 @@ export class BulletModel extends ComponentManager {
         cast_fn(fish);
     }; // tslint:disable-line
     /** 创建鱼网... */
-    public addNet = () => {
-        const net = new NetModel(this.pos, this);
+    public addNet = (show_cast: boolean) => {
+        const { pos } = this;
+        const net = new NetModel(
+            {
+                pos,
+                show_cast,
+            },
+            this,
+        );
         this.event.emit(BulletEvent.AddNet, net);
         this.destroy();
     }; // tslint:disable-line
