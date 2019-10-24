@@ -25,6 +25,7 @@ declare global {
         modelState: typeof modelState;
         ctrlState: typeof ctrlState;
         viewState: typeof viewState;
+        stageClick: typeof stageClick;
     }
 }
 
@@ -66,3 +67,4 @@ injectAfter(GameCtrl, 'preEnter', () => {
     // socket_test.runTest('connect');
     // path_test.runTest('sprite_offset');
 });
+socket_test.runTest('init_app_socket');

@@ -2,11 +2,11 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":13,
+    "selecteID":15,
     "searchKey":"View",
     "props":{"width":413,"sceneColor":"#000000","height":102},
     "nodeParent":-1,
-    "maxID":15,
+    "maxID":17,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -21,14 +21,13 @@
             "props":{"y":-18,"x":129},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":11,
             "child":[
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":2,"x":0,"width":158,"texture":"image/game/energy_bg.png","height":22},
@@ -43,7 +42,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,energy_bar",
                     "props":{"y":2,"x":0,"width":158,"var":"energy_bar","texture":"image/game/energy_progress.png","height":22},
@@ -77,16 +75,17 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,skill_list",
-            "props":{"y":3,"x":15,"var":"skill_list"},
+            "props":{"y":3,"x":15,"width":289,"var":"skill_list","height":96},
             "nodeParent":2,
             "label":"skill_list",
-            "isOpen":null,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":12,
             "child":[
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"scenes/game/skillItem.scene",
                     "searchKey":"UIView,item0",
@@ -101,6 +100,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"scenes/game/skillItem.scene",
                     "searchKey":"UIView,item1",
@@ -115,6 +115,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"scenes/game/skillItem.scene",
                     "searchKey":"UIView,item2",
@@ -127,21 +128,21 @@
                     "compId":6,
                     "child":[
                         ]
-                },
-                {
-                    "type":"UIView",
-                    "source":"scenes/game/skillItem.scene",
-                    "searchKey":"UIView,item3",
-                    "props":{"x":291,"name":"item3"},
-                    "nodeParent":12,
-                    "label":"item3",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":7,
-                    "child":[
-                        ]
                 }]
+        },
+        {
+            "x":15,
+            "type":"Sprite",
+            "searchKey":"Sprite,auto_launch",
+            "props":{"y":5,"x":304,"var":"auto_launch","texture":"image/game/skill_auto.png","mouseThrough":false,"mouseEnabled":true},
+            "nodeParent":2,
+            "label":"auto_launch",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":15,
+            "child":[
+                ]
         },
         {
             "x":15,

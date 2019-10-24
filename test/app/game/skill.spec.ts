@@ -3,7 +3,7 @@ import { Test } from 'testBuilder';
 import { fish_test } from './fish.spec';
 import { player_id, player_test } from './player.spec';
 import { viewState } from 'view/viewState';
-import SkillItem from 'view/scenes/game/skillItem';
+import SkillItem from 'view/scenes/game/skillItemView';
 import { startCount } from 'utils/count';
 
 /** 技能的测试 */
@@ -65,7 +65,8 @@ export const skill_test = new Test('skill', runner => {
         fish_test.runTest('add_fish');
 
         setTimeout(() => {
-            modelState.app.game.freezing_com.freezing(5);
+            const { id } = [...modelState.app.game.fish_list][0];
+            modelState.app.game.freezing_com.freezing(5, [id]);
         }, 5000);
     });
 

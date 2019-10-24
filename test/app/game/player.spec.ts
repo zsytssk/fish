@@ -1,5 +1,5 @@
 import { modelState } from 'model/modelState';
-import { PlayerInfo, PlayerModel } from 'model/playerModel';
+import { PlayerInfo } from 'model/playerModel';
 import { Test } from 'testBuilder';
 
 export const player_id = 'xxxx';
@@ -12,14 +12,40 @@ export const player_test = new Test('player', runner => {
         }
         // body_test.runTest('show_shape');
         const player_data = {
-            userId: player_id,
-            serverIndex: 0,
+            user_id: player_id,
+            server_index: 0,
             level: 101,
             gold: 10000,
-            gunSkin: '1',
+            gun_skin: '1',
             nickname: 'test',
             avatar: 'test',
-            isCurPlayer: true,
+            is_cur_player: true,
+            skills: {
+                '1': {
+                    item_id: '1',
+                    num: 20,
+                    cool_time: 10,
+                    used_time: 0,
+                },
+                '2': {
+                    item_id: '2',
+                    num: 20,
+                    cool_time: 10,
+                    used_time: 0,
+                },
+                '3': {
+                    item_id: '3',
+                    num: 20,
+                    cool_time: 10,
+                    used_time: 0,
+                },
+                '4': {
+                    item_id: '4',
+                    num: 20,
+                    cool_time: 10,
+                    used_time: 0,
+                },
+            },
         } as PlayerInfo;
         modelState.app.game.addPlayer(player_data);
     });
@@ -30,14 +56,34 @@ export const player_test = new Test('player', runner => {
         if (!other_player) {
             // body_test.runTest('show_shape');
             const player_data = {
-                userId: other_id,
-                serverIndex: 1,
-                level: 10,
+                user_id: other_id,
+                server_index: 0,
+                level: 101,
                 gold: 10000,
-                gunSkin: '1',
+                gun_skin: '1',
                 nickname: 'test',
                 avatar: 'test',
-                isCurPlayer: false,
+                is_cur_player: true,
+                skills: {
+                    '1': {
+                        item_id: '1',
+                        num: 20,
+                        cool_time: 10,
+                        used_time: 0,
+                    },
+                    '2': {
+                        item_id: '1',
+                        num: 20,
+                        cool_time: 10,
+                        used_time: 0,
+                    },
+                    '3': {
+                        item_id: '1',
+                        num: 20,
+                        cool_time: 10,
+                        used_time: 0,
+                    },
+                },
             } as PlayerInfo;
             other_player = modelState.app.game.addPlayer(player_data);
         }

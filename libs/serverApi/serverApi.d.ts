@@ -1,94 +1,197 @@
-type DisplaceType = 'path' | 'fun';
-
-/** 鱼群的信息 */
-type ServerShoalInfo = {
-    shoalId: string;
-    totalTime: number;
-    usedTime: number;
-    fishList: ServerFishInfo[];
-    revert?: boolean;
+type RoomInReq = {
+    roomId: number;
+    /** 是否试玩 */
+    isTrial: 0 | 1;
+    /** 币种 */
+    currency: number;
+};
+type RoomInRep = {
+    roomId: number;
+    bulletNum: number;
+    socketUrl: string;
+};
+type CheckReplayRep = {
+    isReplay: boolean;
+    socketUrl: string;
+};
+type ServerUserInfo = {
+    userId: string;
+    bulletNum: number;
+    multiple: number;
+    turretSkin: string;
+    bulletSkin: string;
+    lockFish: string;
+    lockLeft: number;
 };
 
+type displaceType = 'path' | 'fun';
 type ServerFishInfo = {
+    eid: string;
     fishId: string;
-    typeId: string;
-    displaceType: DisplaceType;
-    pathNo?: string;
-    startTime?: number;
-    totalTime?: number;
-    usedTime?: number;
-    reverse?: boolean;
-    funNo?: string;
-    funList?: any[];
-    group?: Array<{
-        fishId: string;
+    group: [
+        {
+            eid: string;
+            index: number;
+        },
+    ];
+    displaceType: displaceType;
+    pathNo: string;
+    usedTime: number;
+    totalTime: number;
+    funNo: string;
+    funParams: any[];
+    startTime: number;
+    reverse: boolean;
+    frozen: boolean;
+    inScreen: boolean;
+};
+type ServerItemInfo = {
+    itemId: string;
+    count: number;
+    coolTime: number;
+    usedTime: number;
+};
+type EnterGameRep = {
+    roomId: number;
+    tableId: string;
+    frozen: boolean;
+    frozenLeft: number;
+    users: ServerUserInfo[];
+    fish: ServerFishInfo[];
+    items: ServerItemInfo[];
+};
+
+type RoomOutRep = {
+    userId: string;
+};
+type ShootReq = {
+    direction: Point;
+};
+type ShootRep = {
+    userId: string;
+    direction: Point;
+};
+type HitReq = {
+    eid: string;
+    multiple: number;
+};
+type HitDrop = {
+    itemId: string;
+    itemNum: number;
+};
+type HitRep = {
+    userId: string;
+    eid: string;
+    bet: string;
+    win: string;
+    balance: string;
+    drop: HitDrop[];
+};
+type ChangeTurretReq = {
+    multiple: string;
+};
+type ChangeTurretRep = {
+    userId: string;
+    multiple: string;
+};
+type FishShoal = {
+    shoalId: string;
+    fish: ServerFishInfo[];
+};
+type UseFreezeRep = {
+    userId: string;
+    count: number;
+    duration: number;
+    frozenFishList: string[];
+};
+
+type FreezeOverRep = {
+    tableId: string;
+};
+type UseLockRep = {
+    userId: string;
+    count: number;
+    lockedFish: string;
+    duration: string;
+};
+type LockFishReq = {
+    eid: string;
+};
+type LockFishRep = {
+    useId: string;
+    eid: string;
+};
+type UseBombReq = {
+    bombPoint: string;
+    eid: string[];
+};
+type UseBombReq = {
+    bombPoint: string;
+    eid: string[];
+};
+type UseBombRep = {
+    userId: string;
+    bombPoint: string;
+    killedFish: {
+        eid: string;
+        win: number;
+    };
+    balance: number;
+};
+
+type PowerUpRep = {
+    userId: string;
+    duration: number;
+};
+type SetRobotReportRep = {};
+type UserAccountRep = {
+    userId: string;
+    email: string;
+    showName: string;
+    balances: Array<{
+        currency: string;
+        available: number;
     }>;
 };
-type CaptureFishInfo = {
-    fishId: string;
-    award: number;
+type GetDomainRep = {
+    domain: string;
+    cdn: string;
+    api: string;
+    sso: string;
+    domainRecharge: string;
+    channelRecharge: string;
+    homeUrl: string;
+    roomApi: string;
+    serverApi: string;
+    newServerApi: string;
 };
 
-type ServerPlayerInfo = {
-    userId: string;
-    serverIndex: number;
-    level: number;
-    gold: number;
-    gunSkin: string;
-    nickname: string;
-    avatar: string;
+type ItemPrice = {
+    type: number;
+    count: number;
+    name: string;
 };
-
-/** 复盘的信息 */
-type ReplayInfo = {};
-
-type ServerShoalInfo = {
-    shoalId: string;
-    totalTime: number;
-    usedTime: number;
-    reverse?: boolean;
-    fish: ServerFishInfo[];
+type LotteryRep = {
+    list: ItemPrice[];
 };
-
-type ServerFishInfo = {
-    fishId: string;
-    typeId: string;
-    centerFishTypeId?: string;
-    isSpecial?: boolean;
-    displaceType: 'fun' | 'path';
-    pathNo?: string;
-    usedTime?: number;
-    totalTime?: number;
-    funNo?: string;
-    funPrams?: any[];
-    startTimeRadio?: number;
-    endTimeRadio?: number;
-    reverse?: boolean;
+type TicketExchangeRep = {
+    list: ItemPrice[];
 };
-
-/**服务器数据结构*/
-type ServerGameInfo = {
-    userId: string;
-    roomId: string;
-    tableId: string;
-    fish: ServerFishInfo[];
-    shoal: ServerShoalInfo;
-    items: ServerItemData[];
-    userItems: ServerItemInfo;
-    users: ServerPlayerInfo[];
+type ShopItem = {
+    id: string;
+    name: string;
+    price: number;
+    status: number;
 };
-
-type ServerItemData = {
-    status?: 1 | 0; // 成功使用
-    itemId: string;
-    userId?: string;
-    usedTime?: number;
-    fish?: ServerFishInfo[];
+type ShopListRep = {
+    turret: ShopItem[];
+    bullet: ShopItem[];
+    items: ShopItem[];
 };
-
-type ServerItemInfo = {
-    [key: string]: {
-        count?: 50;
-        coolTime?: 10;
-    };
+type BuyReq = {
+    id: string;
+};
+type BuyRep = {
+    count: number;
+    name: string;
 };

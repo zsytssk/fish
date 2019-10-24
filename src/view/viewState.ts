@@ -1,4 +1,5 @@
 import GameView from './scenes/game/gameView';
+import SkillItemView from './scenes/game/skillItemView';
 
 type ViewState = {
     game: GameView;
@@ -16,6 +17,12 @@ export function addNet(skin: string) {
 }
 export function getPoolMousePos() {
     return viewState.game.getPoolMousePos();
+}
+export function getSkillItemByIndex(idx: number) {
+    return viewState.game.getSkillItemByIndex(idx);
+}
+export function getAutoLaunchSkillItem() {
+    return viewState.game.getAutoLaunchSkillItem();
 }
 export function convertPosToNode(
     pos: Laya.Point,

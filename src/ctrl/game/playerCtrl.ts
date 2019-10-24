@@ -5,8 +5,14 @@ import { PlayerModel } from 'model/playerModel';
 import SAT from 'sat';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import GunBoxView from 'view/scenes/game/gunBoxView';
-import { getPoolMousePos } from 'view/viewState';
+import {
+    getPoolMousePos,
+    getSkillItemByIndex,
+    getAutoLaunchSkillItem,
+} from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
+import { SkillCtrl } from './skillCtrl';
+import { AutoLaunchModel } from 'model/skill/autoLaunchModel';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -33,7 +39,7 @@ export class PlayerCtrl {
     private initEvent() {
         const {
             view,
-            model: { nickname, gun, is_cur_player },
+            model: { nickname, gun, is_cur_player, skill_map },
         } = this;
         const { event, direction, pos: gun_pos } = gun;
         const { ctrl_box, btn_minus, btn_add } = view;
@@ -62,9 +68,27 @@ export class PlayerCtrl {
             view.setLevel(level_info);
         });
 
+        view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+            e.stopPropagation();
+            console.log(`gun_box click`);
+        });
+
         /** 当前用户的处理 */
         if (!is_cur_player) {
             return;
+        }
+
+        let index = 0;
+        for (const [, skill_model] of skill_map) {
+            if (skill_model instanceof AutoLaunchModel) {
+                const auto_launch_view = getAutoLaunchSkillItem();
+                this.handleAutoLaunch(auto_launch_view, skill_model);
+                continue;
+            } else {
+                const skill_view = getSkillItemByIndex(index);
+                const skill_ctrl = new SkillCtrl(skill_view, skill_model);
+            }
+            index++;
         }
         event.on(GunEvent.CastFish, (fish: FishModel) => {
             console.log(`cast fish:`, fish);
@@ -88,11 +112,20 @@ export class PlayerCtrl {
         });
 
         ctrl_box.visible = true;
-        btn_minus.on(Laya.Event.CLICK, btn_minus, () => {
+        btn_minus.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
+            e.stopPropagation();
             console.log(`btn_minus`);
         });
-        btn_add.on(Laya.Event.CLICK, btn_minus, () => {
+        btn_add.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
+            e.stopPropagation();
             console.log(`btn_add`);
+        });
+    }
+    private handleAutoLaunch(view: Laya.Sprite, model: AutoLaunchModel) {
+        view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+            e.stopPropagation();
+            console.log('auto launch');
+            model.toggle();
         });
     }
 }

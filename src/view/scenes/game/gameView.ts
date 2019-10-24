@@ -6,6 +6,7 @@ import { createSprite, getSpriteInfo } from 'utils/dataUtil';
 import { viewState } from '../../viewState';
 import GunBoxView from './gunBoxView';
 import { playSkeleton } from 'utils/utils';
+import SkillItemView from './skillItemView';
 
 export default class GameView extends ui.scenes.game.gameUI
     implements HonorScene {
@@ -66,6 +67,12 @@ export default class GameView extends ui.scenes.game.gameUI
         const gun = new GunBoxView();
         gun_wrap.addChild(gun);
         return gun;
+    }
+    public getSkillItemByIndex(index: number) {
+        return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
+    }
+    public getAutoLaunchSkillItem() {
+        return this.skill_box.auto_launch;
     }
     public setEnergyRadio(radio: number) {
         const { energy_bar } = this.skill_box;

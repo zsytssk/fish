@@ -1,7 +1,7 @@
 import Bezier from 'bezier-js';
 import GameConfig from 'GameConfig';
 import SAT from 'sat';
-import { getShapeInfo, getSpriteInfo } from 'utils/dataUtil';
+import { getSpriteInfo } from 'utils/dataUtil';
 import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
@@ -346,6 +346,7 @@ export function createLine(path_info: [number, number, number, number]) {
     };
 }
 
+/** 生成鱼的路径函数... */
 export function createFishDisplace(data: ServerFishInfo) {
     const {
         typeId,
@@ -358,10 +359,13 @@ export function createFishDisplace(data: ServerFishInfo) {
     } = data;
 
     let curve_list: CurveInfo[];
-    if (displaceType === 'path') {
-        curve_list = createCurvesByPath(pathNo, typeId);
-    } else if (displaceType === 'fun') {
-        curve_list = createCurvesByFun(funList, typeId);
+    switch (displaceType) {
+        case 'fun':
+            curve_list = createCurvesByFun(funList, typeId);
+            break;
+        default:
+            curve_list = createCurvesByPath(pathNo, typeId);
+            break;
     }
     return new Displace(totalTime, usedTime, curve_list, reverse);
 }

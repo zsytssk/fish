@@ -13,6 +13,11 @@ type ModelState = {
 };
 export let modelState = {} as ModelState;
 
+/** 获取鱼 */
+export function getFishById(id: string) {
+    const { game } = modelState.app;
+    return game.getFishById(id);
+}
 /** 检测碰撞到鱼: 获取第一个 */
 export function getCollisionFish(ori_body: BodyCom) {
     const { fish_list } = modelState.app.game;

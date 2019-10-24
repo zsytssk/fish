@@ -1,8 +1,8 @@
-import { FishModel, FishStatus } from 'model/fishModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { GameModel } from 'model/gameModel';
 import { TimeoutCom } from 'comMan/timeoutCom';
+import { FishStatus } from 'model/fishModel';
+import { GameModel } from 'model/gameModel';
 
 export const FreezingComEvent = {
     /** 冰冻 */
@@ -27,9 +27,8 @@ export class FreezingCom extends ComponentManager {
     }
 
     /** 冰冻 */
-    public freezing(cool_time: number) {
+    public freezing(cool_time: number, fish_list: string[]) {
         const { game, freezing_timeout } = this;
-        const { fish_list } = game;
         const timeout = this.getCom(TimeoutCom);
         if (freezing_timeout) {
             timeout.clear(freezing_timeout);
@@ -38,7 +37,8 @@ export class FreezingCom extends ComponentManager {
             this.unFreezing();
         }, cool_time * 1000);
 
-        for (const fish of fish_list) {
+        for (const fish_id of fish_list) {
+            const fish = game.getFishById(fish_id);
             fish.setStatus(FishStatus.Freezed);
         }
         this.event.emit(FreezingComEvent.Freezing);
@@ -54,6 +54,6 @@ export class FreezingCom extends ComponentManager {
         for (const fish of fish_list) {
             fish.setStatus(FishStatus.Normal);
         }
-        this.event.emit(FreezingComEvent.Freezing);
+        this.event.emit(FreezingComEvent.UnFreezing);
     }
 }

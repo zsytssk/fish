@@ -5,7 +5,7 @@ import { EventCom } from 'comMan/eventCom';
 import { GunModel, GunEvent, GunStatus } from 'model/gun/gunModel';
 import { ModelEvent } from 'model/modelEvent';
 
-/** 追踪鱼 */
+/** 追踪鱼com */
 export class TrackFishCom extends ComponentManager {
     /** 追踪的鱼 */
     public fish: FishModel;

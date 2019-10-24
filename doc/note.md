@@ -1,3 +1,115 @@
+-   @todo
+
+    -   大厅页面
+    -   技能的本地 联调
+
+-   @todo 国旗 flag ..
+
+## 2019-10-24 09:34:56
+
+-   @ques 鱼组 中间删掉一个元素...
+
+-   @todo markdown to type.d.ts
+
+-   @ques 自动发射怎么将命令给服务端...
+
+    -   每次发射都需要将命令给服务端...
+
+-   @ques checkReplay @ques
+
+*   @todo 同步服务端的接口...
+
+-   @todo 技能冷却时间复盘 ?? @hujianx
+
+-   @todo setRobotReport 复盘...
+
+*   @todo
+
+    -   技能:> 本地跑完
+    -   同步服务端的接口...
+    -   点击 鱼 + 点击屏幕一个位置 (不显示提示触发 技能...))
+    -   webpack 清理 console.log --> 这时候怎么调试呢
+    -   干脆替换 console.log 吧
+
+*   @ques 鱼组 能不能 按照鱼潮的数据生成...
+
+    -   能不能将对路径的偏移做成一个函数...
+    -   这样鱼组就是几个独立的鱼...
+
+*   @ques 给当前用户炮台添加点击事件
+
+    -   这样就不会发射到底部...
+    -   所有用户的炮台都需要这样的点击事件 查看玩家信息...
+    -   @设计
+
+*   @todo 技能的点击 + 释放...
+
+    -   技能无法点击...
+
+*   @ques 更新 energy 需不需要 接口 (应该要) @后台...
+
+*   @ques 自动释放的技能怎么处理...
+
+*   @note 点击释放技能
+
+    -   选中鱼
+    -   选择炸弹炸点
+
+*   @ques 其他用户需不需要创建 skillCtrl
+
+    -   如果不要 炸弹如何处理...
+    -   gameModel 添加 炸弹效果...
+    -   不需要...
+
+*   @ques 技能有多部操作 在什么地方去监听这些...
+
+    -   最好是在相应的 skillCtrl 中监听...
+    -   ctrl --> model --> ctrl --> server --> ... model
+    -   比方说炸弹...
+
+*   将技能在页面上渲染出来
+*   @ques 能不能用
+
+    -   export 给 bomb bomb 再去
+    -   const 表示 SkillStatus
+    -   不好指定类型...
+
+*   @todo 多步技能怎么处理
+
+```ts
+BombStats = {
+    ...SkillStatus
+    fish_list: string[]
+}
+```
+
+怎么处理...
+
+-   @ques 有没有必要 将服务端的数据换成自己需要的数据
+    -   player_info ... 就直接可以 setProps 了
+
+## 2019-10-23 11:31:34
+
+-   @bug 网的动画太大了 有时候罩 P 住鱼 但是鱼没有显示 被网住...
+
+-   @bug 子弹开始的位置 可能在炮的旁边能够看出来...
+
+-   @ques skillModel --> freezing 这个不用继承 怎么处理
+
+    -   interface...
+    -   skillCoreCom
+
+-   @ques FreezingCom --> GameFreezingCom
+
+-   @todo CMD.skill_disable
+
+-   @ques 鱼提示锁定鱼怎么处理...
+
+    -   锁定的鱼被打死 重新提示怎么处理...
+    -   服务端的数据...
+
+## 2019-10-23 09:43:10
+
 -   @todo overlapArrLast
 
     -   多次发炮 - 然后动画就不播放

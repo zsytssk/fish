@@ -32,6 +32,10 @@ export function startCount(time: number, delta: number, fn: CountFn) {
 
 /** 清理倒计时 */
 export function clearCount(index: number) {
+    const item = count_map.get(index);
+    if (!item) {
+        return;
+    }
     count_map.get(index)();
     count_map.delete(index);
     if (count_map.size === 0) {

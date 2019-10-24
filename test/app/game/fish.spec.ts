@@ -64,7 +64,7 @@ export const fish_test = new Test('fish', runner => {
     /** 鱼组的测试 */
     runner.describe('add_fish_group', () => {
         // body_test.runTest('show_shape');
-        const typeId = 21;
+        const typeId = 'g21';
         const pathId = 90;
         const time = 50;
         const fish_data = {
@@ -78,12 +78,15 @@ export const fish_test = new Test('fish', runner => {
             group: [
                 {
                     fishId: `00g1`,
+                    index: 1,
                 },
                 {
                     fishId: `00g2`,
+                    index: 2,
                 },
                 {
                     fishId: `00g3`,
+                    index: 3,
                 },
             ],
         } as ServerFishInfo;

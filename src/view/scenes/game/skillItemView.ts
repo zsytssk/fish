@@ -3,8 +3,9 @@ const SkillMap = {
     '1': 'freeze',
     '2': 'bomb',
     '3': 'aim',
+    '4': 'auto',
 };
-export default class SkillItem extends ui.scenes.game.skillItemUI {
+export default class SkillItemView extends ui.scenes.game.skillItemUI {
     private cool_mask: Laya.Sprite;
     constructor() {
         super();

@@ -9,6 +9,8 @@ export type BulletGroupInfo = {
     velocity: SAT.Vector;
     track?: TrackTarget;
 };
+
+/** 子弹组合(一次发射多个子弹, 一颗子弹击中鱼, 所有同时生成网) */
 export class BulletGroup extends ComponentManager {
     public bullet_list: Set<BulletModel> = new Set();
     private gun: GunModel;
@@ -37,6 +39,7 @@ export class BulletGroup extends ComponentManager {
             this.bullet_list.add(bullet);
         }
     }
+    /** 一颗子弹击中鱼之后的处理 */
     private castFn = (fish: FishModel) => {
         const { gun, casted, bullet_list } = this;
         const { is_cur_player } = gun.player;

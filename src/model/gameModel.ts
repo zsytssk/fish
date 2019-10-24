@@ -81,7 +81,7 @@ export class GameModel extends ComponentManager {
     }
     /** 添加用户 */
     public addPlayer(data: PlayerInfo) {
-        const player = new PlayerModel(data, this);
+        const player = new PlayerModel(data);
         this.player_list.add(player);
         this.event.emit(GameEvent.AddPlayer, player);
         return player;

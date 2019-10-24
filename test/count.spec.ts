@@ -7,7 +7,7 @@ export const count_test = new Test('count', runner => {
             if (t === 0) {
                 return console.log('complete');
             }
-            console.log(Math.floor(11 * t));
+            console.log(t, Math.floor(11 * t));
         });
 
         setTimeout(() => {

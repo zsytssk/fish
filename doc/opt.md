@@ -4,3 +4,11 @@
 ## componentManager
 
 -   需不需要 同一个 class 多个 com + getComByName
+
+## 发布
+
+同时发布 es6 es5 版本...
+
+## 其他
+
+-   干脆替换 console.log 吧
