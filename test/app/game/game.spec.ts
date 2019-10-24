@@ -1,18 +1,27 @@
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
+import { injectAfter, injectProto } from 'honor/utils/tool';
+import { GameCtrl } from 'ctrl/game/gameCtrl';
+import { player_test } from './player.spec';
+import { fish_test } from './fish.spec';
+import { AppCtrl } from 'ctrl/appCtrl';
 
 export const game_test = new Test('game', runner => {
-    runner.describe('add_fish', () => {
-        for (let i = 0; i < 10; i++) {
-            const fish_data = {
-                fishId: '00' + i,
-                typeId: `${i + 1}`,
-                displaceType: 'path',
-                pathNo: `${i + 1}`,
-                totalTime: 10,
-                usedTime: 0,
-            } as ServerFishInfo;
-            modelState.app.game.addFish(fish_data);
-        }
+    runner.describe('enter_game', () => {
+        injectProto(AppCtrl, 'startApp', () => {
+            GameCtrl.preEnter();
+        });
+        let running = false;
+        injectAfter(GameCtrl, 'preEnter', () => {
+            if (running) {
+                return;
+            }
+            running = true;
+            player_test.runTest('add_cur_player');
+            // fish_test.runTest('add_fish_group', ['21', '1']);
+            fish_test.runTest('add_fish_group', ['20', '1']);
+            // socket_test.runTest('connect');
+            // path_test.runTest('sprite_offset');
+        });
     });
 });
