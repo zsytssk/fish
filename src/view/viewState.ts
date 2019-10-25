@@ -20,6 +20,9 @@ export function onPoolClick() {
 export function onFishClick() {
     return viewState.game.onFishClick();
 }
+export function offFishClick() {
+    return viewState.game.offFishClick();
+}
 export function getPoolMousePos() {
     return viewState.game.getPoolMousePos();
 }

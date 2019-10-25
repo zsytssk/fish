@@ -30,16 +30,27 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     }
     /** 显示技能的冷却时间 */
     public showCoolTime(radio: number) {
-        const { cool_mask } = this;
+        const { cool_mask, overlay } = this;
         const graphics = cool_mask.graphics;
         const radius = 60;
-
-        const angle = radio * 360 - 90;
+        const end_angle = 360 - 90;
+        const angle = (1 - radio) * 360 - 90;
         graphics.clear();
-        if (radio === 1) {
-            graphics.drawCircle(40, 41, radius, '#fff');
+        if (radio !== 0) {
+            graphics.drawPie(
+                40,
+                41,
+                radius,
+                angle,
+                end_angle,
+                '#fff',
+                '#fff',
+                0,
+            );
+            overlay.visible = true;
         } else {
-            graphics.drawPie(40, 41, radius, -90, angle, '#fff', '#fff', 0);
+            overlay.visible = false;
+            graphics.clear();
         }
     }
 }

@@ -1,18 +1,20 @@
+import { Observable, Subscriber } from 'rxjs';
 import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ui } from 'ui/layaMaxUI';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
-import { viewState } from '../../viewState';
-import GunBoxView from './gunBoxView';
 import { playSkeleton } from 'utils/utils';
-import SkillItemView from './skillItemView';
+import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
+import GunBoxView from './gunBoxView';
+import SkillItemView from './skillItemView';
 
 export default class GameView extends ui.scenes.game.gameUI
     implements HonorScene {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
+    private fish_click_observer: Subscriber<string>;
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
@@ -80,19 +82,29 @@ export default class GameView extends ui.scenes.game.gameUI
         });
     }
     /** 获取点击pool中的位置 */
-    public onFishClick(): Promise<string> {
-        return new Promise((resolve, reject) => {
+    public onFishClick(): Observable<string> {
+        return new Observable(subscriber => {
             const { pool } = this;
             const fun = (e: Laya.Event) => {
                 e.stopPropagation();
                 const { target } = e;
                 if (target instanceof FishView) {
-                    resolve(target.info.id);
-                    pool.off(Laya.Event.CLICK, pool, fun);
+                    subscriber.next(target.info.id);
                 }
             };
+            subscriber.add(() => {
+                pool.off(Laya.Event.CLICK, pool, fun);
+            });
             pool.on(Laya.Event.CLICK, pool, fun);
-        });
+            this.fish_click_observer = subscriber;
+        }) as Observable<string>;
+    }
+    /** 获取点击pool中的位置 */
+    public offFishClick() {
+        const { fish_click_observer: click_fish_observer } = this;
+        if (click_fish_observer) {
+            click_fish_observer.complete();
+        }
     }
     public addGun() {
         const { gun_wrap } = this;

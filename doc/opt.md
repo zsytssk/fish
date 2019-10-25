@@ -1,6 +1,10 @@
 -   @opt 张笑的可以 coingame 可以打包成 es6 模块
     -   能不能 gitlab release
 
+## 效果
+
+子弹的大小 大于 炮口 子弹有漏出的部分...
+
 ## componentManager
 
 -   需不需要 同一个 class 多个 com + getComByName

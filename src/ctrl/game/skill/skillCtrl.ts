@@ -1,7 +1,11 @@
 import SkillItemView from 'view/scenes/game/skillItemView';
 import { SkillModel } from 'model/skill/skillModel';
-import { SkillEvent } from 'model/skill/skillCoreCom';
-import { skillActiveHandler } from './skillCtrlUtils';
+import { SkillEvent, SkillStatus } from 'model/skill/skillCoreCom';
+import {
+    skillActiveHandler,
+    skillDisableHandler,
+    skillPreActiveHandler,
+} from './skillCtrlUtils';
 
 export class SkillCtrl {
     /**
@@ -21,9 +25,17 @@ export class SkillCtrl {
         event.on(SkillEvent.UpdateRadio, (radio: number) => {
             view.showCoolTime(radio);
         });
+        event.on(SkillEvent.StatusChange, (status: SkillStatus) => {
+            if (status === SkillStatus.Active) {
+                skillActiveHandler(model);
+            } else {
+                skillDisableHandler(model);
+            }
+        });
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+            // @test
             e.stopPropagation();
-            skillActiveHandler(model);
+            skillPreActiveHandler(model);
         });
     }
     private setInfo() {

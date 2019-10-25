@@ -1,9 +1,15 @@
 -   @todo
 
+    -   技能的冷却时间...
     -   技能的本地 联调
-        -   技能的冷却时间...
 
 -   @ques 怎么 complete a observer
+
+    -   自定义 complete func
+    -   when Subscriber complete
+    -   rxjs fromEvent complete... 取消事件绑定...
+
+-   @bug 瞄准鱼之后无法点击屏幕了
 
 *   @todo 锁定无法更改目标...
 

@@ -41,8 +41,8 @@ export function onNode(
     throttle = 1000,
 ) {
     let once_observer: Subscriber<Laya.Event>;
-    const observer = new Observable((_observer: Subscriber<Laya.Event>) => {
-        node.on(event, node, (_event: Laya.Event) => {
+    const observer = new Observable((subscriber: Subscriber<Laya.Event>) => {
+        const fn = (_event: Laya.Event) => {
             /** 按钮置灰 */
             if ((node as Laya.Image).gray === true) {
                 return;
@@ -55,11 +55,15 @@ export function onNode(
                 (node as Laya.Image).gray = false;
             }, throttle);
 
-            _observer.next(_event);
-            once_observer = _observer;
+            subscriber.next(_event);
+            once_observer = subscriber;
             if (once) {
-                _observer.complete();
+                subscriber.complete();
             }
+        };
+        node.on(event, node, fn);
+        subscriber.add(() => {
+            node.off(event, node, fn);
         });
     });
 

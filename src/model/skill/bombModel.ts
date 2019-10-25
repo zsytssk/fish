@@ -23,7 +23,7 @@ export class BombModel extends ComponentManager implements SkillModel {
     private init(info: SkillInfo) {
         this.addCom(new SkillCoreCom(info), new TimeoutCom());
     }
-    public active(info: SkillInfo) {
+    public active(info: BombInfo) {
         // 激活
         const { skill_core } = this;
         const { game } = modelState.app;
