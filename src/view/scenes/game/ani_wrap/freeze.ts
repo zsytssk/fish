@@ -16,19 +16,20 @@ function createFreezingAni() {
         ani_wrap.addChild(freezing_ani);
     }
 }
-export function activeFreezing() {
+export function activeFreeze() {
     createFreezingAni();
-    freezing_ani.on(Laya.Event.STOPPED, freezing_ani, () => {
-        loopFreezing();
+    freezing_ani.once(Laya.Event.STOPPED, freezing_ani, () => {
+        loopFreeze();
     });
 
     playSkeleton(freezing_ani, 0, false);
 }
-export function loopFreezing() {
+export function loopFreeze() {
     createFreezingAni();
     playSkeleton(freezing_ani, 1, true);
 }
-export function stopFreezing() {
+export function stopFreeze() {
+    freezing_ani.offAll();
     freezing_ani.stop();
     freezing_ani.removeSelf();
 }

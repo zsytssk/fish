@@ -9,6 +9,8 @@ import { setProps } from 'utils/utils';
 import GameView from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import { PlayerCtrl } from './playerCtrl';
+import { FreezingComEvent } from 'model/com/freezingCom';
+import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -43,6 +45,12 @@ export class GameCtrl {
             }
             const player_view = view.addGun();
             const ctrl = new PlayerCtrl(player_view, player);
+        });
+        event.on(FreezingComEvent.Freezing, () => {
+            activeFreeze();
+        });
+        event.on(FreezingComEvent.UnFreezing, () => {
+            stopFreeze();
         });
     }
 }

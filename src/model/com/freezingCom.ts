@@ -19,16 +19,13 @@ export class FreezingCom extends ComponentManager {
         super();
         this.game = game;
 
-        this.addCom(new EventCom(), new TimeoutCom());
-    }
-
-    public get event() {
-        return this.getCom(EventCom);
+        this.addCom(new TimeoutCom());
     }
 
     /** 冰冻 */
     public freezing(cool_time: number, fish_list: string[]) {
         const { game, freezing_timeout } = this;
+        const { event } = game;
         const timeout = this.getCom(TimeoutCom);
         if (freezing_timeout) {
             timeout.clear(freezing_timeout);
@@ -41,12 +38,12 @@ export class FreezingCom extends ComponentManager {
             const fish = game.getFishById(fish_id);
             fish.setStatus(FishStatus.Freezed);
         }
-        this.event.emit(FreezingComEvent.Freezing);
+        event.emit(FreezingComEvent.Freezing);
     }
     /** 解除冰冻 */
     public unFreezing() {
         const { game, freezing_timeout } = this;
-        const { fish_list } = game;
+        const { fish_list, event } = game;
         const timeout = this.getCom(TimeoutCom);
         if (freezing_timeout) {
             timeout.clear(freezing_timeout);
@@ -54,6 +51,6 @@ export class FreezingCom extends ComponentManager {
         for (const fish of fish_list) {
             fish.setStatus(FishStatus.Normal);
         }
-        this.event.emit(FreezingComEvent.UnFreezing);
+        event.emit(FreezingComEvent.UnFreezing);
     }
 }

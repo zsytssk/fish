@@ -9,7 +9,7 @@ let shoal_wave_ani: Laya.Skeleton;
 export function activeShoalWave(reverse = false) {
     createShoalWaveAni();
 
-    shoal_wave_ani.on(Laya.Event.STOPPED, shoal_wave_ani, () => {
+    shoal_wave_ani.once(Laya.Event.STOPPED, shoal_wave_ani, () => {
         stopShoalWave();
     });
     if (reverse) {
@@ -22,6 +22,7 @@ export function activeShoalWave(reverse = false) {
 
 /** 停止鱼群动画 */
 export function stopShoalWave() {
+    shoal_wave_ani.offAll();
     shoal_wave_ani.stop();
     shoal_wave_ani.removeSelf();
 }

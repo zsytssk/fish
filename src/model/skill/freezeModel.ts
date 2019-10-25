@@ -3,11 +3,11 @@ import { modelState } from 'model/modelState';
 import { SkillCoreCom, SkillInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 
-type FreezingInfo = {
+type FreezeInfo = {
     fish_list: string[];
 } & SkillInfo;
 /** 冰冻技能 */
-export class FreezingModel extends ComponentManager implements SkillModel {
+export class FreezeModel extends ComponentManager implements SkillModel {
     constructor(info: SkillInfo) {
         super();
         this.init(info);
@@ -18,7 +18,7 @@ export class FreezingModel extends ComponentManager implements SkillModel {
     private init(info: SkillInfo) {
         this.addCom(new SkillCoreCom(info));
     }
-    public active(info: FreezingInfo) {
+    public active(info: FreezeInfo) {
         const { skill_core } = this;
         const { cool_time } = skill_core;
         const { used_time, fish_list } = info;

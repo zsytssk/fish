@@ -226,7 +226,7 @@ export let SPRITE: GameSprite = {
             path: 'ani/fish/fish20',
             ani_type: 'horizon_turn',
         },
-        g21: {
+        G21: {
             group: [
                 {
                     type: '1',

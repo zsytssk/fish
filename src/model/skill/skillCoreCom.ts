@@ -91,6 +91,7 @@ export class SkillCoreCom extends ComponentManager {
                     const radio = rate * (remain_time / cool_time);
                     event.emit(SkillEvent.UpdateRadio, radio);
                     if (radio === 0) {
+                        this.disable();
                         resolve();
                     }
                 },

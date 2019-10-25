@@ -21,7 +21,7 @@ function createExplodingAni() {
 export function activeExploding(pos: Point) {
     const ani = createExplodingAni();
 
-    ani.on(Laya.Event.STOPPED, ani, () => {
+    ani.once(Laya.Event.STOPPED, ani, () => {
         recoverExploding(ani);
     });
     ani.pos(pos.x, pos.y);
@@ -29,6 +29,7 @@ export function activeExploding(pos: Point) {
 }
 
 export function recoverExploding(ani: Laya.Skeleton) {
+    ani.offAll();
     ani.stop();
     ani.removeSelf();
     exploding_ani_arr.push(ani);

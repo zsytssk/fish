@@ -1,7 +1,7 @@
 import { range } from 'lodash';
 import { Test } from 'testBuilder';
-import { loopFreezing, stopFreezing } from 'view/scenes/game/ani_wrap/freezing';
-import { activeFreezing } from 'view/scenes/game/ani_wrap/freezing';
+import { loopFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
+import { activeFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import {
     activeShoalWave,
     stopShoalWave,
@@ -14,13 +14,13 @@ import { modelState } from 'model/modelState';
 /** 冰冻 鱼群 爆炸 瞄准...测试 */
 export const ani_wrap = new Test('ani_wrap', runner => {
     runner.describe('active_freezing', () => {
-        activeFreezing();
+        activeFreeze();
     });
     runner.describe('loop_freezing', () => {
-        loopFreezing();
+        loopFreeze();
     });
     runner.describe('stop_freezing', () => {
-        stopFreezing();
+        stopFreeze();
     });
 
     runner.describe('active_shoal_wave', () => {

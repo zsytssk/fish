@@ -3,6 +3,12 @@
     -   技能的冷却时间...
     -   技能的本地 联调
 
+-   @todo 触发... 爆炸动画
+
+-   @bug freeze 之后无法二次 freeze
+
+-   @bug 无法取消 `offFishClick`
+
 -   @ques 怎么 complete a observer
 
     -   自定义 complete func
