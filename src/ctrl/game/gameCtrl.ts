@@ -33,14 +33,15 @@ export class GameCtrl {
         const event = this.model.event;
         const { view } = this;
         event.on(GameEvent.AddFish, (fish: FishModel) => {
-            const fish_view = view.addFish(fish.type, fish.horizon_turn);
+            const { type, id, horizon_turn } = fish;
+            const fish_view = view.addFish({ type, id, horizon_turn });
             const ctrl = new FishCtrl(fish_view, fish);
         });
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
             if (player.is_cur_player && player.server_index > 1) {
                 view.upSideDown();
             }
-            const player_view = view.addGun(player.gun.skin);
+            const player_view = view.addGun();
             const ctrl = new PlayerCtrl(player_view, player);
         });
     }

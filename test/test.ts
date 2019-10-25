@@ -55,4 +55,5 @@ export const test = mapTest(testBuilder.top_scope);
 window.test = test;
 window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
 
-// game_test.runTest('enter_game');
+game_test.runTest('enter_game');
+socket_test.runTest('init_app_socket');

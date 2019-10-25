@@ -49,13 +49,13 @@ export function getCollisionAllFish(
 
 /** 创建鱼 move_com在外面创建 */
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
-    const { typeId, fishId } = data;
+    const { eid: id, fishId: type } = data;
     const displace = createFishDisplace(data);
     const move_com = new MoveDisplaceCom(displace);
     const fish = new FishModel(
         {
-            typeId,
-            fishId,
+            id,
+            type,
             move_com,
         },
         game,
@@ -73,7 +73,7 @@ export function createFishGroup(
     data: ServerFishInfo,
     game: GameModel,
 ): FishModel[] {
-    const { typeId: groupType, group } = data;
+    const { fishId: groupType, group } = data;
     const result = [] as FishModel[];
     const { group: sprite_group } = getSpriteInfo(
         'fish',
@@ -131,8 +131,8 @@ export function createFishGroup(
         }
     });
     for (let i = 0; i < sprite_group.length; i++) {
-        const { typeId, pos } = sprite_group[i];
-        const { fishId } = group[i];
+        const { type, pos } = sprite_group[i];
+        const { eid: id } = group[i];
         const [onUpdate, destroy, start, stop] = createUpdateFn(
             (move_info: MoveInfo) => {
                 const { pos: _pos, ...other } = move_info;
@@ -157,8 +157,8 @@ export function createFishGroup(
         } as MoveCom;
         const fish = new FishModel(
             {
-                typeId,
-                fishId,
+                id,
+                type,
                 move_com: _move_com,
             },
             game,

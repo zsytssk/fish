@@ -1,6 +1,6 @@
 import { Component, ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { config } from 'data/config';
+import { Config } from 'data/config';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
 import { MoveTrackCom, TrackTarget } from '../com/moveCom/moveTrackCom';
@@ -45,7 +45,7 @@ export class BulletModel extends ComponentManager {
         this.skin = props.skin;
         this.pos = props.pos;
         this.cast_fn = props.cast_fn;
-        this.velocity = props.velocity.scale(config.bullet_speed);
+        this.velocity = props.velocity.scale(Config.BulletSpeed);
         this.init(props.track);
     }
     public get event() {
@@ -58,12 +58,8 @@ export class BulletModel extends ComponentManager {
         const { pos, velocity, level } = this;
         const com_list: Component[] = [new EventCom()];
         if (!track) {
-            const move_com = new MoveVelocityCom(
-                pos,
-                velocity,
-                this.onMoveChange,
-            );
-
+            const move_com = new MoveVelocityCom(pos, velocity);
+            move_com.onUpdate(this.onMoveChange);
             const shapes = getShapes('bullet', level);
             const body_com = new BodyCom(shapes);
 
@@ -74,10 +70,10 @@ export class BulletModel extends ComponentManager {
                 velocity,
                 track,
                 this.onTrackMoveChange,
-                this.onHit,
             );
 
             com_list.push(move_com);
+            move_com.onUpdate(this.onHit);
         }
 
         this.addCom(...com_list);

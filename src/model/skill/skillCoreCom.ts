@@ -9,13 +9,7 @@ export enum SkillStatus {
     /** 正常状态 */
     Normal = 'normal',
     /** 激活状态1 */
-    Active1 = 'active_1',
-    /** 激活状态2 */
-    Active2 = 'active_2',
-    /** 激活状态3 */
-    Active3 = 'active_3',
-    /** 激活状态4 */
-    Active4 = 'active_4',
+    Active = 'active',
 }
 /** 技能属性 */
 export type SkillInfo = {
@@ -78,6 +72,10 @@ export class SkillCoreCom extends ComponentManager {
     }
     public active(info?: SkillInfo) {
         return new Promise((resolve, reject) => {
+            /** 只能激活一次 */
+            if (this.status === SkillStatus.Active) {
+                return;
+            }
             this.updateInfo(info);
             const { cool_time, event } = this;
             const { used_time } = info;
@@ -85,7 +83,7 @@ export class SkillCoreCom extends ComponentManager {
             const count_delta = 0.03;
             const remain_time = cool_time - used_time;
 
-            this.setStatus(SkillStatus.Active1);
+            this.setStatus(SkillStatus.Active);
             this.count_index = startCount(
                 remain_time,
                 count_delta,

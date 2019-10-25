@@ -5,6 +5,7 @@ type RoomInReq = {
     /** 币种 */
     currency: number;
 };
+
 type RoomInRep = {
     roomId: number;
     bulletNum: number;
@@ -28,22 +29,22 @@ type displaceType = 'path' | 'fun';
 type ServerFishInfo = {
     eid: string;
     fishId: string;
-    group: [
-        {
-            eid: string;
-            index: number;
-        },
-    ];
+    group?: {
+        eid: string;
+        index: number;
+    }[];
     displaceType: displaceType;
-    pathNo: string;
+    pathNo?: string;
     usedTime: number;
     totalTime: number;
-    funNo: string;
-    funParams: any[];
-    startTime: number;
-    reverse: boolean;
-    frozen: boolean;
-    inScreen: boolean;
+    funList: {
+        funNo?: string;
+        funParams?: any[];
+    }[];
+    startTime?: number;
+    reverse?: boolean;
+    frozen?: boolean;
+    inScreen?: boolean;
 };
 type ServerItemInfo = {
     itemId: string;

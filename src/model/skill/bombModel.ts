@@ -1,7 +1,11 @@
+import * as SAT from 'sat';
 import { ComponentManager } from 'comMan/component';
-import { modelState } from 'model/modelState';
+import { modelState, getCollisionAllFish } from 'model/modelState';
 import { SkillCoreCom, SkillInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
+import { BodyCom } from 'model/com/bodyCom';
+import { Config } from 'data/config';
+import { TimeoutCom } from 'comMan/timeoutCom';
 
 export type BombInfo = {
     fish_list: string[];
@@ -17,17 +21,38 @@ export class BombModel extends ComponentManager implements SkillModel {
         return this.getCom(SkillCoreCom);
     }
     private init(info: SkillInfo) {
-        this.addCom(new SkillCoreCom(info));
+        this.addCom(new SkillCoreCom(info), new TimeoutCom());
     }
     public active(info: SkillInfo) {
         // 激活
         const { skill_core } = this;
         const { game } = modelState.app;
-
         skill_core.active(info);
+    }
+    /** 获取炸到的鱼 */
+    public getBombFish(pos: Point): string[] {
+        const time_out = this.getCom(TimeoutCom);
+        const body = createBombBody();
+        body.update(pos);
+        const fish_list = getCollisionAllFish(body);
+        time_out.createTimeout(() => {
+            body.destroy();
+        }, 500);
+        return fish_list.map(item => {
+            return item.id;
+        });
     }
     public disable() {
         const { skill_core } = this;
         skill_core.disable();
     }
+}
+
+export function createBombBody() {
+    const circle = new SAT.Circle(new SAT.Vector(0, 0), Config.BombRadius);
+    const shape = {
+        shape: circle,
+        pos: new SAT.Vector(0, 0),
+    };
+    return new BodyCom([shape], false);
 }

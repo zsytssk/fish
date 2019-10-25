@@ -1,6 +1,7 @@
 import { range } from 'lodash';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
+import { body_test } from './body.spec';
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
@@ -11,9 +12,8 @@ export const fish_test = new Test('fish', runner => {
             pathId = pathId || 17;
             time = time || 15;
             const fish_data = {
-                fishId: '00' + typeId,
-                typeId: `${typeId}`,
-
+                eid: '00' + typeId,
+                fishId: `${typeId}`,
                 pathNo: `${pathId}`,
                 totalTime: time,
                 usedTime: 0,
@@ -31,8 +31,8 @@ export const fish_test = new Test('fish', runner => {
                 pathId = i;
                 time = time || 15;
                 const fish_data = {
-                    fishId: '00' + typeId,
-                    typeId: `${typeId}`,
+                    eid: '00' + typeId,
+                    fishId: `${typeId}`,
                     displaceType: 'path',
                     pathNo: `${pathId}`,
                     totalTime: time,
@@ -50,8 +50,8 @@ export const fish_test = new Test('fish', runner => {
             const pathId = i;
             const time = 40;
             const fish_data = {
-                fishId: '00' + typeId,
-                typeId: `${typeId}`,
+                eid: '00' + typeId,
+                fishId: `${typeId}`,
                 displaceType: 'path',
                 pathNo: `${pathId}`,
                 totalTime: time,
@@ -63,13 +63,13 @@ export const fish_test = new Test('fish', runner => {
 
     /** 鱼组的测试 */
     runner.describe('add_fish_group', () => {
-        // body_test.runTest('show_shape');
+        body_test.runTest('show_shape');
         const typeId = 'g21';
         const pathId = 90;
         const time = 50;
         const fish_data = {
-            fishId: '00' + typeId,
-            typeId: `${typeId}`,
+            eid: '00' + typeId,
+            fishId: `${typeId}`,
             displaceType: 'path',
             pathNo: `${pathId}`,
             totalTime: time,
@@ -77,15 +77,15 @@ export const fish_test = new Test('fish', runner => {
             reverse: true,
             group: [
                 {
-                    fishId: `00g1`,
+                    eid: `00g1`,
                     index: 1,
                 },
                 {
-                    fishId: `00g2`,
+                    eid: `00g2`,
                     index: 2,
                 },
                 {
-                    fishId: `00g3`,
+                    eid: `00g3`,
                     index: 3,
                 },
             ],

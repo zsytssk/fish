@@ -1,4 +1,4 @@
-import { config } from 'data/config';
+import { Config } from 'data/config';
 import GameConfig from 'GameConfig';
 // import honor from 'honor';
 import { HallCtrl } from './start/hallCtrl';
@@ -26,7 +26,7 @@ export class AppCtrl {
     /** 初始化 honor */
     private async startHonor() {
         await honor.run(GameConfig, {
-            defaultVersion: config.cdn_version,
+            defaultVersion: Config.CdnVersion,
         });
 
         const task1 = honor.director.setLoadPageForScene(

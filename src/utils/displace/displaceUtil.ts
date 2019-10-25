@@ -215,8 +215,8 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
 }
 
 export type DisplaceFunInfo = {
-    funNo: string;
-    funParam: any[];
+    funNo?: string;
+    funParams?: any[];
     radio?: number;
     len?: number;
     /** poker水母直接出现在屏幕中间无需添加额外曲线 */
@@ -235,11 +235,13 @@ export function createCurvesByFun(
     const curves = [] as CurveInfo[];
     for (let i = 0; i < fun_list.length; i++) {
         const curve_item = {} as CurveInfo;
-        const fun_no = fun_list[i].funNo;
-        const fun_param = fun_list[i].funParam;
+        const {
+            funNo: fun_no,
+            funParams: fun_param,
+            no_enter_leave,
+            no_enter_leave: leave,
+        } = fun_list[i];
         /** 直接显示在页面中的鱼不需要添加额外路线 */
-        const no_enter_leave = fun_list[i].no_enter_leave;
-        const leave = fun_list[i].no_enter_leave || fun_list[i].leave;
         let curve = FUNCTION[fun_no].apply(this, fun_param);
         curve_item.curve = curve;
         let length = fun_list[i].len;
@@ -349,7 +351,7 @@ export function createLine(path_info: [number, number, number, number]) {
 /** 生成鱼的路径函数... */
 export function createFishDisplace(data: ServerFishInfo) {
     const {
-        typeId,
+        fishId,
         displaceType,
         pathNo,
         usedTime,
@@ -361,10 +363,10 @@ export function createFishDisplace(data: ServerFishInfo) {
     let curve_list: CurveInfo[];
     switch (displaceType) {
         case 'fun':
-            curve_list = createCurvesByFun(funList, typeId);
+            curve_list = createCurvesByFun(funList, fishId);
             break;
         default:
-            curve_list = createCurvesByPath(pathNo, typeId);
+            curve_list = createCurvesByPath(pathNo, fishId);
             break;
     }
     return new Displace(totalTime, usedTime, curve_list, reverse);

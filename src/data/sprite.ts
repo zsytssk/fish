@@ -29,7 +29,7 @@ export type FishSpriteInfo = SpriteInfo & {
     /** 有没有转向动画 */
     ani_type?: FishAniType;
     group?: Array<{
-        typeId: string;
+        type: string;
         pos: Point;
     }>;
     /** 为了在边界给鱼添加额外的路径, 慢慢的进入|退出 */
@@ -229,21 +229,21 @@ export let SPRITE: GameSprite = {
         g21: {
             group: [
                 {
-                    typeId: '1',
+                    type: '1',
                     pos: {
                         x: -135,
                         y: -46,
                     },
                 },
                 {
-                    typeId: '1',
+                    type: '1',
                     pos: {
                         x: -28,
                         y: -48,
                     },
                 },
                 {
-                    typeId: '1',
+                    type: '1',
                     pos: {
                         x: 23,
                         y: 47,

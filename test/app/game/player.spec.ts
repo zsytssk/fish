@@ -1,6 +1,7 @@
 import { modelState } from 'model/modelState';
 import { PlayerInfo } from 'model/playerModel';
 import { Test } from 'testBuilder';
+import { body_test } from './body.spec';
 
 export const player_id = 'xxxx';
 /** @type {PlayerModel} 的测试 */

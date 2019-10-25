@@ -1,7 +1,7 @@
 import { ComponentManager } from 'comMan/component';
 import { getGunInfo } from 'utils/dataUtil';
 import { GunModel } from './gun/gunModel';
-import { SkillMap, SkillModel } from './skill/skillModel';
+import { SkillCtorMap, SkillModel } from './skill/skillModel';
 import { SkillInfo } from './skill/skillCoreCom';
 import { setProps } from 'utils/utils';
 
@@ -75,11 +75,11 @@ export class PlayerModel extends ComponentManager {
     }
     private initSkill(skills: SkillMap) {
         const { skill_map } = this;
-        for (const key in SkillMap) {
-            if (!SkillMap.hasOwnProperty(key)) {
+        for (const key in SkillCtorMap) {
+            if (!SkillCtorMap.hasOwnProperty(key)) {
                 continue;
             }
-            const ctor = SkillMap[key];
+            const ctor = SkillCtorMap[key];
             const info = {
                 player: this,
                 ...skills[key],

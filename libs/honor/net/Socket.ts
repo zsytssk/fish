@@ -77,7 +77,7 @@ export class SocketCtrl extends ComponentManager {
         this.event.emit(cmd, code, params);
     }; //tslint:disable-line
 
-    public send(cmd: string, params: {}) {
+    public send(cmd: string, params = {}) {
         const { token } = this.config;
         const data = {
             cmd,

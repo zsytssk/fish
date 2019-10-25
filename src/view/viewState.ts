@@ -1,5 +1,4 @@
 import GameView from './scenes/game/gameView';
-import SkillItemView from './scenes/game/skillItemView';
 
 type ViewState = {
     game: GameView;
@@ -14,6 +13,12 @@ export function addBullet(skin: string, rage: boolean) {
 }
 export function addNet(skin: string) {
     return viewState.game.addNet(skin);
+}
+export function onPoolClick() {
+    return viewState.game.onPoolClick();
+}
+export function onFishClick() {
+    return viewState.game.onFishClick();
 }
 export function getPoolMousePos() {
     return viewState.game.getPoolMousePos();

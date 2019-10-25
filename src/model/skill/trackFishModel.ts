@@ -1,10 +1,12 @@
 import { ComponentManager } from 'comMan/component';
-import { modelState, getCollisionFish, getFishById } from 'model/modelState';
+import { getFishById } from 'model/modelState';
 import { SkillCoreCom, SkillInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 
-export type FreezingInfo = {
+export type TrackFishInfo = {
+    /** 锁定的鱼 */
     fish: string;
+    /** 是否是提示选中鱼 */
     pre_active: boolean;
 } & SkillInfo;
 
@@ -20,19 +22,18 @@ export class TrackFishModel extends ComponentManager implements SkillModel {
     private init(info: SkillInfo) {
         this.addCom(new SkillCoreCom(info));
     }
-    public active(info: FreezingInfo) {
+    public active(info: TrackFishInfo) {
         // 激活
         const { skill_core } = this;
         const { player } = skill_core;
-        const { fish } = info;
+        const { fish, pre_active } = info;
         const fish_model = getFishById(fish);
 
-        player.gun.trackFish.track(fish_model, true);
+        player.gun.trackFish.track(fish_model, pre_active);
         skill_core.active(info).then(() => {
             player.gun.trackFish.unTrack();
         });
     }
-    public preActive() {}
     public disable() {
         const { skill_core } = this;
         skill_core.disable();

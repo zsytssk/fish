@@ -1,19 +1,18 @@
 import SAT from 'sat';
 import { clearTick, createTick } from '../../../utils/tick';
-import { config } from 'data/config';
+import { Config } from 'data/config';
 
 /** 速度 移动控制 */
-export class MoveVelocityCom {
+export class MoveVelocityCom implements MoveCom {
     private pos: Point;
     private velocity: SAT.Vector;
     private update_fn: MoveUpdateFn;
     private tick_index: number;
     /** 停止 */
     private is_stop = false;
-    constructor(pos: Point, velocity: SAT.Vector, update_fn: MoveUpdateFn) {
+    constructor(pos: Point, velocity: SAT.Vector) {
         this.pos = pos;
         this.velocity = velocity;
-        this.update_fn = update_fn;
 
         this.tick_index = createTick(this.update.bind(this));
     }
@@ -28,8 +27,12 @@ export class MoveVelocityCom {
         this.detectHitWall();
         this.update_fn({ pos, velocity });
     }
+    /** 绑定更新 */
+    public onUpdate(update_fn: MoveUpdateFn) {
+        this.update_fn = update_fn;
+    }
     public detectHitWall() {
-        const { pool_height, pool_width } = config;
+        const { PoolHeight: pool_height, PoolWidth: pool_width } = Config;
         const velocity = this.velocity;
         const pos = this.pos;
         let { x, y } = velocity;

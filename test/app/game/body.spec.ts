@@ -1,9 +1,9 @@
-import { Honor } from 'honor';
 import { injectProto } from 'honor/utils/tool';
 import { BodyCom, ShapeInfo } from 'model/com/bodyCom';
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
 import GameView from 'view/scenes/game/gameView';
+import honor from 'honor';
 
 export const body_test = new Test('body', runner => {
     let init_show_shape = false;
@@ -16,7 +16,7 @@ export const body_test = new Test('body', runner => {
                 let sprite = sprite_map.get(obj);
                 if (!sprite) {
                     sprite = new Laya.Sprite();
-                    const game_view = Honor.director.runningScene as GameView;
+                    const game_view = honor.director.runningScene as GameView;
                     sprite.zOrder = 10;
                     game_view.pool.addChild(sprite);
                     sprite_map.set(obj, sprite);

@@ -1,18 +1,67 @@
 -   @todo
 
+    -   技能的本地 联调
+        -   技能的冷却时间...
+
+-   @ques enableProposalApi to
+
+-   @bug 技能已经激活无法再激活...
+
+-   @todo `enum SkillMap`
+
+*   @bug createFishDisplace...
+
+*   @ques 怎么选中屏幕中的鱼...
+
+    -   创建一个鱼的节点 将他包裹起来, 他的大小等于鱼的大小...
+        -   如果鱼的形状是圆行怎么办 --> 只计算 offset...
+    -   点击屏幕之后通过 便利 fishModel 计算 pointInShape...
+
+*   @ques onFishClick... 获取 fish 的 fishId
+
+    -   能不能监听一次 之后就取消了...
+    -   promise.race
+
+*   @todo 被攻击的特效 可以和发射的特效一样处理...
+
+*   @todo test.fish.... 数据错误...
+
+## 2019-10-25 10:38:03
+
+-   @todo
+
     -   大厅页面
     -   技能的本地 联调
+        -   技能的冷却时间...
 
--   @todo 国旗 flag ..
+*   @ques 不同的技能怎么使用相同的格式
 
--   @todo 马上玩的 接口.. @hujianx
+    -   getProgress
 
--   @bug 进入游戏的时候 大厅没有销毁...
+*   @todo 炮弹选择屏幕中的位置时
+
+    -   已经激活 但是没有触发 怎么显示这个个状态 @设计
+    -   skillBox 上直接显示提示...
+    -   技能本身需不需要什么特殊的样式
+
+*   @ques 鱼组中所有的鱼的速度都是一样的 这可以吗 (产品...)
+
+*   @todo 国旗 flag ..
+
+*   @todo 马上玩的 接口.. @hujianx
+
+*   @bug 进入游戏的时候 大厅没有销毁...
 
     -   切换场景怎么处理...
     -   怎么监听切换场景...
 
--   @todo 玩玩张笑的游戏 看看有什么需要注意的地方...
+-   @
+
+*   @ques hallView onResize 为什么不执行...
+
+*   @todo 玩玩张笑的游戏 看看有什么需要注意的地方...
+
+*   @todo onPoolClick onFishClick
 
 ## 2019-10-24 09:34:56
 

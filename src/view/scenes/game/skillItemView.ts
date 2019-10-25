@@ -1,9 +1,11 @@
 import { ui } from 'ui/layaMaxUI';
-const SkillMap = {
-    '1': 'freeze',
-    '2': 'bomb',
-    '3': 'aim',
-    '4': 'auto',
+import { SkillMap } from 'data/config';
+
+export const SkillNameMap = {
+    [SkillMap.Freezing]: 'freeze',
+    [SkillMap.Bomb]: 'bomb',
+    [SkillMap.TrackFish]: 'aim',
+    [SkillMap.Auto]: 'auto',
 };
 export default class SkillItemView extends ui.scenes.game.skillItemUI {
     private cool_mask: Laya.Sprite;
@@ -19,7 +21,7 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     }
     public setId(skill_id: string) {
         const { skill_icon } = this;
-        const name = SkillMap[skill_id];
+        const name = SkillNameMap[skill_id];
         skill_icon.skin = `image/game/skill_${name}.png`;
     }
     public setNum(num: number) {

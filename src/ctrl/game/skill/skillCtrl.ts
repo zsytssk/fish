@@ -1,6 +1,7 @@
 import SkillItemView from 'view/scenes/game/skillItemView';
 import { SkillModel } from 'model/skill/skillModel';
 import { SkillEvent } from 'model/skill/skillCoreCom';
+import { skillHandler } from './skillCtrlUtils';
 
 export class SkillCtrl {
     /**
@@ -22,7 +23,7 @@ export class SkillCtrl {
         });
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             e.stopPropagation();
-            console.log('active skill', model.skill_core.item_id);
+            skillHandler(model);
         });
     }
     private setInfo() {

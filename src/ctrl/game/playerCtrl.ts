@@ -11,7 +11,7 @@ import {
     getAutoLaunchSkillItem,
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
-import { SkillCtrl } from './skillCtrl';
+import { SkillCtrl } from './skill/skillCtrl';
 import { AutoLaunchModel } from 'model/skill/autoLaunchModel';
 
 /** 玩家的控制器 */

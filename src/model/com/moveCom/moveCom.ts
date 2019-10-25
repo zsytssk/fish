@@ -4,7 +4,7 @@ interface MoveInfo {
 }
 interface MoveCom {
     /** 更新位置 */
-    onUpdate(move_fn: MoveUpdateFn);
+    onUpdate(move_fn: MoveUpdateFn): void;
     start(): void;
     stop(): void;
     destroy(): void;

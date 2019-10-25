@@ -7,6 +7,7 @@ import { viewState } from '../../viewState';
 import GunBoxView from './gunBoxView';
 import { playSkeleton } from 'utils/utils';
 import SkillItemView from './skillItemView';
+import { FishView, FishViewInfo } from './fishView';
 
 export default class GameView extends ui.scenes.game.gameUI
     implements HonorScene {
@@ -33,9 +34,10 @@ export default class GameView extends ui.scenes.game.gameUI
         pool.scaleY = gun_wrap.scaleY = ani_wrap.scaleY = -1;
         this.upside_down = true;
     }
-    public addFish(type: string, horizon_turn: boolean) {
+    public addFish(info: FishViewInfo & { horizon_turn: boolean }) {
         const { pool, upside_down } = this;
-        const fish = createSkeleton('ani/fish/fish' + type);
+        const { horizon_turn } = info;
+        const fish = new FishView(info, pool);
         /** 水平翻转移动的鱼需要垂直颠倒 */
         if (horizon_turn && upside_down) {
             fish.scaleY = -1;
@@ -61,6 +63,36 @@ export default class GameView extends ui.scenes.game.gameUI
         const net = createSprite('net', skin);
         pool.addChild(net);
         return net;
+    }
+    /** 获取点击pool中的位置 */
+    public onPoolClick(): Promise<Point> {
+        return new Promise((resolve, reject) => {
+            const { pool } = this;
+            pool.once(Laya.Event.CLICK, pool, (e: Laya.Event) => {
+                e.stopPropagation();
+                const { x, y } = pool.getMousePoint();
+
+                resolve({
+                    x,
+                    y,
+                });
+            });
+        });
+    }
+    /** 获取点击pool中的位置 */
+    public onFishClick(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const { pool } = this;
+            const fun = (e: Laya.Event) => {
+                e.stopPropagation();
+                const { target } = e;
+                if (target instanceof FishView) {
+                    resolve(target.info.id);
+                    pool.off(Laya.Event.CLICK, pool, fun);
+                }
+            };
+            pool.on(Laya.Event.CLICK, pool, fun);
+        });
     }
     public addGun() {
         const { gun_wrap } = this;

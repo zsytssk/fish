@@ -5,5 +5,8 @@ type CtrlState = {
     app: AppCtrl;
     game: GameCtrl;
 };
-
 export const ctrlState = {} as CtrlState;
+
+export function getSocket() {
+    return ctrlState.app.socket;
+}

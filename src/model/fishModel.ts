@@ -8,6 +8,7 @@ import { BodyCom } from './com/bodyCom';
 import { getShapes } from './com/bodyComUtil';
 import { GameModel } from './gameModel';
 import { ModelEvent } from './modelEvent';
+import { setProps } from 'utils/utils';
 
 export const FishEvent = {
     /** 移动 */
@@ -25,8 +26,8 @@ export type FishMoveData = {
 };
 
 export type FishData = {
-    typeId: string;
-    fishId: string;
+    type: string;
+    id: string;
     move_com: MoveCom;
 };
 /** 鱼的状态 */
@@ -65,17 +66,16 @@ export class FishModel extends ComponentManager {
         return this.getCom(BodyCom);
     }
     private init(data: FishData) {
-        const { typeId, fishId, move_com } = data;
-        this.type = typeId;
-        this.id = fishId;
+        const { type, id, move_com } = data;
 
+        setProps(this as FishModel, { type, id });
         move_com.onUpdate(this.onMoveChange);
-        const sprite_info = getSpriteInfo('fish', typeId) as FishSpriteInfo;
+        const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;
         if (sprite_info.ani_type === 'horizon_turn') {
             horizon_turn = true;
         }
-        const shapes = getShapes('fish', Number(typeId));
+        const shapes = getShapes('fish', Number(type));
         const body_com = new BodyCom(shapes, horizon_turn);
 
         this.horizon_turn = horizon_turn;

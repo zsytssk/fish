@@ -1,7 +1,7 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { config } from 'data/config';
+import { Config } from 'data/config';
 import * as SAT from 'sat';
 import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
 import { AutoLaunchCom } from '../com/autoLaunchCom';
@@ -65,7 +65,7 @@ export class GunModel extends ComponentManager {
     /** 是否加速  */
     public is_speedup = false;
     /** 是否加速  */
-    public launch_space = config.launch_space;
+    public launch_space = Config.LaunchSpace;
     /** 枪是否打开, 用来控制发射子弹的间隔 */
     private is_on = true;
     /** 枪是狂暴 */
@@ -137,10 +137,10 @@ export class GunModel extends ComponentManager {
         this.event.emit(GunEvent.SpeedUpStatus, is_speedup);
         if (is_speedup === true) {
             /** 开启 */
-            this.launch_space = config.launch_space / 2;
+            this.launch_space = Config.LaunchSpace / 2;
         } else {
             /** 禁用 */
-            this.launch_space = config.launch_space;
+            this.launch_space = Config.LaunchSpace;
         }
     }
     /** 自动发射的处理 */
