@@ -65,15 +65,10 @@ export class BulletModel extends ComponentManager {
 
             com_list.push(move_com, body_com);
         } else {
-            const move_com = new MoveTrackCom(
-                pos,
-                velocity,
-                track,
-                this.onTrackMoveChange,
-            );
+            const move_com = new MoveTrackCom(pos, velocity, track, this.onHit);
 
             com_list.push(move_com);
-            move_com.onUpdate(this.onHit);
+            move_com.onUpdate(this.onTrackMoveChange);
         }
 
         this.addCom(...com_list);

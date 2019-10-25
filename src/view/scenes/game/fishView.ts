@@ -73,4 +73,8 @@ export class FishView extends Laya.Sprite {
             }, 500) as any;
         });
     }
+    public destroy() {
+        clearTimeout(this.time_out);
+        super.destroy();
+    }
 }
