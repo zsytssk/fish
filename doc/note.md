@@ -1,3 +1,17 @@
+-   @todo 所有东西的 icon 放在一起 用来什么来区分
+
+    -   name + itemMap
+
+-   @todo item 的样式...
+
+    -   shop 单独以文件夹...
+
+-   lottery item 的样式...
+
+-   lottery progress bar...
+
+## 2019-10-28 10:50:20
+
 -   @todo
 
     -   技能的冷却时间...

@@ -18,6 +18,8 @@ function createExplodingAni() {
     }
     return exploding_ani;
 }
+
+/** 激活爆炸动画 */
 export function activeExploding(pos: Point) {
     const ani = createExplodingAni();
 
@@ -28,6 +30,7 @@ export function activeExploding(pos: Point) {
     playSkeleton(ani, 0, false);
 }
 
+/**  */
 export function recoverExploding(ani: Laya.Skeleton) {
     ani.offAll();
     ani.stop();

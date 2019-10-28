@@ -39,6 +39,19 @@ net 需要访问 player, 怎么处理?
 player -> gun(top:player) -> .. (top queryTop(name|class))
 代价很大 必须有一个基类, 灵活易用
 
+## 国际化
+
+-   弹出层 title + 内容中文字...
+
+-   按钮上的文字...
+
+-   使用同样类似的方法
+    -   每一个节点初始化之后又一个
+        -   international_res_arr [key]
+        -   international_txt_map {key: 'InternationalTxtMap.name'}
+        -   所有文本 `_zh .. 用来区分`
+        -   分为两类 图片 + 文字...
+
 ## 影响性能的地方
 
 -   get event 在这个函数中每次去便利寻找 event

@@ -28,6 +28,18 @@ export function skillPreActiveHandler(model: SkillModel) {
             });
         } else if (model instanceof TrackFishModel) {
             // 发送命令给服务器, 接受到信息之后, 选鱼提示
+            console.log('2. 请选择屏幕中的鱼..');
+            onFishClick().subscribe((fish_id: string) => {
+                console.log(`点击的鱼:>`, fish_id);
+                model.active({
+                    fish: fish_id,
+                    pre_active: true,
+                    used_time: 0,
+                });
+                // 将鱼的id发给服务器...
+                // 收到服务端的信息需要统一的处理...
+                // onGameCtrl...
+            });
         } else {
             resolve();
         }
