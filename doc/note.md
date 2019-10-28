@@ -1,14 +1,33 @@
--   @todo 所有东西的 icon 放在一起 用来什么来区分
+-   @todo 连接 socket...
+-   @todo 小 alert, 将所有的 txt 后面加 zh
+
+-   @1920 x 750 在 ipad 或者普通电脑上显示效果有问题
+
+    -   需要自己写自适应方法吗...
+
+-   @ques injectAfter
+
+-   @todo
+    -   tip 的代码... tip 怎么居中
+    -   alert
+
+## 2019-10-28 15:43:50
+
+-   @todo websocket 验证流程...
+
+*   @todo 打开弹出层...
+
+*   @todo 所有东西的 icon 放在一起 用来什么来区分
 
     -   name + itemMap
 
--   @todo item 的样式...
+*   @todo item 的样式...
 
     -   shop 单独以文件夹...
 
--   lottery item 的样式...
+*   lottery item 的样式...
 
--   lottery progress bar...
+*   lottery progress bar...
 
 ## 2019-10-28 10:50:20
 

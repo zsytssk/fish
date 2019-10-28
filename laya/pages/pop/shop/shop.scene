@@ -1,10 +1,10 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":18,
-    "selecteID":39,
+    "selectedBox":2,
+    "selecteID":8,
     "searchKey":"Dialog",
-    "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","height":710},
+    "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
     "nodeParent":-1,
     "maxID":40,
     "label":"Dialog",
@@ -97,17 +97,17 @@
         {
             "x":15,
             "type":"Button",
-            "searchKey":"Button,btn_close",
-            "props":{"y":20,"x":937,"var":"btn_close","stateNum":"1","skin":"image/pop/shop/btn_close.png"},
+            "searchKey":"Button,close",
+            "props":{"y":20,"x":937,"stateNum":"1","skin":"image/pop/shop/btn_close.png","name":"close"},
             "nodeParent":2,
-            "label":"btn_close",
+            "label":"close",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
             "compId":8,
             "child":[
                 ],
-            "$HIDDEN":true
+            "$HIDDEN":false
         },
         {
             "x":15,

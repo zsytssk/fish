@@ -17,6 +17,7 @@ import { socket_test } from './app/socket.spec';
 import { count_test } from './count.spec';
 import { sat_test } from './sat.spec';
 import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
+import { alert_test } from './app/alert/alert.spec';
 
 type TestUtils = {
     stageClick: typeof stageClick;
@@ -46,6 +47,7 @@ testScope.addChild(
     sat_test,
     skill_test,
     socket_test,
+    alert_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -56,4 +58,4 @@ window.test = test;
 window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
 
 game_test.runTest('enter_game');
-socket_test.runTest('init_app_socket');
+// socket_test.runTest('init_app_socket');

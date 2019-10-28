@@ -5,7 +5,7 @@ const count_map: Map<number, FuncVoid> = new Map();
 /**
  * 倒计时
  * @param time 总时间
- * @param delta tick 时间
+ * @param delta (ms) tick 时间
  * @param fn 每次调用时间
  */
 export function startCount(time: number, delta: number, fn: CountFn) {
@@ -21,7 +21,7 @@ export function startCount(time: number, delta: number, fn: CountFn) {
         fn((count - i) / count);
     };
 
-    Laya.timer.loop(delta, null, count_fn);
+    Laya.timer.loop(delta * 1000, null, count_fn);
     const off = () => {
         Laya.timer.clear(null, count_fn);
     };

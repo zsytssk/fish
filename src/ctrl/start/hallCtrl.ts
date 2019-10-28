@@ -1,4 +1,5 @@
 import HallView from 'view/scenes/hallView';
+import ShopPop from 'view/pop/shop';
 
 export class HallCtrl {
     private view: HallView;
@@ -39,9 +40,6 @@ export class HallCtrl {
         btn_match_try.on(CLICK, this, () => {
             console.log(`btn_match_try`);
         });
-        btn_match_play.on(CLICK, this, () => {
-            console.log(`btn_match_play`);
-        });
         btn_coin_select.on(CLICK, this, () => {
             console.log(`btn_coin_select`);
         });
@@ -52,7 +50,7 @@ export class HallCtrl {
             console.log(`btn_charge`);
         });
         btn_buy.on(CLICK, this, () => {
-            console.log(`btn_buy`);
+            ShopPop.preEnter();
         });
         btn_home.on(CLICK, this, () => {
             console.log(`btn_home`);

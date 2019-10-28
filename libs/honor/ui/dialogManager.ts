@@ -159,16 +159,20 @@ export class DialogManagerCtor {
             dialog.onMounted(...params);
         }
 
-        /**  */
-        const ori_show_effect = dialog.popupEffect;
-        if (show_effect !== undefined && show_effect === false) {
-            dialog.popupEffect = null;
-        }
-        dialog.open(dialog_config.closeOther);
-        if (ori_show_effect) {
-            dialog.popupEffect = ori_show_effect;
-        }
-        this.checkMask();
+        // 异步打开弹出层, 用来在外面设置弹出层的大小使 弹出层可以居中...
+        setTimeout(() => {
+            /**  */
+            const ori_show_effect = dialog.popupEffect;
+            if (show_effect !== undefined && show_effect === false) {
+                dialog.popupEffect = null;
+            }
+            dialog.open(dialog_config.closeOther);
+            if (ori_show_effect) {
+                dialog.popupEffect = ori_show_effect;
+            }
+            this.checkMask();
+        }, 0);
+
         return dialog;
     }
     public toOpenDialog(url: DialogRefUrl): Promise<HonorDialog> {
@@ -233,7 +237,11 @@ export class DialogManagerCtor {
         return item && item.config;
     }
     /** 在dialog关闭之后将没有destroy的dialog放在dialog_pool_list, 下次利用 */
-    private injectDoCloseAfter(dialog: HonorDialog) {
+    private injectDoCloseAfter(
+        dialog_manager: Laya.DialogManager,
+        result,
+        dialog: HonorDialog,
+    ) {
         const { open_dialog_list, dialog_pool_list } = this;
         let dialog_info: DialogInfo;
         for (let i = 0; i < open_dialog_list.length; i++) {
@@ -250,7 +258,11 @@ export class DialogManagerCtor {
         }
     }
     /** 在dialog打开之后 */
-    private injectDoOpenAfter(dialog: HonorDialog) {
+    private injectDoOpenAfter(
+        dialog_manager: Laya.DialogManager,
+        result,
+        dialog: HonorDialog,
+    ) {
         const config = this.getDialogConfig(dialog);
         if (config && config.autoClose) {
             Laya.timer.once(config.autoClose as number, dialog, dialog.close);

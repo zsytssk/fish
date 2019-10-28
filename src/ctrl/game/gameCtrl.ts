@@ -11,6 +11,8 @@ import { FishCtrl } from './fishCtrl';
 import { PlayerCtrl } from './playerCtrl';
 import { FreezingComEvent } from 'model/com/freezingCom';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
+import HelpPop from 'view/pop/help';
+import LotteryPop from 'view/pop/lottery';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -34,6 +36,9 @@ export class GameCtrl {
     private initEvent() {
         const event = this.model.event;
         const { view } = this;
+        const { btn_help, btn_gift, btn_voice, btn_leave } = view;
+        const { CLICK } = Laya.Event;
+
         event.on(GameEvent.AddFish, (fish: FishModel) => {
             const { type, id, horizon_turn } = fish;
             const fish_view = view.addFish({ type, id, horizon_turn });
@@ -51,6 +56,21 @@ export class GameCtrl {
         });
         event.on(FreezingComEvent.UnFreezing, () => {
             stopFreeze();
+        });
+
+        btn_help.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+            HelpPop.preEnter();
+        });
+        btn_gift.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+            LotteryPop.preEnter();
+        });
+        btn_voice.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+        });
+        btn_leave.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
         });
     }
 }

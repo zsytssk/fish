@@ -18,7 +18,7 @@ export default class Loading extends ui.scenes.loadingUI {
     }
 
     public onHide() {
-        this.removeSelf();
+        this.close();
         console.log('LoadingScene onReset');
     }
 
