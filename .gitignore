@@ -1,4 +1,8 @@
-﻿node_modules/
+﻿# script config
+/script/calcPathLen/path.json
+
+
+node_modules/
 
 /.laya/
 !/.laya/gulpfile.js

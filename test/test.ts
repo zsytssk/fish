@@ -18,6 +18,7 @@ import { count_test } from './count.spec';
 import { sat_test } from './sat.spec';
 import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
 import { alert_test } from './app/alert/alert.spec';
+import { web_socket_test } from './app/websocket.spec';
 
 type TestUtils = {
     stageClick: typeof stageClick;
@@ -48,6 +49,7 @@ testScope.addChild(
     skill_test,
     socket_test,
     alert_test,
+    web_socket_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());

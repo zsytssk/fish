@@ -1,3 +1,90 @@
+-   @ques 什么时候重启心跳...
+
+    -   收到任何消息的时候...
+    -   每隔 10s 中发送一次信息如果 3s 内没有收到信息就
+    -   能不能做成 await 这样逻辑清晰点...
+
+-   @thk 三个异步过程
+
+    -   能不能用 rxjs 处理
+    -   每隔 10s 大循环 (1)
+    -   10s 后 三秒去重连 (2)
+    -   10s 后 发送命令 如果收到回复 清除 2 (3)
+
+-   @ques 本地怎么测试 登陆用户
+    - 写死publicKey ...
+    - 怎么获取这些key+code
+    - 这些数据又能 激活多长时间...
+
+-   @todo 打到鱼组中的鱼 将 groupId 返回给服务端...
+-   @todo 鱼潮 id r1-r6
+-   路径的长度 path.json id:len
+-   所有的时间单位都是毫秒...
+
+## 2019-10-29 17:16:07
+
+-   websocket 代码
+
+    -   连上
+    -   心跳(2 | 3) (\_on(msg) {)
+
+-   @ques socket 的数据从哪获取
+
+    -   code 从哪获取..., 从登陆的流程 url 中获取... 参考 glory
+    -   jwt(token) 从哪获取...,参考张笑的代码... 又一个
+
+*   @ques 要不要 honor 只提供原始的 socket
+    -   只做基本逻辑 + 封装 api 类似 socket.io
+    -   我有很多地方需要绑定
+
+-   @ques 传奇的时候我需要不停的传 token 吗
+
+    -   @服务端需要吗 真的需要...
+    -   好像不是 但是我的 token 需要记下来
+
+-   @ques ping 是多长时间发一次...
+
+    -   每隔一段时间 pingTimeout 是不是有问题...
+
+-   @ques `localStorage.getItem('token')` 会不会过期啊...
+
+    -   能不能像传奇一样啊...
+    -   又一个固定的错误嘛
+
+-   @todo 月度总结...
+
+-   @ques 有没有验证 checkToken 的接口...
+
+    -   code --> token
+    -   code 记在本地, 每次刷新 去请求 token..., 请求不到 以为是游客
+    -   游客登陆
+
+-   'scoket:authorize';
+
+## 2019-10-29 11:41:28
+
+-   @ques decorator cacheInit 挺实用的
+
+    -   function 能不能用 decarator
+
+-   @todo 连接 socket + 大厅的动画...
+
+    -   最好我自己写一个 websocket 的连接处理...
+    -   加密 解密 怎么处理...
+    -   断线重连怎么处理...
+    -   glory 的 websocket
+    -   自己写 看看他的源码
+
+-   张笑的 socket 连接的处理
+
+    -   http://gitlab.intranet.huiyin.com/springfans/game/game-utils/blob/master/SocketManager.js
+    -   http://gitlab.intranet.huiyin.com/springfans/game/game-utils
+    -   http://gitlab.intranet.huiyin.com/springfans/game/oxpk
+
+-   @todo 张笑的游戏初始化的处理...
+
+## 2019-10-29 09:53:50
+
 -   @todo 连接 socket...
 -   @todo 小 alert, 将所有的 txt 后面加 zh
 

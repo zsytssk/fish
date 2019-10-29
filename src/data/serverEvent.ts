@@ -21,4 +21,10 @@ export const ServerEvent = {
     TicketExchange: 'ticketExchange',
     ShopList: 'shopList',
     Buy: 'buy',
+    /** 获取游客 TOKEN */
+    GetGuestToken: 'getRequestId',
+    /** 获取用户 TOKEN */
+    GetUserToken: 'getTokenByCode',
+    /** 获取用户信息 */
+    GetUserInfo: 'getUserInfo',
 };

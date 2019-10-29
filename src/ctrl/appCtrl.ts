@@ -6,12 +6,11 @@ import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
 import { res, font_list } from 'data/res';
 import honor from 'honor';
-import { SocketCtrl } from 'honor/net/Socket';
 
+/** 顶级 ctrl */
 export class AppCtrl {
     public model: AppModel;
     private view = Laya.stage;
-    public socket: SocketCtrl;
     constructor() {
         this.startApp();
     }
