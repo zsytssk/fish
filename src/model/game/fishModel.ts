@@ -126,6 +126,7 @@ export class FishModel extends ComponentManager {
         if (this.event) {
             this.event.emit(FishEvent.BeCast);
         }
+        this.destroy();
     }
     public destroy() {
         this.game.removeFish(this);

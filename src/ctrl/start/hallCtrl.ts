@@ -49,7 +49,7 @@ export class HallCtrl {
     }
     private initViewEvent() {
         const { view } = this;
-        const { normal_box, match_box, header } = view;
+        const { normal_box, match_box, header, btn_play_now } = view;
         const {
             coin_menu: { list: coin_menu_list },
             flag_menu: { list: flag_menu_list },
@@ -123,6 +123,9 @@ export class HallCtrl {
         });
         flag_box.on(CLICK, this, () => {
             view.toggleFlagMenu();
+        });
+        btn_play_now.on(CLICK, this, () => {
+            console.log(`btn_play_now`);
         });
     }
     private selectCoin = (index: number) => {

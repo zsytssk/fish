@@ -4,14 +4,26 @@ type FunItem = {
     index: number;
 };
 const tick_time = 1000 / 30;
+const tick = tick_time / (1000 / 60);
 
 const fun_list: Set<FunItem> = new Set();
 let looping = false;
 let index = 0;
-
+let pre_time: number;
 function update() {
+    let now_tick = tick;
+    if (!pre_time) {
+        pre_time = Date.now();
+    } else {
+        const now = Date.now();
+        const dist_time = now - pre_time;
+        now_tick = Math.floor((dist_time / tick_time) * tick);
+        const more_dist_time = dist_time - (now_tick / tick) * tick_time;
+        pre_time = now - more_dist_time;
+    }
+
     for (const item of fun_list) {
-        item.fn(2);
+        item.fn(now_tick);
     }
 }
 
@@ -40,5 +52,8 @@ export function clearTick(_index: number) {
     if (fun_list.size === 0) {
         Laya.timer.clear(null, update);
         looping = false;
+
+        // 如果不清0, 就会导致 createTick 的第一个tick飞很远
+        pre_time = 0;
     }
 }

@@ -17,6 +17,7 @@ export class MoveVelocityCom implements MoveCom {
         this.tick_index = createTick(this.update.bind(this));
     }
     public update(t: number) {
+        console.log(`test:>`, t);
         const { pos, velocity, is_stop } = this;
         if (is_stop) {
             return;

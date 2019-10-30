@@ -23,10 +23,9 @@ export class GameCtrl {
         this.model = model;
         this.init();
     }
-    public static async preEnter() {
+    public static async preEnter(game_model: GameModel) {
         const view = (await GameView.preEnter()) as GameView;
         await honor.director.load(res.game as ResItem[]);
-        const game_model = ctrlState.app.enterGame();
         const game_ctrl = new GameCtrl(view, game_model);
         setProps(ctrlState, { game: game_ctrl });
     }

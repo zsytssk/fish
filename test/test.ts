@@ -19,6 +19,7 @@ import { sat_test } from './sat.spec';
 import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
 import { alert_test } from './app/alert/alert.spec';
 import { web_socket_test } from './app/websocket.spec';
+import { laya_test } from './laya.spec';
 
 type TestUtils = {
     stageClick: typeof stageClick;
@@ -50,6 +51,7 @@ testScope.addChild(
     socket_test,
     alert_test,
     web_socket_test,
+    laya_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -59,5 +61,5 @@ export const test = mapTest(testBuilder.top_scope);
 window.test = test;
 window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
 
-// game_test.runTest('enter_game');
+game_test.runTest('enter_game');
 // socket_test.runTest('init_app_socket');

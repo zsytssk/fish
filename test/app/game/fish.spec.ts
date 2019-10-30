@@ -2,6 +2,10 @@ import { range } from 'lodash';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { body_test } from './body.spec';
+import { GameEvent } from 'model/game/gameModel';
+import { FishModel, FishEvent } from 'model/game/fishModel';
+import { injectAfter } from 'honor/utils/tool';
+import { ModelEvent } from 'model/modelEvent';
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
@@ -48,7 +52,7 @@ export const fish_test = new Test('fish', runner => {
         for (const i of range(1, 21)) {
             const typeId = i;
             const pathId = i;
-            const time = 40;
+            const time = 5;
             const fish_data = {
                 eid: '00' + typeId,
                 fishId: `${typeId}`,
@@ -63,10 +67,11 @@ export const fish_test = new Test('fish', runner => {
 
     /** 鱼组的测试 */
     runner.describe('add_fish_group', () => {
-        body_test.runTest('show_shape');
+        // body_test.runTest('show_shape');
+        const game = modelState.app.game;
         const typeId = 'G21';
         const pathId = 90;
-        const time = 50;
+        const time = 10;
         const fish_data = {
             eid: '00' + typeId,
             fishId: `${typeId}`,
@@ -90,6 +95,30 @@ export const fish_test = new Test('fish', runner => {
                 },
             ],
         } as ServerFishInfo;
-        modelState.app.game.addFish(fish_data);
+        game.addFish(fish_data);
+    });
+    /** 鱼组的测试 */
+    runner.describe('fish_total_time', () => {
+        // body_test.runTest('show_shape');
+        const game = modelState.app.game;
+        const typeId = 1;
+        const pathId = 90;
+        const time = 100;
+        const fish_data = {
+            eid: '00' + typeId,
+            fishId: `${typeId}`,
+            displaceType: 'path',
+            pathNo: `${pathId}`,
+            totalTime: time,
+            usedTime: 0,
+        } as ServerFishInfo;
+        game.event.once(GameEvent.AddFish, (fish: FishModel) => {
+            const start = Date.now();
+            fish.event.once(ModelEvent.Destroy, () => {
+                const duration = Date.now() - start;
+                console.log(`test:>fish_total_time:>`, duration, time);
+            });
+        });
+        game.addFish(fish_data);
     });
 });

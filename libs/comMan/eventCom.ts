@@ -43,6 +43,9 @@ export class EventCom {
 
         events.add({ caller, callback, once, off });
     }
+    public once(event: string, callback?: Func<any>, caller?: any) {
+        return this.on(event, callback, caller, true);
+    }
     public getBind(event: string) {
         return this.events.get(event);
     }

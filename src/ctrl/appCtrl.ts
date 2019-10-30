@@ -6,6 +6,7 @@ import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
 import { res, font_list } from 'data/res';
 import honor from 'honor';
+import { GameCtrl } from './game/gameCtrl';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -38,6 +39,7 @@ export class AppCtrl {
         await Promise.all([task1, task2]);
     }
     public enterGame() {
-        return this.model.enterGame();
+        const game_model = this.model.enterGame();
+        return GameCtrl.preEnter(game_model);
     }
 }
