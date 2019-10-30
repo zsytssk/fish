@@ -1,6 +1,6 @@
 import SkillItemView from 'view/scenes/game/skillItemView';
-import { SkillModel } from 'model/skill/skillModel';
-import { SkillEvent, SkillStatus } from 'model/skill/skillCoreCom';
+import { SkillModel } from 'model/game/skill/skillModel';
+import { SkillEvent, SkillStatus } from 'model/game/skill/skillCoreCom';
 import {
     skillActiveHandler,
     skillDisableHandler,

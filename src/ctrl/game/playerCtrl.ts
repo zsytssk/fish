@@ -1,7 +1,7 @@
-import { FishModel } from 'model/fishModel';
-import { BulletGroup } from 'model/gun/bulletGroup';
-import { GunEvent, LevelInfo } from 'model/gun/gunModel';
-import { PlayerModel } from 'model/playerModel';
+import { FishModel } from 'model/game/fishModel';
+import { BulletGroup } from 'model/game/gun/bulletGroup';
+import { GunEvent, LevelInfo } from 'model/game/gun/gunModel';
+import { PlayerModel } from 'model/game/playerModel';
 import SAT from 'sat';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import GunBoxView from 'view/scenes/game/gunBoxView';
@@ -12,7 +12,7 @@ import {
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
-import { AutoLaunchModel } from 'model/skill/autoLaunchModel';
+import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {

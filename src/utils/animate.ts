@@ -2,9 +2,9 @@ import * as zTimer from './zTimer';
 
 type EaseFn = Func<void> | string;
 type Sprite = Laya.Sprite & {
-    tween: Laya.Tween;
-    is_stop: boolean;
-    time_out: any;
+    tween?: Laya.Tween;
+    is_stop?: boolean;
+    time_out?: any;
 };
 type Props<T> = { [k in keyof T]?: T[k] };
 
@@ -114,7 +114,7 @@ export function slide_up_in(
         });
     });
 }
-export function slide_up_out(
+export async function slide_up_out(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
@@ -124,7 +124,7 @@ export function slide_up_out(
         const height = sprite.getBounds().height;
         space = height > 50 ? 50 : height;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 200;
     const ori_y = sprite.y;
@@ -132,11 +132,11 @@ export function slide_up_out(
         alpha: 1,
         y: ori_y - space,
     };
-    return tween({ sprite, end_props, time, ease_fn }).then(() => {
+    await tween({ sprite, end_props, time, ease_fn }).then(() => {
         setStyle(sprite, { visible: false, alpha: 1, y: ori_y });
     });
 }
-export function slide_down_in(
+export async function slide_down_in(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
@@ -146,7 +146,7 @@ export function slide_down_in(
         const height = sprite.getBounds().height;
         space = height > 50 ? 50 : height;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleOut';
     time = time || 200;
     const ori_y = sprite.y;
@@ -159,7 +159,7 @@ export function slide_down_in(
         alpha: 1,
         y: ori_y,
     };
-    return tween({ sprite, start_props, end_props, time, ease_fn });
+    await tween({ sprite, start_props, end_props, time, ease_fn });
 }
 export function slide_down_out(
     sprite: Sprite,
@@ -668,12 +668,17 @@ export function stopAni(sprite: Sprite | FuncVoid) {
     }
 }
 export function completeAni(sprite: Sprite) {
-    if (!sprite) {
-        return;
-    }
-    if (sprite.tween) {
-        sprite.tween.complete();
-        sprite.tween.clear();
-        sprite.tween = undefined;
-    }
+    return new Promise((resolve, reject) => {
+        if (!sprite) {
+            return;
+        }
+        if (sprite.tween) {
+            sprite.tween.complete();
+            sprite.tween.clear();
+            sprite.tween = undefined;
+        }
+        setTimeout(() => {
+            resolve();
+        });
+    });
 }

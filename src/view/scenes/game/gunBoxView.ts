@@ -1,5 +1,5 @@
 import { GunSpriteInfo } from 'data/sprite';
-import { LevelInfo } from 'model/gun/gunModel';
+import { LevelInfo } from 'model/game/gun/gunModel';
 import { getSpriteInfo } from 'utils/dataUtil';
 import { vectorToDegree } from 'utils/mathUtils';
 import {

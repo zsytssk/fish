@@ -10,9 +10,9 @@ export enum Lang {
 }
 
 /** 国际化的资源 */
-const InternationalRes = {};
+export const InternationalRes = {};
 /** 国际化的提示 */
-const InternationalTip = {
+export const InternationalTip = {
     '404': {
         [Lang.En]: 'not found',
         [Lang.Kor]: '찾지 못하다',

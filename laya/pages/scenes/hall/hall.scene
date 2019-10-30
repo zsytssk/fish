@@ -2,11 +2,11 @@
     "x":0,
     "type":"Scene",
     "selectedBox":11,
-    "selecteID":6,
+    "selecteID":27,
     "searchKey":"Scene",
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/hallView.ts","height":750},
     "nodeParent":-1,
-    "maxID":20,
+    "maxID":29,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -30,6 +30,35 @@
         },
         {
             "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer",
+            "props":{"y":365,"x":961.5,"width":111,"url":"image/hall/hall_light.sk","height":111},
+            "nodeParent":2,
+            "label":"SkeletonPlayer",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":22,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer,mermaid",
+            "props":{"y":396,"x":951,"var":"mermaid","url":"image/hall/mermaid.sk"},
+            "nodeParent":2,
+            "label":"mermaid",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":26,
+            "child":[
+                ],
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
             "type":"UIView",
             "source":"scenes/hall/header.scene",
             "searchKey":"UIView,header",
@@ -40,20 +69,6 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":19,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite",
-            "props":{"y":82,"x":184,"texture":"image/hall/mermaid.png"},
-            "nodeParent":2,
-            "label":"Sprite",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":4,
             "child":[
                 ]
         },
@@ -72,15 +87,15 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"texture":"image/hall/sign_normal.png"},
+                    "type":"SkeletonPlayer",
+                    "searchKey":"SkeletonPlayer,ani",
+                    "props":{"y":350,"x":168,"url":"image/hall/normal_sign.sk","name":"ani"},
                     "nodeParent":11,
-                    "label":"Sprite",
+                    "label":"ani",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":6,
+                    "compId":24,
                     "child":[
                         ]
                 },
@@ -115,15 +130,15 @@
                 },
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":234,"x":-137,"texture":"image/hall/light.png"},
+                    "type":"Label",
+                    "searchKey":"Label,coin_name",
+                    "props":{"y":347,"x":88,"width":136,"valign":"middle","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","align":"center"},
                     "nodeParent":11,
-                    "label":"Sprite",
+                    "label":"coin_name",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":9,
+                    "compId":27,
                     "child":[
                         ]
                 }]
@@ -143,15 +158,15 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":16,"x":0,"texture":"image/hall/sigh_match.png"},
+                    "type":"SkeletonPlayer",
+                    "searchKey":"SkeletonPlayer,ani",
+                    "props":{"y":291,"x":153,"url":"image/hall/match_sign.sk","name":"ani"},
                     "nodeParent":12,
-                    "label":"Sprite",
+                    "label":"ani",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":13,
+                    "compId":25,
                     "child":[
                         ]
                 },
@@ -185,15 +200,15 @@
                 },
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":234,"x":-137,"texture":"image/hall/light.png"},
+                    "type":"Label",
+                    "searchKey":"Label,coin_name",
+                    "props":{"y":347,"x":88,"width":136,"valign":"middle","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","align":"center"},
                     "nodeParent":12,
-                    "label":"Sprite",
+                    "label":"coin_name",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":16,
+                    "compId":28,
                     "child":[
                         ]
                 }]
@@ -211,6 +226,21 @@
             "compId":17,
             "child":[
                 ]
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer",
+            "props":{"y":378,"x":975,"width":101,"url":"image/hall/hall_bubble.sk","height":111},
+            "nodeParent":2,
+            "label":"SkeletonPlayer",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":23,
+            "child":[
+                ],
+            "$HIDDEN":true
         }],
     "animations":[
         {

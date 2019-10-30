@@ -1,5 +1,5 @@
 import { modelState } from 'model/modelState';
-import { PlayerInfo } from 'model/playerModel';
+import { PlayerInfo } from 'model/game/playerModel';
 import { Test } from 'testBuilder';
 import { body_test } from './body.spec';
 

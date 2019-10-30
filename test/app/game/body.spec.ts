@@ -1,5 +1,5 @@
 import { injectProto } from 'honor/utils/tool';
-import { BodyCom, ShapeInfo } from 'model/com/bodyCom';
+import { BodyCom, ShapeInfo } from 'model/game/com/bodyCom';
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
 import GameView from 'view/scenes/game/gameView';

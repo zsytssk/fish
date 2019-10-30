@@ -1,4 +1,4 @@
-import { NetModel } from 'model/gun/netModel';
+import { NetModel } from 'model/game/gun/netModel';
 import { ModelEvent } from 'model/modelEvent';
 import { playSkeleton } from 'utils/utils';
 

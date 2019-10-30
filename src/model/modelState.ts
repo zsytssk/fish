@@ -1,12 +1,12 @@
 import { AppModel } from './appModel';
-import { BodyCom } from './com/bodyCom';
-import { detectCollision } from './com/bodyComUtil';
-import { FishModel } from './fishModel';
-import { GameModel } from './gameModel';
+import { BodyCom } from './game/com/bodyCom';
+import { detectCollision } from './game/com/bodyComUtil';
+import { FishModel } from './game/fishModel';
+import { GameModel } from './game/gameModel';
 import { createFishDisplace } from 'utils/displace/displaceUtil';
-import { MoveDisplaceCom } from './com/moveCom/moveDisplaceCom';
-import { getSpriteInfo } from 'utils/dataUtil';
+import { MoveDisplaceCom } from './game/com/moveCom/moveDisplaceCom';
 import { FishSpriteInfo } from 'data/sprite';
+import { getSpriteInfo } from 'utils/dataUtil';
 
 type ModelState = {
     app: AppModel;

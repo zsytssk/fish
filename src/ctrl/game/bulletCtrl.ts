@@ -1,6 +1,6 @@
-import { BulletEvent, BulletModel } from 'model/gun/bulletModel';
+import { BulletEvent, BulletModel } from 'model/game/gun/bulletModel';
 import { vectorToDegree } from 'utils/mathUtils';
-import { NetModel } from 'model/gun/netModel';
+import { NetModel } from 'model/game/gun/netModel';
 import { NetCtrl } from './netCtrl';
 import { ModelEvent } from 'model/modelEvent';
 import { addNet } from 'view/viewState';

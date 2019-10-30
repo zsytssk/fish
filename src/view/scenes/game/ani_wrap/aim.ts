@@ -1,6 +1,6 @@
 import * as SAT from 'sat';
 import { createImg } from 'honor/utils/createSkeleton';
-import { FishEvent, FishModel } from 'model/fishModel';
+import { FishEvent, FishModel } from 'model/game/fishModel';
 import { ModelEvent } from 'model/modelEvent';
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton } from 'utils/utils';

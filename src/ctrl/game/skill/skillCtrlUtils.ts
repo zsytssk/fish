@@ -1,8 +1,8 @@
-import { SkillModel } from 'model/skill/skillModel';
+import { SkillModel } from 'model/game/skill/skillModel';
 import { onPoolClick, onFishClick, offFishClick } from 'view/viewState';
-import { FreezeModel } from 'model/skill/freezeModel';
-import { BombModel } from 'model/skill/bombModel';
-import { TrackFishModel } from 'model/skill/trackFishModel';
+import { FreezeModel } from 'model/game/skill/freezeModel';
+import { BombModel } from 'model/game/skill/bombModel';
+import { TrackFishModel } from 'model/game/skill/trackFishModel';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
