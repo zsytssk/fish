@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":10,
-    "selecteID":11,
+    "selectedBox":2,
+    "selecteID":16,
     "searchKey":"Dialog",
     "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/alert.png","height":429},
     "nodeParent":-1,
-    "maxID":16,
+    "maxID":17,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -150,6 +150,20 @@
                     "child":[
                         ]
                 }]
+        },
+        {
+            "x":15,
+            "type":"Sprite",
+            "searchKey":"Sprite",
+            "props":{"y":7,"x":292,"texture":"image/international/txt_tip_title.png"},
+            "nodeParent":2,
+            "label":"Sprite",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":16,
+            "child":[
+                ]
         }],
     "animations":[
         {
