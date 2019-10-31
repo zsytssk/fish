@@ -16,7 +16,8 @@
         "webpack-prod": "webpack --ENV=PROD --mode production",
         "webpack-prod-server": "webpack-dev-server --ENV=DEV --mode development",
         "compressImg": "node ./script/compressImg/compressImg.js compressImg",
-        "genVersion": "node ./script/genVersion/genVersion.js genVersion"
+        "genVersion": "node ./script/genVersion/genVersion.js genVersion",
+        "updateSdk": "ts-node --files ./script/game.client.sdk/game.client.sdk.ts"
     },
     "devDependencies": {
         "ts-loader": "^6.0.4",

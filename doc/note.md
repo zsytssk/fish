@@ -12,6 +12,10 @@
 
 ## game-client-sdk
 
+-   可以将他打包到 main.js 中..
+
+    -   再把其他的模
+
 -   `import '@babel/polyfill/noConflict';`
 
     -   这个可以放到 webpack 的的配置中去

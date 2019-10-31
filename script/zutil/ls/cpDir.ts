@@ -6,7 +6,7 @@ import { isIgnore } from './ignore';
 export async function cpDir(
     src_folder: string,
     dist_folder: string,
-    progress_fun?: FuncVoid,
+    progress_fun?: (progress: number) => void,
 ) {
     let num = 0;
 
