@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":8,
+    "selectedBox":16,
+    "selecteID":28,
     "searchKey":"Dialog",
     "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
     "nodeParent":-1,
-    "maxID":40,
+    "maxID":41,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -21,13 +21,14 @@
             "props":{"y":-2,"x":-1,"var":"bg"},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":13,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":77,"x":26,"width":990,"skin":"image/pop/shop/bg.png","sizeGrid":"0,42,0,42","height":629},
@@ -41,6 +42,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":12,"texture":"image/pop/shop/top_bg.png"},
@@ -54,6 +56,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"x":379,"texture":"image/pop/shop/title_bg.png"},
@@ -67,6 +70,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":654,"x":969,"texture":"image/pop/shop/star.png"},
@@ -80,9 +84,10 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,title",
-                    "props":{"y":19,"x":459,"var":"title","skin":"image/international/title_shop.png"},
+                    "props":{"y":19,"x":459,"var":"title","skin":"image/international/title_shop_zh.png"},
                     "nodeParent":13,
                     "label":"title",
                     "isDirectory":false,
@@ -140,7 +145,7 @@
                     "x":30,
                     "type":"List",
                     "searchKey":"List,gun_list",
-                    "props":{"y":0,"x":0,"width":943,"var":"gun_list","spaceX":7,"repeatY":1,"repeatX":5,"height":243},
+                    "props":{"y":0,"x":0,"width":943,"var":"gun_list","spaceX":7,"repeatY":1,"repeatX":5,"height":243,"hScrollBarSkin":"\"\""},
                     "nodeParent":15,
                     "label":"gun_list",
                     "isOpen":true,
@@ -152,7 +157,7 @@
                         {
                             "x":45,
                             "type":"UIView",
-                            "source":"pop/shop/shopItem.scene",
+                            "source":"pop/shop/shopGunItem.scene",
                             "searchKey":"UIView,item",
                             "props":{"y":6,"x":18,"renderType":"render","name":"item"},
                             "nodeParent":20,
@@ -224,10 +229,10 @@
                 {
                     "x":30,
                     "type":"List",
-                    "searchKey":"List,skill_list",
-                    "props":{"y":0,"x":0,"width":943,"var":"skill_list","spaceX":7,"repeatY":1,"repeatX":5,"height":243},
+                    "searchKey":"List,item_list",
+                    "props":{"y":0,"x":0,"width":943,"var":"item_list","spaceX":7,"repeatY":1,"repeatX":5,"height":243,"hScrollBarSkin":"\"\""},
                     "nodeParent":16,
-                    "label":"skill_list",
+                    "label":"item_list",
                     "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
@@ -237,7 +242,7 @@
                         {
                             "x":45,
                             "type":"UIView",
-                            "source":"pop/shop/shopItem.scene",
+                            "source":"pop/shop/shopItemItem.scene",
                             "searchKey":"UIView,item",
                             "props":{"y":6,"x":18,"renderType":"render","name":"item"},
                             "nodeParent":28,
@@ -245,7 +250,7 @@
                             "isDirectory":false,
                             "isAniNode":false,
                             "hasChild":false,
-                            "compId":36,
+                            "compId":40,
                             "child":[
                                 ]
                         }]

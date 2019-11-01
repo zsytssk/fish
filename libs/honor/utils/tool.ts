@@ -59,7 +59,7 @@ export function createScene(ctor: Ctor<Laya.Scene>): Promise<Laya.Scene> {
         );
 
         const instance = new ctor();
-        if (!is_load && nodeIsReady(instance)) {
+        if (!(is_load && nodeIsReady(instance))) {
             return resolve(instance);
         }
         instance.once('onViewCreated', this, () => {

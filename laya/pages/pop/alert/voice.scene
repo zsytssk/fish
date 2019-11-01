@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":13,
+    "selectedBox":13,
+    "selecteID":29,
     "searchKey":"Dialog",
     "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/voice.png","height":427},
     "nodeParent":-1,
-    "maxID":27,
+    "maxID":30,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -21,13 +21,14 @@
             "props":{"y":0,"x":0,"width":658,"height":427},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":3,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":0,"x":0,"texture":"image/pop/alert/alert_bg_01.png"},
@@ -41,6 +42,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":58,"x":0,"width":658,"skin":"image/pop/alert/alert_bg_02.png","sizeGrid":"0,38,0,40","height":369},
@@ -50,6 +52,20 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":6,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":8,"x":272,"texture":"image/international/txt_voice_title_zh.png"},
+                    "nodeParent":3,
+                    "label":"Sprite",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":27,
                     "child":[
                         ]
                 }],
@@ -76,7 +92,7 @@
             "props":{"y":96,"x":46},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
@@ -151,30 +167,16 @@
                 },
                 {
                     "x":30,
-                    "type":"ProgressBar",
-                    "searchKey":"ProgressBar,progress_music",
-                    "props":{"y":75,"x":80,"width":452,"var":"progress_music","skin":"image/pop/alert/progress_voice.png","sizeGrid":"0,14,0,4","height":13},
+                    "type":"UIView",
+                    "source":"pop/alert/voiceProgress.scene",
+                    "searchKey":"UIView,music_progress",
+                    "props":{"y":53,"x":79,"var":"music_progress"},
                     "nodeParent":24,
-                    "label":"progress_music",
-                    "isOpen":true,
+                    "label":"music_progress",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":21,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
-                    "type":"Button",
-                    "searchKey":"Button,progress_music_btn",
-                    "props":{"y":54,"x":286,"var":"progress_music_btn","stateNum":"1","skin":"image/pop/alert/btn_circle.png"},
-                    "nodeParent":24,
-                    "label":"progress_music_btn",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":22,
+                    "compId":28,
                     "child":[
                         ]
                 }],
@@ -237,35 +239,6 @@
                 },
                 {
                     "x":30,
-                    "type":"ProgressBar",
-                    "searchKey":"ProgressBar,progress_voice",
-                    "props":{"y":75,"x":80,"width":452,"var":"progress_voice","skin":"image/pop/alert/progress_voice.png","sizeGrid":"0,14,0,4","height":13},
-                    "nodeParent":13,
-                    "label":"progress_voice",
-                    "isOpen":true,
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":25,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
-                    "type":"Button",
-                    "searchKey":"Button,progress_voice_btn",
-                    "props":{"y":54,"x":286,"var":"progress_voice_btn","stateNum":"1","skin":"image/pop/alert/btn_circle.png"},
-                    "nodeParent":13,
-                    "label":"progress_voice_btn",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":26,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":55,"x":11,"texture":"image/pop/alert/icon_voice.png"},
@@ -275,6 +248,21 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":19,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"UIView",
+                    "source":"pop/alert/voiceProgress.scene",
+                    "searchKey":"UIView,voice_progress",
+                    "props":{"y":53,"x":79,"var":"voice_progress"},
+                    "nodeParent":13,
+                    "label":"voice_progress",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":29,
                     "child":[
                         ]
                 }],

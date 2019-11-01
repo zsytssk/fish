@@ -1,3 +1,60 @@
+-   @todo 音量设置
+    -   voiceCtrl
+
+-   @todo 提交代码
+
+## 2019-11-01 11:30:35
+
+-   @ques 怎么给字体添加组件 作出效果...
+
+-   @uqes 抽奖中的奖券, 是从哪获取
+
+-   @todo 炮台 + 金币动画
+
+    -   多个动画在一起 会不会变卡
+
+-   @ques vscode 复制选中区域...
+
+-   @ques 这周我想把接口连调上...
+
+## 2019-10-31 17:56:29
+
+-   @todo runLottery
+
+-   @todo 抽奖
+
+    -   renderExchange
+    -   渲染数据
+    -   动画
+    -   点击事件
+
+-   @ques use_gun_skin 没作用
+
+-   @todo shop 方框的样式
+
+-   @todo 所有弹出层的数据渲染...
+
+    -   商店
+    -   抽奖
+    -   购买子弹
+    -   声音设置..
+
+-   @ques 商店 item 的名称 应该支持多个语言
+
+    -   这需要前端本地来做吗...
+
+-   @todo 购买按钮的样式...
+
+-   @todo 平台 的 币种的配置...
+
+-   @todo bug 无法打包 json 文件
+
+    -   webpack ts-loader test
+
+-   @ques 鱼潮来了 要把页面背景换掉 是不是搞错了...
+
+## 2019-10-31 13:46:23
+
 -   @todo 升级 mac..
 
 -   @bug loading 进度条的样式...
@@ -12,9 +69,9 @@
 
 ## game-client-sdk
 
--   可以将他打包到 main.js 中..
+-   可以将他和 main.ts 单独打一个包 其他文件在打一个包
 
-    -   再把其他的模
+    -   这样好不好 ???
 
 -   `import '@babel/polyfill/noConflict';`
 

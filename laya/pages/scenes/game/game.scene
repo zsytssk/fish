@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":11,
-    "selecteID":16,
+    "selectedBox":10,
+    "selecteID":9,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -57,16 +57,17 @@
             "props":{"width":1920,"var":"bg","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":10,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"skin":"image/game/bg_normal.jpg","centerY":0,"centerX":0},
+                    "props":{"skin":"image/game/normal_bg/bg1.jpg","centerY":0,"centerX":0},
                     "nodeParent":10,
                     "label":"Image",
                     "isDirectory":false,
@@ -77,6 +78,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":376,"x":960,"url":"image/game/bg_normal.sk"},
@@ -91,6 +93,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":375,"x":960,"url":"image/game/wave.sk","scaleY":4,"scaleX":4},
@@ -127,7 +130,7 @@
             "props":{"y":0,"x":0,"width":1920,"var":"ani_wrap","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"ani_wrap",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,

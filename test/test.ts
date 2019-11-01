@@ -17,9 +17,14 @@ import { socket_test } from './app/socket.spec';
 import { count_test } from './count.spec';
 import { sat_test } from './sat.spec';
 import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
-import { alert_test } from './app/alert/alert.spec';
+import { alert_test } from './app/pop/alert.spec';
 import { web_socket_test } from './app/websocket.spec';
 import { laya_test } from './laya.spec';
+import { shop_test } from './app/pop/shop.spec';
+import { injectAfter, injectProto } from 'honor/utils/tool';
+import { AppCtrl } from 'ctrl/appCtrl';
+import { lottery_test } from './app/pop/lottery.spec';
+import { voice_test } from './app/pop/voice.spec';
 
 type TestUtils = {
     stageClick: typeof stageClick;
@@ -52,6 +57,9 @@ testScope.addChild(
     alert_test,
     web_socket_test,
     laya_test,
+    shop_test,
+    lottery_test,
+    voice_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -61,5 +69,8 @@ export const test = mapTest(testBuilder.top_scope);
 window.test = test;
 window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
 
+injectProto(AppCtrl, 'startApp', () => {
+    voice_test.runTest('open_dialog');
+});
 // game_test.runTest('enter_game');
 // socket_test.runTest('init_app_socket');

@@ -1,14 +1,14 @@
-coingame.sys.init({
-    callback: () => {
-        // 检查登录态
-        const logged = coingame.account.checkLogged();
+// coingame.sys.init({
+//     callback: () => {
+//         // 检查登录态
+//         const logged = coingame.account.checkLogged();
 
-        // 加载游戏引擎
-        if (logged) {
-            loadEngin();
-        }
-    },
-});
+//         // 加载游戏引擎
+//         if (logged) {
+//             loadEngin();
+//         }
+//     },
+// });
 // @test
 loadEngin();
 
