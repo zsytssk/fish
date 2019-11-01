@@ -1,7 +1,6 @@
 import { modelState } from 'model/modelState';
 import { PlayerInfo } from 'model/game/playerModel';
 import { Test } from 'testBuilder';
-import { body_test } from './body.spec';
 
 export const player_id = 'xxxx';
 /** @type {PlayerModel} 的测试 */
@@ -15,9 +14,9 @@ export const player_test = new Test('player', runner => {
         const player_data = {
             user_id: player_id,
             server_index: 0,
-            level: 101,
-            gold: 10000,
-            gun_skin: '1',
+            level: 10111,
+            gold: 10111,
+            gun_skin: '4',
             nickname: 'test',
             avatar: 'test',
             is_cur_player: true,

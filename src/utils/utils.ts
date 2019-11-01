@@ -150,6 +150,7 @@ export function createRedFilter() {
     // 创建一个颜色滤镜对象,红色
     return new Laya.ColorFilter(redMat);
 }
+
 export function createGLowRedFilter() {
     return new Laya.GlowFilter('#ff0000', 10, 0, 0);
 }

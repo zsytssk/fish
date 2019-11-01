@@ -20,10 +20,11 @@ export class BulletCtrl {
         this.initEvent();
     }
     private initView() {
-        const { view } = this;
+        const { view, model } = this;
+        const { level_skin } = model;
         this.syncPos();
         view.visible = true;
-        playSkeleton(view, 0, true);
+        playSkeleton(view, level_skin, true);
     }
     private initEvent() {
         const { view } = this;

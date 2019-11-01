@@ -1,3 +1,5 @@
+import { injectProto } from 'honor/utils/tool';
+
 /** 检测stage上点击元素 */
 export function stageClick() {
     Laya.stage.on('click', null, (e: Event) => {

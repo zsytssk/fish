@@ -20,9 +20,6 @@ export type SpriteInfo = {
     belong_scene?: BelongScene;
 };
 
-export type GunSpriteInfo = {
-    has_base?: boolean;
-};
 /** 鱼动画类型 正常 | 水平翻转 */
 export type FishAniType = 'normal' | 'horizon_turn';
 export type FishSpriteInfo = SpriteInfo & {
@@ -38,7 +35,7 @@ export type FishSpriteInfo = SpriteInfo & {
 export interface GameSprite {
     /** 枪 */
     gun: {
-        [key: string]: GunSpriteInfo;
+        [key: string]: string[];
     };
     /** 子弹 */
     bullet: {
@@ -82,11 +79,11 @@ export type SpriteType =
 
 export let SPRITE: GameSprite = {
     gun: {
-        '1': {
-            has_base: true,
-        },
-        '2': {},
-        '3': {},
+        '1': ['base', 'light', 'gun'],
+        '2': ['light', 'gun'],
+        '3': ['light', 'gun'],
+        '4': ['light', 'gun'],
+        '5': ['base', 'gun'],
     },
     bullet: {
         '1': {
@@ -101,6 +98,14 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             path: 'ani/gun/bullet3',
         },
+        '4': {
+            type: 'DragonBone',
+            path: 'ani/gun/bullet4',
+        },
+        '5': {
+            type: 'DragonBone',
+            path: 'ani/gun/bullet5',
+        },
     },
     net: {
         '1': {
@@ -109,6 +114,8 @@ export let SPRITE: GameSprite = {
         },
         '2': { type: 'DragonBone', path: 'ani/gun/net2' },
         '3': { type: 'DragonBone', path: 'ani/gun/net3' },
+        '4': { type: 'DragonBone', path: 'ani/gun/net4' },
+        '5': { type: 'DragonBone', path: 'ani/gun/net4' },
     },
     fish_shadow: {
         '1': {
@@ -288,14 +295,17 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             path: 'ani/other/energy_light',
         },
+        award_big: {
+            type: 'DragonBone',
+            path: 'ani/other/award_big',
+        },
+        award_light: {
+            type: 'DragonBone',
+            path: 'ani/other/award_light',
+        },
         coin: {
-            type: 'Frame',
-            pivot: {
-                x: 44 / 2,
-                y: 46 / 2,
-            },
-            width: 44,
-            height: 46,
+            type: 'DragonBone',
+            path: 'ani/other/coin',
         },
     },
 };

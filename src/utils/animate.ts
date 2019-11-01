@@ -8,6 +8,13 @@ type Sprite = Laya.Sprite & {
 };
 type Props<T> = { [k in keyof T]?: T[k] };
 
+export function sleep(time: number) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(time);
+        }, time * 1000);
+    });
+}
 export function fade_in(sprite: Sprite, time?: number, ease_fn?: string) {
     completeAni(sprite);
     const start_props = {

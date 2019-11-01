@@ -71,7 +71,7 @@ export const fish_test = new Test('fish', runner => {
         const game = modelState.app.game;
         const typeId = 'G21';
         const pathId = 90;
-        const time = 10;
+        const time = 40;
         const fish_data = {
             eid: '00' + typeId,
             fishId: `${typeId}`,

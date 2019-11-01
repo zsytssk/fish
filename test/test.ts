@@ -16,7 +16,12 @@ import { path_test } from './app/path.spec';
 import { socket_test } from './app/socket.spec';
 import { count_test } from './count.spec';
 import { sat_test } from './sat.spec';
-import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
+import {
+    getTestEnable,
+    getTestIgnore,
+    stageClick,
+    onCreateInstance,
+} from './utils/testUtils';
 import { alert_test } from './app/pop/alert.spec';
 import { web_socket_test } from './app/websocket.spec';
 import { laya_test } from './laya.spec';
@@ -69,8 +74,8 @@ export const test = mapTest(testBuilder.top_scope);
 window.test = test;
 window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
 
-injectProto(AppCtrl, 'startApp', () => {
-    voice_test.runTest('open_dialog');
-});
-// game_test.runTest('enter_game');
+// injectProto(AppCtrl, 'startApp', () => {
+//     voice_test.runTest('open_dialog');
+// });
+game_test.runTest('enter_game');
 // socket_test.runTest('init_app_socket');

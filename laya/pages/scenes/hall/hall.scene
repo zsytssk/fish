@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":39,
-    "selecteID":40,
+    "selectedBox":2,
+    "selecteID":22,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -48,7 +48,7 @@
             "x":15,
             "type":"SkeletonPlayer",
             "searchKey":"SkeletonPlayer",
-            "props":{"y":365,"x":961.5,"width":111,"url":"image/hall/hall_light.sk","height":111},
+            "props":{"y":366,"x":955.5,"width":111,"url":"image/hall/hall_light.sk","height":111},
             "nodeParent":2,
             "label":"SkeletonPlayer",
             "isDirectory":false,
@@ -56,7 +56,8 @@
             "hasChild":false,
             "compId":22,
             "child":[
-                ]
+                ],
+            "$HIDDEN":false
         },
         {
             "x":15,
@@ -71,7 +72,8 @@
             "compId":26,
             "child":[
                 ],
-            "$HIDDEN":false
+            "$LOCKED":true,
+            "$HIDDEN":true
         },
         {
             "x":15,
@@ -86,7 +88,8 @@
             "hasChild":false,
             "compId":19,
             "child":[
-                ]
+                ],
+            "$LOCKED":true
         },
         {
             "x":15,
@@ -325,7 +328,8 @@
             "compId":23,
             "child":[
                 ],
-            "$HIDDEN":true
+            "$LOCKED":true,
+            "$HIDDEN":false
         }],
     "animations":[
         {
