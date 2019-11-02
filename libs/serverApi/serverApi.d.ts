@@ -84,8 +84,8 @@ type HitRep = {
     userId: string;
     eid: string;
     bet: string;
-    win: string;
-    balance: string;
+    win: number;
+    balance: number;
     drop: HitDrop[];
 };
 type ChangeTurretReq = {

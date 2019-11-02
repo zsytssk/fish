@@ -1,7 +1,7 @@
 import { FishModel } from 'model/game/fishModel';
 import { BulletGroup } from 'model/game/gun/bulletGroup';
 import { GunEvent, LevelInfo } from 'model/game/gun/gunModel';
-import { PlayerModel } from 'model/game/playerModel';
+import { PlayerModel, PlayerEvent, CaptureInfo } from 'model/game/playerModel';
 import SAT from 'sat';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import GunBoxView from 'view/scenes/game/gunBoxView';
@@ -13,6 +13,9 @@ import {
 import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
 import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { ServerEvent } from 'data/serverEvent';
+import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -39,12 +42,17 @@ export class PlayerCtrl {
     private initEvent() {
         const {
             view,
-            model: { nickname, gun, is_cur_player, skill_map },
+            model: { nickname, gun, is_cur_player, skill_map, event },
         } = this;
-        const { event, direction, pos: gun_pos } = gun;
+        const { event: gun_event, direction, pos: gun_pos } = gun;
         const { ctrl_box, btn_minus, btn_add } = view;
 
-        event.on(
+        event.on(PlayerEvent.CaptureFish, (data: CaptureInfo) => {
+            const { pos, win, resolve } = data;
+            const { pos: end_pos } = gun;
+            showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
+        });
+        gun_event.on(
             GunEvent.AddBullet,
             (bullet_group: BulletGroup, velocity: SAT.Vector) => {
                 const { rage } = gun;
@@ -61,22 +69,36 @@ export class PlayerCtrl {
         );
 
         view.setDirection(direction);
-        event.on(GunEvent.DirectionChange, (_direction: SAT.Vector) => {
+        gun_event.on(GunEvent.DirectionChange, (_direction: SAT.Vector) => {
             view.setDirection(_direction);
         });
-        event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
+        gun_event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
             view.setLevel(level_info);
         });
 
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             e.stopPropagation();
-            console.log(`gun_box click`);
         });
 
         /** 当前用户的处理 */
         if (!is_cur_player) {
             return;
         }
+        ctrl_box.visible = true;
+        const socket = getSocket('game');
+        gun_event.on(
+            GunEvent.CastFish,
+            (data: { fish: FishModel; level: number }) => {
+                const {
+                    fish: { id: eid },
+                    level: multiple,
+                } = data;
+                socket.send(ServerEvent.Hit, {
+                    eid,
+                    multiple,
+                } as HitReq);
+            },
+        );
 
         let index = 0;
         for (const [, skill_model] of skill_map) {
@@ -90,16 +112,19 @@ export class PlayerCtrl {
             }
             index++;
         }
-        event.on(GunEvent.CastFish, (fish: FishModel) => {
+        gun_event.on(GunEvent.CastFish, (fish: FishModel) => {
             console.log(`cast fish:`, fish);
         });
-        event.on(
+        gun_event.on(
             GunEvent.StartTrack,
             (fish: FishModel, show_point: boolean) => {
                 activeAim(fish, show_point, gun.pos);
             },
         );
-        event.on(GunEvent.StopTrack, () => {
+        gun_event.on(GunEvent.StopTrack, () => {
+            stopAim();
+        });
+        gun_event.on(GunEvent.StopTrack, () => {
             stopAim();
         });
         Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
@@ -111,7 +136,6 @@ export class PlayerCtrl {
             gun.preAddBullet(_direction);
         });
 
-        ctrl_box.visible = true;
         btn_minus.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
             e.stopPropagation();
             console.log(`btn_minus`);

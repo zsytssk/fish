@@ -1,5 +1,5 @@
 import { LevelInfo } from 'model/game/gun/gunModel';
-import { getSpriteInfo } from 'utils/dataUtil';
+import { getSpriteInfo, getGunSkinMap } from 'utils/dataUtil';
 import { vectorToDegree } from 'utils/mathUtils';
 import {
     playSkeleton,
@@ -37,17 +37,31 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     public setLevel(level_info: LevelInfo) {
         const { skin, level_skin, level } = level_info;
         const { gun, score_label } = this;
-        score_label.text = level + '';
-        const gun_skin = `${skin}${level_skin}`;
 
         score_label.text = level + '';
         this.gun_skin = skin;
-        utilSkeletonLoadUrl(gun, `ani/gun/gun${gun_skin}.sk`).then(() => {
+
+        const ani_list = ['base', 'light', 'body'];
+        const ani_map = getGunSkinMap(skin, level_skin);
+        const not_show_arr = ani_list.filter(item => {
+            return !ani_map.has(item);
+        });
+        let gun_skin: string;
+        for (const [ani_name, ani_id] of ani_map) {
+            const name = `${ani_name}${ani_id}`;
+            const ani_node = this[ani_name];
+            if (ani_name === 'gun') {
+                gun_skin = name;
+            }
+            ani_node.url = `ani/gun/${name}.sk`;
+            ani_node.visible = true;
+        }
+        for (const not_ani_name of not_show_arr) {
+            this[not_ani_name].visible = false;
+        }
+        utilSkeletonLoadUrl(gun, `ani/gun/${gun_skin}.sk`).then(() => {
             playSkeleton(gun, 'standby', true);
         });
-
-        /** 将因为皮肤 而需要特殊处理的逻辑 独立出来 */
-        setGunLevel(this, level_info);
     }
     public setDirection(direction: SAT.Vector) {
         const { gun } = this;
@@ -104,36 +118,9 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
 }
 
 /** 将因为皮肤 而需要特殊处理的逻辑 独立出来 */
-export function setGunLevel(gun_box: GunBoxView, level_info: LevelInfo) {
-    const { skin, level_skin } = level_info;
-    const { light, base } = gun_box;
-    const ani_arr = getSpriteInfo('gun', skin) as string[];
-    const has_base = ani_arr.indexOf('base') !== -1;
-    const has_light = ani_arr.indexOf('light') !== -1;
-
-    const light_skin = `${skin}${level_skin}`;
-    const base_skin = skin === '5' ? skin : `${skin}${level_skin}`;
-
-    if (skin === '5') {
-        base.zOrder = 10;
-    }
-    if (has_light) {
-        light.visible = true;
-        light.url = `ani/gun/light${light_skin}.sk`;
-    } else {
-        light.visible = false;
-    }
-    if (has_base) {
-        base.visible = true;
-        base.url = `ani/gun/base${base_skin}.sk`;
-    } else {
-        base.visible = false;
-    }
-}
-/** 将因为皮肤 而需要特殊处理的逻辑 独立出来 */
 export function setGunDirection(gun_box: GunBoxView, degree: number) {
-    const { gun_skin, base } = gun_box;
+    const { gun_skin, body } = gun_box;
     if (gun_skin === '5') {
-        base.rotation = degree;
+        body.rotation = degree;
     }
 }

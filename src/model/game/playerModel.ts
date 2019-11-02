@@ -1,12 +1,20 @@
 import { ComponentManager } from 'comMan/component';
+import { ModelEvent } from 'model/modelEvent';
 import { getGunInfo } from 'utils/dataUtil';
-import { GunModel } from './gun/gunModel';
-import { SkillCtorMap, SkillModel } from './skill/skillModel';
-import { SkillInfo } from './skill/skillCoreCom';
 import { setProps } from 'utils/utils';
+import { FishEvent } from './fishModel';
+import { GunModel } from './gun/gunModel';
+import { SkillInfo } from './skill/skillCoreCom';
+import { SkillCtorMap, SkillModel } from './skill/skillModel';
+import { EventCom } from 'comMan/eventCom';
 
 type SkillMap = {
     [key: string]: SkillInfo;
+};
+export type CaptureInfo = {
+    pos: Point;
+    win: number;
+    resolve: FuncVoid;
 };
 export type PlayerInfo = {
     user_id: string;
@@ -18,6 +26,11 @@ export type PlayerInfo = {
     avatar: string;
     is_cur_player: boolean;
     skills: SkillMap;
+};
+export const PlayerEvent = {
+    CaptureFish: FishEvent.BeCapture,
+    UpdateInfo: 'update_info',
+    Destroy: ModelEvent.Destroy,
 };
 
 /** 玩家的数据类 */
@@ -42,7 +55,11 @@ export class PlayerModel extends ComponentManager {
     public skill_map: Map<string, SkillModel> = new Map();
     constructor(player_info: PlayerInfo) {
         super();
+        this.addCom(new EventCom());
         this.init(player_info);
+    }
+    public get event() {
+        return this.getCom(EventCom);
     }
     private init(player_info: PlayerInfo) {
         const {
@@ -57,7 +74,7 @@ export class PlayerModel extends ComponentManager {
             skills,
         } = player_info;
 
-        setProps(this as PlayerModel, {
+        this.updateInfo({
             user_id,
             server_index,
             level,
@@ -86,5 +103,23 @@ export class PlayerModel extends ComponentManager {
             };
             skill_map.set(key, new ctor(info));
         }
+    }
+    private updateInfo(info: Partial<PlayerInfo>) {
+        setProps(this as PlayerModel, info);
+    }
+    public captureFish(pos: Point, info: HitRep) {
+        const { win } = info;
+        const { gold } = this;
+        new Promise((resolve, reject) => {
+            this.event.emit(PlayerEvent.CaptureFish, {
+                pos,
+                win,
+                resolve,
+            } as CaptureInfo);
+        }).then(() => {
+            this.updateInfo({
+                gold: gold + win,
+            });
+        });
     }
 }

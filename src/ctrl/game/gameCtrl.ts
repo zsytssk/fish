@@ -13,6 +13,8 @@ import { FreezingComEvent } from 'model/game/com/freezingCom';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { onGameSocket } from './gameSocket';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -31,6 +33,7 @@ export class GameCtrl {
     }
     private init() {
         this.initEvent();
+        onGameSocket(getSocket('game'), this);
     }
     private initEvent() {
         const event = this.model.event;
@@ -71,5 +74,8 @@ export class GameCtrl {
         btn_leave.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();
         });
+    }
+    public onHit(data: HitRep) {
+        this.model.captureFish(data);
     }
 }

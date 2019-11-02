@@ -83,7 +83,7 @@ export let SPRITE: GameSprite = {
         '2': ['light', 'gun'],
         '3': ['light', 'gun'],
         '4': ['light', 'gun'],
-        '5': ['base', 'gun'],
+        '5': ['body', 'gun'],
     },
     bullet: {
         '1': {

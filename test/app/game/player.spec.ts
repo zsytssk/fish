@@ -1,23 +1,23 @@
 import { modelState } from 'model/modelState';
 import { PlayerInfo } from 'model/game/playerModel';
 import { Test } from 'testBuilder';
+import { test_data } from '../../testData';
 
-export const player_id = 'xxxx';
 /** @type {PlayerModel} 的测试 */
 export const player_test = new Test('player', runner => {
     runner.describe('add_cur_player', () => {
-        const player = modelState.app.game.getPlayerById(player_id);
+        const player = modelState.app.game.getPlayerById(test_data.userId);
         if (player) {
             return;
         }
         // body_test.runTest('show_shape');
         const player_data = {
-            user_id: player_id,
+            user_id: test_data.userId,
             server_index: 0,
             level: 1,
             gold: 10111,
             gun_skin: '5',
-            nickname: 'test',
+            nickname: test_data.nickname,
             avatar: 'test',
             is_cur_player: true,
             skills: {
@@ -51,17 +51,18 @@ export const player_test = new Test('player', runner => {
     });
 
     runner.describe('add_other_player', () => {
-        const other_id = '----';
-        let other_player = modelState.app.game.getPlayerById(other_id);
+        let other_player = modelState.app.game.getPlayerById(
+            test_data.otherUserId,
+        );
         if (!other_player) {
             // body_test.runTest('show_shape');
             const player_data = {
-                user_id: other_id,
+                user_id: test_data.otherUserId,
                 server_index: 0,
                 level: 101,
                 gold: 10000,
                 gun_skin: '1',
-                nickname: 'test',
+                nickname: test_data.otherNickname,
                 avatar: 'test',
                 is_cur_player: true,
                 skills: {

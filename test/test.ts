@@ -13,23 +13,17 @@ import { player_test } from './app/game/player.spec';
 import { skill_test } from './app/game/skill.spec';
 import { hall_test } from './app/hall/hall.spec';
 import { path_test } from './app/path.spec';
-import { socket_test } from './app/socket.spec';
-import { count_test } from './count.spec';
-import { sat_test } from './sat.spec';
-import {
-    getTestEnable,
-    getTestIgnore,
-    stageClick,
-    onCreateInstance,
-} from './utils/testUtils';
 import { alert_test } from './app/pop/alert.spec';
-import { web_socket_test } from './app/websocket.spec';
-import { laya_test } from './laya.spec';
-import { shop_test } from './app/pop/shop.spec';
-import { injectAfter, injectProto } from 'honor/utils/tool';
-import { AppCtrl } from 'ctrl/appCtrl';
 import { lottery_test } from './app/pop/lottery.spec';
+import { shop_test } from './app/pop/shop.spec';
 import { voice_test } from './app/pop/voice.spec';
+import { socket_test } from './app/socket/socket.spec';
+import { web_socket_test } from './app/socket/websocket.spec';
+import { count_test } from './count.spec';
+import { laya_test } from './laya.spec';
+import { sat_test } from './sat.spec';
+import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
+import { mock_web_socket_test } from './app/socket/mockSocket/mockWebsocket.spec';
 
 type TestUtils = {
     stageClick: typeof stageClick;
@@ -65,6 +59,7 @@ testScope.addChild(
     shop_test,
     lottery_test,
     voice_test,
+    mock_web_socket_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
@@ -78,4 +73,5 @@ window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
 //     voice_test.runTest('open_dialog');
 // });
 game_test.runTest('enter_game');
+mock_web_socket_test.runTest('on_hit');
 // socket_test.runTest('init_app_socket');

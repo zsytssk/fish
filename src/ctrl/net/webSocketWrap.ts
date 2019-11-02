@@ -37,8 +37,15 @@ export const SocketEvent = {
     End: 'end',
 };
 
+export interface WebSocketTrait {
+    event: EventCom;
+    setParams(params: {}): void;
+    send(cmd: string, data: {}): void;
+    disconnect(): void;
+}
 /** websocket 的 */
-export class WebSocketWrapCtrl extends ComponentManager {
+export class WebSocketWrapCtrl extends ComponentManager
+    implements WebSocketTrait {
     private ws: WebSocketCtrl;
     private params: {} = {};
     public event: EventCom;

@@ -11,6 +11,7 @@ import { EventCom } from 'comMan/eventCom';
 import { getSpriteInfo } from 'utils/dataUtil';
 
 export const FishEvent = {
+    Destroy: ModelEvent.Destroy,
     /** 移动 */
     Move: 'move',
     /** 被网住 */
@@ -122,15 +123,21 @@ export class FishModel extends ComponentManager {
         }
     }
     /** 被捉住 */
-    public beCapture() {
-        if (this.event) {
-            this.event.emit(FishEvent.BeCast);
-        }
-        this.destroy();
+    public beCapture(): Promise<Point> {
+        return new Promise((resolve, reject) => {
+            if (this.event) {
+                this.event.emit(FishEvent.BeCapture, () => {
+                    resolve(this.pos);
+                });
+            } else {
+                reject();
+            }
+            this.destroy();
+        });
     }
     public destroy() {
         this.game.removeFish(this);
-        this.event.emit(ModelEvent.Destroy);
+        this.event.emit(FishEvent.Destroy);
         super.destroy();
     }
 }

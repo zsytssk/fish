@@ -21,7 +21,6 @@ export class GameModel extends ComponentManager {
     private player_list: Set<PlayerModel> = new Set();
     constructor() {
         super();
-
         this.init();
     }
     private init() {
@@ -67,8 +66,11 @@ export class GameModel extends ComponentManager {
         }
     }
     public captureFish(info: HitRep) {
+        const player = this.getPlayerById(info.userId);
         const fish = this.getFishById(info.eid);
-        fish.beCapture();
+        fish.beCapture().then(pos => {
+            player.captureFish(pos, info);
+        });
     }
     /** 鱼群的处理逻辑 */
     public get shoal_com() {

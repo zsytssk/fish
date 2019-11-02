@@ -14,10 +14,12 @@ export type BulletGroupInfo = {
 export class BulletGroup extends ComponentManager {
     public bullet_list: Set<BulletModel> = new Set();
     private gun: GunModel;
+    private level: number;
     /** 是否已经捕捉到了, 只处理第一个bulletModel捕的鱼 */
     private casted = false;
     constructor(info: BulletGroupInfo, gun: GunModel) {
         super();
+        this.level = gun.level;
         this.gun = gun;
         this.initBullet(info);
     }
@@ -41,14 +43,14 @@ export class BulletGroup extends ComponentManager {
     }
     /** 一颗子弹击中鱼之后的处理 */
     private castFn = (fish: FishModel) => {
-        const { gun, casted, bullet_list } = this;
+        const { gun, casted, bullet_list, level } = this;
         const { is_cur_player } = gun.player;
         if (casted) {
             return;
         }
         this.casted = true;
         if (is_cur_player) {
-            gun.castFish(fish);
+            gun.castFish(fish, level);
         }
         gun.removeBullet(this);
         this.gun = undefined;

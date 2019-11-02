@@ -212,8 +212,8 @@ export class GunModel extends ComponentManager {
         this.bullet_list.add(bullet_group);
         this.event.emit(GunEvent.AddBullet, bullet_group, velocity);
     }
-    public castFish(fish: FishModel) {
-        this.event.emit(GunEvent.CastFish, fish);
+    public castFish(fish: FishModel, level: number) {
+        this.event.emit(GunEvent.CastFish, { fish, level });
     }
     public removeBullet(bullet: BulletGroup) {
         this.bullet_list.delete(bullet);

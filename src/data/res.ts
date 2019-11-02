@@ -1,4 +1,5 @@
 import { SPRITE } from './sprite';
+import { getGunSkinMap } from 'utils/dataUtil';
 
 export const res = {
     font: [],
@@ -50,37 +51,22 @@ for (const top_type in SPRITE) {
 /** gun */
 for (let i = 1; i <= 3; i++) {
     for (let j = 1; j <= 3; j++) {
-        res.game.push(
-            {
-                url: `ani/gun/light${i}${j}.sk`,
-                type: Laya.Loader.BUFFER,
-            },
-            {
-                url: `ani/gun/light${i}${j}.png`,
-                type: Laya.Loader.IMAGE,
-            },
-            {
-                url: `ani/gun/gun${i}${j}.sk`,
-                type: Laya.Loader.BUFFER,
-            },
-            {
-                url: `ani/gun/gun${i}${j}.png`,
-                type: Laya.Loader.IMAGE,
-            },
-        );
-        if (SPRITE.gun[i].has_base) {
+        const ani_map = getGunSkinMap(`${i}`, `${j}`);
+        for (const [ani_name, ani_id] of ani_map) {
+            const name = `${ani_name}${ani_id}`;
             res.game.push(
                 {
-                    url: `ani/gun/base${i}${j}.sk`,
+                    url: `ani/gun/${name}.sk`,
                     type: Laya.Loader.BUFFER,
                 },
                 {
-                    url: `ani/gun/base${i}${j}.png`,
+                    url: `ani/gun/${name}.png`,
                     type: Laya.Loader.IMAGE,
                 },
             );
         }
     }
+
     res.game.push(
         {
             url: `ani/gun/bullet${i}.sk`,
@@ -91,17 +77,16 @@ for (let i = 1; i <= 3; i++) {
             type: Laya.Loader.IMAGE,
         },
     );
-
-    // res.game.push(
-    //     {
-    //         url: `ani/gun/bullet${i}_rage.sk`,
-    //         type: Laya.Loader.BUFFER,
-    //     },
-    //     {
-    //         url: `ani/gun/bullet${i}_rage.png`,
-    //         type: Laya.Loader.IMAGE,
-    //     },
-    // );
+    res.game.push(
+        {
+            url: `ani/gun/net${i}.sk`,
+            type: Laya.Loader.BUFFER,
+        },
+        {
+            url: `ani/gun/net${i}.png`,
+            type: Laya.Loader.IMAGE,
+        },
+    );
 }
 
 export const font_list = [

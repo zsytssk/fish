@@ -1,6 +1,6 @@
 import SAT from 'sat';
 import { Coordinates } from 'data/coordinate';
-import { SpriteType, SpriteInfo, GunSpriteInfo } from 'data/sprite';
+import { SpriteType, SpriteInfo } from 'data/sprite';
 import { SPRITE } from 'data/sprite';
 import { SHAPE } from 'data/shape';
 import { vectorToAngle } from './mathUtils';
@@ -11,6 +11,19 @@ import {
 } from 'honor/utils/createSkeleton';
 import { GunInfo } from 'data/gun';
 
+/** 获取皮肤对应的id */
+export function getGunSkinMap(skin: string, level: string) {
+    const ani_list = SPRITE.gun[skin];
+    const result = new Map() as Map<string, string>;
+    for (const ani_name of ani_list) {
+        if (ani_name === 'body' && skin === '5') {
+            result.set(ani_name, `${skin}`);
+        } else {
+            result.set(ani_name, `${skin}${level}`);
+        }
+    }
+    return result;
+}
 export function getGunInfo(server_index: number) {
     const pos = Coordinates.gun_global_pos[server_index];
     return {
@@ -35,10 +48,7 @@ export function getGunLevelSkinInfo(level: number) {
     };
 }
 /** 获取sprite的信息 */
-export function getSpriteInfo(
-    type: SpriteType,
-    sub_type: string,
-): SpriteInfo | GunSpriteInfo {
+export function getSpriteInfo(type: SpriteType, sub_type: string): SpriteInfo {
     let sprite_info = SPRITE[type][sub_type];
     if (sprite_info.as) {
         sprite_info = SPRITE[type][sprite_info.as];

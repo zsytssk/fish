@@ -27,9 +27,7 @@ export class FishCtrl extends ComponentManager {
         event.on(FishEvent.BeCast, () => {
             view.beCastAni();
         });
-        event.on(FishEvent.BeCapture, () => {
-            this.beCapture();
-        });
+        event.on(FishEvent.BeCapture, this.beCapture);
         event.on(FishEvent.StatusChange, (status: FishStatus) => {
             if (status === FishStatus.Freezed) {
                 view.stopSwimAni();
@@ -37,7 +35,7 @@ export class FishCtrl extends ComponentManager {
                 view.playSwimAni();
             }
         });
-        event.on(ModelEvent.Destroy, () => {
+        event.on(FishEvent.Destroy, () => {
             this.destroy();
         });
     }
@@ -46,9 +44,12 @@ export class FishCtrl extends ComponentManager {
         const { pos, velocity, horizon_turn } = this.model;
         view.syncPos(pos, velocity, horizon_turn);
     }; //tslint:disable-line
-    public beCapture() {
+    public beCapture = (handler: FuncVoid) => {
         // 被网住的逻辑
-    }
+        setTimeout(() => {
+            handler();
+        }, 500);
+    }; // tslint:disable-line
     public destroy() {
         const { view } = this;
         view.destroy();

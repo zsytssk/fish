@@ -10,7 +10,6 @@ export const socket_test = new Test('socket', runner => {
                 url: 'http://localhost:3000',
                 token: 'this is a test',
             });
-            app.socket = socket;
         });
     });
 

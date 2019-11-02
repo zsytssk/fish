@@ -1,5 +1,6 @@
 import { WebSocketWrapCtrl, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { WebSocketCtrl } from 'honor/net/websocket';
+import { JSEncrypt } from 'jsencrypt';
 import { Test } from 'testBuilder';
 
 export const web_socket_test = new Test('web_socket', runner => {
