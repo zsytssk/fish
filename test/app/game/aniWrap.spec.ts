@@ -11,6 +11,7 @@ import { activePosTip } from 'view/scenes/game/ani_wrap/posTip';
 import { activeAim } from 'view/scenes/game/ani_wrap/aim';
 import { modelState } from 'model/modelState';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
+import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 
 /** 冰冻 鱼群 爆炸 瞄准...测试 */
 export const ani_wrap = new Test('ani_wrap', runner => {
@@ -33,11 +34,23 @@ export const ani_wrap = new Test('ani_wrap', runner => {
     runner.describe('stop_shoal_wave', () => {
         stopShoalWave();
     });
-    runner.describe('show_award', () => {
+    runner.describe('show_award_coin', () => {
         const pos = { x: 100, y: 100 };
         const end_pos = { x: 600, y: 600 };
         const num = 100000;
-        showAwardCoin(pos, end_pos, num);
+        showAwardCoin(pos, end_pos, num, true);
+
+        setTimeout(() => {
+            const pos1 = { x: 1000, y: 100 };
+            const end_pos1 = { x: 600, y: 600 };
+            const num1 = 100000;
+            showAwardCoin(pos1, end_pos1, num1, false);
+        }, 3000);
+    });
+    runner.describe('show_award_circle', () => {
+        const pos = { x: 1000, y: 1000 };
+        const num = 100000;
+        showAwardCircle(pos, num, true);
     });
 
     runner.describe('active_exploding', (pos: Point) => {

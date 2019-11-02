@@ -115,7 +115,7 @@ export let SPRITE: GameSprite = {
         '2': { type: 'DragonBone', path: 'ani/gun/net2' },
         '3': { type: 'DragonBone', path: 'ani/gun/net3' },
         '4': { type: 'DragonBone', path: 'ani/gun/net4' },
-        '5': { type: 'DragonBone', path: 'ani/gun/net4' },
+        '5': { type: 'DragonBone', path: 'ani/gun/net5' },
     },
     fish_shadow: {
         '1': {
