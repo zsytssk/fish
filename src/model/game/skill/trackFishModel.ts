@@ -4,11 +4,13 @@ import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 
 export type TrackFishInfo = {
-    /** 锁定的鱼 */
+    user_id: string;
     fish: string;
-    /** 是否是提示选中鱼 */
-    pre_active: boolean;
-} & SkillInfo;
+    num?: number;
+    used_time?: number;
+    /** 是否是提示 */
+    is_tip?: boolean;
+};
 
 /** 冰冻技能 */
 export class TrackFishModel extends ComponentManager implements SkillModel {
@@ -26,10 +28,13 @@ export class TrackFishModel extends ComponentManager implements SkillModel {
         // 激活
         const { skill_core } = this;
         const { player } = skill_core;
-        const { fish, pre_active } = info;
+        const { fish, is_tip } = info;
         const fish_model = getFishById(fish);
 
-        player.gun.trackFish.track(fish_model, pre_active);
+        player.gun.trackFish.track(fish_model, !is_tip);
+        if (is_tip) {
+            skill_core.activeEvent({ is_tip: true });
+        }
         skill_core.active(info).then(() => {
             player.gun.trackFish.unTrack();
         });

@@ -20,7 +20,6 @@ export class FreezingCom extends ComponentManager {
 
         this.addCom(new TimeoutCom());
     }
-
     /** 冰冻 */
     public freezing(cool_time: number, fish_list: string[]) {
         const { game, freezing_timeout } = this;

@@ -82,12 +82,12 @@ export class TestScopeCtor implements TestScope {
             /** 如果有msg直接运行那个msg 对应的 entity */
             if (msg) {
                 if (entity.msg === msg) {
-                    parseTestEntity(entity, params);
+                    await parseTestEntity(entity, params);
                 } else {
                     continue;
                 }
             } else {
-                parseTestEntity(entity, params);
+                await parseTestEntity(entity, params);
             }
         }
     }

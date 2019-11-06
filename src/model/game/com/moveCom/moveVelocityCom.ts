@@ -71,5 +71,9 @@ export class MoveVelocityCom implements MoveCom {
 
     public destroy() {
         clearTick(this.tick_index);
+        this.velocity = undefined;
+        this.update_fn = undefined;
+        this.is_stop = false;
+        this.tick_index = 0;
     }
 }

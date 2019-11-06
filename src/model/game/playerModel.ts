@@ -7,8 +7,9 @@ import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
 import { SkillCtorMap, SkillModel } from './skill/skillModel';
 import { EventCom } from 'comMan/eventCom';
+import { SkillMap } from 'data/config';
 
-type SkillMap = {
+type SkillInfoMap = {
     [key: string]: SkillInfo;
 };
 export type CaptureInfo = {
@@ -25,7 +26,7 @@ export type PlayerInfo = {
     nickname: string;
     avatar: string;
     is_cur_player: boolean;
-    skills: SkillMap;
+    skills: SkillInfoMap;
 };
 export const PlayerEvent = {
     CaptureFish: FishEvent.BeCapture,
@@ -90,7 +91,10 @@ export class PlayerModel extends ComponentManager {
 
         this.initSkill(skills);
     }
-    private initSkill(skills: SkillMap) {
+    private updateInfo(info: Partial<PlayerInfo>) {
+        setProps(this as PlayerModel, info);
+    }
+    private initSkill(skills: SkillInfoMap) {
         const { skill_map } = this;
         for (const key in SkillCtorMap) {
             if (!SkillCtorMap.hasOwnProperty(key)) {
@@ -104,11 +108,11 @@ export class PlayerModel extends ComponentManager {
             skill_map.set(key, new ctor(info));
         }
     }
-    private updateInfo(info: Partial<PlayerInfo>) {
-        setProps(this as PlayerModel, info);
+    public activeSkill(skill: SkillMap, data = {} as any) {
+        const skill_model = this.skill_map.get(skill);
+        skill_model.active(data);
     }
-    public captureFish(pos: Point, info: HitRep) {
-        const { win } = info;
+    public captureFish(pos: Point, win: number) {
         const { gold } = this;
         new Promise((resolve, reject) => {
             this.event.emit(PlayerEvent.CaptureFish, {

@@ -22,20 +22,20 @@ import { web_socket_test } from './app/socket/websocket.spec';
 import { count_test } from './count.spec';
 import { laya_test } from './laya.spec';
 import { sat_test } from './sat.spec';
-import { getTestEnable, getTestIgnore, stageClick } from './utils/testUtils';
+import {
+    getTestEnable,
+    getTestIgnore,
+    stageClick,
+    showNodeZone,
+    nameMap,
+} from './utils/testUtils';
 import { mock_web_socket_test } from './app/socket/mockSocket/mockWebsocket.spec';
+import { ServerEvent } from 'data/serverEvent';
 
-type TestUtils = {
-    stageClick: typeof stageClick;
-    honor: typeof honor;
-    modelState: typeof modelState;
-    ctrlState: typeof ctrlState;
-    viewState: typeof viewState;
-};
 declare global {
     interface Window {
         test: typeof test;
-        testUtils: TestUtils;
+        testUtils: typeof testUtils;
     }
 }
 
@@ -66,12 +66,21 @@ testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
 testBuilder.init();
 
 export const test = mapTest(testBuilder.top_scope);
-window.test = test;
-window.testUtils = { stageClick, modelState, ctrlState, viewState, honor };
+const testUtils = {
+    showNodeZone,
+    stageClick,
+    modelState,
+    ctrlState,
+    viewState,
+    honor,
+};
+
+nameMap('testUtil', testUtils);
+nameMap('test', test);
 
 // injectProto(AppCtrl, 'startApp', () => {
 //     voice_test.runTest('open_dialog');
 // });
-game_test.runTest('enter_game');
-mock_web_socket_test.runTest('on_hit');
+mock_web_socket_test.runTest('lock_fish');
+
 // socket_test.runTest('init_app_socket');

@@ -1,6 +1,5 @@
 import * as SAT from 'sat';
 import { clearTick, createTick } from 'utils/tick';
-import { Config } from 'data/config';
 
 export interface TrackTarget {
     pos: Point;
@@ -12,7 +11,8 @@ export class MoveTrackCom implements MoveCom {
     private pos: Point;
     /** 初始位置, 为了计算追踪子弹有没有击中目标 */
     private start_pos: Point;
-    private velocity: SAT.Vector;
+    /** 速度 */
+    private velocity_size: number;
     private update_fn: MoveUpdateFn;
     private on_hit: OnHit;
     private tick_index: number;
@@ -27,13 +27,13 @@ export class MoveTrackCom implements MoveCom {
         this.target = target;
         this.pos = pos;
         this.start_pos = { ...pos };
-        this.velocity = velocity;
+        this.velocity_size = velocity.len();
         this.on_hit = on_hit;
 
         this.tick_index = createTick(this.update.bind(this));
     }
     private update = (t: number) => {
-        const { target, pos, is_stop } = this;
+        const { target, pos, is_stop, velocity_size } = this;
         if (is_stop) {
             return;
         }
@@ -41,11 +41,10 @@ export class MoveTrackCom implements MoveCom {
         const { x: tx, y: ty } = target.pos;
         const velocity = new SAT.Vector(tx - x, ty - y)
             .normalize()
-            .scale(Config.BulletSpeed);
+            .scale(velocity_size);
 
         pos.x += velocity.x * t;
         pos.y += velocity.y * t;
-        this.velocity = velocity;
 
         if (this.detectOnHit()) {
             this.update_fn({ pos: this.pos, velocity });
@@ -87,5 +86,10 @@ export class MoveTrackCom implements MoveCom {
     }
     public destroy() {
         clearTick(this.tick_index);
+        this.target = undefined;
+        this.velocity_size = 0;
+        this.update_fn = undefined;
+        this.is_stop = false;
+        this.tick_index = 0;
     }
 }

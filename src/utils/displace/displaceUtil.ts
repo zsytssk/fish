@@ -7,6 +7,8 @@ import { FUNCTION } from './function';
 import { Line } from './line';
 import { FishSpriteInfo } from 'data/sprite';
 import { PATH } from 'data/path';
+import { MoveDisplaceCom } from 'model/game/com/moveCom/moveDisplaceCom';
+import { Config } from 'data/config';
 
 export const stage_width = GameConfig.width;
 export const stage_height = GameConfig.height;

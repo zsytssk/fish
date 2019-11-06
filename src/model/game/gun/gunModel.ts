@@ -80,8 +80,8 @@ export class GunModel extends ComponentManager {
     }
     private init() {
         this.addCom(new EventCom(), new TimeoutCom());
-        this.initDirection();
         this.setLevel(this.player.level);
+        this.initDirection();
     }
     public get event() {
         return this.getCom(EventCom);
@@ -89,8 +89,8 @@ export class GunModel extends ComponentManager {
     private initDirection() {
         const { server_index } = this.player;
         if (server_index < 2) {
-            /** 炮台在下面, 方向为向上 */
             this.setDirection(new SAT.Vector(0, -1));
+            /** 炮台在下面, 方向为向上 */
         } else {
             this.setDirection(new SAT.Vector(0, 1));
             /** 炮台在下面, 方向为向下 */
@@ -101,7 +101,10 @@ export class GunModel extends ComponentManager {
             return;
         }
         this.direction = direction;
-        this.event.emit(GunEvent.DirectionChange, direction);
+        const timeout = this.getCom(TimeoutCom);
+        timeout.createTimeout(() => {
+            this.event.emit(GunEvent.DirectionChange, direction);
+        }, this.launch_space);
     }
     public setLevel(level: number) {
         if (level === this.level) {

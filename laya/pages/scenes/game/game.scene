@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":10,
-    "selecteID":9,
+    "selectedBox":2,
+    "selecteID":39,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750},
     "nodeParent":-1,
-    "maxID":39,
+    "maxID":41,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,

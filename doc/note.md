@@ -1,9 +1,105 @@
--   @todo 本地测试
+-   @todo 切换炮台等级
+
+    -   进入桌子
+    -   离开桌子
+    -   addFish
+
+-   @todo quickLeaveFish + changeMoveCom
+
+    -   鱼的速度增加...
+
+-   @ques fish 需要 quick_leave 的状态吗...
+
+-   @todo 鱼潮来袭 处理
+
+    -   清理所有的鱼 能不能做成 被鱼碰到波浪才加速 和 wave 一样的速度...
+
+*   @ques 鱼群数据...
+
+## 2019-11-06 17:42:57
+
+-   @todo 所有技能的联调
+
+    -   锁定 lock_fish
+
+-   @ques 我这代码其他人能不能看的懂...
+-   @ques lockFish useId 写错了 @hujianx
+
+-   @ques 胡建新 能不能使用 used_time....
+
+-   @ques 技能锁定 有两步 我怎么处理...
+    -   step ... 怎么把这数据传过来...
+
+*   @todo 鱼潮的数据...
+
+    -   先按照我的做, 可以给一个原来的 demo...
+
+-   @todo 子弹 1 2 3 也放在一起... @设计
+    -   bindSocketEvent
+
+*   @bug startCount 的时间比 createTimeout 时间长..
+
+### save
+
+-   冰冻...
+
+## 登陆的流程...
+
+-   @todo jiri 地址...
+
+-   @ques 访问的地址怎么又一个 null
+
+    -   checkLogged
+
+-   @ques location.replace vs location.href =
+
+    -   preflight=true @meng
+
+-   @todo 登陆的流程参考 张笑+萌哥的
+
+testing-bitfish.cointest.link
+
+-   @todo 连服务器
+    -   如何去登陆, 获取登陆接口...
+    -   登陆 获取 token
+
+## 2019-11-06 11:42:33
+
+-   @bug 其他用户的炮口的位置不对...
+
+    -   @ques 为什么... 动画加载前设置 没有用吗...
+    -   在设置好方向之后 设置
+    -   上面的炮台的方向为什么也是 `new SAT.Vector(0, -1)`
+
+-   @todo 楼上开炮 是什么效果..., 会不会颠倒...
+
+*   @todo 本地测试
 
     -   炸弹
+        -> gameCtrl.onUserBomb -> gameModel.activeSkill -> PlayerModel -> BombModel.active --> SkillModel... -> SkillCtrl
     -   冰冻 鱼潮...
 
+*   @todo BombModel.active -> skill_model.active(data, this);
+
+*   @todo testBuilder 异步操作 + 去掉 afterAll...
+
+-   @todo 对炮台 子弹 网 大小和坐标 @yangchunming
+
+-   @todo 狂暴技能... 像其他技能一样...
+
+    -   @todo 狂暴的样式... @设计 @todo 不显示 技能图标 而是 技能框子 上面闪动
+
+-   @ques 炸弹的显示效果 + 实际作用如何处理....
+
+## 2019-11-02 16:47:45
+
 -   @todo 技能的光...
+
+-   @todo 鱼潮来了倒计时 @设计稿
+
+-   @todo 鱼的阴影
+
+-   @todo 发射子弹的 调试...
 
 *   @bug 本地激活技能之后 有可能无法点击屏幕发射子弹
 

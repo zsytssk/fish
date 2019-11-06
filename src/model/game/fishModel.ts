@@ -70,7 +70,6 @@ export class FishModel extends ComponentManager {
         const { type, id, move_com } = data;
 
         setProps(this as FishModel, { type, id });
-        move_com.onUpdate(this.onMoveChange);
         const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;
         if (sprite_info.ani_type === 'horizon_turn') {
@@ -80,8 +79,18 @@ export class FishModel extends ComponentManager {
         const body_com = new BodyCom(shapes, horizon_turn);
 
         this.horizon_turn = horizon_turn;
+        this.addCom(new EventCom(), body_com);
+        this.setMoveCom(move_com);
+    }
+    public setMoveCom(move_com: MoveCom) {
+        const { move_com: old_move_com } = this;
+        if (old_move_com) {
+            old_move_com.destroy();
+            this.delCom(old_move_com);
+        }
+        move_com.onUpdate(this.onMoveChange);
         this.move_com = move_com;
-        this.addCom(new EventCom(), move_com, body_com);
+        this.addCom(move_com);
     }
     private onMoveChange = (displace_info: DisplaceInfo) => {
         const body_com = this.getCom(BodyCom);

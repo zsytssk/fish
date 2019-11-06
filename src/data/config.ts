@@ -17,6 +17,8 @@ export const Config = {
     LaunchSpace: 100,
     /** 炸弹的区域 */
     BombRadius: 300,
+    /** 鱼潮 清理鱼的时间 */
+    ClearFishTime: 2.5,
 };
 
 export enum SkillMap {

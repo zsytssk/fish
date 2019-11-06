@@ -3,9 +3,12 @@ import { SkillCoreCom, SkillInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 
-type FreezeInfo = {
+export type FreezeInfo = {
+    user_id: string;
     fish_list: string[];
-} & SkillInfo;
+    num: number;
+    used_time: number;
+};
 /** 冰冻技能 */
 export class FreezeModel extends ComponentManager implements SkillModel {
     constructor(info: SkillInfo) {

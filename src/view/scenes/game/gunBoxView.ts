@@ -1,24 +1,28 @@
 import { LevelInfo } from 'model/game/gun/gunModel';
-import { getSpriteInfo, getGunSkinMap } from 'utils/dataUtil';
+import { asyncQue, stopAsyncQue } from 'utils/asyncQue';
+import { getGunSkinMap } from 'utils/dataUtil';
 import { vectorToDegree } from 'utils/mathUtils';
 import {
     playSkeleton,
+    playSkeletonOnce,
     stopSkeleton,
     utilSkeletonLoadUrl,
-    playSkeletonOnce,
 } from 'utils/utils';
 import { ui } from '../../../ui/layaMaxUI';
 import { addBullet, viewState } from '../../viewState';
 import { activePosTip, stopPosTip } from './ani_wrap/posTip';
-import { asyncQue, stopAsyncQue } from 'utils/asyncQue';
 
 /** 炮台的view */
 export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     private time_out: number;
     public gun_skin: string;
+    private gun_direct: SAT.Vector;
     constructor() {
         super();
+    }
+    public onEnable() {
         this.init();
+        this.setDirection(this.gun_direct);
     }
     private init() {
         const { light, gun, base, score_box } = this;
@@ -63,11 +67,19 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
             playSkeleton(gun, 'standby', true);
         });
     }
+    public fixServerTopPos() {
+        const { ani_box } = this;
+        ani_box.rotation = this.rotation = 180;
+    }
     public setDirection(direction: SAT.Vector) {
+        if (!direction) {
+            return;
+        }
         const { gun } = this;
         const degree = vectorToDegree(direction) + 90;
         gun.rotation = degree;
 
+        this.gun_direct = direction;
         /** 将因为皮肤 而需要特殊处理的逻辑 独立出来 */
         setGunDirection(this, degree);
     }

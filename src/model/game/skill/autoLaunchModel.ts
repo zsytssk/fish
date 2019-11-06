@@ -2,9 +2,7 @@ import { SkillCoreCom, SkillInfo, SkillStatus } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 
-export type BombInfo = {
-    fish_list: string[];
-} & SkillInfo;
+export type AutoLaunchInfo = {} & SkillInfo;
 
 /** 炸弹技能: 提示用户选中屏幕的位置, 然后就发射炸弹 */
 export class AutoLaunchModel extends ComponentManager implements SkillModel {

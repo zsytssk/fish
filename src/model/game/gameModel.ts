@@ -6,6 +6,7 @@ import { createFish, createFishGroup } from '../modelState';
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
 import { EventCom } from 'comMan/eventCom';
+import { SkillMap } from 'data/config';
 
 export const GameEvent = {
     /** 添加鱼 */
@@ -65,18 +66,30 @@ export class GameModel extends ComponentManager {
             }
         }
     }
+    public getAllFish() {
+        const { fish_list } = this;
+        return [...fish_list];
+    }
     public captureFish(info: HitRep) {
         const player = this.getPlayerById(info.userId);
         const fish = this.getFishById(info.eid);
+        if (!fish || !player) {
+            console.error('Game:>captureFish:> cant find fish or player!!');
+            return;
+        }
         fish.beCapture().then(pos => {
-            player.captureFish(pos, info);
+            if (!pos) {
+                console.error('Game:>captureFish:> cant find fish pos!!');
+                return;
+            }
+            player.captureFish(pos, info.win);
         });
     }
     /** 鱼群的处理逻辑 */
     public get shoal_com() {
         let shoal_com = this.getCom(ShoalCom);
         if (!shoal_com) {
-            shoal_com = new ShoalCom();
+            shoal_com = new ShoalCom(this);
             this.addCom(shoal_com);
         }
         return shoal_com;
@@ -100,7 +113,13 @@ export class GameModel extends ComponentManager {
     public removePlayer(player: PlayerModel) {
         this.player_list.delete(player);
     }
-
+    public activeSkill(skill: SkillMap, data: { user_id: string }) {
+        const player = this.getPlayerById(data.user_id);
+        player.activeSkill(skill, data);
+    }
+    public shoalComingTip(data: FishShoalWarnRep) {
+        this.shoal_com.preAddShoal(data);
+    }
     public destroy() {
         super.destroy();
         // 离开游戏销毁...

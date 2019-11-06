@@ -3,43 +3,42 @@ import { onPoolClick, onFishClick, offFishClick } from 'view/viewState';
 import { FreezeModel } from 'model/game/skill/freezeModel';
 import { BombModel } from 'model/game/skill/bombModel';
 import { TrackFishModel } from 'model/game/skill/trackFishModel';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { ServerEvent } from 'data/serverEvent';
+import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 
 /** 技能的激活前的处理 */
-export function skillPreActiveHandler(model: SkillModel) {
+export function skillPreActiveHandler(model: SkillModel, step?: number) {
     return new Promise((resolve, reject) => {
         if (model instanceof FreezeModel) {
-            model.active({
-                fish_list: [],
-                used_time: 0,
-            });
+            // 冰冻
+            const socket = getSocket('game');
+            socket.send(ServerEvent.UseFreeze);
             resolve();
         } else if (model instanceof BombModel) {
-            console.log('1. 请选择屏幕中选择爆炸位置..');
+            // 炸弹
             onPoolClick().then((pos: Point) => {
+                const socket = getSocket('game');
                 const fish_list = model.getBombFish(pos);
-
-                model.active({
-                    fish_list,
-                    used_time: 0,
-                });
-                // 计算爆炸区域的鱼, 发送给服务端...
-                // 收到服务端的信息需要统一的处理...
-                // onGameCtrl...
+                socket.send(ServerEvent.UseBomb, {
+                    bombPoint: pos,
+                    eid: fish_list,
+                } as UseBombReq);
             });
         } else if (model instanceof TrackFishModel) {
-            // 发送命令给服务器, 接受到信息之后, 选鱼提示
-            console.log('2. 请选择屏幕中的鱼..');
-            onFishClick().subscribe((fish_id: string) => {
-                console.log(`点击的鱼:>`, fish_id);
-                model.active({
-                    fish: fish_id,
-                    pre_active: true,
-                    used_time: 0,
+            const socket = getSocket('game');
+            if (step === 0) {
+                // 激活锁定
+                socket.send(ServerEvent.UseLock);
+            } else {
+                // 选中鱼
+                onFishClick().subscribe((fish_id: string) => {
+                    console.log(`点击的鱼:>`, fish_id);
+                    socket.send(ServerEvent.LockFish, {
+                        eid: fish_id,
+                    } as LockFishReq);
                 });
-                // 将鱼的id发给服务器...
-                // 收到服务端的信息需要统一的处理...
-                // onGameCtrl...
-            });
+            }
         } else {
             resolve();
         }
@@ -47,22 +46,15 @@ export function skillPreActiveHandler(model: SkillModel) {
 }
 
 /** 技能的激活的处理 */
-export function skillActiveHandler(model: SkillModel) {
+export function skillActiveHandler(model: SkillModel, info: any) {
     return new Promise((resolve, reject) => {
         if (model instanceof TrackFishModel) {
-            console.log('2. 请选择屏幕中的鱼..');
-            onFishClick().subscribe((fish_id: string) => {
-                console.log(`点击的鱼:>`, fish_id);
-                model.active({
-                    fish: fish_id,
-                    pre_active: true,
-                    used_time: 0,
-                });
-                // 将鱼的id发给服务器...
-                // 收到服务端的信息需要统一的处理...
-                // onGameCtrl...
-            });
-        } else {
+            // 激活锁定之后 提示选中鱼 选中之后发给服务器...
+            console.log('请选中你要攻击的鱼...');
+            skillPreActiveHandler(model, 1);
+            // ...
+        } else if (model instanceof BombModel) {
+            activeExploding(info as Point);
             resolve();
         }
     });

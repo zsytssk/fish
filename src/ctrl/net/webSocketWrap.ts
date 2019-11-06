@@ -40,7 +40,7 @@ export const SocketEvent = {
 export interface WebSocketTrait {
     event: EventCom;
     setParams(params: {}): void;
-    send(cmd: string, data: {}): void;
+    send(cmd: string, data?: {}): void;
     disconnect(): void;
 }
 /** websocket 的 */

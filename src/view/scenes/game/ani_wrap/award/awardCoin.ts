@@ -9,7 +9,7 @@ const coin_width = 70;
 const coin_height = 70;
 const coin_show_time = 0.5;
 const coin_stop_time = 0.5;
-const coin_fly_time = 1;
+const coin_fly_time = 0.5;
 
 /** 显示奖励金币 */
 export async function showAwardCoin(

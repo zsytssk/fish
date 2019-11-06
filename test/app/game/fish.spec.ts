@@ -1,11 +1,10 @@
 import { range } from 'lodash';
+import { FishModel } from 'model/game/fishModel';
+import { GameEvent } from 'model/game/gameModel';
+import { ModelEvent } from 'model/modelEvent';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
-import { body_test } from './body.spec';
-import { GameEvent } from 'model/game/gameModel';
-import { FishModel, FishEvent } from 'model/game/fishModel';
-import { injectAfter } from 'honor/utils/tool';
-import { ModelEvent } from 'model/modelEvent';
+
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
@@ -15,14 +14,7 @@ export const fish_test = new Test('fish', runner => {
             typeId = typeId || 17;
             pathId = pathId || 17;
             time = time || 15;
-            const fish_data = {
-                eid: '00' + typeId,
-                fishId: `${typeId}`,
-                pathNo: `${pathId}`,
-                totalTime: time,
-                usedTime: 0,
-                reverse: true,
-            } as ServerFishInfo;
+            const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
         },
     );
@@ -34,14 +26,7 @@ export const fish_test = new Test('fish', runner => {
                 typeId = typeId || 1;
                 pathId = i;
                 time = time || 15;
-                const fish_data = {
-                    eid: '00' + typeId,
-                    fishId: `${typeId}`,
-                    displaceType: 'path',
-                    pathNo: `${pathId}`,
-                    totalTime: time,
-                    usedTime: 0,
-                } as ServerFishInfo;
+                const fish_data = genFishInfo(typeId, pathId, time);
                 modelState.app.game.addFish(fish_data);
             }
         },
@@ -53,14 +38,7 @@ export const fish_test = new Test('fish', runner => {
             const typeId = i;
             const pathId = i;
             const time = 5;
-            const fish_data = {
-                eid: '00' + typeId,
-                fishId: `${typeId}`,
-                displaceType: 'path',
-                pathNo: `${pathId}`,
-                totalTime: time,
-                usedTime: 0,
-            } as ServerFishInfo;
+            const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
         }
     });
@@ -97,6 +75,7 @@ export const fish_test = new Test('fish', runner => {
         } as ServerFishInfo;
         game.addFish(fish_data);
     });
+
     /** 鱼组的测试 */
     runner.describe('fish_total_time', () => {
         // body_test.runTest('show_shape');
@@ -122,3 +101,19 @@ export const fish_test = new Test('fish', runner => {
         game.addFish(fish_data);
     });
 });
+
+export function genFishInfo(
+    typeId: number,
+    pathId: number,
+    totalTime: number,
+    usedTime = 0,
+) {
+    return {
+        eid: '00' + typeId,
+        fishId: `${typeId}`,
+        displaceType: 'path',
+        pathNo: `${pathId}`,
+        totalTime,
+        usedTime,
+    } as ServerFishInfo;
+}

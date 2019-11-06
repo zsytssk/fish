@@ -15,6 +15,9 @@ import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { onGameSocket } from './gameSocket';
+import { SkillMap } from 'data/config';
+import { ShoalEvent } from 'model/game/com/shoalCom';
+import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -59,6 +62,9 @@ export class GameCtrl {
         event.on(FreezingComEvent.UnFreezing, () => {
             stopFreeze();
         });
+        event.on(ShoalEvent.PreAddShoal, () => {
+            activeShoalWave();
+        });
 
         btn_help.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();
@@ -77,5 +83,11 @@ export class GameCtrl {
     }
     public onHit(data: HitRep) {
         this.model.captureFish(data);
+    }
+    public shoalComingTip(data: FishShoalWarnRep) {
+        this.model.shoalComingTip(data);
+    }
+    public activeSkill(skill: SkillMap, data: any) {
+        this.model.activeSkill(skill, data);
     }
 }

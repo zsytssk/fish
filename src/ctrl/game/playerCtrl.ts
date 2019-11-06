@@ -34,8 +34,8 @@ export class PlayerCtrl {
         const { view, model } = this;
         const { server_index, gun } = model;
         const { pos } = gun;
-        if (server_index > 2) {
-            view.rotation = 180;
+        if (server_index >= 2) {
+            view.fixServerTopPos();
         }
         view.setPos(pos.x, pos.y);
     }
@@ -75,10 +75,30 @@ export class PlayerCtrl {
         gun_event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
             view.setLevel(level_info);
         });
-
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             e.stopPropagation();
         });
+
+        let index = 0;
+        for (const [, skill_model] of skill_map) {
+            if (skill_model instanceof AutoLaunchModel) {
+                if (is_cur_player) {
+                    const auto_launch_view = getAutoLaunchSkillItem();
+                    this.handleAutoLaunch(skill_model, auto_launch_view);
+                }
+                continue;
+            } else {
+                if (is_cur_player) {
+                    const skill_view = getSkillItemByIndex(index);
+                    const skill_ctrl = new SkillCtrl(skill_model, skill_view);
+                } else {
+                    {
+                        const skill_ctrl = new SkillCtrl(skill_model);
+                    }
+                }
+            }
+            index++;
+        }
 
         /** 当前用户的处理 */
         if (!is_cur_player) {
@@ -100,21 +120,6 @@ export class PlayerCtrl {
             },
         );
 
-        let index = 0;
-        for (const [, skill_model] of skill_map) {
-            if (skill_model instanceof AutoLaunchModel) {
-                const auto_launch_view = getAutoLaunchSkillItem();
-                this.handleAutoLaunch(auto_launch_view, skill_model);
-                continue;
-            } else {
-                const skill_view = getSkillItemByIndex(index);
-                const skill_ctrl = new SkillCtrl(skill_view, skill_model);
-            }
-            index++;
-        }
-        gun_event.on(GunEvent.CastFish, (fish: FishModel) => {
-            console.log(`cast fish:`, fish);
-        });
         gun_event.on(
             GunEvent.StartTrack,
             (fish: FishModel, show_point: boolean) => {
@@ -145,7 +150,7 @@ export class PlayerCtrl {
             console.log(`btn_add`);
         });
     }
-    private handleAutoLaunch(view: Laya.Sprite, model: AutoLaunchModel) {
+    private handleAutoLaunch(model: AutoLaunchModel, view: Laya.Sprite) {
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             e.stopPropagation();
             console.log('auto launch');

@@ -29,6 +29,7 @@ export const SkillEvent = {
     UpdateInfo: 'update_info',
     StatusChange: 'status_change',
     UpdateRadio: 'update_radio',
+    ActiveSkill: 'active_skill',
 };
 export class SkillCoreCom extends ComponentManager {
     /** 技能对应的id */
@@ -69,6 +70,9 @@ export class SkillCoreCom extends ComponentManager {
         }
         this.status = status;
         this.event.emit(SkillEvent.StatusChange, status);
+    }
+    public activeEvent(info: any) {
+        this.event.emit(SkillEvent.ActiveSkill, info);
     }
     public active(info?: SkillInfo) {
         return new Promise((resolve, reject) => {

@@ -13,10 +13,10 @@ export const player_test = new Test('player', runner => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 0,
+            server_index: 1,
             level: 1,
             gold: 10111,
-            gun_skin: '5',
+            gun_skin: '1',
             nickname: test_data.nickname,
             avatar: 'test',
             is_cur_player: true,
@@ -58,13 +58,13 @@ export const player_test = new Test('player', runner => {
             // body_test.runTest('show_shape');
             const player_data = {
                 user_id: test_data.otherUserId,
-                server_index: 0,
+                server_index: 3,
                 level: 101,
                 gold: 10000,
                 gun_skin: '1',
                 nickname: test_data.otherNickname,
                 avatar: 'test',
-                is_cur_player: true,
+                is_cur_player: false,
                 skills: {
                     '1': {
                         item_id: '1',

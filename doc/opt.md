@@ -13,6 +13,8 @@
 
 同时发布 es6 es5 版本...
 
+-   检测浏览器版本... https://modernizr.com/
+
 ## 其他
 
 -   干脆替换 console.log 吧

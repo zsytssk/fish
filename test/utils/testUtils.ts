@@ -6,12 +6,33 @@ export function stageClick() {
         console.log(`test:>`, e.target);
     });
 }
+export function showNodeZone(sprite: Laya.Sprite) {
+    sprite.graphics.alpha(0.3);
+    sprite.graphics.drawRect(0, 0, sprite.width, sprite.height, '#000');
+}
 export function sleep(time: number) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve();
         }, time * 1000);
     });
+}
+export function nameMap(path: string | string[], end_obj: any, obj?: any) {
+    if (typeof path === 'string') {
+        path = path.split('.');
+    }
+    if (!obj) {
+        obj = window;
+    }
+    const cur_path = path.shift();
+    if (path.length === 0) {
+        return (obj[cur_path] = end_obj);
+    }
+
+    if (!obj[cur_path]) {
+        obj[cur_path] = {};
+    }
+    return nameMap(path, end_obj, obj[cur_path]);
 }
 
 let test_ignore_arr: string[] = [];

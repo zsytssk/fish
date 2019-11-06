@@ -7,8 +7,13 @@ export const ServerEvent = {
     Shoot: 'shoot',
     Hit: 'hit',
     ChangeTurret: 'changeTurret',
+    /** 鱼潮来了提示 */
+    FishShoalWarn: 'fishShoalWarn',
+    /** 鱼潮 */
     FishShoal: 'fishShoal',
+    /** 激活锁定 */
     UseLock: 'useLock',
+    /** 锁定<鱼> */
     LockFish: 'lockFish',
     UseBomb: 'useBomb',
     PowerUp: 'powerUp',

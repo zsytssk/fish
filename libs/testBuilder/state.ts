@@ -57,7 +57,10 @@ export async function parseTestEntity(entity: TestEntity, params: any[] = []) {
     console.group(`TestBuilder:>`, entity.msg);
     cur_test_entity = entity;
     try {
-        fun(...params);
+        const result = fun(...params);
+        if (result instanceof Promise) {
+            await result;
+        }
     } catch (e) {
         console.error(`TestBuilder:>`, e.stack ? e.stack : e);
     }

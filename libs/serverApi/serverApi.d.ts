@@ -1,3 +1,5 @@
+// http://gitlab.intranet.huiyin.com/springfans/game/game-bitfish-server/blob/docker/API.md
+// import {} from 'data/serverEvent';
 type RoomInReq = {
     roomId: number;
     /** 是否试玩 */
@@ -15,7 +17,9 @@ type CheckReplayRep = {
     isReplay: boolean;
     socketUrl: string;
 };
+/** 用户的数据 */
 type ServerUserInfo = {
+    seatIndex: number;
     userId: string;
     bulletNum: number;
     multiple: number;
@@ -37,13 +41,14 @@ type ServerFishInfo = {
     pathNo?: string;
     usedTime: number;
     totalTime: number;
-    funList: {
+    funList?: {
         funNo?: string;
-        funParams?: any[];
+        len: number;
+        funParam?: any[];
     }[];
-    startTime?: number;
     reverse?: boolean;
     frozen?: boolean;
+    startTime?: number;
     inScreen?: boolean;
 };
 type ServerItemInfo = {
@@ -52,6 +57,8 @@ type ServerItemInfo = {
     coolTime: number;
     usedTime: number;
 };
+
+/** 复盘 */
 type EnterGameRep = {
     roomId: number;
     tableId: string;
@@ -81,19 +88,24 @@ type HitDrop = {
     itemNum: number;
 };
 type HitRep = {
-    userId: string;
+    userId?: string;
     eid: string;
-    bet: string;
+    bet?: string;
     win: number;
-    balance: number;
+    balance?: number;
     drop: HitDrop[];
 };
+/** 换炮台等级 */
 type ChangeTurretReq = {
     multiple: string;
 };
 type ChangeTurretRep = {
     userId: string;
     multiple: string;
+};
+type FishShoalWarnRep = {
+    shoalId: string;
+    delay: number;
 };
 type FishShoal = {
     shoalId: string;
@@ -113,31 +125,32 @@ type UseLockRep = {
     userId: string;
     count: number;
     lockedFish: string;
-    duration: string;
+    duration: number;
+};
+/** 锁定鱼 */
+type LockFishRep = {
+    eid: string;
 };
 type LockFishReq = {
-    eid: string;
-};
-type LockFishRep = {
-    useId: string;
+    userId: string;
     eid: string;
 };
 type UseBombReq = {
-    bombPoint: string;
+    bombPoint: Point;
     eid: string[];
 };
-type UseBombReq = {
-    bombPoint: string;
-    eid: string[];
+
+type UseBombFishInfo = {
+    eid: string;
+    win: number;
+    drop?: HitDrop;
 };
 type UseBombRep = {
     userId: string;
-    bombPoint: string;
-    killedFish: {
-        eid: string;
-        win: number;
-    };
-    balance: number;
+    bombPoint: Point;
+    count: number;
+    killedFish: UseBombFishInfo[];
+    balance?: number;
 };
 
 type PowerUpRep = {

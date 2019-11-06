@@ -4,11 +4,12 @@ import { BombModel } from './bombModel';
 import { FreezeModel } from './freezeModel';
 import { AutoLaunchModel } from './autoLaunchModel';
 import { SkillMap } from 'data/config';
+import { PlayerModel } from '../playerModel';
 
 /** 技能的接口 */
 export interface SkillModel {
     skill_core: SkillCoreCom;
-    active(info: SkillInfo): void;
+    active(info: any): void;
     disable(): void;
 }
 

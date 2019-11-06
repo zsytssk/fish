@@ -24,7 +24,8 @@ export class BulletCtrl {
         const { level_skin } = model;
         this.syncPos();
         view.visible = true;
-        playSkeleton(view, level_skin, true);
+        playSkeleton(view, getBulletAniSkin(level_skin), true);
+        // playSkeleton(view, level_skin, true);
     }
     private initEvent() {
         const { view } = this;
@@ -55,4 +56,13 @@ export class BulletCtrl {
         view.rotation = angle;
         view.pos(pos.x, pos.y);
     }; // tslint:disable-line
+}
+
+function getBulletAniSkin(level_skin: string) {
+    const num_skin = Number(level_skin);
+    if (num_skin < 4) {
+        return 0;
+    } else {
+        return level_skin;
+    }
 }
