@@ -90,4 +90,9 @@ export class GameCtrl {
     public activeSkill(skill: SkillMap, data: any) {
         this.model.activeSkill(skill, data);
     }
+    public addFish(fish_list: ServerFishInfo[]) {
+        for (const fish of fish_list) {
+            this.model.addFish(fish);
+        }
+    }
 }

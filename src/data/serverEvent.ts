@@ -7,6 +7,8 @@ export const ServerEvent = {
     Shoot: 'shoot',
     Hit: 'hit',
     ChangeTurret: 'changeTurret',
+    /** 添加鱼 */
+    AddFish: 'addFish',
     /** 鱼潮来了提示 */
     FishShoalWarn: 'fishShoalWarn',
     /** 鱼潮 */

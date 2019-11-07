@@ -143,9 +143,10 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         });
     });
 
-    mock_web_socket_test.runTest('create');
     runner.describe('shoal', async () => {
+        mock_web_socket_test.runTest('create');
         await game_test.runTest('enter_game');
+        await sleep(5);
         const { event } = getSocket('game') as MockWebSocket;
 
         event.emit(ServerEvent.FishShoalWarn, {
@@ -169,5 +170,22 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
             shoalId: '1',
             fish: fish_arr,
         } as FishShoal);
+    });
+
+    runner.describe('add_fish', async () => {
+        mock_web_socket_test.runTest('create');
+        await game_test.runTest('enter_game');
+        await sleep(3);
+        const { event } = getSocket('game') as MockWebSocket;
+
+        const fish_arr = [] as ServerFishInfo[];
+        for (const i of range(1, 21)) {
+            const fish = createLineDisplaceFun(`${i}`, 30, -(i * 4), 750 / 2);
+            fish_arr.push(fish);
+        }
+
+        event.emit(ServerEvent.AddFish, {
+            fish: fish_arr,
+        } as ServerAddFishRep);
     });
 });

@@ -23,6 +23,9 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.LockFish]: (data: LockFishReq) => {
             game.activeSkill(SkillMap.TrackFish, convertLockFishData(data));
         },
+        [ServerEvent.AddFish]: (data: ServerAddFishRep) => {
+            game.addFish(data.fish);
+        },
         [ServerEvent.FishShoal]: (data: FishShoal) => {},
         [ServerEvent.FishShoalWarn]: (data: FishShoalWarnRep) => {
             game.shoalComingTip(data);

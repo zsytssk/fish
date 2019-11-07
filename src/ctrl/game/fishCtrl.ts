@@ -1,7 +1,6 @@
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
 import { FishEvent, FishModel, FishStatus } from 'model/game/fishModel';
-import { ModelEvent } from 'model/modelEvent';
 import { FishView } from 'view/scenes/game/fishView';
 
 /** 鱼的控制器 */

@@ -44,7 +44,7 @@ type ServerFishInfo = {
     funList?: {
         funNo?: string;
         len: number;
-        funParam?: any[];
+        funParams?: any[];
     }[];
     reverse?: boolean;
     frozen?: boolean;
@@ -56,6 +56,9 @@ type ServerItemInfo = {
     count: number;
     coolTime: number;
     usedTime: number;
+};
+type ServerAddFishRep = {
+    fish: ServerFishInfo[];
 };
 
 /** 复盘 */
