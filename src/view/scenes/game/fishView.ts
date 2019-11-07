@@ -20,10 +20,13 @@ export class FishView extends Laya.Sprite {
         this.pool = pool;
         this.mouseEnabled = true;
         this.mouseThrough = false;
-        this.init();
+        this.visible = false;
     }
     /** 创建 ani and shadow */
-    private init() {
+    private initAni() {
+        if (this.fish_ani) {
+            return;
+        }
         const { type } = this.info;
         const fish_ani = createSkeleton('ani/fish/fish' + type);
         const { offset } = getSpriteInfo('fish', type) as FishSpriteInfo;
@@ -42,12 +45,26 @@ export class FishView extends Laya.Sprite {
     /** 创建 ani and shadow */
     public playSwimAni() {
         const { fish_ani } = this;
-        playSkeleton(fish_ani, 0, true);
+        if (fish_ani) {
+            playSkeleton(fish_ani, 0, true);
+        }
     }
     /** 创建 ani and shadow */
     public stopSwimAni() {
         const { fish_ani } = this;
-        stopSkeleton(fish_ani);
+        if (fish_ani) {
+            stopSkeleton(fish_ani);
+        }
+    }
+    /** 设置显示状态 */
+    public setVisible(visible: boolean) {
+        this.visible = visible;
+        if (visible) {
+            this.initAni();
+            this.playSwimAni();
+        } else {
+            this.stopSwimAni();
+        }
     }
     /** 同步位置 */
     public syncPos(pos: Point, velocity: SAT.Vector, horizon_turn: boolean) {

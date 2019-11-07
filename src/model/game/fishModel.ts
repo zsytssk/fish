@@ -20,6 +20,8 @@ export const FishEvent = {
     BeCapture: 'be_capture',
     /** 状态改变 */
     StatusChange: 'status_change',
+    /** 显示状态改变 */
+    VisibleChange: 'visible_change',
 };
 export type FishMoveData = {
     pos: Point;
@@ -53,6 +55,8 @@ export class FishModel extends ComponentManager {
     public horizon_turn = false;
     /** 移动控制器, */
     private move_com: MoveCom;
+    /** 是否显示 */
+    private visible = false;
     private game: GameModel;
     constructor(data: FishData, game: GameModel) {
         super();
@@ -94,11 +98,12 @@ export class FishModel extends ComponentManager {
     }
     private onMoveChange = (displace_info: DisplaceInfo) => {
         const body_com = this.getCom(BodyCom);
-        const { pos, velocity, is_end: is_complete, out_stage } = displace_info;
+        const { pos, velocity, is_complete, visible } = displace_info;
         if (is_complete) {
             return this.destroy();
         }
-        if (out_stage) {
+        this.setVisible(visible);
+        if (!visible) {
             return;
         }
 
@@ -124,6 +129,13 @@ export class FishModel extends ComponentManager {
         } else {
             this.move_com.start();
         }
+    }
+    public setVisible(visible: boolean) {
+        if (visible === this.visible) {
+            return;
+        }
+        this.visible = visible;
+        this.event.emit(FishEvent.VisibleChange, visible);
     }
     /** 被网住 */
     public beCast() {

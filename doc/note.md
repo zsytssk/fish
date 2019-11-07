@@ -1,29 +1,89 @@
--   @todo 开始不显示 鱼 只有鱼进入页面才显示...
+
+
+
+-   @ques 游客的 token 是怎么处理的...
+
+    -   游客和没有登陆的用户怎么区分...
+
+-   @note
+    // 获取游客 TOEKN
+    "GET_GUEST_TOKEN": "getRequestId",
+
+-   @ques 前端代码 要不要 区分是游客
+
+```ts
+const { data } = await utils.socket.send({
+    cmd: CONFIG.ACTION.GET_GUEST_TOKEN,
+    isPromise: true,
+    ignore: true,
+});
+```
+
+-   ## @ques 游客和正常用户 是怎么区分的
+
+-   @ques 游客通过一个特殊的接口获取 游客的 token...
+
+-   @ques 用户直接点击登陆按钮是直接登陆的吧 没有 `&preflight=true`
+
+## 2019-11-07 20:07:33
+
+-   @todo 机器人的处理逻辑...
+
+-   @todo 切换炮台等级
+
+    -   登陆页面
+    -   获取 code
+    -   获取 token
+    -   token 不合法 的处理
+
+-   @todo 第一通过 code 后面就将 code 删除掉了
+
+    -   这个逻辑是对的
+
+-   @ques 为什么不用张笑的 socket
+
+    -   监听事件 不太好用
+    -   要一帧帧去更新, 捕鱼不能这样去做...
+
+-   我只要 url 中去掉 code, 验证 token 就可以了...
+
+    -   url 中去掉 code, 最好 公共模块去做...
+    -   game.sdk 只要获取 code, 其他的就可以不做了...
+
+-   @ques 游客怎么处理...
+
+-   @ques 这公共的代码 检测 code(url + localStorage+ cookie) + token
+    -   ...
+
+*   @opt 开始不显示 鱼 只有鱼进入页面才显示...
+
     -   in_screen change...
     -   不然不创建 fishAni...
 
-*   @todo 切换炮台等级
+*   @todo fishView setVisible
+
+-   @todo 切换炮台等级
 
     -   登陆页面
     -   进入桌子
     -   离开桌子
     -   addFish
 
-*   @todo 鱼组 + 鱼潮的数据...
+-   @todo 鱼组 + 鱼潮的数据...
 
-*   @todo 设计 鱼潮数据...
+-   @todo 设计 鱼潮数据...
 
-*   @todo quickLeaveFish + changeMoveCom
+-   @todo quickLeaveFish + changeMoveCom
 
     -   鱼的速度增加...
 
-*   @ques fish 需要 quick_leave 的状态吗...
+-   @ques fish 需要 quick_leave 的状态吗...
 
-*   @todo 鱼潮来袭 处理
+-   @todo 鱼潮来袭 处理
 
     -   清理所有的鱼 能不能做成 被鱼碰到波浪才加速 和 wave 一样的速度...
 
--   @ques 鱼群数据...
+*   @ques 鱼群数据...
 
 ## 2019-11-06 17:42:57
 

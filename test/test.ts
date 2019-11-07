@@ -30,7 +30,6 @@ import {
     nameMap,
 } from './utils/testUtils';
 import { mock_web_socket_test } from './app/socket/mockSocket/mockWebsocket.spec';
-import { ServerEvent } from 'data/serverEvent';
 
 declare global {
     interface Window {
@@ -81,6 +80,6 @@ nameMap('test', test);
 // injectProto(AppCtrl, 'startApp', () => {
 //     voice_test.runTest('open_dialog');
 // });
-mock_web_socket_test.runTest('add_fish');
+// mock_web_socket_test.runTest('add_fish');
 
 // socket_test.runTest('init_app_socket');

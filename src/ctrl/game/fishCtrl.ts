@@ -5,8 +5,6 @@ import { FishView } from 'view/scenes/game/fishView';
 
 /** 鱼的控制器 */
 export class FishCtrl extends ComponentManager {
-    /** view是否水平是翻转  */
-    private view_horizon_turn = false;
     /**
      * @param view 鱼对应的动画
      * @param model 鱼对应的model
@@ -22,6 +20,7 @@ export class FishCtrl extends ComponentManager {
     private initEvent() {
         const event = this.model.event;
         const { view } = this;
+        event.on(FishEvent.VisibleChange, this.setVisible);
         event.on(FishEvent.Move, this.syncPos);
         event.on(FishEvent.BeCast, () => {
             view.beCastAni();
@@ -38,6 +37,9 @@ export class FishCtrl extends ComponentManager {
             this.destroy();
         });
     }
+    public setVisible = (visible: boolean) => {
+        this.view.setVisible(visible);
+    }; //tslint:disable-line
     public syncPos = () => {
         const { view } = this;
         const { pos, velocity, horizon_turn } = this.model;

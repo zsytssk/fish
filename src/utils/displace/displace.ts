@@ -33,10 +33,10 @@ export type DisplaceInfo = {
     pos?: Point;
     /** 速度 */
     velocity?: SAT.Vector;
-    /** 是否离开页面 */
-    out_stage?: boolean;
-    /** 是否结束 */
-    is_end?: boolean;
+    /** 是否显示 */
+    visible?: boolean;
+    /** 是否游完路径 | 函数 */
+    is_complete?: boolean;
 };
 /**
  * 位移控制器
@@ -80,14 +80,14 @@ export class Displace {
         let is_complete: boolean = false;
         if (used_radio <= 0) {
             return {
-                out_stage: true,
+                visible: false,
             };
         }
 
         if (used_radio >= 1) {
             is_complete = true;
             return {
-                is_end: is_complete,
+                is_complete,
             };
         }
 
@@ -103,9 +103,10 @@ export class Displace {
         }
 
         return {
+            visible: true,
             pos: position,
             velocity,
-            is_end: is_complete,
+            is_complete,
         };
     }
     protected getPointAtRadio(

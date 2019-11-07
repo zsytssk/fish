@@ -1,6 +1,8 @@
 import { AppCtrl } from 'ctrl/appCtrl';
 import coingame from 'coingame.min.test';
 
+const code = `c3392c356cc746e3b845632ac9753f05`;
+
 coingame.sys.init(
     {
         origin: 'https://testing-bitfish.cointest.link/getDomain',
