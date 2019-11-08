@@ -1,7 +1,7 @@
 import { Config } from 'data/config';
 import GameConfig from 'GameConfig';
 // import honor from 'honor';
-import { HallCtrl } from './start/hallCtrl';
+import { HallCtrl } from './hall/hallCtrl';
 import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
 import { res, font_list } from 'data/res';

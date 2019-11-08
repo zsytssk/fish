@@ -1,6 +1,6 @@
 import { ctrlState } from 'ctrl/ctrlState';
 import { GameCtrl } from 'ctrl/game/gameCtrl';
-import { HallCtrl } from 'ctrl/start/hallCtrl';
+import { HallCtrl } from 'ctrl/hall/hallCtrl';
 import { injectAfter } from 'honor/utils/tool';
 import { Test } from 'testBuilder';
 import { fish_test } from './fish.spec';

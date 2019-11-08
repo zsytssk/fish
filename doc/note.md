@@ -1,5 +1,38 @@
+-   @todo enterGame
 
+-   @todo 登陆的 url 如何获取 coingame.config.loginUrl @zhangxiao
 
+    -   coingame.account.login()
+    -   coingame.sys.lang
+
+-   @todo 登陆的 url 如何获取 coingame.config.loginUrl @zhangxiao
+
+    -   coingame.account.login()
+
+-   @ques 游戏中如何登陆 socket...
+
+    -   login + enterGame.. 连接 GameSocket
+    -   publicKey 写死...
+
+-   @todo 大厅的 socket
+
+    -   @ques socket url 从哪获取... 如果是写死的 那么只能通过环境变量来解决这个问题了...
+
+-   @todo 断开 socket... env
+
+*   @todo 公共的部分应该去做哪些内容...
+
+*   @ques token 出错的的错误码 是在 code 中
+
+    -   websocket 怎么做 统一的错误处理...
+
+*   @ques token 出错的的错误码
+
+*   @ques 如果本地已经有 token 的处理...
+
+*   @todo game-client-sdk merge request
+
+## 2019-11-08 10:02:30
 
 -   @ques 游客的 token 是怎么处理的...
 

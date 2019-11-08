@@ -7,7 +7,7 @@ export type Config = {
     url: string;
     name: string;
     publicKey: string;
-    code: string;
+    code?: string;
 };
 
 /** 服务器数据类型 */
@@ -34,6 +34,7 @@ export const SocketEvent = {
     Reconnected: 'reconnected',
     Close: 'close',
     Error: 'error',
+    ErrorCode: 'error_code',
     End: 'end',
 };
 
@@ -100,6 +101,7 @@ export class WebSocketWrapCtrl extends ComponentManager
         ws.send(send_str);
     }
     public disconnect() {
+        this.event.destroy();
         this.ws.disconnect();
         this.ws = undefined;
     }
@@ -116,6 +118,11 @@ export class WebSocketWrapCtrl extends ComponentManager
                 data = decrypt(data_str);
                 const { cmd, res, code } = data;
                 this.event.emit(cmd, res, code);
+
+                // 统一的错误处理...
+                if (Number(code) !== 0) {
+                    this.event.emit(SocketEvent.ErrorCode, code);
+                }
                 break;
             case ServerMsgType.PingTimeOut:
                 const { jwt } = JSON.parse(data_str);

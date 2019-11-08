@@ -1,5 +1,5 @@
 import {
-    connectSocket,
+    createSocket,
     getSocket,
     mockSocketCtor,
 } from 'ctrl/net/webSocketWrapUtil';
@@ -17,7 +17,7 @@ import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
 export const mock_web_socket_test = new Test('mock_web_socket', runner => {
     runner.describe('create', () => {
         mockSocketCtor(MockWebSocket);
-        connectSocket({
+        createSocket({
             url: '',
             publicKey: '',
             code: '',

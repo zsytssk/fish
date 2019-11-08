@@ -1,3 +1,16 @@
+/** socket 名 */
+export const ServerName = {
+    /** 游戏的 socket */
+    Game: 'game',
+    /** 大厅的 socket */
+    Hall: 'hall',
+};
+
+/** socket 错误码 */
+export const ServerErrCode = {
+    TokenExpire: '4001',
+};
+
 /** 服务器端的接口 */
 export const ServerEvent = {
     RoomIn: 'roomIn',
@@ -30,8 +43,6 @@ export const ServerEvent = {
     Buy: 'buy',
     /** 获取游客 TOKEN */
     GetGuestToken: 'getRequestId',
-    /** 获取用户 TOKEN */
-    GetUserToken: 'getTokenByCode',
     /** 获取用户信息 */
     GetUserInfo: 'getUserInfo',
 };

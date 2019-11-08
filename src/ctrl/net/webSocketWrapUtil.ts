@@ -1,18 +1,25 @@
 import { JSEncrypt } from 'jsencrypt';
 import CryptoJS from 'crypto-js';
-import { WebSocketWrapCtrl, Config, WebSocketTrait } from './webSocketWrap';
+import {
+    WebSocketWrapCtrl,
+    Config,
+    WebSocketTrait,
+    SocketEvent,
+} from './webSocketWrap';
 
 /** socket 的工具函数 */
 let comm_key: string;
 let socket_ctor: Ctor<WebSocketTrait>;
 const socket_map: Map<string, WebSocketTrait> = new Map();
-export function connectSocket(config: Config) {
+
+export function createSocket(config: Config) {
     const { name } = config;
     const ctor = socket_ctor || WebSocketWrapCtrl;
     const socket = new ctor(config);
     socket_map.set(name, socket);
     return socket;
 }
+
 export function mockSocketCtor(ctor: Ctor<WebSocketTrait>) {
     socket_ctor = ctor;
 }

@@ -32,6 +32,7 @@ let common_config = {
         new webpack.DefinePlugin({ ENV: JSON.stringify(findParam('ENV')) }),
     ],
 };
+
 const dev_config = {
     devtool: 'eval-source-map',
     watch: true,

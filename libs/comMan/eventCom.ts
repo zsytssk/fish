@@ -88,7 +88,7 @@ export class EventCom {
             for (const item of events) {
                 const { callback, once, off } = item;
                 if (typeof callback === 'function') {
-                    callback.apply(item.caller, [...params]);
+                    callback(...params);
                 }
                 if (once) {
                     off();

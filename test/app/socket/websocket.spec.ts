@@ -1,4 +1,5 @@
-import { WebSocketWrapCtrl, SocketEvent } from 'ctrl/net/webSocketWrap';
+import { SocketEvent, WebSocketWrapCtrl } from 'ctrl/net/webSocketWrap';
+import { ServerEvent } from 'data/serverEvent';
 import { WebSocketCtrl } from 'honor/net/websocket';
 import { JSEncrypt } from 'jsencrypt';
 import { Test } from 'testBuilder';
@@ -19,7 +20,7 @@ export const web_socket_test = new Test('web_socket', runner => {
     runner.describe('create_socket', () => {
         const url = '172.17.3.46:7005';
         const publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB`;
-        const code = `c3392c356cc746e3b845632ac9753f05`;
+        const code = `7529094e0bc04ac0a654762904399e40`;
 
         const socket = new WebSocketWrapCtrl({
             url,
@@ -29,9 +30,13 @@ export const web_socket_test = new Test('web_socket', runner => {
         });
 
         /** 获取token */
-        socket.event.on(SocketEvent.GetToken, (jwt: string) => {
+        socket.event.on(SocketEvent.GetToken, async (jwt: string) => {
+            /** 游客的token */
+            if (!jwt) {
+                jwt = await getGuestToken(socket);
+            }
             socket.setParams({ jwt });
-            socket.send('userAccount');
+            socket.send(ServerEvent.UserAccount);
         });
     });
 });
@@ -49,4 +54,13 @@ function getAuth(public_key: string) {
     jsencrypt.setPublicKey(public_key);
     const encryptedString = jsencrypt.encrypt(comm_key);
     return encryptedString;
+}
+
+export function getGuestToken(socket: WebSocketWrapCtrl) {
+    return new Promise((resolve, reject) => {
+        socket.event.once(ServerEvent.GetGuestToken, (token: string) => {
+            resolve(token);
+        });
+        socket.send(ServerEvent.GetGuestToken);
+    }) as Promise<string>;
 }

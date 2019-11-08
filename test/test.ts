@@ -30,6 +30,7 @@ import {
     nameMap,
 } from './utils/testUtils';
 import { mock_web_socket_test } from './app/socket/mockSocket/mockWebsocket.spec';
+import { coingame_test } from './app/coingame.spec';
 
 declare global {
     interface Window {
@@ -59,6 +60,7 @@ testScope.addChild(
     lottery_test,
     voice_test,
     mock_web_socket_test,
+    coingame_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());

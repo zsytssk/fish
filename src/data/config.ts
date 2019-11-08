@@ -5,6 +5,7 @@ declare global {
 }
 
 export const Config = {
+    PublicKey: '',
     /** cnd版本号 */
     CdnVersion: window.CDN_VERSION,
     /** 子弹速度 */

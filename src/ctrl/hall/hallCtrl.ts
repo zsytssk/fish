@@ -1,16 +1,14 @@
-import HallView from 'view/scenes/hallView';
-import ShopPop from 'view/pop/shop';
-import { modelState } from 'model/modelState';
-import { SettingEvent } from 'model/userInfo/settingModel';
 import { Lang } from 'data/internationalConfig';
-import { UserInfoEvent } from 'model/userInfo/userInfoModel';
+import { modelState } from 'model/modelState';
+import ShopPop from 'view/pop/shop';
+import HallView from 'view/scenes/hallView';
 import {
+    getAllLangList,
     offBindEvent,
+    onAccountChange,
     onCurCoinChange,
     onLangChange,
-    onAccountChange,
     onNicknameChange,
-    getAllLangList,
 } from './hallCtrlUtil';
 
 export class HallCtrl {
