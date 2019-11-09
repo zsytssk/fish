@@ -1,23 +1,26 @@
 import { ctrlState } from 'ctrl/ctrlState';
+import { waitConnectGame } from 'ctrl/hall/login';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { SkillMap } from 'data/config';
 import { res } from 'data/res';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
+import { FreezingComEvent } from 'model/game/com/freezingCom';
+import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
-import { PlayerModel } from 'model/game/playerModel';
+import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
 import { setProps } from 'utils/utils';
-import GameView from 'view/scenes/game/gameView';
-import { FishCtrl } from './fishCtrl';
-import { PlayerCtrl } from './playerCtrl';
-import { FreezingComEvent } from 'model/game/com/freezingCom';
-import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { onGameSocket } from './gameSocket';
-import { SkillMap } from 'data/config';
-import { ShoalEvent } from 'model/game/com/shoalCom';
+import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
+import GameView from 'view/scenes/game/gameView';
+import { FishCtrl } from './fishCtrl';
+import { onGameSocket } from './gameSocket';
+import { PlayerCtrl } from './playerCtrl';
+import { isCurUser } from 'model/modelState';
+import AlertPop from 'view/pop/alert';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -36,7 +39,9 @@ export class GameCtrl {
     }
     private init() {
         this.initEvent();
-        onGameSocket(getSocket('game'), this);
+        waitConnectGame().then(() => {
+            onGameSocket(getSocket('game'), this);
+        });
     }
     private initEvent() {
         const event = this.model.event;
@@ -63,7 +68,7 @@ export class GameCtrl {
             stopFreeze();
         });
         event.on(ShoalEvent.PreAddShoal, () => {
-            activeShoalWave();
+            activeShoalWave(true);
         });
 
         btn_help.on(CLICK, this, (e: Laya.Event) => {
@@ -81,11 +86,14 @@ export class GameCtrl {
             e.stopPropagation();
         });
     }
+    public onShoot(data: ShootRep) {
+        this.model.shoot(data);
+    }
     public onHit(data: HitRep) {
         this.model.captureFish(data);
     }
-    public shoalComingTip(data: FishShoalWarnRep) {
-        this.model.shoalComingTip(data);
+    public shoalComingTip() {
+        this.model.shoalComingTip();
     }
     public activeSkill(skill: SkillMap, data: any) {
         this.model.activeSkill(skill, data);
@@ -93,6 +101,23 @@ export class GameCtrl {
     public addFish(fish_list: ServerFishInfo[]) {
         for (const fish of fish_list) {
             this.model.addFish(fish);
+        }
+    }
+    public tableOut(data: TableOutRep) {
+        const { model } = this;
+        const { userId } = data;
+        if (isCurUser(userId)) {
+            AlertPop.alert('你被踢出房间, 刷新重新进入').then(() => {
+                location.reload();
+            });
+        } else {
+            const player = model.getPlayerById(userId);
+            player.destroy();
+        }
+    }
+    public addPlayer(player_list: PlayerInfo[]) {
+        for (const player of player_list) {
+            this.model.addPlayer(player);
         }
     }
 }

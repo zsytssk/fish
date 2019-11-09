@@ -59,4 +59,14 @@ export class BulletGroup extends ComponentManager {
         }
         bullet_list.clear();
     }; //tslint:disable-line
+
+    public destroy() {
+        const { bullet_list } = this;
+
+        for (const bullet of bullet_list) {
+            bullet.destroy();
+        }
+        bullet_list.clear();
+        this.gun = undefined;
+    }
 }

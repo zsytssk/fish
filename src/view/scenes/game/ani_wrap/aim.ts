@@ -3,7 +3,7 @@ import { createImg } from 'honor/utils/createSkeleton';
 import { FishEvent, FishModel } from 'model/game/fishModel';
 import { ModelEvent } from 'model/modelEvent';
 import { createSprite } from 'utils/dataUtil';
-import { playSkeleton } from 'utils/utils';
+import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
 
 /** 追踪子弹的动画 */
@@ -18,11 +18,13 @@ type AimState = {
     /** Point的缓存 */
     points_temp: Laya.Image[];
 };
+
 const state = {
     point_list: [],
     points_temp: [],
 } as AimState;
 const point_space = 50;
+
 export function activeAim(
     fish: FishModel,
     show_points?: boolean,
@@ -40,8 +42,22 @@ export function activeAim(
 
     clearPoints();
 
-    playSkeleton(aim_ani, 0, true);
-    aim_ani.pos(pos.x, pos.y);
+    if (fish.visible) {
+        playSkeleton(aim_ani, 0, true);
+        aim_ani.pos(pos.x, pos.y);
+    }
+    fish.event.on(
+        FishEvent.VisibleChange,
+        (visible: boolean) => {
+            if (visible) {
+                playSkeleton(aim_ani, 0, true);
+                aim_ani.pos(pos.x, pos.y);
+            } else {
+                stopSkeleton(aim_ani);
+            }
+        },
+        aim_ani,
+    );
     fish.event.on(
         FishEvent.Move,
         (move_info: MoveInfo) => {
@@ -61,6 +77,7 @@ export function activeAim(
     });
 }
 
+/** 消除动画 */
 export function stopAim() {
     const { aim_ani, fish, point_list } = state;
 
@@ -79,6 +96,7 @@ export function stopAim() {
     }
 }
 
+/** 创建锁定动画 */
 function createAim() {
     let { aim_ani } = state;
     const { ani_wrap } = viewState;
@@ -91,6 +109,7 @@ function createAim() {
     }
 }
 
+/** 创建点 */
 function createPoints(aim_pos: Point, ori_pos: Point) {
     /** 瞄准路线点之间的距离 */
     const { point_list } = state;
@@ -117,6 +136,7 @@ function createPoints(aim_pos: Point, ori_pos: Point) {
     }
 }
 
+/** 通过点的数目来创建|销毁 节点 */
 function handlePointNum(point_num: number) {
     const { point_list, points_temp } = state;
 
@@ -135,6 +155,8 @@ function handlePointNum(point_num: number) {
         }
     }
 }
+
+/** 清理 *点* */
 function clearPoints() {
     const { point_list, points_temp } = state;
     for (const point of point_list) {

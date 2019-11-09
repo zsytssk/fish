@@ -8,11 +8,12 @@ export const ServerName = {
 
 /** socket 错误码 */
 export const ServerErrCode = {
-    TokenExpire: '4001',
+    TokenExpire: 1002,
 };
 
 /** 服务器端的接口 */
 export const ServerEvent = {
+    /** 游戏部分 */
     RoomIn: 'roomIn',
     CheckReplay: 'checkReplay',
     EnterGame: 'enterGame',
@@ -33,10 +34,15 @@ export const ServerEvent = {
     UseBomb: 'useBomb',
     PowerUp: 'powerUp',
     SetRobotReport: 'setRobotReport',
-    UserAccount: 'userAccount',
-    GetDomain: 'getDomain',
     UseFreeze: 'useFreeze',
     FreezeOver: 'freezeOver',
+    /** 离开桌子 */
+    TableOut: 'tableOut',
+
+    /** 其他部分 */
+    ErrCode: 'conn::error',
+    UserAccount: 'userAccount',
+    GetDomain: 'getDomain',
     Lottery: 'lottery',
     TicketExchange: 'ticketExchange',
     ShopList: 'shopList',

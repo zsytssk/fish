@@ -34,6 +34,9 @@ export class FreezingCom extends ComponentManager {
 
         for (const fish_id of fish_list) {
             const fish = game.getFishById(fish_id);
+            if (!fish) {
+                continue;
+            }
             fish.setStatus(FishStatus.Freezed);
         }
         event.emit(FreezingComEvent.Freezing);

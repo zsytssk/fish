@@ -25,8 +25,10 @@ export class SkillCtrl {
         const { event } = model.skill_core;
         event.on(SkillEvent.StatusChange, (status: SkillStatus) => {
             if (status === SkillStatus.Active) {
+                view.highlight();
                 // ...
             } else {
+                view.unHighlight();
                 skillDisableHandler(model);
             }
         });

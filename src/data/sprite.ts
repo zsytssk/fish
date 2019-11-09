@@ -233,7 +233,7 @@ export let SPRITE: GameSprite = {
             path: 'ani/fish/fish20',
             ani_type: 'horizon_turn',
         },
-        G21: {
+        G1: {
             group: [
                 {
                     type: '1',
@@ -306,6 +306,10 @@ export let SPRITE: GameSprite = {
         coin: {
             type: 'DragonBone',
             path: 'ani/other/coin',
+        },
+        skill_border_light: {
+            type: 'DragonBone',
+            path: 'ani/other/skill_border_light',
         },
     },
 };

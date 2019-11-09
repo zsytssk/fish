@@ -5,7 +5,10 @@ declare global {
 }
 
 export const Config = {
-    PublicKey: '',
+    PublicKey:
+        'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB',
+    SocketUrl: '',
+    Host: '',
     /** cnd版本号 */
     CdnVersion: window.CDN_VERSION,
     /** 子弹速度 */
@@ -23,8 +26,8 @@ export const Config = {
 };
 
 export enum SkillMap {
-    Freezing = '1',
-    Bomb = '2',
-    TrackFish = '3',
-    Auto = '4',
+    TrackFish = '2001',
+    Freezing = '2002',
+    Bomb = '2003',
+    Auto = 'A2004',
 }

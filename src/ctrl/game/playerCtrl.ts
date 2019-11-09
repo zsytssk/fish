@@ -16,6 +16,7 @@ import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent } from 'data/serverEvent';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
+import { vectorToDegree } from 'utils/mathUtils';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -129,8 +130,11 @@ export class PlayerCtrl {
         gun_event.on(GunEvent.StopTrack, () => {
             stopAim();
         });
-        gun_event.on(GunEvent.StopTrack, () => {
-            stopAim();
+        gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
+            const { x, y } = velocity;
+            socket.send(ServerEvent.Shoot, {
+                direction: { x, y },
+            } as ShootReq);
         });
         Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             const click_pos = getPoolMousePos();
@@ -139,6 +143,11 @@ export class PlayerCtrl {
                 click_pos.y - gun_pos.y,
             );
             gun.preAddBullet(_direction);
+            console.log(`test:>degree1`, vectorToDegree(_direction));
+            console.log(
+                `test:>degree2`,
+                vectorToDegree({ x: _direction.x, y: -_direction.y }),
+            );
         });
 
         btn_minus.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {

@@ -2,10 +2,11 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
+    "selecteID":8,
     "searchKey":"View",
     "props":{"width":94,"sceneColor":"#000000","runtime":"view/scenes/game/skillItemView.ts","mouseThrough":false,"mouseEnabled":true,"height":96},
     "nodeParent":-1,
-    "maxID":8,
+    "maxID":9,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -66,6 +67,20 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":5,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer,border_light",
+            "props":{"y":48,"x":48.5,"visible":false,"var":"border_light","url":"ani/other/skill_border_light.sk"},
+            "nodeParent":2,
+            "label":"border_light",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":8,
             "child":[
                 ]
         }],

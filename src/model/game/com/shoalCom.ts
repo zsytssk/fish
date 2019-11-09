@@ -22,11 +22,11 @@ export class ShoalCom extends ComponentManager {
         this.game = game;
     }
     /** 添加鱼群前 处理 */
-    public preAddShoal(data: FishShoalWarnRep) {
+    public preAddShoal() {
         const { event, fish_list } = this.game;
         event.emit(ShoalEvent.PreAddShoal);
         for (const fish of fish_list) {
-            quickLeaveFish(fish, false);
+            quickLeaveFish(fish, true);
         }
     }
     /** 添加鱼群 */
@@ -46,7 +46,10 @@ export class ShoalCom extends ComponentManager {
  * @param reverse  -> 鱼往x=0游动, true -> 鱼往x=1920游动
  */
 export function quickLeaveFish(fish: FishModel, reverse = true) {
-    const { pos: start_pos } = fish;
+    const { pos: start_pos, visible } = fish;
+    if (!visible) {
+        return fish.destroy();
+    }
 
     const { ClearFishTime, PoolWidth } = Config;
     const leave_fish_len = calcNormalLen('after', fish.type);

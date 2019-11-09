@@ -22,6 +22,14 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
             publicKey: '',
             code: '',
             name: 'game',
+            host: '',
+        });
+        createSocket({
+            url: '',
+            publicKey: '',
+            code: '',
+            name: 'hall',
+            host: '',
         });
     });
 
@@ -39,12 +47,24 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         });
     });
 
+    runner.describe(ServerEvent.Shoot, async () => {
+        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
+            sleep(0.01).then(() => {
+                event.emit(ServerEvent.Shoot, {
+                    userId: test_data.userId,
+                    direction: data.direction,
+                } as ShootRep);
+            });
+        });
+    });
+
     runner.describe(ServerEvent.UseBomb, () => {
         mock_web_socket_test.runTest('create');
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.UseBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
-                const { bombPoint, eid } = data;
+                const { bombPoint, fishList: eid } = data;
                 const fish_arr = [] as UseBombRep['killedFish'];
                 for (const eid_item of eid) {
                     fish_arr.push({
@@ -71,7 +91,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
 
         sendEvent.on(ServerEvent.UseBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
-                const { bombPoint, eid } = data;
+                const { bombPoint, fishList: eid } = data;
                 const fish_arr = [] as UseBombRep['killedFish'];
                 for (const eid_item of eid) {
                     fish_arr.push({
@@ -143,10 +163,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         });
     });
 
-    runner.describe('shoal', async () => {
-        mock_web_socket_test.runTest('create');
-        await game_test.runTest('enter_game');
-        await sleep(5);
+    runner.describe(ServerEvent.FishShoal, async (data: ServerFishInfo[]) => {
         const { event } = getSocket('game') as MockWebSocket;
 
         event.emit(ServerEvent.FishShoalWarn, {
@@ -154,21 +171,11 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
             delay: 5,
         } as FishShoalWarnRep);
 
-        await sleep(5);
-        const fish_arr = [] as ServerFishInfo[];
-        for (const i of range(1, 21)) {
-            const fish = createLineDisplaceFun(
-                `${i}`,
-                50,
-                50 * (i * 0.05),
-                i * (750 / 40) + 40,
-            );
-            fish_arr.push(fish);
-        }
+        await sleep(2);
 
         event.emit(ServerEvent.FishShoal, {
             shoalId: '1',
-            fish: fish_arr,
+            fish: data,
         } as FishShoal);
     });
 

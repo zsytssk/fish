@@ -11,6 +11,8 @@ import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
 
 export const GunEvent = {
+    /** 通知ctrl添加子弹 -> 发送给服务端... */
+    WillAddBullet: 'will_add_bullet',
     /** 添加子弹 */
     AddBullet: 'add_bullet',
     /** 方向改变 */
@@ -186,8 +188,7 @@ export class GunModel extends ComponentManager {
             return;
         }
 
-        this.addBullet(velocity);
-
+        this.event.emit(GunEvent.WillAddBullet, velocity);
         /** 枪隔一段时间才会打开 */
         this.is_on = false;
         const timeout = this.getCom(TimeoutCom);
@@ -196,10 +197,11 @@ export class GunModel extends ComponentManager {
             this.event.emit(GunEvent.SwitchOn);
         }, this.launch_space);
     }
-    public addBullet(velocity: SAT.Vector) {
+    public addBullet(direction: Point) {
         const { skin, level_skin } = this;
+        const { x, y } = direction;
 
-        velocity = velocity.clone().normalize();
+        const velocity = new SAT.Vector(x, y).normalize();
         this.setDirection(velocity);
         const bullets_pos = getBulletStartPos(
             this.player.server_index,
@@ -222,6 +224,15 @@ export class GunModel extends ComponentManager {
         this.bullet_list.delete(bullet);
     }
     public destroy() {
+        const { bullet_list } = this;
+
+        for (const bullet of bullet_list) {
+            bullet.destroy();
+        }
+        this.player = undefined;
+        this.track_fish = undefined;
+        this.bullet_list.clear();
+
         super.destroy();
     }
 }

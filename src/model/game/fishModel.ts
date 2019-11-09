@@ -56,7 +56,7 @@ export class FishModel extends ComponentManager {
     /** 移动控制器, */
     private move_com: MoveCom;
     /** 是否显示 */
-    private visible = false;
+    public visible = false;
     private game: GameModel;
     constructor(data: FishData, game: GameModel) {
         super();
@@ -102,19 +102,17 @@ export class FishModel extends ComponentManager {
         if (is_complete) {
             return this.destroy();
         }
-        this.setVisible(visible);
-        if (!visible) {
-            return;
+        if (visible) {
+            this.pos = pos;
+            this.velocity = velocity;
+
+            body_com.update(pos, velocity);
+            this.event.emit(FishEvent.Move, {
+                pos,
+                velocity,
+            } as MoveInfo);
         }
-
-        this.pos = pos;
-        this.velocity = velocity;
-
-        body_com.update(pos, velocity);
-        this.event.emit(FishEvent.Move, {
-            pos,
-            velocity,
-        } as MoveInfo);
+        this.setVisible(visible);
     }; // tslint:disable-line: semicolon
     /** 被网住 */
     public setStatus(status: FishStatus) {

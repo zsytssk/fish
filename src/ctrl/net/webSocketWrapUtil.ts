@@ -53,17 +53,22 @@ export function getAuth(public_key: string) {
 }
 
 export function decrypt(data: string) {
-    const desData = CryptoJS.AES.decrypt(
-        data,
-        CryptoJS.enc.Utf8.parse(comm_key),
-        {
-            mode: CryptoJS.mode.ECB,
-            padding: CryptoJS.pad.Pkcs7,
-        },
-    );
-    const rep_str = desData.toString(CryptoJS.enc.Utf8);
-    const rep = JSON.parse(rep_str);
-    return rep;
+    try {
+        const desData = CryptoJS.AES.decrypt(
+            data,
+            CryptoJS.enc.Utf8.parse(comm_key),
+            {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7,
+            },
+        );
+        const rep_str = desData.toString(CryptoJS.enc.Utf8);
+        const rep = JSON.parse(rep_str);
+        return rep;
+    } catch {
+        console.error('cant decrypt data');
+        return '';
+    }
 }
 
 export function encrypt(msg: string) {
@@ -76,4 +81,18 @@ export function encrypt(msg: string) {
         },
     );
     return encryptData.toString();
+}
+
+export function bindSocketEvent(
+    socket: WebSocketTrait,
+    bind_obj: any,
+    bind_info: { [key: string]: Func<void> },
+) {
+    const { event } = socket;
+    for (const key in bind_info) {
+        if (!bind_info.hasOwnProperty(key)) {
+            continue;
+        }
+        event.on(key, bind_info[key], bind_obj);
+    }
 }

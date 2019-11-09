@@ -47,7 +47,7 @@ export const fish_test = new Test('fish', runner => {
     runner.describe('add_fish_group', () => {
         // body_test.runTest('show_shape');
         const game = modelState.app.game;
-        const typeId = 'G21';
+        const typeId = 'G1';
         const pathId = 90;
         const time = 40;
         const fish_data = {

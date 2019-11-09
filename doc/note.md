@@ -1,4 +1,103 @@
--   @todo enterGame
+-   @todo
+
+    -   服务端的鱼发给我的时候鱼已经要离开页面 我需要做兼容
+    -   tableOut 的处理
+
+-   @todo model 的 destroy
+
+-   @bug 技能释放的时间不同步...
+
+-   @bug 锁定无法选中屏幕中的鱼???
+
+-   @bug 机器人自动攻击...
+
+-   @todo 技能激活的动画...
+
+    -   炸弹无法关闭
+
+-   @todo 测试环境的搭建...
+
+    -   正常进入游戏 ... 鱼 socket...
+    -   各个测试相互的独立, 分别进入...
+
+-   @todo 炸弹 + 锁定 没法触发
+
+-   @ques 狂暴的进度怎么处理...
+
+-   @ques 鱼潮的位置可以通过鱼的 offset 来设置...
+
+    -   这需要我和设计的原图保持一致
+
+-   @ques 通过鱼分
+
+-   @bug 锁定的鱼 锁定的部分在屏幕外面 (因为鱼只有很少部分在屏幕内...)
+
+## 2019-11-09 13:40:56
+
+-   token 过期的处理
+
+-   conn::error 接口格式... res 而不是 code
+-   @ques @test 如何测鱼的路径...
+
+*   @todo 皮肤 SkinMap
+    -   getSkinNoById
+
+-   @opt 鱼的 totalTime 要不要在之前处理掉...
+
+-   @opt mac 高亮光标
+
+-   @opt ps 脚本获取 显示的图层...
+
+-   @todo 本地测试鱼潮数据...
+
+-   @todo 正常连接 socket 的地方如何测试环境
+    -   ....
+
+## 鱼潮生成
+
+-   鱼的游速 @产品
+
+## 2019-11-08 14:12:16
+
+-   @ques 鱼潮来了 没有进入的鱼 要不要清除...
+
+-   conn::error 1002 "BAD_JWT_TOKEN"
+
+*   @todo 鱼潮来了 换皮肤...
+
+*   @bug 鱼潮中有两个鱼叠在一起...
+
+-   @bug 数据报错 难道要 try catch
+
+    -   特殊的错误的处理...
+
+-   @todo 鱼潮的数据能用最新的吗 @hujianx
+
+-   @opt 鱼群来了 清理鱼的时候所有的鱼的速度都一样...
+
+-   @bug 用户获得钱 颠倒了...
+
+-   enterGame 用户 + item...
+
+    -   shoot :> 发射子弹 + ...
+    -   渲染用户的技能...
+        -   @ques item_id 对应的技能分别是什么...
+
+-   quickLeaveFish 鱼没有显示 直接离开页面...
+
+    -   tototal time /1000
+
+-   enterGame 获取用户信息, 加鱼 打鱼
+
+    -   鱼群添加 鱼...
+
+-   @ques 能不能把正常进入游戏的接口天好
+
+-   @todo login.js
+
+-   @todo 设置 socket url...
+
+-   @ques coingame nav 太大了...
 
 -   @todo 登陆的 url 如何获取 coingame.config.loginUrl @zhangxiao
 

@@ -7,6 +7,7 @@ export type Config = {
     url: string;
     name: string;
     publicKey: string;
+    host: string;
     code?: string;
 };
 
@@ -34,7 +35,6 @@ export const SocketEvent = {
     Reconnected: 'reconnected',
     Close: 'close',
     Error: 'error',
-    ErrorCode: 'error_code',
     End: 'end',
 };
 
@@ -54,6 +54,7 @@ export class WebSocketWrapCtrl extends ComponentManager
     constructor(config: Config) {
         super();
         this.config = config;
+        this.config = config;
         this.init();
     }
     private init() {
@@ -61,10 +62,7 @@ export class WebSocketWrapCtrl extends ComponentManager
         this.addCom(event);
         this.event = event;
 
-        const { url, publicKey, code } = this.config;
-        const new_url = `ws://${url}/gws?auth=${getAuth(
-            publicKey,
-        )}'&code=${code}`;
+        const new_url = genUrl(this.config);
         const ws = new WebSocketCtrl({
             url: new_url,
             handlers: {
@@ -88,8 +86,12 @@ export class WebSocketWrapCtrl extends ComponentManager
     }
     /** 发送数据给服务端 */
     public send(cmd: string, data = {}) {
-        const { ws } = this;
-        const { params } = this;
+        const {
+            ws,
+            params,
+            config: { name },
+        } = this;
+        console.log(`${name}:>发送:>`, cmd, data);
         const send_data = {
             cmd,
             params: {
@@ -109,20 +111,19 @@ export class WebSocketWrapCtrl extends ComponentManager
         this.event.emit(SocketEvent.Init);
     }; //tslint:disable-line
     private onData = (msg: string) => {
-        const { ws } = this;
+        const { name } = this.config;
         const data_str = msg.substring(1);
         const type = msg.charAt(0);
         let data: { cmd: string; code: number; res: {} };
         switch (type) {
             case ServerMsgType.OnData:
                 data = decrypt(data_str);
+                if (!data) {
+                    return;
+                }
+                console.log(`${name}:>接收:>`, data);
                 const { cmd, res, code } = data;
                 this.event.emit(cmd, res, code);
-
-                // 统一的错误处理...
-                if (Number(code) !== 0) {
-                    this.event.emit(SocketEvent.ErrorCode, code);
-                }
                 break;
             case ServerMsgType.PingTimeOut:
                 const { jwt } = JSON.parse(data_str);
@@ -146,4 +147,16 @@ export class WebSocketWrapCtrl extends ComponentManager
     private onReconnected = () => {
         this.event.emit(SocketEvent.Reconnected);
     }; //tslint:disable-line
+}
+
+export function genUrl(config: Config) {
+    const { url, publicKey, code, host } = config;
+    let new_url = `wss://${url}/gws?auth=${getAuth(publicKey)}`;
+    if (host) {
+        new_url += `&host=${host}`;
+    }
+    if (code) {
+        new_url += `&code=${code}`;
+    }
+    return new_url;
 }

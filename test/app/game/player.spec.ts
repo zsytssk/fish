@@ -13,7 +13,7 @@ export const player_test = new Test('player', runner => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 1,
+            server_index: 2,
             level: 1,
             gold: 10111,
             gun_skin: '1',

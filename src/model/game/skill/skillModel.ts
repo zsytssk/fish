@@ -11,6 +11,7 @@ export interface SkillModel {
     skill_core: SkillCoreCom;
     active(info: any): void;
     disable(): void;
+    destroy(): void;
 }
 
 /** 技能的树... */

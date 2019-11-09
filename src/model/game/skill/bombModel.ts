@@ -4,15 +4,14 @@ import { Config } from 'data/config';
 import { BodyCom } from 'model/game/com/bodyCom';
 import { getCollisionAllFish, getFishById } from 'model/modelState';
 import * as SAT from 'sat';
-import { SkillCoreCom, SkillInfo } from './skillCoreCom';
+import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 
 export type BombInfo = {
     user_id: string;
     pos: Point;
-    num: number;
     fish_list: UseBombFishInfo[];
-};
+} & SkillActiveInfo;
 
 /** 炸弹技能: 提示用户选中屏幕的位置, 然后就发射炸弹 */
 export class BombModel extends ComponentManager implements SkillModel {
@@ -28,12 +27,12 @@ export class BombModel extends ComponentManager implements SkillModel {
     }
     public active(info: BombInfo) {
         // 激活
-        const { num, fish_list, pos } = info;
+        const { num, fish_list, pos, used_time } = info;
         const { skill_core } = this;
         const { player } = skill_core;
 
         skill_core.activeEvent(pos);
-        skill_core.active({ num });
+        skill_core.active({ num, used_time });
         const wait_arr = [] as Array<Promise<void>>;
         for (const fish of fish_list) {
             const { eid: fish_id, win } = fish;

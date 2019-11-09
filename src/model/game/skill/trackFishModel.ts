@@ -1,16 +1,14 @@
 import { getFishById } from 'model/modelState';
-import { SkillCoreCom, SkillInfo } from './skillCoreCom';
+import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 
 export type TrackFishInfo = {
     user_id: string;
     fish: string;
-    num?: number;
-    used_time?: number;
     /** 是否是提示 */
     is_tip?: boolean;
-};
+} & SkillActiveInfo;
 
 /** 冰冻技能 */
 export class TrackFishModel extends ComponentManager implements SkillModel {

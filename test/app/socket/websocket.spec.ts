@@ -3,6 +3,7 @@ import { ServerEvent } from 'data/serverEvent';
 import { WebSocketCtrl } from 'honor/net/websocket';
 import { JSEncrypt } from 'jsencrypt';
 import { Test } from 'testBuilder';
+import { Config } from 'data/config';
 
 export const web_socket_test = new Test('web_socket', runner => {
     runner.describe('create_web_socket', () => {
@@ -18,14 +19,16 @@ export const web_socket_test = new Test('web_socket', runner => {
     });
 
     runner.describe('create_socket', () => {
-        const url = '172.17.3.46:7005';
+        const url = Config.SocketUrl;
         const publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB`;
-        const code = `7529094e0bc04ac0a654762904399e40`;
+        const code = `3142a89b24424257aaf4bf66f85ff419`;
+        const host = Config.Host;
 
         const socket = new WebSocketWrapCtrl({
             url,
             name: 'test',
             code,
+            host,
             publicKey,
         });
 

@@ -8,6 +8,8 @@ import { EventCom } from 'comMan/eventCom';
 export enum SkillStatus {
     /** 正常状态 */
     Normal = 'normal',
+    /** 激活前 防止多次激活 */
+    PreActive = 'pre_active',
     /** 激活状态1 */
     Active = 'active',
 }
@@ -22,6 +24,12 @@ export type SkillInfo = {
     cool_time?: number;
     used_time?: number;
     player?: PlayerModel;
+};
+
+/** 技能属性 */
+export type SkillActiveInfo = {
+    num?: number;
+    used_time?: number;
 };
 
 /** 技能的事件 */

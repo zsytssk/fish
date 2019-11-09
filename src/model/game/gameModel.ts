@@ -96,7 +96,7 @@ export class GameModel extends ComponentManager {
     }
     /** 添加用户 */
     public addPlayer(data: PlayerInfo) {
-        const player = new PlayerModel(data);
+        const player = new PlayerModel(data, this);
         this.player_list.add(player);
         this.event.emit(GameEvent.AddPlayer, player);
         return player;
@@ -117,8 +117,12 @@ export class GameModel extends ComponentManager {
         const player = this.getPlayerById(data.user_id);
         player.activeSkill(skill, data);
     }
-    public shoalComingTip(data: FishShoalWarnRep) {
-        this.shoal_com.preAddShoal(data);
+    public shoot(data: ShootRep) {
+        const player = this.getPlayerById(data.userId);
+        player.gun.addBullet(data.direction);
+    }
+    public shoalComingTip() {
+        this.shoal_com.preAddShoal();
     }
     public destroy() {
         super.destroy();

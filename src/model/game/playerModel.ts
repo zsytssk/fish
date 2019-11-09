@@ -8,6 +8,8 @@ import { SkillInfo } from './skill/skillCoreCom';
 import { SkillCtorMap, SkillModel } from './skill/skillModel';
 import { EventCom } from 'comMan/eventCom';
 import { SkillMap } from 'data/config';
+import { modelState } from 'model/modelState';
+import { GameModel } from './gameModel';
 
 type SkillInfoMap = {
     [key: string]: SkillInfo;
@@ -54,8 +56,11 @@ export class PlayerModel extends ComponentManager {
     public gun: GunModel;
     /** 技能列表 */
     public skill_map: Map<string, SkillModel> = new Map();
-    constructor(player_info: PlayerInfo) {
+    /** 炮台 */
+    public game: GameModel;
+    constructor(player_info: PlayerInfo, game: GameModel) {
         super();
+        this.game = game;
         this.addCom(new EventCom());
         this.init(player_info);
     }
@@ -125,5 +130,17 @@ export class PlayerModel extends ComponentManager {
                 gold: gold + win,
             });
         });
+    }
+    public destroy() {
+        const { gun, skill_map, game } = this;
+        for (const [, skill] of skill_map) {
+            skill.destroy();
+        }
+        gun.destroy();
+        game.removePlayer(this);
+        this.gun = undefined;
+        this.gun = undefined;
+        this.skill_map.clear();
+        super.destroy();
     }
 }

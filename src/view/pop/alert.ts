@@ -8,7 +8,7 @@ export default class AlertPop extends ui.pop.alert.alertUI
     public close_resolve: (type: CloseType) => void;
     public static async alert(msg: string) {
         const alert = (await honor.director.openDialog(AlertPop)) as AlertPop;
-        await alert.alert(msg);
+        return await alert.alert(msg);
     }
     public onAwake() {
         this.initEvent();
@@ -29,7 +29,7 @@ export default class AlertPop extends ui.pop.alert.alertUI
             const { label } = this;
             label.text = msg;
             this.close_resolve = resolve;
-        });
+        }) as Promise<CloseType>;
     }
     public close(type: CloseType) {
         const { close_resolve } = this;

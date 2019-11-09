@@ -1,14 +1,12 @@
 import { modelState } from 'model/modelState';
-import { SkillCoreCom, SkillInfo } from './skillCoreCom';
+import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 
 export type FreezeInfo = {
     user_id: string;
     fish_list: string[];
-    num: number;
-    used_time: number;
-};
+} & SkillActiveInfo;
 /** 冰冻技能 */
 export class FreezeModel extends ComponentManager implements SkillModel {
     constructor(info: SkillInfo) {

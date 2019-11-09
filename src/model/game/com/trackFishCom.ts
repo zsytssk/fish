@@ -59,7 +59,7 @@ export class TrackFishCom extends ComponentManager {
         const { x: gx, y: gy } = gun.pos;
         gun.setDirection(new SAT.Vector(x - gx, y - gy));
     }; // tslint:disable-line: semicolon
-    public unTrack() {
+    public unTrack = () => {
         const { fish, gun } = this;
         if (!fish) {
             return;
@@ -70,7 +70,7 @@ export class TrackFishCom extends ComponentManager {
         gun.event.offAllCaller(this);
         fish.event.offAllCaller(this);
         this.fish = null;
-    }
+    }; // tslint:disable-line: semicolon
     public destroy() {
         const { gun } = this;
         this.unTrack();

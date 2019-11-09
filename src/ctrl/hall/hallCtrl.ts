@@ -1,4 +1,6 @@
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { Lang } from 'data/internationalConfig';
+import { ServerName } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import ShopPop from 'view/pop/shop';
 import HallView from 'view/scenes/hallView';
@@ -10,6 +12,8 @@ import {
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
+import { onHallSocket } from './hallSocket';
+import { login } from './login';
 
 export class HallCtrl {
     private view: HallView;
@@ -18,12 +22,16 @@ export class HallCtrl {
         this.init();
     }
     public static async preEnter() {
-        const view = (await HallView.preEnter()) as HallView;
-        const ctrl = new HallCtrl(view);
+        const wait_view = HallView.preEnter() as Promise<HallView>;
+        const wait_socket = login() as Promise<boolean>;
+        return Promise.all([wait_view, wait_socket]).then(([view]) => {
+            const ctrl = new HallCtrl(view);
+        });
     }
     private init() {
         this.initViewEvent();
         this.initModelEvent();
+        onHallSocket(getSocket(ServerName.Hall), this);
     }
     private initModelEvent() {
         const { view } = this;
@@ -153,6 +161,8 @@ export class HallCtrl {
         setting.setLang(flag_type);
         view.toggleFlagMenu();
     }; // tslint:disable-line
+
+    public onUserAccount(data) {}
     public destroy() {
         offBindEvent(this);
     }

@@ -14,7 +14,7 @@ export function createLineDisplaceFun(
             {
                 funNo: '3',
                 len: 1334,
-                funParams: [
+                params: [
                     {
                         x: 1920,
                         y,

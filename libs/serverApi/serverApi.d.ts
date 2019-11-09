@@ -17,14 +17,16 @@ type CheckReplayRep = {
     isReplay: boolean;
     socketUrl: string;
 };
+type TableOutRep = {
+    userId: string;
+};
 /** 用户的数据 */
 type ServerUserInfo = {
-    seatIndex: number;
+    index: number;
     userId: string;
     bulletNum: number;
     multiple: number;
     turretSkin: string;
-    bulletSkin: string;
     lockFish: string;
     lockLeft: number;
 };
@@ -44,7 +46,7 @@ type ServerFishInfo = {
     funList?: {
         funNo?: string;
         len: number;
-        funParams?: any[];
+        params?: any[];
     }[];
     reverse?: boolean;
     frozen?: boolean;
@@ -140,7 +142,7 @@ type LockFishReq = {
 };
 type UseBombReq = {
     bombPoint: Point;
-    eid: string[];
+    fishList: string[];
 };
 
 type UseBombFishInfo = {

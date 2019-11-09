@@ -218,7 +218,7 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
 
 export type DisplaceFunInfo = {
     funNo?: string;
-    funParams?: any[];
+    params?: any[];
     radio?: number;
     len?: number;
     /** poker水母直接出现在屏幕中间无需添加额外曲线 */
@@ -239,7 +239,7 @@ export function createCurvesByFun(
         const curve_item = {} as CurveInfo;
         const {
             funNo: fun_no,
-            funParams: fun_param,
+            params: fun_param,
             no_enter_leave,
             no_enter_leave: leave,
         } = fun_list[i];
@@ -364,12 +364,12 @@ export function createFishDisplace(data: ServerFishInfo) {
 
     let curve_list: CurveInfo[];
     switch (displaceType) {
-        case 'fun':
-            curve_list = createCurvesByFun(funList, fishId);
-            break;
-        default:
+        case 'path':
             curve_list = createCurvesByPath(pathNo, fishId);
             break;
+        default:
+            curve_list = createCurvesByFun(funList, fishId);
+            break;
     }
-    return new Displace(totalTime, usedTime, curve_list, reverse);
+    return new Displace(totalTime / 1000, usedTime / 1000, curve_list, reverse);
 }

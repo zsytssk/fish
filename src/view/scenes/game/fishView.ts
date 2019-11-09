@@ -82,9 +82,15 @@ export class FishView extends Laya.Sprite {
     public beCastAni() {
         return new Promise((resolve, reject) => {
             const { fish_ani } = this;
+            if (!fish_ani) {
+                return;
+            }
             fish_ani.filters = [createRedFilter()];
             clearTimeout(this.time_out);
             this.time_out = setTimeout(() => {
+                if (fish_ani.destroyed) {
+                    return;
+                }
                 fish_ani.filters = [];
                 resolve();
             }, 500) as any;

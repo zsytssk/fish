@@ -1,5 +1,6 @@
 import { ui } from 'ui/layaMaxUI';
 import { SkillMap } from 'data/config';
+import { playSkeleton, stopSkeleton } from 'utils/utils';
 
 export const SkillNameMap = {
     [SkillMap.Freezing]: 'freeze',
@@ -27,6 +28,16 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     public setNum(num: number) {
         const { num_label } = this;
         num_label.text = num + '';
+    }
+    public highlight() {
+        const { border_light } = this;
+        border_light.visible = true;
+        playSkeleton(border_light, 0, true);
+    }
+    public unHighlight() {
+        const { border_light } = this;
+        border_light.visible = false;
+        stopSkeleton(border_light);
     }
     /** 显示技能的冷却时间 */
     public showCoolTime(radio: number) {

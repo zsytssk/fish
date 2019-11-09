@@ -9,6 +9,8 @@ export const UserInfoEvent = {
 
 /** 当前用户信息.. */
 export class UserInfoModel extends ComponentManager {
+    /** 用户id */
+    public user_id = 'U-q5mAnq';
     /** 用户名 */
     public nickname: string;
     /** 账户信息 */
@@ -23,6 +25,9 @@ export class UserInfoModel extends ComponentManager {
             this.addCom(event);
         }
         return event;
+    }
+    public setUserId(name: string) {
+        this.user_id = name;
     }
     public setNickname(name: string) {
         this.nickname = name;

@@ -33,17 +33,3 @@ for (var k = 0; k < layers.length; k++) {
 var docRef = app.documents.add(5000, 7000, 72, 'Simple Line');
 // var myPathItem = docRef.pathItems.add('A Line', revert_points);
 // myPathItem.strokePath(ToolType.BRUSH);
-
-/** 获得没有子类的图层 */
-function getAllLayers(doc) {
-    var result = [];
-    for (var k = 0; k < doc.layers.length; k++) {
-        var activeLayer = doc.layers[k];
-        if (!activeLayer.layers || !activeLayer.layers.length) {
-            result.push(activeLayer);
-        } else {
-            result = result.concat(getAllLayers(activeLayer));
-        }
-    }
-    return result;
-}

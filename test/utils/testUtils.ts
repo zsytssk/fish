@@ -34,6 +34,14 @@ export function nameMap(path: string | string[], end_obj: any, obj?: any) {
     }
     return nameMap(path, end_obj, obj[cur_path]);
 }
+export function injectWindow(obj: { [key: string]: any }) {
+    for (const key in obj) {
+        if (!obj.hasOwnProperty(key)) {
+            continue;
+        }
+        nameMap(key, obj[key]);
+    }
+}
 
 let test_ignore_arr: string[] = [];
 /** 测试是否需要跳过 */

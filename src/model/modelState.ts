@@ -1,18 +1,22 @@
+import { FishSpriteInfo } from 'data/sprite';
+import { getSpriteInfo } from 'utils/dataUtil';
+import { createFishDisplace } from 'utils/displace/displaceUtil';
 import { AppModel } from './appModel';
 import { BodyCom } from './game/com/bodyCom';
 import { detectCollision } from './game/com/bodyComUtil';
+import { MoveDisplaceCom } from './game/com/moveCom/moveDisplaceCom';
 import { FishModel } from './game/fishModel';
 import { GameModel } from './game/gameModel';
-import { createFishDisplace } from 'utils/displace/displaceUtil';
-import { MoveDisplaceCom } from './game/com/moveCom/moveDisplaceCom';
-import { FishSpriteInfo } from 'data/sprite';
-import { getSpriteInfo } from 'utils/dataUtil';
 
 type ModelState = {
     app: AppModel;
 };
 export let modelState = {} as ModelState;
 
+/** 获取鱼 */
+export function isCurUser(id: string) {
+    return id === modelState.app.user_info.user_id;
+}
 /** 获取鱼 */
 export function getFishById(id: string) {
     const { game } = modelState.app;
