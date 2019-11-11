@@ -177,8 +177,6 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
             continue;
         }
 
-        curves.push(curve_info);
-
         // 在曲线的前面添加一个直线, 用于鱼游入
         if (i === 0) {
             const curve_before = createSpace(
@@ -201,6 +199,8 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
             curves.push(curve_after);
             all_length += curve_after.length;
         }
+        curves.push(curve_info);
+        all_length += curve_info.length;
     }
 
     let cur_length = 0;
