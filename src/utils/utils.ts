@@ -25,6 +25,46 @@ export function setProps<T>(data: T, props: Partial<T>) {
     }
 }
 
+type ChangeNumType = 'add' | 'minus';
+/** 有规律增加或减少数字 */
+export function changeNum(num: number, type = 'add' as ChangeNumType) {
+    const num_arr = splitNum(num);
+    if (type === 'add') {
+        const add_num = addZeroToNum(1, num_arr.length - 1);
+        return num + add_num;
+    } else {
+        const last = num_arr[0];
+        let minus_num: number;
+        if (last === 1) {
+            minus_num = addZeroToNum(1, num_arr.length - 2);
+        } else {
+            minus_num = addZeroToNum(1, num_arr.length - 1);
+        }
+        return num - minus_num;
+    }
+}
+
+/** 数字转化为数组 */
+export function splitNum(num: number, arr: number[] = []): number[] {
+    if (num < 1) {
+        return arr;
+    }
+    const last = num % 10;
+    const new_num = (num - last) / 10;
+    arr.unshift(last);
+    return splitNum(new_num, arr);
+}
+
+/** 在数字后面添加多少位的0 */
+export function addZeroToNum(num: number, len: number): number {
+    len -= 1;
+    if (len < 0) {
+        return num;
+    }
+    num = num * 10;
+    return createNewNum(num, len);
+}
+
 /**
  * 在按钮上绑定事件, 防止多次点击事件导致
  * @param node 绑定的节点

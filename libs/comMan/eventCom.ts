@@ -97,6 +97,6 @@ export class EventCom {
         }
     }
     public destroy() {
-        this.events = new Map();
+        this.events.clear();
     }
 }

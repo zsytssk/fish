@@ -7,6 +7,9 @@ import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent } from 'data/serverEvent';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 import { SkillStatus } from 'model/game/skill/skillCoreCom';
+import TopTipPop from 'view/pop/topTip';
+import { Config } from 'data/config';
+import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel, step?: number) {
@@ -19,8 +22,12 @@ export function skillPreActiveHandler(model: SkillModel, step?: number) {
         const socket = getSocket('game');
         socket.send(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
+        TopTipPop.tip('请选择屏幕中的位置放置炸弹', 2);
+        const { PoolWidth, PoolHeight } = Config;
+        activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
         // 炸弹
         onPoolClick().then((pos: Point) => {
+            stopAim();
             const socket = getSocket('game');
             const fish_list = model.getBombFish(pos);
             socket.send(ServerEvent.UseBomb, {
@@ -41,10 +48,9 @@ export function skillActiveHandler(model: SkillModel, info: any) {
         const socket = getSocket('game');
         if (model instanceof TrackFishModel) {
             // 激活锁定之后 提示选中鱼 选中之后发给服务器...
-            console.log('请选中你要攻击的鱼...');
+            TopTipPop.tip('请选中你要攻击的鱼...', 2);
             // 选中鱼
             onFishClick().subscribe((fish_id: string) => {
-                console.log(`点击的鱼:>`, fish_id);
                 socket.send(ServerEvent.LockFish, {
                     eid: fish_id,
                 } as LockFishReq);
@@ -61,7 +67,6 @@ export function skillActiveHandler(model: SkillModel, info: any) {
 export function skillDisableHandler(model: SkillModel) {
     return new Promise((resolve, reject) => {
         if (model instanceof TrackFishModel) {
-            console.log('取消选中屏幕的鱼...');
             offFishClick();
         } else {
             resolve();

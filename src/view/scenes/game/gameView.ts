@@ -112,6 +112,10 @@ export default class GameView extends ui.scenes.game.gameUI
         gun_wrap.addChild(gun);
         return gun;
     }
+    public setBulletNum(num: number) {
+        const { bullet_num } = this;
+        bullet_num.text = num + '';
+    }
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
     }

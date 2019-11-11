@@ -9,6 +9,7 @@ import { FishModel } from '../fishModel';
 import { ModelEvent } from '../../modelEvent';
 import { getCollisionFish } from '../../modelState';
 import { NetModel } from './netModel';
+import { setProps } from 'utils/utils';
 
 export const BulletEvent = {
     Move: 'move',
@@ -18,8 +19,8 @@ export type CastFn = (fish: FishModel) => void;
 export type BulletInfo = {
     pos: Point;
     velocity: SAT.Vector;
-    level: number;
-    level_skin: string;
+    bullet_cost: number;
+    skin_level: string;
     skin: string;
     track?: TrackTarget;
     cast_fn?: CastFn;
@@ -27,9 +28,9 @@ export type BulletInfo = {
 /** 子弹数据类 */
 export class BulletModel extends ComponentManager {
     /** 等级 */
-    public level_skin: string;
+    public skin_level: string;
     /** 等级 */
-    public level: number;
+    public bullet_cost: number;
     /** 等级 */
     public skin: string;
     /** 位置 */
@@ -40,12 +41,10 @@ export class BulletModel extends ComponentManager {
     constructor(props: BulletInfo) {
         super();
 
-        this.level = props.level;
-        this.level_skin = props.level_skin;
-        this.skin = props.skin;
-        this.pos = props.pos;
-        this.cast_fn = props.cast_fn;
-        this.velocity = props.velocity.scale(Config.BulletSpeed);
+        setProps(this as BulletModel, {
+            ...props,
+            velocity: props.velocity.scale(Config.BulletSpeed),
+        });
         this.init(props.track);
     }
     public get event() {
@@ -55,12 +54,12 @@ export class BulletModel extends ComponentManager {
         return this.getCom(BodyCom);
     }
     private init(track?: TrackTarget) {
-        const { pos, velocity, level } = this;
+        const { pos, velocity } = this;
         const com_list: Component[] = [new EventCom()];
         if (!track) {
             const move_com = new MoveVelocityCom(pos, velocity);
             move_com.onUpdate(this.onMoveChange);
-            const shapes = getShapes('bullet', level);
+            const shapes = getShapes('bullet');
             const body_com = new BodyCom(shapes);
 
             com_list.push(move_com, body_com);

@@ -145,8 +145,9 @@ export class FishModel extends ComponentManager {
     public beCapture(): Promise<Point> {
         return new Promise((resolve, reject) => {
             if (this.event) {
+                const { pos } = this;
                 this.event.emit(FishEvent.BeCapture, () => {
-                    resolve(this.pos);
+                    resolve(pos);
                 });
             } else {
                 reject();
@@ -156,6 +157,16 @@ export class FishModel extends ComponentManager {
     }
     public destroy() {
         this.game.removeFish(this);
+        this.setStatus(FishStatus.Normal);
+
+        this.game = undefined;
+        this.id = undefined;
+        this.type = undefined;
+        this.pos = undefined;
+        this.velocity = undefined;
+        this.visible = false;
+        this.horizon_turn = false;
+        this.move_com = undefined;
         this.event.emit(FishEvent.Destroy);
         super.destroy();
     }

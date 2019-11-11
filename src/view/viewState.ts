@@ -17,6 +17,9 @@ export function addNet(skin: string) {
 export function onPoolClick() {
     return viewState.game.onPoolClick();
 }
+export function setBulletNum(num: number) {
+    return viewState.game.setBulletNum(num);
+}
 export function onFishClick() {
     return viewState.game.onFishClick();
 }

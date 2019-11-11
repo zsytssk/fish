@@ -8,7 +8,7 @@ import {
 } from 'view/scenes/game/ani_wrap/shoalWave';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 import { activePosTip } from 'view/scenes/game/ani_wrap/posTip';
-import { activeAim } from 'view/scenes/game/ani_wrap/aim';
+import { activeAimFish } from 'view/scenes/game/ani_wrap/aim';
 import { modelState } from 'model/modelState';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
@@ -67,6 +67,6 @@ export const ani_wrap = new Test('ani_wrap', runner => {
     });
     runner.describe('aim', () => {
         const fish = [...modelState.app.game.fish_list][0];
-        activeAim(fish, false, { x: 100, y: 100 });
+        activeAimFish(fish, false, { x: 100, y: 100 });
     });
 });

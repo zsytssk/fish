@@ -21,7 +21,7 @@ export class BulletCtrl {
     }
     private initView() {
         const { view, model } = this;
-        const { level_skin } = model;
+        const { skin_level: level_skin } = model;
         this.syncPos();
         view.visible = true;
         playSkeleton(view, getBulletAniSkin(level_skin), true);

@@ -51,7 +51,7 @@ export let Coordinates = {
         '52': [0],
         '53': [0],
     },
-    /** gun 在 gunbox 中的位置 */
+    /** gun 在gunBox中的位置 */
     guns_inbox_pos: {
         x: 104,
         y: 78,

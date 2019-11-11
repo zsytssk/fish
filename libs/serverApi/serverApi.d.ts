@@ -43,11 +43,14 @@ type ServerFishInfo = {
     pathNo?: string;
     usedTime: number;
     totalTime: number;
+    displaceLen?: number;
+    dieReBorn?: boolean;
     funList?: {
         funNo?: string;
-        len: number;
+        radio: number;
         params?: any[];
     }[];
+    radio_list: [0.5, 0.6, 0.7];
     reverse?: boolean;
     frozen?: boolean;
     startTime?: number;
@@ -102,11 +105,11 @@ type HitRep = {
 };
 /** 换炮台等级 */
 type ChangeTurretReq = {
-    multiple: string;
+    multiple: number;
 };
 type ChangeTurretRep = {
     userId: string;
-    multiple: string;
+    multiple: number;
 };
 type FishShoalWarnRep = {
     shoalId: string;

@@ -115,9 +115,16 @@ export class GameCtrl {
             player.destroy();
         }
     }
-    public addPlayer(player_list: PlayerInfo[]) {
+    public addPlayers(player_list: PlayerInfo[]) {
         for (const player of player_list) {
             this.model.addPlayer(player);
         }
+    }
+    public changeBulletCost(data: ChangeTurretRep) {
+        const { userId, multiple } = data;
+        const player = this.model.getPlayerById(userId);
+        player.updateInfo({
+            bullet_cost: multiple,
+        });
     }
 }

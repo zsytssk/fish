@@ -4,11 +4,12 @@ import { TimeoutCom } from 'comMan/timeoutCom';
 import { Config } from 'data/config';
 import * as SAT from 'sat';
 import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
-import { AutoLaunchCom } from '../com/autoLaunchCom';
-import { TrackFishCom } from '../com/trackFishCom';
+import { GunAutoLaunchCom } from '../com/gunAutoLaunchCom';
+import { GunTrackFishCom } from '../com/gunTrackFishCom';
 import { FishModel } from '../fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
+import { TrackTarget } from '../com/moveCom/moveTrackCom';
 
 export const GunEvent = {
     /** 通知ctrl添加子弹 -> 发送给服务端... */
@@ -23,20 +24,24 @@ export const GunEvent = {
     SpeedUpStatus: 'speed_up_status',
     /** 网道鱼 */
     CastFish: 'cast_fish',
-    /** 开始追踪 */
-    StartTrack: 'start_track',
-    /** 停止追踪 */
-    StopTrack: 'stop_track',
     /** 等级修改 */
     LevelChange: 'level_change',
 };
 
 export type LevelInfo = {
-    level: number;
+    bullet_cost: number;
     skin: string;
     level_skin: string;
     hole_num: number;
 };
+
+/** 添加子弹的信息 */
+export type AddBulletInfo = {
+    bullet_group: BulletGroup;
+    velocity: SAT.Vector;
+    track: TrackTarget;
+};
+
 export enum GunStatus {
     Normal,
     AutoLaunch,
@@ -49,11 +54,11 @@ export class GunModel extends ComponentManager {
     /** 位置 */
     public readonly pos: Point;
     /** 炮等级 */
-    public level: number;
+    public bullet_cost: number;
     /** 炮皮肤 */
     public readonly skin: string;
     /** 炮皮肤 */
-    public level_skin: string;
+    public skin_level: string;
     /** 炮皮肤 */
     public hole_num: number;
     /** 子弹列表 */
@@ -82,7 +87,7 @@ export class GunModel extends ComponentManager {
     }
     private init() {
         this.addCom(new EventCom(), new TimeoutCom());
-        this.setLevel(this.player.level);
+        this.setBulletPrice(this.player.bullet_cost);
         this.initDirection();
     }
     public get event() {
@@ -108,20 +113,20 @@ export class GunModel extends ComponentManager {
             this.event.emit(GunEvent.DirectionChange, direction);
         }, this.launch_space);
     }
-    public setLevel(level: number) {
-        if (level === this.level) {
+    public setBulletPrice(bullet_cost: number) {
+        if (bullet_cost === this.bullet_cost) {
             return;
         }
         const { skin } = this;
-        const { level_skin, hole_num } = getGunLevelSkinInfo(level);
-        this.level = level;
-        this.level_skin = level_skin;
+        const { level_skin, hole_num } = getGunLevelSkinInfo(bullet_cost);
+        this.bullet_cost = bullet_cost;
+        this.skin_level = level_skin;
         this.hole_num = hole_num;
 
         const timeout = this.getCom(TimeoutCom);
         timeout.createTimeout(() => {
             this.event.emit(GunEvent.LevelChange, {
-                level,
+                bullet_cost,
                 skin,
                 level_skin,
                 hole_num,
@@ -150,25 +155,17 @@ export class GunModel extends ComponentManager {
     }
     /** 自动发射的处理 */
     public get autoLaunch() {
-        let auto_launch = this.getCom(AutoLaunchCom);
+        let auto_launch = this.getCom(GunAutoLaunchCom);
         if (!auto_launch) {
-            auto_launch = new AutoLaunchCom(this);
+            auto_launch = new GunAutoLaunchCom(this);
             this.addCom(auto_launch);
         }
         return auto_launch;
     }
     public get trackFish() {
-        let track_fish = this.getCom(TrackFishCom);
+        let track_fish = this.getCom(GunTrackFishCom);
         if (!track_fish) {
-            track_fish = new TrackFishCom(this);
-            this.addCom(track_fish);
-        }
-        return track_fish;
-    }
-    public get speedup() {
-        let track_fish = this.getCom(TrackFishCom);
-        if (!track_fish) {
-            track_fish = new TrackFishCom(this);
+            track_fish = new GunTrackFishCom(this);
             this.addCom(track_fish);
         }
         return track_fish;
@@ -198,7 +195,13 @@ export class GunModel extends ComponentManager {
         }, this.launch_space);
     }
     public addBullet(direction: Point) {
-        const { skin, level_skin } = this;
+        const {
+            bullet_cost,
+            skin,
+            skin_level: level_skin,
+            track_fish: track,
+            player,
+        } = this;
         const { x, y } = direction;
 
         const velocity = new SAT.Vector(x, y).normalize();
@@ -211,11 +214,17 @@ export class GunModel extends ComponentManager {
         const info: BulletGroupInfo = {
             bullets_pos,
             velocity,
-            track: this.track_fish,
+            track,
         };
         const bullet_group = new BulletGroup(info, this);
         this.bullet_list.add(bullet_group);
-        this.event.emit(GunEvent.AddBullet, bullet_group, velocity);
+
+        player.updateInfo({ bullet_num: player.bullet_num - bullet_cost });
+        this.event.emit(GunEvent.AddBullet, {
+            bullet_group,
+            velocity,
+            track,
+        } as AddBulletInfo);
     }
     public castFish(fish: FishModel, level: number) {
         this.event.emit(GunEvent.CastFish, { fish, level });
@@ -231,6 +240,8 @@ export class GunModel extends ComponentManager {
         }
         this.player = undefined;
         this.track_fish = undefined;
+        this.setStatus(GunStatus.Normal);
+        this.toggleSpeedUp(false);
         this.bullet_list.clear();
 
         super.destroy();

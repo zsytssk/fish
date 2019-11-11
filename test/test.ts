@@ -12,5 +12,5 @@ const testUtils = {
 };
 
 injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
-// localAndSocketTest();
-localTest();
+localAndSocketTest();
+// localTest();

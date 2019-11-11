@@ -1,22 +1,27 @@
 import { FishModel } from 'model/game/fishModel';
 import { BulletGroup } from 'model/game/gun/bulletGroup';
-import { GunEvent, LevelInfo } from 'model/game/gun/gunModel';
+import { GunEvent, LevelInfo, AddBulletInfo } from 'model/game/gun/gunModel';
 import { PlayerModel, PlayerEvent, CaptureInfo } from 'model/game/playerModel';
 import SAT from 'sat';
-import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
+import { activeAimFish, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import GunBoxView from 'view/scenes/game/gunBoxView';
 import {
     getPoolMousePos,
     getSkillItemByIndex,
     getAutoLaunchSkillItem,
+    setBulletNum,
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
 import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent } from 'data/serverEvent';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
-import { vectorToDegree } from 'utils/mathUtils';
+import {
+    GunTrackFishEvent,
+    StartTrackInfo,
+} from 'model/game/com/gunTrackFishCom';
+import { changeNum } from 'utils/utils';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -43,38 +48,42 @@ export class PlayerCtrl {
     private initEvent() {
         const {
             view,
-            model: { nickname, gun, is_cur_player, skill_map, event },
+            model: {
+                nickname,
+                gun,
+                is_cur_player,
+                skill_map,
+                event: player_event,
+            },
         } = this;
         const { event: gun_event, direction, pos: gun_pos } = gun;
         const { ctrl_box, btn_minus, btn_add } = view;
 
-        event.on(PlayerEvent.CaptureFish, (data: CaptureInfo) => {
+        player_event.on(PlayerEvent.CaptureFish, (data: CaptureInfo) => {
             const { pos, win, resolve } = data;
             const { pos: end_pos } = gun;
             showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
         });
-        gun_event.on(
-            GunEvent.AddBullet,
-            (bullet_group: BulletGroup, velocity: SAT.Vector) => {
-                const { rage } = gun;
-                view.fire(velocity, nickname);
-                view.stopPosTip();
-                for (const bullet of bullet_group.bullet_list) {
-                    const bullet_view = view.addBullet(
-                        bullet.skin,
-                        rage,
-                    ) as Laya.Skeleton;
-                    const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
-                }
-            },
-        );
+        gun_event.on(GunEvent.AddBullet, (info: AddBulletInfo) => {
+            const { bullet_group, velocity } = info;
+            const { rage } = gun;
+            view.fire(velocity, nickname);
+            view.stopPosTip();
+            for (const bullet of bullet_group.bullet_list) {
+                const bullet_view = view.addBullet(
+                    bullet.skin,
+                    rage,
+                ) as Laya.Skeleton;
+                const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
+            }
+        });
 
         view.setDirection(direction);
         gun_event.on(GunEvent.DirectionChange, (_direction: SAT.Vector) => {
             view.setDirection(_direction);
         });
         gun_event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
-            view.setLevel(level_info);
+            view.setBulletCost(level_info);
         });
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             e.stopPropagation();
@@ -107,6 +116,12 @@ export class PlayerCtrl {
         }
         ctrl_box.visible = true;
         const socket = getSocket('game');
+
+        player_event.on(PlayerEvent.UpdateInfo, () => {
+            const { bullet_num, bullet_cost } = this.model;
+            console.log(`test:>UpdateInfo`, bullet_num);
+            setBulletNum(bullet_num);
+        });
         gun_event.on(
             GunEvent.CastFish,
             (data: { fish: FishModel; level: number }) => {
@@ -121,13 +136,11 @@ export class PlayerCtrl {
             },
         );
 
-        gun_event.on(
-            GunEvent.StartTrack,
-            (fish: FishModel, show_point: boolean) => {
-                activeAim(fish, show_point, gun.pos);
-            },
-        );
-        gun_event.on(GunEvent.StopTrack, () => {
+        gun_event.on(GunTrackFishEvent.StartTrack, (data: StartTrackInfo) => {
+            const { fish, fire: show_point } = data;
+            activeAimFish(fish, show_point, gun.pos);
+        });
+        gun_event.on(GunTrackFishEvent.StopTrack, () => {
             stopAim();
         });
         gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
@@ -143,20 +156,15 @@ export class PlayerCtrl {
                 click_pos.y - gun_pos.y,
             );
             gun.preAddBullet(_direction);
-            console.log(`test:>degree1`, vectorToDegree(_direction));
-            console.log(
-                `test:>degree2`,
-                vectorToDegree({ x: _direction.x, y: -_direction.y }),
-            );
         });
 
         btn_minus.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
             e.stopPropagation();
-            console.log(`btn_minus`);
+            this.sendChangeBulletCost('minus');
         });
         btn_add.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
             e.stopPropagation();
-            console.log(`btn_add`);
+            this.sendChangeBulletCost('add');
         });
     }
     private handleAutoLaunch(model: AutoLaunchModel, view: Laya.Sprite) {
@@ -165,5 +173,12 @@ export class PlayerCtrl {
             console.log('auto launch');
             model.toggle();
         });
+    }
+    private sendChangeBulletCost(type: 'add' | 'minus') {
+        const { bullet_cost } = this.model;
+        const _socket = getSocket(ServerName.Game);
+        _socket.send(ServerEvent.ChangeTurret, {
+            multiple: changeNum(bullet_cost, 'add'),
+        } as ChangeTurretReq);
     }
 }

@@ -1,14 +1,12 @@
 import Bezier from 'bezier-js';
+import { PATH } from 'data/path';
+import { FishSpriteInfo } from 'data/sprite';
 import GameConfig from 'GameConfig';
 import SAT from 'sat';
 import { getSpriteInfo } from 'utils/dataUtil';
 import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
-import { FishSpriteInfo } from 'data/sprite';
-import { PATH } from 'data/path';
-import { MoveDisplaceCom } from 'model/game/com/moveCom/moveDisplaceCom';
-import { Config } from 'data/config';
 
 export const stage_width = GameConfig.width;
 export const stage_height = GameConfig.height;
@@ -179,7 +177,8 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
             continue;
         }
 
-        all_length += curve_info.length;
+        curves.push(curve_info);
+
         // 在曲线的前面添加一个直线, 用于鱼游入
         if (i === 0) {
             const curve_before = createSpace(
@@ -188,12 +187,9 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
                 curve.derivative(0),
                 fish_type,
             ) as CurveInfo;
-            curves.push(curve_before);
+            curves.unshift(curve_before);
             all_length += curve_before.length;
         }
-
-        curves.push(curve_info);
-
         // 在曲线的后面添加一个直线, 用于鱼游出
         if (i === path_info.length - 1) {
             const curve_after = createSpace(
@@ -232,6 +228,7 @@ export type DisplaceFunInfo = {
 export function createCurvesByFun(
     fun_list: DisplaceFunInfo[],
     fish_type: string,
+    origin_len: number,
 ) {
     let all_length = 0;
     const curves = [] as CurveInfo[];
@@ -242,16 +239,18 @@ export function createCurvesByFun(
             params: fun_param,
             no_enter_leave,
             no_enter_leave: leave,
+            radio,
         } = fun_list[i];
         /** 直接显示在页面中的鱼不需要添加额外路线 */
         let curve = FUNCTION[fun_no].apply(this, fun_param);
         curve_item.curve = curve;
-        let length = fun_list[i].len;
+        let length = origin_len * radio;
         if (!length && typeof curve.length === 'function') {
             length = curve.length(1);
         }
         curve_item.length = length || 1;
         all_length += curve_item.length;
+        curves.push(curve_item);
 
         // 在曲线的前面添加一个直线, 用于鱼游入
         if (i === 0) {
@@ -267,16 +266,12 @@ export function createCurvesByFun(
                 all_length += curve_before.length;
             }
         }
-
-        curves.push(curve_item);
-
         if (i === fun_list.length - 1) {
             /** 添加额外的离开曲线 */
             if (leave) {
                 const offset_curve_info = createOffsetLine(curve_item, 'after');
                 curves.push(offset_curve_info);
                 all_length += offset_curve_info.length;
-
                 curve = offset_curve_info.curve;
             }
             /** 离开屏幕为鱼大小添加新的路径  */
@@ -360,6 +355,7 @@ export function createFishDisplace(data: ServerFishInfo) {
         totalTime,
         reverse,
         funList,
+        displaceLen,
     } = data;
 
     let curve_list: CurveInfo[];
@@ -368,7 +364,7 @@ export function createFishDisplace(data: ServerFishInfo) {
             curve_list = createCurvesByPath(pathNo, fishId);
             break;
         default:
-            curve_list = createCurvesByFun(funList, fishId);
+            curve_list = createCurvesByFun(funList, fishId, displaceLen);
             break;
     }
     return new Displace(totalTime / 1000, usedTime / 1000, curve_list, reverse);

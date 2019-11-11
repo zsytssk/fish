@@ -13,7 +13,7 @@ export class BodyCom {
     /** 角度 */
     private angle: number = 0;
     /** 角度 */
-    private pos = {} as Point;
+    private pos = { x: 0, y: 0 };
     /** 是否水平翻转 */
     public horizon_turn: boolean;
     /** 形状信息 */
@@ -77,5 +77,7 @@ export class BodyCom {
     }
     public destroy() {
         this.shapes = undefined;
+        this.angle = 0;
+        this.pos = { x: 0, y: 0 };
     }
 }

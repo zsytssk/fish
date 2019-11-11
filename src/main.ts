@@ -1,5 +1,5 @@
 import { AppCtrl } from 'ctrl/appCtrl';
-import coingame from 'coingame/coingame.min.test';
+import coingame from 'coingame/coingame.min';
 import { state } from 'data/env';
 import { Config } from 'data/config';
 

@@ -4,7 +4,7 @@ import { ShapeInfo, BodyCom, Shape } from './bodyCom';
 
 export type ShapeOriType = 'fish' | 'bullet' | 'net';
 
-export function getShapes(type: ShapeOriType, level: number): ShapeInfo[] {
+export function getShapes(type: ShapeOriType, level?: number): ShapeInfo[] {
     const result = [] as ShapeInfo[];
 
     let shape_info: shapeOriInfoItem;

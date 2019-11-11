@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":39,
+    "selectedBox":28,
+    "selecteID":29,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -227,18 +227,19 @@
                             "props":{"y":45,"x":38,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
                             "nodeParent":26,
                             "label":"Image",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":28,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Label",
-                                    "searchKey":"Label",
-                                    "props":{"y":8,"x":14,"width":199,"valign":"middle","text":"余额 384789380 EBT","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
+                                    "searchKey":"Label,bullet_num",
+                                    "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"余额 384789380 EBT","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
                                     "nodeParent":28,
-                                    "label":"Label",
+                                    "label":"bullet_num",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,

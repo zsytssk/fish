@@ -2,7 +2,7 @@ import { ComponentManager } from 'comMan/component';
 import { GunEvent, GunModel, GunStatus } from 'model/game/gun/gunModel';
 
 /** 自动攻击 */
-export class AutoLaunchCom extends ComponentManager {
+export class GunAutoLaunchCom extends ComponentManager {
     private gun: GunModel;
     constructor(gun: GunModel) {
         super();

@@ -17,22 +17,22 @@ export const NetEvent = {
 /** 鱼网数据类 */
 export class NetModel extends ComponentManager {
     /** 位置 */
-    public readonly pos: Point;
+    public pos: Point;
     /** 炮等级 */
-    public readonly level: number;
+    public bullet_cost: number;
     /** 炮皮肤 */
-    public readonly skin: string;
+    public skin: string;
+    /** 炮皮肤 */
+    public skin_level: string;
     /** 是否显示 cast fish 的状态  */
     public show_cast: boolean;
-    /** 炮皮肤 */
-    public readonly level_skin: string;
     constructor(info: NetInfo, bullet: BulletModel) {
         super();
 
         const { show_cast, pos } = info;
-        this.level = bullet.level;
+        this.bullet_cost = bullet.bullet_cost;
         this.skin = bullet.skin;
-        this.level_skin = bullet.level_skin;
+        this.skin_level = bullet.skin_level;
         this.show_cast = show_cast;
         this.pos = pos;
         this.init();
@@ -44,8 +44,8 @@ export class NetModel extends ComponentManager {
         return this.getCom(EventCom);
     }
     private init() {
-        const { level, show_cast } = this;
-        const shapes = getShapes('net', level);
+        const { show_cast } = this;
+        const shapes = getShapes('net');
         const body_com = new BodyCom(shapes);
         body_com.update(this.pos);
         const timeout_com = new TimeoutCom();
@@ -67,6 +67,11 @@ export class NetModel extends ComponentManager {
         }, 100);
     }
     public destroy() {
+        this.pos = undefined;
+        this.bullet_cost = -1;
+        this.skin = '-1';
+        this.skin_level = '-1';
+        this.show_cast = false;
         this.event.emit(ModelEvent.Destroy);
         super.destroy();
     }

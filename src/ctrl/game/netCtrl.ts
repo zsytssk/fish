@@ -13,11 +13,11 @@ export class NetCtrl {
     }
     private init() {
         const { view, model } = this;
-        const { level_skin } = model;
+        const { skin_level } = model;
 
         const { x, y } = model.pos;
         view.pos(x, y);
-        playSkeleton(view, level_skin, false);
+        playSkeleton(view, skin_level, false);
         this.initEvent();
     }
     private initEvent() {

@@ -27,10 +27,11 @@ for (const fish of fish_list) {
         fishId,
         startTimeRadio,
         endTimeRadio,
+        displaceLen: pool_width,
         funList: [
             {
                 funNo: '3',
-                len: pool_width,
+                radio: 1,
                 params: [
                     {
                         x: 1920,

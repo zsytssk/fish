@@ -25,7 +25,14 @@ const state = {
 } as AimState;
 const point_space = 50;
 
-export function activeAim(
+export function activeAim(pos: Point) {
+    createAim();
+    const { aim_ani } = state;
+    playSkeleton(aim_ani, 0, true);
+    aim_ani.pos(pos.x, pos.y);
+}
+
+export function activeAimFish(
     fish: FishModel,
     show_points?: boolean,
     ori_pos?: Point,
@@ -71,7 +78,7 @@ export function activeAim(
         },
         aim_ani,
     );
-    fish.event.on(ModelEvent.Destroy, () => {
+    fish.event.on(FishEvent.Destroy, () => {
         stopAim();
         fish.event.offAllCaller(aim_ani);
     });

@@ -14,7 +14,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep) => {
             const { fish, users } = convertEnterGame(data);
-            game.addPlayer(users);
+            game.addPlayers(users);
             game.addFish(fish);
         },
         [ServerEvent.Shoot]: (data: ShootRep) => {
@@ -46,6 +46,9 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.TableOut]: (data: TableOutRep) => {
             game.tableOut(data);
         },
+        [ServerEvent.ChangeTurret]: (data: TableOutRep) => {
+            game.changeBulletCost(data);
+        },
     });
 }
 
@@ -60,8 +63,8 @@ function convertEnterGame(data: EnterGameRep) {
         const {
             userId: user_id,
             index: index,
-            bulletNum: gold,
-            multiple: level,
+            bulletNum: bullet_num,
+            multiple: bullet_cost,
             turretSkin: gun_skin,
         } = user_source;
         const skills = {} as { [key: string]: SkillInfo };
@@ -83,8 +86,8 @@ function convertEnterGame(data: EnterGameRep) {
         users.push({
             user_id,
             server_index: index - 1,
-            gold,
-            level,
+            bullet_num,
+            bullet_cost,
             gun_skin: `${Number(gun_skin) - 1000}`,
             nickname: '',
             avatar: '',

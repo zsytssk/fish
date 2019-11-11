@@ -1,15 +1,14 @@
 import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+import { SkillMap } from 'data/config';
 import { ModelEvent } from 'model/modelEvent';
 import { getGunInfo } from 'utils/dataUtil';
 import { setProps } from 'utils/utils';
 import { FishEvent } from './fishModel';
+import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
 import { SkillCtorMap, SkillModel } from './skill/skillModel';
-import { EventCom } from 'comMan/eventCom';
-import { SkillMap } from 'data/config';
-import { modelState } from 'model/modelState';
-import { GameModel } from './gameModel';
 
 type SkillInfoMap = {
     [key: string]: SkillInfo;
@@ -22,8 +21,8 @@ export type CaptureInfo = {
 export type PlayerInfo = {
     user_id: string;
     server_index: number;
-    level: number;
-    gold: number;
+    bullet_cost: number;
+    bullet_num: number;
     gun_skin: string;
     nickname: string;
     avatar: string;
@@ -45,9 +44,9 @@ export class PlayerModel extends ComponentManager {
     /** 服务器的位置 */
     public server_index: number;
     /** 等级 */
-    public level: number;
+    public bullet_cost: number;
     /** 金币数量 */
-    public gold: number;
+    public bullet_num: number;
     /** 用户名 */
     public nickname: string;
     /** 图像地址 */
@@ -71,33 +70,38 @@ export class PlayerModel extends ComponentManager {
         const {
             user_id,
             server_index,
-            level,
+            bullet_cost,
             gun_skin,
             nickname,
             avatar,
-            gold,
+            bullet_num,
             is_cur_player,
             skills,
         } = player_info;
-
-        this.updateInfo({
-            user_id,
-            server_index,
-            level,
-            nickname,
-            avatar,
-            gold,
-            is_cur_player,
-        });
 
         const { pos } = getGunInfo(server_index);
         const gun = new GunModel(pos, gun_skin, this);
         this.gun = gun;
 
+        this.updateInfo({
+            user_id,
+            server_index,
+            bullet_cost,
+            nickname,
+            avatar,
+            bullet_num,
+            is_cur_player,
+        });
+
         this.initSkill(skills);
     }
-    private updateInfo(info: Partial<PlayerInfo>) {
+    public updateInfo(info: Partial<PlayerInfo>) {
+        const { bullet_cost } = info;
         setProps(this as PlayerModel, info);
+        if (info.bullet_cost) {
+            this.gun.setBulletPrice(bullet_cost);
+        }
+        this.event.emit(PlayerEvent.UpdateInfo);
     }
     private initSkill(skills: SkillInfoMap) {
         const { skill_map } = this;
@@ -118,7 +122,7 @@ export class PlayerModel extends ComponentManager {
         skill_model.active(data);
     }
     public captureFish(pos: Point, win: number) {
-        const { gold } = this;
+        const { bullet_num } = this;
         new Promise((resolve, reject) => {
             this.event.emit(PlayerEvent.CaptureFish, {
                 pos,
@@ -127,20 +131,22 @@ export class PlayerModel extends ComponentManager {
             } as CaptureInfo);
         }).then(() => {
             this.updateInfo({
-                gold: gold + win,
+                bullet_num: bullet_num + win,
             });
         });
     }
     public destroy() {
         const { gun, skill_map, game } = this;
+
         for (const [, skill] of skill_map) {
             skill.destroy();
         }
         gun.destroy();
         game.removePlayer(this);
-        this.gun = undefined;
-        this.gun = undefined;
+        this.event.emit(PlayerEvent.Destroy);
+
         this.skill_map.clear();
+        this.gun = undefined;
         super.destroy();
     }
 }

@@ -1,8 +1,10 @@
-import { ComponentManager } from 'comMan/component';
-import { BulletModel, BulletInfo } from './bulletModel';
-import { GunModel } from './gunModel';
 import { TrackTarget } from 'model/game/com/moveCom/moveTrackCom';
 import { FishModel } from 'model/game/fishModel';
+import { BulletInfo, BulletModel } from './bulletModel';
+import { GunModel } from './gunModel';
+import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+import { ModelEvent } from 'model/modelEvent';
 
 export type BulletGroupInfo = {
     bullets_pos: Point[];
@@ -10,30 +12,38 @@ export type BulletGroupInfo = {
     track?: TrackTarget;
 };
 
+export const BulletGroupEvent = {
+    Destroy: ModelEvent.Destroy,
+};
+
 /** 子弹组合(一次发射多个子弹, 一颗子弹击中鱼, 所有同时生成网) */
 export class BulletGroup extends ComponentManager {
     public bullet_list: Set<BulletModel> = new Set();
     private gun: GunModel;
-    private level: number;
+    public bullet_cost: number;
     /** 是否已经捕捉到了, 只处理第一个bulletModel捕的鱼 */
     private casted = false;
     constructor(info: BulletGroupInfo, gun: GunModel) {
         super();
-        this.level = gun.level;
+        this.bullet_cost = gun.bullet_cost;
         this.gun = gun;
+        this.addCom(new EventCom());
         this.initBullet(info);
+    }
+    public get event() {
+        return this.getCom(EventCom);
     }
     private initBullet(info: BulletGroupInfo) {
         const { bullets_pos, track, velocity } = info;
-        const { skin, level, level_skin } = this.gun;
+        const { skin, bullet_cost, skin_level } = this.gun;
 
         for (const pos of bullets_pos) {
             const bullet_props = {
                 skin,
                 pos,
-                level,
+                bullet_cost,
                 track,
-                level_skin,
+                skin_level,
                 velocity: velocity.clone(),
                 cast_fn: this.castFn,
             } as BulletInfo;
@@ -43,14 +53,14 @@ export class BulletGroup extends ComponentManager {
     }
     /** 一颗子弹击中鱼之后的处理 */
     private castFn = (fish: FishModel) => {
-        const { gun, casted, bullet_list, level } = this;
+        const { gun, casted, bullet_list, bullet_cost: bullet_price } = this;
         const { is_cur_player } = gun.player;
         if (casted) {
             return;
         }
         this.casted = true;
         if (is_cur_player) {
-            gun.castFish(fish, level);
+            gun.castFish(fish, bullet_price);
         }
         gun.removeBullet(this);
         this.gun = undefined;
@@ -67,6 +77,11 @@ export class BulletGroup extends ComponentManager {
             bullet.destroy();
         }
         bullet_list.clear();
+        this.getCom(EventCom).emit(BulletGroupEvent.Destroy);
+
         this.gun = undefined;
+        this.bullet_cost = 0;
+
+        super.destroy();
     }
 }

@@ -5,6 +5,7 @@ export interface TrackTarget {
     pos: Point;
 }
 export type OnHit = (target: TrackTarget) => void;
+
 /** 追踪目标 移动控制 */
 export class MoveTrackCom implements MoveCom {
     private target: TrackTarget;
@@ -86,10 +87,13 @@ export class MoveTrackCom implements MoveCom {
     }
     public destroy() {
         clearTick(this.tick_index);
+        this.tick_index = 0;
         this.target = undefined;
+        this.on_hit = undefined;
+        this.pos = undefined;
+        this.start_pos = undefined;
         this.velocity_size = 0;
         this.update_fn = undefined;
         this.is_stop = false;
-        this.tick_index = 0;
     }
 }

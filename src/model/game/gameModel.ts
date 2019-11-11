@@ -125,6 +125,15 @@ export class GameModel extends ComponentManager {
         this.shoal_com.preAddShoal();
     }
     public destroy() {
+        const { fish_list, player_list } = this;
+        for (const fish of fish_list) {
+            fish.destroy();
+        }
+        for (const player of player_list) {
+            player.destroy();
+        }
+        this.fish_list.clear();
+        this.player_list.clear();
         super.destroy();
         // 离开游戏销毁...
     }

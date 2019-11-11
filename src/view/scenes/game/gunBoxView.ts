@@ -38,11 +38,11 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     }
 
     /** 设置动画 */
-    public setLevel(level_info: LevelInfo) {
-        const { skin, level_skin, level } = level_info;
+    public setBulletCost(level_info: LevelInfo) {
+        const { skin, level_skin, bullet_cost } = level_info;
         const { gun, score_label } = this;
 
-        score_label.text = level + '';
+        score_label.text = bullet_cost + '';
         this.gun_skin = skin;
 
         const ani_list = ['base', 'light', 'body'];

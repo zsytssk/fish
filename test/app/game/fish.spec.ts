@@ -1,5 +1,5 @@
 import { range } from 'lodash';
-import { FishModel } from 'model/game/fishModel';
+import { FishModel, FishEvent } from 'model/game/fishModel';
 import { GameEvent } from 'model/game/gameModel';
 import { ModelEvent } from 'model/modelEvent';
 import { modelState } from 'model/modelState';
@@ -93,7 +93,7 @@ export const fish_test = new Test('fish', runner => {
         } as ServerFishInfo;
         game.event.once(GameEvent.AddFish, (fish: FishModel) => {
             const start = Date.now();
-            fish.event.once(ModelEvent.Destroy, () => {
+            fish.event.once(FishEvent.Destroy, () => {
                 const duration = Date.now() - start;
                 console.log(`test:>fish_total_time:>`, duration, time);
             });

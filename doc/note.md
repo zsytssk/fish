@@ -1,24 +1,105 @@
--   @todo
+-   @ques displace=fun usedTime 如何处理...
+    -   usedTime -> used_frame ->
+    -   显示的总共时间, 在页面行动轨迹...
 
-    -   服务端的鱼发给我的时候鱼已经要离开页面 我需要做兼容
-    -   tableOut 的处理
+## 2019-11-11 20:06:26
+
+-   @ques 鱼群中的鱼 usedTime 为负数 也需要添加额外的距离
+
+-   @todo 倍数文档 更改倍数...
+
+-   @todo channel
+
+-   @todo 优化 鱼群数据
+
+    -   缩短 key + 去掉 funcList
+    -   本地保存一份鱼群的路线数据
+    -   funList fun --> radio
+
+*   @ques 乌龟需要一个标示... dieReBorn: true
+
+*   @todo 显示用户的金钱 + 金钱的变化
+
+    -   更改倍数
+    -   添加用户...
+    -   发射子弹 减少金钱...
+
+*   @todo 不影响游戏体验的提示 在顶部出现一个提示框...
+*   @todo 添加用户接口...
+
+*   @bug `const shapes = getShapes('net');`
+    -   暂时不用 level 后面可能会改, 但是折合 level 其实没有什么关系...
+*   @todo StartTrackInfo
+
+*   @todo gold -> bullet_num
+*   @bug bombModel.active fish_model 没有 pos
+
+*   @ques 我可以监听 gunAddBullet 然后 bullet.setTrack
+
+    -   不行... bullet 在创建的时候就会设置 MoveCom
+    -   能不能将 move_com 传进去...
+    -   所有需要借用 Event 传递收据 都需要 提供方法 emitEvent, 知道哪些地方用了这个方法...
+
+*   @ques 能不能将所有的代码 com 的代码全部放在其他的地方...
+
+    -   trackFishCom
+
+*   @ques ...
 
 -   @todo model 的 destroy
 
--   @bug 技能释放的时间不同步...
+-   点击屏幕内您想投放炸弹的位置
 
--   @bug 锁定无法选中屏幕中的鱼???
+*   @todo emit(ModelEvent.Destroy);
 
--   @bug 机器人自动攻击...
+*   @todo PlayerEvent.Destroy
 
--   @todo 技能激活的动画...
+*   @todo gunSpeedUpCom...
 
-    -   炸弹无法关闭
+    -   com 命名
+
+*   @todo modelEvent -> CommonEvent
+
+*   @todo 奖励数目 颠倒...
 
 -   @todo 测试环境的搭建...
 
     -   正常进入游戏 ... 鱼 socket...
     -   各个测试相互的独立, 分别进入...
+
+*   @thk 能不能在不同的游戏模式的时候, 动态的给 model 添加 com, 实现... 的功能...
+    -   将不同模式的代码隔离...
+
+-   @todo 设计模式
+    -   一个 model 只做实现这个模块的基础代码(struct)
+    -   这个代码可以扩展其他的功能(com)
+
+*   @bug bulletModel -> MoveTrackCom update 报错...
+
+    -   target 销毁时 没有消除绑定...
+
+*   @todo 设计模式
+    -   destroy 时候 调用方法 --> 初始化值 -> 父类 destroy
+
+-   @ques GunTrackFishCom 能不能知道 track_fish 时创建的子弹...
+    -   event...
+
+## 2019-11-11 10:24:33
+
+-   @todo
+
+    -   服务端的鱼发给我的时候鱼已经要离开页面 我需要做兼容
+    -   tableOut 的处理
+
+*   @bug 技能释放的时间不同步...
+
+*   @bug 锁定无法选中屏幕中的鱼???
+
+*   @bug 机器人自动攻击...
+
+*   @todo 技能激活的动画...
+
+    -   炸弹无法关闭
 
 -   @todo 炸弹 + 锁定 没法触发
 

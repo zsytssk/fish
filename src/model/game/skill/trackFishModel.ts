@@ -28,6 +28,9 @@ export class TrackFishModel extends ComponentManager implements SkillModel {
         const { player } = skill_core;
         const { fish, is_tip } = info;
         const fish_model = getFishById(fish);
+        if (!fish_model) {
+            return console.error(`cant find fish for eid=${fish}`);
+        }
 
         player.gun.trackFish.track(fish_model, !is_tip);
         if (is_tip) {
