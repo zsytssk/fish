@@ -155,15 +155,14 @@ export function calcFixLen(start_pos: Point, fish_type: string) {
     };
 }
 
-export function createCurvesByPath(path_id: string, fish_type: string) {
+export function createCurvesByPath(path_arr: number[][], fish_type: string) {
     const curves = [] as CurveInfo[];
-    const path_info = PATH[path_id];
 
     let all_length = 0;
-    for (let i = 0; i < path_info.length; i++) {
+    for (let i = 0; i < path_arr.length; i++) {
         let curve_info: CurveInfo;
         let curve: Curve;
-        const path_item_info = path_info[i] as [number, number, number, number];
+        const path_item_info = path_arr[i] as [number, number, number, number];
         if (path_item_info.length >= 6) {
             // 贝塞尔曲线
             curve_info = createBezier(path_item_info);
@@ -177,6 +176,7 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
             continue;
         }
 
+        curves.push(curve_info);
         // 在曲线的前面添加一个直线, 用于鱼游入
         if (i === 0) {
             const curve_before = createSpace(
@@ -189,7 +189,7 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
             all_length += curve_before.length;
         }
         // 在曲线的后面添加一个直线, 用于鱼游出
-        if (i === path_info.length - 1) {
+        if (i === path_arr.length - 1) {
             const curve_after = createSpace(
                 'after',
                 curve.get(1),
@@ -199,7 +199,6 @@ export function createCurvesByPath(path_id: string, fish_type: string) {
             curves.push(curve_after);
             all_length += curve_after.length;
         }
-        curves.push(curve_info);
         all_length += curve_info.length;
     }
 
@@ -351,6 +350,7 @@ export function createFishDisplace(data: ServerFishInfo) {
         fishId,
         displaceType,
         pathNo,
+        pathList,
         usedTime,
         totalTime,
         reverse,
@@ -361,7 +361,13 @@ export function createFishDisplace(data: ServerFishInfo) {
     let curve_list: CurveInfo[];
     switch (displaceType) {
         case 'path':
-            curve_list = createCurvesByPath(pathNo, fishId);
+            let path_arr: number[][];
+            if (pathNo) {
+                path_arr = PATH[pathNo];
+            } else if (pathList) {
+                path_arr = pathList;
+            }
+            curve_list = createCurvesByPath(path_arr, fishId);
             break;
         default:
             curve_list = createCurvesByFun(funList, fishId, displaceLen);

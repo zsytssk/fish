@@ -41,6 +41,7 @@ type ServerFishInfo = {
     }[];
     displaceType: displaceType;
     pathNo?: string;
+    pathList?: number[][];
     usedTime: number;
     totalTime: number;
     displaceLen?: number;
@@ -50,7 +51,6 @@ type ServerFishInfo = {
         radio: number;
         params?: any[];
     }[];
-    radio_list: [0.5, 0.6, 0.7];
     reverse?: boolean;
     frozen?: boolean;
     startTime?: number;

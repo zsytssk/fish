@@ -3,11 +3,15 @@ import { Test } from 'testBuilder';
 import { genRandomStr } from 'utils/utils';
 import { mock_web_socket_test } from '../../socket/mockSocket/mockWebsocket.spec';
 import * as Shoal1Data from './shoal1.json';
+import * as Shoal2Data from './shoal2.json';
 import * as Shoal3Data from './shoal3.json';
 
 export const shoal_test = new Test('shoal', runner => {
     runner.describe('add_shoal1', () => {
         addShoal(Shoal1Data);
+    });
+    runner.describe('add_shoal2', () => {
+        addShoal(Shoal2Data);
     });
     runner.describe('add_shoal3', () => {
         addShoal(Shoal3Data);
@@ -15,7 +19,7 @@ export const shoal_test = new Test('shoal', runner => {
 });
 
 function addShoal(data: typeof Shoal1Data) {
-    const total_time = 50000;
+    const total_time = 100000;
     const { fish } = data;
     const result = [] as ServerFishInfo[];
     for (const fish_item of fish) {

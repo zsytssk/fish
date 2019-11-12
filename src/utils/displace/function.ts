@@ -10,22 +10,27 @@ type t_displace_fun_obj = {
 export let FUNCTION: t_displace_fun_obj = {
     /**
      * 正玄曲线 a - 振幅, b - 角频率, c-偏离y位移, d-x 偏移, e-间距
+     * a*sin(b*x+d)+c
      */
     '1': (a: number, b: number, c: number, d: number, e: number[]) => {
         const space = e[1] - e[0];
+        let dt = 1;
+        if (space < 0) {
+            dt = -1;
+        }
         return {
             get(t: number) {
                 t = e[0] + t * space;
                 return {
-                    x: -t + 1334,
+                    x: t,
                     y: a * Math.sin(d + b * t) + c,
                 };
             },
             derivative(t: number) {
                 t = e[0] + t * space;
                 return {
-                    x: -1,
-                    y: a * b * Math.cos(d + b * t),
+                    x: dt,
+                    y: dt * a * b * Math.cos(d + b * t),
                 };
             },
         };

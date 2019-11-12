@@ -4,7 +4,7 @@ import { modelState } from 'model/modelState';
 import { viewState } from 'view/viewState';
 import { showNodeZone, stageClick, injectWindow } from './utils/testUtils';
 import { test } from './testBuilder';
-import { localAndSocketTest, localTest } from './app/testEnv';
+import { localHaveSocketTest, localTest } from './app/testEnv';
 
 const testUtils = {
     showNodeZone,
@@ -12,5 +12,5 @@ const testUtils = {
 };
 
 injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
-localAndSocketTest();
-// localTest();
+// localHaveSocketTest();
+localTest();

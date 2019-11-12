@@ -12,7 +12,7 @@ export const fish_test = new Test('fish', runner => {
         (typeId: number, pathId: number, time: number) => {
             // body_test.runTest('show_shape');
             typeId = typeId || 17;
-            pathId = pathId || 17;
+            pathId = pathId || 1;
             time = time || 15;
             const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
@@ -113,7 +113,7 @@ export function genFishInfo(
         fishId: `${typeId}`,
         displaceType: 'path',
         pathNo: `${pathId}`,
-        totalTime,
+        totalTime: totalTime * 1000,
         usedTime,
     } as ServerFishInfo;
 }
