@@ -7,6 +7,9 @@
 ## 2019-11-13 10:53:42
 
 -   @todo
+-   将代码放到服务器...
+
+-   @todo 乌龟爆炸 wiki
 
 -   @bug 锁定的鱼 出去了
 
@@ -14,26 +17,22 @@
     -   我自己去提示 攻击的鱼
     -   ...
 
--   将代码放到服务器...
-
--   @todo 乌龟爆炸 wiki
-
--   @todo model 相互引用分析
+*   @todo model 相互引用分析
 
     -   player -> gun -> bullet...
 
--   @ques 为什么我的本地 ip 访问登陆 没有用...
+*   @ques 为什么我的本地 ip 访问登陆 没有用...
 
--   @todo this.event.emit(FishEvent.Destroy); destroy 最先处理
+*   @todo this.event.emit(FishEvent.Destroy); destroy 最先处理
 
--   @todo 炸弹鱼只有当前用户打死的鱼才会处理
+*   @todo 炸弹鱼只有当前用户打死的鱼才会处理
 
     -   player:> needEmit
     -   所有的消息都通过用户发送...
 
--   @ques 炸弹的流程是什么 ??
+*   @ques 炸弹的流程是什么 ??
 
--   @ques player --> fish 的关系...
+*   @ques player --> fish 的关系...
 
 ## 2019-11-13 09:39:35
 
