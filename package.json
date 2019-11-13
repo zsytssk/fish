@@ -18,6 +18,7 @@
         "compressImg": "node ./script/compressImg/compressImg.js compressImg",
         "genVersion": "node ./script/genVersion/genVersion.js genVersion",
         "updateSdk": "ts-node --files ./script/game.client.sdk/game.client.sdk.ts",
+        "release": "ts-node --files ./script/release/release.ts release",
         "updateSdkSource": "ts-node --files ./script/game.client.sdk/game.client.sdk.ts updateSdkSource"
     },
     "devDependencies": {

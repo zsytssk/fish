@@ -1,1 +1,0 @@
-{"type":"Scene","props":{"width":1334,"runtime":"view/scenes/startView.ts","height":750,"autoDestroyAtClosed":true},"compId":2,"child":[{"type":"Button","props":{"y":352,"x":582,"width":133,"var":"btn_back","labelSize":18,"labelColors":"#fff","labelBold":true,"label":"进入游戏","height":70},"compId":4}],"loadList":[],"loadList3D":[]}

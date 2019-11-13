@@ -11,10 +11,10 @@ node_modules/
 /laya/views
 
 release/
-# /bin/**
-# !/bin/libs/**
-# !/bin/index.html
-# !/bin/index.js
+/bin/**
+!/bin/libs/**
+!/bin/index.html
+!/bin/index.js
 .DS_Store
 /src/ui/layaMaxUI.ts
 script/**/config.json
