@@ -119,7 +119,6 @@ export class PlayerCtrl {
 
         player_event.on(PlayerEvent.UpdateInfo, () => {
             const { bullet_num, bullet_cost } = this.model;
-            console.log(`test:>UpdateInfo`, bullet_num);
             setBulletNum(bullet_num);
         });
         gun_event.on(

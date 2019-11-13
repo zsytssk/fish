@@ -19,3 +19,14 @@ coingame.sys.init({
     origin,
     success,
 });
+// coingame.sys.init(
+//     {
+//         origin,
+//         success,
+//     },
+//     {
+//         sso: 'web-sp-inte1.dae.org',
+//         loginUrl:
+//             '/events/games/login.html?client_id={clientId}&redirect_uri={redirectUrl}',
+//     },
+// );

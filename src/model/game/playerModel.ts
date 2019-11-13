@@ -4,7 +4,7 @@ import { SkillMap } from 'data/config';
 import { ModelEvent } from 'model/modelEvent';
 import { getGunInfo } from 'utils/dataUtil';
 import { setProps } from 'utils/utils';
-import { FishEvent } from './fishModel';
+import { FishEvent, FishModel } from './fishModel';
 import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
@@ -121,8 +121,12 @@ export class PlayerModel extends ComponentManager {
         const skill_model = this.skill_map.get(skill);
         skill_model.active(data);
     }
-    public captureFish(pos: Point, win: number) {
+    public async captureFish(fish: FishModel, win: number) {
         const { bullet_num } = this;
+        const pos = await fish.beCapture();
+        if (!win) {
+            return;
+        }
         new Promise((resolve, reject) => {
             this.event.emit(PlayerEvent.CaptureFish, {
                 pos,

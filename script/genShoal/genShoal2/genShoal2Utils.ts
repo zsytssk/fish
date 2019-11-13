@@ -20,9 +20,17 @@ export type Type3Data = {
     endTimeRadio: number;
     params: any;
     displaceLen: number;
+    reverse?: boolean;
 };
 export function genType3(data: Type3Data) {
-    const { fish, startTimeRadio, endTimeRadio, params, displaceLen } = data;
+    const {
+        fish,
+        startTimeRadio,
+        endTimeRadio,
+        params,
+        displaceLen,
+        reverse,
+    } = data;
     const { fishType: fishId } = fish;
     const funList = [
         {
@@ -38,10 +46,18 @@ export function genType3(data: Type3Data) {
         endTimeRadio,
         displaceLen,
         funList,
+        reverse,
     };
 }
 export function genType3Path(data: Type3Data) {
-    const { fish, startTimeRadio, endTimeRadio, params, displaceLen } = data;
+    const {
+        fish,
+        startTimeRadio,
+        endTimeRadio,
+        params,
+        displaceLen,
+        reverse,
+    } = data;
     const { fishType: fishId } = fish;
     return {
         displaceType: 'path' as displaceType,
@@ -50,6 +66,7 @@ export function genType3Path(data: Type3Data) {
         startTimeRadio,
         endTimeRadio,
         displaceLen,
+        reverse,
     };
 }
 
@@ -59,7 +76,6 @@ export function minusPathX1920(path_arr: number[][]) {
         const result_item_arr = [] as number[];
         for (const [index, path_item] of path_arr_item.entries()) {
             if (index % 2 === 0) {
-                console.log(parent_index, index, path_item);
                 result_item_arr[index] = path_item - 1920;
             } else {
                 result_item_arr[index] = path_item;

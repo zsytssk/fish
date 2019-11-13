@@ -7,6 +7,7 @@ import { detectCollision } from './game/com/bodyComUtil';
 import { MoveDisplaceCom } from './game/com/moveCom/moveDisplaceCom';
 import { FishModel } from './game/fishModel';
 import { GameModel } from './game/gameModel';
+import { PlayerModel } from './game/playerModel';
 
 type ModelState = {
     app: AppModel;
@@ -171,3 +172,10 @@ export function createFishGroup(
     }
     return result;
 }
+
+/** 用户捕捉到鱼 */
+export function playerCaptureFish(
+    player: PlayerModel,
+    fish: FishModel,
+    win: number,
+) {}

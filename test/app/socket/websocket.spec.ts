@@ -4,6 +4,7 @@ import { WebSocketCtrl } from 'honor/net/websocket';
 import { JSEncrypt } from 'jsencrypt';
 import { Test } from 'testBuilder';
 import { Config } from 'data/config';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 
 export const web_socket_test = new Test('web_socket', runner => {
     runner.describe('create_web_socket', () => {
@@ -41,6 +42,16 @@ export const web_socket_test = new Test('web_socket', runner => {
             socket.setParams({ jwt });
             socket.send(ServerEvent.UserAccount);
         });
+    });
+
+    runner.describe('receive', (name: string, data: any) => {
+        const socket = getSocket(name);
+        const { cmd, code, res } = data;
+        socket.event.emit(cmd, res, code);
+    });
+    runner.describe('send', (name: string, cmd: string, data: any) => {
+        const socket = getSocket(name);
+        socket.send(cmd, data);
     });
 });
 

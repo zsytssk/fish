@@ -115,6 +115,7 @@ for (const fish of type3_arr1) {
         endTimeRadio,
         params: path_data['2'],
         displaceLen: pool_width,
+        reverse: true,
     });
     type3_fish.push(data);
 }
@@ -174,7 +175,7 @@ for (const fish of type3_arr4) {
 }
 
 write(
-    path.resolve(__dirname, '../data/shoal2.json'),
+    path.resolve('/Users/zsytssk/github/fish/test/app/game/shoal/shoal2.json'),
     stringify({
         shoalId,
         totalTime: 30,

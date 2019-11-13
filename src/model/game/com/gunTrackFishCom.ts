@@ -52,7 +52,7 @@ export class GunTrackFishCom extends ComponentManager {
         if (fire) {
             this.bindTrackFish(fish);
         }
-        gun_event.emit(GunTrackFishEvent.StartTrack, fish, fire);
+        gun_event.emit(GunTrackFishEvent.StartTrack, { fish, fire });
     }
     /** 监听锁定鱼事件 */
     private bindTrackFish(fish: FishModel) {

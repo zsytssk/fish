@@ -156,8 +156,9 @@ export class FishModel extends ComponentManager {
         });
     }
     public destroy() {
-        this.game.removeFish(this);
+        this.event.emit(FishEvent.Destroy);
         this.setStatus(FishStatus.Normal);
+        this.game.removeFish(this);
 
         this.game = undefined;
         this.id = undefined;
@@ -167,7 +168,6 @@ export class FishModel extends ComponentManager {
         this.visible = false;
         this.horizon_turn = false;
         this.move_com = undefined;
-        this.event.emit(FishEvent.Destroy);
         super.destroy();
     }
 }

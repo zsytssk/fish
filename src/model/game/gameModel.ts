@@ -77,12 +77,12 @@ export class GameModel extends ComponentManager {
             console.error('Game:>captureFish:> cant find fish or player!!');
             return;
         }
+        player.captureFish(fish, info.win);
         fish.beCapture().then(pos => {
             if (!pos) {
                 console.error('Game:>captureFish:> cant find fish pos!!');
                 return;
             }
-            player.captureFish(pos, info.win);
         });
     }
     /** 鱼群的处理逻辑 */
