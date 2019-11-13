@@ -14,5 +14,5 @@ export function localTest() {
 }
 
 export function localHaveSocketTest() {
-    game_test.runTest('enter_game');
+    // game_test.runTest('enter_game');
 }

@@ -14,6 +14,7 @@ import {
 } from './hallCtrlUtil';
 import { onHallSocket } from './hallSocket';
 import { login } from './login';
+import { coingameLogin } from 'coingame/coingameUtil';
 
 export class HallCtrl {
     private view: HallView;
@@ -57,6 +58,7 @@ export class HallCtrl {
         const { view } = this;
         const { normal_box, match_box, header, btn_play_now } = view;
         const {
+            user_box,
             coin_menu: { list: coin_menu_list },
             flag_menu: { list: flag_menu_list },
         } = header;
@@ -91,6 +93,9 @@ export class HallCtrl {
         const btn_normal_play = normal_box.getChildByName('btn_play');
         const btn_match_try = match_box.getChildByName('btn_try');
         const btn_match_play = match_box.getChildByName('btn_play');
+        user_box.on(CLICK, this, () => {
+            coingameLogin();
+        });
         btn_normal_try.on(CLICK, this, () => {
             console.log(`btn_normal_try`);
         });

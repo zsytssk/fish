@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":8,
-    "selecteID":42,
+    "selectedBox":26,
+    "selecteID":31,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -102,17 +102,18 @@
                 {
                     "x":30,
                     "type":"Box",
-                    "searchKey":"Box",
-                    "props":{"y":17,"x":0},
+                    "searchKey":"Box,user_box",
+                    "props":{"y":17,"x":0,"var":"user_box"},
                     "nodeParent":26,
-                    "label":"Box",
-                    "isOpen":false,
+                    "label":"user_box",
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":31,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"texture":"image/hall/avatar.png"},
@@ -126,6 +127,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,nickname",
                             "props":{"y":9,"x":42,"width":163,"var":"nickname","text":"3...@163.com","overflow":"hidden","height":22,"fontSize":22,"color":"#fff","align":"center"},

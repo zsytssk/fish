@@ -14,6 +14,14 @@ export function showNav(lang: string) {
         },
     });
 }
+
+export function coingameLogin() {
+    coingame.account.login();
+}
+export function logout() {
+    coingame.account.logout();
+}
+
 export function hideNav() {
     // 游戏通用导航栏 隐藏
     coingame.checkComponents({
