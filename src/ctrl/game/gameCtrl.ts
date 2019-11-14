@@ -31,17 +31,17 @@ export class GameCtrl {
     constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
-        this.init();
     }
-    public static async preEnter(game_model: GameModel) {
+    public static async preEnter(url: string, game_model: GameModel) {
         const view = (await GameView.preEnter()) as GameView;
         await honor.director.load(res.game as ResItem[]);
         const game_ctrl = new GameCtrl(view, game_model);
+        game_ctrl.init(url);
         setProps(ctrlState, { game: game_ctrl });
     }
-    private init() {
+    private init(url) {
         this.initEvent();
-        waitConnectGame().then(() => {
+        waitConnectGame(url).then(() => {
             onGameSocket(getSocket('game'), this);
         });
     }

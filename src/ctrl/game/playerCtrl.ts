@@ -1,27 +1,26 @@
-import { FishModel } from 'model/game/fish/fishModel';
-import { BulletGroup } from 'model/game/gun/bulletGroup';
-import { GunEvent, LevelInfo, AddBulletInfo } from 'model/game/gun/gunModel';
-import { PlayerModel, PlayerEvent, CaptureInfo } from 'model/game/playerModel';
-import SAT from 'sat';
-import { activeAimFish, stopAim } from 'view/scenes/game/ani_wrap/aim';
-import GunBoxView from 'view/scenes/game/gunBoxView';
-import {
-    getPoolMousePos,
-    getSkillItemByIndex,
-    getAutoLaunchSkillItem,
-    setBulletNum,
-} from 'view/viewState';
-import { BulletCtrl } from './bulletCtrl';
-import { SkillCtrl } from './skill/skillCtrl';
-import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent, ServerName } from 'data/serverEvent';
-import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import {
     GunTrackFishEvent,
     StartTrackInfo,
 } from 'model/game/com/gunTrackFishCom';
+import { FishModel } from 'model/game/fish/fishModel';
+import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
+import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
+import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
+import SAT from 'sat';
 import { changeNum } from 'utils/utils';
+import { activeAimFish, stopAim } from 'view/scenes/game/ani_wrap/aim';
+import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
+import GunBoxView from 'view/scenes/game/gunBoxView';
+import {
+    getAutoLaunchSkillItem,
+    getPoolMousePos,
+    getSkillItemByIndex,
+    setBulletNum,
+} from 'view/viewState';
+import { BulletCtrl } from './bulletCtrl';
+import { SkillCtrl } from './skill/skillCtrl';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -120,6 +119,9 @@ export class PlayerCtrl {
         player_event.on(PlayerEvent.UpdateInfo, () => {
             const { bullet_num, bullet_cost } = this.model;
             setBulletNum(bullet_num);
+        });
+        player_event.on(PlayerEvent.Destroy, () => {
+            Laya.stage.offAllCaller(this.view);
         });
         gun_event.on(
             GunEvent.CastFish,

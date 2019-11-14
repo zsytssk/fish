@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":28,
-    "selecteID":29,
+    "selectedBox":2,
+    "selecteID":10,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -40,7 +40,7 @@
             "type":0,
             "id":7
         }],
-    "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750},
+    "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
     "maxID":41,
     "label":"Scene",
@@ -57,14 +57,13 @@
             "props":{"width":1920,"var":"bg","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":10,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"skin":"image/game/normal_bg/bg1.jpg","centerY":0,"centerX":0},
@@ -78,7 +77,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":376,"x":960,"url":"image/game/bg_normal.sk"},
@@ -93,7 +91,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":375,"x":960,"url":"image/game/wave.sk","scaleY":4,"scaleX":4},
@@ -145,14 +142,13 @@
             "props":{"y":0,"x":321,"width":1278,"var":"ctrl_box","mouseThrough":true,"mouseEnabled":true,"height":750},
             "nodeParent":2,
             "label":"ctrl_box",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":11,
             "child":[
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_leave",
                     "props":{"y":10,"x":0,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png"},
@@ -166,7 +162,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_gift",
                     "props":{"y":10,"x":100,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png"},
@@ -180,7 +175,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_voice",
                     "props":{"y":10,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":100},
@@ -194,7 +188,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_help",
                     "props":{"y":10,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":0},
@@ -208,7 +201,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":653,"x":-55,"width":286,"skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92},
@@ -221,7 +213,6 @@
                     "compId":26,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":45,"x":38,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
@@ -234,7 +225,6 @@
                             "compId":28,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
                                     "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"余额 384789380 EBT","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
@@ -249,7 +239,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement",
                             "props":{"y":16,"x":70,"width":176,"innerHTML":"<div style=\"width: 192px;height: 32px;font-size: 20px;color:#fff;\"><span>1 底分</span> = <span color=\"#ffdd76\">0.0035</span> <span>币</span> </div>","height":29},
@@ -264,7 +253,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"scenes/game/skillBox.scene",
                     "searchKey":"UIView,skill_box",

@@ -2,7 +2,6 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":3,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -20,7 +19,7 @@
             "type":1,
             "id":3
         }],
-    "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/hallView.ts","height":750},
+    "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/hallView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
     "maxID":41,
     "label":"Scene",

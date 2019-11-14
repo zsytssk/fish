@@ -1,10 +1,10 @@
-import {
-    coingameLogin,
-    updateLanguage,
-    coingameLogout,
-} from 'coingame/coingameUtil';
+import coingame from 'coingame/coingame.min';
+import { coingameLogin, updateLanguage } from 'coingame/coingameUtil';
+import { disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
 import { Lang } from 'data/internationalConfig';
+import { ServerName } from 'data/serverEvent';
 import { getUserInfo, modelState } from 'model/modelState';
+import { AccountMap } from 'model/userInfo/userInfoModel';
 import ShopPop from 'view/pop/shop';
 import HallView from 'view/scenes/hallView';
 import {
@@ -15,9 +15,7 @@ import {
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
-import { onHallSocket, roomIn } from './hallSocket';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import coingame from 'coingame/coingame.min';
+import { checkReplay, onHallSocket, roomIn } from './hallSocket';
 import { loginOut } from './login';
 
 export class HallCtrl {
@@ -32,15 +30,17 @@ export class HallCtrl {
             const ctrl = new HallCtrl(view);
         });
     }
-    private init() {
+    private async init() {
         this.initViewEvent();
         this.initModelEvent();
-        onHallSocket(this);
+        await onHallSocket(this);
+        if (await checkReplay(this)) {
+            this.destroy();
+        }
     }
     private initModelEvent() {
         const { view } = this;
         const { user_info } = modelState.app;
-
         onCurBalanceChange(this, (type: string) => {
             const { account_map } = user_info;
             const { num, icon } = account_map.get(type);
@@ -187,5 +187,6 @@ export class HallCtrl {
     }
     public destroy() {
         offBindEvent(this);
+        disconnectSocket(ServerName.Hall);
     }
 }

@@ -29,12 +29,12 @@ export function loginOut() {
     coingameLogout();
 }
 
-export async function waitConnectGame() {
+export async function waitConnectGame(url: string) {
     let socket = getSocket(ServerName.Game);
     if (socket) {
         return socket;
     }
-    socket = await enterGame(Config.SocketUrl);
+    socket = await enterGame(url || Config.SocketUrl);
     socket.send(ServerEvent.EnterGame);
 }
 

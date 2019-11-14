@@ -38,8 +38,8 @@ export class AppCtrl {
         });
         await Promise.all([task1, task2]);
     }
-    public enterGame() {
+    public enterGame(url: string) {
         const game_model = this.model.enterGame();
-        return GameCtrl.preEnter(game_model);
+        return GameCtrl.preEnter(url, game_model);
     }
 }
