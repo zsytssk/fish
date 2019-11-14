@@ -1,4 +1,9 @@
--   @todo roomIn roomOut
+-   声音 + 国际化 + 外面的接口 + 新手引导
+-   超级技能加速
+
+## 2019-11-14 20:11:06
+
+-   @todo CheckReplay roomIn roomOut
 
 -   @todo 用户没有钱 提示 用户退出...
 

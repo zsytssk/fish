@@ -55,13 +55,19 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.TableOut]: (data: TableOutRep) => {
             game.tableOut(data);
         },
+        [ServerEvent.RoomOut]: (data: RoomOutRep) => {
+            game.roomOut(data);
+        },
         [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
             game.changeBulletCost(data);
         },
     });
 }
 
-export function sendToSocket(...params: [string, any]) {
+export function offGameSocket(game: GameCtrl) {
+    game_socket.event.offAllCaller(game);
+}
+export function sendToSocket(...params: [string, any?]) {
     game_socket.send(...params);
 }
 

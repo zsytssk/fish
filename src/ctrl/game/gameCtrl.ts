@@ -3,7 +3,7 @@ import { waitConnectGame } from 'ctrl/hall/login';
 import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { SkillMap } from 'data/config';
 import { res } from 'data/res';
-import { ServerName } from 'data/serverEvent';
+import { ServerName, ServerEvent } from 'data/serverEvent';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
 import { FreezingComEvent } from 'model/game/com/freezingCom';
@@ -20,8 +20,9 @@ import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import GameView from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
-import { onGameSocket } from './gameSocket';
+import { onGameSocket, sendToSocket, offGameSocket } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
+import { HallCtrl } from 'ctrl/hall/hallCtrl';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -63,6 +64,7 @@ export class GameCtrl {
         });
         btn_leave.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();
+            sendToSocket(ServerEvent.RoomOut);
         });
     }
     private onModel() {
@@ -110,18 +112,6 @@ export class GameCtrl {
             this.model.addFish(fish);
         }
     }
-    public tableOut(data: TableOutRep) {
-        const { model } = this;
-        const { userId } = data;
-        if (isCurUser(userId)) {
-            AlertPop.alert('你被踢出房间, 刷新重新进入').then(() => {
-                location.reload();
-            });
-        } else {
-            const player = model.getPlayerById(userId);
-            player.destroy();
-        }
-    }
     public addPlayers(player_list: PlayerInfo[]) {
         for (const player of player_list) {
             this.model.addPlayer(player);
@@ -134,13 +124,30 @@ export class GameCtrl {
             bullet_cost: multiple,
         });
     }
-    public leave() {
-        this.model.destroy();
+    public tableOut(data: TableOutRep) {
+        const { model } = this;
+        const { userId } = data;
+        if (isCurUser(userId)) {
+            AlertPop.alert('你被踢出房间, 刷新重新进入').then(() => {
+                location.reload();
+            });
+        } else {
+            const player = model.getPlayerById(userId);
+            player.destroy();
+        }
+    }
+    public roomOut(data: RoomOutRep) {
+        const { model } = this;
+        const { userId } = data;
+        if (isCurUser(userId)) {
+            offGameSocket(this);
+            disconnectSocket(ServerName.Game);
+            model.destroy();
+            HallCtrl.preEnter();
+        }
     }
     public destroy() {
-        disconnectSocket(ServerName.Game);
         this.view.destroy();
-        this.model.destroy();
         this.view = undefined;
         this.model = undefined;
         setProps(ctrlState, { game: undefined });
