@@ -20,7 +20,7 @@ export class EventCom {
      */
     public on(
         event: string,
-        callback?: Func<any>,
+        callback: Func<any>,
         caller?: any,
         once?: boolean,
     ) {

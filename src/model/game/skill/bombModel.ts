@@ -1,16 +1,16 @@
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { Config } from 'data/config';
-import { BodyCom } from 'model/game/com/bodyCom';
-import { getCollisionAllFish, getFishById } from 'model/modelState';
-import * as SAT from 'sat';
-import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
+import { getFishById } from 'model/modelState';
+import { playerCaptureFish } from '../fish/fishModelUtils';
+import { SkillActiveInfo, SkillCoreCom, SkillInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 
 export type BombInfo = {
     user_id: string;
     pos: Point;
     fish_list: UseBombFishInfo[];
+    /** 炸弹鱼触发 */
+    is_bomb_fish?: boolean;
 } & SkillActiveInfo;
 
 /** 炸弹技能: 提示用户选中屏幕的位置, 然后就发射炸弹 */
@@ -27,46 +27,25 @@ export class BombModel extends ComponentManager implements SkillModel {
     }
     public active(info: BombInfo) {
         // 激活
-        const { num, fish_list, pos, used_time } = info;
+        const { num, fish_list, pos, used_time, is_bomb_fish } = info;
         const { skill_core } = this;
         const { player } = skill_core;
 
-        skill_core.activeEvent(pos);
-        skill_core.active({ num, used_time });
-        const wait_arr = [] as Array<Promise<void>>;
         for (const fish of fish_list) {
             const { eid: fish_id, win } = fish;
             const fish_model = getFishById(fish_id);
-            const wait_kill_fish = fish_model.beCapture().then(_pos => {
-                player.captureFish(_pos, win);
-            });
-            wait_arr.push(wait_kill_fish);
+            playerCaptureFish(player, fish_model, win);
         }
-    }
-    /** 获取炸到的鱼 */
-    public getBombFish(pos: Point): string[] {
-        const time_out = this.getCom(TimeoutCom);
-        const body = createBombBody();
-        body.update(pos);
-        const fish_list = getCollisionAllFish(body);
-        time_out.createTimeout(() => {
-            body.destroy();
-        }, 500);
-        return fish_list.map(item => {
-            return item.id;
-        });
+        skill_core.activeEvent(pos);
+
+        /** 炸弹鱼不激活技能的信息 */
+        if (!is_bomb_fish) {
+            return;
+        }
+        skill_core.active({ num, used_time });
     }
     public disable() {
         const { skill_core } = this;
         skill_core.disable();
     }
-}
-
-export function createBombBody() {
-    const circle = new SAT.Circle(new SAT.Vector(0, 0), Config.BombRadius);
-    const shape = {
-        shape: circle,
-        pos: new SAT.Vector(0, 0),
-    };
-    return new BodyCom([shape], false);
 }

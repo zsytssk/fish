@@ -1,6 +1,6 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { FishEvent, FishModel } from 'model/game/fishModel';
+import { FishEvent, FishModel } from 'model/game/fish/fishModel';
 import {
     GunEvent,
     GunModel,

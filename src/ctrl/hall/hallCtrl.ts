@@ -1,7 +1,6 @@
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { coingameLogin } from 'coingame/coingameUtil';
 import { Lang } from 'data/internationalConfig';
-import { ServerName } from 'data/serverEvent';
-import { modelState } from 'model/modelState';
+import { getUserInfo, modelState } from 'model/modelState';
 import ShopPop from 'view/pop/shop';
 import HallView from 'view/scenes/hallView';
 import {
@@ -12,9 +11,7 @@ import {
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
-import { onHallSocket } from './hallSocket';
-import { login } from './login';
-import { coingameLogin } from 'coingame/coingameUtil';
+import { onHallSocket, roomIn } from './hallSocket';
 
 export class HallCtrl {
     private view: HallView;
@@ -24,15 +21,14 @@ export class HallCtrl {
     }
     public static async preEnter() {
         const wait_view = HallView.preEnter() as Promise<HallView>;
-        const wait_socket = login() as Promise<boolean>;
-        return Promise.all([wait_view, wait_socket]).then(([view]) => {
+        return Promise.all([wait_view]).then(([view]) => {
             const ctrl = new HallCtrl(view);
         });
     }
     private init() {
         this.initViewEvent();
         this.initModelEvent();
-        onHallSocket(getSocket(ServerName.Hall), this);
+        onHallSocket(this);
     }
     private initModelEvent() {
         const { view } = this;
@@ -136,7 +132,7 @@ export class HallCtrl {
             view.toggleFlagMenu();
         });
         btn_play_now.on(CLICK, this, () => {
-            console.log(`btn_play_now`);
+            roomIn();
         });
     }
     private selectCoin = (index: number) => {
@@ -167,7 +163,11 @@ export class HallCtrl {
         view.toggleFlagMenu();
     }; // tslint:disable-line
 
-    public onUserAccount(data) {}
+    public onUserAccount(data: UserAccountRep) {
+        const { userId } = data;
+        const user_info = getUserInfo();
+        user_info.setUserId(userId);
+    }
     public destroy() {
         offBindEvent(this);
     }

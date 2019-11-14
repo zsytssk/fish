@@ -103,10 +103,10 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,user_box",
-                    "props":{"y":17,"x":0,"var":"user_box"},
+                    "props":{"y":17,"x":0,"var":"user_box","mouseThrough":false,"mouseEnabled":true},
                     "nodeParent":26,
                     "label":"user_box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -256,14 +256,13 @@
                     "props":{"x":541},
                     "nodeParent":26,
                     "label":"Box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":20,
                     "child":[
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_get",
                             "props":{"y":-1,"x":0,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
@@ -276,7 +275,6 @@
                             "compId":10,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_charge_zh.png"},
@@ -291,7 +289,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_charge",
                             "props":{"y":0,"x":99,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
@@ -304,7 +301,6 @@
                             "compId":9,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_excharge_zh.png"},
@@ -319,7 +315,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_buy",
                             "props":{"y":0,"x":197,"var":"btn_buy","stateNum":"1","skin":"image/hall/btn_buy.png"},
@@ -332,7 +327,6 @@
                             "compId":8,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_buy_zh.png"},
@@ -436,14 +430,13 @@
                     "props":{"y":16,"x":1207.7213862390597,"var":"flag_box"},
                     "nodeParent":26,
                     "label":"flag_box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":24,
                     "child":[
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button",
                             "props":{"y":7,"x":45,"stateNum":"1","skin":"image/hall/btn_down.png"},
@@ -457,7 +450,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,flag",
                             "props":{"var":"flag","skin":"image/common/flag/flag_zh.png"},

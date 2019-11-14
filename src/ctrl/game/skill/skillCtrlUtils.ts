@@ -10,6 +10,7 @@ import { SkillStatus } from 'model/game/skill/skillCoreCom';
 import TopTipPop from 'view/pop/topTip';
 import { Config } from 'data/config';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
+import { getBombFish } from 'model/modelState';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel, step?: number) {
@@ -29,7 +30,7 @@ export function skillPreActiveHandler(model: SkillModel, step?: number) {
         onPoolClick().then((pos: Point) => {
             stopAim();
             const socket = getSocket('game');
-            const fish_list = model.getBombFish(pos);
+            const fish_list = getBombFish(pos);
             socket.send(ServerEvent.UseBomb, {
                 bombPoint: pos,
                 fishList: fish_list,

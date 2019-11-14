@@ -1,7 +1,15 @@
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { FishEvent, FishModel, FishStatus } from 'model/game/fishModel';
+import { FishEvent, FishModel, FishStatus } from 'model/game/fish/fishModel';
 import { FishView } from 'view/scenes/game/fishView';
+import {
+    FishBombCom,
+    FishBombEvent,
+    FishBombInfo,
+} from 'model/game/fish/fishBombCom';
+import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
+import { sendToSocket } from './gameSocket';
+import { ServerEvent } from 'data/serverEvent';
 
 /** 鱼的控制器 */
 export class FishCtrl extends ComponentManager {
@@ -20,6 +28,7 @@ export class FishCtrl extends ComponentManager {
     private initEvent() {
         const event = this.model.event;
         const { view } = this;
+        event.on(FishBombEvent.FishBomb, this.onBomb);
         event.on(FishEvent.VisibleChange, this.setVisible);
         event.on(FishEvent.Move, this.syncPos);
         event.on(FishEvent.BeCast, () => {
@@ -37,6 +46,17 @@ export class FishCtrl extends ComponentManager {
             this.destroy();
         });
     }
+    public onBomb = (data: FishBombInfo) => {
+        const { id: eid } = this.model;
+        const { pos: bombPoint, fish_list: fishList, need_emit } = data;
+        if (need_emit) {
+            sendToSocket(ServerEvent.FishBomb, {
+                bombPoint,
+                eid,
+                fishList,
+            } as FishBombReq);
+        }
+    }; //tslint:disable-line
     public setVisible = (visible: boolean) => {
         this.view.setVisible(visible);
     }; //tslint:disable-line

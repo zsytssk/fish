@@ -15,9 +15,9 @@ export const ServerErrCode = {
 export const ServerEvent = {
     /** 游戏部分 */
     RoomIn: 'roomIn',
+    RoomOut: 'roomOut',
     CheckReplay: 'checkReplay',
     EnterGame: 'enterGame',
-    RoomOut: 'roomOut',
     Shoot: 'shoot',
     Hit: 'hit',
     ChangeTurret: 'changeTurret',
@@ -32,6 +32,7 @@ export const ServerEvent = {
     /** 锁定<鱼> */
     LockFish: 'lockFish',
     UseBomb: 'useBomb',
+    FishBomb: 'fishBomb',
     PowerUp: 'powerUp',
     SetRobotReport: 'setRobotReport',
     UseFreeze: 'useFreeze',

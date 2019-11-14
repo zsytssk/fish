@@ -1,9 +1,10 @@
 declare const ENV: 'DEV' | 'TEST' | 'PROD';
 
-export const state = {} as {
-    origin: string;
-    host: string;
-    env: typeof ENV;
+export const state = {
+    localTest: Laya.Utils.getQueryString('localTest'),
+    origin: '',
+    host: '',
+    env: '' as typeof ENV,
 };
 
 state.env = ENV;

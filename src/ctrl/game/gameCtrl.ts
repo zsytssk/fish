@@ -1,16 +1,19 @@
 import { ctrlState } from 'ctrl/ctrlState';
 import { waitConnectGame } from 'ctrl/hall/login';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { SkillMap } from 'data/config';
 import { res } from 'data/res';
+import { ServerName } from 'data/serverEvent';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
 import { FreezingComEvent } from 'model/game/com/freezingCom';
 import { ShoalEvent } from 'model/game/com/shoalCom';
-import { FishModel } from 'model/game/fishModel';
+import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
 import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
+import { isCurUser } from 'model/modelState';
 import { setProps } from 'utils/utils';
+import AlertPop from 'view/pop/alert';
 import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
@@ -19,8 +22,6 @@ import GameView from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import { onGameSocket } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
-import { isCurUser } from 'model/modelState';
-import AlertPop from 'view/pop/alert';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -44,11 +45,29 @@ export class GameCtrl {
         });
     }
     private initEvent() {
-        const event = this.model.event;
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave } = view;
         const { CLICK } = Laya.Event;
 
+        this.onModel();
+        btn_help.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+            HelpPop.preEnter();
+        });
+        btn_gift.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+            LotteryPop.preEnter();
+        });
+        btn_voice.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+        });
+        btn_leave.on(CLICK, this, (e: Laya.Event) => {
+            e.stopPropagation();
+        });
+    }
+    private onModel() {
+        const { event } = this.model;
+        const { view } = this;
         event.on(GameEvent.AddFish, (fish: FishModel) => {
             const { type, id, horizon_turn } = fish;
             const fish_view = view.addFish({ type, id, horizon_turn });
@@ -70,20 +89,8 @@ export class GameCtrl {
         event.on(ShoalEvent.PreAddShoal, () => {
             activeShoalWave(true);
         });
-
-        btn_help.on(CLICK, this, (e: Laya.Event) => {
-            e.stopPropagation();
-            HelpPop.preEnter();
-        });
-        btn_gift.on(CLICK, this, (e: Laya.Event) => {
-            e.stopPropagation();
-            LotteryPop.preEnter();
-        });
-        btn_voice.on(CLICK, this, (e: Laya.Event) => {
-            e.stopPropagation();
-        });
-        btn_leave.on(CLICK, this, (e: Laya.Event) => {
-            e.stopPropagation();
+        event.on(GameEvent.Destroy, () => {
+            this.destroy();
         });
     }
     public onShoot(data: ShootRep) {
@@ -126,5 +133,16 @@ export class GameCtrl {
         player.updateInfo({
             bullet_cost: multiple,
         });
+    }
+    public leave() {
+        this.model.destroy();
+    }
+    public destroy() {
+        disconnectSocket(ServerName.Game);
+        this.view.destroy();
+        this.model.destroy();
+        this.view = undefined;
+        this.model = undefined;
+        setProps(ctrlState, { game: undefined });
     }
 }

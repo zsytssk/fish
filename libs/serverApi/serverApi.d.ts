@@ -1,5 +1,6 @@
 // http://gitlab.intranet.huiyin.com/springfans/game/game-bitfish-server/blob/docker/API.md
 // import {} from 'data/serverEvent';
+
 type RoomInReq = {
     roomId: number;
     /** 是否试玩 */
@@ -142,6 +143,16 @@ type LockFishRep = {
 type LockFishReq = {
     userId: string;
     eid: string;
+};
+type FishBombReq = {
+    bombPoint: Point;
+    eid: string;
+    fishList: string[];
+};
+type FishBombRep = {
+    userId: string;
+    bombPoint: Point;
+    killedFish: UseBombFishInfo[];
 };
 type UseBombReq = {
     bombPoint: Point;

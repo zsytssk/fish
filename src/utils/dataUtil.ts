@@ -10,6 +10,7 @@ import {
     createImg,
 } from 'honor/utils/createSkeleton';
 import { GunInfo } from 'data/gun';
+import { FishModel } from 'model/game/fish/fishModel';
 
 /** 获取皮肤对应的id */
 export function getGunSkinMap(skin: string, level: string) {
@@ -165,4 +166,9 @@ export function createGunBox(level: number) {
     const gun = createSkeleton(`ani/gun/gun${level}/gun`);
 
     gun_inner.addChildren(base, light, gun);
+}
+
+/** 判断是否是炸弹贵 */
+export function isBombFish(fish: FishModel) {
+    return fish.type === '9';
 }

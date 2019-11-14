@@ -1,5 +1,5 @@
 import { range } from 'lodash';
-import { FishModel, FishEvent } from 'model/game/fishModel';
+import { FishModel, FishEvent } from 'model/game/fish/fishModel';
 import { GameEvent } from 'model/game/gameModel';
 import { ModelEvent } from 'model/modelEvent';
 import { modelState } from 'model/modelState';
@@ -11,7 +11,7 @@ export const fish_test = new Test('fish', runner => {
         'add_fish',
         (typeId: number, pathId: number, time: number) => {
             // body_test.runTest('show_shape');
-            typeId = typeId || 17;
+            typeId = typeId || 9;
             pathId = pathId || 1;
             time = time || 15;
             const fish_data = genFishInfo(typeId, pathId, time);

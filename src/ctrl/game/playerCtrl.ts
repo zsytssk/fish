@@ -1,4 +1,4 @@
-import { FishModel } from 'model/game/fishModel';
+import { FishModel } from 'model/game/fish/fishModel';
 import { BulletGroup } from 'model/game/gun/bulletGroup';
 import { GunEvent, LevelInfo, AddBulletInfo } from 'model/game/gun/gunModel';
 import { PlayerModel, PlayerEvent, CaptureInfo } from 'model/game/playerModel';

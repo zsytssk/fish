@@ -6,7 +6,7 @@ import * as SAT from 'sat';
 import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
 import { GunAutoLaunchCom } from '../com/gunAutoLaunchCom';
 import { GunTrackFishCom } from '../com/gunTrackFishCom';
-import { FishModel } from '../fishModel';
+import { FishModel } from '../fish/fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
 import { TrackTarget } from '../com/moveCom/moveTrackCom';

@@ -10,7 +10,9 @@ import { PlayerInfo } from 'model/game/playerModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
 import { isCurUser } from 'model/modelState';
 
+let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
+    game_socket = socket;
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep) => {
             const { fish, users } = convertEnterGame(data);
@@ -23,8 +25,15 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.Hit]: (data: HitRep) => {
             game.onHit(data);
         },
-        [ServerEvent.UseBomb]: (data: UseBombRep) => {
+        [ServerEvent.FishBomb]: (data: UseBombRep) => {
             game.activeSkill(SkillMap.Bomb, convertBombData(data));
+        },
+        [ServerEvent.UseBomb]: (data: UseBombRep) => {
+            const _data = convertBombData(data);
+            game.activeSkill(SkillMap.Bomb, {
+                ..._data,
+                is_bomb_fish: true,
+            } as BombInfo);
         },
         [ServerEvent.UseFreeze]: (data: UseFreezeRep) => {
             game.activeSkill(SkillMap.Freezing, convertFreezeData(data));
@@ -46,10 +55,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.TableOut]: (data: TableOutRep) => {
             game.tableOut(data);
         },
-        [ServerEvent.ChangeTurret]: (data: TableOutRep) => {
+        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
             game.changeBulletCost(data);
         },
     });
+}
+
+export function sendToSocket(...params: [string, any]) {
+    game_socket.send(...params);
 }
 
 export type EnterGameData = {
@@ -82,7 +95,8 @@ function convertEnterGame(data: EnterGameRep) {
                 cool_time,
             } as SkillInfo;
         }
-
+        const is_cur_player = isCurUser(user_id);
+        const need_emit = isCurUser(user_id);
         users.push({
             user_id,
             server_index: index - 1,
@@ -91,8 +105,9 @@ function convertEnterGame(data: EnterGameRep) {
             gun_skin: `${Number(gun_skin) - 1000}`,
             nickname: '',
             avatar: '',
-            is_cur_player: isCurUser(user_id),
+            is_cur_player,
             skills,
+            need_emit,
         });
     }
 

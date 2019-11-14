@@ -19,6 +19,7 @@ export const player_test = new Test('player', runner => {
             gun_skin: '1',
             nickname: test_data.nickname,
             avatar: 'test',
+            need_emit: true,
             is_cur_player: true,
             skills: {
                 '1': {
@@ -65,6 +66,7 @@ export const player_test = new Test('player', runner => {
                 nickname: test_data.otherNickname,
                 avatar: 'test',
                 is_cur_player: false,
+                need_emit: false,
                 skills: {
                     '1': {
                         item_id: '1',

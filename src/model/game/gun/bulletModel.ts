@@ -5,7 +5,7 @@ import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
 import { MoveTrackCom, TrackTarget } from '../com/moveCom/moveTrackCom';
 import { MoveVelocityCom } from '../com/moveCom/moveVelocityCom';
-import { FishModel } from '../fishModel';
+import { FishModel } from '../fish/fishModel';
 import { ModelEvent } from '../../modelEvent';
 import { getCollisionFish } from '../../modelState';
 import { NetModel } from './netModel';

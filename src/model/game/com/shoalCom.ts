@@ -1,5 +1,5 @@
 import { ComponentManager } from 'comMan/component';
-import { FishModel } from 'model/game/fishModel';
+import { FishModel } from 'model/game/fish/fishModel';
 import { Config } from 'data/config';
 import { calcNormalLen } from 'utils/displace/displaceUtil';
 import { Line } from 'utils/displace/line';

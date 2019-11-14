@@ -4,7 +4,7 @@ import { SkillMap } from 'data/config';
 import { ModelEvent } from 'model/modelEvent';
 import { getGunInfo } from 'utils/dataUtil';
 import { setProps } from 'utils/utils';
-import { FishEvent, FishModel } from './fishModel';
+import { FishEvent, FishModel } from './fish/fishModel';
 import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
@@ -19,6 +19,7 @@ export type CaptureInfo = {
     resolve: FuncVoid;
 };
 export type PlayerInfo = {
+    need_emit: boolean;
     user_id: string;
     server_index: number;
     bullet_cost: number;
@@ -37,6 +38,8 @@ export const PlayerEvent = {
 
 /** 玩家的数据类 */
 export class PlayerModel extends ComponentManager {
+    /** 应该发送命令给服务端 */
+    public need_emit: boolean;
     /** 用户id */
     public user_id: string;
     /** 是否是当前用户 */
@@ -67,30 +70,15 @@ export class PlayerModel extends ComponentManager {
         return this.getCom(EventCom);
     }
     private init(player_info: PlayerInfo) {
-        const {
-            user_id,
-            server_index,
-            bullet_cost,
-            gun_skin,
-            nickname,
-            avatar,
-            bullet_num,
-            is_cur_player,
-            skills,
-        } = player_info;
+        const { gun_skin, skills, server_index, ...other } = player_info;
 
         const { pos } = getGunInfo(server_index);
         const gun = new GunModel(pos, gun_skin, this);
         this.gun = gun;
 
         this.updateInfo({
-            user_id,
             server_index,
-            bullet_cost,
-            nickname,
-            avatar,
-            bullet_num,
-            is_cur_player,
+            ...other,
         });
 
         this.initSkill(skills);

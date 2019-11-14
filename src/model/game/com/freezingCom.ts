@@ -1,4 +1,4 @@
-import { FishStatus } from 'model/game/fishModel';
+import { FishStatus } from 'model/game/fish/fishModel';
 import { GameModel } from 'model/game/gameModel';
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';

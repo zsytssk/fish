@@ -32,8 +32,6 @@ export const game_test = new Test('game', runner => {
                 running = true;
                 resolve();
             });
-
-            mock_web_socket_test.runTest(ServerEvent.Shoot);
         });
     });
 });

@@ -1,8 +1,62 @@
--   @todo 上币
+-   @todo roomIn roomOut
+
+-   @todo 怎么离开房间 roomOut
+
+-   @todo gun 下面的行为都通过接口返回给 player...
+
+    -   由 player 发给服务端...
+
+*   // 更新 SDK 语言 coingame.sys.updateLanguage(lang);
+    -   sdk js 更新了
+    -   rell
+
+-   @ques 通过什么接口获取 userId
+
+## 2019-11-14 10:02:45
+
+-   @bug 炸弹鱼 激活了炸弹技能的参数...
+    -   @ques 炸弹这个功能能不能做成 com 挂载载其他的地方...
+
+## 2019-11-14 09:13:36
+
+-   @ques
+
+-   @ques 炸弹鱼的返回如何处理...
+    -   这显然不是因为用户的处理
+
+*   @todo 9 13 15 缩小到原来的 90%
+
+*   @todo 上币
 
     -   江鹏 icon
 
--   @todo 让本地可以测试...
+*   @todo 让本地可以测试...
+
+*   @todo 居住证
+
+*   @todo activeExploding --> ActiveBombAni
+
+*   @todo 要不要把 player 的额外方法放到一个地方去...
+
+    -   所有关于 鱼的是不是也要放在一个地方...
+
+*   当前用户击杀 炸弹龟 处理 其他玩家不处理 如何做...
+
+*   @todo 炸弹龟 被击杀...
+
+*   其他用户 能不能不去检测 炸弹碰撞的鱼...
+
+*   @todo 机器人是否发送命令给服务端..
+
+*   @ques 最好不要这个调用...
+
+    -   fish.event.emit(FishBombEvent.FishBomb,
+
+*   @设计模式
+    -   组件化开发
+    -   在创建 ComponentManager 的地方 添加 com(在 class 外)
+    -   将所有关于 component 的代码全部放到外面...
+    -   这样符合封装的逻辑
 
 ## 2019-11-13 10:53:42
 

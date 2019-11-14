@@ -39,6 +39,7 @@ const dev_config = {
     devServer: {
         host: '0.0.0.0',
         contentBase: path.join(__dirname, 'bin'),
+        disableHostCheck: true,
     },
 };
 

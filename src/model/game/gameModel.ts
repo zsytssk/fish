@@ -1,12 +1,17 @@
 import { FreezingCom } from './com/freezingCom';
 import { ShoalCom } from './com/shoalCom';
-import { FishModel } from './fishModel';
+import { FishModel } from './fish/fishModel';
 import { PlayerInfo, PlayerModel } from './playerModel';
-import { createFish, createFishGroup } from '../modelState';
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
 import { EventCom } from 'comMan/eventCom';
 import { SkillMap } from 'data/config';
+import {
+    createFish,
+    createFishGroup,
+    playerCaptureFish,
+} from './fish/fishModelUtils';
+import { ModelEvent } from 'model/modelEvent';
 
 export const GameEvent = {
     /** 添加鱼 */
@@ -15,6 +20,7 @@ export const GameEvent = {
     AddPlayer: 'add_player',
     /** 冰冻 */
     Freezing: 'freezing',
+    Destroy: ModelEvent.Destroy,
 };
 
 export class GameModel extends ComponentManager {
@@ -77,13 +83,7 @@ export class GameModel extends ComponentManager {
             console.error('Game:>captureFish:> cant find fish or player!!');
             return;
         }
-        player.captureFish(fish, info.win);
-        fish.beCapture().then(pos => {
-            if (!pos) {
-                console.error('Game:>captureFish:> cant find fish pos!!');
-                return;
-            }
-        });
+        playerCaptureFish(player, fish, info.win);
     }
     /** 鱼群的处理逻辑 */
     public get shoal_com() {
@@ -126,6 +126,7 @@ export class GameModel extends ComponentManager {
     }
     public destroy() {
         const { fish_list, player_list } = this;
+        this.event.emit(GameEvent.Destroy);
         for (const fish of fish_list) {
             fish.destroy();
         }
@@ -135,6 +136,5 @@ export class GameModel extends ComponentManager {
         this.fish_list.clear();
         this.player_list.clear();
         super.destroy();
-        // 离开游戏销毁...
     }
 }

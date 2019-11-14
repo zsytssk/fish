@@ -1,5 +1,5 @@
 import { TrackTarget } from 'model/game/com/moveCom/moveTrackCom';
-import { FishModel } from 'model/game/fishModel';
+import { FishModel } from 'model/game/fish/fishModel';
 import { BulletInfo, BulletModel } from './bulletModel';
 import { GunModel } from './gunModel';
 import { ComponentManager } from 'comMan/component';
