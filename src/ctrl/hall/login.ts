@@ -11,6 +11,7 @@ import {
     disconnectSocket,
     getSocket,
 } from '../net/webSocketWrapUtil';
+import { coingameLogout } from 'coingame/coingameUtil';
 
 /** 登陆用的脚本 */
 export async function login() {
@@ -25,6 +26,7 @@ export async function login() {
 export function loginOut() {
     localStorage.removeItem('token');
     disconnectSocket(ServerName.Hall);
+    coingameLogout();
 }
 
 export async function waitConnectGame() {

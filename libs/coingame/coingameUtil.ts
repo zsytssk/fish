@@ -18,8 +18,11 @@ export function showNav(lang: string) {
 export function coingameLogin() {
     coingame.account.login();
 }
-export function logout() {
+export function coingameLogout() {
     coingame.account.logout();
+}
+export function updateLanguage(lang: string) {
+    coingame.sys.updateLanguage(lang);
 }
 
 export function hideNav() {

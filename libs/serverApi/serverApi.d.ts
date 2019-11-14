@@ -181,10 +181,12 @@ type UserAccountRep = {
     userId: string;
     email: string;
     showName: string;
-    balances: Array<{
-        currency: string;
-        available: number;
-    }>;
+    balances: {
+        [key: string]: {
+            balance: number;
+            imageUrl: string;
+        };
+    };
 };
 type GetDomainRep = {
     domain: string;

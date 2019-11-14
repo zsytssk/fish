@@ -1,6 +1,15 @@
 -   @todo roomIn roomOut
 
--   @todo 怎么离开房间 roomOut
+-   @todo 用户没有钱 提示 用户退出...
+
+-   @todo coinMenuRender
+
+-   http://gitlab.intranet.huiyin.com/springfans/game-doc/blob/master/config/dvc-usdg.md
+
+-   @todo setLang
+-   @todo 游客 userInfo 要标示...
+
+-   @todo 怎么离开房间 用户的账户有问题 对应的 icon 不对
 
 -   @todo gun 下面的行为都通过接口返回给 player...
 

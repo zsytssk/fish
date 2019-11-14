@@ -1,4 +1,8 @@
-import { coingameLogin } from 'coingame/coingameUtil';
+import {
+    coingameLogin,
+    updateLanguage,
+    coingameLogout,
+} from 'coingame/coingameUtil';
 import { Lang } from 'data/internationalConfig';
 import { getUserInfo, modelState } from 'model/modelState';
 import ShopPop from 'view/pop/shop';
@@ -7,11 +11,14 @@ import {
     getAllLangList,
     offBindEvent,
     onAccountChange,
-    onCurCoinChange,
+    onCurBalanceChange,
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
 import { onHallSocket, roomIn } from './hallSocket';
+import { AccountMap } from 'model/userInfo/userInfoModel';
+import coingame from 'coingame/coingame.min';
+import { loginOut } from './login';
 
 export class HallCtrl {
     private view: HallView;
@@ -34,21 +41,23 @@ export class HallCtrl {
         const { view } = this;
         const { user_info } = modelState.app;
 
-        onCurCoinChange(this, coin => {
+        onCurBalanceChange(this, (type: string) => {
             const { account_map } = user_info;
-            const num = account_map.get(coin);
-            view.setCoin(coin, num);
+            const { num, icon } = account_map.get(type);
+            view.setCoin(type, icon, num);
         });
         onLangChange(this, (lang: Lang) => {
+            updateLanguage(lang);
             view.setFlag(lang);
         });
-        onAccountChange(this, (data: Map<string, number>) => {
+        onAccountChange(this, (data: AccountMap) => {
             view.setCoinData(data);
         });
         onNicknameChange(this, (nickname: string) => {
             view.setNickname(nickname);
         });
         view.setFlagData(getAllLangList());
+        user_info.setLang(coingame.sys.config.lang as Lang);
     }
     private initViewEvent() {
         const { view } = this;
@@ -69,6 +78,7 @@ export class HallCtrl {
             btn_leave,
             btn_voice,
             flag_box,
+            btn_login,
         } = header;
 
         coin_menu_list.selectHandler = new Laya.Handler(
@@ -89,7 +99,7 @@ export class HallCtrl {
         const btn_normal_play = normal_box.getChildByName('btn_play');
         const btn_match_try = match_box.getChildByName('btn_try');
         const btn_match_play = match_box.getChildByName('btn_play');
-        user_box.on(CLICK, this, () => {
+        btn_login.on(CLICK, this, () => {
             coingameLogin();
         });
         btn_normal_try.on(CLICK, this, () => {
@@ -123,7 +133,7 @@ export class HallCtrl {
             console.log(`btn_home`);
         });
         btn_leave.on(CLICK, this, () => {
-            console.log(`btn_leave`);
+            loginOut();
         });
         btn_voice.on(CLICK, this, () => {
             console.log(`btn_voice`);
@@ -143,9 +153,9 @@ export class HallCtrl {
         const {
             coin_menu: { list },
         } = view.header;
-        const { setting } = modelState.app;
+        const { user_info } = modelState.app;
         const coin_type = list.array[index].coin_name;
-        setting.setCurCoin(coin_type);
+        user_info.setCurBalance(coin_type);
         view.toggleCoinMenu();
     }; // tslint:disable-line
     private selectFlag = (index: number) => {
@@ -156,17 +166,24 @@ export class HallCtrl {
         const {
             flag_menu: { list },
         } = view.header;
-        const { setting } = modelState.app;
+        const { user_info } = modelState.app;
         const flag_type = list.array[index].flag_type;
 
-        setting.setLang(flag_type);
+        user_info.setLang(flag_type);
         view.toggleFlagMenu();
     }; // tslint:disable-line
 
     public onUserAccount(data: UserAccountRep) {
-        const { userId } = data;
+        const { btn_leave, btn_login } = this.view.header;
+        const { userId, showName, balances } = data;
         const user_info = getUserInfo();
         user_info.setUserId(userId);
+        user_info.setNickname(showName);
+        user_info.setAccount(balances);
+
+        /** 登陆之后显示离开按钮 */
+        btn_leave.visible = true;
+        btn_login.visible = false;
     }
     public destroy() {
         offBindEvent(this);

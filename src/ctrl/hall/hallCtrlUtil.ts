@@ -1,24 +1,24 @@
-import { modelState } from 'model/modelState';
 import { Lang } from 'data/internationalConfig';
-import { SettingEvent } from 'model/userInfo/settingModel';
-import { UserInfoEvent } from 'model/userInfo/userInfoModel';
+import { modelState } from 'model/modelState';
+import { AccountMap, UserInfoEvent } from 'model/userInfo/userInfoModel';
 
 export function onLangChange(item: any, callback: (lang: Lang) => void) {
-    const { setting } = modelState.app;
-    const { event } = setting;
-    const { lang } = setting;
-    event.on(SettingEvent.LangChange, callback, item);
+    const { user_info } = modelState.app;
+    const { event, lang } = user_info;
+    event.on(UserInfoEvent.LangChange, callback, item);
     setTimeout(() => {
         if (lang) {
             callback(lang);
         }
     });
 }
-export function onCurCoinChange(item: any, callback: (type: string) => void) {
-    const { setting } = modelState.app;
-    const { event } = setting;
-    const { cur_coin } = setting;
-    event.on(SettingEvent.CurCoinChange, callback, item);
+export function onCurBalanceChange(
+    item: any,
+    callback: (type: string) => void,
+) {
+    const { user_info } = modelState.app;
+    const { cur_balance: cur_coin, event } = user_info;
+    event.on(UserInfoEvent.CurBalanceChange, callback, item);
     setTimeout(() => {
         if (cur_coin) {
             callback(cur_coin);
@@ -41,7 +41,7 @@ export function onNicknameChange(
 }
 export function onAccountChange(
     item: any,
-    callback: (info: Map<string, number>) => void,
+    callback: (info: AccountMap) => void,
 ) {
     const { user_info } = modelState.app;
     const { event } = user_info;

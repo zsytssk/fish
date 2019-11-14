@@ -9,6 +9,7 @@ const coingame: {
     checkComponents(params: any): void;
     sys: {
         init: (data, override?) => void;
+        updateLanguage: (lang: string) => void;
         config: {
             [key: string]: string;
         };
