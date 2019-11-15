@@ -111,7 +111,7 @@ export function getGuestToken(socket: WebSocketTrait) {
 
 export function waitTokenExpire(socket: WebSocketTrait, callback: FuncVoid) {
     const { ErrCode } = ServerEvent;
-    const fn = ({ code }: { code: string }) => {
+    const fn = ({ code }: { code: ServerErrCode }) => {
         if (code === ServerErrCode.TokenExpire) {
             localStorage.removeItem('token');
             socket.event.off(ErrCode, fn, socket);

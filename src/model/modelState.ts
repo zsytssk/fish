@@ -41,7 +41,12 @@ export function getCollisionAllFish(
         if (contain_list.indexOf(fish) !== -1) {
             continue;
         }
-        const { body } = fish;
+        const { body, visible } = fish;
+
+        /** 鱼还没有显示 不需要做碰撞检测... */
+        if (!visible) {
+            continue;
+        }
 
         if (detectCollision(ori_body, body)) {
             contain_list.push(fish);

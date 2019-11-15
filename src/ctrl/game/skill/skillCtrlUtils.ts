@@ -10,10 +10,13 @@ import { SkillStatus } from 'model/game/skill/skillCoreCom';
 import TopTipPop from 'view/pop/topTip';
 import { Config } from 'data/config';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
-import { getBombFish } from 'model/modelState';
+import { getBeBombFish } from 'model/game/fish/fishModelUtils';
 
 /** 技能的激活前的处理 */
-export function skillPreActiveHandler(model: SkillModel, step?: number) {
+export function skillPreActiveHandler(model: SkillModel) {
+    if (model.skill_core.num <= 0) {
+        return TopTipPop.tip('你还没有当前技能, 是否购买!');
+    }
     if (model.skill_core.status !== SkillStatus.Normal) {
         return;
     }
@@ -30,7 +33,7 @@ export function skillPreActiveHandler(model: SkillModel, step?: number) {
         onPoolClick().then((pos: Point) => {
             stopAim();
             const socket = getSocket('game');
-            const fish_list = getBombFish(pos);
+            const fish_list = getBeBombFish(pos);
             socket.send(ServerEvent.UseBomb, {
                 bombPoint: pos,
                 fishList: fish_list,

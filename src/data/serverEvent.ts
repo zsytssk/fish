@@ -7,9 +7,9 @@ export const ServerName = {
 };
 
 /** socket 错误码 */
-export const ServerErrCode = {
-    TokenExpire: 1002,
-};
+export enum ServerErrCode {
+    TokenExpire = 1002,
+}
 
 /** 服务器端的接口 */
 export const ServerEvent = {
@@ -17,6 +17,10 @@ export const ServerEvent = {
     RoomIn: 'roomIn',
     RoomOut: 'roomOut',
     CheckReplay: 'checkReplay',
+    /** 进入桌子 */
+    TableIn: 'tableIn',
+    /** 离开桌子 */
+    TableOut: 'tableOut',
     EnterGame: 'enterGame',
     Shoot: 'shoot',
     Hit: 'hit',
@@ -37,8 +41,6 @@ export const ServerEvent = {
     SetRobotReport: 'setRobotReport',
     UseFreeze: 'useFreeze',
     FreezeOver: 'freezeOver',
-    /** 离开桌子 */
-    TableOut: 'tableOut',
 
     /** 其他部分 */
     ErrCode: 'conn::error',

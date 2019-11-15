@@ -13,7 +13,7 @@ export class BodyCom {
     /** 角度 */
     private angle: number = 0;
     /** 角度 */
-    private pos = { x: 0, y: 0 };
+    private pos: Point = { x: 0, y: 0 };
     /** 是否水平翻转 */
     public horizon_turn: boolean;
     /** 形状信息 */

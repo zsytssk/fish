@@ -62,7 +62,7 @@ export function addZeroToNum(num: number, len: number): number {
         return num;
     }
     num = num * 10;
-    return createNewNum(num, len);
+    return addZeroToNum(num, len);
 }
 
 /**

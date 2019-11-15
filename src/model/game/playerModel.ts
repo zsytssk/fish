@@ -98,9 +98,10 @@ export class PlayerModel extends ComponentManager {
                 continue;
             }
             const ctor = SkillCtorMap[key];
+            const data = skills[key] || {};
             const info = {
                 player: this,
-                ...skills[key],
+                ...data,
             };
             skill_map.set(key, new ctor(info));
         }

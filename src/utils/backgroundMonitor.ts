@@ -29,7 +29,7 @@ export class BackgroundMonitor {
     }
     public enableMonitor() {
         /** 测试环境禁用后台功能 */
-        if (document && document.visibilityState) {
+        if (document?.visibilityState) {
             const bind_visibility_change_fn: EventListener = this.visibilityChange.bind(
                 this,
             );

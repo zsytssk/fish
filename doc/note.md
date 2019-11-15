@@ -1,5 +1,39 @@
 -   声音 + 国际化 + 外面的接口 + 新手引导
--   超级技能加速
+
+-   @bug 当前用户的位置..
+
+    -   convertEnterGame unshift...
+
+-   炸弹鱼的效果,....
+
+-   @bug 11 号鱼的游动的方向不对...
+
+-   @bug fish 被 capture 的时候没有 pos
+
+    -   鱼还没有出来, 默认的 body 为 0 , 0
+    -   这样就导致 他可以被碰撞 其实他不在页面上...
+
+-   用户展示 子弹的位置,,,
+
+-
+
+*   鱼分 本地提示 击中鱼...
+
+*   炮台的光不显示... [偶现]
+
+*   tableIn
+
+*   超级技能加速 @ques FishBombCom fish 没有 pos
+
+*   技能数目为 0 的限制...
+
+*   option Chain 的测试
+
+-   类型“{}”上不存在属性“hasOwnProperty”
+    -   https://github.com/microsoft/TypeScript/issues/new?assignees=&labels=&template=Bug_report.md&title=
+    -   重新 npm install 好了
+
+*   提早测试 页面的显示效果缺失内容...
 
 ## 2019-11-14 20:11:06
 

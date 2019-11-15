@@ -19,6 +19,13 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.addPlayers(users);
             game.addFish(fish);
         },
+        [ServerEvent.TableIn]: (data: TableInRep) => {
+            const user = convertTableInData(data);
+            game.addPlayers([user]);
+        },
+        [ServerEvent.TableOut]: (data: TableOutRep) => {
+            game.tableOut(data);
+        },
         [ServerEvent.Shoot]: (data: ShootRep) => {
             game.onShoot(data);
         },
@@ -78,6 +85,23 @@ export type EnterGameData = {
 function convertEnterGame(data: EnterGameRep) {
     const { users: users_source, items, fish } = data;
     const users = [] as PlayerInfo[];
+    const skills = {} as { [key: string]: SkillInfo };
+
+    for (const item of items) {
+        const {
+            itemId: item_id,
+            count: num,
+            usedTime: used_time,
+            coolTime: cool_time,
+        } = item;
+        skills[item.itemId] = {
+            item_id,
+            num,
+            used_time,
+            cool_time,
+        } as SkillInfo;
+    }
+
     for (const user_source of users_source) {
         const {
             userId: user_id,
@@ -86,24 +110,9 @@ function convertEnterGame(data: EnterGameRep) {
             multiple: bullet_cost,
             turretSkin: gun_skin,
         } = user_source;
-        const skills = {} as { [key: string]: SkillInfo };
-        for (const item of items) {
-            const {
-                itemId: item_id,
-                count: num,
-                usedTime: used_time,
-                coolTime: cool_time,
-            } = item;
-            skills[item.itemId] = {
-                item_id,
-                num,
-                used_time,
-                cool_time,
-            } as SkillInfo;
-        }
         const is_cur_player = isCurUser(user_id);
         const need_emit = isCurUser(user_id);
-        users.push({
+        const player_info = {
             user_id,
             server_index: index - 1,
             bullet_num,
@@ -114,12 +123,39 @@ function convertEnterGame(data: EnterGameRep) {
             is_cur_player,
             skills,
             need_emit,
-        });
+        };
+
+        /** 当前用户放在第一位 */
+        if (isCurUser) {
+            users.unshift(player_info);
+        } else {
+            users.push(player_info);
+        }
     }
 
     return {
         fish,
         users,
+    };
+}
+function convertTableInData(data: TableInRep): PlayerInfo {
+    const {
+        userId: user_id,
+        index: index,
+        multiple: bullet_cost,
+        turretSkin: gun_skin,
+    } = data;
+    return {
+        user_id,
+        server_index: index - 1,
+        bullet_cost,
+        gun_skin: `${Number(gun_skin) - 1000}`,
+        nickname: '',
+        avatar: '',
+        bullet_num: 0,
+        need_emit: false,
+        is_cur_player: false,
+        skills: [],
     };
 }
 function convertBombData(data: UseBombRep): BombInfo {

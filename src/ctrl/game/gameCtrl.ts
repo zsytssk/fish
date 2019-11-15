@@ -18,7 +18,7 @@ import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
-import GameView from 'view/scenes/game/gameView';
+import GameView, { BulletBoxPos } from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import { onGameSocket, sendToSocket, offGameSocket } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
@@ -76,9 +76,18 @@ export class GameCtrl {
             const ctrl = new FishCtrl(fish_view, fish);
         });
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
-            if (player.is_cur_player && player.server_index > 1) {
-                view.upSideDown();
+            const { server_index, is_cur_player } = player;
+            if (is_cur_player) {
+                if (server_index > 1) {
+                    view.upSideDown();
+                }
+                let pos = 'left' as BulletBoxPos;
+                if (server_index === 1 || server_index === 2) {
+                    pos = 'right';
+                }
+                view.setBulletBoxPos(pos);
             }
+
             const player_view = view.addGun();
             const ctrl = new PlayerCtrl(player_view, player);
         });

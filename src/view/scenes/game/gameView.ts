@@ -10,6 +10,7 @@ import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
 
+export type BulletBoxPos = 'left' | 'right';
 export default class GameView extends ui.scenes.game.gameUI
     implements HonorScene {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
@@ -143,6 +144,17 @@ export default class GameView extends ui.scenes.game.gameUI
             });
             playSkeleton(energy_light, 0, false);
         });
+    }
+    /**  设置子弹box的位置 */
+    public setBulletBoxPos(pos: BulletBoxPos) {
+        const { bullet_box } = this;
+        if (pos === 'left') {
+            bullet_box.right = undefined;
+            bullet_box.left = -55;
+        } else if (pos === 'right') {
+            bullet_box.right = -55;
+            bullet_box.left = undefined;
+        }
     }
     public getPoolMousePos() {
         const { pool } = this;

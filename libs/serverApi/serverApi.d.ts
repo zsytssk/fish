@@ -21,6 +21,12 @@ type CheckReplayRep = {
 type TableOutRep = {
     userId: string;
 };
+type TableInRep = {
+    index: number;
+    userId: string;
+    multiple: number;
+    turretSkin: string;
+};
 /** 用户的数据 */
 type ServerUserInfo = {
     index: number;
