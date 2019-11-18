@@ -21,6 +21,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         return;
     }
     model.skill_core.setStatus(SkillStatus.PreActive);
+
     if (model instanceof FreezeModel) {
         // 冰冻
         const socket = getSocket('game');

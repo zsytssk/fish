@@ -68,9 +68,9 @@ export class NetModel extends ComponentManager {
     }
     public destroy() {
         this.pos = undefined;
-        this.bullet_cost = -1;
-        this.skin = '-1';
-        this.skin_level = '-1';
+        this.bullet_cost = undefined;
+        this.skin = undefined;
+        this.skin_level = undefined;
         this.show_cast = false;
         this.event.emit(ModelEvent.Destroy);
         super.destroy();

@@ -11,16 +11,27 @@ import {
 import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
 import { PlayerInfo } from 'model/game/playerModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
-import { isCurUser } from 'model/modelState';
+import { isCurUser, getCurUserId } from 'model/modelState';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     game_socket = socket;
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep) => {
-            const { fish, users } = convertEnterGame(data);
+            const {
+                fish,
+                users,
+                frozen,
+                frozen_left,
+                fish_list,
+            } = convertEnterGame(data);
             game.addPlayers(users);
             game.addFish(fish);
+
+            /** 复盘冰冻 */
+            if (frozen) {
+                game.freeze({ cool_time: frozen_left, fish_list });
+            }
         },
         [ServerEvent.TableIn]: (data: TableInRep) => {
             const user = convertTableInData(data);
@@ -37,12 +48,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.FishBomb]: (data: UseBombRep, code: number) => {
             if (code !== 200) {
+                game.resetSkill(SkillMap.Bomb, getCurUserId());
                 return;
             }
             game.activeSkill(SkillMap.Bomb, convertBombData(data));
         },
         [ServerEvent.UseBomb]: (data: UseBombRep, code: number) => {
             if (code !== 200) {
+                game.resetSkill(SkillMap.Bomb, getCurUserId());
                 return;
             }
             const _data = convertBombData(data);
@@ -51,13 +64,25 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
                 is_bomb_fish: true,
             } as BombInfo);
         },
-        [ServerEvent.UseFreeze]: (data: UseFreezeRep) => {
+        [ServerEvent.UseFreeze]: (data: UseFreezeRep, code: number) => {
+            if (code !== 200) {
+                game.resetSkill(SkillMap.Freezing, getCurUserId());
+                return;
+            }
             game.activeSkill(SkillMap.Freezing, convertFreezeData(data));
         },
-        [ServerEvent.UseLock]: (data: UseLockRep) => {
+        [ServerEvent.UseLock]: (data: UseLockRep, code: number) => {
+            if (code !== 200) {
+                game.resetSkill(SkillMap.Freezing, getCurUserId());
+                return;
+            }
             game.activeSkill(SkillMap.TrackFish, convertUseLockData(data));
         },
-        [ServerEvent.LockFish]: (data: LockFishReq) => {
+        [ServerEvent.LockFish]: (data: LockFishReq, code: number) => {
+            if (code !== 200) {
+                game.resetSkill(SkillMap.Freezing, getCurUserId());
+                return;
+            }
             game.activeSkill(SkillMap.TrackFish, convertLockFishData(data));
         },
         [ServerEvent.AddFish]: (data: ServerAddFishRep) => {
@@ -93,9 +118,11 @@ export type EnterGameData = {
 };
 let items_template: ServerItemInfo[];
 function convertEnterGame(data: EnterGameRep) {
-    const { users: users_source, items, fish } = data;
+    const { users: users_source, items, fish, frozen, frozenLeft } = data;
     const users = [] as PlayerInfo[];
     items_template = items;
+
+    /** 用户信息 */
     for (const user_source of users_source) {
         const {
             userId: user_id,
@@ -139,9 +166,22 @@ function convertEnterGame(data: EnterGameRep) {
         }
     }
 
+    /** 提取冰冻的鱼 */
+    const fish_list: string[] = [];
+    if (frozen) {
+        for (const fish_item of fish) {
+            if (fish_item.frozen) {
+                fish_list.push(fish_item.eid);
+            }
+        }
+    }
+
     return {
         fish,
         users,
+        frozen,
+        frozen_left: frozenLeft / 1000,
+        fish_list,
     };
 }
 function convertTableInData(data: TableInRep): PlayerInfo {
@@ -212,8 +252,8 @@ function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {
 
         skills[item.itemId] = {
             item_id,
-            num: is_cur_player ? num : -1,
-            used_time: is_cur_player ? used_time / 1000 : -1,
+            num: is_cur_player ? num : 0,
+            used_time: is_cur_player ? used_time / 1000 : 0,
             cool_time: cool_time / 1000,
         } as SkillInfo;
     }

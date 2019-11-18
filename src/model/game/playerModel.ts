@@ -84,7 +84,11 @@ export class PlayerModel extends ComponentManager {
         this.initSkill(skills);
     }
     public init() {
-        this.gun.init();
+        const { skill_map, gun } = this;
+        gun.init();
+        for (const [, skill] of skill_map) {
+            skill.init();
+        }
     }
     public updateInfo(info: Partial<PlayerInfo>) {
         const { bullet_cost } = info;
@@ -113,11 +117,21 @@ export class PlayerModel extends ComponentManager {
         const skill_model = this.skill_map.get(skill);
         skill_model.active(data);
     }
+    public resetSkill(skill: SkillMap) {
+        const skill_model = this.skill_map.get(skill);
+        skill_model.reset();
+    }
     public async captureFish(fish: FishModel, win: number) {
         const { bullet_num } = this;
         const pos = await fish.beCapture();
         if (!win) {
             return;
+        }
+        if (!pos) {
+            console.error(`cant find fish pos`);
+            return this.updateInfo({
+                bullet_num: bullet_num + win,
+            });
         }
         new Promise((resolve, reject) => {
             this.event.emit(PlayerEvent.CaptureFish, {

@@ -15,15 +15,21 @@ export type BombInfo = {
 
 /** 炸弹技能: 提示用户选中屏幕的位置, 然后就发射炸弹 */
 export class BombModel extends ComponentManager implements SkillModel {
+    public skill_core: SkillCoreCom;
     constructor(info: SkillInfo) {
         super();
-        this.init(info);
+        this.initCom(info);
     }
-    public get skill_core() {
-        return this.getCom(SkillCoreCom);
+    private initCom(info: SkillInfo) {
+        const skill_core = new SkillCoreCom(info);
+        this.addCom(skill_core);
+        this.skill_core = skill_core;
     }
-    private init(info: SkillInfo) {
-        this.addCom(new SkillCoreCom(info), new TimeoutCom());
+    public reset() {
+        this.skill_core.reset();
+    }
+    public init() {
+        this.skill_core.init();
     }
     public active(info: BombInfo) {
         // 激活

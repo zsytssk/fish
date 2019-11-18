@@ -17,21 +17,27 @@ export interface TrackFishInitInfo extends SkillInfo {
 
 /** 冰冻技能 */
 export class TrackFishModel extends ComponentManager implements SkillModel {
+    public skill_core: SkillCoreCom;
+    private init_info: TrackFishInitInfo;
     constructor(info: TrackFishInitInfo) {
         super();
-        this.init(info);
+        this.initCom(info);
     }
-    public get skill_core() {
-        return this.getCom(SkillCoreCom);
-    }
-    private init(info: TrackFishInitInfo) {
-        this.addCom(new SkillCoreCom(info));
-        const { lock_fish, lock_left } = info;
+    public init() {
+        const { lock_fish, lock_left } = this.init_info;
+        this.skill_core.init();
         if (lock_fish) {
-            setTimeout(() => {
-                this.active({ fish: lock_fish, used_time: lock_left });
-            });
+            this.active({ fish: lock_fish, used_time: lock_left });
         }
+    }
+    public reset() {
+        this.skill_core.reset();
+    }
+    private initCom(info: TrackFishInitInfo) {
+        const skill_core = new SkillCoreCom(info);
+        this.addCom(skill_core);
+        this.skill_core = skill_core;
+        this.init_info = info;
     }
     public active(info: TrackFishActiveInfo) {
         // 激活

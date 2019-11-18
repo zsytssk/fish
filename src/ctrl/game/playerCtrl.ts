@@ -63,6 +63,9 @@ export class PlayerCtrl {
             const { pos: end_pos } = gun;
             showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
         });
+        player_event.on(PlayerEvent.Destroy, () => {
+            this.destroy();
+        });
         gun_event.on(GunEvent.AddBullet, (info: AddBulletInfo) => {
             const { bullet_group, velocity } = info;
             const { rage } = gun;
@@ -117,9 +120,6 @@ export class PlayerCtrl {
         player_event.on(PlayerEvent.UpdateInfo, () => {
             const { bullet_num, bullet_cost } = this.model;
             setBulletNum(bullet_num);
-        });
-        player_event.on(PlayerEvent.Destroy, () => {
-            this.destroy();
         });
         gun_event.on(
             GunEvent.CastFish,
@@ -192,6 +192,7 @@ export class PlayerCtrl {
     }
     public destroy() {
         const { view } = this;
+        view.destroy();
         Laya.stage.offAllCaller(this.view);
         this.view = undefined;
     }

@@ -1,4 +1,4 @@
-import { GameFreezingCom } from './com/gameFreezingCom';
+import { GameFreezeCom } from './com/gameFreezeCom';
 import { ShoalCom } from './com/shoalCom';
 import { FishModel } from './fish/fishModel';
 import { PlayerInfo, PlayerModel } from './playerModel';
@@ -38,9 +38,9 @@ export class GameModel extends ComponentManager {
     }
     /** 冰冻的处理  */
     public get freezing_com() {
-        let freezing_com = this.getCom(GameFreezingCom);
+        let freezing_com = this.getCom(GameFreezeCom);
         if (!freezing_com) {
-            freezing_com = new GameFreezingCom(this);
+            freezing_com = new GameFreezeCom(this);
             this.addCom(freezing_com);
         }
         return freezing_com;
@@ -101,6 +101,7 @@ export class GameModel extends ComponentManager {
         const player = new PlayerModel(data, this);
         this.player_list.add(player);
         this.event.emit(GameEvent.AddPlayer, player);
+        player.init();
         return player;
     }
     public getPlayerById(id: string) {
@@ -118,6 +119,10 @@ export class GameModel extends ComponentManager {
     public activeSkill(skill: SkillMap, data: { user_id: string }) {
         const player = this.getPlayerById(data.user_id);
         player.activeSkill(skill, data);
+    }
+    public resetSkill(skill: SkillMap, user_id: string) {
+        const player = this.getPlayerById(user_id);
+        player.resetSkill(skill);
     }
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);

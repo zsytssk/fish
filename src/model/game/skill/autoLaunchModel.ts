@@ -6,19 +6,15 @@ export type AutoLaunchInfo = {} & SkillInfo;
 
 /** 炸弹技能: 提示用户选中屏幕的位置, 然后就发射炸弹 */
 export class AutoLaunchModel extends ComponentManager implements SkillModel {
+    public skill_core: SkillCoreCom;
     constructor(info: SkillInfo) {
         super();
-        this.init(info);
+        this.initCom(info);
     }
-    public get skill_core() {
-        return this.getCom(SkillCoreCom);
-    }
-    private init(info: SkillInfo) {
-        this.addCom(
-            new SkillCoreCom({
-                ...info,
-            }),
-        );
+    private initCom(info: SkillInfo) {
+        const skill_core = new SkillCoreCom(info);
+        this.addCom(skill_core);
+        this.skill_core = skill_core;
     }
     public toggle() {
         const { status } = this.skill_core;
@@ -27,6 +23,12 @@ export class AutoLaunchModel extends ComponentManager implements SkillModel {
         } else {
             this.disable();
         }
+    }
+    public init() {
+        this.skill_core.init();
+    }
+    public reset() {
+        this.skill_core.reset();
     }
     public active() {
         // 激活

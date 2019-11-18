@@ -8,9 +8,13 @@ type ModelState = {
 };
 export let modelState = {} as ModelState;
 
-/** 获取鱼 */
+/** 获取当前用户信息 */
 export function getUserInfo() {
     return modelState.app.user_info;
+}
+/** 获取当前用户id */
+export function getCurUserId() {
+    return modelState.app.user_info.user_id;
 }
 /** 获取鱼 */
 export function isCurUser(id: string) {

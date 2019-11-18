@@ -22,6 +22,7 @@ export type SkillInfo = {
     status?: SkillStatus;
     num?: number;
     cool_time?: number;
+    used_time?: number;
     player?: PlayerModel;
 };
 
@@ -56,18 +57,24 @@ export class SkillCoreCom extends ComponentManager {
     public event: EventCom;
     constructor(skill_info: SkillInfo) {
         super();
-        this.init();
-        this.updateInfo(skill_info);
+        setProps(this as SkillCoreCom, { ...skill_info });
+        this.initCom();
     }
-    private init() {
+    private initCom() {
         const event = new EventCom();
         this.addCom(event);
         this.event = event;
     }
-    /** 更新数据 */
-    public updateInfo(skill_info: SkillInfo) {
-        setProps(this as SkillCoreCom, { ...skill_info });
-        this.event.emit(SkillEvent.UpdateInfo, skill_info);
+    public init() {
+        const { used_time, num } = this;
+        if (used_time) {
+            this.active({
+                used_time,
+                num,
+            });
+            setProps(this as SkillCoreCom, { used_time: 0 });
+        }
+        this.event.emit(SkillEvent.UpdateInfo);
     }
     /** 设置技能的状态 */
     public setStatus(status: SkillStatus) {
@@ -87,9 +94,8 @@ export class SkillCoreCom extends ComponentManager {
                 resolve(false);
                 return;
             }
-            this.updateInfo(info);
             const { cool_time, event } = this;
-            const { used_time } = info;
+            const { used_time, num } = info;
             /** 倒计时的时间间隔 */
             const count_delta = 0.03;
             const remain_time = cool_time - used_time;
@@ -108,6 +114,11 @@ export class SkillCoreCom extends ComponentManager {
                 },
             );
         });
+    }
+    /** 重置 */
+    public reset() {
+        this.setStatus(SkillStatus.Normal);
+        clearCount(this.count_index);
     }
     /** 禁用 */
     public disable() {

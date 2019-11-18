@@ -9,15 +9,21 @@ export type FreezeInfo = {
 } & SkillActiveInfo;
 /** 冰冻技能 */
 export class FreezeModel extends ComponentManager implements SkillModel {
+    public skill_core: SkillCoreCom;
     constructor(info: SkillInfo) {
         super();
-        this.init(info);
+        this.initCom(info);
     }
-    public get skill_core() {
-        return this.getCom(SkillCoreCom);
+    private initCom(info: SkillInfo) {
+        const skill_core = new SkillCoreCom(info);
+        this.addCom(skill_core);
+        this.skill_core = skill_core;
     }
-    private init(info: SkillInfo) {
-        this.addCom(new SkillCoreCom(info));
+    public init() {
+        this.skill_core.init();
+    }
+    public reset() {
+        this.skill_core.reset();
     }
     public active(info: FreezeInfo) {
         const { skill_core } = this;

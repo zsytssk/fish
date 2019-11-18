@@ -1,15 +1,16 @@
-import { SkillCoreCom, SkillInfo } from './skillCoreCom';
-import { TrackFishModel } from './trackFishModel';
+import { SkillMap } from 'data/config';
+import { AutoLaunchModel } from './autoLaunchModel';
 import { BombModel } from './bombModel';
 import { FreezeModel } from './freezeModel';
-import { AutoLaunchModel } from './autoLaunchModel';
-import { SkillMap } from 'data/config';
-import { PlayerModel } from '../playerModel';
+import { SkillCoreCom } from './skillCoreCom';
+import { TrackFishModel } from './trackFishModel';
 
 /** 技能的接口 */
 export interface SkillModel {
     skill_core: SkillCoreCom;
+    init(): void;
     active(info: any): void;
+    reset(): void;
     disable(): void;
     destroy(): void;
 }

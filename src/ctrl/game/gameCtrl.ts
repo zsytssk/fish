@@ -6,7 +6,7 @@ import { res } from 'data/res';
 import { ServerName, ServerEvent } from 'data/serverEvent';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
-import { FreezingComEvent } from 'model/game/com/gameFreezingCom';
+import { FreezingComEvent } from 'model/game/com/gameFreezeCom';
 import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
@@ -117,6 +117,9 @@ export class GameCtrl {
     public shoalComingTip() {
         this.model.shoalComingTip();
     }
+    public resetSkill(skill: SkillMap, user_id: string) {
+        this.model.resetSkill(skill, user_id);
+    }
     public activeSkill(skill: SkillMap, data: any) {
         this.model.activeSkill(skill, data);
     }
@@ -148,6 +151,12 @@ export class GameCtrl {
             const player = model.getPlayerById(userId);
             player.destroy();
         }
+    }
+    /** 复盘冰冻处理 */
+    public freeze(data: { cool_time: number; fish_list: string[] }) {
+        const { model } = this;
+        const { cool_time, fish_list } = data;
+        model.freezing_com.freezing(cool_time, fish_list);
     }
     public roomOut(data: RoomOutRep) {
         const { model } = this;

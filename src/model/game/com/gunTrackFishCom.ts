@@ -112,6 +112,7 @@ export class GunTrackFishCom extends ComponentManager {
         for (const bullet of bullet_list) {
             const { bullet_cost } = bullet;
             bullets_cost += bullet_cost;
+            gun.removeBullet(bullet);
             bullet.destroy();
         }
         player.updateInfo({

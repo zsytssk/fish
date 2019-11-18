@@ -23,15 +23,15 @@ export class BulletGroup extends ComponentManager {
     public bullet_cost: number;
     /** 是否已经捕捉到了, 只处理第一个bulletModel捕的鱼 */
     private casted = false;
+    public event: EventCom;
     constructor(info: BulletGroupInfo, gun: GunModel) {
         super();
         this.bullet_cost = gun.bullet_cost;
         this.gun = gun;
-        this.addCom(new EventCom());
+        const event = new EventCom();
+        this.event = event;
+        this.addCom(event);
         this.initBullet(info);
-    }
-    public get event() {
-        return this.getCom(EventCom);
     }
     public init() {
         const { bullet_list } = this;
@@ -78,13 +78,13 @@ export class BulletGroup extends ComponentManager {
 
     public destroy() {
         const { bullet_list } = this;
-
         for (const bullet of bullet_list) {
             bullet.destroy();
         }
         bullet_list.clear();
-        this.getCom(EventCom).emit(BulletGroupEvent.Destroy);
+        this.event.emit(BulletGroupEvent.Destroy);
 
+        this.event = undefined;
         this.gun = undefined;
         this.bullet_cost = 0;
 
