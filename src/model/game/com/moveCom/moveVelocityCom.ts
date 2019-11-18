@@ -13,8 +13,19 @@ export class MoveVelocityCom implements MoveCom {
     constructor(pos: Point, velocity: SAT.Vector) {
         this.pos = pos;
         this.velocity = velocity;
-
+    }
+    /** 显示当前位置 */
+    public start() {
+        if (this.tick_index) {
+            this.is_stop = false;
+            return;
+        }
+        this.is_stop = false;
         this.tick_index = createTick(this.update.bind(this));
+        this.update(0);
+    }
+    public stop() {
+        this.is_stop = true;
     }
     public update(t: number) {
         const { pos, velocity, is_stop } = this;
@@ -61,14 +72,6 @@ export class MoveVelocityCom implements MoveCom {
         this.velocity = new SAT.Vector(x, y);
         this.pos = pos;
     }
-
-    public stop() {
-        this.is_stop = true;
-    }
-    public start() {
-        this.is_stop = false;
-    }
-
     public destroy() {
         clearTick(this.tick_index);
         this.tick_index = 0;

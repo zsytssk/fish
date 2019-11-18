@@ -22,7 +22,6 @@ export type SkillInfo = {
     status?: SkillStatus;
     num?: number;
     cool_time?: number;
-    used_time?: number;
     player?: PlayerModel;
 };
 
@@ -54,17 +53,16 @@ export class SkillCoreCom extends ComponentManager {
     public status = SkillStatus.Normal;
     /** 所属的用户... */
     public player: PlayerModel;
+    public event: EventCom;
     constructor(skill_info: SkillInfo) {
         super();
         this.init();
         this.updateInfo(skill_info);
     }
-    public get event() {
-        return this.getCom(EventCom);
-    }
     private init() {
         const event = new EventCom();
         this.addCom(event);
+        this.event = event;
     }
     /** 更新数据 */
     public updateInfo(skill_info: SkillInfo) {
@@ -82,10 +80,11 @@ export class SkillCoreCom extends ComponentManager {
     public activeEvent(info: any) {
         this.event.emit(SkillEvent.ActiveSkill, info);
     }
-    public active(info?: SkillInfo) {
+    public active(info?: SkillActiveInfo) {
         return new Promise((resolve, reject) => {
             /** 只能激活一次 */
             if (this.status === SkillStatus.Active) {
+                resolve(false);
                 return;
             }
             this.updateInfo(info);
@@ -104,7 +103,7 @@ export class SkillCoreCom extends ComponentManager {
                     event.emit(SkillEvent.UpdateRadio, radio);
                     if (radio === 0) {
                         this.disable();
-                        resolve();
+                        resolve(true);
                     }
                 },
             );

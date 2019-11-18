@@ -47,12 +47,23 @@ export function skillPreActiveHandler(model: SkillModel) {
 }
 
 /** 技能的激活的处理 */
-export function skillActiveHandler(model: SkillModel, info: any) {
+export function skillActiveHandler(
+    model: SkillModel,
+    info: any,
+    is_cur_player?: boolean,
+    is_tip?: boolean,
+) {
     return new Promise((resolve, reject) => {
         const socket = getSocket('game');
         if (model instanceof TrackFishModel) {
-            // 激活锁定之后 提示选中鱼 选中之后发给服务器...
-            TopTipPop.tip('请选中你要攻击的鱼...', 2);
+            if (!is_cur_player) {
+                return;
+            }
+            if (info.is_tip) {
+                // 激活锁定之后 提示选中鱼 选中之后发给服务器...
+                TopTipPop.tip('请选中你要攻击的鱼...', 2);
+            }
+
             // 选中鱼
             onFishClick().subscribe((fish_id: string) => {
                 socket.send(ServerEvent.LockFish, {

@@ -129,4 +129,8 @@ export default class HallView extends ui.scenes.hall.hallUI {
         const { flag } = this.header;
         flag.skin = `image/common/flag/flag_${type}.png`;
     }
+    public destroy() {
+        super.destroy();
+        console.log(`destroy`);
+    }
 }

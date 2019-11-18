@@ -1,6 +1,5 @@
-import { FishEvent, FishModel } from './fishModel';
+import { FishModel } from './fishModel';
 import { getBeBombFish } from './fishModelUtils';
-
 export const FishBombEvent = {
     FishBomb: 'fish_bomb',
 };
@@ -29,7 +28,7 @@ export class FishBombCom {
         fish.event.emit(FishBombEvent.FishBomb, data);
     }
     public destroy() {
-        this.fish.event.offAllCaller(this);
+        this.fish.event?.offAllCaller(this);
         this.fish = undefined;
     }
 }

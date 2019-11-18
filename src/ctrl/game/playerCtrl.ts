@@ -9,7 +9,7 @@ import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
 import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 import SAT from 'sat';
-import { changeNum } from 'utils/utils';
+import TipPop from 'view/pop/tip';
 import { activeAimFish, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import GunBoxView from 'view/scenes/game/gunBoxView';
@@ -99,11 +99,9 @@ export class PlayerCtrl {
             } else {
                 if (is_cur_player) {
                     const skill_view = getSkillItemByIndex(index);
-                    const skill_ctrl = new SkillCtrl(skill_model, skill_view);
+                    new SkillCtrl(skill_model, skill_view); // tslint:disable-line
                 } else {
-                    {
-                        const skill_ctrl = new SkillCtrl(skill_model);
-                    }
+                    new SkillCtrl(skill_model); // tslint:disable-line
                 }
             }
             index++;
@@ -121,7 +119,7 @@ export class PlayerCtrl {
             setBulletNum(bullet_num);
         });
         player_event.on(PlayerEvent.Destroy, () => {
-            Laya.stage.offAllCaller(this.view);
+            this.destroy();
         });
         gun_event.on(
             GunEvent.CastFish,
@@ -177,9 +175,24 @@ export class PlayerCtrl {
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
         const { bullet_cost } = this.model;
+
+        // prettier-ignore
+        const arr =
+         [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100, 200, 300, 500, 800, 1000];
+        const index = arr.indexOf(bullet_cost);
+        if (index === -1) {
+            return TipPop.tip('已经是最大倍数炮台');
+        }
+        const next = arr[index + 1];
         const _socket = getSocket(ServerName.Game);
+
         _socket.send(ServerEvent.ChangeTurret, {
-            multiple: changeNum(bullet_cost, 'add'),
+            multiple: next,
         } as ChangeTurretReq);
+    }
+    public destroy() {
+        const { view } = this;
+        Laya.stage.offAllCaller(this.view);
+        this.view = undefined;
     }
 }

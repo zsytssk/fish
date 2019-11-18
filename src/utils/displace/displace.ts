@@ -109,6 +109,42 @@ export class Displace {
             is_complete,
         };
     }
+    private calcInfo() {
+        const { is_reverse } = this;
+        const used_frame = (this.used_frame = this.used_frame + update_frame);
+        let used_radio = used_frame / this.total_frame;
+        let is_complete: boolean = false;
+        if (used_radio <= 0) {
+            return {
+                visible: false,
+            };
+        }
+
+        if (used_radio >= 1) {
+            is_complete = true;
+            return {
+                is_complete,
+            };
+        }
+
+        if (is_reverse) {
+            used_radio = 1 - used_radio;
+        }
+
+        const point_info = this.getPointAtRadio(used_radio);
+        const position = point_info.position;
+        let velocity = point_info.direction;
+        if (is_reverse) {
+            velocity = velocity.reverse();
+        }
+
+        return {
+            visible: true,
+            pos: position,
+            velocity,
+            is_complete,
+        };
+    }
     protected getPointAtRadio(
         radio: number,
     ): { position: Point; direction: SAT.Vector } {
@@ -150,8 +186,8 @@ export class Displace {
 
         /** 如果当前的radio变化还在一个曲线中 */
         if (
-            (!is_reverse && (end_radio && radio < end_radio)) ||
-            (is_reverse && (start_radio && radio > start_radio))
+            (!is_reverse && end_radio && radio < end_radio) ||
+            (is_reverse && start_radio && radio > start_radio)
         ) {
             cur_radio = (radio - start_radio) / (end_radio - start_radio);
             cur_curve_info.radio_in_curve = cur_radio;

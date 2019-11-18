@@ -11,7 +11,7 @@ export const FreezingComEvent = {
 };
 
 /** 冰冻处理逻辑 */
-export class FreezingCom extends ComponentManager {
+export class GameFreezingCom extends ComponentManager {
     private game: GameModel;
     private freezing_timeout: number;
     constructor(game: GameModel) {

@@ -1,5 +1,9 @@
 -   @opt 张笑的可以 coingame 可以打包成 es6 模块
+
     -   能不能 gitlab release
+
+-   鱼群的数据优化
+    -   pathList 数据优化..
 
 ## 效果
 
@@ -18,6 +22,8 @@
 ## 其他
 
 -   干脆替换 console.log 吧
+
+-   dynamic import
 
 -   @todo 全屏自适应... bug
 

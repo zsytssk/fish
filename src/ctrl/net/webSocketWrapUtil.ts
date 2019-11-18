@@ -8,7 +8,7 @@ import {
 } from './webSocketWrap';
 
 /** socket 的工具函数 */
-let comm_key: string;
+const common_key_map: Map<string, string> = new Map();
 let socket_ctor: Ctor<WebSocketTrait>;
 const socket_map: Map<string, WebSocketTrait> = new Map();
 
@@ -34,26 +34,41 @@ export function disconnectSocket(name: string) {
     }
 }
 
-export function createComKey() {
+export function createComKey(name: string) {
     const date_str = new Date().toString();
-    comm_key =
+    const comm_key =
         Date.parse(date_str).toString() +
         Date.parse(date_str).toString() +
         Date.parse(date_str)
             .toString()
             .substring(0, 6);
+    common_key_map.set(name, comm_key);
+    return comm_key;
 }
 
-export function getAuth(public_key: string) {
-    createComKey();
+export function genUrl(config: Config) {
+    const { url, publicKey, code, host, name } = config;
+    let new_url = `wss://${url}/gws?auth=${getAuth(name, publicKey)}`;
+    if (host) {
+        new_url += `&host=${host}`;
+    }
+    if (code) {
+        new_url += `&code=${code}`;
+    }
+    return new_url;
+}
+
+export function getAuth(name: string, public_key: string) {
+    const comm_key = createComKey(name);
     const jsencrypt = new JSEncrypt();
     jsencrypt.setPublicKey(public_key);
     const encryptedString = jsencrypt.encrypt(comm_key);
     return encryptedString;
 }
 
-export function decrypt(data: string) {
+export function decrypt(name: string, data: string) {
     try {
+        const comm_key = common_key_map.get(name);
         const desData = CryptoJS.AES.decrypt(
             data,
             CryptoJS.enc.Utf8.parse(comm_key),
@@ -71,7 +86,8 @@ export function decrypt(data: string) {
     }
 }
 
-export function encrypt(msg: string) {
+export function encrypt(name: string, msg: string) {
+    const comm_key = common_key_map.get(name);
     const encryptData = CryptoJS.AES.encrypt(
         msg,
         CryptoJS.enc.Utf8.parse(comm_key),

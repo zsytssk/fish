@@ -142,7 +142,9 @@ export class HallCtrl {
             view.toggleFlagMenu();
         });
         btn_play_now.on(CLICK, this, () => {
-            roomIn();
+            roomIn().then(() => {
+                this.destroy();
+            });
         });
     }
     private selectCoin = (index: number) => {

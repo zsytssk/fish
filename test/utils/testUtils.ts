@@ -1,6 +1,9 @@
-import { injectProto } from 'honor/utils/tool';
+import { modelState } from 'model/modelState';
 
 /** 检测stage上点击元素 */
+export function getCurPlayer() {
+    return modelState.app.game.getFishById(modelState.app.user_info.user_id);
+}
 export function stageClick() {
     Laya.stage.on('click', null, (e: Event) => {
         console.log(`test:>`, e.target);

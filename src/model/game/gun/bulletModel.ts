@@ -38,6 +38,10 @@ export class BulletModel extends ComponentManager {
     /** 速度 */
     public velocity: SAT.Vector;
     public cast_fn: CastFn;
+    public track: TrackTarget;
+    private event: EventCom;
+    private body: BodyCom;
+    private move_com: MoveCom;
     constructor(props: BulletInfo) {
         super();
 
@@ -45,32 +49,34 @@ export class BulletModel extends ComponentManager {
             ...props,
             velocity: props.velocity.scale(Config.BulletSpeed),
         });
-        this.init(props.track);
+        this.initCom();
     }
-    public get event() {
-        return this.getCom(EventCom);
-    }
-    public get body() {
-        return this.getCom(BodyCom);
-    }
-    private init(track?: TrackTarget) {
-        const { pos, velocity } = this;
-        const com_list: Component[] = [new EventCom()];
+    private initCom() {
+        const { pos, velocity, track } = this;
+        const event = new EventCom();
+        const com_list: Component[] = [event];
+
+        let move_com: MoveCom;
         if (!track) {
-            const move_com = new MoveVelocityCom(pos, velocity);
-            move_com.onUpdate(this.onMoveChange);
             const shapes = getShapes('bullet');
             const body_com = new BodyCom(shapes);
-
+            move_com = new MoveVelocityCom(pos, velocity);
             com_list.push(move_com, body_com);
+            move_com.onUpdate(this.onMoveChange);
+            this.body = body_com;
         } else {
-            const move_com = new MoveTrackCom(pos, velocity, track, this.onHit);
-
+            move_com = new MoveTrackCom(pos, velocity, track, this.onHit);
             com_list.push(move_com);
             move_com.onUpdate(this.onTrackMoveChange);
         }
 
+        this.move_com = move_com;
+        this.event = event;
         this.addCom(...com_list);
+    }
+    public init() {
+        const { move_com } = this;
+        move_com.start();
     }
     private onMoveChange = (move_info: MoveInfo) => {
         const { pos, velocity } = move_info;
@@ -113,8 +119,11 @@ export class BulletModel extends ComponentManager {
         this.destroy();
     }; // tslint:disable-line
     public destroy() {
-        this.cast_fn = undefined;
         this.event.emit(ModelEvent.Destroy);
+
+        this.cast_fn = undefined;
+        this.event = undefined;
+        this.body = undefined;
         super.destroy();
     }
 }

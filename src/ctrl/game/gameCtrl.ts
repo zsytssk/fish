@@ -6,7 +6,7 @@ import { res } from 'data/res';
 import { ServerName, ServerEvent } from 'data/serverEvent';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
-import { FreezingComEvent } from 'model/game/com/freezingCom';
+import { FreezingComEvent } from 'model/game/com/gameFreezingCom';
 import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
@@ -64,7 +64,11 @@ export class GameCtrl {
         });
         btn_leave.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();
-            sendToSocket(ServerEvent.RoomOut);
+            AlertPop.alert('确定要离开游戏吗?').then(type => {
+                if (type === 'confirm') {
+                    sendToSocket(ServerEvent.RoomOut);
+                }
+            });
         });
     }
     private onModel() {
@@ -156,7 +160,6 @@ export class GameCtrl {
         }
     }
     public destroy() {
-        this.view.destroy();
         this.view = undefined;
         this.model = undefined;
         setProps(ctrlState, { game: undefined });

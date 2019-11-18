@@ -30,8 +30,23 @@ export class MoveTrackCom implements MoveCom {
         this.start_pos = { ...pos };
         this.velocity_size = velocity.len();
         this.on_hit = on_hit;
-
+    }
+    /** 显示当前位置 */
+    public start() {
+        if (this.tick_index) {
+            this.is_stop = false;
+            return;
+        }
+        this.is_stop = false;
         this.tick_index = createTick(this.update.bind(this));
+        this.update(0);
+    }
+    public stop() {
+        this.is_stop = true;
+    }
+    /** 绑定更新 */
+    public onUpdate(update_fn: MoveUpdateFn) {
+        this.update_fn = update_fn;
     }
     private update = (t: number) => {
         const { target, pos, is_stop, velocity_size } = this;
@@ -54,10 +69,6 @@ export class MoveTrackCom implements MoveCom {
             this.update_fn({ pos: this.pos, velocity });
         }
     }; //tslint:disable-line
-    /** 绑定更新 */
-    public onUpdate(update_fn: MoveUpdateFn) {
-        this.update_fn = update_fn;
-    }
     private detectOnHit() {
         const { pos, start_pos, target } = this;
         const { pos: track_pos } = target;
@@ -78,12 +89,6 @@ export class MoveTrackCom implements MoveCom {
         }
         this.pos = track_pos;
         return true;
-    }
-    public stop() {
-        this.is_stop = true;
-    }
-    public start() {
-        this.is_stop = false;
     }
     public destroy() {
         clearTick(this.tick_index);

@@ -74,4 +74,5 @@ export function quickLeaveFish(fish: FishModel, reverse = true) {
 
     const move_com = new MoveDisplaceCom(displace);
     fish.setMoveCom(move_com);
+    fish.init();
 }

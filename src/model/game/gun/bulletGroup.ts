@@ -33,6 +33,12 @@ export class BulletGroup extends ComponentManager {
     public get event() {
         return this.getCom(EventCom);
     }
+    public init() {
+        const { bullet_list } = this;
+        for (const bullet of bullet_list) {
+            bullet.init();
+        }
+    }
     private initBullet(info: BulletGroupInfo) {
         const { bullets_pos, track, velocity } = info;
         const { skin, bullet_cost, skin_level } = this.gun;
@@ -54,10 +60,10 @@ export class BulletGroup extends ComponentManager {
     /** 一颗子弹击中鱼之后的处理 */
     private castFn = (fish: FishModel) => {
         const { gun, casted, bullet_list, bullet_cost: bullet_price } = this;
-        const { is_cur_player } = gun.player;
         if (casted) {
             return;
         }
+        const { is_cur_player } = gun.player;
         this.casted = true;
         if (is_cur_player) {
             gun.castFish(fish, bullet_price);

@@ -30,8 +30,7 @@ export function onNicknameChange(
     callback: (nickname: string) => void,
 ) {
     const { user_info } = modelState.app;
-    const { event } = user_info;
-    const { nickname } = user_info;
+    const { event, nickname } = user_info;
     event.on(UserInfoEvent.NicknameChange, callback, item);
     setTimeout(() => {
         if (nickname) {
@@ -44,8 +43,7 @@ export function onAccountChange(
     callback: (info: AccountMap) => void,
 ) {
     const { user_info } = modelState.app;
-    const { event } = user_info;
-    const { account_map } = user_info;
+    const { event, account_map } = user_info;
     event.on(UserInfoEvent.AccountChange, callback, item);
     setTimeout(() => {
         if (account_map) {

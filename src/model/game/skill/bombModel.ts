@@ -30,10 +30,14 @@ export class BombModel extends ComponentManager implements SkillModel {
         const { num, fish_list, pos, used_time, is_bomb_fish } = info;
         const { skill_core } = this;
         const { player } = skill_core;
-
+        const { bullet_num } = player;
         for (const fish of fish_list) {
             const { eid: fish_id, win } = fish;
             const fish_model = getFishById(fish_id);
+            if (!fish_model) {
+                player.updateInfo({ bullet_num: bullet_num + win });
+                continue;
+            }
             playerCaptureFish(player, fish_model, win);
         }
         skill_core.activeEvent(pos);

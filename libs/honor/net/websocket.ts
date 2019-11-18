@@ -193,24 +193,17 @@ export class WebSocketCtrl {
     }
     /** 清理本地数据 */
     private reset() {
-        if (this.ws) {
-            this.ws.onopen = null;
-            this.ws.onmessage = null;
-            this.ws.onerror = null;
-            this.ws.onclose = null;
+        const { ws } = this;
+        if (ws) {
+            ws.onopen = null;
+            ws.onmessage = null;
+            ws.onerror = null;
+            ws.onclose = null;
 
-            this.ws.close();
+            ws.close();
             this.ws = null;
         }
         clearInterval(this.heartbeat_interval);
         clearTimeout(this.heartbeat_gap_timeout);
     }
-}
-
-function sleep(time: number) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve();
-        }, time * 1000);
-    });
 }

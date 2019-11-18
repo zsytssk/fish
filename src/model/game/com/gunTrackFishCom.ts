@@ -95,6 +95,9 @@ export class GunTrackFishCom extends ComponentManager {
     /** 监听track目标位置改变 */
     private onTrackMove = () => {
         const { gun, fish } = this;
+        if (!fish.visible) {
+            return;
+        }
         const { x, y } = fish.pos;
         const { x: gx, y: gy } = gun.pos;
         gun.setDirection(new SAT.Vector(x - gx, y - gy));

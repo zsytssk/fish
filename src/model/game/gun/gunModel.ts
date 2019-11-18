@@ -83,12 +83,14 @@ export class GunModel extends ComponentManager {
         this.pos = pos;
         this.skin = skin;
         this.player = player;
-        this.init();
+        this.initCom();
     }
-    private init() {
+    private initCom() {
         this.addCom(new EventCom(), new TimeoutCom());
-        this.setBulletPrice(this.player.bullet_cost);
+    }
+    public init() {
         this.initDirection();
+        this.setBulletPrice(this.player.bullet_cost);
     }
     public get event() {
         return this.getCom(EventCom);
@@ -218,13 +220,14 @@ export class GunModel extends ComponentManager {
         };
         const bullet_group = new BulletGroup(info, this);
         this.bullet_list.add(bullet_group);
-
-        player.updateInfo({ bullet_num: player.bullet_num - bullet_cost });
         this.event.emit(GunEvent.AddBullet, {
             bullet_group,
             velocity,
             track,
         } as AddBulletInfo);
+        bullet_group.init();
+
+        player.updateInfo({ bullet_num: player.bullet_num - bullet_cost });
     }
     public castFish(fish: FishModel, level: number) {
         this.event.emit(GunEvent.CastFish, { fish, level });

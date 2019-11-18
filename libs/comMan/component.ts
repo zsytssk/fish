@@ -3,6 +3,7 @@ export interface Component {
 }
 
 export class ComponentManager {
+    public destroyed = false;
     private components: Set<Component> = new Set();
     public addCom(...com_list: Component[]) {
         for (const com of com_list) {
@@ -28,5 +29,6 @@ export class ComponentManager {
             }
         }
         this.components.clear();
+        this.destroyed = true;
     }
 }

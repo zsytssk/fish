@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":11,
-    "selecteID":26,
+    "selectedBox":41,
+    "selecteID":31,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":41,
+    "maxID":42,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -206,32 +206,61 @@
                 },
                 {
                     "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,bullet_box",
-                    "props":{"y":653,"x":-55,"width":286,"var":"bullet_box","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92},
+                    "type":"UIView",
+                    "source":"scenes/game/skillBox.scene",
+                    "searchKey":"UIView,skill_box",
+                    "props":{"y":648,"x":434,"var":"skill_box"},
+                    "nodeParent":11,
+                    "label":"skill_box",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":32,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Box",
+                    "searchKey":"Box,bullet_box",
+                    "props":{"y":653,"x":-31,"width":287,"var":"bullet_box","height":92},
                     "nodeParent":11,
                     "label":"bullet_box",
                     "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
-                    "compId":26,
+                    "compId":41,
                     "child":[
                         {
                             "x":45,
                             "type":"Image",
-                            "searchKey":"Image",
-                            "props":{"y":45,"x":38,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
-                            "nodeParent":26,
-                            "label":"Image",
+                            "searchKey":"Image,bullet_box_bg",
+                            "props":{"x":142,"width":286,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92,"anchorX":0.5},
+                            "nodeParent":41,
+                            "label":"bullet_box_bg",
                             "isOpen":true,
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":26,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image",
+                            "props":{"y":45,"x":31,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
+                            "nodeParent":41,
+                            "label":"Image",
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":28,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
                                     "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"余额 384789380 EBT","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
@@ -249,8 +278,8 @@
                             "x":45,
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement",
-                            "props":{"y":16,"x":70,"width":176,"innerHTML":"<div style=\"width: 192px;height: 32px;font-size: 20px;color:#fff;\"><span>1 底分</span> = <span color=\"#ffdd76\">0.0035</span> <span>币</span> </div>","height":29},
-                            "nodeParent":26,
+                            "props":{"y":13,"x":44,"width":176,"innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1 底分</span> = <span color=\"#ffdd76\">0.0035</span> <span>币</span> </div>","height":29},
+                            "nodeParent":41,
                             "label":"HTMLDivElement",
                             "isDirectory":false,
                             "isAniNode":true,
@@ -259,21 +288,6 @@
                             "child":[
                                 ]
                         }]
-                },
-                {
-                    "x":30,
-                    "type":"UIView",
-                    "source":"scenes/game/skillBox.scene",
-                    "searchKey":"UIView,skill_box",
-                    "props":{"y":648,"x":434,"var":"skill_box"},
-                    "nodeParent":11,
-                    "label":"skill_box",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":32,
-                    "child":[
-                        ]
                 }]
         },
         {

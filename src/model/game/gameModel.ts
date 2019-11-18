@@ -1,4 +1,4 @@
-import { FreezingCom } from './com/freezingCom';
+import { GameFreezingCom } from './com/gameFreezingCom';
 import { ShoalCom } from './com/shoalCom';
 import { FishModel } from './fish/fishModel';
 import { PlayerInfo, PlayerModel } from './playerModel';
@@ -38,9 +38,9 @@ export class GameModel extends ComponentManager {
     }
     /** 冰冻的处理  */
     public get freezing_com() {
-        let freezing_com = this.getCom(FreezingCom);
+        let freezing_com = this.getCom(GameFreezingCom);
         if (!freezing_com) {
-            freezing_com = new FreezingCom(this);
+            freezing_com = new GameFreezingCom(this);
             this.addCom(freezing_com);
         }
         return freezing_com;
@@ -52,12 +52,14 @@ export class GameModel extends ComponentManager {
             const fish = createFish(fish_info, this);
             this.fish_list.add(fish);
             this.event.emit(GameEvent.AddFish, fish);
+            fish.init();
         } else {
             /** 创建鱼组 */
             const fish_list = createFishGroup(fish_info, this);
             for (const fish of fish_list) {
                 this.fish_list.add(fish);
                 this.event.emit(GameEvent.AddFish, fish);
+                fish.init();
             }
         }
     }

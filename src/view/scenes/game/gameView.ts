@@ -84,6 +84,7 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     /** 获取点击pool中的位置 */
     public onFishClick(): Observable<string> {
+        this.offFishClick();
         return new Observable(subscriber => {
             const { pool } = this;
             const fun = (e: Laya.Event) => {
@@ -147,13 +148,15 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     /**  设置子弹box的位置 */
     public setBulletBoxPos(pos: BulletBoxPos) {
-        const { bullet_box } = this;
+        const { bullet_box, bullet_box_bg } = this;
         if (pos === 'left') {
             bullet_box.right = undefined;
-            bullet_box.left = -55;
+            bullet_box.left = -30;
+            bullet_box_bg.scaleX = 1;
         } else if (pos === 'right') {
-            bullet_box.right = -55;
+            bullet_box.right = -30;
             bullet_box.left = undefined;
+            bullet_box_bg.scaleX = -1;
         }
     }
     public getPoolMousePos() {

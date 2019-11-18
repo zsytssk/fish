@@ -28,7 +28,7 @@ export type PlayerInfo = {
     nickname: string;
     avatar: string;
     is_cur_player: boolean;
-    skills: SkillInfoMap;
+    skills?: SkillInfoMap;
 };
 export const PlayerEvent = {
     CaptureFish: FishEvent.BeCapture,
@@ -64,12 +64,12 @@ export class PlayerModel extends ComponentManager {
         super();
         this.game = game;
         this.addCom(new EventCom());
-        this.init(player_info);
+        this.createGun(player_info);
     }
     public get event() {
         return this.getCom(EventCom);
     }
-    private init(player_info: PlayerInfo) {
+    private createGun(player_info: PlayerInfo) {
         const { gun_skin, skills, server_index, ...other } = player_info;
 
         const { pos } = getGunInfo(server_index);
@@ -82,6 +82,9 @@ export class PlayerModel extends ComponentManager {
         });
 
         this.initSkill(skills);
+    }
+    public init() {
+        this.gun.init();
     }
     public updateInfo(info: Partial<PlayerInfo>) {
         const { bullet_cost } = info;

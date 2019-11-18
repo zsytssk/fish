@@ -4,7 +4,10 @@ import { ServerEvent } from 'data/serverEvent';
 import { BombInfo } from 'model/game/skill/bombModel';
 import { SkillMap, Config } from 'data/config';
 import { FreezeInfo } from 'model/game/skill/freezeModel';
-import { TrackFishInfo } from 'model/game/skill/trackFishModel';
+import {
+    TrackFishActiveInfo,
+    TrackFishInitInfo,
+} from 'model/game/skill/trackFishModel';
 import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
 import { PlayerInfo } from 'model/game/playerModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
@@ -32,10 +35,16 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.Hit]: (data: HitRep) => {
             game.onHit(data);
         },
-        [ServerEvent.FishBomb]: (data: UseBombRep) => {
+        [ServerEvent.FishBomb]: (data: UseBombRep, code: number) => {
+            if (code !== 200) {
+                return;
+            }
             game.activeSkill(SkillMap.Bomb, convertBombData(data));
         },
-        [ServerEvent.UseBomb]: (data: UseBombRep) => {
+        [ServerEvent.UseBomb]: (data: UseBombRep, code: number) => {
+            if (code !== 200) {
+                return;
+            }
             const _data = convertBombData(data);
             game.activeSkill(SkillMap.Bomb, {
                 ..._data,
@@ -82,36 +91,33 @@ export type EnterGameData = {
     fish: ServerFishInfo;
     users: PlayerInfo[];
 };
+let items_template: ServerItemInfo[];
 function convertEnterGame(data: EnterGameRep) {
     const { users: users_source, items, fish } = data;
     const users = [] as PlayerInfo[];
-    const skills = {} as { [key: string]: SkillInfo };
-
-    for (const item of items) {
-        const {
-            itemId: item_id,
-            count: num,
-            usedTime: used_time,
-            coolTime: cool_time,
-        } = item;
-        skills[item.itemId] = {
-            item_id,
-            num,
-            used_time,
-            cool_time,
-        } as SkillInfo;
-    }
-
+    items_template = items;
     for (const user_source of users_source) {
         const {
             userId: user_id,
-            index: index,
+            index,
             bulletNum: bullet_num,
             multiple: bullet_cost,
             turretSkin: gun_skin,
+            lockFish,
+            lockLeft,
         } = user_source;
         const is_cur_player = isCurUser(user_id);
         const need_emit = isCurUser(user_id);
+        const skills = genSkillMap(items, is_cur_player);
+
+        if (lockFish) {
+            skills[SkillMap.TrackFish] = {
+                ...skills[SkillMap.TrackFish],
+                lock_fish: lockFish,
+                lock_left: lockLeft / 1000,
+            } as TrackFishInitInfo;
+        }
+
         const player_info = {
             user_id,
             server_index: index - 1,
@@ -145,6 +151,7 @@ function convertTableInData(data: TableInRep): PlayerInfo {
         multiple: bullet_cost,
         turretSkin: gun_skin,
     } = data;
+    const skills = genSkillMap(items_template, false);
     return {
         user_id,
         server_index: index - 1,
@@ -155,7 +162,7 @@ function convertTableInData(data: TableInRep): PlayerInfo {
         bullet_num: 0,
         need_emit: false,
         is_cur_player: false,
-        skills: [],
+        skills,
     };
 }
 function convertBombData(data: UseBombRep): BombInfo {
@@ -178,7 +185,7 @@ function convertFreezeData(data: UseFreezeRep): FreezeInfo {
     const used_time = 0;
     return { user_id, used_time, num, fish_list };
 }
-function convertUseLockData(data: UseLockRep): TrackFishInfo {
+function convertUseLockData(data: UseLockRep): TrackFishActiveInfo {
     const {
         userId: user_id,
         count: num,
@@ -188,8 +195,28 @@ function convertUseLockData(data: UseLockRep): TrackFishInfo {
     const used_time = 0;
     return { user_id, used_time, num, fish, is_tip: true };
 }
-function convertLockFishData(data: LockFishReq): TrackFishInfo {
+function convertLockFishData(data: LockFishReq): TrackFishActiveInfo {
     const { userId: user_id, eid: fish } = data;
-
     return { user_id, fish };
+}
+
+function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {
+    const skills = {} as { [key: string]: SkillInfo };
+    for (const item of items) {
+        const {
+            itemId: item_id,
+            count: num,
+            usedTime: used_time,
+            coolTime: cool_time,
+        } = item;
+
+        skills[item.itemId] = {
+            item_id,
+            num: is_cur_player ? num : -1,
+            used_time: is_cur_player ? used_time / 1000 : -1,
+            cool_time: cool_time / 1000,
+        } as SkillInfo;
+    }
+
+    return skills;
 }

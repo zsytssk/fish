@@ -26,6 +26,7 @@ export class NetModel extends ComponentManager {
     public skin_level: string;
     /** 是否显示 cast fish 的状态  */
     public show_cast: boolean;
+    public event: EventCom;
     constructor(info: NetInfo, bullet: BulletModel) {
         super();
 
@@ -40,16 +41,15 @@ export class NetModel extends ComponentManager {
     public get body() {
         return this.getCom(BodyCom);
     }
-    public get event() {
-        return this.getCom(EventCom);
-    }
     private init() {
         const { show_cast } = this;
         const shapes = getShapes('net');
         const body_com = new BodyCom(shapes);
         body_com.update(this.pos);
         const timeout_com = new TimeoutCom();
-        this.addCom(new EventCom(), new TimeoutCom(), body_com);
+        const event = new EventCom();
+        this.addCom(event, timeout_com, body_com);
+        this.event = event;
 
         if (show_cast) {
             /** 做成异步, 不然信息 netCtrl 无法接受到 */

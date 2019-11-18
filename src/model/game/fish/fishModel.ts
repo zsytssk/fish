@@ -57,19 +57,15 @@ export class FishModel extends ComponentManager {
     /** 是否显示 */
     public visible = false;
     private game: GameModel;
+    public event: EventCom;
+    public body: BodyCom;
     constructor(data: FishData, game: GameModel) {
         super();
 
         this.game = game;
-        this.init(data);
+        this.initCom(data);
     }
-    public get event() {
-        return this.getCom(EventCom);
-    }
-    public get body() {
-        return this.getCom(BodyCom);
-    }
-    private init(data: FishData) {
+    private initCom(data: FishData) {
         const { type, id } = data;
 
         setProps(this as FishModel, { type, id });
@@ -80,9 +76,15 @@ export class FishModel extends ComponentManager {
         }
         const shapes = getShapes('fish', Number(type));
         const body_com = new BodyCom(shapes, horizon_turn);
-
+        const event = new EventCom();
+        this.event = event;
+        this.body = body_com;
         this.horizon_turn = horizon_turn;
         this.addCom(new EventCom(), body_com);
+    }
+    public init() {
+        const { move_com } = this;
+        move_com.start();
     }
     public setMoveCom(move_com: MoveCom) {
         const { move_com: old_move_com } = this;
@@ -95,7 +97,7 @@ export class FishModel extends ComponentManager {
         this.addCom(move_com);
     }
     private onMoveChange = (displace_info: DisplaceInfo) => {
-        const body_com = this.getCom(BodyCom);
+        const { body } = this;
         const { pos, velocity, is_complete, visible } = displace_info;
         if (is_complete) {
             return this.destroy();
@@ -104,7 +106,7 @@ export class FishModel extends ComponentManager {
             this.pos = pos;
             this.velocity = velocity;
 
-            body_com.update(pos, velocity);
+            body.update(pos, velocity);
             this.event.emit(FishEvent.Move, {
                 pos,
                 velocity,
@@ -167,6 +169,8 @@ export class FishModel extends ComponentManager {
         this.visible = false;
         this.horizon_turn = false;
         this.move_com = undefined;
+        this.event = undefined;
+        this.body = undefined;
         super.destroy();
     }
 }

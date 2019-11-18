@@ -1,7 +1,7 @@
 import { ComponentManager } from 'comMan/component';
-import { WebSocketCtrl } from 'honor/net/websocket';
 import { EventCom } from 'comMan/eventCom';
-import { getAuth, encrypt, decrypt } from './webSocketWrapUtil';
+import { WebSocketCtrl } from 'honor/net/websocket';
+import { decrypt, encrypt, genUrl } from './webSocketWrapUtil';
 
 export type Config = {
     url: string;
@@ -54,7 +54,6 @@ export class WebSocketWrapCtrl extends ComponentManager
     constructor(config: Config) {
         super();
         this.config = config;
-        this.config = config;
         this.init();
     }
     private init() {
@@ -99,7 +98,7 @@ export class WebSocketWrapCtrl extends ComponentManager
                 ...data,
             },
         };
-        const send_str = '0' + encrypt(JSON.stringify(send_data));
+        const send_str = '0' + encrypt(name, JSON.stringify(send_data));
         ws.send(send_str);
     }
     public disconnect() {
@@ -117,7 +116,7 @@ export class WebSocketWrapCtrl extends ComponentManager
         let data: { cmd: string; code: number; res: {} };
         switch (type) {
             case ServerMsgType.OnData:
-                data = decrypt(data_str);
+                data = decrypt(name, data_str);
                 if (!data) {
                     return;
                 }
@@ -147,16 +146,4 @@ export class WebSocketWrapCtrl extends ComponentManager
     private onReconnected = () => {
         this.event.emit(SocketEvent.Reconnected);
     }; //tslint:disable-line
-}
-
-export function genUrl(config: Config) {
-    const { url, publicKey, code, host } = config;
-    let new_url = `wss://${url}/gws?auth=${getAuth(publicKey)}`;
-    if (host) {
-        new_url += `&host=${host}`;
-    }
-    if (code) {
-        new_url += `&code=${code}`;
-    }
-    return new_url;
 }

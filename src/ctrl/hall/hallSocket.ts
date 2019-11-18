@@ -37,6 +37,7 @@ export async function checkReplay(hall: HallCtrl) {
                             resolve(true);
                         }
                     });
+                    return;
                 }
                 resolve(false);
             },
