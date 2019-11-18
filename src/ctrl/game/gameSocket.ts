@@ -18,20 +18,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     game_socket = socket;
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep) => {
-            const {
-                fish,
-                users,
-                frozen,
-                frozen_left,
-                fish_list,
-            } = convertEnterGame(data);
-            game.addPlayers(users);
-            game.addFish(fish);
-
-            /** 复盘冰冻 */
-            if (frozen) {
-                game.freeze({ cool_time: frozen_left, fish_list });
-            }
+            game.onEnterGame(convertEnterGame(data));
         },
         [ServerEvent.TableIn]: (data: TableInRep) => {
             const user = convertTableInData(data);
@@ -117,7 +104,7 @@ export type EnterGameData = {
     users: PlayerInfo[];
 };
 let items_template: ServerItemInfo[];
-function convertEnterGame(data: EnterGameRep) {
+export function convertEnterGame(data: EnterGameRep) {
     const { users: users_source, items, fish, frozen, frozenLeft } = data;
     const users = [] as PlayerInfo[];
     items_template = items;

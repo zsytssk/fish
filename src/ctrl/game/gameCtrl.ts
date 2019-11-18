@@ -20,7 +20,12 @@ import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import GameView, { BulletBoxPos } from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
-import { onGameSocket, sendToSocket, offGameSocket } from './gameSocket';
+import {
+    onGameSocket,
+    sendToSocket,
+    offGameSocket,
+    convertEnterGame,
+} from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
 import { HallCtrl } from 'ctrl/hall/hallCtrl';
 
@@ -108,6 +113,17 @@ export class GameCtrl {
             this.destroy();
         });
     }
+    public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
+        const { model } = this;
+        const { fish, users, frozen, frozen_left, fish_list } = data;
+
+        this.addPlayers(users);
+        this.addFish(fish);
+        /** 复盘冰冻 */
+        if (frozen) {
+            model.freezing_com.freezing(frozen_left, fish_list);
+        }
+    }
     public onShoot(data: ShootRep) {
         this.model.shoot(data);
     }
@@ -151,12 +167,6 @@ export class GameCtrl {
             const player = model.getPlayerById(userId);
             player.destroy();
         }
-    }
-    /** 复盘冰冻处理 */
-    public freeze(data: { cool_time: number; fish_list: string[] }) {
-        const { model } = this;
-        const { cool_time, fish_list } = data;
-        model.freezing_com.freezing(cool_time, fish_list);
     }
     public roomOut(data: RoomOutRep) {
         const { model } = this;

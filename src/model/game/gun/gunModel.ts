@@ -77,6 +77,8 @@ export class GunModel extends ComponentManager {
     private is_on = true;
     /** 枪是狂暴 */
     public rage = false;
+    public event: EventCom;
+    public timeout: TimeoutCom;
     constructor(pos: Point, skin: string, player: PlayerModel) {
         super();
 
@@ -86,14 +88,15 @@ export class GunModel extends ComponentManager {
         this.initCom();
     }
     private initCom() {
-        this.addCom(new EventCom(), new TimeoutCom());
+        const event = new EventCom();
+        const timeout = new TimeoutCom();
+        this.addCom(event, timeout);
+        this.event = event;
+        this.timeout = timeout;
     }
     public init() {
         this.initDirection();
         this.setBulletPrice(this.player.bullet_cost);
-    }
-    public get event() {
-        return this.getCom(EventCom);
     }
     private initDirection() {
         const { server_index } = this.player;
@@ -119,21 +122,20 @@ export class GunModel extends ComponentManager {
         if (bullet_cost === this.bullet_cost) {
             return;
         }
-        const { skin } = this;
+        const { skin, timeout, event, launch_space } = this;
         const { level_skin, hole_num } = getGunLevelSkinInfo(bullet_cost);
         this.bullet_cost = bullet_cost;
         this.skin_level = level_skin;
         this.hole_num = hole_num;
 
-        const timeout = this.getCom(TimeoutCom);
         timeout.createTimeout(() => {
-            this.event.emit(GunEvent.LevelChange, {
+            event.emit(GunEvent.LevelChange, {
                 bullet_cost,
                 skin,
                 level_skin,
                 hole_num,
             } as LevelInfo);
-        }, this.launch_space);
+        }, launch_space);
     }
     public setStatus(status: GunStatus) {
         if (status === this.status) {
@@ -145,8 +147,9 @@ export class GunModel extends ComponentManager {
         if (is_speedup === this.is_speedup) {
             return;
         }
+        const { event } = this;
         this.is_speedup = is_speedup;
-        this.event.emit(GunEvent.SpeedUpStatus, is_speedup);
+        event.emit(GunEvent.SpeedUpStatus, is_speedup);
         if (is_speedup === true) {
             /** 开启 */
             this.launch_space = Config.LaunchSpace / 2;
@@ -173,28 +176,32 @@ export class GunModel extends ComponentManager {
         return track_fish;
     }
     public preAddBullet(velocity: SAT.Vector, force = false) {
-        if (!force && this.status === GunStatus.TrackFish) {
+        const { status, is_on, event, launch_space, player } = this;
+        if (player.bullet_num < 0) {
+            return;
+        }
+        if (!force && status === GunStatus.TrackFish) {
             return;
         }
         velocity = velocity.clone().normalize();
         this.setDirection(velocity);
 
-        if (!force && this.status === GunStatus.AutoLaunch) {
+        if (!force && status === GunStatus.AutoLaunch) {
             return;
         }
 
-        if (!this.is_on) {
+        if (!is_on) {
             return;
         }
 
-        this.event.emit(GunEvent.WillAddBullet, velocity);
+        event.emit(GunEvent.WillAddBullet, velocity);
         /** 枪隔一段时间才会打开 */
         this.is_on = false;
         const timeout = this.getCom(TimeoutCom);
         timeout.createTimeout(() => {
             this.is_on = true;
-            this.event.emit(GunEvent.SwitchOn);
-        }, this.launch_space);
+            event.emit(GunEvent.SwitchOn);
+        }, launch_space);
     }
     public addBullet(direction: Point) {
         const {
@@ -203,13 +210,15 @@ export class GunModel extends ComponentManager {
             skin_level: level_skin,
             track_fish: track,
             player,
+            event,
+            bullet_list,
         } = this;
         const { x, y } = direction;
 
         const velocity = new SAT.Vector(x, y).normalize();
         this.setDirection(velocity);
         const bullets_pos = getBulletStartPos(
-            this.player.server_index,
+            player.server_index,
             velocity.clone(),
             `${skin}${level_skin}`,
         );
@@ -219,8 +228,8 @@ export class GunModel extends ComponentManager {
             track,
         };
         const bullet_group = new BulletGroup(info, this);
-        this.bullet_list.add(bullet_group);
-        this.event.emit(GunEvent.AddBullet, {
+        bullet_list.add(bullet_group);
+        event.emit(GunEvent.AddBullet, {
             bullet_group,
             velocity,
             track,

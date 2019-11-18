@@ -26,7 +26,9 @@ export class NetCtrl {
 
         event.on(ModelEvent.Destroy, () => {
             setTimeout(() => {
-                view.destroy();
+                if (!view.destroyed) {
+                    view.destroy();
+                }
             }, 1000);
         });
     }

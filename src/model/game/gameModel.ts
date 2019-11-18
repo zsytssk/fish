@@ -28,9 +28,9 @@ export class GameModel extends ComponentManager {
     private player_list: Set<PlayerModel> = new Set();
     constructor() {
         super();
-        this.init();
+        this.initCom();
     }
-    private init() {
+    private initCom() {
         this.addCom(new EventCom(), new TimeoutCom());
     }
     public get event() {

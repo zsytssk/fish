@@ -37,12 +37,15 @@ export class PlayerCtrl {
     }
     private initGun() {
         const { view, model } = this;
-        const { server_index, gun } = model;
+        const { server_index, gun, bullet_num, is_cur_player } = model;
         const { pos } = gun;
         if (server_index >= 2) {
             view.fixServerTopPos();
         }
         view.setPos(pos.x, pos.y);
+        if (is_cur_player) {
+            setBulletNum(bullet_num);
+        }
     }
     private initEvent() {
         const {
@@ -118,7 +121,7 @@ export class PlayerCtrl {
         const socket = getSocket('game');
 
         player_event.on(PlayerEvent.UpdateInfo, () => {
-            const { bullet_num, bullet_cost } = this.model;
+            const { bullet_num } = this.model;
             setBulletNum(bullet_num);
         });
         gun_event.on(
@@ -134,13 +137,12 @@ export class PlayerCtrl {
                 } as HitReq);
             },
         );
-
         gun_event.on(GunTrackFishEvent.StartTrack, (data: StartTrackInfo) => {
             const { fish, fire: show_point } = data;
             activeAimFish(fish, show_point, gun.pos);
         });
         gun_event.on(GunTrackFishEvent.StopTrack, () => {
-            stopAim();
+            stopAim('fish');
         });
         gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
             const { x, y } = velocity;
@@ -156,12 +158,11 @@ export class PlayerCtrl {
             );
             gun.preAddBullet(_direction);
         });
-
         btn_minus.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
             e.stopPropagation();
             this.sendChangeBulletCost('minus');
         });
-        btn_add.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
+        btn_add.on(Laya.Event.CLICK, btn_add, (e: Laya.Event) => {
             e.stopPropagation();
             this.sendChangeBulletCost('add');
         });

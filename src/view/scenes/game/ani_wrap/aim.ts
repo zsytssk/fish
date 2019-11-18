@@ -1,7 +1,6 @@
-import * as SAT from 'sat';
 import { createImg } from 'honor/utils/createSkeleton';
 import { FishEvent, FishModel } from 'model/game/fish/fishModel';
-import { ModelEvent } from 'model/modelEvent';
+import * as SAT from 'sat';
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
@@ -12,7 +11,7 @@ type AimState = {
     ori_pos: Point;
     /** 追踪的鱼 */
     fish: FishModel;
-    aim_ani: Laya.Skeleton;
+    aim_ani_map: Map<string, Laya.Skeleton>;
     /** 从当前玩家的炮台到 aim_ani 的点 */
     point_list: Laya.Image[];
     /** Point的缓存 */
@@ -22,12 +21,12 @@ type AimState = {
 const state = {
     point_list: [],
     points_temp: [],
+    aim_ani_map: new Map(),
 } as AimState;
 const point_space = 50;
 
 export function activeAim(pos: Point) {
-    createAim();
-    const { aim_ani } = state;
+    const aim_ani = createAim('normal');
     playSkeleton(aim_ani, 0, true);
     aim_ani.pos(pos.x, pos.y);
 }
@@ -37,8 +36,8 @@ export function activeAimFish(
     show_points?: boolean,
     ori_pos?: Point,
 ) {
-    createAim();
-    const { aim_ani, fish: ori_fish } = state;
+    const aim_ani = createAim('fish');
+    const { fish: ori_fish } = state;
     const { pos } = fish;
 
     if (ori_fish) {
@@ -79,24 +78,29 @@ export function activeAimFish(
         aim_ani,
     );
     fish.event.on(FishEvent.Destroy, () => {
-        stopAim();
+        stopAim('fish');
         fish.event.offAllCaller(aim_ani);
     });
 }
 
 /** 消除动画 */
-export function stopAim() {
-    const { aim_ani, fish, point_list } = state;
+export function stopAim(type: string = 'normal') {
+    const { aim_ani_map, fish, point_list } = state;
+    const aim_ani = aim_ani_map.get(type);
 
-    if (point_list.length) {
-        state.ori_pos = undefined;
-        clearPoints();
-    }
     if (aim_ani) {
         aim_ani.stop();
         aim_ani.removeSelf();
     }
 
+    if (type !== 'fish') {
+        return;
+    }
+
+    if (point_list.length) {
+        state.ori_pos = undefined;
+        clearPoints();
+    }
     if (fish) {
         fish.event.offAllCaller(aim_ani);
         state.fish = undefined;
@@ -104,16 +108,18 @@ export function stopAim() {
 }
 
 /** 创建锁定动画 */
-function createAim() {
-    let { aim_ani } = state;
+function createAim(type: string) {
+    const { aim_ani_map } = state;
     const { ani_wrap } = viewState;
+    let aim_ani = aim_ani_map.get(type);
     if (!aim_ani) {
         aim_ani = createSprite('other', 'aim') as Laya.Skeleton;
         ani_wrap.addChild(aim_ani);
-        state.aim_ani = aim_ani;
+        aim_ani_map.set(type, aim_ani);
     } else if (!aim_ani.parent) {
         ani_wrap.addChild(aim_ani);
     }
+    return aim_ani;
 }
 
 /** 创建点 */

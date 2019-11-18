@@ -2,6 +2,7 @@ import { getFishById } from 'model/modelState';
 import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
+import { TimeoutCom } from 'comMan/timeoutCom';
 
 export type TrackFishActiveInfo = {
     user_id?: string;
@@ -18,16 +19,20 @@ export interface TrackFishInitInfo extends SkillInfo {
 /** 冰冻技能 */
 export class TrackFishModel extends ComponentManager implements SkillModel {
     public skill_core: SkillCoreCom;
+    private timeout: TimeoutCom;
     private init_info: TrackFishInitInfo;
     constructor(info: TrackFishInitInfo) {
         super();
         this.initCom(info);
     }
     public init() {
+        const { timeout, skill_core } = this;
         const { lock_fish, lock_left } = this.init_info;
-        this.skill_core.init();
+        skill_core.init();
         if (lock_fish) {
-            this.active({ fish: lock_fish, used_time: lock_left });
+            timeout.createTimeout(() => {
+                this.active({ fish: lock_fish, used_time: lock_left });
+            });
         }
     }
     public reset() {
@@ -35,8 +40,10 @@ export class TrackFishModel extends ComponentManager implements SkillModel {
     }
     private initCom(info: TrackFishInitInfo) {
         const skill_core = new SkillCoreCom(info);
-        this.addCom(skill_core);
+        const timeout = new TimeoutCom();
+        this.addCom(skill_core, timeout);
         this.skill_core = skill_core;
+        this.timeout = timeout;
         this.init_info = info;
     }
     public active(info: TrackFishActiveInfo) {
