@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":25,
-    "selecteID":29,
+    "selectedBox":20,
+    "selecteID":9,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -146,7 +146,7 @@
                     "type":"UIView",
                     "source":"scenes/hall/coinMenu.scene",
                     "searchKey":"UIView,coin_menu",
-                    "props":{"y":54,"x":219,"visible":false,"var":"coin_menu"},
+                    "props":{"x":219,"visible":false,"var":"coin_menu","top":54},
                     "nodeParent":26,
                     "label":"coin_menu",
                     "isDirectory":false,
@@ -271,10 +271,10 @@
                         {
                             "x":45,
                             "type":"Button",
-                            "searchKey":"Button,btn_get",
-                            "props":{"y":-1,"x":0,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
+                            "searchKey":"Button,btn_charge",
+                            "props":{"y":-1,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
                             "nodeParent":20,
-                            "label":"btn_get",
+                            "label":"btn_charge",
                             "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
@@ -299,10 +299,10 @@
                         {
                             "x":45,
                             "type":"Button",
-                            "searchKey":"Button,btn_charge",
-                            "props":{"y":0,"x":99,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
+                            "searchKey":"Button,btn_get",
+                            "props":{"y":0,"x":99,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
                             "nodeParent":20,
-                            "label":"btn_charge",
+                            "label":"btn_get",
                             "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,

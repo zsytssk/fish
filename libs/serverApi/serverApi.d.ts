@@ -6,7 +6,9 @@ type RoomInReq = {
     /** 是否试玩 */
     isTrial: 0 | 1;
     /** 币种 */
-    currency: number;
+    currency: string;
+    /** 域名 */
+    domain: string;
 };
 
 type RoomInRep = {

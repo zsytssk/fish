@@ -7,19 +7,20 @@ import {
     stageClick,
     injectWindow,
     getCurPlayer,
+    getUserInfo,
 } from './utils/testUtils';
 import { test } from './testBuilder';
 import { localHaveSocketTest, localTest } from './app/testEnv';
-import { state } from 'data/env';
+import { EnvState } from 'data/env';
 
 const testUtils = {
     showNodeZone,
     stageClick,
     getCurPlayer,
+    getUserInfo,
 };
-
 injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
-if (state.localTest) {
+if (EnvState.localTest) {
     localTest();
 } else {
     localHaveSocketTest();

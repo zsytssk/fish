@@ -1,9 +1,12 @@
 import { modelState } from 'model/modelState';
 
-/** 检测stage上点击元素 */
-export function getCurPlayer() {
-    return modelState.app.game.getFishById(modelState.app.user_info.user_id);
+export function getUserInfo() {
+    return modelState.app.user_info;
 }
+export function getCurPlayer() {
+    return modelState.app.game.getPlayerById(modelState.app.user_info.user_id);
+}
+/** 检测stage上点击元素 */
 export function stageClick() {
     Laya.stage.on('click', null, (e: Event) => {
         console.log(`test:>`, e.target);

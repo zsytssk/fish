@@ -5,6 +5,8 @@ import { ServerEvent, ServerName } from 'data/serverEvent';
 import { HallCtrl } from './hallCtrl';
 import { login } from './login';
 import AlertPop from 'view/pop/alert';
+import { coingameGetDomain } from 'coingame/coingameUtil';
+import { modelState } from 'model/modelState';
 
 export async function onHallSocket(hall: HallCtrl) {
     await login();
@@ -47,18 +49,18 @@ export async function checkReplay(hall: HallCtrl) {
     });
 }
 
-export function roomIn() {
+export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
-        socket.event.once(ServerEvent.RoomIn, (data: RoomInRep) => {
-            ctrlState.app.enterGame(data.socketUrl);
+        socket.event.once(ServerEvent.RoomIn, (_data: RoomInRep) => {
+            ctrlState.app.enterGame(_data.socketUrl);
             resolve();
         });
+        const currency = modelState.app.user_info.cur_balance;
         socket.send(ServerEvent.RoomIn, {
-            roomId: 1,
-            currency: 'ETH',
-            isTrial: 0,
-            domain: 'https://testing-bitfish.cointest.link',
-        });
+            ...data,
+            currency,
+            domain: coingameGetDomain(),
+        } as RoomInReq);
     });
 }

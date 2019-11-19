@@ -2,17 +2,33 @@
 
 -   freezeLeft 时间不对...
 
+## 2019-11-19 16:23:39
+- @todo voice
+
+-   @ques coingame.pay.request data 的格式是什么...
+
+-   @todo 更新鱼的动画
+
+-   @bug 大厅币列表 有时候 y 不对
+
+-   @ques 正式场合 如何点击 type 是多少
+    -   游客试玩的时候 currency, 是什么
+    -   domain 从什么地方获取...
+
 ## 2019-11-18 16:13:10
 
-- @todo wiki 里面有  商城接口
+-   @test webpack dynamic import
 
-- @todo 页面上的鱼不同步...
+-   @todo wiki 里面有 商城接口
+
+-   @todo 页面上的鱼不同步...
+
     -   @todo 在鱼的头上显示 eid
     -   在玩家头上 显示座位号...
 
-- @todo 当前用户的金钱 :> 显示 + 发射子弹金钱变化
+-   @todo 当前用户的金钱 :> 显示 + 发射子弹金钱变化
 
-- @ques 离开大厅 不断开socket @研究
+-   @ques 离开大厅 不断开 socket @研究
 
 -   function returns
 
@@ -21,19 +37,18 @@
 
 -   @bug 同步其他玩家的射击位置方向 不对...
 
+*   @todo 更新 新的鱼的动画
 
--   @todo 更新 新的鱼的动画
+-   @todo 鼠标按住屏幕 一直开炮
 
-*   @todo 鼠标按住屏幕 一直开炮
-
-*   @bug netView destroy 多次 因为 在其他地方也 destroy 了
+-   @bug netView destroy 多次 因为 在其他地方也 destroy 了
 
     -   一个方法又能多个入口,
     -   怎么避免这种情形...
 
--   @bug 打空地方 显示和鱼碰撞....
+*   @bug 打空地方 显示和鱼碰撞....
 
--   @bug 炮台的动画有时候不播放
+*   @bug 炮台的动画有时候不播放
 
 ## 2019-11-18 11:04:26
 

@@ -84,8 +84,11 @@ export default class HallView extends ui.scenes.hall.hallUI {
         list.array = arr;
         flag_menu.height = bg.height = list.height = arr.length * 61 + 20;
     }
-    public toggleCoinMenu() {
+    public toggleBalanceMenu() {
         const { coin_menu } = this.header;
+        if (!coin_menu.list.array.length) {
+            return;
+        }
         if (!coin_menu.visible) {
             // show
             slide_down_in(coin_menu);

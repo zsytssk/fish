@@ -1,5 +1,12 @@
 import coingame from 'coingame/coingame.min';
-import { coingameLogin, updateLanguage } from 'coingame/coingameUtil';
+import {
+    coingameLogin,
+    coingameUpdateLanguage,
+    coingameWithDraw,
+    coingameCharge,
+    coingameHome,
+    coingameApp,
+} from 'coingame/coingameUtil';
 import { disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
 import { Lang } from 'data/internationalConfig';
 import { ServerName } from 'data/serverEvent';
@@ -17,6 +24,7 @@ import {
 } from './hallCtrlUtil';
 import { checkReplay, onHallSocket, roomIn } from './hallSocket';
 import { loginOut } from './login';
+import VoicePop from 'view/pop/voice';
 
 export class HallCtrl {
     private view: HallView;
@@ -47,7 +55,7 @@ export class HallCtrl {
             view.setCoin(type, icon, num);
         });
         onLangChange(this, (lang: Lang) => {
-            updateLanguage(lang);
+            coingameUpdateLanguage(lang);
             view.setFlag(lang);
         });
         onAccountChange(this, (data: AccountMap) => {
@@ -103,48 +111,48 @@ export class HallCtrl {
             coingameLogin();
         });
         btn_normal_try.on(CLICK, this, () => {
-            console.log(`btn_normal_try`);
+            roomIn({ roomId: 1, isTrial: 1 });
         });
         btn_normal_play.on(CLICK, this, () => {
-            console.log(`btn_normal_play`);
+            roomIn({ roomId: 1, isTrial: 0 });
+        });
+        btn_match_play.on(CLICK, this, () => {
+            roomIn({ roomId: 2, isTrial: 0 });
         });
         btn_match_try.on(CLICK, this, () => {
-            console.log(`btn_match_try`);
+            roomIn({ roomId: 2, isTrial: 1 });
+        });
+        btn_play_now.on(CLICK, this, () => {
+            roomIn({ roomId: 1, isTrial: 1 }).then(() => {
+                this.destroy();
+            });
         });
         btn_coin_select.on(CLICK, this, () => {
-            view.toggleCoinMenu();
+            view.toggleBalanceMenu();
         });
         btn_get.on(CLICK, this, () => {
-            console.log(`btn_get`);
+            coingameCharge('');
         });
         btn_charge.on(CLICK, this, () => {
-            console.log(`btn_charge`);
+            coingameWithDraw('');
         });
         btn_buy.on(CLICK, this, () => {
             ShopPop.preEnter();
         });
         btn_home.on(CLICK, this, () => {
-            console.log(`btn_home`);
+            coingameHome();
         });
         btn_app.on(CLICK, this, () => {
-            console.log(`btn_app`);
-        });
-        btn_home.on(CLICK, this, () => {
-            console.log(`btn_home`);
+            coingameApp();
         });
         btn_leave.on(CLICK, this, () => {
             loginOut();
         });
         btn_voice.on(CLICK, this, () => {
-            console.log(`btn_voice`);
+            VoicePop.preEnter();
         });
         flag_box.on(CLICK, this, () => {
             view.toggleFlagMenu();
-        });
-        btn_play_now.on(CLICK, this, () => {
-            roomIn().then(() => {
-                this.destroy();
-            });
         });
     }
     private selectCoin = (index: number) => {
@@ -158,7 +166,7 @@ export class HallCtrl {
         const { user_info } = modelState.app;
         const coin_type = list.array[index].coin_name;
         user_info.setCurBalance(coin_type);
-        view.toggleCoinMenu();
+        view.toggleBalanceMenu();
     }; // tslint:disable-line
     private selectFlag = (index: number) => {
         if (index === -1) {

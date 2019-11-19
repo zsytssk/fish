@@ -2,6 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
+    "selecteID":3,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -60,38 +61,6 @@
         },
         {
             "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer,mermaid",
-            "props":{"y":396,"x":951,"var":"mermaid","url":"image/hall/mermaid.sk"},
-            "nodeParent":2,
-            "label":"mermaid",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":26,
-            "child":[
-                ],
-            "$LOCKED":true,
-            "$HIDDEN":true
-        },
-        {
-            "x":15,
-            "type":"UIView",
-            "source":"scenes/hall/header.scene",
-            "searchKey":"UIView,header",
-            "props":{"y":0,"x":0,"var":"header"},
-            "nodeParent":2,
-            "label":"header",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":19,
-            "child":[
-                ],
-            "$LOCKED":true
-        },
-        {
-            "x":15,
             "type":"Box",
             "searchKey":"Box,normal_box",
             "props":{"y":125,"x":799,"var":"normal_box"},
@@ -121,7 +90,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,coin_name",
-                    "props":{"y":347,"x":88,"width":136,"valign":"middle","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","align":"center"},
+                    "props":{"y":347,"x":88,"width":136,"valign":"middle","text":"----","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","bold":true,"align":"center"},
                     "nodeParent":11,
                     "label":"coin_name",
                     "isDirectory":false,
@@ -192,7 +161,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,match_box",
-            "props":{"y":125,"x":1193,"var":"match_box"},
+            "props":{"y":126,"x":1193,"var":"match_box"},
             "nodeParent":2,
             "label":"match_box",
             "isOpen":true,
@@ -219,7 +188,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,coin_name",
-                    "props":{"y":347,"x":88,"width":136,"valign":"middle","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","align":"center"},
+                    "props":{"y":347,"x":88,"width":136,"valign":"middle","text":"----","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","bold":true,"align":"center"},
                     "nodeParent":12,
                     "label":"coin_name",
                     "isDirectory":false,
@@ -285,6 +254,38 @@
                                 ]
                         }]
                 }]
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer,mermaid",
+            "props":{"y":397,"x":951,"var":"mermaid","url":"image/hall/mermaid.sk"},
+            "nodeParent":2,
+            "label":"mermaid",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":26,
+            "child":[
+                ],
+            "$LOCKED":true,
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"UIView",
+            "source":"scenes/hall/header.scene",
+            "searchKey":"UIView,header",
+            "props":{"y":1,"x":0,"var":"header"},
+            "nodeParent":2,
+            "label":"header",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":19,
+            "child":[
+                ],
+            "$LOCKED":true
         },
         {
             "x":15,

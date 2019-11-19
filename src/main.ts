@@ -1,7 +1,7 @@
 import { Config } from 'data/config';
-import { state } from 'data/env';
+import { EnvState } from 'data/env';
 
-const { origin, localTest } = state;
+const { origin, localTest } = EnvState;
 if (!localTest) {
     import('coingame/coingame.min').then(sdkLoaded);
 } else {
@@ -17,8 +17,9 @@ function sdkLoaded({ default: coingame }) {
                 .replace('https://', '');
             Config.Host = coingame.sys.config.domain;
             if (logged) {
-                const { AppCtrl } = await import('ctrl/appCtrl');
-                new AppCtrl(); // tslint:disable-line
+                import('ctrl/appCtrl').then(({ AppCtrl }) => {
+                    new AppCtrl(); // tslint:disable-line
+                });
             }
         },
     });
