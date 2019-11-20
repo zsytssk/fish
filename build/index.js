@@ -30,4 +30,5 @@ function loadEngin() {
     loadLib('libs/bytebuffer.js');
     //-----libs-end-------
     loadLib('js/bundle.js?v=' + CDN_VERSION);
+    // loadLib('js/app.bundle.js?v=' + CDN_VERSION);
 }

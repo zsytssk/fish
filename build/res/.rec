@@ -125,6 +125,7 @@ P 3DC9A92D btn_help.png
 P 1893886C btn_minus.png
 P D67CA55C btn_music.png
 P 650D0FBA btn_quit.png
+P EE50320A btn_shop.png
 P F2462FA5 energy_bg.png
 P BD8FA146 energy_progress.png
 P C9A7F8DA skill_aim.png
@@ -160,20 +161,21 @@ P 12E9F5B1 hall_bubble.png
 R CCB2CDC8 hall_bubble.sk
 P 1241F02E hall_light.png
 R F378C197 hall_light.sk
+R 100557D7 header_bg.png
 P 92682EF2 header_bg_01.png
 P 053A720D header_bg_02.png
 P 54C869BB header_bg_03.png
 P C41B88BC header_bg_04.png
 P 366B941F light.png
-R FD11F3CD match_sign.png
-R A75533DF match_sign.sk
+R 198CD8C1 match_sign.png
+R 478C7346 match_sign.sk
 P D8145C10 menu_top_light.png
 S C1AB8F52 mermaid.png
 R 6FA7CA21 mermaid.sk
 P 0A355523 normal_btn.png
 R CDD10C06 normal_btn.sk
-R 976AB2B0 normal_sign.png
-R 3345699D normal_sign.sk
+R 59F9821D normal_sign.png
+R 9C19760C normal_sign.sk
 R AB4ED04E play_now_btn.png
 R 3CDA9FD0 play_now_btn.sk
 P FD98BB63 sigh_match.png
@@ -181,6 +183,7 @@ P 38FEF0B4 sign_normal.png
 P E63EFF17 split_vertical.png
 P C0A443D0 try_btn.png
 R E56D7509 try_btn.sk
+P 5A52F4CE wait_bg.png
 D image/international
 P E3E0B5D8 help_title_zh.png
 P 9A1E28DB title_shop_zh.png
@@ -189,6 +192,7 @@ P 8C548118 txt_btn_used_zh.png
 P BFEB68B7 txt_buy_bullet_zh.png
 P 51CEE666 txt_buy_zh.png
 P 9F999E44 txt_cancel_zh.png
+P 5E24BFF5 txt_comming_soon_zh.png
 P 636A5CE5 txt_confirm_zh.png
 P 79491664 txt_hall_buy_zh.png
 P AFF441D6 txt_hall_charge_zh.png
@@ -206,8 +210,8 @@ R AD243E30 load_bg.png
 R 41844EB9 loading.png
 R 6BE39ACC loading_logo.png
 R 2C46C5F6 loading_logo.sk
-P CAD9E2F4 progress$bar.png
-P 185DF64D progress.png
+R 670D3B11 progress$bar.png
+R A73AE268 progress.png
 D image/pop
 D image/common/coin
 P AE65B670 BBC.png
@@ -319,11 +323,11 @@ P D3D9D405 tag_skin.png
 P 11F66150 title_bg.png
 R 085F0C31 top_bg.png
 D image/pop/shop/icon
-P 5D1DEEA6 gun1.png
-P FDFF1FD0 gun2.png
-P 5E6B5D1B gun3.png
-P 424A65F3 gun4.png
-P BFD0B4F4 gun5.png
-P 4E08B651 item_1.png
-P ED3A283D item_2.png
-P 223B1320 item_3.png
+P 5D1DEEA6 1001.png
+P FDFF1FD0 1002.png
+P 5E6B5D1B 1003.png
+P 424A65F3 1004.png
+P BFD0B4F4 1005.png
+P 223B1320 2001.png
+P ED3A283D 2002.png
+P 4E08B651 2003.png
