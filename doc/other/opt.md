@@ -2,6 +2,14 @@
 
     -   能不能 gitlab release
 
+-   @todo 进度条的样式...
+
+    -   @gaoyang
+
+-   @todo 鱼群的数据生成
+
+-   @todo 鱼的阴影
+
 -   鱼群的数据优化
     -   pathList 数据优化..
 

@@ -2,11 +2,11 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":13,
-    "selecteID":18,
+    "selecteID":20,
     "searchKey":"Dialog",
     "props":{"width":1030,"sceneColor":"#000000","sceneBg":"laya/views/pop/lottery.png","height":710},
     "nodeParent":-1,
-    "maxID":44,
+    "maxID":45,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -140,7 +140,7 @@
                     "x":30,
                     "type":"List",
                     "searchKey":"List,lottery_list",
-                    "props":{"y":12,"x":78,"width":789,"var":"lottery_list","spaceX":20,"repeatY":1,"repeatX":5,"height":138},
+                    "props":{"y":12,"x":80,"width":785,"var":"lottery_list","spaceX":20,"repeatY":1,"repeatX":5,"height":138},
                     "nodeParent":13,
                     "label":"lottery_list",
                     "isOpen":true,
@@ -167,36 +167,9 @@
                 },
                 {
                     "x":30,
-                    "type":"ProgressBar",
-                    "searchKey":"ProgressBar,progress",
-                    "props":{"y":171,"x":45,"width":663,"var":"progress","value":1,"skin":"image/pop/lottery/progress.png","sizeGrid":"6,43,10,16","height":22},
-                    "nodeParent":13,
-                    "label":"progress",
-                    "isOpen":false,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":18,
-                    "child":[
-                        {
-                            "type":"Sprite",
-                            "searchKey":"Sprite",
-                            "props":{"y":0,"x":2,"width":662,"texture":"image/pop/lottery/light.png","height":22},
-                            "nodeParent":18,
-                            "label":"Sprite",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":19,
-                            "child":[
-                                ]
-                        }]
-                },
-                {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_lottery",
-                    "props":{"y":150.5,"x":749,"var":"btn_lottery","stateNum":"1","skin":"image/pop/lottery/btn_get_lottery.png"},
+                    "props":{"y":152.5,"x":753,"var":"btn_lottery","stateNum":"1","skin":"image/pop/lottery/btn_get_lottery.png"},
                     "nodeParent":13,
                     "label":"btn_lottery",
                     "isOpen":true,
@@ -219,6 +192,20 @@
                             "child":[
                                 ]
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"ProgressBar",
+                    "searchKey":"ProgressBar",
+                    "props":{"y":171,"x":59,"width":657,"skin":"image/loading/progress.png","height":18},
+                    "nodeParent":13,
+                    "label":"ProgressBar",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":44,
+                    "child":[
+                        ]
                 }]
         },
         {

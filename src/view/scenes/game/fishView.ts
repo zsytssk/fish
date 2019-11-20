@@ -14,6 +14,7 @@ export class FishView extends Laya.Sprite {
     public info: FishViewInfo;
     private pool: Laya.Sprite;
     private time_out: number;
+    private turn_ani: boolean;
     constructor(info: FishViewInfo, pool: Laya.Sprite) {
         super();
         this.info = info;
@@ -29,7 +30,10 @@ export class FishView extends Laya.Sprite {
         }
         const { type } = this.info;
         const fish_ani = createSkeleton('ani/fish/fish' + type);
-        const { offset } = getSpriteInfo('fish', type) as FishSpriteInfo;
+        const { offset, turn_ani } = getSpriteInfo(
+            'fish',
+            type,
+        ) as FishSpriteInfo;
         const [top, right, bottom, left] = offset;
         const width = right + left;
         const height = top + bottom;
@@ -41,6 +45,7 @@ export class FishView extends Laya.Sprite {
         this.addChild(fish_ani);
         playSkeleton(fish_ani, 0, true);
         this.fish_ani = fish_ani;
+        this.turn_ani = turn_ani;
     }
     /** 创建 ani and shadow */
     public playSwimAni() {
@@ -68,11 +73,17 @@ export class FishView extends Laya.Sprite {
     }
     /** 同步位置 */
     public syncPos(pos: Point, velocity: SAT.Vector, horizon_turn: boolean) {
+        const { turn_ani, fish_ani } = this;
         const angle = vectorToDegree(velocity) + 90;
         if (horizon_turn) {
             /** angle(-90 - 90) + 90 = 0-180 */
             const need_scale_x = angle > 0 && angle < 180;
-            this.scaleX = need_scale_x ? -1 : 1;
+            if (turn_ani) {
+                const ani_name = need_scale_x ? 'right' : 'left';
+                fish_ani.play(ani_name, true);
+            } else {
+                this.scaleX = need_scale_x ? -1 : 1;
+            }
         } else {
             this.rotation = angle;
         }

@@ -4,6 +4,9 @@ import ShopPop from 'view/pop/shop';
 import honor from 'honor';
 
 export const shop_test = new Test('shop', runner => {
+    runner.describe('open', async () => {
+        ShopPop.preEnter();
+    });
     runner.describe('render_data', async () => {
         return new Promise(async resolve => {
             const shop = (await honor.director.openDialog(

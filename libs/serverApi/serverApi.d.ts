@@ -209,6 +209,32 @@ type GetDomainRep = {
     newServerApi: string;
 };
 
+type ShopItem = {
+    type: number;
+    item_id: string;
+    name: string;
+    price: number;
+    num: number;
+    /** 0购买 1已获得 2已穿戴 */
+    status: 0 | 1 | 2;
+};
+type ShopListRep = ShopItem[];
+type BuyReq = {
+    item_id: string;
+    num: number;
+};
+type BuyRep = {
+    name: number;
+    num: string;
+};
+
+type UseSkinReq = {
+    skinId: string;
+};
+type UseSkinRep = {
+    skinId: string;
+};
+
 type ItemPrice = {
     type: number;
     count: number;
@@ -219,22 +245,4 @@ type LotteryRep = {
 };
 type TicketExchangeRep = {
     list: ItemPrice[];
-};
-type ShopItem = {
-    id: string;
-    name: string;
-    price: number;
-    status: number;
-};
-type ShopListRep = {
-    turret: ShopItem[];
-    bullet: ShopItem[];
-    items: ShopItem[];
-};
-type BuyReq = {
-    id: string;
-};
-type BuyRep = {
-    count: number;
-    name: string;
 };

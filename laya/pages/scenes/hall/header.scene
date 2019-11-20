@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":20,
-    "selecteID":9,
+    "selectedBox":26,
+    "selecteID":20,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -10,9 +10,9 @@
             "type":0,
             "id":1
         }],
-    "props":{"width":1920,"sceneColor":"#000000","mouseThrough":false,"mouseEnabled":true,"height":750},
+    "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":46,
+    "maxID":47,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -27,61 +27,23 @@
             "props":{"y":0,"x":0,"width":1920,"name":"bg","height":78},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":15,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
-                    "props":{"y":0,"x":0,"texture":"image/hall/header_bg_01.png"},
+                    "props":{"texture":"image/hall/header_bg.png"},
                     "nodeParent":15,
                     "label":"Sprite",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":16,
-                    "child":[
-                        ]
-                },
-                {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":500,"texture":"image/hall/header_bg_02.png"},
-                    "nodeParent":15,
-                    "label":"Sprite",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":17,
-                    "child":[
-                        ]
-                },
-                {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":1001,"texture":"image/hall/header_bg_03.png"},
-                    "nodeParent":15,
-                    "label":"Sprite",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":18,
-                    "child":[
-                        ]
-                },
-                {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":1570,"texture":"image/hall/header_bg_04.png"},
-                    "nodeParent":15,
-                    "label":"Sprite",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":19,
+                    "compId":46,
                     "child":[
                         ]
                 }]
@@ -146,7 +108,7 @@
                     "type":"UIView",
                     "source":"scenes/hall/coinMenu.scene",
                     "searchKey":"UIView,coin_menu",
-                    "props":{"x":219,"visible":false,"var":"coin_menu","top":54},
+                    "props":{"y":54,"x":219,"visible":false,"var":"coin_menu"},
                     "nodeParent":26,
                     "label":"coin_menu",
                     "isDirectory":false,
@@ -259,7 +221,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box",
-                    "props":{"x":541},
+                    "props":{"y":3,"x":578},
                     "nodeParent":26,
                     "label":"Box",
                     "isOpen":true,
@@ -300,7 +262,7 @@
                             "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_get",
-                            "props":{"y":0,"x":99,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
+                            "props":{"y":0,"x":133,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
                             "nodeParent":20,
                             "label":"btn_get",
                             "isOpen":true,
@@ -320,34 +282,6 @@
                                     "isAniNode":true,
                                     "hasChild":false,
                                     "compId":41,
-                                    "child":[
-                                        ]
-                                }]
-                        },
-                        {
-                            "x":45,
-                            "type":"Button",
-                            "searchKey":"Button,btn_buy",
-                            "props":{"y":0,"x":197,"var":"btn_buy","stateNum":"1","skin":"image/hall/btn_buy.png"},
-                            "nodeParent":20,
-                            "label":"btn_buy",
-                            "isOpen":true,
-                            "isDirectory":true,
-                            "isAniNode":true,
-                            "hasChild":true,
-                            "compId":8,
-                            "child":[
-                                {
-                                    "x":60,
-                                    "type":"Image",
-                                    "searchKey":"Image",
-                                    "props":{"y":19,"x":20,"skin":"image/international/txt_hall_buy_zh.png"},
-                                    "nodeParent":8,
-                                    "label":"Image",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":42,
                                     "child":[
                                         ]
                                 }]

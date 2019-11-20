@@ -1,22 +1,23 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
+import { getShopInfo } from 'ctrl/hall/hallSocket';
 
 enum GunSkinStatus {
     NoHave = 0,
     Have = 1,
     Used = 2,
 }
+/** gun的初始数据 */
 type GunData = {
     name: string;
     id: string;
     status: GunSkinStatus;
     price: number;
 };
+/** item的初始数据 */
 type ItemData = { name: string; id: string; price: number; num: number };
 
-type ShopGunItemUI = ui.pop.shop.shopGunItemUI;
-type ShopItemItemUI = ui.pop.shop.shopItemItemUI;
-
+/** gun_list array 对应的数据 */
 type GunRenderData = {
     gun_name: string;
     gun_id: string;
@@ -24,6 +25,7 @@ type GunRenderData = {
     gun_price: number;
 };
 
+/** item 渲染数据 */
 type ItemRenderData = {
     item_name: string;
     item_id: string;
@@ -31,13 +33,25 @@ type ItemRenderData = {
     item_num: number;
 };
 
+/** 商城的数据 */
+export type ShopData = { gun: GunData[]; item: ItemData[] };
+
+type ShopGunItemUI = ui.pop.shop.shopGunItemUI;
+type ShopItemItemUI = ui.pop.shop.shopItemItemUI;
+
 /** 商城弹出层 */
 export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     public isModal = true;
     /** 是否初始化... */
     private is_init = false;
     public static preEnter() {
-        honor.director.openDialog(ShopPop);
+        const shop_dialog = honor.director.openDialog(ShopPop) as Promise<
+            ShopPop
+        >;
+        const shop_data = getShopInfo();
+        Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
+            dialog.initData(data);
+        });
     }
     public init() {
         const { gun_list, item_list } = this;
@@ -63,7 +77,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         }
         this.is_init = true;
     }
-    public initData(data: { gun: GunData[]; item: ItemData[] }) {
+    public initData(data: ShopData) {
         const { gun_list, item_list } = this;
         const { gun, item } = data;
 

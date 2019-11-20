@@ -91,6 +91,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
         }
         if (!coin_menu.visible) {
             // show
+            coin_menu.y = 54;
             slide_down_in(coin_menu);
         } else {
             // hide

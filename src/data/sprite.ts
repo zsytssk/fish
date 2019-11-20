@@ -31,6 +31,7 @@ export type FishSpriteInfo = SpriteInfo & {
     }>;
     /** 为了在边界给鱼添加额外的路径, 慢慢的进入|退出 */
     offset?: number[];
+    turn_ani?: boolean;
 };
 export interface GameSprite {
     /** 枪 */
@@ -209,6 +210,7 @@ export let SPRITE: GameSprite = {
             offset: [157, 130, 68, 131],
             path: 'ani/fish/fish16',
             ani_type: 'horizon_turn',
+            turn_ani: true,
         },
         '17': {
             type: 'DragonBone',
@@ -226,12 +228,14 @@ export let SPRITE: GameSprite = {
             offset: [147, 140, 133, 156],
             path: 'ani/fish/fish19',
             ani_type: 'horizon_turn',
+            turn_ani: true,
         },
         '20': {
             type: 'DragonBone',
             offset: [110, 183, 54, 138],
             path: 'ani/fish/fish20',
             ani_type: 'horizon_turn',
+            turn_ani: true,
         },
         G1: {
             group: [

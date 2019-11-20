@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":3,
+    "selectedBox":11,
+    "selecteID":24,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -22,7 +22,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/hallView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":41,
+    "maxID":43,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -174,7 +174,7 @@
                     "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer,ani",
-                    "props":{"y":291,"x":153,"url":"image/hall/match_sign.sk","name":"ani"},
+                    "props":{"y":287,"x":157,"url":"image/hall/match_sign.sk","name":"ani"},
                     "nodeParent":12,
                     "label":"ani",
                     "isDirectory":false,
@@ -202,7 +202,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_play",
-                    "props":{"y":400,"x":163,"width":151,"name":"btn_play","height":71},
+                    "props":{"y":400,"x":163,"width":151,"visible":false,"name":"btn_play","height":71},
                     "nodeParent":12,
                     "label":"btn_play",
                     "isOpen":true,
@@ -224,13 +224,14 @@
                             "compId":33,
                             "child":[
                                 ]
-                        }]
+                        }],
+                    "$HIDDEN":true
                 },
                 {
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_try",
-                    "props":{"y":400,"x":13,"width":151,"name":"btn_try","height":71},
+                    "props":{"y":400,"x":13,"width":151,"visible":false,"name":"btn_try","height":71},
                     "nodeParent":12,
                     "label":"btn_try",
                     "isOpen":true,
@@ -250,6 +251,35 @@
                             "isAniNode":true,
                             "hasChild":false,
                             "compId":34,
+                            "child":[
+                                ]
+                        }],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":405,"x":30.5,"texture":"image/hall/wait_bg.png"},
+                    "nodeParent":12,
+                    "label":"Sprite",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":41,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite",
+                            "props":{"y":13,"x":66,"texture":"image/international/txt_comming_soon_zh.png"},
+                            "nodeParent":41,
+                            "label":"Sprite",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":42,
                             "child":[
                                 ]
                         }]

@@ -1,5 +1,12 @@
 -   兼容性测试
+
     -   es6-map es6-set ...
+
+-   @todo toggleBalanceMenu 效果...
+
+-   @todo 页面鱼在复盘之后不同步...
+
+-   @todo 子弹击中空地 显示 网
 
 *   两套 js es6 es5, 同时检测 es5 客户的百分比
 

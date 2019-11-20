@@ -1,17 +1,49 @@
 -   声音 + 国际化 + 外面的接口 + 新手引导
 
--   freezeLeft 时间不对...
+-   @todo webpack dynamic
+
+## 2019-11-20 15:33:11
+
+-   @todo 商城页面 + 购买 到房间
+
+-   @todo 黄金蛙 动画有问题...
+
+-   @todo 鱼的 horizon_turn -> turn ani...
+
+-   @todo 将子弹的recover代码放到gun中...
+
+## 2019-11-20 10:18:05
+
+-   @bug shangbi
+
+-   @bug `Cannot read property 'send' of null`
+
+    -   从房间进入大厅 socket 报错..
+
+-   @todo onNode()
+
+-   @todo 国际化整理给春明...
+
+-   @todo 大厅的动画 + 接口 +
+
+-   @todo 更新鱼的动画 + 大小...
+
+-   @ques mac 电脑配置同步...
+
+-   @todo 音效 + 国际化...
+
+-   @todo 个人所得税 上个月交的是不是多写..
 
 ## 2019-11-19 16:23:39
-- @todo voice
+
+-   freezeLeft 时间不对...
+-   @todo voice
 
 -   @ques coingame.pay.request data 的格式是什么...
 
--   @todo 更新鱼的动画
+*   @bug 大厅币列表 有时候 y 不对
 
--   @bug 大厅币列表 有时候 y 不对
-
--   @ques 正式场合 如何点击 type 是多少
+*   @ques 正式场合 如何点击 type 是多少
     -   游客试玩的时候 currency, 是什么
     -   domain 从什么地方获取...
 
