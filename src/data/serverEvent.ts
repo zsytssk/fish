@@ -47,8 +47,11 @@ export const ServerEvent = {
     UserAccount: 'userAccount',
     GetDomain: 'getDomain',
     Lottery: 'lottery',
+    LotteryList: 'lotteryList',
+    ExchangeList: 'exchangeList',
     TicketExchange: 'ticketExchange',
     ShopList: 'shopList',
+    UseSkin: 'useSkin',
     Buy: 'buy',
     /** 获取游客 TOKEN */
     GetGuestToken: 'getRequestId',

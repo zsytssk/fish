@@ -94,7 +94,7 @@ export class PlayerModel extends ComponentManager {
         const { bullet_cost } = info;
         setProps(this as PlayerModel, info);
         if (info.bullet_cost) {
-            this.gun.setBulletPrice(bullet_cost);
+            this.gun.setBulletCost(bullet_cost);
         }
         this.event.emit(PlayerEvent.UpdateInfo);
     }

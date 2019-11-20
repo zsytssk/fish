@@ -1,6 +1,7 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
-import { getShopInfo } from 'ctrl/hall/hallSocket';
+import { getShopInfo, useGunSkin, buyItem } from './popSocket';
+import TopTipPop from './topTip';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -49,7 +50,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             ShopPop
         >;
         const shop_data = getShopInfo();
-        Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
+        return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
             dialog.initData(data);
         });
     }
@@ -123,7 +124,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         ] as GunRenderData;
         const { name_label, icon, stack_btn } = box;
         name_label.text = gun_name;
-        icon.skin = `image/pop/shop/icon/gun${gun_id}.png`;
+        icon.skin = `image/pop/shop/icon/${gun_id}.png`;
         stack_btn.selectedIndex = gun_status;
         const cur_btn = stack_btn.getChildAt(gun_status) as Laya.Button;
         const cur_label = cur_btn.getChildByName('label') as Laya.Label;
@@ -131,15 +132,21 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         if (gun_status === GunSkinStatus.NoHave) {
             cur_label.text = gun_price + '';
             cur_btn.on(Laya.Event.CLICK, cur_btn, () => {
-                console.log(`btn`, gun_status);
+                buyItem(gun_id).then(() => {
+                    this.buyGunSkin(gun_id);
+                });
             });
         } else if (gun_status === GunSkinStatus.Have) {
             cur_btn.on(Laya.Event.CLICK, cur_btn, () => {
-                this.useGunSkin(gun_id);
+                useGunSkin(gun_id).then(() => {
+                    this.useGunSkin(gun_id);
+                });
             });
         } else if (gun_status === GunSkinStatus.Used) {
             cur_btn.on(Laya.Event.CLICK, cur_btn, () => {
-                console.log(`btn`, gun_status);
+                buyItem(gun_id).then(() => {
+                    this.buyGunSkin(gun_id);
+                });
             });
         }
     }; // tslint:disable-line
@@ -167,18 +174,19 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         }
         this.gun_list.refresh();
     }
-    public buyItem() {}
     private renderItemList = (box: ShopItemItemUI, index: number) => {
         const { item_name, item_id, item_num, item_price } = this.item_list
             .array[index] as ItemRenderData;
         const { name_label, icon, num_label, price_label, btn_buy } = box;
         name_label.text = item_name;
         num_label.text = item_num + '';
-        icon.skin = `image/pop/shop/icon/item_${item_id}.png`;
+        icon.skin = `image/pop/shop/icon/${item_id}.png`;
         price_label.text = item_price + '';
         btn_buy.offAll();
         btn_buy.on(Laya.Event.CLICK, btn_buy, () => {
-            console.log(`buy ${item_id}`);
+            buyItem(item_id, item_num).then(() => {
+                TopTipPop.tip('购买成功');
+            });
         });
     }; // tslint:disable-line
 }

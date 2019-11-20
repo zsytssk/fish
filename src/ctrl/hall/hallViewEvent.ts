@@ -70,7 +70,7 @@ export function hallViewEvent(hall: HallCtrl) {
         hall.destroy();
     });
     onNode(btn_play_now, CLICK, async () => {
-        await roomIn({ roomId: 1, isTrial: 1 });
+        await roomIn({ roomId: 1, isTrial: 0 });
         hall.destroy();
     });
     btn_coin_select.on(CLICK, hall, () => {

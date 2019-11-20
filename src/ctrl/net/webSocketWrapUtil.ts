@@ -1,9 +1,9 @@
-import { JSEncrypt } from 'jsencrypt';
 import CryptoJS from 'crypto-js';
+import { JSEncrypt } from 'jsencrypt';
 import {
-    WebSocketWrapCtrl,
     Config,
     WebSocketTrait,
+    WebSocketWrapCtrl,
     SocketEvent,
 } from './webSocketWrap';
 
@@ -13,11 +13,26 @@ let socket_ctor: Ctor<WebSocketTrait>;
 const socket_map: Map<string, WebSocketTrait> = new Map();
 
 export function createSocket(config: Config) {
-    const { name } = config;
-    const ctor = socket_ctor || WebSocketWrapCtrl;
-    const socket = new ctor(config);
-    socket_map.set(name, socket);
-    return socket;
+    return new Promise((resolve, reject) => {
+        const { name } = config;
+        const ctor = socket_ctor || WebSocketWrapCtrl;
+        const socket = new ctor(config);
+        socket.event.once(SocketEvent.Init, () => {
+            socket_map.set(name, socket);
+            resolve(socket);
+        });
+    }) as Promise<WebSocketTrait>;
+}
+export function waitCreateSocket(config: Config) {
+    return new Promise((resolve, reject) => {
+        const { name } = config;
+        const ctor = socket_ctor || WebSocketWrapCtrl;
+        const socket = new ctor(config);
+        socket.event.once(SocketEvent.Init, () => {
+            socket_map.set(name, socket);
+            resolve(socket);
+        });
+    }) as Promise<WebSocketTrait>;
 }
 
 export function mockSocketCtor(ctor: Ctor<WebSocketTrait>) {

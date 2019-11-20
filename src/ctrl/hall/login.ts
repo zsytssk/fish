@@ -67,8 +67,8 @@ export function getHallSocketInfo(): SocketConfig {
 }
 
 export function connectSocket(config: SocketConfig) {
-    return new Promise((resolve, reject) => {
-        const socket = createSocket(config);
+    return new Promise(async (resolve, reject) => {
+        const socket = await createSocket(config);
 
         waitTokenExpire(socket, () => {
             socket.disconnect();
@@ -81,9 +81,7 @@ export function connectSocket(config: SocketConfig) {
         const token = localStorage.getItem('token');
         if (token) {
             socket.setParams({ jwt: token });
-            socket.event.once(SocketEvent.Init, () => {
-                resolve(socket);
-            });
+            resolve(socket);
             return;
         }
 
@@ -99,6 +97,7 @@ export function connectSocket(config: SocketConfig) {
         });
     }) as Promise<WebSocketTrait>;
 }
+export function onSocketCreate(name: string) {}
 
 export function getGuestToken(socket: WebSocketTrait) {
     return new Promise((resolve, reject) => {

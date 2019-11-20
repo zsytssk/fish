@@ -56,7 +56,7 @@ export class GunModel extends ComponentManager {
     /** 炮等级 */
     public bullet_cost: number;
     /** 炮皮肤 */
-    public readonly skin: string;
+    public skin: string;
     /** 炮皮肤 */
     public skin_level: string;
     /** 炮皮肤 */
@@ -96,8 +96,9 @@ export class GunModel extends ComponentManager {
     }
     public init() {
         this.initDirection();
-        this.setBulletPrice(this.player.bullet_cost);
+        this.setBulletCost(this.player.bullet_cost);
     }
+
     private initDirection() {
         const { server_index } = this.player;
         if (server_index < 2) {
@@ -118,7 +119,11 @@ export class GunModel extends ComponentManager {
             this.event.emit(GunEvent.DirectionChange, direction);
         }, this.launch_space);
     }
-    public setBulletPrice(bullet_cost: number) {
+    public changeSkin(skin: string) {
+        this.skin = skin;
+        this.setBulletCost(this.bullet_cost);
+    }
+    public setBulletCost(bullet_cost: number) {
         if (bullet_cost === this.bullet_cost) {
             return;
         }

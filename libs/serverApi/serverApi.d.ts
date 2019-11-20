@@ -219,8 +219,9 @@ type ShopItem = {
     status: 0 | 1 | 2;
 };
 type ShopListRep = ShopItem[];
+
 type BuyReq = {
-    item_id: string;
+    itemId: string;
     num: number;
 };
 type BuyRep = {
@@ -231,18 +232,30 @@ type BuyRep = {
 type UseSkinReq = {
     skinId: string;
 };
-type UseSkinRep = {
-    skinId: string;
-};
+type UseSkinRep = UseSkinReq;
 
 type ItemPrice = {
-    type: number;
+    id: string;
     count: number;
     name: string;
 };
-type LotteryRep = {
-    list: ItemPrice[];
+type LotteryRep = LotteryItem;
+
+type LotteryItem = { id: string; num: number; name: string };
+type LotteryListRep = {
+    list: LotteryItem[];
+    curNum: number;
+    costNum: number;
 };
-type TicketExchangeRep = {
-    list: ItemPrice[];
+
+type ExchangeItemData = {
+    itemId: string;
+    num: number;
+    name: string;
+    cost: number;
+    curNum: number;
 };
+type ExchangeListRep = {
+    list: ExchangeItemData[];
+};
+type TicketExchangeRep = ExchangeItemData;

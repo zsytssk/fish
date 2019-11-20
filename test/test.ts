@@ -23,5 +23,5 @@ injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
 if (EnvState.localTest) {
     localTest();
 } else {
-    localHaveSocketTest();
+    // localHaveSocketTest();
 }

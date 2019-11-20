@@ -1,16 +1,36 @@
 -   声音 + 国际化 + 外面的接口 + 新手引导
 
+-   @ques fish_test.add_fish 人为什么是颠倒的
+
 -   @todo webpack dynamic
 
 ## 2019-11-20 15:33:11
 
+-   @todo onSocketCreated(name) ...
+
+-   @bug 服务端 重启 我怎么没有收到 socket断开...
+
+-   @todo runTest clearTest
+
+    -   clearTest 清理事件
+
+-   @test 点中一个鱼
+
 -   @todo 商城页面 + 购买 到房间
+
+-   @todo 商城使用炮台 直接换当前用户的炮台
+
+    -   changeSkin
+    -   购买道具
+    -   购买子弹 都需要更新...
+
+-   @todo 发射子弹绑定在 laya.stage 上有问题...
 
 -   @todo 黄金蛙 动画有问题...
 
 -   @todo 鱼的 horizon_turn -> turn ani...
 
--   @todo 将子弹的recover代码放到gun中...
+-   @todo 将子弹的 recover 代码放到 gun 中...
 
 ## 2019-11-20 10:18:05
 

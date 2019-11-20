@@ -28,6 +28,7 @@ import {
 } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
 import { HallCtrl } from 'ctrl/hall/hallCtrl';
+import ShopPop from 'view/pop/shop';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -52,7 +53,7 @@ export class GameCtrl {
     }
     private initEvent() {
         const { view } = this;
-        const { btn_help, btn_gift, btn_voice, btn_leave } = view;
+        const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
         const { CLICK } = Laya.Event;
 
         this.onModel();
@@ -66,6 +67,9 @@ export class GameCtrl {
         });
         btn_voice.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();
+        });
+        btn_shop.on(CLICK, this, (e: Laya.Event) => {
+            ShopPop.preEnter();
         });
         btn_leave.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();

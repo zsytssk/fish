@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":41,
-    "selecteID":31,
+    "selectedBox":2,
+    "selecteID":42,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":42,
+    "maxID":43,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -305,6 +305,20 @@
             "child":[
                 ],
             "$LOCKED":true
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "searchKey":"Button,btn_shop",
+            "props":{"y":0,"x":920,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png"},
+            "nodeParent":2,
+            "label":"btn_shop",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":42,
+            "child":[
+                ]
         }],
     "animations":[
         {

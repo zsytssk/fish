@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":5,
+    "selecteID":11,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -132,7 +132,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,type_label",
-            "props":{"y":79,"x":60,"width":91,"var":"type_label","valign":"middle","text":"BTC","strokeColor":"#692315","stroke":2,"height":30,"fontSize":36,"color":"#f4e090","bold":true,"align":"center"},
+            "props":{"y":79,"x":54,"width":102,"var":"type_label","valign":"middle","text":"BTC","strokeColor":"#692315","stroke":2,"height":30,"fontSize":36,"color":"#f4e090","bold":true,"align":"center"},
             "nodeParent":2,
             "label":"type_label",
             "isDirectory":false,

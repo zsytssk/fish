@@ -191,6 +191,17 @@ export function createRedFilter() {
     return new Laya.ColorFilter(redMat);
 }
 
+export function createDarkFilter() {
+    // prettier-ignore
+    const mat = [
+        0.5, 0, 0, 0, 0,
+        0, 0.5, 0, 0, 0,
+        0, 0, 0.5, 0, 0,
+        0, 0, 0, 1, 0,
+    ];
+    return new Laya.ColorFilter(mat);
+}
+
 export function createGLowRedFilter() {
     return new Laya.GlowFilter('#ff0000', 10, 0, 0);
 }

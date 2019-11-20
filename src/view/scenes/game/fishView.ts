@@ -15,6 +15,7 @@ export class FishView extends Laya.Sprite {
     private pool: Laya.Sprite;
     private time_out: number;
     private turn_ani: boolean;
+    private turn_ani_name: string;
     constructor(info: FishViewInfo, pool: Laya.Sprite) {
         super();
         this.info = info;
@@ -80,9 +81,16 @@ export class FishView extends Laya.Sprite {
             const need_scale_x = angle > 0 && angle < 180;
             if (turn_ani) {
                 const ani_name = need_scale_x ? 'right' : 'left';
-                fish_ani.play(ani_name, true);
+                if (this.turn_ani_name !== ani_name) {
+                    console.log(need_scale_x);
+                    this.turn_ani_name = ani_name;
+                    fish_ani.play(ani_name, true);
+                }
             } else {
-                this.scaleX = need_scale_x ? -1 : 1;
+                const scale_x = need_scale_x ? -1 : 1;
+                if (scale_x !== this.scaleX) {
+                    this.scaleX = need_scale_x ? -1 : 1;
+                }
             }
         } else {
             this.rotation = angle;

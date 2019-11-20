@@ -1,9 +1,11 @@
 import { range } from 'lodash';
-import { FishModel, FishEvent } from 'model/game/fish/fishModel';
+import { FishEvent, FishModel } from 'model/game/fish/fishModel';
 import { GameEvent } from 'model/game/gameModel';
-import { ModelEvent } from 'model/modelEvent';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
+import { injectProto } from 'honor/utils/tool';
+import { FishCtrl } from 'ctrl/game/fishCtrl';
+import { get } from '../../utils/testUtils';
 
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
@@ -11,9 +13,9 @@ export const fish_test = new Test('fish', runner => {
         'add_fish',
         (typeId: number, pathId: number, time: number) => {
             // body_test.runTest('show_shape');
-            typeId = typeId || 9;
-            pathId = pathId || 1;
-            time = time || 15;
+            typeId = typeId || 19;
+            pathId = pathId || 12;
+            time = time || 12;
             const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
         },
@@ -99,6 +101,14 @@ export const fish_test = new Test('fish', runner => {
             });
         });
         game.addFish(fish_data);
+    });
+
+    runner.describe('get_click_fish', () => {
+        injectProto(FishCtrl, 'initEvent' as any, (fish: FishCtrl) => {
+            fish['view'].once(Laya.Event.CLICK, null, () => {
+                console.log(fish['model']);
+            });
+        });
     });
 });
 
