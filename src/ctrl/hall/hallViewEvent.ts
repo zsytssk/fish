@@ -11,6 +11,7 @@ import { roomIn } from './hallSocket';
 import { loginOut } from './login';
 import VoicePop from 'view/pop/voice';
 import ShopPop from 'view/pop/shop';
+import { getUserInfo } from 'model/modelState';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
@@ -77,10 +78,12 @@ export function hallViewEvent(hall: HallCtrl) {
         view.toggleBalanceMenu();
     });
     onNode(btn_get, CLICK, () => {
-        coingameCharge('');
+        const { cur_balance, lang } = getUserInfo();
+        coingameWithDraw(cur_balance, lang);
     });
     onNode(btn_charge, CLICK, () => {
-        coingameWithDraw('');
+        const { cur_balance, lang } = getUserInfo();
+        coingameCharge(cur_balance, lang);
     });
     onNode(btn_home, CLICK, () => {
         coingameHome();

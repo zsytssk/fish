@@ -45,42 +45,29 @@ export function coingameShowNav(lang: string) {
 }
 
 /** 充值 */
-export function coingameCharge(data: any) {
-    return new Promise((resolve, reject) => {
-        coingame.pay.request({
-            type: 1,
-            channel: coingameGetChannel(),
-            data,
-            success: (rep: any) => {
-                resolve(rep);
-            },
-            error: (rep: any) => {
-                reject(rep);
-            },
-            complete: (rep: any) => {
-                console.log(rep);
-            },
-        });
-    });
+export function coingameCharge(currency: string, lang: string) {
+    const data = {
+        currency,
+        lang,
+    };
+    coingame.pay.request({
+        type: '1',
+        // channel: coingameGetChannel(),
+        data,
+    } as any);
 }
 /** 提币 */
-export function coingameWithDraw(data: any) {
-    return new Promise((resolve, reject) => {
-        coingame.pay.request({
-            type: 1,
-            channel: coingameGetChannel(),
-            data,
-            success: (rep: any) => {
-                resolve(rep);
-            },
-            error: (rep: any) => {
-                reject(rep);
-            },
-            complete: (rep: any) => {
-                console.log(rep);
-            },
-        });
-    });
+export function coingameWithDraw(currency: string, lang: string) {
+    const data = {
+        currency,
+        lang,
+    };
+
+    coingame.pay.request({
+        type: '0',
+        // channel: coingameGetChannel(),
+        data,
+    } as any);
 }
 /** 提币 */
 export function coingameHome() {

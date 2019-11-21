@@ -11,7 +11,7 @@ import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
 import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
-import { isCurUser } from 'model/modelState';
+import { isCurUser, getUserInfo } from 'model/modelState';
 import { setProps } from 'utils/utils';
 import AlertPop from 'view/pop/alert';
 import HelpPop from 'view/pop/help';
@@ -118,8 +118,16 @@ export class GameCtrl {
         });
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
-        const { model } = this;
-        const { fish, users, frozen, frozen_left, fish_list } = data;
+        const { model, view } = this;
+        const {
+            fish,
+            users,
+            frozen,
+            frozen_left,
+            fish_list,
+            exchange_rate,
+        } = data;
+        const { cur_balance } = getUserInfo();
 
         this.addPlayers(users);
         this.addFish(fish);
@@ -127,6 +135,7 @@ export class GameCtrl {
         if (frozen) {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
+        view.setExchangeRate(exchange_rate, cur_balance);
     }
     public onShoot(data: ShootRep) {
         this.model.shoot(data);

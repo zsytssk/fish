@@ -6,12 +6,24 @@
 
 ## 2019-11-21 09:58:45
 
-- @ques 点击发射子弹的事件绑定
-    - 放在pool上面(多个事件放在一个节点上会相互覆盖吗)
+- @ques 提币按钮点的没反应
+    - gameSdk
 
-- @todo
+- @todo 初始界面...
+
+
+-   setExchangeRate 怎么做国际化
+
+    -   `getText(‘’, ()=>{...})`
+    -   IntervalChangeOff
+    -   要清除
+
+-   @ques 点击发射子弹的事件绑定
+
+    -   放在 pool 上面(多个事件放在一个节点上会相互覆盖吗)
+
+-   @todo
 -   子弹不够的提示
--   音效 + 帮助
 -   充值提币提示...
 
 -   @ques 怎么将多个 promise 变成一个个的执行, 监听整个执行完成
@@ -21,8 +33,9 @@
     -   testUpdateAmount
 
 -   @ques onClassCreate
+-   @ques onPropertyChange
 
--   @todo 音效 + 细节
+-   @todo 音效 + 细节 + 帮助
 
     -   音效的大小限制
 

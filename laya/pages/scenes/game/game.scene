@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":11,
-    "selecteID":41,
+    "selectedBox":41,
+    "selecteID":31,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -254,16 +254,17 @@
                             "props":{"y":45,"x":31,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
                             "nodeParent":41,
                             "label":"Image",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":28,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
-                                    "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"余额 384789380 EBT","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
+                                    "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
                                     "nodeParent":28,
                                     "label":"bullet_num",
                                     "isDirectory":false,
@@ -277,10 +278,10 @@
                         {
                             "x":45,
                             "type":"HTMLDivElement",
-                            "searchKey":"HTMLDivElement",
-                            "props":{"y":13,"x":44,"width":176,"innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1 底分</span> = <span color=\"#ffdd76\">0.0035</span> <span>币</span> </div>","height":29},
+                            "searchKey":"HTMLDivElement,exchange_rate",
+                            "props":{"y":13,"x":44,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">xxx</span> <span></span> </div>","height":29},
                             "nodeParent":41,
-                            "label":"HTMLDivElement",
+                            "label":"exchange_rate",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,

@@ -1,3 +1,5 @@
+-   直接进入游戏 `https://testing-bitfish.cointest.link/?enterGame=1`
+
 -   兼容性测试
 
     -   es6-map es6-set ...

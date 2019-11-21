@@ -78,6 +78,7 @@ type ServerAddFishRep = {
 /** 复盘 */
 type EnterGameRep = {
     roomId: number;
+    rate: number;
     tableId: string;
     frozen: boolean;
     frozenLeft: number;

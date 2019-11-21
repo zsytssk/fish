@@ -102,7 +102,7 @@ export type EnterGameData = {
 };
 let items_template: ServerItemInfo[];
 export function convertEnterGame(data: EnterGameRep) {
-    const { users: users_source, items, fish, frozen, frozenLeft } = data;
+    const { rate, users: users_source, items, fish, frozen, frozenLeft } = data;
     const users = [] as PlayerInfo[];
     items_template = items;
 
@@ -161,6 +161,7 @@ export function convertEnterGame(data: EnterGameRep) {
     }
 
     return {
+        exchange_rate: rate,
         fish,
         users,
         frozen,
