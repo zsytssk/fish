@@ -6,11 +6,19 @@ import {
     WebSocketWrapCtrl,
     SocketEvent,
 } from './webSocketWrap';
+import { EventCom } from 'comMan/eventCom';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();
 let socket_ctor: Ctor<WebSocketTrait>;
 const socket_map: Map<string, WebSocketTrait> = new Map();
+
+/**  监听创建 */
+const socket_map_event = new EventCom();
+const SocketMapEvent = {
+    Create: 'create',
+    Disconnect: 'disconnect',
+};
 
 export function createSocket(config: Config) {
     return new Promise((resolve, reject) => {
@@ -18,20 +26,26 @@ export function createSocket(config: Config) {
         const ctor = socket_ctor || WebSocketWrapCtrl;
         const socket = new ctor(config);
         socket.event.once(SocketEvent.Init, () => {
+            socket_map_event.emit(SocketMapEvent.Create, name, socket);
             socket_map.set(name, socket);
             resolve(socket);
         });
     }) as Promise<WebSocketTrait>;
 }
-export function waitCreateSocket(config: Config) {
+export function waitCreateSocket(name: string) {
     return new Promise((resolve, reject) => {
-        const { name } = config;
-        const ctor = socket_ctor || WebSocketWrapCtrl;
-        const socket = new ctor(config);
-        socket.event.once(SocketEvent.Init, () => {
-            socket_map.set(name, socket);
-            resolve(socket);
-        });
+        const socket = socket_map.get(name);
+        if (socket) {
+            return resolve(socket);
+        }
+        socket_map_event.once(
+            SocketMapEvent.Create,
+            (_name: string, _socket: WebSocketTrait) => {
+                if (_name === name) {
+                    resolve(_socket);
+                }
+            },
+        );
     }) as Promise<WebSocketTrait>;
 }
 

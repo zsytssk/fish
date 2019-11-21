@@ -2,6 +2,7 @@ import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { Lang } from 'data/internationalConfig';
 import coingame from 'coingame/coingame.min';
+import { getCacheBalance, setCacheBalance } from './userInfoUtils';
 
 /** 账户信息修改 */
 export const UserInfoEvent = {
@@ -40,6 +41,7 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.cur_balance = balance;
+        setCacheBalance(this.user_id, balance);
         setTimeout(() => {
             this.event.emit(UserInfoEvent.CurBalanceChange, balance);
         });
@@ -61,18 +63,23 @@ export class UserInfoModel extends ComponentManager {
     }
     /** 选择当前用户的coin */
     public setAccount(data: UserAccountRep['balances']) {
+        let first_balance: string;
         for (const key in data) {
             if (!data.hasOwnProperty(key)) {
                 continue;
             }
-            if (!this.cur_balance) {
-                this.setCurBalance(key);
+            if (!first_balance) {
+                first_balance = key;
             }
             const { balance: num, imageUrl: icon } = data[key];
             this.account_map.set(key, {
                 num,
                 icon,
             });
+        }
+        if (!this.cur_balance) {
+            const cur_balance = getCacheBalance(this.user_id);
+            this.setCurBalance(cur_balance || first_balance);
         }
         this.event.emit(UserInfoEvent.AccountChange, this.account_map);
     }

@@ -11,11 +11,18 @@ import TopTipPop from 'view/pop/topTip';
 import { Config } from 'data/config';
 import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import { getBeBombFish } from 'model/game/fish/fishModelUtils';
+import AlertPop from 'view/pop/alert';
+import ShopPop from 'view/pop/shop';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
     if (model.skill_core.num <= 0) {
-        return TopTipPop.tip('你还没有当前技能, 是否购买!');
+        AlertPop.alert('你还没有当前技能, 是否购买!').then(type => {
+            if (type === 'confirm') {
+                ShopPop.preEnter();
+            }
+        });
+        return;
     }
     if (model.skill_core.status !== SkillStatus.Normal) {
         return;

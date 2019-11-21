@@ -32,10 +32,11 @@ export class HallCtrl {
     private async init() {
         hallViewEvent(this);
         this.initModelEvent();
-        await onHallSocket(this);
-        if (await checkReplay(this)) {
-            this.destroy();
-        }
+        await onHallSocket(this).then(enter_game => {
+            if (enter_game) {
+                this.destroy();
+            }
+        });
     }
     private initModelEvent() {
         const { view } = this;

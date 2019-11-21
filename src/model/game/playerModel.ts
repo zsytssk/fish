@@ -122,13 +122,13 @@ export class PlayerModel extends ComponentManager {
         skill_model.reset();
     }
     public async captureFish(fish: FishModel, win: number) {
-        const { bullet_num } = this;
         const pos = await fish.beCapture();
         if (!win) {
             return;
         }
         if (!pos) {
             console.error(`cant find fish pos`);
+            const { bullet_num } = this;
             return this.updateInfo({
                 bullet_num: bullet_num + win,
             });
@@ -140,6 +140,7 @@ export class PlayerModel extends ComponentManager {
                 resolve,
             } as CaptureInfo);
         }).then(() => {
+            const { bullet_num } = this;
             this.updateInfo({
                 bullet_num: bullet_num + win,
             });

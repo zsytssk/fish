@@ -80,9 +80,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.addFish(data.fish);
         },
         [ServerEvent.FishShoalWarn]: (data: FishShoalWarnRep) => {},
-        [ServerEvent.TableOut]: (data: TableOutRep) => {
-            game.tableOut(data);
-        },
         [ServerEvent.RoomOut]: (data: RoomOutRep) => {
             game.roomOut(data);
         },

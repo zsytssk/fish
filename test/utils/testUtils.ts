@@ -1,4 +1,7 @@
 import { modelState } from 'model/modelState';
+import { injectProto } from 'honor/utils/tool';
+import { WebSocketWrapCtrl } from 'ctrl/net/webSocketWrap';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 
 export function getUserInfo() {
     return modelState.app.user_info;
@@ -6,6 +9,26 @@ export function getUserInfo() {
 export function getCurPlayer() {
     return modelState.app.game.getPlayerById(modelState.app.user_info.user_id);
 }
+
+/** 等待socket连接上 */
+export function waitSocketCreate(name: string) {
+    return new Promise((resolve, reject) => {
+        const socket = getSocket(name);
+        if (socket) {
+            return resolve(socket);
+        }
+        injectProto(
+            WebSocketWrapCtrl,
+            'onInit' as any,
+            (_socket: WebSocketWrapCtrl) => {
+                if (socket['config'].name === name) {
+                    resolve(_socket);
+                }
+            },
+        );
+    });
+}
+
 /** 检测stage上点击元素 */
 export function stageClick() {
     Laya.stage.on('click', null, (e: Event) => {
@@ -73,4 +96,8 @@ export function getTestEnable() {
         test_enable_arr = test_str.split(',');
     }
     return test_enable_arr;
+}
+
+export function getParams(name: string) {
+    return Laya.Utils.getQueryString(name);
 }

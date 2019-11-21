@@ -26,6 +26,8 @@ export const GunEvent = {
     CastFish: 'cast_fish',
     /** 等级修改 */
     LevelChange: 'level_change',
+    /** 子弹数目不够 */
+    NotEnoughBulletNum: 'not_enough_bullet_num',
 };
 
 export type LevelInfo = {
@@ -181,8 +183,17 @@ export class GunModel extends ComponentManager {
         return track_fish;
     }
     public preAddBullet(velocity: SAT.Vector, force = false) {
-        const { status, is_on, event, launch_space, player } = this;
-        if (player.bullet_num < 0) {
+        const {
+            status,
+            is_on,
+            event,
+            launch_space,
+            player,
+            bullet_cost,
+        } = this;
+
+        if (player.bullet_num - bullet_cost < 0) {
+            event.emit(GunEvent.NotEnoughBulletNum);
             return;
         }
         if (!force && status === GunStatus.TrackFish) {

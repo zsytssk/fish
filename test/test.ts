@@ -2,16 +2,16 @@ import { ctrlState } from 'ctrl/ctrlState';
 import honor from 'honor';
 import { modelState } from 'model/modelState';
 import { viewState } from 'view/viewState';
+import { localHaveSocketTest, localTest } from './app/testEnv';
+import { test } from './testBuilder';
 import {
+    getCurPlayer,
+    getParams,
+    getUserInfo,
+    injectWindow,
     showNodeZone,
     stageClick,
-    injectWindow,
-    getCurPlayer,
-    getUserInfo,
 } from './utils/testUtils';
-import { test } from './testBuilder';
-import { localHaveSocketTest, localTest } from './app/testEnv';
-import { EnvState } from 'data/env';
 
 const testUtils = {
     showNodeZone,
@@ -20,8 +20,9 @@ const testUtils = {
     getUserInfo,
 };
 injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
-if (EnvState.localTest) {
+
+if (getParams('localTest')) {
     localTest();
-} else {
-    // localHaveSocketTest();
+} else if (getParams('enterGame')) {
+    localHaveSocketTest();
 }

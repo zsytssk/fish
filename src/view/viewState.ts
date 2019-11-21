@@ -8,6 +8,9 @@ type ViewState = {
 
 export const viewState = {} as ViewState;
 
+export function getGameView() {
+    return viewState.game;
+}
 export function addBullet(skin: string, rage: boolean) {
     return viewState.game.addBullet(skin, rage);
 }

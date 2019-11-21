@@ -206,6 +206,13 @@ export function createGLowRedFilter() {
     return new Laya.GlowFilter('#ff0000', 10, 0, 0);
 }
 
+export function darkNode(node: Laya.Sprite) {
+    node.filters = [createDarkFilter()];
+}
+export function unDarkNode(node: Laya.Sprite) {
+    node.filters = null;
+}
+
 export function genRandomStr() {
     return Math.random()
         .toString()

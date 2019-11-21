@@ -9,7 +9,7 @@ import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
 import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 import SAT from 'sat';
-import TipPop from 'view/pop/tip';
+import { darkNode, unDarkNode } from 'utils/utils';
 import { activeAimFish, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import GunBoxView from 'view/scenes/game/gunBoxView';
@@ -18,9 +18,12 @@ import {
     getPoolMousePos,
     getSkillItemByIndex,
     setBulletNum,
+    getGameView,
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
+import AlertPop from 'view/pop/alert';
+import ShopPop from 'view/pop/shop';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -124,6 +127,13 @@ export class PlayerCtrl {
             const { bullet_num } = this.model;
             setBulletNum(bullet_num);
         });
+        gun_event.on(GunEvent.NotEnoughBulletNum, () => {
+            AlertPop.alert('子弹数目不够, 是否购买?').then(type => {
+                if (type === 'confirm') {
+                    ShopPop.preEnter();
+                }
+            });
+        });
         gun_event.on(
             GunEvent.CastFish,
             (data: { fish: FishModel; level: number }) => {
@@ -150,7 +160,8 @@ export class PlayerCtrl {
                 direction: { x, y },
             } as ShootReq);
         });
-        Laya.stage.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+
+        getGameView().on(Laya.Event.CLICK, view, (e: Laya.Event) => {
             const click_pos = getPoolMousePos();
             const _direction = new SAT.Vector(
                 click_pos.x - gun_pos.x,
@@ -176,17 +187,28 @@ export class PlayerCtrl {
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
         const { bullet_cost } = this.model;
+        const { btn_minus, btn_add } = this.view;
 
         // prettier-ignore
         const arr =
          [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100, 200, 300, 500, 800, 1000];
         const index = arr.indexOf(bullet_cost);
-        if (index === -1) {
-            return TipPop.tip('已经是最大倍数炮台');
-        }
-        const next = arr[index + 1];
-        const _socket = getSocket(ServerName.Game);
+        const next_index = type === 'add' ? index + 1 : index - 1;
 
+        unDarkNode(btn_minus);
+        unDarkNode(btn_add);
+        if (next_index <= 0) {
+            darkNode(btn_minus);
+        } else if (next_index >= arr.length - 1) {
+            darkNode(btn_add);
+        }
+
+        if (next_index < 0 || next_index > arr.length - 1) {
+            return;
+        }
+
+        const next = arr[next_index];
+        const _socket = getSocket(ServerName.Game);
         _socket.send(ServerEvent.ChangeTurret, {
             multiple: next,
         } as ChangeTurretReq);

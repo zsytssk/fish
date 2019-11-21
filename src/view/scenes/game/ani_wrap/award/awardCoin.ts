@@ -61,6 +61,7 @@ export function createAwardCoin(pos: Point, num: number) {
 /** 显示奖励的数目 */
 export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     const { ani_wrap } = viewState;
+    const { upside_down } = viewState.game;
     const bg_ani = createSprite('other', 'award_light') as Laya.Skeleton;
     const num_label = new Laya.Label();
 
@@ -68,6 +69,9 @@ export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     num_label.zOrder = 10;
     num_label.font = is_cur_player ? 'numYellow40' : 'numWhite40';
     num_label.text = '+' + num;
+    if (upside_down) {
+        num_label.scaleY = -1;
+    }
     ani_wrap.addChild(num_label);
     ani_wrap.addChild(bg_ani);
     const bounds_num_label = num_label.getBounds();
