@@ -87,38 +87,32 @@ export function slide_up_in(
     ease_fn?: string,
     space?: number,
 ) {
-    return new Promise((resolve, reject) => {
-        if (!space) {
-            const height = sprite.getBounds().height;
-            space = height > 50 ? 50 : height;
-        }
-        completeAni(sprite);
-        /** 因为completeAni 导致的动画完成函数要异步执行
-         * 所以为了等待原来的函数执行完成 所以他自己必须异步执行
-         */
-        setTimeout(() => {
-            ease_fn = ease_fn || 'circleOut';
-            time = time || 200;
-            const ori_y = sprite.y;
-            const start_props = {
-                alpha: 0,
-                visible: true,
-                y: ori_y + space,
-            };
-            const end_props = {
-                alpha: 1,
-                y: ori_y,
-            };
-            return tween({
-                sprite,
-                start_props,
-                end_props,
-                time,
-                ease_fn,
-            }).then(() => {
-                resolve();
-            });
-        });
+    if (!space) {
+        const height = sprite.getBounds().height;
+        space = height > 50 ? 50 : height;
+    }
+    completeAni(sprite);
+
+    ease_fn = ease_fn || 'circleOut';
+    time = time || 200;
+    setStyle(sprite, {
+        alpha: 0.2,
+        visible: true,
+    });
+    const ori_y = sprite.y;
+    const start_props = {
+        y: ori_y + space,
+    };
+    const end_props = {
+        alpha: 1,
+        y: ori_y,
+    };
+    return tween({
+        sprite,
+        start_props,
+        end_props,
+        time,
+        ease_fn,
     });
 }
 export async function slide_up_out(
@@ -156,10 +150,12 @@ export async function slide_down_in(
     await completeAni(sprite);
     ease_fn = ease_fn || 'circleOut';
     time = time || 200;
+    setStyle(sprite, {
+        alpha: 0.2,
+        visible: true,
+    });
     const ori_y = sprite.y;
     const start_props = {
-        alpha: 0,
-        visible: true,
         y: ori_y - space,
     };
     const end_props = {
@@ -211,10 +207,12 @@ export function slide_left_in(
     completeAni(sprite);
     ease_fn = ease_fn || 'easeIn';
     time = time || 200;
+    setStyle(sprite, {
+        alpha: 0.2,
+        visible: true,
+    });
     const ori_x = sprite.x;
     const start_props = {
-        alpha: 0,
-        visible: true,
         x: ori_x + space,
     };
     const end_props = {
@@ -260,10 +258,12 @@ export function slide_right_in(
     completeAni(sprite);
     ease_fn = ease_fn || 'circleOut';
     time = time || 200;
+    setStyle(sprite, {
+        alpha: 0.2,
+        visible: true,
+    });
     const ori_x = sprite.x;
     const start_props = {
-        alpha: 0,
-        visible: true,
         x: ori_x - space,
     };
     const end_props = {

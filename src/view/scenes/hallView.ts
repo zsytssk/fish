@@ -99,7 +99,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
             coin_menu.list.selectedIndex = -1;
         }
     }
-    public setCoin(type: string, icon: string, num: number) {
+    public setCurBalance(type: string, icon: string, num: number) {
         const { coin_icon, coin_name, coin_num } = this.header;
         const { normal_box, match_box } = this;
         coin_icon.skin = icon;

@@ -127,6 +127,7 @@ type FishShoalWarnRep = {
 };
 type FishShoal = {
     shoalId: string;
+    reverse: boolean;
     fish: ServerFishInfo[];
 };
 type UseFreezeRep = {

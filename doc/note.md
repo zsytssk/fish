@@ -1,59 +1,85 @@
--   声音 + 国际化 + 外面的接口 + 新手引导
+-   @todo 鱼组 四个
 
--   @ques fish_test.add_fish 人为什么是颠倒的
+## 2019-11-21 20:29:19
 
 -   @todo webpack dynamic
 
+*   声音 + 国际化 + 外面的接口 + 新手引导
+
+-   @todo 房间 刷新直接进入游戏...
+
+-   @bug 转向鱼的方向有问题...
+
+-   @bug 鱼潮转向 解决..
+
+## 2019-11-21 17:52:47
+
+-   @todo 生成版本号的代码...
+
+-   @todo 鱼死亡动画
+
+-   @todo 奖励的数字显示的时间太长了...
+
+-   @bug slide_down_in 的样式 先把显示出来...
+
+-   @bug shoal.spec.ts 有问题..
+    -   mock_web_socket_test.runTest('create');
+
 ## 2019-11-21 09:58:45
 
-- @ques 提币按钮点的没反应
-    - gameSdk
+-   @ques fish_test.add_fish 人为什么是颠倒的
+-   @ques 从房间回来 钱币 没有更新...
 
-- @todo 初始界面...
+-   按钮的下拉提示... f28
 
+-   @ques 提币按钮点的没反应
 
--   setExchangeRate 怎么做国际化
+    -   gameSdk
+
+-   @todo 初始界面...
+
+*   setExchangeRate 怎么做国际化
 
     -   `getText(‘’, ()=>{...})`
     -   IntervalChangeOff
     -   要清除
 
--   @ques 点击发射子弹的事件绑定
+*   @ques 点击发射子弹的事件绑定
 
     -   放在 pool 上面(多个事件放在一个节点上会相互覆盖吗)
 
--   @todo
--   子弹不够的提示
--   充值提币提示...
+*   @todo
+*   子弹不够的提示
+*   充值提币提示...
 
--   @ques 怎么将多个 promise 变成一个个的执行, 监听整个执行完成
+*   @ques 怎么将多个 promise 变成一个个的执行, 监听整个执行完成
 
--   @bug 用户的金钱 更新有问题...
+*   @bug 用户的金钱 更新有问题...
 
     -   testUpdateAmount
 
--   @ques onClassCreate
--   @ques onPropertyChange
+*   @ques onClassCreate
+*   @ques onPropertyChange
 
--   @todo 音效 + 细节 + 帮助
+*   @todo 音效 + 细节 + 帮助
 
     -   音效的大小限制
 
--   @todo 记录本地选中的币...
+*   @todo 记录本地选中的币...
 
--   @todo 用户的钱加的不对...
+*   @todo 用户的钱加的不对...
 
--   @todo 许多地方的文案需要产品提供
+*   @todo 许多地方的文案需要产品提供
 
     -   文案的地方 我来总结...
 
--   @todo 游戏内展示 子弹的 ui
+*   @todo 游戏内展示 子弹的 ui
 
--   @todo 商城 抽奖 之后 用户 的状态改变...
+*   @todo 商城 抽奖 之后 用户 的状态改变...
 
--   @todo 当前玩家子弹不够的提示...
+*   @todo 当前玩家子弹不够的提示...
 
--   @todo 按钮不可点击 变暗
+*   @todo 按钮不可点击 变暗
 
 ## 2019-11-20 15:33:11
 

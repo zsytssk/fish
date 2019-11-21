@@ -44,7 +44,7 @@ export class HallCtrl {
         onCurBalanceChange(this, (type: string) => {
             const { account_map } = user_info;
             const { num, icon } = account_map.get(type);
-            view.setCoin(type, icon, num);
+            view.setCurBalance(type, icon, num);
         });
         onLangChange(this, (lang: Lang) => {
             coingameUpdateLanguage(lang);

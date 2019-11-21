@@ -97,7 +97,7 @@ export function createFishGroup(
             update_fn(move_info);
         }
     });
-    for (let i = 0; i < sprite_group.length; i++) {
+    for (let i = 0; i < group.length; i++) {
         const { type, pos } = sprite_group[i];
         const { eid: id } = group[i];
         const [onUpdate, destroy, start, stop] = createUpdateFn(
