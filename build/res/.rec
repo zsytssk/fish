@@ -3,6 +3,16 @@ D ani
 D font
 D image
 D sound
+R DB802805 bomb.mp3
+R 3C6C5BC8 change_skin.mp3
+R 3C0DEC06 click.mp3
+R DA5858B4 coin_few.mp3
+R 2F61A5C9 coin_lot.mp3
+R 9808318E fire.mp3
+R 3BFD98EE game_bg.mp3
+R B476F2EC hall_bg.mp3
+R B9905DBD leave_game.mp3
+R CB3E4517 shoal_coming.mp3
 D ani/fish
 D ani/gun
 P C36CD229 base11.png
@@ -113,6 +123,7 @@ R ED92FAB4 shoal_wave.sk
 R ECE048EA skill_border_light.png
 R A60F29B9 skill_border_light.sk
 D image/common
+P 1A923A60 lite_tip_bg.png
 D image/game
 P 48CBF531 account_bd_bg.png
 P FED0977A account_bg.png
