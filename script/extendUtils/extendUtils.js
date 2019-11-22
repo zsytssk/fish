@@ -11,23 +11,9 @@ function getAllLayers(doc, is_visible) {
                 continue;
             }
         }
-        if (!activeLayer.layers || !activeLayer.layers.length) {
-            result.push(activeLayer);
-        } else {
-            result = result.concat(getAllLayers(activeLayer, is_visible));
-        }
-    }
-    return result;
-}
-/** 获得没有子类的图层 */
-function getAllLayers(doc, is_visible) {
-    var result = [];
-    for (var k = 0; k < doc.layers.length; k++) {
-        var activeLayer = doc.layers[k];
-        if (is_visible) {
-            if (!activeLayer.visible) {
-                continue;
-            }
+        /** 排除锁定的图层 */
+        if (activeLayer.allLocked) {
+            continue;
         }
         if (!activeLayer.layers || !activeLayer.layers.length) {
             result.push(activeLayer);
@@ -139,20 +125,6 @@ function roundCoordinate(coor_arr) {
             continue;
         }
         result.y = Math.round(coor_arr[i]);
-    }
-    return result;
-}
-
-/** 获得没有子类的图层 */
-function getAllLayers(doc) {
-    var result = [];
-    for (var k = 0; k < doc.layers.length; k++) {
-        var activeLayer = doc.layers[k];
-        if (!activeLayer.layers || !activeLayer.layers.length) {
-            result.push(activeLayer);
-        } else {
-            result = result.concat(getAllLayers(activeLayer));
-        }
     }
     return result;
 }

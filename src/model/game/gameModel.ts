@@ -128,8 +128,8 @@ export class GameModel extends ComponentManager {
         const player = this.getPlayerById(data.userId);
         player.gun.addBullet(data.direction);
     }
-    public shoalComingTip() {
-        this.shoal_com.preAddShoal();
+    public shoalComingTip(reverse: boolean) {
+        this.shoal_com.preAddShoal(reverse);
     }
     public destroy() {
         const { fish_list, player_list } = this;

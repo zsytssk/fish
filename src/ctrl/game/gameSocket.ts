@@ -76,7 +76,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.addFish(data.fish);
         },
         [ServerEvent.FishShoal]: (data: FishShoal) => {
-            game.shoalComingTip();
+            game.shoalComingTip(data.reverse);
             game.addFish(data.fish);
         },
         [ServerEvent.FishShoalWarn]: (data: FishShoalWarnRep) => {},

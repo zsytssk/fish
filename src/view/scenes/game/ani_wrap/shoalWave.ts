@@ -6,13 +6,13 @@ import { viewState } from 'view/viewState';
 let shoal_wave_ani: Laya.Skeleton;
 
 /** 激活鱼群动画 */
-export function activeShoalWave(reverse = false) {
+export function activeShoalWave(reverse: boolean) {
     createShoalWaveAni();
 
     shoal_wave_ani.once(Laya.Event.STOPPED, shoal_wave_ani, () => {
         stopShoalWave();
     });
-    if (reverse) {
+    if (!reverse) {
         shoal_wave_ani.scaleX = -2;
     } else {
         shoal_wave_ani.scaleX = 2;

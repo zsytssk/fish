@@ -110,8 +110,8 @@ export class GameCtrl {
         event.on(FreezingComEvent.UnFreezing, () => {
             stopFreeze();
         });
-        event.on(ShoalEvent.PreAddShoal, () => {
-            activeShoalWave(true);
+        event.on(ShoalEvent.PreAddShoal, reverse => {
+            activeShoalWave(reverse);
         });
         event.on(GameEvent.Destroy, () => {
             this.destroy();
@@ -143,8 +143,8 @@ export class GameCtrl {
     public onHit(data: HitRep) {
         this.model.captureFish(data);
     }
-    public shoalComingTip() {
-        this.model.shoalComingTip();
+    public shoalComingTip(reverse: boolean) {
+        this.model.shoalComingTip(reverse);
     }
     public resetSkill(skill: SkillMap, user_id: string) {
         this.model.resetSkill(skill, user_id);
