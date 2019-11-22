@@ -110,6 +110,7 @@ export class GameCtrl {
             const ctrl = new PlayerCtrl(player_view, player);
         });
         event.on(FreezingComEvent.Freezing, () => {
+            AudioCtrl.play(AudioRes.Freeze);
             activeFreeze();
         });
         event.on(FreezingComEvent.UnFreezing, () => {

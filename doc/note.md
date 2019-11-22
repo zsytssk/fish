@@ -5,6 +5,8 @@
 
 ## 2019-11-22 13:43:49
 
+- @ques audio 报错...
+
 -   @ques setBulletCost 皮肤发生改变 如何判断
 
 -   @todo item 掉落...
