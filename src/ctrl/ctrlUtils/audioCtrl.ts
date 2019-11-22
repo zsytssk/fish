@@ -18,7 +18,7 @@ export class AudioCtrl {
      * @param is_bg 是否是背景音乐
      */
     public static play(audio: string, is_bg = false) {
-        const { music } = this;
+        const music = this.music || 1;
         const { playSound, playMusic } = this.sound_manager;
         const play_fn = is_bg ? playMusic : playSound;
 
