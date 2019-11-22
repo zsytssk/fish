@@ -1,6 +1,6 @@
-import { Lang } from 'data/internationalConfig';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
+import { getAudio, setMusic, setVoice } from './userInfoUtils';
 
 export const SettingEvent = {
     VoiceChange: 'voice_change',
@@ -14,8 +14,12 @@ export class SettingModel extends ComponentManager {
     public music: number;
     constructor() {
         super();
-
         this.addCom(new EventCom());
+    }
+    public initAudio() {
+        const [voice, music] = getAudio();
+        this.voice = voice;
+        this.music = music;
     }
     public get event() {
         return this.getCom(EventCom);
@@ -26,6 +30,7 @@ export class SettingModel extends ComponentManager {
             return;
         }
         this.voice = voice;
+        setVoice(voice);
         this.event.emit(SettingEvent.VoiceChange, voice);
     }
     public setMusic(music: number) {
@@ -33,6 +38,8 @@ export class SettingModel extends ComponentManager {
             return;
         }
         this.music = music;
+
+        setMusic(music);
         this.event.emit(SettingEvent.MusicChange, music);
     }
 }

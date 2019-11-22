@@ -1,5 +1,7 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from 'data/audioRes';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 export default class AlertPop extends ui.pop.alert.alertUI
@@ -7,6 +9,7 @@ export default class AlertPop extends ui.pop.alert.alertUI
     public isModal = true;
     public close_resolve: (type: CloseType) => void;
     public static async alert(msg: string) {
+        AudioCtrl.play(AudioRes.PopShow);
         const alert = (await honor.director.openDialog(AlertPop)) as AlertPop;
         return await alert.alert(msg);
     }
@@ -32,6 +35,7 @@ export default class AlertPop extends ui.pop.alert.alertUI
         }) as Promise<CloseType>;
     }
     public close(type: CloseType) {
+        AudioCtrl.play(AudioRes.Click);
         const { close_resolve } = this;
         if (close_resolve) {
             close_resolve(type);

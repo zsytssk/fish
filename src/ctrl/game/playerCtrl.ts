@@ -24,6 +24,8 @@ import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
 import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from 'data/audioRes';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -67,6 +69,9 @@ export class PlayerCtrl {
         player_event.on(PlayerEvent.CaptureFish, (data: CaptureInfo) => {
             const { pos, win, resolve } = data;
             const { pos: end_pos } = gun;
+            if (is_cur_player) {
+                AudioCtrl.play(AudioRes.CoinFew);
+            }
             showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
         });
         player_event.on(PlayerEvent.Destroy, () => {
@@ -91,6 +96,9 @@ export class PlayerCtrl {
             view.setDirection(_direction);
         });
         gun_event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
+            if (is_cur_player) {
+                AudioCtrl.play(AudioRes.ChangeSkin);
+            }
             view.setBulletCost(level_info);
         });
         view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
@@ -156,6 +164,7 @@ export class PlayerCtrl {
         });
         gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
             const { x, y } = velocity;
+            AudioCtrl.play(AudioRes.Fire);
             socket.send(ServerEvent.Shoot, {
                 direction: { x, y },
             } as ShootReq);
@@ -207,6 +216,7 @@ export class PlayerCtrl {
             return;
         }
 
+        AudioCtrl.play(AudioRes.Fire);
         const next = arr[next_index];
         const _socket = getSocket(ServerName.Game);
         _socket.send(ServerEvent.ChangeTurret, {

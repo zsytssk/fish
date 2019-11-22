@@ -13,6 +13,8 @@ import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
 import { getBeBombFish } from 'model/game/fish/fishModelUtils';
 import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from 'data/audioRes';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
@@ -81,6 +83,7 @@ export function skillActiveHandler(
             // ...
         } else if (model instanceof BombModel) {
             activeExploding(info as Point);
+            AudioCtrl.play(AudioRes.Bomb);
             resolve();
         }
     });

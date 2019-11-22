@@ -1,6 +1,8 @@
 import coingame from 'coingame/coingame.min';
 import { coingameUpdateLanguage } from 'coingame/coingameUtil';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
+import { AudioRes } from 'data/audioRes';
 import { Lang } from 'data/internationalConfig';
 import { ServerName } from 'data/serverEvent';
 import { getUserInfo, modelState } from 'model/modelState';
@@ -14,8 +16,9 @@ import {
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
-import { checkReplay, onHallSocket } from './hallSocket';
+import { onHallSocket } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
+import { initUserInfo } from 'model/userInfo/userInfoUtils';
 
 export class HallCtrl {
     public view: HallView;
@@ -33,8 +36,11 @@ export class HallCtrl {
         hallViewEvent(this);
         this.initModelEvent();
         await onHallSocket(this).then(enter_game => {
+            initUserInfo();
             if (enter_game) {
                 this.destroy();
+            } else {
+                AudioCtrl.play(AudioRes.HallBg, true);
             }
         });
     }
@@ -100,6 +106,7 @@ export class HallCtrl {
         btn_login.visible = false;
     }
     public destroy() {
+        AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
         disconnectSocket(ServerName.Hall);
     }

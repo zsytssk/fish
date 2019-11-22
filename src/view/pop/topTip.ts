@@ -3,6 +3,8 @@ import { ui } from 'ui/layaMaxUI';
 import { startCount } from 'utils/count';
 import { getStringLength } from 'honor/utils/getStringLength';
 import { slide_down_in } from 'utils/animate';
+import { AudioRes } from 'data/audioRes';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 
 const url = 'pop/alert/topTip.scene';
 export default class TopTipPop extends ui.pop.alert.topTipUI
@@ -11,9 +13,9 @@ export default class TopTipPop extends ui.pop.alert.topTipUI
     public isPopupCenter = false;
     constructor() {
         super();
-        console.log(this.isShowEffect);
     }
     public static async tip(msg: string, time = 3) {
+        AudioCtrl.play(AudioRes.PopShow);
         const tip_dialog = (await honor.director.openDialog(url)) as TopTipPop;
         await tip_dialog.tip(msg, time);
     }

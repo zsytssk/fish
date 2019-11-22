@@ -17,7 +17,9 @@ export class AppCtrl {
     }
     public startApp() {
         ctrlState.app = this;
-        this.model = new AppModel();
+        const model = new AppModel();
+        this.model = model;
+        model.init();
 
         return this.startHonor().then(() => {
             HallCtrl.preEnter();
@@ -33,9 +35,11 @@ export class AppCtrl {
             'scenes/loading.scene',
         );
         // const task2 = honor.director.setLoadPageForDialog('scenes/loading.scene');
-        const task2 = honor.director.load(res.font).then(() => {
-            honor.utils.registerFontSize(font_list);
-        });
+        const task2 = honor.director
+            .load([...res.font, ...res.audio])
+            .then(() => {
+                honor.utils.registerFontSize(font_list);
+            });
         await Promise.all([task1, task2]);
     }
     public enterGame(url: string) {

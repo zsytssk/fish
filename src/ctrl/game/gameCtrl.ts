@@ -29,6 +29,9 @@ import {
 import { PlayerCtrl } from './playerCtrl';
 import { HallCtrl } from 'ctrl/hall/hallCtrl';
 import ShopPop from 'view/pop/shop';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from 'data/audioRes';
+import VoicePop from 'view/pop/voice';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -45,8 +48,9 @@ export class GameCtrl {
         game_ctrl.init(url);
         setProps(ctrlState, { game: game_ctrl });
     }
-    private init(url) {
+    private init(url: string) {
         this.initEvent();
+        AudioCtrl.play(AudioRes.GameBg, true);
         waitConnectGame(url).then(() => {
             onGameSocket(getSocket('game'), this);
         });
@@ -67,6 +71,7 @@ export class GameCtrl {
         });
         btn_voice.on(CLICK, this, (e: Laya.Event) => {
             e.stopPropagation();
+            VoicePop.preEnter();
         });
         btn_shop.on(CLICK, this, (e: Laya.Event) => {
             ShopPop.preEnter();
@@ -111,6 +116,7 @@ export class GameCtrl {
             stopFreeze();
         });
         event.on(ShoalEvent.PreAddShoal, reverse => {
+            AudioCtrl.play(AudioRes.ShoalComing);
             activeShoalWave(reverse);
         });
         event.on(GameEvent.Destroy, () => {

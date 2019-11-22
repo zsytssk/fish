@@ -1,6 +1,9 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
 import ProgressCtrl from 'utils/progressCtrl';
+import { modelState } from 'model/modelState';
+import { AudioRes } from 'data/audioRes';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 
 /** 声音的弹出层 */
 export default class VoicePop extends ui.pop.alert.voiceUI
@@ -9,21 +12,27 @@ export default class VoicePop extends ui.pop.alert.voiceUI
     private music_ctrl: ProgressCtrl;
     private voice_ctrl: ProgressCtrl;
     public static preEnter() {
+        AudioCtrl.play(AudioRes.PopShow);
         honor.director.openDialog(VoicePop);
     }
     public onAwake() {
+        const { voice, music } = modelState.app.setting;
         const { music_progress, voice_progress } = this;
         const music_ctrl = new ProgressCtrl(music_progress, this.onMusicChange);
         const voice_ctrl = new ProgressCtrl(voice_progress, this.onVoiceChange);
 
+        voice_ctrl.setProgress(voice);
+        music_ctrl.setProgress(music);
         this.music_ctrl = music_ctrl;
         this.voice_ctrl = voice_ctrl;
     }
     private onMusicChange = (radio: number) => {
-        console.log(`music radio`, radio);
+        const { setting } = modelState.app;
+        setting.setMusic(radio);
     }; // tslint:disable-line
     private onVoiceChange = (radio: number) => {
-        console.log(`voice radio`, radio);
+        const { setting } = modelState.app;
+        setting.setVoice(radio);
     }; // tslint:disable-line
     public destroy() {
         const { music_ctrl, voice_ctrl } = this;

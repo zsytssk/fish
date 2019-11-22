@@ -1,8 +1,10 @@
 import { SPRITE } from './sprite';
 import { getGunSkinMap } from 'utils/dataUtil';
+import { AudioRes } from './audioRes';
 
 export const res = {
     font: [],
+    audio: [],
     game: [
         {
             url: `res/image/game.png`,
@@ -105,4 +107,14 @@ for (const font of font_list) {
             type: Laya.Loader.IMAGE,
         },
     );
+}
+for (const key in AudioRes) {
+    if (!AudioRes.hasOwnProperty(key)) {
+        continue;
+    }
+    const url = AudioRes[key];
+    res.audio.push({
+        url,
+        type: Laya.Loader.SOUND,
+    });
 }

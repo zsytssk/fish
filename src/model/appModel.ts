@@ -9,13 +9,19 @@ import { UserInfoModel } from './userInfo/userInfoModel';
 export class AppModel extends ComponentManager {
     public game: GameModel;
     /** 设置信息 */
-    public setting = new SettingModel();
+    public setting: SettingModel;
     /** 用户信息 */
-    public user_info = new UserInfoModel();
+    public user_info: UserInfoModel;
     constructor() {
         super();
         modelState.app = this;
+
+        this.setting = new SettingModel();
+        this.user_info = new UserInfoModel();
         this.addCom(new EventCom());
+    }
+    public init() {
+        //...
     }
     public enterGame() {
         const game = new GameModel();

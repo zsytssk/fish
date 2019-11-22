@@ -3,6 +3,8 @@ import { ui } from 'ui/layaMaxUI';
 import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
 import { createDarkFilter } from 'utils/utils';
 import TopTipPop from './topTip';
+import { AudioRes } from 'data/audioRes';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 
 type LotteryData = {
     lottery_id: string;
@@ -41,6 +43,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         lottery_cost: number;
     };
     public static preEnter() {
+        AudioCtrl.play(AudioRes.PopShow);
         const pop = honor.director.openDialog(LotteryPop) as Promise<
             LotteryPop
         >;

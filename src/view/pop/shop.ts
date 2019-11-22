@@ -2,6 +2,8 @@ import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
 import { getShopInfo, useGunSkin, buyItem } from './popSocket';
 import TopTipPop from './topTip';
+import { AudioRes } from 'data/audioRes';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -46,6 +48,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     /** 是否初始化... */
     private is_init = false;
     public static preEnter() {
+        AudioCtrl.play(AudioRes.PopShow);
         const shop_dialog = honor.director.openDialog(ShopPop) as Promise<
             ShopPop
         >;

@@ -2,10 +2,13 @@ import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
 import { startCount } from 'utils/count';
 import { getStringLength } from 'honor/utils/getStringLength';
+import { AudioRes } from 'data/audioRes';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     public isModal = true;
     public static async tip(msg: string) {
+        AudioCtrl.play(AudioRes.PopShow);
         const tip_dialog = (await honor.director.openDialog(TipPop)) as TipPop;
         await tip_dialog.tip(msg);
     }

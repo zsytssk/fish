@@ -41,7 +41,7 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.cur_balance = balance;
-        setCacheBalance(this.user_id, balance);
+        setCacheBalance(balance);
         this.event.emit(UserInfoEvent.CurBalanceChange, balance);
     }
     public setLang(lang: Lang) {
@@ -76,7 +76,7 @@ export class UserInfoModel extends ComponentManager {
             });
         }
         this.event.emit(UserInfoEvent.AccountChange, this.account_map);
-        const cur_balance = getCacheBalance(this.user_id);
+        const cur_balance = getCacheBalance();
 
         /** 强制更新当前货币, 防止 货币数目发生变化 */
         this.setCurBalance(cur_balance || first_balance, true);

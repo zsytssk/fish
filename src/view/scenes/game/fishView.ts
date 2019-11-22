@@ -83,7 +83,7 @@ export class FishView extends Laya.Sprite {
                 const ani_name = need_scale_x ? 'right' : 'left';
                 if (this.turn_ani_name !== ani_name) {
                     this.turn_ani_name = ani_name;
-                    fish_ani.play(ani_name, true);
+                    playSkeleton(fish_ani, ani_name, true);
                 }
             } else {
                 const scale_x = need_scale_x ? -1 : 1;
