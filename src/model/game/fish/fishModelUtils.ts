@@ -1,26 +1,27 @@
 import { Config } from 'data/config';
 import SAT from 'sat';
 import { FishSpriteInfo } from 'data/sprite';
-import { getCollisionAllFish } from 'model/modelState';
+import { getCollisionAllFish, getFishById } from 'model/modelState';
 import { getSpriteInfo, isBombFish } from 'utils/dataUtil';
 import { createFishDisplace } from 'utils/displace/displaceUtil';
 import { BodyCom } from '../com/bodyCom';
 import { MoveDisplaceCom } from '../com/moveCom/moveDisplaceCom';
 import { GameModel } from '../gameModel';
-import { PlayerModel } from '../playerModel';
+import { PlayerModel, CaptureGain } from '../playerModel';
 import { FishBombCom } from './fishBombCom';
-import { FishModel } from './fishModel';
+import { FishModel, FishData } from './fishModel';
 
 /** 创建鱼 move_com在外面创建 */
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
-    const { eid: id, fishId: type } = data;
+    const { eid: id, fishId: type, score } = data;
     const displace = createFishDisplace(data);
     const move_com = new MoveDisplaceCom(displace);
     const fish = new FishModel(
         {
             id,
             type,
-        },
+            score,
+        } as FishData,
         game,
     );
     fish.setMoveCom(move_com);
@@ -99,7 +100,7 @@ export function createFishGroup(
     });
     for (let i = 0; i < group.length; i++) {
         const { type, pos } = sprite_group[i];
-        const { eid: id } = group[i];
+        const { eid: id, score } = group[i];
         const [onUpdate, destroy, start, stop] = createUpdateFn(
             (move_info: MoveInfo) => {
                 const { pos: _pos, ...other } = move_info;
@@ -126,7 +127,8 @@ export function createFishGroup(
             {
                 id,
                 type,
-            },
+                score,
+            } as FishData,
             game,
         );
         fish.setMoveCom(_move_com);
@@ -160,12 +162,17 @@ export function createBombBody() {
 }
 
 /** 用户捕捉到鱼 */
-export function playerCaptureFish(
+export async function playerCaptureFish(
     player: PlayerModel,
     fish: FishModel,
-    win: number,
+    info: HitRep,
 ) {
-    player.captureFish(fish, win);
+    const pos = await fish.beCapture();
+    const { drop, win } = info;
+    if (!pos) {
+        console.error(`cant find fish pos`);
+    }
+    player.captureFish(pos, { win, drop } as CaptureGain);
     if (isBombFish(fish)) {
         const fish_bomb_com = fish.getCom(FishBombCom);
         fish_bomb_com.active(player.need_emit);

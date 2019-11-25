@@ -130,9 +130,13 @@ function animateCoin(coin_views: Laya.Skeleton[], end_pos: Point) {
 
 const pool = [] as Laya.Skeleton[];
 function createCoinAni() {
-    const item = pool.pop();
-    if (item) {
-        return item;
+    let item = pool.pop();
+    if (!item) {
+        item = createSprite('other', 'coin') as Laya.Skeleton;
     }
-    return createSprite('other', 'coin') as Laya.Skeleton;
+    const { upside_down } = viewState.game;
+    if (upside_down) {
+        item.scaleY = -1;
+    }
+    return item;
 }

@@ -1,29 +1,68 @@
--   声音 + 国际化 + 外面的接口 + 帮助弹出层 + 超级技能
+-   声音 + 国际化 + 外面的接口 + 帮助弹出层
 
 -   @todo 音效 加载资源 + 播放音乐...
-    - 弹出层控制...
+
+    -   弹出层控制...
+
+-   超级技能 + item 掉落...
+
+- @todo init --> start
+    - 所有的model运行的代码
+    - create
+
+- @ques 要不要设置 move_com radio...
+
+## 2019-11-25 09:59:00
+
+- @opt trackFish --> lockFish
+
+- @ques 在什么地方重新触发 tip...
+
+- @bug  无法锁定
+    - 章鱼 + 蓝鲨
+
+-   @ques 锁定提示
+
+-   @ques 锁定时将自动攻击取消...
+
+- @ques 锁定鱼 被击杀 需要重新的提示...
+
+-   @todo arrangeRect({item_width, item_height, row_num, column_row, num, space,})
+-   行数(row_num) = Math.floor(Math.sqrt(num))
+-   每行多少个 = Math.Ceil(num(剩下的)/row_num(剩下的))
+    -   如何将最大的数排在中间...(中间向两边递减) 如何做...
+
+## 2019-11-22 17:13:10
+
+-   @ques item_ui 要不要排序...
+
+-   item 掉落
+
+    -   数据 本地模拟...
+    -   @ques awardSkill
+
+-   @ques 能不能搞一个 testState, 里面保存 测试的所有数据
+    -   添加用户 + 鱼, 击杀....
 
 ## 2019-11-22 13:43:49
 
-- @ques audio 报错...
+-   @ques audio 报错...
 
 -   @ques setBulletCost 皮肤发生改变 如何判断
 
--   @todo item 掉落...
-
--   @todo 音效
+*   @todo 音效
 
     -   炸弹时间太长了
     -   冰冻没有...
     -   弹出层出现没有
 
--   @todo 默认关闭 log
+*   @todo 默认关闭 log
 
--   @todo 前端更新道具的数目
+*   @todo 前端更新道具的数目
 
-*   @todo 鱼潮来了 换背景...
+-   @todo 鱼潮来了 换背景...
 
--   @todo 左右翻转的鱼太多了...
+*   @todo 左右翻转的鱼太多了...
 
 ### save
 

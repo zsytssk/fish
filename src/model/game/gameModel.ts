@@ -85,7 +85,7 @@ export class GameModel extends ComponentManager {
             console.error('Game:>captureFish:> cant find fish or player!!');
             return;
         }
-        playerCaptureFish(player, fish, info.win);
+        playerCaptureFish(player, fish, info);
     }
     /** 鱼群的处理逻辑 */
     public get shoal_com() {

@@ -46,6 +46,7 @@ type ServerFishInfo = {
     fishId: string;
     group?: {
         eid: string;
+        score: number;
         index: number;
     }[];
     displaceType: displaceType;
@@ -64,6 +65,8 @@ type ServerFishInfo = {
     frozen?: boolean;
     startTime?: number;
     inScreen?: boolean;
+    /** 鱼分数 */
+    score: number;
 };
 type ServerItemInfo = {
     itemId: string;

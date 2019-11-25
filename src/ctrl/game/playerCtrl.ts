@@ -26,6 +26,7 @@ import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
+import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -66,14 +67,27 @@ export class PlayerCtrl {
         const { event: gun_event, direction, pos: gun_pos } = gun;
         const { ctrl_box, btn_minus, btn_add } = view;
 
-        player_event.on(PlayerEvent.CaptureFish, (data: CaptureInfo) => {
-            const { pos, win, resolve } = data;
-            const { pos: end_pos } = gun;
-            if (is_cur_player) {
-                AudioCtrl.play(AudioRes.CoinFew);
-            }
-            showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
-        });
+        player_event.on(
+            PlayerEvent.CaptureFish,
+            (capture_info: CaptureInfo) => {
+                const {
+                    pos,
+                    data: { win, drop },
+                    resolve,
+                } = capture_info;
+                const { pos: end_pos } = gun;
+                if (!pos) {
+                    resolve();
+                }
+                if (is_cur_player) {
+                    /** 飞行技能 */
+                    awardSkill(pos, end_pos, drop);
+                    AudioCtrl.play(AudioRes.CoinFew);
+                }
+                /** 奖励金币动画 */
+                showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
+            },
+        );
         player_event.on(PlayerEvent.Destroy, () => {
             this.destroy();
         });

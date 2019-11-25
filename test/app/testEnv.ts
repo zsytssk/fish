@@ -11,8 +11,8 @@ import { ctrlState } from 'ctrl/ctrlState';
 import honor from 'honor';
 import { sleep } from 'utils/animate';
 
-export function localTest() {
-    mock_web_socket_test.runTest('create');
+export async function localTest() {
+    await mock_web_socket_test.runTest('create');
     mock_web_socket_test.runTest(ServerEvent.Shoot);
     mock_web_socket_test.runTest(ServerEvent.Hit);
     mock_web_socket_test.runTest(ServerEvent.FishBomb);

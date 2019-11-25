@@ -21,9 +21,30 @@ export function isCurUser(id: string) {
     return id === modelState.app.user_info.user_id;
 }
 /** 获取鱼 */
+export function getPlayerById(id: string) {
+    const { game } = modelState.app;
+    return game.getPlayerById(id);
+}
+/** 获取鱼 */
 export function getFishById(id: string) {
     const { game } = modelState.app;
     return game.getFishById(id);
+}
+
+/** 获取锁定提示鱼
+ * 满足两个条件 分数最高 + 没有游离屏幕...
+ */
+export function getAimFish(id: string) {
+    const { game } = modelState.app;
+    const fish_list = game.getAllFish();
+    const sort_fish_list = fish_list.sort((a, b) => {
+        return a.score - b.score;
+    });
+
+    for (const fish of sort_fish_list) {
+        if (fish) {
+        }
+    }
 }
 /** 检测碰撞到鱼: 获取第一个 */
 export function getCollisionFish(ori_body: BodyCom) {

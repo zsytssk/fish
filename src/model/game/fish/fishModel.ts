@@ -31,6 +31,7 @@ export type FishMoveData = {
 export type FishData = {
     type: string;
     id: string;
+    score: number;
 };
 /** 鱼的状态 */
 export enum FishStatus {
@@ -56,6 +57,8 @@ export class FishModel extends ComponentManager {
     private move_com: MoveCom;
     /** 是否显示 */
     public visible = false;
+    /** 鱼分 */
+    public score: number;
     private game: GameModel;
     public event: EventCom;
     public body: BodyCom;

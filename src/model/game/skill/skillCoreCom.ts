@@ -76,6 +76,11 @@ export class SkillCoreCom extends ComponentManager {
         }
         this.event.emit(SkillEvent.UpdateInfo);
     }
+    /** 更新数量 */
+    public addNum(num: number) {
+        this.num += num;
+        this.event.emit(SkillEvent.UpdateInfo);
+    }
     /** 设置技能的状态 */
     public setStatus(status: SkillStatus) {
         if (this.status === status) {
@@ -95,7 +100,7 @@ export class SkillCoreCom extends ComponentManager {
                 return;
             }
             const { cool_time, event } = this;
-            const { used_time, num } = info;
+            const { used_time } = info;
             /** 倒计时的时间间隔 */
             const count_delta = 0.03;
             const remain_time = cool_time - used_time;

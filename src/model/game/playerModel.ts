@@ -13,9 +13,14 @@ import { SkillCtorMap, SkillModel } from './skill/skillModel';
 type SkillInfoMap = {
     [key: string]: SkillInfo;
 };
+
+export type CaptureGain = {
+    win: number;
+    drop: HitDrop[];
+};
 export type CaptureInfo = {
     pos: Point;
-    win: number;
+    data: CaptureGain;
     resolve: FuncVoid;
 };
 export type PlayerInfo = {
@@ -98,6 +103,7 @@ export class PlayerModel extends ComponentManager {
         }
         this.event.emit(PlayerEvent.UpdateInfo);
     }
+    /** 初始化用户的技能 */
     private initSkill(skills: SkillInfoMap) {
         const { skill_map } = this;
         for (const key in SkillCtorMap) {
@@ -113,38 +119,42 @@ export class PlayerModel extends ComponentManager {
             skill_map.set(key, new ctor(info));
         }
     }
+    /** 激活技能 */
     public activeSkill(skill: SkillMap, data = {} as any) {
         const skill_model = this.skill_map.get(skill);
         skill_model.active(data);
     }
+    /** 重置技能 */
     public resetSkill(skill: SkillMap) {
         const skill_model = this.skill_map.get(skill);
         skill_model.reset();
     }
-    public async captureFish(fish: FishModel, win: number) {
-        const pos = await fish.beCapture();
-        if (!win) {
-            return;
-        }
-        if (!pos) {
-            console.error(`cant find fish pos`);
-            const { bullet_num } = this;
-            return this.updateInfo({
-                bullet_num: bullet_num + win,
-            });
-        }
-        new Promise((resolve, reject) => {
+    /** 更新技能的数目 */
+    public addSkillNum(id: string, num: number) {
+        const skill_model = this.skill_map.get(id);
+        skill_model.skill_core.addNum(num);
+    }
+    public async captureFish(
+        pos: Point,
+        data: { win: number; drop: HitDrop[] },
+    ) {
+        /** 掉落的金币+item动画 */
+        await new Promise((resolve, reject) => {
             this.event.emit(PlayerEvent.CaptureFish, {
                 pos,
-                win,
+                data,
                 resolve,
             } as CaptureInfo);
-        }).then(() => {
-            const { bullet_num } = this;
-            this.updateInfo({
-                bullet_num: bullet_num + win,
-            });
         });
+
+        const { win, drop } = data;
+        const { bullet_num } = this;
+        this.updateInfo({
+            bullet_num: bullet_num + win,
+        });
+        for (const item of drop) {
+            this.addSkillNum(item.itemId, item.itemNum);
+        }
     }
     public destroy() {
         const { gun, skill_map, game } = this;

@@ -31,14 +31,6 @@ export class GunTrackFishCom extends ComponentManager {
         super();
         this.gun = gun;
     }
-    public get event() {
-        let event_com = this.getCom(EventCom);
-        if (!event_com) {
-            event_com = new EventCom();
-            this.addCom(event_com);
-        }
-        return event_com;
-    }
     /**
      * 追踪的鱼
      * @param fish 追踪的鱼

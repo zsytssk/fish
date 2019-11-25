@@ -13,18 +13,19 @@ import { player_test } from '../../game/player.spec';
 import { game_test } from '../../game/game.spec';
 import { modelState } from 'model/modelState';
 import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
+import { SkillMap } from 'data/config';
 
 export const mock_web_socket_test = new Test('mock_web_socket', runner => {
-    runner.describe('create', () => {
+    runner.describe('create', async () => {
         mockSocketCtor(MockWebSocket);
-        createSocket({
+        await createSocket({
             url: '',
             publicKey: '',
             code: '',
             name: 'game',
             host: '',
         });
-        createSocket({
+        await createSocket({
             url: '',
             publicKey: '',
             code: '',
@@ -41,6 +42,10 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     userId: test_data.userId,
                     eid: data.eid,
                     win: 10000,
+                    drop: [
+                        { itemId: SkillMap.Bomb, itemNum: 10 },
+                        { itemId: SkillMap.TrackFish, itemNum: 10 },
+                    ],
                 } as HitRep);
             });
         });

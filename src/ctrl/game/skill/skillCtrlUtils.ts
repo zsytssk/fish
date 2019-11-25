@@ -61,7 +61,6 @@ export function skillActiveHandler(
     model: SkillModel,
     info: any,
     is_cur_player?: boolean,
-    is_tip?: boolean,
 ) {
     return new Promise((resolve, reject) => {
         const socket = getSocket('game');
