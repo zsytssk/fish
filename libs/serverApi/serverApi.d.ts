@@ -175,7 +175,7 @@ type UseBombReq = {
 type UseBombFishInfo = {
     eid: string;
     win: number;
-    drop?: HitDrop;
+    drop?: HitDrop[];
 };
 type UseBombRep = {
     userId: string;

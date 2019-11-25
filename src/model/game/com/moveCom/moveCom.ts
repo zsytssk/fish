@@ -8,6 +8,7 @@ interface MoveCom {
     start(): void;
     stop(): void;
     destroy(): void;
+    getRadio?(): number;
 }
 
 type MoveUpdateFn = (move_info: MoveInfo) => void;

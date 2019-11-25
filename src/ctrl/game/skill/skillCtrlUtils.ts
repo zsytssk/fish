@@ -2,14 +2,21 @@ import { SkillModel } from 'model/game/skill/skillModel';
 import { onPoolClick, onFishClick, offFishClick } from 'view/viewState';
 import { FreezeModel } from 'model/game/skill/freezeModel';
 import { BombModel } from 'model/game/skill/bombModel';
-import { TrackFishModel } from 'model/game/skill/trackFishModel';
+import {
+    TrackFishModel,
+    TrackActiveData,
+} from 'model/game/skill/trackFishModel';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent } from 'data/serverEvent';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 import { SkillStatus } from 'model/game/skill/skillCoreCom';
 import TopTipPop from 'view/pop/topTip';
 import { Config } from 'data/config';
-import { activeAim, stopAim } from 'view/scenes/game/ani_wrap/aim';
+import {
+    activeAim,
+    stopAim,
+    activeAimFish,
+} from 'view/scenes/game/ani_wrap/aim';
 import { getBeBombFish } from 'model/game/fish/fishModelUtils';
 import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
@@ -68,10 +75,13 @@ export function skillActiveHandler(
             if (!is_cur_player) {
                 return;
             }
-            if (info.is_tip) {
+            const { fish, is_tip, gun_pos } = info as TrackActiveData;
+            if (is_tip) {
                 // 激活锁定之后 提示选中鱼 选中之后发给服务器...
                 TopTipPop.tip('请选中你要攻击的鱼...', 2);
             }
+            const fire = !is_tip;
+            activeAimFish(fish, fire, gun_pos);
 
             // 选中鱼
             onFishClick().subscribe((fish_id: string) => {
@@ -92,6 +102,7 @@ export function skillActiveHandler(
 export function skillDisableHandler(model: SkillModel) {
     return new Promise((resolve, reject) => {
         if (model instanceof TrackFishModel) {
+            stopAim('fish');
             offFishClick();
         } else {
             resolve();

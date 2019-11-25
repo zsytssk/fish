@@ -1,36 +1,41 @@
--   声音 + 国际化 + 外面的接口 + 帮助弹出层
-
--   @todo 音效 加载资源 + 播放音乐...
-
-    -   弹出层控制...
+-   国际化 + 外面的接口 + 帮助弹出层
 
 -   超级技能 + item 掉落...
 
-- @todo init --> start
-    - 所有的model运行的代码
-    - create
-
-- @ques 要不要设置 move_com radio...
-
 ## 2019-11-25 09:59:00
 
-- @opt trackFish --> lockFish
+- @ques 怎么确定一个鱼的位置...
+    - 做一个ui aim 鱼的位置
 
-- @ques 在什么地方重新触发 tip...
+-   @bug 炸弹 炸死的鱼没有显示 奖励数目
 
-- @bug  无法锁定
-    - 章鱼 + 蓝鲨
+-   @todo drop 的优化...
+
+-   @opt trackFish --> lockFish
+
+-   @ques 在什么地方重新触发 tip...
+
+-   @bug 无法锁定
+
+    -   章鱼 + 蓝鲨
 
 -   @ques 锁定提示
 
 -   @ques 锁定时将自动攻击取消...
 
-- @ques 锁定鱼 被击杀 需要重新的提示...
+-   @ques 锁定鱼 被击杀 需要重新的提示...
 
 -   @todo arrangeRect({item_width, item_height, row_num, column_row, num, space,})
 -   行数(row_num) = Math.floor(Math.sqrt(num))
 -   每行多少个 = Math.Ceil(num(剩下的)/row_num(剩下的))
     -   如何将最大的数排在中间...(中间向两边递减) 如何做...
+
+*   @todo init --> start
+
+    -   所有的 model 运行的代码
+    -   create
+
+*   @ques 要不要设置 move_com radio...
 
 ## 2019-11-22 17:13:10
 

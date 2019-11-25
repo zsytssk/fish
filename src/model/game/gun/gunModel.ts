@@ -5,7 +5,6 @@ import { Config } from 'data/config';
 import * as SAT from 'sat';
 import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
 import { GunAutoLaunchCom } from '../com/gunAutoLaunchCom';
-import { GunTrackFishCom } from '../com/gunTrackFishCom';
 import { FishModel } from '../fish/fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
@@ -173,14 +172,6 @@ export class GunModel extends ComponentManager {
             this.addCom(auto_launch);
         }
         return auto_launch;
-    }
-    public get trackFish() {
-        let track_fish = this.getCom(GunTrackFishCom);
-        if (!track_fish) {
-            track_fish = new GunTrackFishCom(this);
-            this.addCom(track_fish);
-        }
-        return track_fish;
     }
     public preAddBullet(velocity: SAT.Vector, force = false) {
         const {

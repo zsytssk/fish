@@ -37,6 +37,9 @@ export class MoveDisplaceCom implements MoveCom {
     public stop() {
         this.is_stop = true;
     }
+    public getRadio() {
+        return this.displace.radio;
+    }
     public destroy() {
         clearTick(this.tick_index);
         this.displace = undefined;

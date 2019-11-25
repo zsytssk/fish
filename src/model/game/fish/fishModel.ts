@@ -69,9 +69,9 @@ export class FishModel extends ComponentManager {
         this.initCom(data);
     }
     private initCom(data: FishData) {
-        const { type, id } = data;
+        const { type, id, score } = data;
 
-        setProps(this as FishModel, { type, id });
+        setProps(this as FishModel, { type, id, score } as FishData);
         const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;
         if (sprite_info.ani_type === 'horizon_turn') {
@@ -161,7 +161,7 @@ export class FishModel extends ComponentManager {
     }
     public destroy() {
         this.event.emit(FishEvent.Destroy);
-        this.setStatus(FishStatus.Normal);
+        this.setStatus(FishStatus.Dead);
         this.game.removeFish(this);
 
         this.game = undefined;

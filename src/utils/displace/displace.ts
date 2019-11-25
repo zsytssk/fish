@@ -52,6 +52,8 @@ export class Displace {
     protected cur_curve_info = {} as CurCurveInfo;
     /** 是否反转 */
     private is_reverse: boolean = false;
+    /** 当前移动的比率 */
+    public radio: number;
     /**
      * 获取鱼的路径
      * @param path_id 鱼的路径
@@ -78,42 +80,7 @@ export class Displace {
         const used_frame = (this.used_frame = this.used_frame + update_frame);
         let used_radio = used_frame / this.total_frame;
         let is_complete: boolean = false;
-        if (used_radio <= 0) {
-            return {
-                visible: false,
-            };
-        }
-
-        if (used_radio >= 1) {
-            is_complete = true;
-            return {
-                is_complete,
-            };
-        }
-
-        if (is_reverse) {
-            used_radio = 1 - used_radio;
-        }
-
-        const point_info = this.getPointAtRadio(used_radio);
-        const position = point_info.position;
-        let velocity = point_info.direction;
-        if (is_reverse) {
-            velocity = velocity.reverse();
-        }
-
-        return {
-            visible: true,
-            pos: position,
-            velocity,
-            is_complete,
-        };
-    }
-    private calcInfo() {
-        const { is_reverse } = this;
-        const used_frame = (this.used_frame = this.used_frame + update_frame);
-        let used_radio = used_frame / this.total_frame;
-        let is_complete: boolean = false;
+        this.radio = used_radio;
         if (used_radio <= 0) {
             return {
                 visible: false,

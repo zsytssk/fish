@@ -34,15 +34,16 @@ export function getFishById(id: string) {
 /** 获取锁定提示鱼
  * 满足两个条件 分数最高 + 没有游离屏幕...
  */
-export function getAimFish(id: string) {
+export function getAimFish() {
     const { game } = modelState.app;
     const fish_list = game.getAllFish();
-    const sort_fish_list = fish_list.sort((a, b) => {
-        return a.score - b.score;
+    fish_list.sort((a, b) => {
+        return b.score - a.score;
     });
 
-    for (const fish of sort_fish_list) {
-        if (fish) {
+    for (const fish of fish_list) {
+        if (fish.visible) {
+            return fish;
         }
     }
 }

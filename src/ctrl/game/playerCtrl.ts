@@ -1,32 +1,27 @@
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { AudioRes } from 'data/audioRes';
 import { ServerEvent, ServerName } from 'data/serverEvent';
-import {
-    GunTrackFishEvent,
-    StartTrackInfo,
-} from 'model/game/com/gunTrackFishCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
 import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
 import SAT from 'sat';
 import { darkNode, unDarkNode } from 'utils/utils';
-import { activeAimFish, stopAim } from 'view/scenes/game/ani_wrap/aim';
+import AlertPop from 'view/pop/alert';
+import ShopPop from 'view/pop/shop';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
+import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 import GunBoxView from 'view/scenes/game/gunBoxView';
 import {
     getAutoLaunchSkillItem,
+    getGameView,
     getPoolMousePos,
     getSkillItemByIndex,
     setBulletNum,
-    getGameView,
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
-import AlertPop from 'view/pop/alert';
-import ShopPop from 'view/pop/shop';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
-import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -81,7 +76,9 @@ export class PlayerCtrl {
                 }
                 if (is_cur_player) {
                     /** 飞行技能 */
-                    awardSkill(pos, end_pos, drop);
+                    if (drop) {
+                        awardSkill(pos, end_pos, drop);
+                    }
                     AudioCtrl.play(AudioRes.CoinFew);
                 }
                 /** 奖励金币动画 */
@@ -169,13 +166,6 @@ export class PlayerCtrl {
                 } as HitReq);
             },
         );
-        gun_event.on(GunTrackFishEvent.StartTrack, (data: StartTrackInfo) => {
-            const { fish, fire: show_point } = data;
-            activeAimFish(fish, show_point, gun.pos);
-        });
-        gun_event.on(GunTrackFishEvent.StopTrack, () => {
-            stopAim('fish');
-        });
         gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
             const { x, y } = velocity;
             AudioCtrl.play(AudioRes.Fire);

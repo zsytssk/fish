@@ -152,8 +152,11 @@ export class PlayerModel extends ComponentManager {
         this.updateInfo({
             bullet_num: bullet_num + win,
         });
-        for (const item of drop) {
-            this.addSkillNum(item.itemId, item.itemNum);
+
+        if (drop) {
+            for (const item of drop) {
+                this.addSkillNum(item.itemId, item.itemNum);
+            }
         }
     }
     public destroy() {
