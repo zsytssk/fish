@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const findParam = require('./script/findEnv');
 
+const ENV = JSON.stringify(findParam('ENV'));
 let common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
@@ -28,9 +29,7 @@ let common_config = {
             },
         ],
     },
-    plugins: [
-        new webpack.DefinePlugin({ ENV: JSON.stringify(findParam('ENV')) }),
-    ],
+    plugins: [new webpack.DefinePlugin({ ENV })],
 };
 
 const dev_config = {
@@ -58,6 +57,11 @@ const prod_ts_compile_option = {
 };
 
 module.exports = (env, argv) => {
+    if (ENV === 'TEST') {
+        const dist_folder = path.join(__dirname, 'build');
+        common_config.output.path = dist_folder;
+        dev_config.devServer.contentBase = dist_folder;
+    }
     if (argv.mode === 'development') {
         return Object.assign(common_config, dev_config);
     } else {

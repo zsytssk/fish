@@ -12,7 +12,8 @@
     "scripts": {
         "webpack-dev-server": "webpack-dev-server --ENV=DEV --mode development",
         "webpack-dev": "webpack --ENV=DEV --mode development",
-        "webpack-dev-test": "webpack --ENV=TEST --mode development",
+        "webpack-test": "webpack --ENV=TEST --mode development",
+        "webpack-test-server": "webpack-dev-server --ENV=TEST --mode development",
         "webpack-prod": "webpack --ENV=PROD --mode production",
         "webpack-prod-server": "webpack-dev-server --ENV=DEV --mode development",
         "compressImg": "node ./script/compressImg/compressImg.js compressImg",
@@ -48,7 +49,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "http://172.21.1.184/ragnark/legend_demo.git"
+        "url": "xxx.git"
     },
     "description": ""
 }
