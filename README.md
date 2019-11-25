@@ -2,4 +2,4 @@
 
 -   npm run webpack-test-server
 
--   localhost:8080
+-   http://localhost:8081/?localTest=1
