@@ -16,7 +16,9 @@ export const game_test = new Test('game', runner => {
                 return resolve();
             }
             injectAfter(HallCtrl, 'preEnter', () => {
-                ctrlState.app.enterGame();
+                setTimeout(() => {
+                    ctrlState.app.enterGame('test');
+                });
             });
 
             if (!add_player) {

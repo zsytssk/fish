@@ -57,6 +57,7 @@ const prod_ts_compile_option = {
 };
 
 module.exports = (env, argv) => {
+    console.log();
     if (ENV === 'TEST') {
         const dist_folder = path.join(__dirname, 'build');
         common_config.output.path = dist_folder;
