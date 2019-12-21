@@ -2,12 +2,27 @@
 
 ## 2019-12-21 11:45:00
 
--   todo honor
+-   @bug 打包报错
+
+    -   Widget.resetLayoutX -> UIcomponent-> ...
+    -   好想是对象没有初始化
+    -   所有经过 UIComponent 的属性 this 都丢掉了
+    -   这可能和 ts 打包机制有关 get set super 打包就会出错
+    -   babel 没有问题
+
+-   @bug 打包文件太大了
+
+    -   可能是打包太多的 shader 的缘故
+    -   js 文件本身没多大
 
 -   warning 信息 There are multiple modules with names that only differ in casing.
 
 -   laya 直接打包到一个文件中
+
     -   laya 文件太多了 崩溃了
+
+-   @todo honor
+    -   使用最简单的 api
 
 ### save
 

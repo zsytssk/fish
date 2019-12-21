@@ -2,7 +2,7 @@ import { initState, director } from './state';
 import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
 import { Laya, loader } from 'Laya';
-import { Laya3D } from 'Laya3D';
+// import { Laya3D } from 'Laya3D';
 import { Stat } from 'laya/utils/Stat';
 import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
 import { Handler } from 'laya/utils/Handler';
@@ -41,11 +41,7 @@ async function run(
     extern_config: HonorExternConfig = {},
 ) {
     // 根据IDE设置初始化引擎
-    if (window.Laya3D) {
-        Laya3D.init(game_config.width, game_config.height);
-    } else {
-        Laya.init(game_config.width, game_config.height, WebGL);
-    }
+    Laya.init(game_config.width, game_config.height, WebGL);
     Laya.stage.frameRate = Stage.FRAME_SLOW;
     if ((Laya as any).DebugPanel) {
         (Laya as any).DebugPanel.enable();

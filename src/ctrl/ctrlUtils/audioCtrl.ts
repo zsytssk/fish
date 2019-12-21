@@ -1,4 +1,3 @@
-import { SoundManager } from 'Laya/media/SoundManager';
 import { Handler } from 'Laya/utils/Handler';
 import { Laya } from 'Laya';
 
@@ -6,7 +5,7 @@ import { Laya } from 'Laya';
 export class AudioCtrl {
     private static voice: number;
     private static music: number;
-    private static sound_manager = SoundManager;
+    private static sound_manager = Laya.SoundManager;
     public static setVoice(voice: number) {
         this.voice = voice;
         this.sound_manager.setSoundVolume(voice);

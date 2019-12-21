@@ -8,8 +8,8 @@ let common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
         filename: 'js/bundle.js',
-        path: path.resolve('D:\\zsytssk\\test\\weFish\\miniprogram'),
-        // path: path.join(__dirname, 'bin'),
+        // path: path.resolve('D:\\zsytssk\\test\\weFish\\miniprogram'),
+        path: path.join(__dirname, 'bin'),
     },
     resolve: {
         modules: [
@@ -52,6 +52,7 @@ const dev_config = {
 };
 
 const prod_config = {
+    devtool: 'source-map',
     entry: [
         'es6-promise/auto',
         'es6-map/implement',
@@ -66,7 +67,6 @@ const prod_ts_compile_option = {
 };
 
 module.exports = (env, argv) => {
-    console.log();
     if (ENV === 'TEST') {
         const dist_folder = path.join(__dirname, 'build');
         common_config.output.path = dist_folder;
