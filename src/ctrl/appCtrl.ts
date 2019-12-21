@@ -27,10 +27,10 @@ export class AppCtrl {
     }
     /** 初始化 honor */
     private async startHonor() {
+        // Laya.MiniAdpter.init();
         await honor.run(GameConfig, {
             defaultVersion: Config.CdnVersion,
         });
-
         const task1 = honor.director.setLoadPageForScene(
             'scenes/loading.scene',
         );

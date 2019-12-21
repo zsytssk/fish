@@ -8,7 +8,8 @@ let common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
         filename: 'js/bundle.js',
-        path: path.join(__dirname, 'bin'),
+        path: path.resolve('D:\\zsytssk\\test\\weFish\\miniprogram'),
+        // path: path.join(__dirname, 'bin'),
     },
     resolve: {
         modules: [
@@ -33,7 +34,7 @@ let common_config = {
 };
 
 const dev_config = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     watch: true,
     devServer: {
         host: '0.0.0.0',

@@ -1,5 +1,3 @@
-import coingame from 'coingame/coingame.min';
-import { coingameUpdateLanguage } from 'coingame/coingameUtil';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
@@ -53,7 +51,6 @@ export class HallCtrl {
             view.setCurBalance(type, icon, num);
         });
         onLangChange(this, (lang: Lang) => {
-            coingameUpdateLanguage(lang);
             view.setFlag(lang);
         });
         onAccountChange(this, (data: AccountMap) => {
@@ -63,7 +60,7 @@ export class HallCtrl {
             view.setNickname(nickname);
         });
         view.setFlagData(getAllLangList());
-        user_info.setLang(coingame.sys.config.lang as Lang);
+        user_info.setLang('zh' as Lang);
     }
     public selectCoin = (index: number) => {
         if (index === -1) {

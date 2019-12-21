@@ -1,7 +1,6 @@
 import { mapTest, Test } from 'testBuilder';
 import { TestBuilderCtor } from 'testBuilder/testBuilder';
 import { app_test } from './app/app.spec';
-import { coingame_test } from './app/coingame.spec';
 import { ani_wrap } from './app/game/aniWrap.spec';
 import { body_test } from './app/game/body.spec';
 import { fish_test } from './app/game/fish.spec';
@@ -44,7 +43,6 @@ testScope.addChild(
     lottery_test,
     voice_test,
     mock_web_socket_test,
-    coingame_test,
     shoal_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });

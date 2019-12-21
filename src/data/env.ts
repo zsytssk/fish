@@ -12,7 +12,7 @@ if (ENV === 'DEV') {
     EnvState.origin = 'https://testing-bitfish.cointest.link';
     EnvState.host = 'testing-bitfish.cointest.link';
 } else if (ENV === 'TEST') {
-    origin = location.origin;
+    EnvState.origin = location.origin;
 } else if (ENV === 'PROD') {
-    origin = location.origin;
+    EnvState.origin = location.origin;
 }

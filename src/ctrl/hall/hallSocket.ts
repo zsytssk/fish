@@ -1,4 +1,3 @@
-import { coingameGetDomain } from 'coingame/coingameUtil';
 import { ctrlState } from 'ctrl/ctrlState';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
@@ -70,7 +69,7 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
         socket.send(ServerEvent.RoomIn, {
             ...data,
             currency,
-            domain: coingameGetDomain(),
+            domain: '',
         } as RoomInReq);
     });
 }

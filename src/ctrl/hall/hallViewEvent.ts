@@ -1,11 +1,4 @@
 import { HallCtrl } from './hallCtrl';
-import {
-    coingameLogin,
-    coingameCharge,
-    coingameWithDraw,
-    coingameHome,
-    coingameApp,
-} from 'coingame/coingameUtil';
 import { onNode } from 'utils/utils';
 import { roomIn } from './hallSocket';
 import { loginOut } from './login';
@@ -88,24 +81,19 @@ export function hallViewEvent(hall: HallCtrl) {
     onNode(btn_get, CLICK, () => {
         const { cur_balance, lang } = getUserInfo();
         AudioCtrl.play(AudioRes.Click);
-        coingameWithDraw(cur_balance, lang);
     });
     onNode(btn_charge, CLICK, () => {
         const { cur_balance, lang } = getUserInfo();
         AudioCtrl.play(AudioRes.Click);
-        coingameCharge(cur_balance, lang);
     });
     onNode(btn_home, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
-        coingameHome();
     });
     onNode(btn_app, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
-        coingameApp();
     });
     onNode(btn_login, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
-        coingameLogin();
     });
     onNode(btn_leave, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);

@@ -1,7 +1,6 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { Lang } from 'data/internationalConfig';
-import coingame from 'coingame/coingame.min';
 import { getCacheBalance, setCacheBalance } from './userInfoUtils';
 
 /** 账户信息修改 */
@@ -49,7 +48,6 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.lang = lang;
-        coingame.sys.updateLanguage(lang);
         this.event.emit(UserInfoEvent.LangChange, lang);
     }
     public setUserId(name: string) {

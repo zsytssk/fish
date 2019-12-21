@@ -2,12 +2,19 @@
 
 -   超级技能 + item 掉落...
 
+-   @todo 微信小游戏
+
+## 2019-12-14 14:41:28
+
+-   https://developers.weixin.qq.com/minigame/dev/guide/open-ability/login.html
+
 ## 2019-11-25 09:59:00
 
-- @ques 锁定的时候
+-   @ques 锁定的时候
 
-- @ques 怎么确定一个鱼的位置...
-    - 做一个ui aim 鱼的位置
+-   @ques 怎么确定一个鱼的位置...
+
+    -   做一个 ui aim 鱼的位置
 
 -   @bug 炸弹 炸死的鱼没有显示 奖励数目
 
