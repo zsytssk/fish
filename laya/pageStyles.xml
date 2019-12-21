@@ -6,4 +6,5 @@
    <item name="scenes/game/gunBox.scene" props="" ifExport="内嵌模式" aName=""/>
    <item name="scenes/game/skillItem.scene" props="" ifExport="内嵌模式" aName=""/>
    <item name="pop/shop.scene" props="" ifExport="默认" aName="商城"/>
+   <item name="scenes/game/game.scene" props="" ifExport="分离模式" aName=""/>
 </page>

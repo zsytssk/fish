@@ -124,7 +124,6 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         stopPosTip();
     }
     public setPos(x: number, y: number) {
-        // const pos = convertPosToNode(new Laya.Point(x, y), pool, ctrl_box);
         this.pos(x, y);
     }
 }

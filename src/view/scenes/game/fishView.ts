@@ -3,20 +3,22 @@ import { getSpriteInfo } from 'utils/dataUtil';
 import { FishSpriteInfo } from 'data/sprite';
 import { createRedFilter, playSkeleton, stopSkeleton } from 'utils/utils';
 import { vectorToDegree } from 'utils/mathUtils';
+import { Sprite } from 'laya/display/Sprite';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 
 export type FishViewInfo = {
     type: string;
     id: string;
 };
-export class FishView extends Laya.Sprite {
-    private fish_ani: Laya.Skeleton;
-    private shadow_node: Laya.Sprite;
+export class FishView extends Sprite {
+    private fish_ani: Skeleton;
+    private shadow_node: Sprite;
     public info: FishViewInfo;
-    private pool: Laya.Sprite;
+    private pool: Sprite;
     private time_out: number;
     private turn_ani: boolean;
     private turn_ani_name: string;
-    constructor(info: FishViewInfo, pool: Laya.Sprite) {
+    constructor(info: FishViewInfo, pool: Sprite) {
         super();
         this.info = info;
         this.pool = pool;

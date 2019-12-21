@@ -1,6 +1,8 @@
 import { loaderManager } from 'honor/state';
 import { createScene } from '../utils/tool';
 import { HonorScene } from './view';
+import { Scene } from 'laya/display/Scene';
+import { Laya } from 'Laya';
 export type SceneChangeListener = (
     cur1: string,
     cur2: string,
@@ -76,7 +78,7 @@ export class SceneManagerCtor {
         }
     }
     /** 运行场景 */
-    public runScene(url: SceneRefUrl, ...params: any[]): Promise<Laya.Scene> {
+    public runScene(url: SceneRefUrl, ...params: any[]): Promise<Scene> {
         return new Promise(async (resolve, reject) => {
             /** 场景切换前执行, 如果被截取 就不进入场景 */
             const before_handle = this.callChangeListener(
@@ -104,7 +106,7 @@ export class SceneManagerCtor {
                             return _resolve(dialog);
                         });
                     });
-                } else if (url instanceof Laya.Scene) {
+                } else if (url instanceof Scene) {
                     scene = url;
                 }
             }

@@ -1,8 +1,12 @@
 import * as zTimer from './zTimer';
+import { Sprite as LayaSprite } from 'laya/display/Sprite';
+import { Tween } from 'laya/utils/Tween';
+import { Ease } from 'laya/utils/Ease';
+import { Handler } from 'laya/utils/Handler';
 
 type EaseFn = Func<void> | string;
-type Sprite = Laya.Sprite & {
-    tween?: Laya.Tween;
+type Sprite = LayaSprite & {
+    tween?: Tween;
     is_stop?: boolean;
     time_out?: any;
 };
@@ -352,8 +356,7 @@ export function tween(data: TweenData) {
         completeAni(sprite);
         let { ease_fn } = data;
         let { time } = data;
-        const laya_Tween = new Laya.Tween();
-        const Ease = Laya.Ease;
+        const laya_Tween = new Tween();
         ease_fn = ease_fn || Ease.linearNone;
         if (typeof ease_fn === 'string') {
             ease_fn = Ease[ease_fn as keyof typeof Ease] as Func<void>;
@@ -379,7 +382,7 @@ export function tween(data: TweenData) {
             end_props,
             time,
             ease_fn,
-            Laya.Handler.create(sprite, () => {
+            Handler.create(sprite, () => {
                 if (!sprite.destroyed) {
                     resolve();
                 } else {
@@ -583,12 +586,10 @@ export const tweenProps = (() => {
 
         let ease_fn: (a: number, b: number, c: number, d: number) => number;
         if (typeof time_fun === 'string') {
-            ease_fn = Laya.Ease[time_fun as keyof typeof Laya.Ease] as Func<
-                number
-            >;
+            ease_fn = Ease[time_fun as keyof typeof Ease] as Func<number>;
         }
         if (!ease_fn) {
-            ease_fn = Laya.Ease.linearNone;
+            ease_fn = Ease.linearNone;
         }
         completeNodeListener(caller, true);
         if (!start_props) {

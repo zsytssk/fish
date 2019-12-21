@@ -1,6 +1,7 @@
 import { ui } from 'ui/layaMaxUI';
 import { SkillMap } from 'data/config';
 import { playSkeleton, stopSkeleton } from 'utils/utils';
+import { Sprite } from 'laya/display/Sprite';
 
 export const SkillNameMap = {
     [SkillMap.Freezing]: 'freeze',
@@ -9,14 +10,14 @@ export const SkillNameMap = {
     [SkillMap.Auto]: 'auto',
 };
 export default class SkillItemView extends ui.scenes.game.skillItemUI {
-    private cool_mask: Laya.Sprite;
+    private cool_mask: Sprite;
     constructor() {
         super();
         this.init();
     }
     private init() {
         const { overlay } = this;
-        const cool_mask = new Laya.Sprite();
+        const cool_mask = new Sprite();
         overlay.mask = cool_mask;
         this.cool_mask = cool_mask;
     }

@@ -1,15 +1,17 @@
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Event } from 'laya/events/Event';
 
 /** 鱼群的动画 */
-let shoal_wave_ani: Laya.Skeleton;
+let shoal_wave_ani: Skeleton;
 
 /** 激活鱼群动画 */
 export function activeShoalWave(reverse: boolean) {
     createShoalWaveAni();
 
-    shoal_wave_ani.once(Laya.Event.STOPPED, shoal_wave_ani, () => {
+    shoal_wave_ani.once(Event.STOPPED, shoal_wave_ani, () => {
         stopShoalWave();
     });
     if (!reverse) {
@@ -30,7 +32,7 @@ export function stopShoalWave() {
 function createShoalWaveAni() {
     const { ani_wrap } = viewState;
     if (!shoal_wave_ani) {
-        shoal_wave_ani = createSprite('other', 'shoal_wave') as Laya.Skeleton;
+        shoal_wave_ani = createSprite('other', 'shoal_wave') as Skeleton;
         shoal_wave_ani.scale(2, 2);
         shoal_wave_ani.pos(ani_wrap.width / 2, ani_wrap.height / 2);
         ani_wrap.addChild(shoal_wave_ani);

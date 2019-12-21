@@ -3,6 +3,10 @@ import honor from 'honor';
 import { playSkeleton } from 'utils/utils';
 import { slide_down_in, slide_up_out } from 'utils/animate';
 import { AccountMap } from 'model/userInfo/userInfoModel';
+import { Handler } from 'laya/utils/Handler';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Box } from 'laya/ui/Box';
+import { Label } from 'laya/ui/Label';
 
 export type CoinData = Array<{
     type: string;
@@ -22,7 +26,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
         coin_menu.list.array = [];
         flag_menu.list.array = [];
         this.activeAni('');
-        coin_menu.list.renderHandler = new Laya.Handler(
+        coin_menu.list.renderHandler = new Handler(
             this,
             this.coinMenuRender,
             undefined,
@@ -38,7 +42,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
         ]);
 
         for (const [key, item] of map) {
-            const ani = item.getChildByName('ani') as Laya.Skeleton;
+            const ani = item.getChildByName('ani') as Skeleton;
             if (key === type) {
                 playSkeleton(ani, 'active', true);
             } else {
@@ -50,8 +54,8 @@ export default class HallView extends ui.scenes.hall.hallUI {
         const { nickname } = this.header;
         nickname.text = nickname_str;
     }
-    public coinMenuRender(box: Laya.Box, index: number) {
-        const coin_num = box.getChildByName('coin_num') as Laya.Label;
+    public coinMenuRender(box: Box, index: number) {
+        const coin_num = box.getChildByName('coin_num') as Label;
         const { coin_num: num } = this.header.coin_menu.list.array[index];
         let scale = 13 / (num.length * 1.1);
         scale = scale > 1 ? 1 : scale;
@@ -111,9 +115,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
 
         const item_arr = [normal_box, match_box];
         for (const item of item_arr) {
-            const item_coin_name = item.getChildByName(
-                'coin_name',
-            ) as Laya.Label;
+            const item_coin_name = item.getChildByName('coin_name') as Label;
             item_coin_name.text = type.toUpperCase();
         }
     }

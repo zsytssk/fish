@@ -1,8 +1,12 @@
+import { SoundManager } from 'Laya/media/SoundManager';
+import { Handler } from 'Laya/utils/Handler';
+import { Laya } from 'Laya';
+
 /** 音频控制器 */
 export class AudioCtrl {
     private static voice: number;
     private static music: number;
-    private static sound_manager = Laya.SoundManager;
+    private static sound_manager = SoundManager;
     public static setVoice(voice: number) {
         this.voice = voice;
         this.sound_manager.setSoundVolume(voice);
@@ -40,7 +44,7 @@ export class AudioCtrl {
         } else {
             // 如果是其他音乐 现将背景音乐音量变小 等到音乐放完 再设置回去
             this.sound_manager.setMusicVolume(music * 0.5);
-            play_callback = Laya.Handler.create(null, () => {
+            play_callback = Handler.create(null, () => {
                 this.sound_manager.setMusicVolume(music);
             });
         }

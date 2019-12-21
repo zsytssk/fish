@@ -1,3 +1,7 @@
+import { Dialog } from 'laya/ui/Dialog';
+import { Tween } from 'laya/utils/Tween';
+import { Scene } from 'laya/display/Scene';
+
 export type HonorDialogConfig = {
     /** 在弹窗模式为multiple时，是否在弹窗弹窗的时候关闭其他显示中的弹窗 */
     closeOther?: boolean;
@@ -26,15 +30,15 @@ export const DEFAULT_CONFIG = {
 } as HonorDialogConfig;
 
 /** Honor 中 dialog支持的接口 */
-export interface HonorDialog extends Laya.Dialog {
-    HonorEffectTween?: Laya.Tween;
+export interface HonorDialog extends Dialog {
+    HonorEffectTween?: Tween;
     config?: HonorDialogConfig;
     /** 弹出层打开之前调用... */
     onMounted?(...params: any[]): void;
     onResize?(width?: number, height?: number): void;
 }
 
-export interface HonorScene extends Laya.Scene {
+export interface HonorScene extends Scene {
     onResize?(width: number, height: number): void;
     onMounted?(...param: any[]): void;
 }

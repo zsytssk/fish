@@ -45,7 +45,8 @@
         "rxjs": "^6.5.3",
         "sat": "^0.8.0",
         "socket.io-client": "^2.3.0",
-        "tslint": "^5.18.0"
+        "tslint": "^5.18.0",
+        "webpack-glsl-loader": "^1.0.1"
     },
     "repository": {
         "type": "git",

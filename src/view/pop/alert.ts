@@ -2,6 +2,7 @@ import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
+import { Event } from 'laya/events/Event';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 export default class AlertPop extends ui.pop.alert.alertUI
@@ -18,11 +19,11 @@ export default class AlertPop extends ui.pop.alert.alertUI
     }
     private initEvent() {
         const { btn_confirm, btn_cancel } = this;
-        btn_confirm.on(Laya.Event.CLICK, btn_confirm, (e: Laya.Event) => {
+        btn_confirm.on(Event.CLICK, btn_confirm, (e: Event) => {
             e.stopPropagation();
             this.close('confirm');
         });
-        btn_cancel.on(Laya.Event.CLICK, btn_confirm, (e: Laya.Event) => {
+        btn_cancel.on(Event.CLICK, btn_confirm, (e: Event) => {
             e.stopPropagation();
             this.close('cancel');
         });

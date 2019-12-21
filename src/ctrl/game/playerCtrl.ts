@@ -22,6 +22,10 @@ import {
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Event } from 'laya/events/Event';
+import { Laya } from 'Laya';
+import { Sprite } from 'laya/display/Sprite';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -97,7 +101,7 @@ export class PlayerCtrl {
                 const bullet_view = view.addBullet(
                     bullet.skin,
                     rage,
-                ) as Laya.Skeleton;
+                ) as Skeleton;
                 const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
             }
         });
@@ -112,7 +116,7 @@ export class PlayerCtrl {
             }
             view.setBulletCost(level_info);
         });
-        view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+        view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
         });
 
@@ -174,7 +178,7 @@ export class PlayerCtrl {
             } as ShootReq);
         });
 
-        getGameView().on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+        getGameView().on(Event.CLICK, view, (e: Event) => {
             const click_pos = getPoolMousePos();
             const _direction = new SAT.Vector(
                 click_pos.x - gun_pos.x,
@@ -182,17 +186,17 @@ export class PlayerCtrl {
             );
             gun.preAddBullet(_direction);
         });
-        btn_minus.on(Laya.Event.CLICK, btn_minus, (e: Laya.Event) => {
+        btn_minus.on(Event.CLICK, btn_minus, (e: Event) => {
             e.stopPropagation();
             this.sendChangeBulletCost('minus');
         });
-        btn_add.on(Laya.Event.CLICK, btn_add, (e: Laya.Event) => {
+        btn_add.on(Event.CLICK, btn_add, (e: Event) => {
             e.stopPropagation();
             this.sendChangeBulletCost('add');
         });
     }
-    private handleAutoLaunch(model: AutoLaunchModel, view: Laya.Sprite) {
-        view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+    private handleAutoLaunch(model: AutoLaunchModel, view: Sprite) {
+        view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
             console.log('auto launch');
             model.toggle();

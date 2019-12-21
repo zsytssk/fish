@@ -4,6 +4,8 @@ import * as SAT from 'sat';
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Image } from 'laya/ui/Image';
 
 /** 追踪子弹的动画 */
 type AimState = {
@@ -11,11 +13,11 @@ type AimState = {
     ori_pos: Point;
     /** 追踪的鱼 */
     fish: FishModel;
-    aim_ani_map: Map<string, Laya.Skeleton>;
+    aim_ani_map: Map<string, Skeleton>;
     /** 从当前玩家的炮台到 aim_ani 的点 */
-    point_list: Laya.Image[];
+    point_list: Image[];
     /** Point的缓存 */
-    points_temp: Laya.Image[];
+    points_temp: Image[];
 };
 
 const state = {
@@ -114,7 +116,7 @@ function createAim(type: string) {
     const { ani_wrap } = viewState;
     let aim_ani = aim_ani_map.get(type);
     if (!aim_ani) {
-        aim_ani = createSprite('other', 'aim') as Laya.Skeleton;
+        aim_ani = createSprite('other', 'aim') as Skeleton;
         ani_wrap.addChild(aim_ani);
         aim_ani_map.set(type, aim_ani);
     } else if (!aim_ani.parent) {

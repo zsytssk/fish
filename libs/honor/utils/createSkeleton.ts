@@ -1,5 +1,10 @@
+import { Templet } from 'laya/ani/bone/Templet';
+import { loader } from 'Laya';
+import { Animation } from 'laya/display/Animation';
+import { Image } from 'laya/ui/Image';
+
 const temple_pool: {
-    [key: string]: Laya.Templet;
+    [key: string]: Templet;
 } = {};
 /**
  * @public
@@ -13,21 +18,21 @@ const temple_pool: {
 export function createSkeleton(path: string, rate?: number, type?: number) {
     rate = rate || 30;
     type = type || 0;
-    const png = Laya.loader.getRes(path + '.png');
-    const sk = Laya.loader.getRes(path + '.sk');
+    const png = loader.getRes(path + '.png');
+    const sk = loader.getRes(path + '.sk');
 
     if (!png || !sk) {
         return undefined;
     }
-    let temple: Laya.Templet;
+    let temple: Templet;
     if (temple_pool[path]) {
         temple = temple_pool[path];
     } else {
-        temple = new Laya.Templet();
+        temple = new Templet();
         temple.parseData(png, sk, 24);
         temple_pool[path] = temple;
     }
-    const templet = new Laya.Templet();
+    const templet = new Templet();
     templet.parseData(png, sk, rate);
 
     return templet.buildArmature(type);
@@ -37,8 +42,8 @@ export function createSkeleton(path: string, rate?: number, type?: number) {
  * 创建帧动画
  * @param path 动画的路径
  */
-export function createAnimation(path: string): Laya.Animation {
-    const ani = new Laya.Animation();
+export function createAnimation(path: string): Animation {
+    const ani = new Animation();
     ani.loadAtlas(path + '.json');
     ani.interval = 120;
     ani.index = 1;
@@ -53,8 +58,8 @@ export function createAnimation(path: string): Laya.Animation {
  * 创建帧动画
  * @param path 动画的路径
  */
-export function createImg(path: string): Laya.Image {
-    const sprite = new Laya.Image();
+export function createImg(path: string): Image {
+    const sprite = new Image();
     sprite.loadImage(path + '.png');
     return sprite;
 }

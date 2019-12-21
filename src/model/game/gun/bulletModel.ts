@@ -39,7 +39,7 @@ export class BulletModel extends ComponentManager {
     public velocity: SAT.Vector;
     public cast_fn: CastFn;
     public track: TrackTarget;
-    private event: EventCom;
+    public event: EventCom;
     private body: BodyCom;
     private move_com: MoveCom;
     constructor(props: BulletInfo) {

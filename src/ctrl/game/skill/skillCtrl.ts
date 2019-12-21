@@ -6,6 +6,7 @@ import {
     skillDisableHandler,
     skillPreActiveHandler,
 } from './skillCtrlUtils';
+import { Event } from 'laya/events/Event';
 
 export class SkillCtrl {
     private is_cur_player = false;
@@ -48,7 +49,7 @@ export class SkillCtrl {
         event.on(SkillEvent.UpdateRadio, (radio: number) => {
             view.showCoolTime(radio);
         });
-        view.on(Laya.Event.CLICK, view, (e: Laya.Event) => {
+        view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
             skillPreActiveHandler(model);
         });

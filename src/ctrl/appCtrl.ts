@@ -11,7 +11,6 @@ import { GameCtrl } from './game/gameCtrl';
 /** 顶级 ctrl */
 export class AppCtrl {
     public model: AppModel;
-    private view = Laya.stage;
     constructor() {
         this.startApp();
     }
@@ -27,7 +26,6 @@ export class AppCtrl {
     }
     /** 初始化 honor */
     private async startHonor() {
-        // Laya.MiniAdpter.init();
         await honor.run(GameConfig, {
             defaultVersion: Config.CdnVersion,
         });

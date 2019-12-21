@@ -1,7 +1,9 @@
+import { Utils } from 'laya/utils/Utils';
+
 declare const ENV: 'DEV' | 'TEST' | 'PROD';
 
 export const EnvState = {
-    localTest: Laya.Utils.getQueryString('localTest'),
+    localTest: Utils.getQueryString('localTest'),
     origin: '',
     host: '',
     env: '' as typeof ENV,

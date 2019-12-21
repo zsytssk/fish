@@ -11,6 +11,8 @@ import {
 } from 'honor/utils/createSkeleton';
 import { GunInfo } from 'data/gun';
 import { FishModel } from 'model/game/fish/fishModel';
+import { Box } from 'laya/ui/Box';
+import { Sprite } from 'laya/display/Sprite';
 
 /** 获取皮肤对应的id */
 export function getGunSkinMap(skin: string, level: string) {
@@ -126,12 +128,12 @@ export function getBulletStartPos(
 export function createSprite(
     sprite_type: SpriteType,
     sub_type: string,
-): Laya.Sprite {
+): Sprite {
     const sprite_info = getSpriteInfo(sprite_type, sub_type) as SpriteInfo;
     const { type, path } = sprite_info;
     let pivot = sprite_info.pivot || { x: 0, y: 0 };
 
-    let sprite: Laya.Sprite;
+    let sprite: Sprite;
     if (type === 'DragonBone') {
         sprite = createSkeleton(path);
     } else if (type === 'Frame') {
@@ -154,8 +156,8 @@ export function createSprite(
 }
 
 export function createGunBox(level: number) {
-    const gun_box = new Laya.Box();
-    const gun_inner = new Laya.Box();
+    const gun_box = new Box();
+    const gun_inner = new Box();
 
     gun_box.size(149, 149);
     gun_inner.pos(74, 77);

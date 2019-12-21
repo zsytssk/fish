@@ -1,5 +1,12 @@
 import { Observable, Subscriber } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
+import { ColorFilter } from 'laya/filters/ColorFilter';
+import { GlowFilter } from 'laya/filters/GlowFilter';
+import { Sprite } from 'laya/display/Sprite';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Handler } from 'laya/utils/Handler';
+import { Event } from 'laya/events/Event';
+import { Image } from 'laya/ui/Image';
 
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';
@@ -74,25 +81,25 @@ export function addZeroToNum(num: number, len: number): number {
  * @param throttle 间隔的时间 默认1s
  */
 export function onNode(
-    node: Laya.Sprite,
+    node: Sprite,
     event: string,
-    callback: (event?: Laya.Event) => void,
+    callback: (event?: Event) => void,
     once?: boolean,
     throttle = 1000,
 ) {
-    let once_observer: Subscriber<Laya.Event>;
-    const observer = new Observable((subscriber: Subscriber<Laya.Event>) => {
-        const fn = (_event: Laya.Event) => {
+    let once_observer: Subscriber<Event>;
+    const observer = new Observable((subscriber: Subscriber<Event>) => {
+        const fn = (_event: Event) => {
             /** 按钮置灰 */
-            if ((node as Laya.Image).gray === true) {
+            if ((node as Image).gray === true) {
                 return;
             }
-            (node as Laya.Image).gray = true;
+            (node as Image).gray = true;
             setTimeout(() => {
                 if (node.destroyed) {
                     return;
                 }
-                (node as Laya.Image).gray = false;
+                (node as Image).gray = false;
             }, throttle);
 
             subscriber.next(_event);
@@ -107,27 +114,25 @@ export function onNode(
         });
     });
 
-    observer
-        .pipe(throttleTime(throttle || 1000))
-        .subscribe((_event: Laya.Event) => {
-            if (node.destroyed) {
-                if (once_observer) {
-                    once_observer.complete();
-                }
-                return;
+    observer.pipe(throttleTime(throttle || 1000)).subscribe((_event: Event) => {
+        if (node.destroyed) {
+            if (once_observer) {
+                once_observer.complete();
             }
+            return;
+        }
 
-            callback(_event);
-        });
+        callback(_event);
+    });
 }
 
 /** 停止骨骼动画, 如果是拖到页面上的 一开始无法停止 需要特殊处理` */
-export function stopSkeleton(ani: Laya.Skeleton) {
+export function stopSkeleton(ani: Skeleton) {
     if (ani.player) {
         ani.stop();
         return;
     }
-    ani.once(Laya.Event.PLAYED, ani, () => {
+    ani.once(Event.PLAYED, ani, () => {
         setTimeout(() => {
             ani.stop();
         });
@@ -136,21 +141,21 @@ export function stopSkeleton(ani: Laya.Skeleton) {
 /** 播放骨骼动画, 如果是拖到页面上的 一开始播放 需要特殊处理` */
 type Params = [any, boolean, boolean?, number?, number?, boolean?];
 
-export function playSkeleton(ani: Laya.Skeleton, ...params: Params) {
+export function playSkeleton(ani: Skeleton, ...params: Params) {
     if (ani.player) {
         ani.play(...params);
         return;
     }
-    ani.once(Laya.Event.PLAYED, ani, () => {
+    ani.once(Event.PLAYED, ani, () => {
         setTimeout(() => {
             ani.play(...params);
         });
     });
 }
 
-export function playSkeletonOnce(ani: Laya.Skeleton, ani_name: string) {
+export function playSkeletonOnce(ani: Skeleton, ani_name: string) {
     return new Promise((resolve, reject) => {
-        ani.once(Laya.Event.STOPPED, ani, () => {
+        ani.once(Event.STOPPED, ani, () => {
             resolve();
         });
         if (ani.player) {
@@ -158,7 +163,7 @@ export function playSkeletonOnce(ani: Laya.Skeleton, ani_name: string) {
             return;
         }
 
-        ani.once(Laya.Event.PLAYED, ani, () => {
+        ani.once(Event.PLAYED, ani, () => {
             setTimeout(() => {
                 ani.play(ani_name, false);
             });
@@ -167,11 +172,11 @@ export function playSkeletonOnce(ani: Laya.Skeleton, ani_name: string) {
 }
 
 /** 改变骨骼动画的url */
-export function utilSkeletonLoadUrl(ani: Laya.Skeleton, url: string) {
+export function utilSkeletonLoadUrl(ani: Skeleton, url: string) {
     return new Promise((resolve, reject) => {
         ani.load(
             url,
-            new Laya.Handler(ani, () => {
+            new Handler(ani, () => {
                 resolve();
             }),
         );
@@ -188,7 +193,7 @@ export function createRedFilter() {
     ];
 
     // 创建一个颜色滤镜对象,红色
-    return new Laya.ColorFilter(redMat);
+    return new ColorFilter(redMat);
 }
 
 export function createDarkFilter() {
@@ -199,17 +204,17 @@ export function createDarkFilter() {
         0, 0, 0.5, 0, 0,
         0, 0, 0, 1, 0,
     ];
-    return new Laya.ColorFilter(mat);
+    return new ColorFilter(mat);
 }
 
 export function createGLowRedFilter() {
-    return new Laya.GlowFilter('#ff0000', 10, 0, 0);
+    return new GlowFilter('#ff0000', 10, 0, 0);
 }
 
-export function darkNode(node: Laya.Sprite) {
+export function darkNode(node: Sprite) {
     node.filters = [createDarkFilter()];
 }
-export function unDarkNode(node: Laya.Sprite) {
+export function unDarkNode(node: Sprite) {
     node.filters = null;
 }
 

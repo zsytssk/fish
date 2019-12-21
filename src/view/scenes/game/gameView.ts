@@ -9,6 +9,9 @@ import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
+import { Event } from 'laya/events/Event';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Sprite } from 'laya/display/Sprite';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxPos = 'left' | 'right';
@@ -52,7 +55,7 @@ export default class GameView extends ui.scenes.game.gameUI
     public addBullet(skin: string, rage = false) {
         const { pool } = this;
         const { path } = getSpriteInfo('bullet', skin) as SpriteInfo;
-        let bullet: Laya.Skeleton;
+        let bullet: Skeleton;
         if (!rage) {
             bullet = createSkeleton(path);
         } else {
@@ -72,7 +75,7 @@ export default class GameView extends ui.scenes.game.gameUI
     public onPoolClick(): Promise<Point> {
         return new Promise((resolve, reject) => {
             const { pool } = this;
-            pool.once(Laya.Event.CLICK, pool, (e: Laya.Event) => {
+            pool.once(Event.CLICK, pool, (e: Event) => {
                 e.stopPropagation();
                 const { x, y } = pool.getMousePoint();
 
@@ -88,7 +91,7 @@ export default class GameView extends ui.scenes.game.gameUI
         this.offFishClick();
         return new Observable(subscriber => {
             const { pool } = this;
-            const fun = (e: Laya.Event) => {
+            const fun = (e: Event) => {
                 e.stopPropagation();
                 const { target } = e;
                 if (target instanceof FishView) {
@@ -96,9 +99,9 @@ export default class GameView extends ui.scenes.game.gameUI
                 }
             };
             subscriber.add(() => {
-                pool.off(Laya.Event.CLICK, pool, fun);
+                pool.off(Event.CLICK, pool, fun);
             });
-            pool.on(Laya.Event.CLICK, pool, fun);
+            pool.on(Event.CLICK, pool, fun);
             this.fish_click_observer = subscriber;
         }) as Observable<string>;
     }
@@ -137,7 +140,7 @@ export default class GameView extends ui.scenes.game.gameUI
         let { mask } = energy_bar;
         const { width, height } = energy_bar;
         if (!mask) {
-            mask = new Laya.Sprite();
+            mask = new Sprite();
             energy_bar.mask = mask;
         }
         energy_bar.mask.graphics.clear();
@@ -147,7 +150,7 @@ export default class GameView extends ui.scenes.game.gameUI
         const { energy_light } = this.skill_box;
         return new Promise((resolve, reject) => {
             energy_light.visible = true;
-            energy_light.on(Laya.Event.STOPPED, energy_light, () => {
+            energy_light.on(Event.STOPPED, energy_light, () => {
                 energy_light.visible = false;
                 resolve();
             });

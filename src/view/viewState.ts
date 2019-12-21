@@ -1,9 +1,12 @@
 import GameView from './scenes/game/gameView';
+import { Point } from 'laya/maths/Point';
+import { Sprite } from 'laya/display/Sprite';
+import { Box } from 'laya/ui/Box';
 
 type ViewState = {
     game: GameView;
     /** 所有的动画的芙父容器 */
-    ani_wrap: Laya.Box;
+    ani_wrap: Box;
 };
 
 export const viewState = {} as ViewState;
@@ -39,10 +42,10 @@ export function getAutoLaunchSkillItem() {
     return viewState.game.getAutoLaunchSkillItem();
 }
 export function convertPosToNode(
-    pos: Laya.Point,
-    ori_node: Laya.Sprite,
-    target_node: Laya.Sprite,
-): Laya.Point {
+    pos: Point,
+    ori_node: Sprite,
+    target_node: Sprite,
+): Point {
     const global_p = ori_node.localToGlobal(pos, true);
     return target_node.globalToLocal(global_p, true);
 }

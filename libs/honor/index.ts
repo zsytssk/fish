@@ -1,6 +1,15 @@
 import { initState, director } from './state';
 import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
+import { Laya, loader } from 'Laya';
+import { Laya3D } from 'Laya3D';
+import { Stat } from 'laya/utils/Stat';
+import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
+import { Handler } from 'laya/utils/Handler';
+import { WebGL } from 'laya/webgl/WebGL';
+import { Stage } from 'laya/display/Stage';
+import { Utils } from 'laya/utils/Utils';
+import { URL } from 'laya/net/URL';
 export {
     HonorDialog,
     HonorDialogConfig,
@@ -35,12 +44,9 @@ async function run(
     if (window.Laya3D) {
         Laya3D.init(game_config.width, game_config.height);
     } else {
-        Laya.init(game_config.width, game_config.height, Laya.WebGL);
+        Laya.init(game_config.width, game_config.height, WebGL);
     }
-    Laya.stage.frameRate = Laya.Stage.FRAME_SLOW;
-    if (Laya.Physics) {
-        Laya.Physics.enable();
-    }
+    Laya.stage.frameRate = Stage.FRAME_SLOW;
     if ((Laya as any).DebugPanel) {
         (Laya as any).DebugPanel.enable();
     }
@@ -49,28 +55,24 @@ async function run(
     Laya.stage.alignV = game_config.alignV;
     Laya.stage.alignH = game_config.alignH;
     // 兼容微信不支持加载scene后缀场景
-    Laya.URL.exportSceneToJson = game_config.exportSceneToJson;
+    URL.exportSceneToJson = game_config.exportSceneToJson;
 
     // 打开调试面板（通过IDE设置调试模式，或者url地址增加debug=true参数，均可打开调试面板）
-    if (game_config.debug || Laya.Utils.getQueryString('debug') === 'true') {
+    if (game_config.debug || Utils.getQueryString('debug') === 'true') {
         DEBUG_MODE = true;
         Laya.enableDebugPanel();
     } else {
         DEBUG_MODE = false;
     }
-
-    if (game_config.physicsDebug && Laya.PhysicsDebugDraw) {
-        Laya.PhysicsDebugDraw.enable();
-    }
     if (game_config.stat) {
-        Laya.Stat.show();
+        Stat.show();
     }
     Laya.alertGlobalError = false;
 
     let { defaultVersion } = extern_config;
     defaultVersion = defaultVersion || '0';
-    Laya.URL.customFormat = (url: string) => {
-        const version_map = Laya.URL.version || {};
+    URL.customFormat = (url: string) => {
+        const version_map = URL.version || {};
         if (url.indexOf('data:image') < 0) {
             if (url.indexOf('?') < 0 && url.indexOf('?v=') < 0) {
                 let v = version_map[url];
@@ -86,9 +88,9 @@ async function run(
     const start_task: Array<Promise<any>> = [];
     // 激活大小图映射，加载小图的时候，如果发现小图在大图合集里面，则优先加载大图合集，而不是小图
     const fileconfig_task = new Promise((resolve, reject) => {
-        Laya.AtlasInfoManager.enable(
+        AtlasInfoManager.enable(
             'fileconfig.json',
-            Laya.Handler.create(null, async () => {
+            Handler.create(null, async () => {
                 resolve();
             }),
         );
@@ -103,7 +105,7 @@ async function run(
     await Promise.all(start_task);
 
     if (versionPath) {
-        Laya.URL.version = Laya.loader.getRes(versionPath);
+        URL.version = loader.getRes(versionPath);
     }
 
     initState();

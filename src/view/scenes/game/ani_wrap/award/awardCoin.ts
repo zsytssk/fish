@@ -1,6 +1,10 @@
 import { viewState } from 'view/viewState';
 import { createSprite } from 'utils/dataUtil';
 import { move, slide_up_in, sleep } from 'utils/animate';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Laya } from 'Laya';
+import { Event } from 'laya/events/Event';
+import { Label } from 'laya/ui/Label';
 
 const award_coin_num = 8;
 const space_row = 10;
@@ -42,7 +46,7 @@ export function createAwardCoin(pos: Point, num: number) {
 
     for (let i = 0; i < num_column; i++) {
         for (let j = 0; j < num_row; j++) {
-            const coin_view = createCoinAni() as Laya.Skeleton;
+            const coin_view = createCoinAni() as Skeleton;
             coin_view.visible = false;
             ani_wrap.addChild(coin_view);
             const x =
@@ -62,8 +66,8 @@ export function createAwardCoin(pos: Point, num: number) {
 export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     const { ani_wrap } = viewState;
     const { upside_down } = viewState.game;
-    const bg_ani = createSprite('other', 'award_light') as Laya.Skeleton;
-    const num_label = new Laya.Label();
+    const bg_ani = createSprite('other', 'award_light') as Skeleton;
+    const num_label = new Label();
 
     bg_ani.zOrder = 5;
     num_label.zOrder = 10;
@@ -78,7 +82,7 @@ export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     num_label.pivot(bounds_num_label.width / 2, bounds_num_label.height / 2);
     num_label.pos(pos.x, pos.y);
     bg_ani.pos(pos.x, pos.y);
-    bg_ani.once(Laya.Event.STOPPED, bg_ani, () => {
+    bg_ani.once(Event.STOPPED, bg_ani, () => {
         num_label.destroy();
         bg_ani.destroy();
     });
@@ -113,7 +117,7 @@ function calcCoinRange(pos: Point, coins_width: number, coins_height: number) {
 }
 
 /** 金币飞行动画... */
-function animateCoin(coin_views: Laya.Skeleton[], end_pos: Point) {
+function animateCoin(coin_views: Skeleton[], end_pos: Point) {
     coin_views.reverse().forEach(async (coin_view, i) => {
         const start_pos = {
             x: coin_view.x,
@@ -128,11 +132,11 @@ function animateCoin(coin_views: Laya.Skeleton[], end_pos: Point) {
     });
 }
 
-const pool = [] as Laya.Skeleton[];
+const pool = [] as Skeleton[];
 function createCoinAni() {
     let item = pool.pop();
     if (!item) {
-        item = createSprite('other', 'coin') as Laya.Skeleton;
+        item = createSprite('other', 'coin') as Skeleton;
     }
     const { upside_down } = viewState.game;
     if (upside_down) {

@@ -1,4 +1,4 @@
-import honor from 'honor';
+import honor, { HonorDialog } from 'honor';
 import { ui } from '../../ui/layaMaxUI';
 
 /** loading场景 */
@@ -11,9 +11,8 @@ export default class Loading extends ui.scenes.loadingUI {
     }
 
     public onShow() {
-        // Laya.stage.addChild(this);
         this.open(false);
-        honor.director.openDialog(this);
+        honor.director.openDialog(this as HonorDialog);
         console.log('LoadingScene onReset');
     }
 

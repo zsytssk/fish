@@ -5,6 +5,8 @@ import { createDarkFilter } from 'utils/utils';
 import TopTipPop from './topTip';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { Handler } from 'laya/utils/Handler';
+import { Event } from 'laya/events/Event';
 
 type LotteryData = {
     lottery_id: string;
@@ -64,19 +66,19 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         lottery_list.array = [];
         exchange_list.array = [];
 
-        lottery_list.renderHandler = new Laya.Handler(
+        lottery_list.renderHandler = new Handler(
             lottery_list,
             this.renderLottery,
             undefined,
             false,
         );
-        exchange_list.renderHandler = new Laya.Handler(
+        exchange_list.renderHandler = new Handler(
             lottery_list,
             this.renderExchange,
             undefined,
             false,
         );
-        btn_lottery.on(Laya.Event.CLICK, btn_lottery, () => {
+        btn_lottery.on(Event.CLICK, btn_lottery, () => {
             this.runLottery();
         });
     }
@@ -203,7 +205,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             box.filters = [createDarkFilter()];
         } else {
             box.filters = null;
-            btn_buy.on(Laya.Event.CLICK, btn_buy, () => {
+            btn_buy.on(Event.CLICK, btn_buy, () => {
                 this.runTicketExchange(index);
             });
         }

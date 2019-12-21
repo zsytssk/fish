@@ -1,3 +1,6 @@
+import { Scene } from 'laya/display/Scene';
+import { Node } from 'laya/display/Node';
+
 /** 在class的fun执行之后执行fun */
 export function injectAfter<T extends {}, K extends ObjFilterKeys<T, Function>>(
     instance: T,
@@ -45,7 +48,7 @@ export function injectProto<T extends {}, K extends ObjFilterKeys<T, Function>>(
  *  所有通过 loadScene 有没有调用来监听
  * 这是hack的方法
  */
-export function createScene(ctor: Ctor<Laya.Scene>): Promise<Laya.Scene> {
+export function createScene(ctor: Ctor<Scene>): Promise<Scene> {
     return new Promise((resolve, reject) => {
         let is_load = false;
         /** 监听 */
@@ -65,9 +68,9 @@ export function createScene(ctor: Ctor<Laya.Scene>): Promise<Laya.Scene> {
         instance.once('onViewCreated', this, () => {
             return resolve(instance);
         });
-    }) as Promise<Laya.Scene>;
+    }) as Promise<Scene>;
 }
 
-export function nodeIsReady(node: Laya.Node) {
+export function nodeIsReady(node: Node) {
     return (node as any)._getBit(/*laya.Const.NOT_READY*/ 0x08);
 }

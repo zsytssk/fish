@@ -7,6 +7,9 @@ import ShopPop from 'view/pop/shop';
 import { getUserInfo } from 'model/modelState';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
+import { Handler } from 'laya/utils/Handler';
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
@@ -28,26 +31,24 @@ export function hallViewEvent(hall: HallCtrl) {
         btn_login,
     } = header;
 
-    coin_menu_list.selectHandler = new Laya.Handler(
+    coin_menu_list.selectHandler = new Handler(
         coin_menu_list,
         hall.selectCoin,
         undefined,
         false,
     );
-    flag_menu_list.selectHandler = new Laya.Handler(
+    flag_menu_list.selectHandler = new Handler(
         coin_menu_list,
         hall.selectFlag,
         undefined,
         false,
     );
 
-    const { CLICK } = Laya.Event;
-    const btn_normal_try = normal_box.getChildByName('btn_try') as Laya.Sprite;
-    const btn_normal_play = normal_box.getChildByName(
-        'btn_play',
-    ) as Laya.Sprite;
-    const btn_match_try = match_box.getChildByName('btn_try') as Laya.Sprite;
-    const btn_match_play = match_box.getChildByName('btn_play') as Laya.Sprite;
+    const { CLICK } = Event;
+    const btn_normal_try = normal_box.getChildByName('btn_try') as Sprite;
+    const btn_normal_play = normal_box.getChildByName('btn_play') as Sprite;
+    const btn_match_try = match_box.getChildByName('btn_try') as Sprite;
+    const btn_match_play = match_box.getChildByName('btn_play') as Sprite;
 
     onNode(btn_normal_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);

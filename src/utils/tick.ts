@@ -1,3 +1,5 @@
+import { Laya } from 'Laya';
+
 type Listener = (t: number) => void;
 type FunItem = {
     fn: Listener;

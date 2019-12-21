@@ -32,6 +32,7 @@ import ShopPop from 'view/pop/shop';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
 import VoicePop from 'view/pop/voice';
+import { Event } from 'laya/events/Event';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -58,25 +59,25 @@ export class GameCtrl {
     private initEvent() {
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
-        const { CLICK } = Laya.Event;
+        const { CLICK } = Event;
 
         this.onModel();
-        btn_help.on(CLICK, this, (e: Laya.Event) => {
+        btn_help.on(CLICK, this, (e: Event) => {
             e.stopPropagation();
             HelpPop.preEnter();
         });
-        btn_gift.on(CLICK, this, (e: Laya.Event) => {
+        btn_gift.on(CLICK, this, (e: Event) => {
             e.stopPropagation();
             LotteryPop.preEnter();
         });
-        btn_voice.on(CLICK, this, (e: Laya.Event) => {
+        btn_voice.on(CLICK, this, (e: Event) => {
             e.stopPropagation();
             VoicePop.preEnter();
         });
-        btn_shop.on(CLICK, this, (e: Laya.Event) => {
+        btn_shop.on(CLICK, this, (e: Event) => {
             ShopPop.preEnter();
         });
-        btn_leave.on(CLICK, this, (e: Laya.Event) => {
+        btn_leave.on(CLICK, this, (e: Event) => {
             e.stopPropagation();
             AlertPop.alert('确定要离开游戏吗?').then(type => {
                 if (type === 'confirm') {

@@ -1,10 +1,26 @@
--   国际化 + 外面的接口 + 帮助弹出层
+-   @todo 使用最新的 laya es 接口
 
--   超级技能 + item 掉落...
+## 2019-12-21 11:45:00
 
--   @todo 微信小游戏
+-   todo honor
+
+-   warning 信息 There are multiple modules with names that only differ in casing.
+
+-   laya 直接打包到一个文件中
+    -   laya 文件太多了 崩溃了
+
+### save
+
+-   .fs file...
+-   Laya.timer==undefined
+-   fixedwidth 只能看到一小部分
+-   屏幕无法自适应
 
 ## 2019-12-14 14:41:28
+
+-   超级技能 + item 掉落...
+-   国际化 + 外面的接口 + 帮助弹出层
+-   @todo 微信小游戏
 
 -   https://developers.weixin.qq.com/minigame/dev/guide/open-ability/login.html
 

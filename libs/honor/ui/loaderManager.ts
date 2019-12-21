@@ -1,5 +1,8 @@
 import { ViewType, HonorLoadScene, HonorView } from './view';
 import { ResItem, loadRes } from 'honor/utils/loadRes';
+import { Scene } from 'laya/display/Scene';
+import { Dialog } from 'laya/ui/Dialog';
+import { Handler } from 'laya/utils/Handler';
 
 type LoadingMap = Map<ViewType, HonorLoadScene>;
 
@@ -9,14 +12,14 @@ export class LoaderManagerCtor {
     private load_map = new Map() as LoadingMap;
     public loadScene(type: ViewType, url: string) {
         return new Promise((resolve, reject) => {
-            const ctor = type === 'Scene' ? Laya.Scene : Laya.Dialog;
+            const ctor = type === 'Scene' ? Scene : Dialog;
             ctor.load(
                 url,
-                Laya.Handler.create(this, (_scene: HonorView) => {
+                Handler.create(this, (_scene: HonorView) => {
                     resolve(_scene);
                     this.toggleLoading(type, false);
                 }),
-                Laya.Handler.create(this, this.setLoadProgress, [type], false),
+                Handler.create(this, this.setLoadProgress, [type], false),
             );
             this.toggleLoading(type, true);
         });
@@ -50,9 +53,9 @@ export class LoaderManagerCtor {
         if (status === false) {
             time = 1000;
         }
-        clearTimeout(this[
-            `${type}_timeout_${status}` as keyof LoaderManagerCtor
-        ] as any);
+        clearTimeout(
+            this[`${type}_timeout_${status}` as keyof LoaderManagerCtor] as any,
+        );
         this[
             `${type}_timeout_${status}` as keyof LoaderManagerCtor
         ] = setTimeout(() => {
@@ -60,11 +63,11 @@ export class LoaderManagerCtor {
         }, time) as any;
     }
     public async setLoadView(type: ViewType, url: string) {
-        const ctor = type === 'Scene' ? Laya.Scene : Laya.Dialog;
+        const ctor = type === 'Scene' ? Scene : Dialog;
         const scene: HonorLoadScene = await new Promise((resolve, reject) => {
             ctor.load(
                 url,
-                Laya.Handler.create(null, (_scene: HonorLoadScene) => {
+                Handler.create(null, (_scene: HonorLoadScene) => {
                     resolve(_scene);
                 }),
             );

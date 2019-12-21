@@ -1,6 +1,7 @@
 import { SPRITE } from './sprite';
 import { getGunSkinMap } from 'utils/dataUtil';
 import { AudioRes } from './audioRes';
+import { Loader } from 'laya/net/Loader';
 
 export const res = {
     font: [],
@@ -8,19 +9,19 @@ export const res = {
     game: [
         {
             url: `res/image/game.png`,
-            type: Laya.Loader.IMAGE,
+            type: Loader.IMAGE,
         },
         {
             url: `res/image/game.json`,
-            type: Laya.Loader.JSON,
+            type: Loader.JSON,
         },
         {
             url: `image/game/bg_normal.sk`,
-            type: Laya.Loader.BUFFER,
+            type: Loader.BUFFER,
         },
         {
             url: `image/game/bg_normal.png`,
-            type: Laya.Loader.IMAGE,
+            type: Loader.IMAGE,
         },
     ],
 };
@@ -39,11 +40,11 @@ for (const top_type in SPRITE) {
             res.game.push(
                 {
                     url: `${path}.sk`,
-                    type: Laya.Loader.BUFFER,
+                    type: Loader.BUFFER,
                 },
                 {
                     url: `${path}.png`,
-                    type: Laya.Loader.IMAGE,
+                    type: Loader.IMAGE,
                 },
             );
         }
@@ -59,11 +60,11 @@ for (let i = 1; i <= 3; i++) {
             res.game.push(
                 {
                     url: `ani/gun/${name}.sk`,
-                    type: Laya.Loader.BUFFER,
+                    type: Loader.BUFFER,
                 },
                 {
                     url: `ani/gun/${name}.png`,
-                    type: Laya.Loader.IMAGE,
+                    type: Loader.IMAGE,
                 },
             );
         }
@@ -72,21 +73,21 @@ for (let i = 1; i <= 3; i++) {
     res.game.push(
         {
             url: `ani/gun/bullet${i}.sk`,
-            type: Laya.Loader.BUFFER,
+            type: Loader.BUFFER,
         },
         {
             url: `ani/gun/bullet${i}.png`,
-            type: Laya.Loader.IMAGE,
+            type: Loader.IMAGE,
         },
     );
     res.game.push(
         {
             url: `ani/gun/net${i}.sk`,
-            type: Laya.Loader.BUFFER,
+            type: Loader.BUFFER,
         },
         {
             url: `ani/gun/net${i}.png`,
-            type: Laya.Loader.IMAGE,
+            type: Loader.IMAGE,
         },
     );
 }
@@ -100,11 +101,11 @@ for (const font of font_list) {
     res.font.push(
         {
             url: `${font}.fnt`,
-            type: Laya.Loader.XML,
+            type: Loader.XML,
         },
         {
             url: `${font}.png`,
-            type: Laya.Loader.IMAGE,
+            type: Loader.IMAGE,
         },
     );
 }
@@ -115,6 +116,6 @@ for (const key in AudioRes) {
     const url = AudioRes[key];
     res.audio.push({
         url,
-        type: Laya.Loader.SOUND,
+        type: Loader.SOUND,
     });
 }

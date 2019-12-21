@@ -1,7 +1,12 @@
+import { Event } from 'laya/events/Event';
+import { Laya } from 'Laya';
+import { Sprite } from 'laya/display/Sprite';
+import { ProgressBar } from 'laya/ui/ProgressBar';
+
 export type OnProgressChange = (radio: number) => void;
-export type ProgressUI = Laya.Sprite & {
-    progress_btn: Laya.Sprite;
-    progress_bar: Laya.ProgressBar;
+export type ProgressUI = Sprite & {
+    progress_btn: Sprite;
+    progress_bar: ProgressBar;
 };
 /** 控制进度的ctrl */
 export default class ProgressCtrl {
@@ -18,13 +23,7 @@ export default class ProgressCtrl {
     private initEvent() {
         const { view } = this;
         const { progress_btn } = view;
-        const {
-            CLICK,
-            MOUSE_DOWN,
-            MOUSE_MOVE,
-            MOUSE_OVER,
-            MOUSE_OUT,
-        } = Laya.Event;
+        const { CLICK, MOUSE_DOWN, MOUSE_MOVE, MOUSE_OVER, MOUSE_OUT } = Event;
 
         view.on(CLICK, this, this.onClick);
         progress_btn.on(MOUSE_DOWN, this, () => {
@@ -33,7 +32,7 @@ export default class ProgressCtrl {
             Laya.stage.on(MOUSE_OUT, this, this.onMouseOut);
         });
     }
-    private onClick(e: Laya.Event) {
+    private onClick(e: Event) {
         e.stopPropagation();
         const { view } = this;
         const { progress_bar, progress_btn, width } = view;
@@ -42,7 +41,7 @@ export default class ProgressCtrl {
         progress_bar.value = radio;
         progress_btn.x = x;
     }
-    private onMouseMove(e: Laya.Event) {
+    private onMouseMove(e: Event) {
         const { view } = this;
         e.stopPropagation();
         const { x } = view.getMousePoint();
@@ -57,7 +56,7 @@ export default class ProgressCtrl {
         }
         this.setProgress(radio);
     }
-    private onMouseOut(e: Laya.Event) {
+    private onMouseOut(e: Event) {
         e.stopPropagation();
         Laya.stage.offAllCaller(this);
     }

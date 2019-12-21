@@ -28,6 +28,10 @@ let common_config = {
                     transpileOnly: true,
                 },
             },
+            {
+                test: /(\.glsl|.fs|.vs)$/,
+                loader: 'webpack-glsl-loader',
+            },
         ],
     },
     plugins: [new webpack.DefinePlugin({ ENV })],
@@ -35,8 +39,12 @@ let common_config = {
 
 const dev_config = {
     devtool: 'source-map',
+    stats: {
+        warnings: false,
+    },
     watch: true,
     devServer: {
+        clientLogLevel: 'silent',
         host: '0.0.0.0',
         contentBase: path.join(__dirname, 'bin'),
         disableHostCheck: true,

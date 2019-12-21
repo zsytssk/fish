@@ -1,5 +1,9 @@
 import { createSprite } from 'utils/dataUtil';
 import { viewState } from 'view/viewState';
+import { Laya } from 'Laya';
+import { Label } from 'laya/ui/Label';
+import { Event } from 'laya/events/Event';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 
 const circle_width = 270;
 const circle_height = 270;
@@ -12,14 +16,14 @@ export async function showAwardCircle(
 ) {
     return new Promise((resolve, reject) => {
         const { ani_wrap } = viewState;
-        const circle = createSprite('other', 'award_big') as Laya.Skeleton;
+        const circle = createSprite('other', 'award_big') as Skeleton;
         pos = fixCirclePos(pos);
 
         const num_label = showAwardNum(pos, num, is_cur_player);
         ani_wrap.addChild(circle);
         circle.play(0, false);
         circle.pos(pos.x, pos.y);
-        circle.once(Laya.Event.STOPPED, circle, () => {
+        circle.once(Event.STOPPED, circle, () => {
             num_label.destroy();
             circle.destroy();
             resolve();
@@ -30,7 +34,7 @@ export async function showAwardCircle(
 /** 显示奖励的数目 */
 function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     const { ani_wrap } = viewState;
-    const num_label = new Laya.Label();
+    const num_label = new Label();
 
     num_label.zOrder = 10;
     num_label.font = is_cur_player ? 'numYellow40' : 'numWhite40';

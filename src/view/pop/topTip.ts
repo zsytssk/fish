@@ -5,6 +5,7 @@ import { getStringLength } from 'honor/utils/getStringLength';
 import { slide_down_in } from 'utils/animate';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { Laya } from 'Laya';
 
 const url = 'pop/alert/topTip.scene';
 export default class TopTipPop extends ui.pop.alert.topTipUI

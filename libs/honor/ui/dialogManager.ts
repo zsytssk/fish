@@ -1,6 +1,14 @@
 import { HonorDialog, HonorDialogConfig, DEFAULT_CONFIG } from './view';
 import { injectAfter, createScene } from 'honor/utils/tool';
 import { loaderManager } from 'honor/state';
+import { Tween } from 'laya/utils/Tween';
+import { Ease } from 'laya/utils/Ease';
+import { Handler } from 'laya/utils/Handler';
+import { Dialog } from 'laya/ui/Dialog';
+import { DialogManager } from 'laya/ui/DialogManager';
+import { UIConfig } from 'UIConfig';
+import { Event } from 'laya/events/Event';
+import { Laya } from 'Laya';
 
 /**
  * 全局默认弹出对话框效果，可以设置一个效果代替默认的弹出效果，
@@ -8,9 +16,9 @@ import { loaderManager } from 'honor/state';
  */
 const defaultPopupEffect = function(dialog: HonorDialog) {
     if (dialog.HonorEffectTween) {
-        (dialog.HonorEffectTween as Laya.Tween).complete();
+        (dialog.HonorEffectTween as Tween).complete();
     }
-    dialog.HonorEffectTween = Laya.Tween.from(
+    dialog.HonorEffectTween = Tween.from(
         dialog,
         {
             x: Laya.stage.width / 2,
@@ -20,8 +28,8 @@ const defaultPopupEffect = function(dialog: HonorDialog) {
             alpha: 0,
         },
         300,
-        Laya.Ease.backOut,
-        Laya.Handler.create(this, () => {
+        Ease.backOut,
+        Handler.create(this, () => {
             dialog.HonorEffectTween = undefined;
             dialog.scale(1, 1);
             dialog.alpha = 1;
@@ -37,10 +45,10 @@ const defaultPopupEffect = function(dialog: HonorDialog) {
  */
 const defaultCloseEffect = function(dialog: HonorDialog) {
     if (dialog.HonorEffectTween) {
-        (dialog.HonorEffectTween as Laya.Tween).complete();
+        (dialog.HonorEffectTween as Tween).complete();
     }
 
-    dialog.HonorEffectTween = Laya.Tween.to(
+    dialog.HonorEffectTween = Tween.to(
         dialog,
         {
             x: Laya.stage.width / 2,
@@ -50,8 +58,8 @@ const defaultCloseEffect = function(dialog: HonorDialog) {
             alpha: 0,
         },
         300,
-        Laya.Ease.backIn,
-        Laya.Handler.create(this, () => {
+        Ease.backIn,
+        Handler.create(this, () => {
             dialog.HonorEffectTween = undefined;
             dialog.scale(1, 1);
             dialog.alpha = 1;
@@ -83,10 +91,10 @@ export class DialogManagerCtor {
     private open_dialog_list: DialogInfo[] = [];
     /** 缓存关闭的 dialog */
     private dialog_pool_list: DialogInfo[] = [];
-    private dialog_manager: Laya.DialogManager;
+    private dialog_manager: DialogManager;
     constructor() {
         UIConfig.closeDialogOnSide = false;
-        const dialog_manager = Laya.Dialog.manager;
+        const dialog_manager = Dialog.manager;
         injectAfter(
             dialog_manager,
             'doClose',
@@ -97,11 +105,11 @@ export class DialogManagerCtor {
             'doOpen',
             this.injectDoOpenAfter.bind(this),
         );
-        dialog_manager.popupEffectHandler = new Laya.Handler(
+        dialog_manager.popupEffectHandler = new Handler(
             dialog_manager,
             defaultPopupEffect,
         );
-        dialog_manager.closeEffectHandler = new Laya.Handler(
+        dialog_manager.closeEffectHandler = new Handler(
             dialog_manager,
             defaultCloseEffect,
         );
@@ -195,9 +203,9 @@ export class DialogManagerCtor {
                 });
             } else if (typeof url === 'function') {
                 createScene(url).then(dialog => {
-                    return resolve(dialog as Laya.Dialog);
+                    return resolve(dialog as Dialog);
                 });
-            } else if (url instanceof Laya.Dialog) {
+            } else if (url instanceof Dialog) {
                 return resolve(url);
             }
         });
@@ -238,7 +246,7 @@ export class DialogManagerCtor {
     }
     /** 在dialog关闭之后将没有destroy的dialog放在dialog_pool_list, 下次利用 */
     private injectDoCloseAfter(
-        dialog_manager: Laya.DialogManager,
+        dialog_manager: DialogManager,
         result,
         dialog: HonorDialog,
     ) {
@@ -259,7 +267,7 @@ export class DialogManagerCtor {
     }
     /** 在dialog打开之后 */
     private injectDoOpenAfter(
-        dialog_manager: Laya.DialogManager,
+        dialog_manager: DialogManager,
         result,
         dialog: HonorDialog,
     ) {
@@ -283,7 +291,7 @@ export class DialogManagerCtor {
                 UIConfig.popupBgColor = dialog_config.shadowColor;
                 if (dialog_config.closeOnSide) {
                     maskLayer.offAllCaller(dialog_manager);
-                    maskLayer.once(Laya.Event.CLICK, dialog_manager, () => {
+                    maskLayer.once(Event.CLICK, dialog_manager, () => {
                         dialog.close();
                     });
                 }

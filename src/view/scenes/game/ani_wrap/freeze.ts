@@ -1,13 +1,15 @@
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Event } from 'laya/events/Event';
 
 /** 冰冻的动画 */
-let freezing_ani: Laya.Skeleton;
+let freezing_ani: Skeleton;
 function createFreezingAni() {
     const { ani_wrap } = viewState;
     if (!freezing_ani) {
-        freezing_ani = createSprite('other', 'freezing') as Laya.Skeleton;
+        freezing_ani = createSprite('other', 'freezing') as Skeleton;
         freezing_ani.scale(2, 2);
         freezing_ani.pos(ani_wrap.width / 2, ani_wrap.height / 2);
         ani_wrap.addChild(freezing_ani);
@@ -18,7 +20,7 @@ function createFreezingAni() {
 }
 export function activeFreeze() {
     createFreezingAni();
-    freezing_ani.once(Laya.Event.STOPPED, freezing_ani, () => {
+    freezing_ani.once(Event.STOPPED, freezing_ani, () => {
         loopFreeze();
     });
 

@@ -1,3 +1,6 @@
+//-----libs-begin-----
+loadLib("libs/laya.core.js")
+//-----libs-end-------
 // coingame.sys.init({
 //     callback: () => {
 //         // 检查登录态
@@ -22,13 +25,5 @@ function loadEngin() {
      */
     window.screenOrientation = 'sensor_landscape';
 
-    //-----libs-begin-----
-    loadLib('libs/laya.core.js');
-    loadLib('libs/laya.ani.js');
-    loadLib('libs/laya.html.js');
-    loadLib('libs/laya.ui.js');
-    loadLib('libs/bytebuffer.js');
-    //-----libs-end-------
     loadLib('js/bundle.js?v=' + CDN_VERSION);
-    // loadLib('js/app.bundle.js?v=' + CDN_VERSION);
 }

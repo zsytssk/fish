@@ -4,6 +4,10 @@ import { getShopInfo, useGunSkin, buyItem } from './popSocket';
 import TopTipPop from './topTip';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { Button } from 'laya/ui/Button';
+import { Label } from 'laya/ui/Label';
+import { Event } from 'laya/events/Event';
+import { Handler } from 'laya/utils/Handler';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -61,13 +65,13 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         const { gun_list, item_list } = this;
         gun_list.array = [];
         item_list.array = [];
-        gun_list.renderHandler = new Laya.Handler(
+        gun_list.renderHandler = new Handler(
             gun_list,
             this.renderGunList,
             null,
             false,
         );
-        item_list.renderHandler = new Laya.Handler(
+        item_list.renderHandler = new Handler(
             item_list,
             this.renderItemList,
             null,
@@ -129,24 +133,24 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         name_label.text = gun_name;
         icon.skin = `image/pop/shop/icon/${gun_id}.png`;
         stack_btn.selectedIndex = gun_status;
-        const cur_btn = stack_btn.getChildAt(gun_status) as Laya.Button;
-        const cur_label = cur_btn.getChildByName('label') as Laya.Label;
+        const cur_btn = stack_btn.getChildAt(gun_status) as Button;
+        const cur_label = cur_btn.getChildByName('label') as Label;
         cur_btn.offAll();
         if (gun_status === GunSkinStatus.NoHave) {
             cur_label.text = gun_price + '';
-            cur_btn.on(Laya.Event.CLICK, cur_btn, () => {
+            cur_btn.on(Event.CLICK, cur_btn, () => {
                 buyItem(gun_id).then(() => {
                     this.buyGunSkin(gun_id);
                 });
             });
         } else if (gun_status === GunSkinStatus.Have) {
-            cur_btn.on(Laya.Event.CLICK, cur_btn, () => {
+            cur_btn.on(Event.CLICK, cur_btn, () => {
                 useGunSkin(gun_id).then(() => {
                     this.useGunSkin(gun_id);
                 });
             });
         } else if (gun_status === GunSkinStatus.Used) {
-            cur_btn.on(Laya.Event.CLICK, cur_btn, () => {
+            cur_btn.on(Event.CLICK, cur_btn, () => {
                 buyItem(gun_id).then(() => {
                     this.buyGunSkin(gun_id);
                 });
@@ -186,7 +190,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         icon.skin = `image/pop/shop/icon/${item_id}.png`;
         price_label.text = item_price + '';
         btn_buy.offAll();
-        btn_buy.on(Laya.Event.CLICK, btn_buy, () => {
+        btn_buy.on(Event.CLICK, btn_buy, () => {
             buyItem(item_id, item_num).then(() => {
                 TopTipPop.tip('购买成功');
             });

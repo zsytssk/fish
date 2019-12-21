@@ -1,4 +1,4 @@
-import { DEBUG_MODE } from '../index';
+import { default as honor } from '../index';
 import {
     dialogManager,
     loaderManager,
@@ -9,10 +9,13 @@ import { ResItem } from '../utils/loadRes';
 import { DialogRefUrl } from './dialogManager';
 import { SceneChangeListener, SceneRefUrl } from './SceneManager';
 import { HonorDialogConfig, HonorScene, ViewType } from './view';
+import { Event } from 'laya/events/Event';
+import { Scene } from 'laya/display/Scene';
+import { Laya } from 'Laya';
 
 export class DirectorCtor {
     public init() {
-        Laya.stage.on(Laya.Event.RESIZE, this, this.onResize);
+        Laya.stage.on(Event.RESIZE, this, this.onResize);
         this.onResize();
     }
 
@@ -25,12 +28,9 @@ export class DirectorCtor {
      * @param url 场景的url
      * @param params 场景 onMounted 接收的参数
      */
-    public runScene(
-        url: SceneRefUrl,
-        ...params: any[]
-    ): Promise<Laya.Scene | void> {
+    public runScene(url: SceneRefUrl, ...params: any[]): Promise<Scene | void> {
         return sceneManager.runScene(url, ...params).catch(err => {
-            if (DEBUG_MODE) {
+            if (honor.DEBUG_MODE) {
                 console.error(err);
             }
         });

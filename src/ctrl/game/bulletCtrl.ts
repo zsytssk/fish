@@ -5,6 +5,7 @@ import { NetCtrl } from './netCtrl';
 import { ModelEvent } from 'model/modelEvent';
 import { addNet } from 'view/viewState';
 import { playSkeleton } from 'utils/utils';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 
 /** 子弹的控制器 */
 export class BulletCtrl {
@@ -12,7 +13,7 @@ export class BulletCtrl {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
-    constructor(private view: Laya.Skeleton, private model: BulletModel) {
+    constructor(private view: Skeleton, private model: BulletModel) {
         this.init();
     }
     private init() {
@@ -33,7 +34,7 @@ export class BulletCtrl {
 
         event.on(BulletEvent.Move, this.syncPos);
         event.on(BulletEvent.AddNet, (net_model: NetModel) => {
-            const net_view = addNet(net_model.skin) as Laya.Skeleton;
+            const net_view = addNet(net_model.skin) as Skeleton;
             const net_ctrl = new NetCtrl(net_view, net_model);
         });
         event.on(ModelEvent.Destroy, () => {
