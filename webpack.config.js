@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const findParam = require('./script/findEnv');
 
 const ENV = JSON.stringify(findParam('ENV'));
-let common_config = {
+const common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
         filename: 'js/bundle.js',
@@ -52,18 +52,10 @@ const dev_config = {
 };
 
 const prod_config = {
-    devtool: 'source-map',
-    entry: [
-        'es6-promise/auto',
-        'es6-map/implement',
-        'es6-set/implement',
-        './src/main.ts',
-    ],
+    entry: ['./src/main.ts'],
 };
 const prod_ts_compile_option = {
-    target: 'es5',
     sourceMap: false,
-    lib: ['dom', 'es5', 'es2015.promise'],
 };
 
 module.exports = (env, argv) => {

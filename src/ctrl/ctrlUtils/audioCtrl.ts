@@ -1,4 +1,5 @@
 import { Handler } from 'Laya/utils/Handler';
+import { SoundManager } from 'Laya/media/SoundManager';
 import { Laya } from 'Laya';
 
 /** 音频控制器 */
