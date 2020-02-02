@@ -3,7 +3,7 @@ import { ModelEvent } from 'model/modelEvent';
 import { playSkeleton } from 'utils/utils';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 
-/** 子弹的控制器 */
+/** 网的控制器 */
 export class NetCtrl {
     /**
      * @param view 玩家对应的动画
