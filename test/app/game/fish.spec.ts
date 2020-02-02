@@ -5,7 +5,6 @@ import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { injectProto } from 'honor/utils/tool';
 import { FishCtrl } from 'ctrl/game/fishCtrl';
-import { get } from '../../utils/testUtils';
 
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
@@ -36,7 +35,7 @@ export const fish_test = new Test('fish', runner => {
 
     runner.describe('fish_ani', () => {
         // body_test.runTest('show_shape');
-        for (const i of range(1, 21)) {
+        for (const i of range(1, 15)) {
             const typeId = i;
             const pathId = i;
             const time = 5;
