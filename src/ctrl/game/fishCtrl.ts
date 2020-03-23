@@ -62,7 +62,7 @@ export class FishCtrl extends ComponentManager {
     }; //tslint:disable-line
     public syncPos = () => {
         const { view } = this;
-        const { pos, velocity, horizon_turn } = this.model;
+        const { pos, velocity, horizon_turn, visible } = this.model;
         view.syncPos(pos, velocity, horizon_turn);
     }; //tslint:disable-line
     public beCapture = (handler: FuncVoid) => {

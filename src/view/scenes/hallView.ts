@@ -24,6 +24,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
     public onEnable() {
         const { coin_menu, flag_menu } = this.header;
         coin_menu.list.array = [];
+        coin_menu.list.vScrollBarSkin = '';
         flag_menu.list.array = [];
         this.activeAni('');
         coin_menu.list.renderHandler = new Handler(
@@ -57,15 +58,17 @@ export default class HallView extends ui.scenes.hall.hallUI {
     public coinMenuRender(box: Box, index: number) {
         const coin_num = box.getChildByName('coin_num') as Label;
         const { coin_num: num } = this.header.coin_menu.list.array[index];
-        // let scale = 13 / (num.length * 1.1);
-        // scale = scale > 1 ? 1 : scale;
-        // coin_num.scale(scale, scale);
+        const num_len = (num + '').length;
+        let scale = 13 / (num_len * 1.1);
+        scale = scale > 1 ? 1 : scale;
+        coin_num.scale(scale, scale);
     }
     public setCoinData(data: AccountMap) {
         const { coin_menu } = this.header;
         const { list, bg } = coin_menu;
         const arr = [];
         for (const [type, { num, icon }] of data) {
+            console.log(icon);
             arr.push({
                 coin_icon: icon,
                 coin_name: type,
@@ -73,7 +76,11 @@ export default class HallView extends ui.scenes.hall.hallUI {
             });
         }
         list.array = arr;
-        coin_menu.height = bg.height = list.height = arr.length * 48 + 10;
+        if (arr.length <= 7) {
+            coin_menu.height = bg.height = list.height = arr.length * 48 + 10;
+        } else {
+            coin_menu.height = list.height = bg.height = 7 * 48 + 10;
+        }
     }
     public setFlagData(data: string[]) {
         const { flag_menu } = this.header;

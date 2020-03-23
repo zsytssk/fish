@@ -105,6 +105,7 @@ export class FishModel extends ComponentManager {
         if (is_complete) {
             return this.destroy();
         }
+        this.setVisible(visible);
         if (visible) {
             this.pos = pos;
             this.velocity = velocity;
@@ -115,7 +116,6 @@ export class FishModel extends ComponentManager {
                 velocity,
             } as MoveInfo);
         }
-        this.setVisible(visible);
     }; // tslint:disable-line: semicolon
     /** 被网住 */
     public setStatus(status: FishStatus) {

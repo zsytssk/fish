@@ -76,13 +76,18 @@ export class FishView extends Sprite {
     }
     /** 同步位置 */
     public syncPos(pos: Point, velocity: SAT.Vector, horizon_turn: boolean) {
-        const { turn_ani, fish_ani } = this;
+        const { turn_ani, fish_ani, visible } = this;
+
+        if (!visible) {
+            return;
+        }
         const angle = vectorToDegree(velocity) + 90;
         if (horizon_turn) {
             /** angle(-90 - 90) + 90 = 0-180 */
             const need_scale_x = angle > 0 && angle < 180;
             if (turn_ani) {
                 const ani_name = need_scale_x ? 'right' : 'left';
+                console.log(ani_name, angle, velocity);
                 if (this.turn_ani_name !== ani_name) {
                     this.turn_ani_name = ani_name;
                     playSkeleton(fish_ani, ani_name, true);

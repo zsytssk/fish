@@ -104,9 +104,24 @@ export const fish_test = new Test('fish', runner => {
         game.addFish(fish_data);
     });
 
+    runner.describe(
+        'fish_direct_test',
+        (typeId: number, pathId: number, time: number) => {
+            // body_test.runTest('show_shape');
+            typeId = typeId || 20;
+            for (const i of range(1, 21)) {
+                typeId = typeId || 1;
+                pathId = i;
+                time = time || 15;
+                const fish_data = genFishInfo(typeId, pathId, time);
+                modelState.app.game.addFish(fish_data);
+            }
+        },
+    );
+
     runner.describe('get_click_fish', () => {
         injectProto(FishCtrl, 'initEvent' as any, (fish: FishCtrl) => {
-            fish['view'].once(Laya.Event.CLICK, null, () => {
+            fish['view'].once('click', null, () => {
                 console.log(fish['model']);
             });
         });

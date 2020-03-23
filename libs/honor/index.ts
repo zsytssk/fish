@@ -23,7 +23,7 @@ export type HonorExternConfig = {
     defaultVersion?: string;
 };
 const name = 'Honor';
-const version = '0.0.1-beta';
+const version = '1.0.0-beta';
 let DEBUG_MODE = false;
 
 declare global {
@@ -61,7 +61,7 @@ async function run(
         DEBUG_MODE = false;
     }
     if (game_config.stat) {
-        Stat.show();
+        Stat.show(0, 0);
     }
     Laya.alertGlobalError = false;
 

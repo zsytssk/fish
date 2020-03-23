@@ -45,7 +45,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,icon",
-                    "props":{"y":4,"x":3,"width":88,"var":"icon","skin":"image/pop/shop/icon/gun1.png","height":87},
+                    "props":{"y":4,"x":3,"width":88,"var":"icon","height":87},
                     "nodeParent":5,
                     "label":"icon",
                     "isOpen":true,

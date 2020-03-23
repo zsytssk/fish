@@ -14,7 +14,7 @@ export async function localTest() {
     game_test.runTest('enter_game', [true]).then(() => {
         fish_test.runTest('get_click_fish');
         player_test.runTest('add_cur_player');
-        fish_test.runTest('add_fish');
+        fish_test.runTest('fish_direct_test');
     });
 }
 

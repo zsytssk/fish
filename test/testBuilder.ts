@@ -21,6 +21,7 @@ import { laya_test } from './other/laya.spec';
 import { sat_test } from './other/sat.spec';
 import { getTestEnable, getTestIgnore } from './utils/testUtils';
 import { shoal_test } from './app/game/shoal/shoal.spec';
+import { utils_test } from './other/utils.spec';
 
 const testScope = new Test('top');
 testScope.addChild(
@@ -44,6 +45,7 @@ testScope.addChild(
     voice_test,
     mock_web_socket_test,
     shoal_test,
+    utils_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());

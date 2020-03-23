@@ -1,11 +1,20 @@
--   @ques socket 如何能正常的连接
+-   @bug 鱼的游动方向 有问题
 
-    -   code 在那获取
-    -   code 在那获取
+    -   黄金鲨
+    -   紫色章鱼
 
--   @bug balances 的下拉样式
+-   @ques 是鱼本身的方向有问题
+    -   可能是我算的 angle 不对
+
+*   uml java diva
+
+*   @learn ts 3.8 deno rust...
 
 ## 2020-03-23 11:43:23
+
+-   @bug 商城界面 drawCall 为什么那么大
+
+-   @todo log 使用全局的
 
 -   @ques 钉钉群等人事审核哈
 
@@ -16,6 +25,16 @@
 -   @ques vpn 是什么鬼
 
 ### end
+
+-   @todo 显示帧率
+-   @bug 商城界面
+
+    -   `Cannot set property 'skin' of null`
+
+-   @bug balances 的下拉样式
+-   @ques socket 如何能正常的连接
+
+    -   code 在那获取
 
 -   Utils.getQueryString src\ctrl\net\webSocketWrapUtil.ts 优化
 
