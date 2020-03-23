@@ -13,6 +13,7 @@ const common_config = {
     },
     resolve: {
         modules: [
+            path.resolve('./layaLibs'),
             path.resolve('./libs'),
             path.resolve('./src'),
             path.resolve('./node_modules'),

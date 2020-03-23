@@ -1,15 +1,10 @@
-import { roomIn, checkReplay } from 'ctrl/hall/hallSocket';
-import { ServerEvent, ServerName } from 'data/serverEvent';
+import { Config } from 'data/config';
+import { ServerEvent } from 'data/serverEvent';
+import { getParams } from '../utils/testUtils';
 import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
-import { waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
-import { injectProto } from 'honor/utils/tool';
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
-import { ctrlState } from 'ctrl/ctrlState';
-import honor from 'honor';
-import { sleep } from 'utils/animate';
 
 export async function localTest() {
     await mock_web_socket_test.runTest('create');
@@ -23,18 +18,24 @@ export async function localTest() {
     });
 }
 
-export async function localHaveSocketTest() {
+export async function localSocketTest() {
+    Config.SocketUrl = getParams('url');
+    const code = getParams('code');
+    if (code) {
+        localStorage.setItem('code', code);
+    }
+
     /** 直接进入房间 */
-    injectProto(HallCtrl, 'init' as any, async (hall: HallCtrl) => {
-        const [isReplay, socketUrl] = await checkReplay(hall);
-        if (isReplay) {
-            ctrlState.app.enterGame(socketUrl);
-        } else {
-            await roomIn({ roomId: 1, isTrial: 0 });
-        }
-        hall.destroy();
-        sleep(1).then(() => {
-            honor.director.closeAllDialogs();
-        });
-    });
+    // injectProto(HallCtrl, 'init' as any, async (hall: HallCtrl) => {
+    //     const [isReplay, socketUrl] = await checkReplay(hall);
+    //     if (isReplay) {
+    //         ctrlState.app.enterGame(socketUrl);
+    //     } else {
+    //         await roomIn({ roomId: 1, isTrial: 0 });
+    //     }
+    //     hall.destroy();
+    //     sleep(1).then(() => {
+    //         honor.director.closeAllDialogs();
+    //     });
+    // });
 }

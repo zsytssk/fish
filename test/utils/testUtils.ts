@@ -2,6 +2,8 @@ import { modelState } from 'model/modelState';
 import { injectProto } from 'honor/utils/tool';
 import { WebSocketWrapCtrl } from 'ctrl/net/webSocketWrap';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { Laya } from 'Laya';
+import { Sprite } from 'laya/display/Sprite';
 
 export function getUserInfo() {
     return modelState.app.user_info;
@@ -35,7 +37,7 @@ export function stageClick() {
         console.log(`test:>`, e.target);
     });
 }
-export function showNodeZone(sprite: Laya.Sprite) {
+export function showNodeZone(sprite: Sprite) {
     sprite.graphics.alpha(0.3);
     sprite.graphics.drawRect(0, 0, sprite.width, sprite.height, '#000');
 }

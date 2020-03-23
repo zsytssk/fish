@@ -1,8 +1,31 @@
--   @todo 萌哥修改后的代码
+-   @ques socket 如何能正常的连接
+
+    -   code 在那获取
+    -   code 在那获取
+
+-   @bug balances 的下拉样式
+
+## 2020-03-23 11:43:23
+
+-   @ques 钉钉群等人事审核哈
+
+    -   等人士审核
+
+-   @ques 我三月的五险一金 边锋会给我交吗 ...
 
 -   @ques vpn 是什么鬼
 
+### end
+
 -   Utils.getQueryString src\ctrl\net\webSocketWrapUtil.ts 优化
+
+-   @todo 萌哥修改后的代码
+
+-   @todo telegram
+
+    -   recover@telegram.org
+
+-   @todo https://2000w.xyz/Index/login clash
 
 ## 2020-03-23 09:14:44
 

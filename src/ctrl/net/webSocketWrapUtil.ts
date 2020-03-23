@@ -80,12 +80,7 @@ export function genUrl(config: Config) {
     const { url, publicKey, code, host, name } = config;
 
     // 临时修改
-    const usercode = Utils.getQueryString('code');
-    let new_url = `ws://${url}/gws?auth=${getAuth(
-        name,
-        publicKey,
-    )}&code=${usercode}`;
-    // let new_url = `ws://${url}`;
+    let new_url = `ws://${url}/gws?auth=${getAuth(name, publicKey)}`;
     if (host) {
         new_url += `&host=${host}`;
     }

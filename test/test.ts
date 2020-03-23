@@ -2,7 +2,7 @@ import { ctrlState } from 'ctrl/ctrlState';
 import honor from 'honor';
 import { modelState } from 'model/modelState';
 import { viewState } from 'view/viewState';
-import { localHaveSocketTest, localTest } from './app/testEnv';
+import { localSocketTest, localTest } from './app/testEnv';
 import { test } from './testBuilder';
 import {
     getCurPlayer,
@@ -23,6 +23,6 @@ injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
 
 if (getParams('localTest')) {
     localTest();
-} else if (getParams('enterGame')) {
-    localHaveSocketTest();
+} else if (getParams('localSocketTest')) {
+    localSocketTest();
 }

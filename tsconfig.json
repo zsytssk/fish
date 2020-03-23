@@ -15,8 +15,8 @@
         "esModuleInterop": true,
         "baseUrl": "./",
         "paths": {
-            "*": ["node_modules/*", "libs/*", "src/*"]
+            "*": ["node_modules/*", "layaLibs/*", "libs/*", "src/*"]
         }
     },
-    "include": ["./src", "./libs", "./test"]
+    "include": ["layaLibs/*", "./libs", "./src", "./test"]
 }
