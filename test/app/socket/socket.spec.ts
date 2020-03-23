@@ -12,6 +12,14 @@ export const socket_test = new Test('socket', runner => {
             });
         });
     });
+    runner.describe('init_app_socket', () => {
+        injectProto(AppCtrl, 'enterGame', (app: AppCtrl) => {
+            const socket = new SocketCtrl({
+                url: 'http://localhost:3000',
+                token: 'this is a test',
+            });
+        });
+    });
 
     runner.describe('connect', () => {
         const socket = new SocketCtrl({

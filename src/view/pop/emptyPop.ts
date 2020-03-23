@@ -1,5 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { Dialog } from 'laya/ui/Dialog';
+import { log } from 'utils/log';
 
 export default class EmptyPop extends Dialog implements HonorDialog {
     public isModal = true;
@@ -7,6 +8,6 @@ export default class EmptyPop extends Dialog implements HonorDialog {
         honor.director.openDialog(EmptyPop);
     }
     public onMounted() {
-        console.log('EmptyScene enable');
+        log('EmptyScene enable');
     }
 }

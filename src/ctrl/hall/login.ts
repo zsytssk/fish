@@ -11,6 +11,7 @@ import {
     disconnectSocket,
     getSocket,
 } from '../net/webSocketWrapUtil';
+import { log } from 'utils/log';
 
 /** 登陆用的脚本 */
 export async function login() {
@@ -91,7 +92,7 @@ export function connectSocket(config: SocketConfig) {
             }
             socket.setParams({ jwt });
             localStorage.setItem('token', jwt);
-            console.log('我自己的token:', jwt);
+            log('我自己的token:', jwt);
             resolve(socket);
         });
     }) as Promise<WebSocketTrait>;

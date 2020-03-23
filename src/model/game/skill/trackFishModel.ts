@@ -7,6 +7,7 @@ import { TimeoutCom } from 'comMan/timeoutCom';
 import { BulletGroup, BulletGroupEvent } from '../gun/bulletGroup';
 import { GunModel, GunStatus, GunEvent, AddBulletInfo } from '../gun/gunModel';
 import { FishEvent, FishModel } from 'model/game/fish/fishModel';
+import { log } from 'utils/log';
 
 export type TrackFishActiveInfo = {
     user_id?: string;
@@ -93,7 +94,7 @@ export class TrackFishModel extends ComponentManager implements SkillModel {
     public tipTrack() {
         const { gun, skill_core } = this;
         const fish = getAimFish();
-        console.log('test:>tipTrack', fish, fish.destroyed);
+        log('test:>tipTrack', fish, fish.destroyed);
         skill_core.activeEvent({
             fish,
             is_tip: true,

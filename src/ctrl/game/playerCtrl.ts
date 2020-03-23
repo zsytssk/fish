@@ -26,6 +26,7 @@ import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Event } from 'laya/events/Event';
 import { Laya } from 'Laya';
 import { Sprite } from 'laya/display/Sprite';
+import { log } from 'utils/log';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -198,7 +199,7 @@ export class PlayerCtrl {
     private handleAutoLaunch(model: AutoLaunchModel, view: Sprite) {
         view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
-            console.log('auto launch');
+            log('auto launch');
             model.toggle();
         });
     }

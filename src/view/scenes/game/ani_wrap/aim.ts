@@ -6,6 +6,7 @@ import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Image } from 'laya/ui/Image';
+import { log } from 'utils/log';
 
 /** 追踪子弹的动画 */
 type AimState = {
@@ -72,7 +73,7 @@ export function activeAimFish(
             const {
                 pos: { x, y },
             } = move_info;
-            console.log(`test:>`, x, y);
+            log(`test:>`, x, y);
             aim_ani.pos(x, y);
             if (show_points) {
                 createPoints(ori_pos, { x, y });

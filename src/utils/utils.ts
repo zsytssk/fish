@@ -223,3 +223,18 @@ export function genRandomStr() {
         .toString()
         .replace('0.', '');
 }
+
+let param_map: { [key: string]: string };
+export function getParams(key: string) {
+    if (!param_map) {
+        param_map = {};
+        window.location.href.replace(
+            /[?&]+([^=&]+)=([^&]*)/gi,
+            (m, _key, value) => {
+                param_map[_key] = value;
+                return value;
+            },
+        );
+    }
+    return param_map[key];
+}

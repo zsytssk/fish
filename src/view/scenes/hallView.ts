@@ -7,6 +7,7 @@ import { Handler } from 'laya/utils/Handler';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
 import { Label } from 'laya/ui/Label';
+import { log } from 'utils/log';
 
 export type CoinData = Array<{
     type: string;
@@ -68,7 +69,7 @@ export default class HallView extends ui.scenes.hall.hallUI {
         const { list, bg } = coin_menu;
         const arr = [];
         for (const [type, { num, icon }] of data) {
-            console.log(icon);
+            log(icon);
             arr.push({
                 coin_icon: icon,
                 coin_name: type,
@@ -144,6 +145,6 @@ export default class HallView extends ui.scenes.hall.hallUI {
     }
     public destroy() {
         super.destroy();
-        console.log(`destroy`);
+        log(`destroy`);
     }
 }

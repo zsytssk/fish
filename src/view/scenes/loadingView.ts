@@ -1,5 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from '../../ui/layaMaxUI';
+import { log } from 'utils/log';
 
 /** loading场景 */
 export default class Loading extends ui.scenes.loadingUI {
@@ -13,12 +14,12 @@ export default class Loading extends ui.scenes.loadingUI {
     public onShow() {
         this.open(false);
         honor.director.openDialog(this as HonorDialog);
-        console.log('LoadingScene onReset');
+        log('LoadingScene onReset');
     }
 
     public onHide() {
         this.close();
-        console.log('LoadingScene onReset');
+        log('LoadingScene onReset');
     }
 
     public onProgress(val: number) {

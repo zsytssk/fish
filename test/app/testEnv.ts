@@ -1,10 +1,9 @@
-import { Config } from 'data/config';
 import { ServerEvent } from 'data/serverEvent';
-import { getParams } from '../utils/testUtils';
 import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
+import { getParams } from 'utils/utils';
 
 export async function localTest() {
     await mock_web_socket_test.runTest('create');
@@ -19,7 +18,6 @@ export async function localTest() {
 }
 
 export async function localSocketTest() {
-    Config.SocketUrl = getParams('url');
     const code = getParams('code');
     if (code) {
         localStorage.setItem('code', code);

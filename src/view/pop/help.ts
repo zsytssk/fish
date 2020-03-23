@@ -1,5 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
+import { log } from 'utils/log';
 
 export default class HelpPop extends ui.pop.helpUI implements HonorDialog {
     public isModal = true;
@@ -7,6 +8,6 @@ export default class HelpPop extends ui.pop.helpUI implements HonorDialog {
         honor.director.openDialog(HelpPop);
     }
     public onMounted() {
-        console.log('EmptyScene enable');
+        log('EmptyScene enable');
     }
 }

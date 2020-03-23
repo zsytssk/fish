@@ -8,6 +8,7 @@ import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
+import { log } from 'utils/log';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -82,7 +83,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             null,
             false,
         );
-        console.log('EmptyScene enable');
+        log('EmptyScene enable');
     }
     public onMounted() {
         if (!this.is_init) {

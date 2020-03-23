@@ -33,6 +33,7 @@ import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
 import VoicePop from 'view/pop/voice';
 import { Event } from 'laya/events/Event';
+import { log } from 'utils/log';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -183,7 +184,7 @@ export class GameCtrl {
         const player = this.model.getPlayerById(
             modelState.app.user_info.user_id,
         );
-        console.log('接收到useskin', skinId);
+        log('接收到useskin', skinId);
         player.changeSkin(skinId);
     }
     public tableOut(data: TableOutRep) {

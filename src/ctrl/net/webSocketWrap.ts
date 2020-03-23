@@ -2,6 +2,7 @@ import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { WebSocketCtrl } from 'honor/net/websocket';
 import { decrypt, encrypt, genUrl } from './webSocketWrapUtil';
+import { log } from 'utils/log';
 
 export type Config = {
     url: string;
@@ -90,7 +91,7 @@ export class WebSocketWrapCtrl extends ComponentManager
             params,
             config: { name },
         } = this;
-        console.log(`${name}:>发送:>`, cmd, data);
+        log(`${name}:>发送:>`, cmd, data);
         const send_data = {
             cmd,
             params: {
@@ -120,7 +121,7 @@ export class WebSocketWrapCtrl extends ComponentManager
                 if (!data) {
                     return;
                 }
-                console.log(`${name}:>接收:>`, data);
+                log(`${name}:>接收:>`, data);
                 const { cmd, res, code } = data;
                 this.event.emit(cmd, res, code);
                 break;

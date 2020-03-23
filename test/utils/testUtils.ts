@@ -99,7 +99,3 @@ export function getTestEnable() {
     }
     return test_enable_arr;
 }
-
-export function getParams(name: string) {
-    return Laya.Utils.getQueryString(name);
-}

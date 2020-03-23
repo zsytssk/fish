@@ -6,12 +6,13 @@ import { localSocketTest, localTest } from './app/testEnv';
 import { test } from './testBuilder';
 import {
     getCurPlayer,
-    getParams,
     getUserInfo,
     injectWindow,
     showNodeZone,
     stageClick,
 } from './utils/testUtils';
+import { Config } from 'data/config';
+import { getParams } from 'utils/utils';
 
 const testUtils = {
     showNodeZone,

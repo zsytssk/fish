@@ -1,5 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
+import { log } from 'utils/log';
 
 export default class BulletBulletPop extends ui.pop.alert.buyBulletUI
     implements HonorDialog {
@@ -8,6 +9,6 @@ export default class BulletBulletPop extends ui.pop.alert.buyBulletUI
         honor.director.openDialog(BulletBulletPop);
     }
     public onMounted() {
-        console.log('EmptyScene enable');
+        log('EmptyScene enable');
     }
 }
