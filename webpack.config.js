@@ -43,7 +43,7 @@ const dev_config = {
     stats: {
         warnings: false,
     },
-    watch: true,
+    watch: ENV === 'DEV' ? true : false,
     devServer: {
         clientLogLevel: 'silent',
         host: '0.0.0.0',

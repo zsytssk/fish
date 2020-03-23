@@ -1,12 +1,16 @@
--   @todo log 使用全局的
+-   @learn https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
+
+-   @todo telegram
+
+-   @todo publish
+    -   compressImg
+    -   genVersion
 
 ## 2020-03-23 11:43:23
 
 -   uml java diva
 
 -   `tplant --input src/**/*.ts --output doc/Playground.puml`
-
-*   @learn https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
 
 *   @learn ts 3.8 deno rust...
 
@@ -27,6 +31,8 @@
 -   @ques vpn 是什么鬼
 
 ### end
+
+-   @todo log 使用全局的
 
 -   @bug 鱼的游动方向 有问题
 

@@ -18,9 +18,9 @@
         "webpack-prod-server": "webpack-dev-server --ENV=DEV --mode development",
         "compressImg": "node ./script/compressImg/compressImg.js compressImg",
         "genVersion": "node ./script/genVersion/genVersion.js genVersion",
-        "updateSdk": "ts-node --files ./script/game.client.sdk/game.client.sdk.ts",
-        "release": "ts-node --files ./script/release/release.ts release",
-        "updateSdkSource": "ts-node --files ./script/game.client.sdk/game.client.sdk.ts updateSdkSource"
+        "updateSdk": "ts-node --project ./script/tsconfig.json --files ./script/game.client.sdk/game.client.sdk.ts",
+        "updateSdkSource": "ts-node --project ./script/tsconfig.json --files ./script/game.client.sdk/game.client.sdk.ts updateSdkSource",
+        "publish": "ts-node --project ./script/tsconfig.json --files ./script/publish/publish.ts"
     },
     "devDependencies": {
         "ts-loader": "^6.0.4",

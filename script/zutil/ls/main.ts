@@ -8,7 +8,7 @@ import { rm } from './rm';
 export async function cp(
     src_path: string,
     dist_path: string,
-    progress_fun?: (progress: number) => void,
+    progress_fun?: FuncVoid,
 ) {
     if (!(await exists(src_path))) {
         return;
