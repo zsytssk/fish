@@ -1,3 +1,5 @@
+## 2020-03-23 11:43:23
+
 -   uml java diva
 
 -   `tplant --input src/**/*.ts --output doc/Playground.puml`
@@ -9,8 +11,6 @@
 *   @ques 已经在游戏中是否直接将用户拉入游戏 不用加载大厅的资源
     -   那么就要在 login 页面去连接 socket
     -   我根本就没有 login 页面... | 加载大厅资源是在框架中处理的?
-
-## 2020-03-23 11:43:23
 
 -   @bug 商城界面 drawCall 为什么那么大
 
