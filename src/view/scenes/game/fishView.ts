@@ -87,7 +87,6 @@ export class FishView extends Sprite {
             const need_scale_x = angle > 0 && angle < 180;
             if (turn_ani) {
                 const ani_name = need_scale_x ? 'right' : 'left';
-                console.log(ani_name, angle, velocity);
                 if (this.turn_ani_name !== ani_name) {
                     this.turn_ani_name = ani_name;
                     playSkeleton(fish_ani, ani_name, true);

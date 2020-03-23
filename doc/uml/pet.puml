@@ -1,76 +1,53 @@
 @startuml
-' !include D:\plantuml\style_c4\core.puml
-!include /Users/zhangjunqing/plantuml/style_c4/core.puml
 
-namespace app.home #FDF6E3{
-  class HomeDlg {
-    btnPet: Box
-    onBtnPetClick()
-  }
+namespace controller #DDDDDD {
+	class TestController {
+		- QuestionServicen questionService;
+		+ Question getQuestion(@DBExchange,int questionId);
+	}
+	TestController <--> spring.aop.DBExchangeHandler : Spring AOP
+}
 
-  class PetSpineBox {
-    status: enum
-    playActions()
-    onPetBoxClick()
-  }
-
-  class PetSelectDlg {
-    boxSelectPet: Box
-    onBtnSlectClick()
-  }
-
-  HomeDlg *-- PetSelectDlg
-  HomeDlg *-- PetSpineBox
+namespace service #DDDDDD {
+	interface QuestionService {
+		+ {abstract} Question getMessage(int questionId);
+	}
+	class DbImpl {
+		+ Question getMessage(int questionId);
+	}
+	class RedisImpl {
+		+ Question getMessage(int questionId);
+	}
+	DbImpl .up.|> QuestionService
+	RedisImpl .up.|> QuestionService
 }
 
 
-namespace app.pet #E4FAD5{
-  class PetDlg {
-    imgBg: Image
-    tips: Box
-    petLvl: PetLvlRewardView
-    petNode: PetNode
-    petFeedView: PetFeedView
-    harvestCoins()
-  }
+namespace spring.bean #DDDDDD {
+	class StateControl {
+		- QuestionService questionService;
+		- RedisImpl redisImpl;
+		- DbImpl dbImpl;
 
-  class PetLvlRewardView {
-    progressLvl: ProgressBar
-    lblPetLvl: Label
-    lblPetExp: Label
-    imgReward: Image
-    luckyBag: Box
-    tipsLvl: Box
-    tipsLuck: Box
-    updateData()
-    private playLuckyBagAni()
-  }
-
-  class PetNode {
-    spineNode: Spine
-    imgIntimacy: Image
-    boxIntimacy: Box
-    status: enum
-    updateData()
-    private playStats()
-    private playActions()
-  }
-
-  class PetFeedView {
-    btnFood: Box
-    btnWater: Box
-    updateData()
-    onBtnFoodClick()
-    onBtnWaterClick()
-  }
-
-  PetDlg *-- PetLvlRewardView
-  PetDlg *-- PetNode
-  PetDlg *-- PetFeedView
-
+		+ StateControl(QuestionService questionService);
+		+ Question getMessage(int questionId);
+	}
+	StateControl --> service.QuestionService
+	StateControl --> service.RedisImpl
+	StateControl --> service.DbImpl
 }
 
-app.home.PetSpineBox .. app.pet.PetDlg
+namespace spring.aop #DDDDDD {
+	class DBExchangeHandler {
+		- StateControl stateControl;
+		- void before(JoinePoint joinePoint,@DBExchange dBExchange);
+	}
+	DBExchangeHandler -down-> spring.bean.StateControl : get really status for QuestionService
+}
 
+annotation DBExchange
+
+DBExchange ... controller.TestController : label annotation
+controller.TestController *--> service.QuestionService
 
 @enduml

@@ -1,14 +1,14 @@
--   @bug 鱼的游动方向 有问题
+-   uml java diva
 
-    -   黄金鲨
-    -   紫色章鱼
+-   `tplant --input src/**/*.ts --output doc/Playground.puml`
 
--   @ques 是鱼本身的方向有问题
-    -   可能是我算的 angle 不对
-
-*   uml java diva
+*   @learn https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
 
 *   @learn ts 3.8 deno rust...
+
+*   @ques 已经在游戏中是否直接将用户拉入游戏 不用加载大厅的资源
+    -   那么就要在 login 页面去连接 socket
+    -   我根本就没有 login 页面... | 加载大厅资源是在框架中处理的?
 
 ## 2020-03-23 11:43:23
 
@@ -25,6 +25,15 @@
 -   @ques vpn 是什么鬼
 
 ### end
+
+-   @bug 鱼的游动方向 有问题
+
+    -   黄金鲨
+    -   紫色章鱼
+
+-   @ques 是鱼本身的方向有问题
+
+    -   可能是我算的 angle 不对
 
 -   @todo 显示帧率
 -   @bug 商城界面
