@@ -63,8 +63,13 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
     public init() {
         const { gun_list, item_list } = this;
+
+        gun_list.hScrollBarSkin = '';
         gun_list.array = [];
+
+        item_list.hScrollBarSkin = '';
         item_list.array = [];
+
         gun_list.renderHandler = new Handler(
             gun_list,
             this.renderGunList,

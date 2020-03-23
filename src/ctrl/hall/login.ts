@@ -91,6 +91,7 @@ export function connectSocket(config: SocketConfig) {
             }
             socket.setParams({ jwt });
             localStorage.setItem('token', jwt);
+            console.log('我自己的token:', jwt);
             resolve(socket);
         });
     }) as Promise<WebSocketTrait>;

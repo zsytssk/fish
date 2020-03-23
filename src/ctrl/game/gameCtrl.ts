@@ -11,7 +11,7 @@ import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
 import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
-import { isCurUser, getUserInfo } from 'model/modelState';
+import { isCurUser, getUserInfo, modelState } from 'model/modelState';
 import { setProps } from 'utils/utils';
 import AlertPop from 'view/pop/alert';
 import HelpPop from 'view/pop/help';
@@ -176,6 +176,15 @@ export class GameCtrl {
         player.updateInfo({
             bullet_cost: multiple,
         });
+    }
+    public changeSkin(skinId: string) {
+        // 取最后一位
+        skinId = skinId.charAt(skinId.length - 1);
+        const player = this.model.getPlayerById(
+            modelState.app.user_info.user_id,
+        );
+        console.log('接收到useskin', skinId);
+        player.changeSkin(skinId);
     }
     public tableOut(data: TableOutRep) {
         const { model } = this;

@@ -159,6 +159,9 @@ export class PlayerModel extends ComponentManager {
             }
         }
     }
+    public changeSkin(skinId: string) {
+        this.gun.changeSkin(skinId);
+    }
     public destroy() {
         const { gun, skill_map, game } = this;
 

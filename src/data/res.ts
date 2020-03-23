@@ -8,13 +8,13 @@ export const res = {
     audio: [],
     game: [
         {
-            url: `res/image/game.png`,
+            url: `res/atlas/image/game.png`,
             type: Loader.IMAGE,
         },
-        {
-            url: `res/image/game.json`,
-            type: Loader.JSON,
-        },
+        // {
+        //     url: `res/atlas/image/game.json`,
+        //     type: Loader.JSON,
+        // },
         {
             url: `image/game/bg_normal.sk`,
             type: Loader.BUFFER,

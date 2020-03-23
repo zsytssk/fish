@@ -1,3 +1,5 @@
+import { Laya } from 'Laya';
+
 type CountFn = (rate: number) => void;
 
 let count_index = 0;

@@ -86,6 +86,9 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
             game.changeBulletCost(data);
         },
+        [ServerEvent.UseSkin]: (data: UseSkinReq) => {
+            game.changeSkin(data.skinId);
+        },
     });
 }
 

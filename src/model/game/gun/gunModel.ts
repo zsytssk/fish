@@ -120,12 +120,13 @@ export class GunModel extends ComponentManager {
             this.event.emit(GunEvent.DirectionChange, direction);
         }, this.launch_space);
     }
-    public changeSkin(skin: string) {
-        this.skin = skin;
-        this.setBulletCost(this.bullet_cost);
+    public changeSkin(skinId: string) {
+        this.skin = skinId;
+        this.setBulletCost(this.bullet_cost, true);
+        // this.event.emit(GunEvent.ChangeSkin, skinId);
     }
-    public setBulletCost(bullet_cost: number) {
-        if (bullet_cost === this.bullet_cost) {
+    public setBulletCost(bullet_cost: number, force: boolean = false) {
+        if (bullet_cost === this.bullet_cost && !force) {
             return;
         }
         const { skin, timeout, event, launch_space } = this;

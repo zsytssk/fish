@@ -57,9 +57,9 @@ export default class HallView extends ui.scenes.hall.hallUI {
     public coinMenuRender(box: Box, index: number) {
         const coin_num = box.getChildByName('coin_num') as Label;
         const { coin_num: num } = this.header.coin_menu.list.array[index];
-        let scale = 13 / (num.length * 1.1);
-        scale = scale > 1 ? 1 : scale;
-        coin_num.scale(scale, scale);
+        // let scale = 13 / (num.length * 1.1);
+        // scale = scale > 1 ? 1 : scale;
+        // coin_num.scale(scale, scale);
     }
     public setCoinData(data: AccountMap) {
         const { coin_menu } = this.header;

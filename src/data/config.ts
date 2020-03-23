@@ -7,9 +7,9 @@ declare global {
 export const Config = {
     PublicKey:
         'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB',
-    SocketUrl: '',
+    SocketUrl: '106.15.46.148:7005',
     Host: '',
-    /** cnd版本号 */
+    /** cdn版本号 */
     CdnVersion: window.CDN_VERSION,
     /** 子弹速度 */
     BulletSpeed: 15,

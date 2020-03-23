@@ -7,6 +7,7 @@ import {
     SocketEvent,
 } from './webSocketWrap';
 import { EventCom } from 'comMan/eventCom';
+import { Utils } from 'laya/utils/Utils';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();
@@ -77,7 +78,14 @@ export function createComKey(name: string) {
 
 export function genUrl(config: Config) {
     const { url, publicKey, code, host, name } = config;
-    let new_url = `wss://${url}/gws?auth=${getAuth(name, publicKey)}`;
+
+    // 临时修改
+    const usercode = Utils.getQueryString('code');
+    let new_url = `ws://${url}/gws?auth=${getAuth(
+        name,
+        publicKey,
+    )}&code=${usercode}`;
+    // let new_url = `ws://${url}`;
     if (host) {
         new_url += `&host=${host}`;
     }
