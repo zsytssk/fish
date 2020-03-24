@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":26,
-    "selecteID":34,
+    "selectedBox":25,
+    "selecteID":7,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -178,7 +178,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_name",
-                            "props":{"y":16,"x":53,"width":41,"var":"coin_name","text":"BTC","height":20,"fontSize":20,"color":"#fff392"},
+                            "props":{"y":17,"x":53,"width":41,"var":"coin_name","text":"BTC","height":20,"fontSize":20,"color":"#fff392"},
                             "nodeParent":25,
                             "label":"coin_name",
                             "isDirectory":false,
@@ -192,7 +192,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_num",
-                            "props":{"width":181,"var":"coin_num","top":15,"text":"0","right":61,"overflow":"hidden","height":20,"fontSize":20,"color":"#fff","anchorY":0.5,"anchorX":1,"align":"right"},
+                            "props":{"y":17,"x":210,"width":181,"var":"coin_num","text":"0","right":61,"overflow":"hidden","height":20,"fontSize":20,"color":"#fff","anchorY":0,"anchorX":1,"align":"right"},
                             "nodeParent":25,
                             "label":"coin_num",
                             "isDirectory":false,
@@ -200,13 +200,14 @@
                             "hasChild":false,
                             "compId":29,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         },
                         {
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image,coin_icon",
-                            "props":{"y":10,"x":18,"width":31,"var":"coin_icon","skin":"image/common/coin/BTC.png","height":31},
+                            "props":{"y":12,"x":18,"width":31,"var":"coin_icon","skin":"image/common/coin/BTC.png","height":31},
                             "nodeParent":25,
                             "label":"coin_icon",
                             "isDirectory":false,

@@ -1,14 +1,12 @@
 import { Config } from 'data/config';
+import { font_list, res } from 'data/res';
 import GameConfig from 'GameConfig';
-// import honor from 'honor';
-import { HallCtrl } from './hall/hallCtrl';
+import honor from 'honor';
 import { AppModel } from 'model/appModel';
 import { ctrlState } from './ctrlState';
-import { res, font_list } from 'data/res';
-import honor from 'honor';
 import { GameCtrl } from './game/gameCtrl';
-import { loadRes } from 'honor/utils/loadRes';
-import { Laya } from 'Laya';
+// import honor from 'honor';
+import { HallCtrl } from './hall/hallCtrl';
 
 /** 顶级 ctrl */
 export class AppCtrl {

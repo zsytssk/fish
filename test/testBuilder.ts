@@ -22,6 +22,7 @@ import { sat_test } from './other/sat.spec';
 import { getTestEnable, getTestIgnore } from './utils/testUtils';
 import { shoal_test } from './app/game/shoal/shoal.spec';
 import { utils_test } from './other/utils.spec';
+import { gun_test } from './app/game/gun.spec';
 
 const testScope = new Test('top');
 testScope.addChild(
@@ -45,6 +46,7 @@ testScope.addChild(
     voice_test,
     mock_web_socket_test,
     shoal_test,
+    gun_test,
     utils_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });

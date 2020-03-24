@@ -1,9 +1,8 @@
--   @todo publish
-
-    -   compressImg absoute path
-    -   genVersion
-
 ### 2020-03-24 09:43:02
+
+-   @ques 为什么 btn_add 的位置有问题
+
+-   @todo 冰冻还原
 
 -   @ques 体检 怎么看 预约时间
 
@@ -11,34 +10,42 @@
     -   薪资证明
 
 -   @bug
+
     -   这个也没在一个水平位置上
     -   加减号反了吧
     -   频繁进出房间会导致报错 [偶先]
     -   商店购买 技能没有更新
 
+-   @ques 一开始就加载游戏的资源 不好...
+
 ### end
 
--   @bug 商城界面 drawCall 为什么那么大
+-   @todo publish
+
+    -   compressImg absoute path
+    -   genVersion
+
+*   @bug 商城界面 drawCall 为什么那么大
     -   许多 label + 其他的 ui 的节点...
 
-*   @todo telegram
+-   @todo telegram
 
--   @todo getRequestId 不存在
--   阿里云 能不能转给张元龙 @阿里云客服
+*   @todo getRequestId 不存在
+*   阿里云 能不能转给张元龙 @阿里云客服
 
     -   阿里云多少钱...
 
--   @opt test 去掉 webpack-dev-server.js
+*   @opt test 去掉 webpack-dev-server.js
 
--   已经在房间中的判断
+*   已经在房间中的判断
 
--   售后咨询：400-80-13260 备案咨询：95187
+*   售后咨询：400-80-13260 备案咨询：95187
 
-*   @ques 钉钉群等人事审核哈
+-   @ques 钉钉群等人事审核哈
 
     -   等人士审核
 
--   @learn ts 3.8
+*   @learn ts 3.8
 
 ## 2020-03-23 11:43:23
 

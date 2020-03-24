@@ -46,15 +46,16 @@ export const player_test = new Test('player', runner => {
         modelState.app.game.addPlayer(player_data);
     });
 
-    runner.describe('add_other_player', () => {
+    runner.describe('add_other_player', (seat_index: number) => {
         let other_player = modelState.app.game.getPlayerById(
             test_data.otherUserId,
         );
         if (!other_player) {
+            seat_index = seat_index || 3;
             // body_test.runTest('show_shape');
             const player_data = {
                 user_id: test_data.otherUserId,
-                server_index: 3,
+                server_index: seat_index,
                 bullet_cost: 101,
                 bullet_num: 10000,
                 gun_skin: '1',

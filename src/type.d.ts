@@ -4,9 +4,9 @@ type Point = {
     y: number;
 };
 
-type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X
-    ? 1
-    : 2) extends (<T>() => T extends Y ? 1 : 2)
+type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <
+    T
+>() => T extends Y ? 1 : 2
     ? A
     : B;
 
@@ -29,3 +29,5 @@ type ReadonlyKeys<T> = {
 
 type NoReadOnlyProps<T> = Pick<T, WritableKeys<T>>;
 type B<T> = Readonly<T>;
+
+declare let ENV: string;

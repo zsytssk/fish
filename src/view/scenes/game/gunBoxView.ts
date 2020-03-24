@@ -25,15 +25,16 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         this.setDirection(this.gun_direct);
     }
     private init() {
-        const { light, gun, base, score_box } = this;
+        const { light, gun, base, ctrl_box } = this;
         const { upside_down } = viewState.game;
 
         stopSkeleton(light);
         stopSkeleton(base);
         playSkeleton(gun, 'standby', true);
 
+        // console.log(`test:>`, this.ctrl_box);
         if (upside_down) {
-            score_box.scaleX = -1;
+            ctrl_box.scaleX = -1;
         }
     }
 
