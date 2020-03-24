@@ -7,6 +7,8 @@ import { ctrlState } from './ctrlState';
 import { res, font_list } from 'data/res';
 import honor from 'honor';
 import { GameCtrl } from './game/gameCtrl';
+import { loadRes } from 'honor/utils/loadRes';
+import { Laya } from 'Laya';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -28,6 +30,7 @@ export class AppCtrl {
     private async startHonor() {
         await honor.run(GameConfig, {
             defaultVersion: Config.CdnVersion,
+            versionPath: `./version.json?v=${Config.CdnVersion}`,
         });
         const task1 = honor.director.setLoadPageForScene(
             'scenes/loading.scene',
