@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":25,
-    "selecteID":7,
+    "selectedBox":26,
+    "selecteID":20,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -222,19 +222,20 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box",
-                    "props":{"y":3,"x":578},
+                    "props":{"y":3,"x":588,"width":190,"height":71},
                     "nodeParent":26,
                     "label":"Box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":20,
                     "child":[
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_charge",
-                            "props":{"y":-1,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
+                            "props":{"y":0,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
                             "nodeParent":20,
                             "label":"btn_charge",
                             "isOpen":true,
@@ -244,6 +245,7 @@
                             "compId":10,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_charge_zh.png"},
@@ -258,9 +260,10 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_get",
-                            "props":{"y":0,"x":133,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
+                            "props":{"y":0,"x":106,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
                             "nodeParent":20,
                             "label":"btn_get",
                             "isOpen":true,
@@ -270,6 +273,7 @@
                             "compId":9,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_excharge_zh.png"},

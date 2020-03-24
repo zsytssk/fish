@@ -1,7 +1,10 @@
 ### 2020-03-24 09:43:02
 
+-   @bug onNicknameChange 报错..
+
 -   @ques 为什么 btn_add 的位置有问题
 
+-   @todo 冰冻还原 过场动画
 -   @todo 冰冻还原
 
 -   @ques 体检 怎么看 预约时间

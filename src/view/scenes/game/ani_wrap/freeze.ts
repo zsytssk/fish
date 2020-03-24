@@ -10,7 +10,6 @@ function createFreezingAni() {
     const { ani_wrap } = viewState;
     if (!freezing_ani) {
         freezing_ani = createSprite('other', 'freezing') as Skeleton;
-        freezing_ani.scale(2, 2);
         freezing_ani.pos(ani_wrap.width / 2, ani_wrap.height / 2);
         ani_wrap.addChild(freezing_ani);
         freezing_ani.alpha = 0.8;

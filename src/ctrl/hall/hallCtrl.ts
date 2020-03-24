@@ -17,6 +17,7 @@ import {
 import { onHallSocket } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
 import { initUserInfo } from 'model/userInfo/userInfoUtils';
+import { ctrlState } from 'ctrl/ctrlState';
 
 export class HallCtrl {
     public view: HallView;
@@ -29,6 +30,10 @@ export class HallCtrl {
         return Promise.all([wait_view]).then(([view]) => {
             const ctrl = new HallCtrl(view);
         });
+    }
+    public enterGame(socketUrl: string) {
+        ctrlState.app.enterGame(socketUrl);
+        this.destroy();
     }
     private async init() {
         hallViewEvent(this);

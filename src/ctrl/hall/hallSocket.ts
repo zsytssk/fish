@@ -31,7 +31,7 @@ export async function onHallSocket(hall: HallCtrl) {
     if (isReplay) {
         AlertPop.alert('你当前在游戏中是否重新进入?').then(type => {
             if (type === 'confirm') {
-                ctrlState.app.enterGame(socketUrl);
+                hall.enterGame(socketUrl);
                 return true;
             }
         });
@@ -63,12 +63,11 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
                 if (code === ServerErrCode.AlreadyInRoom) {
                     const [isReplay, socketUrl] = await checkReplay();
                     if (isReplay) {
-                        ctrlState.app.enterGame(socketUrl);
+                        resolve(socketUrl);
                     }
                     return;
                 }
-                ctrlState.app.enterGame(_data.socketUrl);
-                resolve();
+                resolve(_data.socketUrl);
             },
         );
         const currency = modelState.app.user_info.cur_balance;

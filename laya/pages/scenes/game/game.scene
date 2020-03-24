@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":11,
+    "selecteID":37,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -57,13 +57,14 @@
             "props":{"width":1920,"var":"bg","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":10,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"skin":"image/game/normal_bg/bg1.jpg","centerY":0,"centerX":0},
@@ -77,6 +78,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":376,"x":960,"url":"image/game/bg_normal.sk"},
@@ -91,6 +93,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":375,"x":960,"url":"image/game/wave.sk","scaleY":4,"scaleX":4},
@@ -109,7 +112,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,pool",
-            "props":{"y":0,"x":0,"width":1920,"var":"pool","mouseThrough":false,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1624,"var":"pool","mouseThrough":false,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"pool",
             "isOpen":true,
@@ -180,7 +183,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_voice",
-                    "props":{"y":10,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":100},
+                    "props":{"y":10,"x":1154,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":100},
                     "nodeParent":11,
                     "label":"btn_voice",
                     "isDirectory":false,
@@ -194,13 +197,27 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_help",
-                    "props":{"y":10,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":0},
+                    "props":{"y":10,"x":1254,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":0},
                     "nodeParent":11,
                     "label":"btn_help",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":16,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Button",
+                    "searchKey":"Button,btn_shop",
+                    "props":{"y":10,"x":627,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png"},
+                    "nodeParent":11,
+                    "label":"btn_shop",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":42,
                     "child":[
                         ]
                 },
@@ -226,14 +243,13 @@
                     "props":{"y":653,"x":-44.5,"width":287,"var":"bullet_box","height":92},
                     "nodeParent":11,
                     "label":"bullet_box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":41,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,bullet_box_bg",
                             "props":{"x":142,"width":286,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92,"anchorX":0.5},
@@ -248,7 +264,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":45,"x":31,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
@@ -261,7 +276,6 @@
                             "compId":28,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
                                     "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
@@ -276,7 +290,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement,exchange_rate",
                             "props":{"y":13,"x":44,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">xxx</span> <span></span> </div>","height":29},
@@ -295,7 +308,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,gun_wrap",
-            "props":{"y":0,"x":0,"width":1920,"var":"gun_wrap","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1624,"var":"gun_wrap","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"gun_wrap",
             "isOpen":false,
@@ -306,20 +319,6 @@
             "child":[
                 ],
             "$LOCKED":true
-        },
-        {
-            "x":15,
-            "type":"Button",
-            "searchKey":"Button,btn_shop",
-            "props":{"y":0,"x":920,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png"},
-            "nodeParent":2,
-            "label":"btn_shop",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":42,
-            "child":[
-                ]
         }],
     "animations":[
         {

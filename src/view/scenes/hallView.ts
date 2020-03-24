@@ -1,13 +1,13 @@
-import { ui } from '../../ui/layaMaxUI';
 import honor from 'honor';
-import { playSkeleton } from 'utils/utils';
-import { slide_down_in, slide_up_out } from 'utils/animate';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import { Handler } from 'laya/utils/Handler';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
 import { Label } from 'laya/ui/Label';
+import { Handler } from 'laya/utils/Handler';
+import { AccountMap } from 'model/userInfo/userInfoModel';
+import { fade_in, fade_out } from 'utils/animate';
 import { log } from 'utils/log';
+import { playSkeleton } from 'utils/utils';
+import { ui } from '../../ui/layaMaxUI';
 
 export type CoinData = Array<{
     type: string;
@@ -46,9 +46,9 @@ export default class HallView extends ui.scenes.hall.hallUI {
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
             if (key === type) {
-                playSkeleton(ani, 'active', true);
+                playSkeleton(ani, 'active_zh', true);
             } else {
-                playSkeleton(ani, 'normal', true);
+                playSkeleton(ani, 'normal_zh', true);
             }
         }
     }
@@ -104,10 +104,10 @@ export default class HallView extends ui.scenes.hall.hallUI {
         if (!coin_menu.visible) {
             // show
             coin_menu.y = 54;
-            slide_down_in(coin_menu);
+            fade_in(coin_menu, 0.3);
         } else {
             // hide
-            slide_up_out(coin_menu);
+            fade_out(coin_menu, 0.3);
             coin_menu.list.selectedIndex = -1;
         }
     }
@@ -131,10 +131,10 @@ export default class HallView extends ui.scenes.hall.hallUI {
         const { flag_menu } = this.header;
         if (!flag_menu.visible) {
             // show
-            slide_down_in(flag_menu);
+            fade_in(flag_menu, 0.3);
         } else {
             // hide
-            slide_up_out(flag_menu);
+            fade_out(flag_menu, 0.3);
             flag_menu.list.selectedIndex = -1;
         }
     }

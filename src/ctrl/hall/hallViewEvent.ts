@@ -1,15 +1,14 @@
-import { HallCtrl } from './hallCtrl';
-import { onNode } from 'utils/utils';
-import { roomIn } from './hallSocket';
-import { loginOut } from './login';
-import VoicePop from 'view/pop/voice';
-import ShopPop from 'view/pop/shop';
-import { getUserInfo } from 'model/modelState';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
-import { Handler } from 'laya/utils/Handler';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Handler } from 'laya/utils/Handler';
+import { getUserInfo } from 'model/modelState';
+import { onNode } from 'utils/utils';
+import VoicePop from 'view/pop/voice';
+import { HallCtrl } from './hallCtrl';
+import { roomIn } from './hallSocket';
+import { loginOut } from './login';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
@@ -52,28 +51,33 @@ export function hallViewEvent(hall: HallCtrl) {
 
     onNode(btn_normal_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 0 });
-        hall.destroy();
+        await roomIn({ roomId: 1, isTrial: 0 }).then((url: string) => {
+            hall.enterGame(url);
+        });
     });
     onNode(btn_normal_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 1 });
-        hall.destroy();
+        await roomIn({ roomId: 1, isTrial: 1 }).then((url: string) => {
+            hall.enterGame(url);
+        });
     });
     onNode(btn_match_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 2, isTrial: 0 });
-        hall.destroy();
+        await roomIn({ roomId: 2, isTrial: 0 }).then((url: string) => {
+            hall.enterGame(url);
+        });
     });
     onNode(btn_match_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 2, isTrial: 1 });
-        hall.destroy();
+        await roomIn({ roomId: 2, isTrial: 1 }).then((url: string) => {
+            hall.enterGame(url);
+        });
     });
     onNode(btn_play_now, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 1 });
-        hall.destroy();
+        await roomIn({ roomId: 1, isTrial: 1 }).then((url: string) => {
+            hall.enterGame(url);
+        });
     });
     btn_coin_select.on(CLICK, hall, () => {
         AudioCtrl.play(AudioRes.Click);
@@ -104,7 +108,7 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         VoicePop.preEnter();
     });
-    onNode(flag_box, CLICK, () => {
+    flag_box.on(CLICK, hall, () => {
         AudioCtrl.play(AudioRes.Click);
         view.toggleFlagMenu();
     });

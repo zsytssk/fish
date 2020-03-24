@@ -7,6 +7,7 @@ import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Handler } from 'laya/utils/Handler';
 import { Event } from 'laya/events/Event';
 import { Image } from 'laya/ui/Image';
+import { Node } from 'laya/display/Node';
 
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';
@@ -72,6 +73,9 @@ export function addZeroToNum(num: number, len: number): number {
     return addZeroToNum(num, len);
 }
 
+type ClickNode = Sprite & {
+    is_disable: boolean;
+};
 /**
  * 在按钮上绑定事件, 防止多次点击事件导致
  * @param node 绑定的节点
@@ -91,15 +95,15 @@ export function onNode(
     const observer = new Observable((subscriber: Subscriber<Event>) => {
         const fn = (_event: Event) => {
             /** 按钮置灰 */
-            if ((node as Image).gray === true) {
+            if ((node as ClickNode).is_disable === true) {
                 return;
             }
-            (node as Image).gray = true;
+            (node as ClickNode).is_disable = true;
             setTimeout(() => {
                 if (node.destroyed) {
                     return;
                 }
-                (node as Image).gray = false;
+                (node as ClickNode).is_disable = false;
             }, throttle);
 
             subscriber.next(_event);
