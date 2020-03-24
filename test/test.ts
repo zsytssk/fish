@@ -11,7 +11,6 @@ import {
     showNodeZone,
     stageClick,
 } from './utils/testUtils';
-import { Config } from 'data/config';
 import { getParams } from 'utils/utils';
 
 const testUtils = {

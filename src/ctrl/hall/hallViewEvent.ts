@@ -72,7 +72,7 @@ export function hallViewEvent(hall: HallCtrl) {
     });
     onNode(btn_play_now, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 0 });
+        await roomIn({ roomId: 1, isTrial: 1 });
         hall.destroy();
     });
     btn_coin_select.on(CLICK, hall, () => {

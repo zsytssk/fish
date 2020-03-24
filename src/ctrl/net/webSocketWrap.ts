@@ -110,11 +110,11 @@ export class WebSocketWrapCtrl extends ComponentManager
     private onInit = () => {
         this.event.emit(SocketEvent.Init);
     }; //tslint:disable-line
-    private onData = (msg: string) => {
+    private onData = (raw_msg: string) => {
         const { name } = this.config;
-        const data_str = msg.substring(1);
-        const type = msg.charAt(0);
-        let data: { cmd: string; code: number; res: {} };
+        const data_str = raw_msg.substring(1);
+        const type = raw_msg.charAt(0);
+        let data: { cmd: string; code: number; msg: string; res: {} };
         switch (type) {
             case ServerMsgType.OnData:
                 data = decrypt(name, data_str);
@@ -122,8 +122,8 @@ export class WebSocketWrapCtrl extends ComponentManager
                     return;
                 }
                 log(`${name}:>接收:>`, data);
-                const { cmd, res, code } = data;
-                this.event.emit(cmd, res, code);
+                const { cmd, res, code, msg } = data;
+                this.event.emit(cmd, res, code, msg);
                 break;
             case ServerMsgType.PingTimeOut:
                 const { jwt } = JSON.parse(data_str);

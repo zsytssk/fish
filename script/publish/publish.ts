@@ -3,6 +3,8 @@ import * as config from './config.json';
 import { readFile } from '../zutil/ls/asyncUtil';
 import { excuse } from '../zutil/ls/exec';
 import { cp } from '../zutil/ls/main';
+import { replaceReg } from '../zutil/utils/replaceReg';
+import { write } from '../zutil/ls/write';
 
 async function getConfig(): Promise<typeof config> {
     const file = path.resolve(__dirname, './config.json');
@@ -11,7 +13,7 @@ async function getConfig(): Promise<typeof config> {
 }
 
 export async function main() {
-    await webpack();
+    // await webpack();
     await copyBinToDist();
 }
 
@@ -27,4 +29,16 @@ async function copyBinToDist() {
     const dist_bin = path.resolve(dist_path, 'bin');
     console.log(bin, dist_bin);
     await cp(bin, dist_bin);
+
+    /** 删除index.html中的webpack-dev-server */
+    const dist_index = path.resolve(dist_bin, 'index.html');
+    let index_str = await readFile(dist_index);
+    index_str = replaceReg(
+        index_str,
+        /\n\s+<script type="text\/javascript" src="webpack-dev-server.js"><\/script>/g,
+        '',
+    );
+    await write(dist_index, index_str);
 }
+
+async function clean() {}

@@ -1,36 +1,56 @@
--   @learn https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
+-   @bug
+    -   频繁进出房间会导致报错 [偶先]
+    -   商店购买 技能没有更新
 
--   @todo telegram
+### 2020-03-24 09:43:02
 
 -   @todo publish
+
     -   compressImg
     -   genVersion
 
-## 2020-03-23 11:43:23
+*   @bug 商城界面 drawCall 为什么那么大
 
--   uml java diva
+### end
 
--   `tplant --input src/**/*.ts --output doc/Playground.puml`
+-   @todo telegram
 
-*   @learn ts 3.8 deno rust...
+*   @todo getRequestId 不存在
+*   阿里云 能不能转给张元龙 @阿里云客服
 
-*   @ques 已经在游戏中是否直接将用户拉入游戏 不用加载大厅的资源
-    -   那么就要在 login 页面去连接 socket
-    -   我根本就没有 login 页面... | 加载大厅资源是在框架中处理的?
+    -   阿里云多少钱...
 
--   @bug 商城界面 drawCall 为什么那么大
+*   @opt test 去掉 webpack-dev-server.js
 
--   @todo log 使用全局的
+*   已经在房间中的判断
+
+*   售后咨询：400-80-13260 备案咨询：95187
 
 -   @ques 钉钉群等人事审核哈
 
     -   等人士审核
+
+*   @learn ts 3.8
+
+## 2020-03-23 11:43:23
+
+-   @learn ts 3.8 deno rust...
+
+-   @ques 已经在游戏中是否直接将用户拉入游戏 不用加载大厅的资源
+    -   那么就要在 login 页面去连接 socket
+    -   我根本就没有 login 页面... | 加载大厅资源是在框架中处理的?
+
+*   @todo log 使用全局的
 
 -   @ques 我三月的五险一金 边锋会给我交吗 ...
 
 -   @ques vpn 是什么鬼
 
 ### end
+
+-   uml java diva
+
+    -   `tplant --input src/**/*.ts --output doc/Playground.puml`
 
 -   @todo log 使用全局的
 

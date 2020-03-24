@@ -8,7 +8,10 @@ export const ServerName = {
 
 /** socket 错误码 */
 export enum ServerErrCode {
+    /** token过期 */
     TokenExpire = 1002,
+    /** 已经在房间中 */
+    AlreadyInRoom = 109,
 }
 
 /** 服务器端的接口 */

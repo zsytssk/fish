@@ -1,7 +1,7 @@
 import { ctrlState } from 'ctrl/ctrlState';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
-import { ServerEvent, ServerName } from 'data/serverEvent';
+import { ServerEvent, ServerName, ServerErrCode } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import AlertPop from 'view/pop/alert';
 import { HallCtrl } from './hallCtrl';
@@ -27,7 +27,7 @@ export async function onHallSocket(hall: HallCtrl) {
         socket.send(ServerEvent.UserAccount, { domain: Config.Host });
     });
 
-    const [isReplay, socketUrl] = await checkReplay(hall);
+    const [isReplay, socketUrl] = await checkReplay();
     if (isReplay) {
         AlertPop.alert('你当前在游戏中是否重新进入?').then(type => {
             if (type === 'confirm') {
@@ -39,21 +39,17 @@ export async function onHallSocket(hall: HallCtrl) {
     return false;
 }
 
-export async function checkReplay(hall: HallCtrl) {
+export async function checkReplay() {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
-        socket.event.once(
-            ServerEvent.CheckReplay,
-            (data: CheckReplayRep) => {
-                const { isReplay, socketUrl } = data;
-                if (isReplay) {
-                    resolve([isReplay, socketUrl]);
-                    return;
-                }
+        socket.event.once(ServerEvent.CheckReplay, (data: CheckReplayRep) => {
+            const { isReplay, socketUrl } = data;
+            if (isReplay) {
                 resolve([isReplay, socketUrl]);
-            },
-            hall,
-        );
+                return;
+            }
+            resolve([isReplay, socketUrl]);
+        });
         socket.send(ServerEvent.CheckReplay);
     }) as Promise<[boolean, string?]>;
 }
@@ -61,10 +57,20 @@ export async function checkReplay(hall: HallCtrl) {
 export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
-        socket.event.once(ServerEvent.RoomIn, (_data: RoomInRep) => {
-            ctrlState.app.enterGame(_data.socketUrl);
-            resolve();
-        });
+        socket.event.once(
+            ServerEvent.RoomIn,
+            async (_data: RoomInRep, code, msg) => {
+                if (code === ServerErrCode.AlreadyInRoom) {
+                    const [isReplay, socketUrl] = await checkReplay();
+                    if (isReplay) {
+                        ctrlState.app.enterGame(socketUrl);
+                    }
+                    return;
+                }
+                ctrlState.app.enterGame(_data.socketUrl);
+                resolve();
+            },
+        );
         const currency = modelState.app.user_info.cur_balance;
         socket.send(ServerEvent.RoomIn, {
             ...data,
