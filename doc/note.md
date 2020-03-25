@@ -1,13 +1,14 @@
+-   @todo 了解 website react 的工作内容...
+
+-   @todo 韩卿告知 改好了...
+
 ### 2020-03-24 09:43:02
 
--   @bug onNicknameChange 报错..
+-   @error 01 - 初始炮台
 
--   @ques 为什么 btn_add 的位置有问题
+-   @todo 气泡 过场动画
 
--   @todo 冰冻还原 过场动画
--   @todo 冰冻还原
-
--   @ques 体检 怎么看 预约时间
+-   @ques 入职手续...
 
     -   打印社保
     -   打印 银行流水
@@ -16,7 +17,6 @@
 
     -   这个也没在一个水平位置上
     -   加减号反了吧
-    -   频繁进出房间会导致报错 [偶先]
     -   商店购买 技能没有更新
 
 -   @ques 一开始就加载游戏的资源 不好...
@@ -24,6 +24,11 @@
 
 ### end
 
+-   频繁进出房间会导致报错 [偶先]
+
+-   @ques 为什么 btn_add 的位置有问题
+-   @todo 冰冻还原
+-   @bug onNicknameChange 报错..
 -   @todo publish
 
     -   compressImg absoute path

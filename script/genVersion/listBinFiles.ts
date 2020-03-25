@@ -13,7 +13,7 @@ import {
     project_folder,
 } from './const';
 
-export async function findBinFiles() {
+export async function listBinFiles() {
     const files = await findOriAllFiles();
     let result = [];
     for (const file of files) {
@@ -98,7 +98,7 @@ async function findBinFile(ori_file: string): Promise<string | string[]> {
         }
     }
 
-    /** laya/assets  中直接copy到 bin 文件 */
+    /** laya/assets 中直接copy到 bin 文件 */
     if (ori_file.indexOf(laya_assets) === 0) {
         const assets_file = ori_file.replace(laya_assets, bin);
         if (await exists(path.resolve(project_folder, assets_file))) {

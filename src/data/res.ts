@@ -8,7 +8,7 @@ export const res = {
     audio: [],
     game: [
         {
-            url: `res/atlas/image/game.png`,
+            url: `res/image/game.png`,
             type: Loader.IMAGE,
         },
         // {

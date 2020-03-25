@@ -1,17 +1,16 @@
 import md5File from 'md5-file';
 import * as path from 'path';
-import { bin, project_folder, version_pos, intConfig } from './const';
-import { normalize } from '../zutil/ls/pathUtil';
-import { stringify } from '../zutil/utils/stringify';
 import { write } from '../zutil/ls/write';
-import { findBinFiles } from './listBinFiles';
+import { stringify } from '../zutil/utils/stringify';
+import { bin, intConfig, project_folder, version_pos } from './const';
+import { listBinFiles } from './listBinFiles';
 
 const config_path = path.resolve(__dirname, './config.json');
 
 export async function genVersion() {
     await intConfig(config_path);
     const result = {} as { [key: string]: string };
-    const files = await findBinFiles();
+    const files = await listBinFiles();
 
     for (const item of files) {
         const md5 = await getFileMd5(item);

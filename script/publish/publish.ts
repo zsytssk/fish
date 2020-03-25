@@ -4,6 +4,7 @@ import { genVersion } from '../genVersion/genVersion';
 import { readFile } from '../zutil/ls/asyncUtil';
 import { excuse } from '../zutil/ls/exec';
 import { cp } from '../zutil/ls/main';
+import { clear } from '../zutil/ls/rm';
 import { write } from '../zutil/ls/write';
 import { replaceReg } from '../zutil/utils/replaceReg';
 import * as config from './config.json';
@@ -18,11 +19,12 @@ export async function main() {
     console.time('publish');
     const { dist_path } = await getConfig();
     const dist_bin = path.resolve(dist_path, 'bin');
+    await clear(dist_bin);
     await webpack();
     await genVersion();
     await copyBinToDist();
     await cleanDist();
-    // await compress(dist_bin);
+    await compress(dist_bin);
     console.timeEnd('publish');
 }
 
