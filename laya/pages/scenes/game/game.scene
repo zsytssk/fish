@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":36,
+    "selecteID":32,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":43,
+    "maxID":44,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -64,7 +64,6 @@
             "compId":10,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"skin":"image/game/normal_bg/bg1.jpg","centerY":0,"centerX":0},
@@ -78,7 +77,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":376,"x":960,"url":"image/game/bg_normal.sk"},
@@ -93,7 +91,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":375,"x":960,"url":"image/game/wave.sk","scaleY":4,"scaleX":4},
@@ -112,7 +109,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,pool",
-            "props":{"y":0,"x":0,"width":1624,"var":"pool","mouseThrough":false,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1334,"var":"pool","mouseThrough":false,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"pool",
             "isOpen":true,
@@ -127,7 +124,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,ani_wrap",
-            "props":{"y":0,"x":0,"width":1624,"var":"ani_wrap","height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1334,"var":"ani_wrap","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"ani_wrap",
             "isOpen":true,
@@ -140,9 +137,24 @@
         },
         {
             "x":15,
+            "type":"UIView",
+            "source":"scenes/game/skillBox.scene",
+            "searchKey":"UIView,skill_box",
+            "props":{"y":750,"x":960,"width":413,"var":"skill_box","height":102,"centerX":0,"bottom":0,"anchorY":1,"anchorX":0.5},
+            "nodeParent":2,
+            "label":"skill_box",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":32,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
             "type":"Box",
             "searchKey":"Box,ctrl_box",
-            "props":{"y":0,"x":293,"width":1334,"var":"ctrl_box","mouseThrough":true,"mouseEnabled":true,"height":750},
+            "props":{"y":0,"width":1334,"var":"ctrl_box","mouseThrough":true,"mouseEnabled":true,"height":750,"centerX":0},
             "nodeParent":2,
             "label":"ctrl_box",
             "isOpen":false,
@@ -152,10 +164,9 @@
             "compId":11,
             "child":[
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_leave",
-                    "props":{"y":10,"x":0,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png"},
+                    "props":{"y":10,"x":20,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png"},
                     "nodeParent":11,
                     "label":"btn_leave",
                     "isDirectory":false,
@@ -166,10 +177,9 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_gift",
-                    "props":{"y":10,"x":100,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png"},
+                    "props":{"y":10,"x":120,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png"},
                     "nodeParent":11,
                     "label":"btn_gift",
                     "isDirectory":false,
@@ -180,10 +190,9 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_voice",
-                    "props":{"y":10,"x":1154,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":100},
+                    "props":{"y":10,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":120},
                     "nodeParent":11,
                     "label":"btn_voice",
                     "isDirectory":false,
@@ -194,10 +203,9 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_help",
-                    "props":{"y":10,"x":1254,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":0},
+                    "props":{"y":10,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":20},
                     "nodeParent":11,
                     "label":"btn_help",
                     "isDirectory":false,
@@ -208,10 +216,9 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_shop",
-                    "props":{"y":10,"x":627,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png"},
+                    "props":{"y":10,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png","centerX":0},
                     "nodeParent":11,
                     "label":"btn_shop",
                     "isDirectory":false,
@@ -222,25 +229,9 @@
                         ]
                 },
                 {
-                    "x":30,
-                    "type":"UIView",
-                    "source":"scenes/game/skillBox.scene",
-                    "searchKey":"UIView,skill_box",
-                    "props":{"y":648,"x":460,"var":"skill_box"},
-                    "nodeParent":11,
-                    "label":"skill_box",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":32,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,bullet_box",
-                    "props":{"y":653,"x":-44.5,"width":287,"var":"bullet_box","height":92},
+                    "props":{"x":-44,"width":287,"var":"bullet_box","pivotY":92,"height":92,"bottom":0},
                     "nodeParent":11,
                     "label":"bullet_box",
                     "isOpen":false,
@@ -266,7 +257,7 @@
                         {
                             "type":"Image",
                             "searchKey":"Image",
-                            "props":{"y":45,"x":31,"width":224,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
+                            "props":{"y":45,"x":12,"width":251,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
                             "nodeParent":41,
                             "label":"Image",
                             "isOpen":true,
@@ -278,7 +269,7 @@
                                 {
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
-                                    "props":{"y":8,"x":14,"width":199,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
+                                    "props":{"y":8,"x":10,"width":231,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
                                     "nodeParent":28,
                                     "label":"bullet_num",
                                     "isDirectory":false,
@@ -301,14 +292,16 @@
                             "compId":31,
                             "child":[
                                 ]
-                        }]
-                }]
+                        }],
+                    "$HIDDEN":false
+                }],
+            "$HIDDEN":false
         },
         {
             "x":15,
             "type":"Box",
             "searchKey":"Box,gun_wrap",
-            "props":{"y":0,"x":0,"width":1624,"var":"gun_wrap","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1334,"var":"gun_wrap","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"gun_wrap",
             "isOpen":false,
@@ -319,6 +312,20 @@
             "child":[
                 ],
             "$LOCKED":true
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer,bubble_wall",
+            "props":{"y":393,"x":960,"width":100,"var":"bubble_wall","url":"ani/other/bubble.sk","height":100,"alpha":0.5},
+            "nodeParent":2,
+            "label":"bubble_wall",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":43,
+            "child":[
+                ]
         }],
     "animations":[
         {

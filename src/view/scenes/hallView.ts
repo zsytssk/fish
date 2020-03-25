@@ -18,9 +18,16 @@ export default class HallView extends ui.scenes.hall.hallUI {
         return honor.director.runScene('scenes/hall/hall.scene');
     }
     public onResize(width: number, height: number) {
-        const { width: tw, height: th } = this;
+        const {
+            width: tw,
+            height: th,
+            inner,
+            header: { inner: header_inner },
+        } = this;
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
+        header_inner.width = inner.width = width;
+        console.log(`onResize`, width, height);
     }
     public onEnable() {
         const { coin_menu, flag_menu } = this.header;

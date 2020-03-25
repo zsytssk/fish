@@ -11,6 +11,7 @@ import {
 import { ui } from '../../../ui/layaMaxUI';
 import { addBullet, viewState } from '../../viewState';
 import { activePosTip, stopPosTip } from './ani_wrap/posTip';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 
 /** 炮台的view */
 export default class GunBoxView extends ui.scenes.game.gunBoxUI {
@@ -25,11 +26,12 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         this.setDirection(this.gun_direct);
     }
     private init() {
-        const { light, gun, base, ctrl_wrap } = this;
+        const { light, gun, base, body } = this;
 
         stopSkeleton(light);
         stopSkeleton(base);
         playSkeleton(gun, 'standby', true);
+        playSkeleton(body, 'standby', true);
     }
 
     public setMySelfStyle() {
@@ -61,7 +63,11 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
             ani_node.visible = true;
         }
         for (const not_ani_name of not_show_arr) {
-            this[not_ani_name].visible = false;
+            const item = this[not_ani_name];
+            item.visible = false;
+            if (item instanceof Skeleton) {
+                stopSkeleton(this[not_ani_name]);
+            }
         }
         utilSkeletonLoadUrl(gun, `ani/gun/${gun_skin}.sk`).then(() => {
             playSkeleton(gun, 'standby', true);

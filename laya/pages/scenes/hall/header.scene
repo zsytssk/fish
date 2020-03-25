@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":26,
-    "selecteID":20,
+    "selectedBox":2,
+    "selecteID":47,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":47,
+    "maxID":48,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -51,31 +51,29 @@
         {
             "x":15,
             "type":"Box",
-            "searchKey":"Box",
-            "props":{"y":3,"x":320,"width":1280,"height":78},
+            "searchKey":"Box,inner",
+            "props":{"y":6,"width":1915,"var":"inner","height":407,"centerX":0},
             "nodeParent":2,
-            "label":"Box",
-            "isOpen":true,
+            "label":"inner",
+            "isOpen":null,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
-            "compId":26,
+            "compId":47,
             "child":[
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,user_box",
-                    "props":{"y":17,"x":0,"var":"user_box","mouseThrough":false,"mouseEnabled":true},
-                    "nodeParent":26,
+                    "props":{"y":14,"x":-20,"var":"user_box","mouseThrough":false,"mouseEnabled":true,"left":20},
+                    "nodeParent":47,
                     "label":"user_box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":31,
                     "child":[
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"texture":"image/hall/avatar.png"},
@@ -89,7 +87,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,nickname",
                             "props":{"y":9,"x":42,"width":163,"var":"nickname","text":"游客","overflow":"hidden","height":22,"fontSize":22,"color":"#fff","align":"center"},
@@ -104,12 +101,11 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"scenes/hall/coinMenu.scene",
                     "searchKey":"UIView,coin_menu",
-                    "props":{"y":54,"x":219,"visible":false,"var":"coin_menu"},
-                    "nodeParent":26,
+                    "props":{"y":51,"x":-20,"visible":false,"var":"coin_menu","left":235},
+                    "nodeParent":47,
                     "label":"coin_menu",
                     "isDirectory":false,
                     "isAniNode":true,
@@ -120,20 +116,18 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_coin_select",
-                    "props":{"y":8,"x":215,"width":271,"var":"btn_coin_select","height":56},
-                    "nodeParent":26,
+                    "props":{"y":5,"x":-20,"width":271,"var":"btn_coin_select","left":225,"height":56},
+                    "nodeParent":47,
                     "label":"btn_coin_select",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":25,
                     "child":[
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button",
                             "props":{"stateNum":"1","skin":"image/hall/btn_coin_type.png"},
@@ -147,7 +141,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":0,"x":216,"texture":"image/hall/split_vertical.png"},
@@ -161,7 +154,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button",
                             "props":{"y":14,"x":224,"stateNum":"1","skin":"image/hall/btn_down.png"},
@@ -175,7 +167,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_name",
                             "props":{"y":17,"x":53,"width":41,"var":"coin_name","text":"BTC","height":20,"fontSize":20,"color":"#fff392"},
@@ -189,7 +180,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_num",
                             "props":{"y":17,"x":210,"width":181,"var":"coin_num","text":"0","right":61,"overflow":"hidden","height":20,"fontSize":20,"color":"#fff","anchorY":0,"anchorX":1,"align":"right"},
@@ -204,7 +194,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,coin_icon",
                             "props":{"y":12,"x":18,"width":31,"var":"coin_icon","skin":"image/common/coin/BTC.png","height":31},
@@ -219,20 +208,18 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box",
-                    "props":{"y":3,"x":588,"width":190,"height":71},
-                    "nodeParent":26,
+                    "props":{"x":-20,"width":190,"height":71,"centerX":100},
+                    "nodeParent":47,
                     "label":"Box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":20,
                     "child":[
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_charge",
                             "props":{"y":0,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
@@ -245,7 +232,6 @@
                             "compId":10,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_charge_zh.png"},
@@ -260,7 +246,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_get",
                             "props":{"y":0,"x":106,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
@@ -273,7 +258,6 @@
                             "compId":9,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":19,"x":20,"skin":"image/international/txt_hall_excharge_zh.png"},
@@ -289,11 +273,10 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box",
-                    "props":{"y":12,"x":885},
-                    "nodeParent":26,
+                    "props":{"y":9,"x":-20,"right":120},
+                    "nodeParent":47,
                     "label":"Box",
                     "isOpen":false,
                     "isDirectory":true,
@@ -368,12 +351,11 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"scenes/hall/flagMenu.scene",
                     "searchKey":"UIView,flag_menu",
-                    "props":{"y":63.5,"x":1188,"visible":false,"var":"flag_menu"},
-                    "nodeParent":26,
+                    "props":{"y":60,"x":-20,"visible":false,"var":"flag_menu","right":20},
+                    "nodeParent":47,
                     "label":"flag_menu",
                     "isDirectory":false,
                     "isAniNode":true,
@@ -384,11 +366,10 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,flag_box",
-                    "props":{"y":16,"x":1207.7213862390597,"var":"flag_box"},
-                    "nodeParent":26,
+                    "props":{"y":13,"x":-20,"var":"flag_box","right":20},
+                    "nodeParent":47,
                     "label":"flag_box",
                     "isOpen":false,
                     "isDirectory":true,

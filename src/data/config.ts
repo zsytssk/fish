@@ -16,7 +16,7 @@ export const Config = {
     /** 子弹速度 */
     BulletSpeed: 15,
     /** 水池的宽度 */
-    PoolWidth: 1624,
+    PoolWidth: 1334,
     /** 水池的高度 */
     PoolHeight: 750,
     /** 自动攻击的间隔 ms */

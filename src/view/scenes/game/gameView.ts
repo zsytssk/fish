@@ -20,6 +20,7 @@ export default class GameView extends ui.scenes.game.gameUI
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
     private fish_click_observer: Subscriber<string>;
+    private resize_scale: number;
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
@@ -30,16 +31,60 @@ export default class GameView extends ui.scenes.game.gameUI
         viewState.ani_wrap = game.ani_wrap;
         return game;
     }
+    public onMounted() {
+        const { bubble_wall } = this;
+        playSkeleton(bubble_wall, 2, true);
+    }
     public onResize(width: number, height: number) {
-        const { width: tw, height: th } = this;
+        const { width: tw, height: th, ctrl_box } = this;
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
+        ctrl_box.width = width;
+
+        let scale = 1;
+        if (width < 1235) {
+            scale = 0.8;
+        }
+
+        this.triggerResize(scale);
+        // alert(width);
+    }
+    public triggerResize(scale: number) {
+        if (scale === this.resize_scale) {
+            return;
+        }
+        this.resize_scale = scale;
+        const {
+            btn_gift,
+            btn_voice,
+            bullet_box,
+            btn_leave,
+            btn_help,
+            btn_shop,
+            skill_box,
+        } = this;
+        btn_leave.x = 20 * scale;
+        btn_gift.x = 120 * scale;
+        btn_leave.x = 20 * scale;
+        btn_voice.right = 120 * scale;
+        btn_help.right = 20 * scale;
+        btn_voice.y = 10 * scale;
+
+        bullet_box.scale(scale, scale);
+        btn_voice.scale(scale, scale);
+        btn_gift.scale(scale, scale);
+        btn_leave.scale(scale, scale);
+        btn_help.scale(scale, scale);
+        btn_shop.scale(scale, scale);
+        skill_box.scale(scale, scale);
+        console.log(`test:>`, skill_box);
     }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
-        const { pool, gun_wrap, ani_wrap } = this;
+        const { pool, gun_wrap, ani_wrap, bubble_wall } = this;
         pool.scaleY = gun_wrap.scaleY = ani_wrap.scaleY = -1;
         this.upside_down = true;
+        bubble_wall.alpha = 0.5;
     }
     public addFish(info: FishViewInfo & { horizon_turn: boolean }) {
         const { pool, upside_down } = this;

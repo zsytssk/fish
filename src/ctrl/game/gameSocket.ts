@@ -146,7 +146,7 @@ export function convertEnterGame(data: EnterGameRep) {
         };
 
         /** 当前用户放在第一位 */
-        if (isCurUser) {
+        if (is_cur_player) {
             users.unshift(player_info);
         } else {
             users.push(player_info);
