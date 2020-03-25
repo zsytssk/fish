@@ -4,10 +4,6 @@
 
 node_modules/
 
-/.laya/
-!/.laya/gulpfile.js
-!/.laya/launch.json
-!/.laya/publish.js
 /laya/views
 
 release/
