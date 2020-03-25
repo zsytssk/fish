@@ -39,6 +39,7 @@ import { log } from 'utils/log';
 export class GameCtrl {
     public view: GameView;
     private model: GameModel;
+    private cur_player_index: number;
     constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
@@ -98,6 +99,7 @@ export class GameCtrl {
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
             const { server_index, is_cur_player } = player;
             if (is_cur_player) {
+                this.cur_player_index = server_index;
                 if (server_index > 1) {
                     view.upSideDown();
                 }
@@ -109,7 +111,7 @@ export class GameCtrl {
             }
 
             const player_view = view.addGun();
-            const ctrl = new PlayerCtrl(player_view, player);
+            const ctrl = new PlayerCtrl(player_view, player, this);
         });
         event.on(FreezingComEvent.Freezing, () => {
             AudioCtrl.play(AudioRes.Freeze);
@@ -145,6 +147,13 @@ export class GameCtrl {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
         view.setExchangeRate(exchange_rate, cur_balance);
+    }
+    public calcClientIndex(server_index: number) {
+        const { cur_player_index } = this;
+        if (cur_player_index <= 1) {
+            return server_index;
+        }
+        return 3 - server_index;
     }
     public onShoot(data: ShootRep) {
         this.model.shoot(data);

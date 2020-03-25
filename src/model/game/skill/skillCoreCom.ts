@@ -70,7 +70,7 @@ export class SkillCoreCom extends ComponentManager {
         if (used_time) {
             this.active({
                 used_time,
-                num,
+                num: num + 9999999,
             });
             setProps(this as SkillCoreCom, { used_time: 0 });
         }

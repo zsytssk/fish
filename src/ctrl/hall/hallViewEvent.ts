@@ -51,33 +51,23 @@ export function hallViewEvent(hall: HallCtrl) {
 
     onNode(btn_normal_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 0 }).then((url: string) => {
-            hall.enterGame(url);
-        });
+        hall.roomIn({ roomId: 1, isTrial: 0 });
     });
     onNode(btn_normal_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 1 }).then((url: string) => {
-            hall.enterGame(url);
-        });
+        hall.roomIn({ roomId: 1, isTrial: 1 });
     });
     onNode(btn_match_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 2, isTrial: 0 }).then((url: string) => {
-            hall.enterGame(url);
-        });
+        hall.roomIn({ roomId: 2, isTrial: 0 });
     });
     onNode(btn_match_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 2, isTrial: 1 }).then((url: string) => {
-            hall.enterGame(url);
-        });
+        hall.roomIn({ roomId: 2, isTrial: 1 });
     });
     onNode(btn_play_now, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        await roomIn({ roomId: 1, isTrial: 1 }).then((url: string) => {
-            hall.enterGame(url);
-        });
+        hall.roomIn({ roomId: 1, isTrial: 1 });
     });
     btn_coin_select.on(CLICK, hall, () => {
         AudioCtrl.play(AudioRes.Click);

@@ -25,17 +25,16 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         this.setDirection(this.gun_direct);
     }
     private init() {
-        const { light, gun, base, ctrl_box } = this;
-        const { upside_down } = viewState.game;
+        const { light, gun, base, ctrl_wrap } = this;
 
         stopSkeleton(light);
         stopSkeleton(base);
         playSkeleton(gun, 'standby', true);
+    }
 
-        // console.log(`test:>`, this.ctrl_box);
-        if (upside_down) {
-            ctrl_box.scaleX = -1;
-        }
+    public setMySelfStyle() {
+        const { ctrl_box } = this;
+        ctrl_box.visible = true;
     }
 
     /** 设置动画 */
@@ -69,8 +68,13 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         });
     }
     public fixServerTopPos() {
-        const { ani_box } = this;
+        const { ani_box, ctrl_wrap } = this;
         ani_box.rotation = this.rotation = 180;
+        ctrl_wrap.scaleX = -1;
+    }
+    public fixClientTopPos() {
+        const { ctrl_wrap } = this;
+        ctrl_wrap.scaleY = -1;
     }
     public setDirection(direction: SAT.Vector) {
         if (!direction) {
@@ -94,7 +98,7 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
             return playSkeletonOnce(gun, 'fire');
         }).then((is_last: boolean) => {
             if (is_last) {
-                playSkeletonOnce(gun, 'standby');
+                playSkeleton(gun, 'standby', true);
             }
         });
 

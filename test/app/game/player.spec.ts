@@ -1,3 +1,4 @@
+import random from 'lodash/random';
 import { modelState } from 'model/modelState';
 import { PlayerInfo } from 'model/game/playerModel';
 import { Test } from 'testBuilder';
@@ -14,7 +15,7 @@ export const player_test = new Test('player', runner => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 3,
+            server_index: 0,
             bullet_cost: 1,
             bullet_num: 10111,
             gun_skin: '1',
@@ -46,17 +47,19 @@ export const player_test = new Test('player', runner => {
         modelState.app.game.addPlayer(player_data);
     });
 
+    let i = 0;
     runner.describe('add_other_player', (seat_index: number) => {
-        let other_player = modelState.app.game.getPlayerById(
-            test_data.otherUserId,
-        );
+        const other_id = test_data.otherUserId + i;
+        i++;
+
+        let other_player = modelState.app.game.getPlayerById(other_id);
         if (!other_player) {
-            seat_index = seat_index || 3;
+            seat_index = isNaN(Number(seat_index)) ? 3 : seat_index;
             // body_test.runTest('show_shape');
             const player_data = {
-                user_id: test_data.otherUserId,
+                user_id: other_id,
                 server_index: seat_index,
-                bullet_cost: 101,
+                bullet_cost: random(0, 10000),
                 bullet_num: 10000,
                 gun_skin: '1',
                 nickname: test_data.otherNickname,

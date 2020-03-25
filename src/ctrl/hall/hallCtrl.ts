@@ -14,7 +14,7 @@ import {
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
-import { onHallSocket } from './hallSocket';
+import { onHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
 import { initUserInfo } from 'model/userInfo/userInfoUtils';
 import { ctrlState } from 'ctrl/ctrlState';
@@ -34,6 +34,11 @@ export class HallCtrl {
     public enterGame(socketUrl: string) {
         ctrlState.app.enterGame(socketUrl);
         this.destroy();
+    }
+    public roomIn(...data: Parameters<typeof roomIn>) {
+        roomIn(data[0]).then((url: string) => {
+            this.enterGame(url);
+        });
     }
     private async init() {
         hallViewEvent(this);

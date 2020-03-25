@@ -27,6 +27,7 @@ import { Event } from 'laya/events/Event';
 import { Laya } from 'Laya';
 import { Sprite } from 'laya/display/Sprite';
 import { log } from 'utils/log';
+import { GameCtrl } from './gameCtrl';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -34,7 +35,11 @@ export class PlayerCtrl {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
-    constructor(private view: GunBoxView, private model: PlayerModel) {
+    constructor(
+        private view: GunBoxView,
+        private model: PlayerModel,
+        private game_ctrl: GameCtrl,
+    ) {
         this.init();
     }
     private init() {
@@ -42,11 +47,15 @@ export class PlayerCtrl {
         this.initEvent();
     }
     private initGun() {
-        const { view, model } = this;
+        const { view, model, game_ctrl } = this;
         const { server_index, gun, bullet_num, is_cur_player } = model;
         const { pos } = gun;
         if (server_index >= 2) {
             view.fixServerTopPos();
+        }
+        const client_index = game_ctrl.calcClientIndex(server_index);
+        if (client_index >= 2) {
+            view.fixClientTopPos();
         }
         view.setPos(pos.x, pos.y);
         if (is_cur_player) {
@@ -144,7 +153,7 @@ export class PlayerCtrl {
         if (!is_cur_player) {
             return;
         }
-        ctrl_box.visible = true;
+        view.setMySelfStyle();
         const socket = getSocket('game');
 
         player_event.on(PlayerEvent.UpdateInfo, () => {

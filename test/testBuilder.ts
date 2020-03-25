@@ -22,7 +22,8 @@ import { sat_test } from './other/sat.spec';
 import { getTestEnable, getTestIgnore } from './utils/testUtils';
 import { shoal_test } from './app/game/shoal/shoal.spec';
 import { utils_test } from './other/utils.spec';
-import { gun_test } from './app/game/gun.spec';
+import { gun_box_view_test } from './app/view/gunBoxView.spec';
+import { skill_item_view_test } from './app/view/SkillItemView.spec';
 
 const testScope = new Test('top');
 testScope.addChild(
@@ -46,8 +47,9 @@ testScope.addChild(
     voice_test,
     mock_web_socket_test,
     shoal_test,
-    gun_test,
+    gun_box_view_test,
     utils_test,
+    skill_item_view_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());
