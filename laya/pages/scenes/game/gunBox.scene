@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":2,
-    "selecteID":22,
+    "selectedBox":8,
+    "selecteID":18,
     "searchKey":"View",
     "props":{"y":111,"x":111,"width":223,"sceneColor":"#000000","runtime":"view/scenes/game/gunBoxView.ts","mouseThrough":true,"mouseEnabled":true,"height":223,"anchorY":0.5,"anchorX":0.5},
     "nodeParent":-1,
@@ -119,7 +119,6 @@
             "compId":22,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,score_box",
                     "props":{"y":26,"x":89,"width":150,"var":"score_box","skin":"image/game/time_bg.png","sizeGrid":"0,20,0,22","height":48,"anchorY":0.5,"anchorX":0.5},
@@ -132,7 +131,6 @@
                     "compId":13,
                     "child":[
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,score_label",
                             "props":{"y":2,"x":13,"width":124,"var":"score_label","valign":"middle","text":"0","height":44,"font":"score_num","align":"center"},
@@ -147,7 +145,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,ctrl_box",
                     "props":{"y":0,"x":0,"visible":false,"var":"ctrl_box"},

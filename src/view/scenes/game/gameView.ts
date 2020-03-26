@@ -39,6 +39,9 @@ export default class GameView extends ui.scenes.game.gameUI
         const { width: tw, height: th, ctrl_box } = this;
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
+        if (width > tw) {
+            width = tw;
+        }
         ctrl_box.width = width;
 
         let scale = 1;
@@ -47,8 +50,8 @@ export default class GameView extends ui.scenes.game.gameUI
         }
 
         this.triggerResize(scale);
-        // alert(width);
     }
+    /** 页面resize之后触发的重定位 */
     public triggerResize(scale: number) {
         if (scale === this.resize_scale) {
             return;

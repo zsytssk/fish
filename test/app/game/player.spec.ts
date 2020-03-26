@@ -1,9 +1,8 @@
-import random from 'lodash/random';
-import { modelState } from 'model/modelState';
+import { SkillMap } from 'data/config';
 import { PlayerInfo } from 'model/game/playerModel';
+import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { test_data } from '../../testData';
-import { SkillMap } from 'data/config';
 
 /** @type {PlayerModel} 的测试 */
 export const player_test = new Test('player', runner => {
@@ -16,9 +15,9 @@ export const player_test = new Test('player', runner => {
         const player_data = {
             user_id: test_data.userId,
             server_index: 0,
-            bullet_cost: 1,
+            bullet_cost: 10,
             bullet_num: 10111000,
-            gun_skin: '1',
+            gun_skin: '3',
             nickname: test_data.nickname,
             avatar: 'test',
             need_emit: true,
@@ -59,9 +58,9 @@ export const player_test = new Test('player', runner => {
             const player_data = {
                 user_id: other_id,
                 server_index: seat_index,
-                bullet_cost: random(0, 10000),
+                bullet_cost: 800 + i * 200,
                 bullet_num: 10000,
-                gun_skin: '1',
+                gun_skin: '2',
                 nickname: test_data.otherNickname,
                 avatar: 'test',
                 is_cur_player: false,

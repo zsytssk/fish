@@ -77,6 +77,7 @@ export class GameCtrl {
             VoicePop.preEnter();
         });
         btn_shop.on(CLICK, this, (e: Event) => {
+            e.stopPropagation();
             ShopPop.preEnter();
         });
         btn_leave.on(CLICK, this, (e: Event) => {

@@ -1,13 +1,9 @@
-import { Observable, Subscriber } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
 import { ColorFilter } from 'laya/filters/ColorFilter';
 import { GlowFilter } from 'laya/filters/GlowFilter';
 import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Handler } from 'laya/utils/Handler';
 import { Event } from 'laya/events/Event';
-import { Image } from 'laya/ui/Image';
-import { Node } from 'laya/display/Node';
 
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';
@@ -71,63 +67,6 @@ export function addZeroToNum(num: number, len: number): number {
     }
     num = num * 10;
     return addZeroToNum(num, len);
-}
-
-type ClickNode = Sprite & {
-    is_disable: boolean;
-};
-/**
- * 在按钮上绑定事件, 防止多次点击事件导致
- * @param node 绑定的节点
- * @param event 绑定的事件
- * @param callback 执行函数
- * @param once 是否执行一次
- * @param throttle 间隔的时间 默认1s
- */
-export function onNode(
-    node: Sprite,
-    event: string,
-    callback: (event?: Event) => void,
-    once?: boolean,
-    throttle = 1000,
-) {
-    let once_observer: Subscriber<Event>;
-    const observer = new Observable((subscriber: Subscriber<Event>) => {
-        const fn = (_event: Event) => {
-            /** 按钮置灰 */
-            if ((node as ClickNode).is_disable === true) {
-                return;
-            }
-            (node as ClickNode).is_disable = true;
-            setTimeout(() => {
-                if (node.destroyed) {
-                    return;
-                }
-                (node as ClickNode).is_disable = false;
-            }, throttle);
-
-            subscriber.next(_event);
-            once_observer = subscriber;
-            if (once) {
-                subscriber.complete();
-            }
-        };
-        node.on(event, node, fn);
-        subscriber.add(() => {
-            node.off(event, node, fn);
-        });
-    });
-
-    observer.pipe(throttleTime(throttle || 1000)).subscribe((_event: Event) => {
-        if (node.destroyed) {
-            if (once_observer) {
-                once_observer.complete();
-            }
-            return;
-        }
-
-        callback(_event);
-    });
 }
 
 /** 停止骨骼动画, 如果是拖到页面上的 一开始无法停止 需要特殊处理` */

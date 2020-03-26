@@ -1,14 +1,8 @@
-import { ui } from 'ui/layaMaxUI';
-import { SkillMap } from 'data/config';
-import { playSkeleton, stopSkeleton } from 'utils/utils';
+import { SkillNameMap } from 'data/config';
 import { Sprite } from 'laya/display/Sprite';
+import { ui } from 'ui/layaMaxUI';
+import { playSkeleton, stopSkeleton } from 'utils/utils';
 
-export const SkillNameMap = {
-    [SkillMap.Freezing]: 'freeze',
-    [SkillMap.Bomb]: 'bomb',
-    [SkillMap.TrackFish]: 'aim',
-    [SkillMap.Auto]: 'auto',
-};
 export default class SkillItemView extends ui.scenes.game.skillItemUI {
     private cool_mask: Sprite;
     constructor() {

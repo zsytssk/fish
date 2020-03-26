@@ -22,11 +22,12 @@ export class BulletCtrl {
     }
     private initView() {
         const { view, model } = this;
-        const { skin_level: level_skin } = model;
+        const { skin_level } = model;
         this.syncPos();
         view.visible = true;
-        playSkeleton(view, getBulletAniSkin(level_skin), true);
-        // playSkeleton(view, level_skin, true);
+        view.scale(0.8, 0.8);
+        playSkeleton(view, getBulletAniSkin(skin_level), true);
+        // playSkeleton(view, skin_level, true);
     }
     private initEvent() {
         const { view } = this;
@@ -59,11 +60,11 @@ export class BulletCtrl {
     }; // tslint:disable-line
 }
 
-function getBulletAniSkin(level_skin: string) {
-    const num_skin = Number(level_skin);
-    if (num_skin < 4) {
+function getBulletAniSkin(skin_level: string) {
+    const num_skin = Number(skin_level);
+    if (num_skin > 3) {
         return 0;
     } else {
-        return level_skin;
+        return skin_level;
     }
 }

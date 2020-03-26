@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":32,
+    "selecteID":11,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -147,6 +147,20 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":32,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer,bubble_wall",
+            "props":{"y":393,"x":960,"width":100,"var":"bubble_wall","url":"ani/other/bubble.sk","height":100,"alpha":0.5},
+            "nodeParent":2,
+            "label":"bubble_wall",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":43,
             "child":[
                 ]
         },
@@ -312,20 +326,6 @@
             "child":[
                 ],
             "$LOCKED":true
-        },
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer,bubble_wall",
-            "props":{"y":393,"x":960,"width":100,"var":"bubble_wall","url":"ani/other/bubble.sk","height":100,"alpha":0.5},
-            "nodeParent":2,
-            "label":"bubble_wall",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":43,
-            "child":[
-                ]
         }],
     "animations":[
         {

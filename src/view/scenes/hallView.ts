@@ -8,6 +8,7 @@ import { fade_in, fade_out } from 'utils/animate';
 import { log } from 'utils/log';
 import { playSkeleton } from 'utils/utils';
 import { ui } from '../../ui/layaMaxUI';
+import { onStageClick } from 'utils/layaUtils';
 
 export type CoinData = Array<{
     type: string;
@@ -26,6 +27,9 @@ export default class HallView extends ui.scenes.hall.hallUI {
         } = this;
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
+        if (width > 1334) {
+            width = 1334;
+        }
         header_inner.width = inner.width = width;
         console.log(`onResize`, width, height);
     }
@@ -41,7 +45,21 @@ export default class HallView extends ui.scenes.hall.hallUI {
             undefined,
             false,
         );
+
+        this.initEvent();
     }
+    private initEvent() {
+        onStageClick(this, this.toggleFlagAndCoinMenu);
+    }
+    private toggleFlagAndCoinMenu = () => {
+        const { coin_menu, flag_menu } = this.header;
+        if (coin_menu.visible) {
+            this.toggleCoinMenu();
+        }
+        if (flag_menu.visible) {
+            this.toggleFlagMenu();
+        }
+    }; // tslint:disable-line
     /** 显示模式的动画... */
     public activeAni(type: string) {
         const { normal_box, match_box } = this;
@@ -102,19 +120,21 @@ export default class HallView extends ui.scenes.hall.hallUI {
         list.array = arr;
         flag_menu.height = bg.height = list.height = arr.length * 61 + 20;
     }
-    public toggleBalanceMenu() {
-        const { coin_menu } = this.header;
+    public toggleCoinMenu() {
+        const { coin_menu, coin_triangle } = this.header;
         if (!coin_menu.list.array.length) {
             return;
         }
         if (!coin_menu.visible) {
             // show
             coin_menu.y = 54;
-            fade_in(coin_menu, 0.3);
+            fade_in(coin_menu, 300);
+            coin_triangle.rotation = 180;
         } else {
             // hide
-            fade_out(coin_menu, 0.3);
+            fade_out(coin_menu, 100);
             coin_menu.list.selectedIndex = -1;
+            coin_triangle.rotation = 0;
         }
     }
     public setCurBalance(type: string, icon: string, num: number) {
@@ -134,14 +154,16 @@ export default class HallView extends ui.scenes.hall.hallUI {
         }
     }
     public toggleFlagMenu() {
-        const { flag_menu } = this.header;
+        const { flag_menu, flag_triangle } = this.header;
         if (!flag_menu.visible) {
             // show
-            fade_in(flag_menu, 0.3);
+            fade_in(flag_menu, 300);
+            flag_triangle.rotation = 180;
         } else {
             // hide
-            fade_out(flag_menu, 0.3);
+            fade_out(flag_menu, 100);
             flag_menu.list.selectedIndex = -1;
+            flag_triangle.rotation = 0;
         }
     }
 

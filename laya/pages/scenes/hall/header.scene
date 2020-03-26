@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":2,
-    "selecteID":47,
+    "selectedBox":47,
+    "selecteID":22,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -55,25 +55,27 @@
             "props":{"y":6,"width":1915,"var":"inner","height":407,"centerX":0},
             "nodeParent":2,
             "label":"inner",
-            "isOpen":null,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":47,
             "child":[
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,user_box",
                     "props":{"y":14,"x":-20,"var":"user_box","mouseThrough":false,"mouseEnabled":true,"left":20},
                     "nodeParent":47,
                     "label":"user_box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":31,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"texture":"image/hall/avatar.png"},
@@ -87,9 +89,10 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,nickname",
-                            "props":{"y":9,"x":42,"width":163,"var":"nickname","text":"游客","overflow":"hidden","height":22,"fontSize":22,"color":"#fff","align":"center"},
+                            "props":{"y":10,"x":42,"width":163,"var":"nickname","text":"游客","overflow":"hidden","height":22,"fontSize":22,"color":"#fff","align":"left"},
                             "nodeParent":31,
                             "label":"nickname",
                             "isDirectory":false,
@@ -101,6 +104,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"scenes/hall/coinMenu.scene",
                     "searchKey":"UIView,coin_menu",
@@ -116,18 +120,20 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_coin_select",
                     "props":{"y":5,"x":-20,"width":271,"var":"btn_coin_select","left":225,"height":56},
                     "nodeParent":47,
                     "label":"btn_coin_select",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":25,
                     "child":[
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button",
                             "props":{"stateNum":"1","skin":"image/hall/btn_coin_type.png"},
@@ -141,6 +147,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":0,"x":216,"texture":"image/hall/split_vertical.png"},
@@ -154,11 +161,12 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Button",
-                            "searchKey":"Button",
-                            "props":{"y":14,"x":224,"stateNum":"1","skin":"image/hall/btn_down.png"},
+                            "searchKey":"Button,coin_triangle",
+                            "props":{"y":28,"x":239,"width":29,"var":"coin_triangle","stateNum":"1","skin":"image/hall/btn_down.png","pivotY":14,"pivotX":15,"height":27},
                             "nodeParent":25,
-                            "label":"Button",
+                            "label":"coin_triangle",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -167,6 +175,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_name",
                             "props":{"y":17,"x":53,"width":41,"var":"coin_name","text":"BTC","height":20,"fontSize":20,"color":"#fff392"},
@@ -180,6 +189,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_num",
                             "props":{"y":17,"x":210,"width":181,"var":"coin_num","text":"0","right":61,"overflow":"hidden","height":20,"fontSize":20,"color":"#fff","anchorY":0,"anchorX":1,"align":"right"},
@@ -194,6 +204,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,coin_icon",
                             "props":{"y":12,"x":18,"width":31,"var":"coin_icon","skin":"image/common/coin/BTC.png","height":31},
@@ -208,9 +219,10 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box",
-                    "props":{"x":-20,"width":190,"height":71,"centerX":100},
+                    "props":{"y":0,"x":532,"width":190,"height":71},
                     "nodeParent":47,
                     "label":"Box",
                     "isOpen":false,
@@ -273,21 +285,23 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box",
-                    "props":{"y":9,"x":-20,"right":120},
+                    "props":{"y":9,"width":323,"right":139,"height":48},
                     "nodeParent":47,
                     "label":"Box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":22,
                     "child":[
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_home",
-                            "props":{"y":0,"x":0,"var":"btn_home","stateNum":"1","skin":"image/hall/btn_home.png"},
+                            "props":{"y":0,"x":0,"var":"btn_home","stateNum":"1","skin":"image/hall/btn_home.png","name":""},
                             "nodeParent":22,
                             "label":"btn_home",
                             "isDirectory":false,
@@ -298,9 +312,10 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_app",
-                            "props":{"y":0,"x":75,"var":"btn_app","stateNum":"1","skin":"image/hall/btn_app.png"},
+                            "props":{"y":0,"x":91,"var":"btn_app","stateNum":"1","skin":"image/hall/btn_app.png","name":""},
                             "nodeParent":22,
                             "label":"btn_app",
                             "isDirectory":false,
@@ -311,11 +326,13 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_leave",
-                            "props":{"y":0,"x":146,"visible":false,"var":"btn_leave","stateNum":"1","skin":"image/hall/btn_leave.png"},
+                            "props":{"y":0,"x":179,"visible":false,"var":"btn_leave","stateNum":"1","skin":"image/hall/btn_leave.png"},
                             "nodeParent":22,
                             "label":"btn_leave",
+                            "isOpen":true,
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -324,22 +341,10 @@
                                 ]
                         },
                         {
-                            "type":"Button",
-                            "searchKey":"Button,btn_voice",
-                            "props":{"y":0,"x":217,"var":"btn_voice","stateNum":"1","skin":"image/hall/btn_voice.png"},
-                            "nodeParent":22,
-                            "label":"btn_voice",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":11,
-                            "child":[
-                                ]
-                        },
-                        {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_login",
-                            "props":{"y":0,"x":144,"var":"btn_login","stateNum":"1","skin":"image/hall/btn_login.png"},
+                            "props":{"y":0,"x":177,"var":"btn_login","stateNum":"1","skin":"image/hall/btn_login.png","name":""},
                             "nodeParent":22,
                             "label":"btn_login",
                             "isDirectory":false,
@@ -348,13 +353,28 @@
                             "compId":45,
                             "child":[
                                 ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Button",
+                            "searchKey":"Button,btn_voice",
+                            "props":{"y":0,"x":265,"var":"btn_voice","stateNum":"1","skin":"image/hall/btn_voice.png","name":""},
+                            "nodeParent":22,
+                            "label":"btn_voice",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":11,
+                            "child":[
+                                ]
                         }]
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"scenes/hall/flagMenu.scene",
                     "searchKey":"UIView,flag_menu",
-                    "props":{"y":60,"x":-20,"visible":false,"var":"flag_menu","right":20},
+                    "props":{"y":66,"visible":false,"var":"flag_menu","right":44},
                     "nodeParent":47,
                     "label":"flag_menu",
                     "isDirectory":false,
@@ -366,23 +386,25 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,flag_box",
                     "props":{"y":13,"x":-20,"var":"flag_box","right":20},
                     "nodeParent":47,
                     "label":"flag_box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":24,
                     "child":[
                         {
+                            "x":45,
                             "type":"Button",
-                            "searchKey":"Button",
-                            "props":{"y":7,"x":45,"stateNum":"1","skin":"image/hall/btn_down.png"},
+                            "searchKey":"Button,flag_triangle",
+                            "props":{"y":21,"x":60,"width":29,"var":"flag_triangle","stateNum":"1","skin":"image/hall/btn_down.png","pivotY":14,"pivotX":15,"height":27},
                             "nodeParent":24,
-                            "label":"Button",
+                            "label":"flag_triangle",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -391,6 +413,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,flag",
                             "props":{"var":"flag","skin":"image/common/flag/flag_zh.png"},

@@ -83,7 +83,7 @@ export class HallCtrl {
         const { user_info } = modelState.app;
         const coin_type = list.array[index].coin_name;
         user_info.setCurBalance(coin_type);
-        view.toggleBalanceMenu();
+        view.toggleCoinMenu();
     }; // tslint:disable-line
     public selectFlag = (index: number) => {
         if (index === -1) {

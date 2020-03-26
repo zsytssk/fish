@@ -4,10 +4,9 @@ import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 import { getUserInfo } from 'model/modelState';
-import { onNode } from 'utils/utils';
+import { onNode } from 'utils/layaUtils';
 import VoicePop from 'view/pop/voice';
 import { HallCtrl } from './hallCtrl';
-import { roomIn } from './hallSocket';
 import { loginOut } from './login';
 
 export function hallViewEvent(hall: HallCtrl) {
@@ -49,7 +48,7 @@ export function hallViewEvent(hall: HallCtrl) {
     const btn_match_try = match_box.getChildByName('btn_try') as Sprite;
     const btn_match_play = match_box.getChildByName('btn_play') as Sprite;
 
-    onNode(btn_normal_play, CLICK, async () => {
+    onNode(btn_normal_play, CLICK, async (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
         hall.roomIn({ roomId: 1, isTrial: 0 });
     });
@@ -69,9 +68,15 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         hall.roomIn({ roomId: 1, isTrial: 1 });
     });
-    btn_coin_select.on(CLICK, hall, () => {
+    btn_coin_select.on(CLICK, hall, (event: Event) => {
+        event.stopPropagation();
         AudioCtrl.play(AudioRes.Click);
-        view.toggleBalanceMenu();
+        view.toggleCoinMenu();
+    });
+    flag_box.on(CLICK, hall, (event: Event) => {
+        event.stopPropagation();
+        AudioCtrl.play(AudioRes.Click);
+        view.toggleFlagMenu();
     });
     onNode(btn_get, CLICK, () => {
         const { cur_balance, lang } = getUserInfo();
@@ -97,9 +102,5 @@ export function hallViewEvent(hall: HallCtrl) {
     onNode(btn_voice, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         VoicePop.preEnter();
-    });
-    flag_box.on(CLICK, hall, () => {
-        AudioCtrl.play(AudioRes.Click);
-        view.toggleFlagMenu();
     });
 }

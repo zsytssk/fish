@@ -14,7 +14,7 @@ export const Config = {
     /** cdn版本号 */
     CdnVersion: window.CDN_VERSION,
     /** 子弹速度 */
-    BulletSpeed: 15,
+    BulletSpeed: 25,
     /** 水池的宽度 */
     PoolWidth: 1334,
     /** 水池的高度 */
@@ -32,3 +32,10 @@ export enum SkillMap {
     Bomb = '2003',
     Auto = 'A2004',
 }
+
+export const SkillNameMap = {
+    [SkillMap.Freezing]: 'freeze',
+    [SkillMap.Bomb]: 'bomb',
+    [SkillMap.TrackFish]: 'aim',
+    [SkillMap.Auto]: 'auto',
+};

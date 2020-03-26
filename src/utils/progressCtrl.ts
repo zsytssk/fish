@@ -23,13 +23,21 @@ export default class ProgressCtrl {
     private initEvent() {
         const { view } = this;
         const { progress_btn } = view;
-        const { CLICK, MOUSE_DOWN, MOUSE_MOVE, MOUSE_OVER, MOUSE_OUT } = Event;
+        const {
+            CLICK,
+            MOUSE_DOWN,
+            MOUSE_MOVE,
+            MOUSE_OVER,
+            MOUSE_OUT,
+            MOUSE_UP,
+        } = Event;
 
         view.on(CLICK, this, this.onClick);
         progress_btn.on(MOUSE_DOWN, this, () => {
             Laya.stage.on(MOUSE_MOVE, this, this.onMouseMove);
             Laya.stage.on(MOUSE_OVER, this, this.onMouseOut);
             Laya.stage.on(MOUSE_OUT, this, this.onMouseOut);
+            Laya.stage.on(MOUSE_UP, this, this.onMouseOut);
         });
     }
     private onClick(e: Event) {

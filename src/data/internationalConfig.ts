@@ -1,6 +1,8 @@
 export enum Lang {
     /** 中文 */
     Zh = 'zh',
+    /** 中文 */
+    Zh_TW = 'Zh_TW',
     /** 韩文 */
     Kor = 'kor',
     /** 英文 */
@@ -13,10 +15,19 @@ export enum Lang {
 export const InternationalRes = {};
 /** 国际化的提示 */
 export const InternationalTip = {
-    '404': {
-        [Lang.En]: 'not found',
-        [Lang.Kor]: '찾지 못하다',
-        [Lang.Jp]: 'いらない',
-        [Lang.Zh]: '没有发现页面',
+    [Lang.En]: {
+        '404': 'not found',
+    },
+    [Lang.Kor]: {
+        '404': '찾지 못하다',
+    },
+    [Lang.Jp]: {
+        '404': 'いらない',
+    },
+    [Lang.Zh]: {
+        '404': '没有发现页面',
+    },
+    [Lang.Zh_TW]: {
+        '404': '没有发现页面',
     },
 };
