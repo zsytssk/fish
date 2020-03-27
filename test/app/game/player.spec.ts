@@ -15,9 +15,9 @@ export const player_test = new Test('player', runner => {
         const player_data = {
             user_id: test_data.userId,
             server_index: 0,
-            bullet_cost: 10,
+            bullet_cost: 1000,
             bullet_num: 10111000,
-            gun_skin: '3',
+            gun_skin: '4',
             nickname: test_data.nickname,
             avatar: 'test',
             need_emit: true,
@@ -54,13 +54,13 @@ export const player_test = new Test('player', runner => {
         let other_player = modelState.app.game.getPlayerById(other_id);
         if (!other_player) {
             seat_index = isNaN(Number(seat_index)) ? 3 : seat_index;
-            // body_test.runTest('show_shape');
+
             const player_data = {
                 user_id: other_id,
                 server_index: seat_index,
-                bullet_cost: 800 + i * 200,
+                bullet_cost: Math.pow(10, i),
                 bullet_num: 10000,
-                gun_skin: '2',
+                gun_skin: '4',
                 nickname: test_data.otherNickname,
                 avatar: 'test',
                 is_cur_player: false,
