@@ -1,10 +1,11 @@
 import { Observable, Subscriber } from 'rxjs';
 import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
+import { default as random } from 'lodash/random';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ui } from 'ui/layaMaxUI';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
-import { playSkeleton } from 'utils/utils';
+import { playSkeleton, playSkeletonOnce } from 'utils/utils';
 import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
@@ -12,6 +13,7 @@ import SkillItemView from './skillItemView';
 import { Event } from 'laya/events/Event';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
+import { fade_in } from 'utils/animate';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxPos = 'left' | 'right';
@@ -21,6 +23,7 @@ export default class GameView extends ui.scenes.game.gameUI
     public upside_down: boolean;
     private fish_click_observer: Subscriber<string>;
     private resize_scale: number;
+    private bg_num = 1;
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
@@ -33,7 +36,29 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     public onMounted() {
         const { bubble_wall } = this;
-        playSkeleton(bubble_wall, 2, true);
+        const bg_num = random(1, 4);
+
+        console.log(`test:>111`, bubble_wall);
+        this.showBubbleRefresh(bg_num);
+    }
+    public showBubbleRefresh(bg_num?: number) {
+        const { bubble_overlay, bg, bubble_wall } = this;
+
+        if (!bg_num) {
+            bg_num = this.bg_num + 1;
+            if (bg_num > 3) {
+                bg_num = 1;
+            }
+        }
+
+        console.log(`test:>`, bg_num);
+        this.bg_num = bg_num;
+        bg.skin = `image/game/normal_bg/bg${bg_num}.jpg`;
+        bubble_wall.visible = false;
+        playSkeletonOnce(bubble_overlay, 'hide').then(() => {
+            fade_in(bubble_wall, 300, '', 0.3);
+            playSkeleton(bubble_wall, 2, true);
+        });
     }
     public onResize(width: number, height: number) {
         const { width: tw, height: th, ctrl_box } = this;
@@ -87,7 +112,6 @@ export default class GameView extends ui.scenes.game.gameUI
         const { pool, gun_wrap, ani_wrap, bubble_wall } = this;
         pool.scaleY = gun_wrap.scaleY = ani_wrap.scaleY = -1;
         this.upside_down = true;
-        bubble_wall.alpha = 0.5;
     }
     public addFish(info: FishViewInfo & { horizon_turn: boolean }) {
         const { pool, upside_down } = this;

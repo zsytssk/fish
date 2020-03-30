@@ -47,10 +47,10 @@ export const ani_wrap = new Test('ani_wrap', runner => {
             showAwardCoin(pos1, end_pos1, num1, false);
         }, 3000);
     });
-    runner.describe('show_award_circle', () => {
-        const pos = { x: 1000, y: 1000 };
+    runner.describe('show_award_circle', (t, d) => {
+        const pos = { x: 1000, y: 300 };
         const num = 100000;
-        showAwardCircle(pos, num, true);
+        showAwardCircle(pos, num, true, t, d);
     });
 
     runner.describe('active_exploding', (pos: Point) => {

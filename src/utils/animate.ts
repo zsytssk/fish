@@ -19,7 +19,12 @@ export function sleep(time: number) {
         }, time * 1000);
     });
 }
-export function fade_in(sprite: Sprite, time?: number, ease_fn?: string) {
+export function fade_in(
+    sprite: Sprite,
+    time?: number,
+    ease_fn?: string,
+    end_alpha = 1,
+) {
     completeAni(sprite);
     const start_props = {
         alpha: 0,
@@ -28,7 +33,7 @@ export function fade_in(sprite: Sprite, time?: number, ease_fn?: string) {
     time = time ? time : 700;
     ease_fn = ease_fn || 'circleOut';
     const end_props = {
-        alpha: 1,
+        alpha: end_alpha,
     };
     return tween({
         ease_fn,
@@ -55,7 +60,7 @@ export function fade_out(sprite: Sprite, time?: number, ease_fn?: string) {
         sprite.alpha = 1;
     });
 }
-export function scale_in(sprite: Sprite, time: number, ease_fn: EaseFn) {
+export function scale_in(sprite: Sprite, time?: number, ease_fn?: EaseFn) {
     completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 400;

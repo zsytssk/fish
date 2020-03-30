@@ -28,8 +28,9 @@ const state = {
 } as AimState;
 const point_space = 50;
 
+type AimType = 'aim' | 'aim_big';
 export function activeAim(pos: Point) {
-    const aim_ani = createAim('normal');
+    const aim_ani = createAim('aim_big');
     playSkeleton(aim_ani, 0, true);
     aim_ani.pos(pos.x, pos.y);
 }
@@ -39,7 +40,7 @@ export function activeAimFish(
     show_points?: boolean,
     ori_pos?: Point,
 ) {
-    const aim_ani = createAim('fish');
+    const aim_ani = createAim('aim');
     const { fish: ori_fish } = state;
     const { pos } = fish;
 
@@ -82,13 +83,13 @@ export function activeAimFish(
         aim_ani,
     );
     fish.event.on(FishEvent.Destroy, () => {
-        stopAim('fish');
+        stopAim('aim');
         fish.event.offAllCaller(aim_ani);
     });
 }
 
 /** 消除动画 */
-export function stopAim(type: string = 'normal') {
+export function stopAim(type: AimType = 'aim') {
     const { aim_ani_map, fish, point_list } = state;
     const aim_ani = aim_ani_map.get(type);
 
@@ -97,7 +98,7 @@ export function stopAim(type: string = 'normal') {
         aim_ani.removeSelf();
     }
 
-    if (type !== 'fish') {
+    if (type !== 'aim') {
         return;
     }
 
@@ -112,12 +113,12 @@ export function stopAim(type: string = 'normal') {
 }
 
 /** 创建锁定动画 */
-function createAim(type: string) {
+function createAim(type: AimType) {
     const { aim_ani_map } = state;
     const { ani_wrap } = viewState;
     let aim_ani = aim_ani_map.get(type);
     if (!aim_ani) {
-        aim_ani = createSprite('other', 'aim') as Skeleton;
+        aim_ani = createSprite('other', type) as Skeleton;
         ani_wrap.addChild(aim_ani);
         aim_ani_map.set(type, aim_ani);
     } else if (!aim_ani.parent) {

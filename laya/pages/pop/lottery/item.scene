@@ -2,11 +2,11 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":13,
+    "selecteID":11,
     "searchKey":"View",
     "props":{"width":141,"sceneColor":"#000000","height":141},
     "nodeParent":-1,
-    "maxID":14,
+    "maxID":17,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -16,33 +16,31 @@
     "child":[
         {
             "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite",
-            "props":{"y":1,"x":-13,"width":152,"texture":"image/pop/lottery/lottery_item_bg.png","height":140},
+            "type":"Image",
+            "searchKey":"Image",
+            "props":{"y":5,"x":5,"width":130,"skin":"image/pop/lottery/lottery_item_bg.png","height":130},
             "nodeParent":2,
-            "label":"Sprite",
-            "isDirectory":false,
+            "label":"Image",
+            "isOpen":true,
+            "isDirectory":true,
             "isAniNode":true,
-            "hasChild":false,
-            "compId":4,
+            "hasChild":true,
+            "compId":16,
             "child":[
-                ],
-            "$HIDDEN":false
-        },
-        {
-            "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite,light",
-            "props":{"y":17,"x":16.5,"var":"light","texture":"image/pop/lottery/lottery_item_light.png"},
-            "nodeParent":2,
-            "label":"light",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":8,
-            "child":[
-                ],
-            "$HIDDEN":true
+                {
+                    "x":30,
+                    "type":"SkeletonPlayer",
+                    "searchKey":"SkeletonPlayer,light",
+                    "props":{"y":65,"x":65,"visible":false,"var":"light","url":"image/pop/lottery/exchange_circle_light.sk"},
+                    "nodeParent":16,
+                    "label":"light",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":15,
+                    "child":[
+                        ]
+                }]
         },
         {
             "x":15,
@@ -57,21 +55,6 @@
             "compId":13,
             "child":[
                 ]
-        },
-        {
-            "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite,cur_light",
-            "props":{"y":0,"x":0,"var":"cur_light","texture":"image/pop/lottery/lottery_item_cur_bg.png"},
-            "nodeParent":2,
-            "label":"cur_light",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":5,
-            "child":[
-                ],
-            "$HIDDEN":false
         },
         {
             "x":15,

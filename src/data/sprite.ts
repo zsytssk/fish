@@ -299,6 +299,10 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             path: 'ani/other/pos_tip',
         },
+        aim_big: {
+            type: 'DragonBone',
+            path: 'ani/other/aim_big',
+        },
         aim: {
             type: 'DragonBone',
             path: 'ani/other/aim',
@@ -307,9 +311,9 @@ export let SPRITE: GameSprite = {
             type: 'DragonBone',
             path: 'ani/other/energy_light',
         },
-        award_big: {
+        award_circle: {
             type: 'DragonBone',
-            path: 'ani/other/award_big',
+            path: 'ani/other/award_circle',
         },
         award_light: {
             type: 'DragonBone',

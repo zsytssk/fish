@@ -4,6 +4,10 @@ import { Laya } from 'Laya';
 import { Label } from 'laya/ui/Label';
 import { Event } from 'laya/events/Event';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { AudioRes } from 'data/audioRes';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { scale_in, tweenLoop } from 'utils/animate';
+import { Ease } from 'laya/utils/Ease';
 
 const circle_width = 270;
 const circle_height = 270;
@@ -13,16 +17,35 @@ export async function showAwardCircle(
     pos: Point,
     num: number,
     is_cur_player: boolean,
+    e?: any,
+    f?: any,
 ) {
     return new Promise((resolve, reject) => {
         const { ani_wrap } = viewState;
-        const circle = createSprite('other', 'award_big') as Skeleton;
+        const circle = createSprite('other', 'award_circle') as Skeleton;
         pos = fixCirclePos(pos);
 
+        AudioCtrl.play(AudioRes.FlySkill);
         const num_label = showAwardNum(pos, num, is_cur_player);
         ani_wrap.addChild(circle);
         circle.play(0, false);
         circle.pos(pos.x, pos.y);
+        scale_in(num_label, 700, (t, b, c, d) => {
+            return Ease.elasticOut(t, b, c, d, e, f);
+        }).then(() => {
+            tweenLoop({
+                sprite: num_label,
+                props_arr: [
+                    { rotation: 0 },
+                    { rotation: -30 },
+                    { rotation: 0 },
+                    { rotation: 30 },
+                ],
+                time: 120,
+                // ease_fn: Ease.elasticOut,
+            });
+        });
+        console.log(`test:>2222`, num_label, scale_in);
         circle.once(Event.STOPPED, circle, () => {
             num_label.destroy();
             circle.destroy();

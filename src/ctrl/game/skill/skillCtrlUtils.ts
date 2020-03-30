@@ -48,7 +48,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
         // 炸弹
         onPoolClick().then((pos: Point) => {
-            stopAim();
+            stopAim('aim_big');
             const socket = getSocket('game');
             const fish_list = getBeBombFish(pos);
             socket.send(ServerEvent.UseBomb, {
@@ -102,7 +102,7 @@ export function skillActiveHandler(
 export function skillDisableHandler(model: SkillModel) {
     return new Promise((resolve, reject) => {
         if (model instanceof TrackFishModel) {
-            stopAim('fish');
+            stopAim('aim');
             offFishClick();
         } else {
             resolve();

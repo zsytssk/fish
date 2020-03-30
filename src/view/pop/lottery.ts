@@ -1,12 +1,14 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
 import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
-import { createDarkFilter } from 'utils/utils';
+import { createDarkFilter, playSkeleton, playSkeletonOnce } from 'utils/utils';
 import TopTipPop from './topTip';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { Handler } from 'laya/utils/Handler';
 import { Event } from 'laya/events/Event';
+import AlertPop from './alert';
+import { onNode } from 'utils/layaUtils';
 
 type LotteryData = {
     lottery_id: string;
@@ -15,6 +17,7 @@ type LotteryData = {
 };
 type LotteryRenderData = {
     cur: boolean;
+    get: boolean;
 } & LotteryData;
 type ExchangeData = {
     exchange_id: string;
@@ -78,7 +81,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             undefined,
             false,
         );
-        btn_lottery.on(Event.CLICK, btn_lottery, () => {
+        onNode(btn_lottery, Event.CLICK, () => {
             this.runLottery();
         });
     }
@@ -91,10 +94,12 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             lottery_arr.push({
                 ...lottery_item,
                 cur: false,
+                get: false,
             });
         }
 
-        progress.value = lottery_num / lottery_cost;
+        const val = lottery_num / lottery_cost;
+        progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
         exchange_list.array = exchange;
@@ -105,22 +110,31 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         };
     }
     private renderLottery = (box: LotteryItemUI, index: number) => {
-        const {
-            light,
-            cur_light,
-            item_num,
-            item_type,
-            bullet_icon,
-            bullet_num,
-        } = box;
-        const { cur, lottery_type, lottery_num } = this.lottery_list.array[
+        const { light, item_num, item_type, bullet_icon, bullet_num } = box;
+        const { cur, get, lottery_type, lottery_num } = this.lottery_list.array[
             index
         ] as LotteryRenderData;
 
-        cur_light.visible = cur;
         const is_bullet = lottery_type === 'bullet';
         bullet_icon.visible = bullet_num.visible = is_bullet;
-        light.visible = item_type.visible = item_num.visible = !is_bullet;
+        item_type.visible = item_num.visible = !is_bullet;
+        // light.visible = cur;
+        console.log(`test:>is_cur`, cur, get);
+        if (!cur) {
+            return;
+        }
+        const ani_name = get ? 'active' : 'move';
+        light.visible = true;
+        if (ani_name === 'move') {
+            playSkeletonOnce(light, ani_name).then(() => {
+                light.visible = false;
+            });
+        } else {
+            playSkeletonOnce(light, ani_name).then(() => {
+                this.showLotteryAward();
+            });
+        }
+
         item_type.text = lottery_type;
         bullet_num.text = item_num.text = lottery_num + '';
     }; // tslint:disable-line
@@ -156,25 +170,34 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             this.lottery_interval = setInterval(() => {
                 const cur_index = index % arr.length;
                 for (let i = 0; i < arr.length; i++) {
+                    const item = arr[i];
+                    item.get = false;
                     if (i === cur_index) {
-                        arr[i].cur = true;
+                        item.cur = true;
                     } else {
-                        arr[i].cur = false;
+                        item.cur = false;
                     }
+                }
+                if (index >= dist_num) {
+                    arr[dist_index].get = true;
+                    arr[dist_index].cur = true;
+                    this.completeLottery();
+                    lottery_list.refresh();
+                    resolve();
+                    return;
                 }
                 lottery_list.refresh();
                 index++;
-                if (index >= dist_num) {
-                    this.completeLottery();
-                    resolve();
-                }
-            }, 300) as any;
+            }, 250) as any;
         });
     }
     private completeLottery() {
         const { btn_lottery } = this;
         btn_lottery.disabled = false;
         clearInterval(this.lottery_interval);
+    }
+    private showLotteryAward() {
+        AlertPop.alert('恭喜你获得...');
     }
     private renderExchange = (box: ExchangeItemUI, index: number) => {
         const {

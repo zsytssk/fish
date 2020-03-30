@@ -28,6 +28,7 @@ import { Laya } from 'Laya';
 import { Sprite } from 'laya/display/Sprite';
 import { log } from 'utils/log';
 import { GameCtrl } from './gameCtrl';
+import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 
 /** 玩家的控制器 */
 export class PlayerCtrl {
@@ -74,7 +75,7 @@ export class PlayerCtrl {
             },
         } = this;
         const { event: gun_event, direction, pos: gun_pos } = gun;
-        const { ctrl_box, btn_minus, btn_add } = view;
+        const { btn_minus, btn_add } = view;
 
         player_event.on(
             PlayerEvent.CaptureFish,
@@ -93,10 +94,18 @@ export class PlayerCtrl {
                     if (drop) {
                         awardSkill(pos, end_pos, drop);
                     }
-                    AudioCtrl.play(AudioRes.CoinFew);
+                    AudioCtrl.play(AudioRes.FlySkill);
                 }
-                /** 奖励金币动画 */
-                showAwardCoin(pos, end_pos, win, is_cur_player).then(resolve);
+
+                if (is_cur_player && win > 1000) {
+                    /** 奖励圆环 */
+                    showAwardCircle(pos, win, is_cur_player);
+                } else {
+                    /** 奖励金币动画 */
+                    showAwardCoin(pos, end_pos, win, is_cur_player).then(
+                        resolve,
+                    );
+                }
             },
         );
         player_event.on(PlayerEvent.Destroy, () => {

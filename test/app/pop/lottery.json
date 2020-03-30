@@ -1,55 +1,62 @@
 {
     "lottery": [
         {
-            "id": "1",
-            "type": "bullet",
-            "num": 10
+            "lottery_id": "1",
+            "lottery_type": "bullet",
+            "lottery_num": 10,
+            "lottery_cost": 10
         },
         {
-            "id": "2",
-            "type": "ETC",
-            "num": 10
+            "lottery_id": "2",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
         },
         {
-            "id": "3",
-            "type": "ETC",
-            "num": 10
+            "lottery_id": "3",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
         },
         {
-            "id": "4",
-            "type": "ETC",
-            "num": 10
+            "lottery_id": "4",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
         },
         {
-            "id": "5",
-            "type": "ETC",
-            "num": 10
+            "lottery_id": "5",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
         }
     ],
     "exchange": [
         {
-            "id": "1",
-            "price_num": 1,
+            "exchange_id": "1",
+            "cost_num": 1,
             "price_type": "btc",
-            "type": "btc",
-            "remain": 100,
-            "num": 123
+            "exchange_type": "btc",
+            "cur_num": 100,
+            "exchange_num": 123
         },
         {
-            "id": "2",
-            "price_num": 1100,
+            "exchange_id": "2",
+            "cost_num": 1100,
             "price_type": "eth",
-            "type": "btc",
-            "remain": 100,
-            "num": 123
+            "exchange_type": "btc",
+            "cur_num": 100,
+            "exchange_num": 123
         },
         {
-            "id": "3",
-            "price_num": 21,
+            "exchange_id": "3",
+            "cost_num": 21,
             "price_type": "xrp",
-            "type": "btc",
-            "remain": 100,
-            "num": 123
+            "exchange_type": "btc",
+            "cur_num": 100,
+            "exchange_num": 123
         }
-    ]
+    ],
+    "lottery_num": 10,
+    "lottery_cost": 10
 }

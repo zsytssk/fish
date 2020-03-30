@@ -8,18 +8,20 @@ import { Event } from 'laya/events/Event';
 let shoal_wave_ani: Skeleton;
 
 /** 激活鱼群动画 */
-export function activeShoalWave(reverse: boolean) {
-    createShoalWaveAni();
-
-    shoal_wave_ani.once(Event.STOPPED, shoal_wave_ani, () => {
-        stopShoalWave();
+export function activeShoalWave(reverse?: boolean) {
+    return new Promise((resolve, reject) => {
+        createShoalWaveAni();
+        shoal_wave_ani.once(Event.STOPPED, shoal_wave_ani, () => {
+            stopShoalWave();
+            resolve();
+        });
+        if (!reverse) {
+            shoal_wave_ani.scaleX = -2;
+        } else {
+            shoal_wave_ani.scaleX = 2;
+        }
+        playSkeleton(shoal_wave_ani, 0, false);
     });
-    if (!reverse) {
-        shoal_wave_ani.scaleX = -2;
-    } else {
-        shoal_wave_ani.scaleX = 2;
-    }
-    playSkeleton(shoal_wave_ani, 0, false);
 }
 
 /** 停止鱼群动画 */

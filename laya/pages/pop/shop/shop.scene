@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":28,
-    "selecteID":40,
+    "selectedBox":13,
+    "selecteID":44,
     "searchKey":"Dialog",
     "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
     "nodeParent":-1,
-    "maxID":41,
+    "maxID":45,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -45,7 +45,7 @@
                     "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
-                    "props":{"y":12,"texture":"image/pop/shop/top_bg.png"},
+                    "props":{"y":20,"x":0,"texture":"image/pop/shop/top_bg.png"},
                     "nodeParent":13,
                     "label":"Sprite",
                     "isDirectory":false,
@@ -96,6 +96,21 @@
                     "compId":37,
                     "child":[
                         ]
+                },
+                {
+                    "x":30,
+                    "type":"SkeletonPlayer",
+                    "searchKey":"SkeletonPlayer",
+                    "props":{"y":358,"x":518.5,"url":"image/pop/shop/shop_bulb.sk"},
+                    "nodeParent":13,
+                    "label":"SkeletonPlayer",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":44,
+                    "child":[
+                        ],
+                    "$HIDDEN":false
                 }],
             "$HIDDEN":false
         },

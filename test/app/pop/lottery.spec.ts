@@ -2,6 +2,9 @@ import { Test } from 'testBuilder';
 import honor from 'honor';
 import Data from './lottery.json';
 import LotteryPop from 'view/pop/lottery';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { ServerEvent } from 'data/serverEvent';
+import { sleep } from 'utils/animate';
 
 export const lottery_test = new Test('lottery', runner => {
     runner.describe('open', () => {
@@ -19,7 +22,7 @@ export const lottery_test = new Test('lottery', runner => {
             }, 1000);
 
             setTimeout(() => {
-                pop.runLotteryAni(Data.lottery[2].id);
+                pop.runLotteryAni(Data.lottery[2].lottery_id);
             }, 3000);
         }) as Promise<void>;
     });

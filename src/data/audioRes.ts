@@ -12,4 +12,6 @@ export const AudioRes = {
     CoinLot: 'sound/coin_lot.mp3',
     LeaveGame: 'sound/leave_game.mp3',
     PopShow: 'sound/pop_show.mp3',
+    FlySkill: 'sound/pop_show.mp3',
+    CoinCircle: 'sound/pop_show.mp3',
 };
