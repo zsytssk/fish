@@ -35,10 +35,8 @@ export default class GameView extends ui.scenes.game.gameUI
         return game;
     }
     public onMounted() {
-        const { bubble_wall } = this;
         const bg_num = random(1, 4);
 
-        console.log(`test:>111`, bubble_wall);
         this.showBubbleRefresh(bg_num);
     }
     public showBubbleRefresh(bg_num?: number) {
@@ -234,10 +232,10 @@ export default class GameView extends ui.scenes.game.gameUI
         const { bullet_box, bullet_box_bg } = this;
         if (pos === 'left') {
             bullet_box.right = undefined;
-            bullet_box.left = -30;
+            bullet_box.left = 15;
             bullet_box_bg.scaleX = 1;
         } else if (pos === 'right') {
-            bullet_box.right = -30;
+            bullet_box.right = 15;
             bullet_box.left = undefined;
             bullet_box_bg.scaleX = -1;
         }

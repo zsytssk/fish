@@ -10,6 +10,7 @@ export async function localTest() {
     mock_web_socket_test.runTest(ServerEvent.Shoot);
     mock_web_socket_test.runTest(ServerEvent.Hit);
     mock_web_socket_test.runTest(ServerEvent.FishBomb);
+    mock_web_socket_test.runTest(ServerEvent.UseBomb);
     game_test.runTest('enter_game', [true]).then(() => {
         fish_test.runTest('get_click_fish');
         player_test.runTest('add_cur_player');

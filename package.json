@@ -10,7 +10,7 @@
         "doc": "doc"
     },
     "scripts": {
-        "webpack-dev-server": "webpack-dev-server --ENV=DEV --mode development",
+        "start": "webpack-dev-server --ENV=DEV --mode development",
         "webpack-dev": "webpack --ENV=DEV --mode development",
         "webpack-test": "webpack --ENV=TEST --mode development",
         "webpack-test-server": "webpack-dev-server --ENV=TEST --mode development",

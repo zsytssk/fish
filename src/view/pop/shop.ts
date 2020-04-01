@@ -1,14 +1,14 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { getShopInfo, useGunSkin, buyItem } from './popSocket';
-import TopTipPop from './topTip';
-import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from 'data/audioRes';
+import honor, { HonorDialog } from 'honor';
+import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
-import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
+import { ui } from 'ui/layaMaxUI';
 import { log } from 'utils/log';
+import { buyItem, getShopInfo, useGunSkin } from './popSocket';
+import TipPop from './tip';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -198,7 +198,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         btn_buy.offAll();
         btn_buy.on(Event.CLICK, btn_buy, () => {
             buyItem(item_id, item_num).then(() => {
-                TopTipPop.tip('购买成功');
+                TipPop.tip('购买成功');
             });
         });
     }; // tslint:disable-line

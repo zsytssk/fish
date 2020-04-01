@@ -30,6 +30,9 @@ import { log } from 'utils/log';
 import { GameCtrl } from './gameCtrl';
 import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 
+// prettier-ignore
+const bullet_cost_arr  =
+         [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100, 200, 300, 500, 800, 1000];
 /** 玩家的控制器 */
 export class PlayerCtrl {
     /**
@@ -133,6 +136,9 @@ export class PlayerCtrl {
             if (is_cur_player) {
                 AudioCtrl.play(AudioRes.ChangeSkin);
             }
+            if (is_cur_player) {
+                this.detectDisableChangeBulletCost(level_info.bullet_cost);
+            }
             view.setBulletCost(level_info);
         });
         view.on(Event.CLICK, view, (e: Event) => {
@@ -221,30 +227,31 @@ export class PlayerCtrl {
             model.toggle();
         });
     }
-    private sendChangeBulletCost(type: 'add' | 'minus') {
-        const { bullet_cost } = this.model;
+    private detectDisableChangeBulletCost(cost: number) {
         const { btn_minus, btn_add } = this.view;
-
-        // prettier-ignore
-        const arr =
-         [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100, 200, 300, 500, 800, 1000];
-        const index = arr.indexOf(bullet_cost);
-        const next_index = type === 'add' ? index + 1 : index - 1;
+        const index = bullet_cost_arr.indexOf(cost);
 
         unDarkNode(btn_minus);
         unDarkNode(btn_add);
-        if (next_index <= 0) {
+        if (index <= 0) {
             darkNode(btn_minus);
-        } else if (next_index >= arr.length - 1) {
+        } else if (index >= bullet_cost_arr.length - 1) {
             darkNode(btn_add);
         }
+    }
+    private sendChangeBulletCost(type: 'add' | 'minus') {
+        const { bullet_cost } = this.model;
 
-        if (next_index < 0 || next_index > arr.length - 1) {
+        const index = bullet_cost_arr.indexOf(bullet_cost);
+        const next_index = type === 'add' ? index + 1 : index - 1;
+
+        if (next_index < 0 || next_index > bullet_cost_arr.length - 1) {
             return;
         }
 
         AudioCtrl.play(AudioRes.Fire);
-        const next = arr[next_index];
+        const next = bullet_cost_arr[next_index];
+        this.detectDisableChangeBulletCost(next);
         const _socket = getSocket(ServerName.Game);
         _socket.send(ServerEvent.ChangeTurret, {
             multiple: next,

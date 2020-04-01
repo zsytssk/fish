@@ -21,7 +21,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                 return resolve();
             }
 
-            startCount(3, 1, (radio: number) => {
+            startCount(2, 1, (radio: number) => {
                 if (radio === 0) {
                     this.close();
                     resolve();

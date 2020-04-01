@@ -92,15 +92,19 @@ export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
 /** 计算金币的边界... */
 function calcCoinRange(pos: Point, coins_width: number, coins_height: number) {
     let { x, y } = pos;
+    const { ani_wrap } = viewState;
     const stage_width = Laya.stage.width;
     const stage_height = Laya.stage.height;
 
-    if (x - coins_width / 2 < 0) {
+    const start = (ani_wrap.width - stage_width) / 2;
+    const end_pos = stage_width + (ani_wrap.width - stage_width) / 2;
+
+    if (x - coins_width / 2 < start) {
         /* 左边界 */
-        x = coins_width / 2;
-    } else if (x - coins_width / 2 > stage_width) {
+        x = start + coins_width / 2;
+    } else if (x - coins_width / 2 > end_pos) {
         /* 右边界 */
-        x = stage_width - coins_width / 2;
+        x = end_pos - coins_width / 2;
     }
 
     if (y - coins_height / 2 < 0) {

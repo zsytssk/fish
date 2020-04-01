@@ -24,7 +24,7 @@ export async function main() {
     await genVersion();
     await copyBinToDist();
     await cleanDist();
-    await compress(dist_bin);
+    // await compress(dist_bin);
     console.timeEnd('publish');
 }
 

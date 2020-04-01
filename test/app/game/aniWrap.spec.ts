@@ -35,7 +35,7 @@ export const ani_wrap = new Test('ani_wrap', runner => {
         stopShoalWave();
     });
     runner.describe('show_award_coin', () => {
-        const pos = { x: 100, y: 100 };
+        const pos = { x: 0, y: -100 };
         const end_pos = { x: 600, y: 600 };
         const num = 100000;
         showAwardCoin(pos, end_pos, num, true);

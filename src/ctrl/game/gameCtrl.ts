@@ -203,7 +203,9 @@ export class GameCtrl {
         const { model } = this;
         const { userId } = data;
         if (isCurUser(userId)) {
-            AlertPop.alert('你被踢出房间, 刷新重新进入').then(() => {
+            AlertPop.alert('你被踢出房间, 刷新重新进入', {
+                hide_cancel: true,
+            }).then(() => {
                 location.reload();
             });
         } else {

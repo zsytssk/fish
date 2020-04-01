@@ -37,6 +37,7 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     public setMySelfStyle() {
         const { ctrl_box } = this;
         ctrl_box.visible = true;
+        this.activePosTip();
     }
 
     /** 设置动画 */
@@ -121,6 +122,7 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     public addBullet(skin: string, rage: boolean) {
         return addBullet(skin, rage);
     }
+    public detectDisableChangeBulletCost() {}
     /** 当前玩家的位置展示 */
     public activePosTip() {
         const { upside_down } = viewState.game;

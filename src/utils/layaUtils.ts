@@ -93,3 +93,33 @@ export function onNode(
         callback(_event);
     });
 }
+
+const bind_arr = [] as Array<{
+    item: Sprite;
+    off: () => void;
+}>;
+export function onMouseMove(view: Sprite, callback: (pos: Point) => void) {
+    const { MOUSE_MOVE } = Event;
+    const fn = e => {
+        console.log(e);
+        const { x, y } = view.getMousePoint();
+        callback({ x, y });
+    };
+    view.on(MOUSE_MOVE, view, fn);
+    bind_arr.push({
+        item: view,
+        off: () => {
+            view.off(MOUSE_MOVE, view, fn);
+        },
+    });
+}
+
+export function offMouseMove(node: Sprite) {
+    for (let len = bind_arr.length, i = len - 1; i >= 0; i--) {
+        const { item, off } = bind_arr[i];
+        if (item === node) {
+            off();
+            bind_arr.splice(i, 1);
+        }
+    }
+}

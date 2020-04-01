@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":44,
+    "selecteID":36,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -112,7 +112,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,pool",
-            "props":{"y":0,"x":0,"width":1334,"var":"pool","mouseThrough":false,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1920,"var":"pool","mouseThrough":false,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"pool",
             "isOpen":true,
@@ -141,7 +141,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,ani_wrap",
-            "props":{"y":0,"x":0,"width":1334,"var":"ani_wrap","height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1920,"var":"ani_wrap","height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"ani_wrap",
             "isOpen":true,
@@ -174,13 +174,14 @@
             "props":{"y":0,"width":1334,"var":"ctrl_box","mouseThrough":true,"mouseEnabled":true,"height":750,"centerX":0},
             "nodeParent":2,
             "label":"ctrl_box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":11,
             "child":[
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_leave",
                     "props":{"y":10,"x":20,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png"},
@@ -194,6 +195,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_gift",
                     "props":{"y":10,"x":120,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png"},
@@ -207,6 +209,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_voice",
                     "props":{"y":10,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":120},
@@ -220,6 +223,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_help",
                     "props":{"y":10,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":20},
@@ -233,6 +237,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_shop",
                     "props":{"y":10,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png","centerX":0},
@@ -246,9 +251,10 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,bullet_box",
-                    "props":{"x":-44,"width":287,"var":"bullet_box","pivotY":92,"height":92,"bottom":0},
+                    "props":{"x":18,"width":268,"var":"bullet_box","pivotY":92,"height":92,"bottom":0},
                     "nodeParent":11,
                     "label":"bullet_box",
                     "isOpen":false,
@@ -260,7 +266,7 @@
                         {
                             "type":"Image",
                             "searchKey":"Image,bullet_box_bg",
-                            "props":{"x":142,"width":286,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92,"anchorX":0.5},
+                            "props":{"y":0,"x":137,"width":275,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92,"anchorX":0.5},
                             "nodeParent":41,
                             "label":"bullet_box_bg",
                             "isOpen":true,
@@ -274,7 +280,7 @@
                         {
                             "type":"Image",
                             "searchKey":"Image",
-                            "props":{"y":45,"x":12,"width":251,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
+                            "props":{"y":45,"x":16,"width":235,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
                             "nodeParent":41,
                             "label":"Image",
                             "isOpen":true,
@@ -300,7 +306,7 @@
                         {
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement,exchange_rate",
-                            "props":{"y":13,"x":44,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">xxx</span> <span></span> </div>","height":29},
+                            "props":{"y":13,"x":38,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">xxx</span> <span></span> </div>","height":29},
                             "nodeParent":41,
                             "label":"exchange_rate",
                             "isDirectory":false,
@@ -318,7 +324,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,gun_wrap",
-            "props":{"y":0,"x":0,"width":1334,"var":"gun_wrap","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
+            "props":{"y":0,"x":0,"width":1920,"var":"gun_wrap","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"gun_wrap",
             "isOpen":false,

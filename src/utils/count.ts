@@ -44,33 +44,3 @@ export function clearCount(index: number) {
         count_index = 0;
     }
 }
-
-// type CountFn = (rate: number) => void;
-// /**
-//  * 倒计时
-//  * @param time 总时间
-//  * @param delta tick 时间
-//  * @param fn 每次调用时间
-//  */
-// export function startCount(time: number, delta: number, fn: CountFn) {
-//     const count = time / delta;
-//     let i = 0;
-//     const count_fn = () => {
-//         i++;
-//         if (i >= count) {
-//             fn(0);
-//             return clearInterval(interval);
-//         }
-//         fn((count - i) / count);
-//     };
-
-//     const interval = setInterval(count_fn, delta);
-//     fn(1);
-
-//     return interval;
-// }
-
-// /** 清理倒计时 */
-// export function clearCount(index: number) {
-//     clearInterval(index);
-// }

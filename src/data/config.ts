@@ -16,11 +16,13 @@ export const Config = {
     /** 子弹速度 */
     BulletSpeed: 25,
     /** 水池的宽度 */
-    PoolWidth: 1334,
+    PoolWidth: 1920,
     /** 水池的高度 */
     PoolHeight: 750,
+    /** 子弹运行的宽度 */
+    BulletZoneWidth: 1334,
     /** 自动攻击的间隔 ms */
-    LaunchSpace: 100,
+    LaunchSpace: 300,
     /** 炸弹的区域 */
     BombRadius: 300,
     /** 鱼潮 清理鱼的时间 */

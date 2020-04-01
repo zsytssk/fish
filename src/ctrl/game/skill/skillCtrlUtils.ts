@@ -1,5 +1,10 @@
 import { SkillModel } from 'model/game/skill/skillModel';
-import { onPoolClick, onFishClick, offFishClick } from 'view/viewState';
+import {
+    onPoolClick,
+    onFishClick,
+    offFishClick,
+    viewState,
+} from 'view/viewState';
 import { FreezeModel } from 'model/game/skill/freezeModel';
 import { BombModel } from 'model/game/skill/bombModel';
 import {
@@ -22,6 +27,9 @@ import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
+import { Laya } from 'Laya';
+import { Event } from 'laya/events/Event';
+import { onMouseMove, offMouseMove } from 'utils/layaUtils';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
@@ -44,8 +52,11 @@ export function skillPreActiveHandler(model: SkillModel) {
         socket.send(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
         TopTipPop.tip('请选择屏幕中的位置放置炸弹', 2);
+        const { pool } = viewState.game;
         const { PoolWidth, PoolHeight } = Config;
         activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
+        onMouseMove(pool, pos => activeAim(pos));
+
         // 炸弹
         onPoolClick().then((pos: Point) => {
             stopAim('aim_big');
@@ -91,7 +102,9 @@ export function skillActiveHandler(
             });
             // ...
         } else if (model instanceof BombModel) {
+            const { pool } = viewState.game;
             activeExploding(info as Point);
+            offMouseMove(pool);
             AudioCtrl.play(AudioRes.Bomb);
             resolve();
         }

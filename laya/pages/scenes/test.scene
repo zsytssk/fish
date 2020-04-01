@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":22,
+    "selecteID":23,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -17,7 +17,7 @@
         }],
     "props":{"width":1334,"sceneColor":"#000000","height":750},
     "nodeParent":-1,
-    "maxID":23,
+    "maxID":24,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -64,6 +64,20 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":22,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"SkeletonPlayer",
+            "searchKey":"SkeletonPlayer",
+            "props":{"y":438,"x":908,"url":"ani/other/award_circle.sk"},
+            "nodeParent":2,
+            "label":"SkeletonPlayer",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":23,
             "child":[
                 ]
         }],

@@ -1,14 +1,14 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
-import { createDarkFilter, playSkeleton, playSkeletonOnce } from 'utils/utils';
-import TopTipPop from './topTip';
-import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { Handler } from 'laya/utils/Handler';
+import { AudioRes } from 'data/audioRes';
+import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
-import AlertPop from './alert';
+import { Handler } from 'laya/utils/Handler';
+import { ui } from 'ui/layaMaxUI';
 import { onNode } from 'utils/layaUtils';
+import { createDarkFilter, playSkeletonOnce } from 'utils/utils';
+import AlertPop from './alert';
+import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
+import TipPop from './tip';
 
 type LotteryData = {
     lottery_id: string;
@@ -232,12 +232,12 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
                 this.runTicketExchange(index);
             });
         }
-    };
+    }; // tslint:disable-line
     private async runTicketExchange(index: number) {
         const data = this.exchange_list.array[index] as ExchangeRenderData;
         const { exchange_id, cost_num, cur_num } = data as ExchangeRenderData;
         await runTicketExchange(exchange_id);
-        TopTipPop.tip('购买成功..');
+        TipPop.tip('购买成功..');
         this.exchange_list.array[index] = {
             ...data,
             cur_num: cur_num - cost_num,
