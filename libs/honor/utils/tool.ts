@@ -1,5 +1,6 @@
 import { Scene } from 'laya/display/Scene';
 import { Node } from 'laya/display/Node';
+import { Sprite } from 'laya/display/Sprite';
 
 /** 在class的fun执行之后执行fun */
 export function injectAfter<T extends {}, K extends ObjFilterKeys<T, Function>>(
@@ -19,6 +20,10 @@ export function injectAfter<T extends {}, K extends ObjFilterKeys<T, Function>>(
         }
         return result;
     } as any;
+
+    return () => {
+        instance[fun_name] = ori_fun as any;
+    };
 }
 
 export function injectProto<T extends {}, K extends ObjFilterKeys<T, Function>>(
@@ -42,6 +47,10 @@ export function injectProto<T extends {}, K extends ObjFilterKeys<T, Function>>(
         }
         return result;
     };
+
+    return () => {
+        ctor.prototype[fun_name] = ori_fun as any;
+    };
 }
 
 /** 之所以要这个处理, 为了解决外嵌模式需要loadScene本身的资源, 干净的类 class不需要
@@ -50,27 +59,28 @@ export function injectProto<T extends {}, K extends ObjFilterKeys<T, Function>>(
  */
 export function createScene(ctor: Ctor<Scene>): Promise<Scene> {
     return new Promise((resolve, reject) => {
-        let is_load = false;
-        /** 监听 */
-        injectProto(
-            ctor,
-            'loadScene',
-            () => {
-                is_load = true;
-            },
-            true,
-        );
-
         const instance = new ctor();
-        if (!(is_load && nodeIsReady(instance))) {
-            return resolve(instance);
-        }
-        instance.once('onViewCreated', this, () => {
-            return resolve(instance);
-        });
+        return resolve(instance);
     }) as Promise<Scene>;
 }
 
-export function nodeIsReady(node: Node) {
-    return (node as any)._getBit(/*laya.Const.NOT_READY*/ 0x08);
+export function afterActive(node: Sprite) {
+    return new Promise((resolve, reject) => {
+        if (node.active) {
+            return resolve();
+        }
+        node.once('onViewCreated', this, () => {
+            return resolve();
+        });
+    });
+}
+export function afterEnable(node: Node) {
+    return new Promise((resolve, reject) => {
+        injectAfter(node, 'onEnable', () => {
+            resolve();
+        });
+        injectAfter(node, 'onDestroy', () => {
+            reject();
+        });
+    });
 }

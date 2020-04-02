@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":3,
+    "selectedBox":37,
+    "selecteID":37,
     "searchKey":"Dialog",
     "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/buyBullet.png","height":427},
     "nodeParent":-1,
-    "maxID":41,
+    "maxID":45,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -21,13 +21,14 @@
             "props":{"y":0,"x":0,"width":658,"height":427},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":3,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":0,"x":0,"texture":"image/pop/alert/alert_bg_01.png"},
@@ -41,6 +42,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":58,"x":0,"width":658,"skin":"image/pop/alert/alert_bg_02.png","sizeGrid":"0,38,0,40","height":369},
@@ -54,15 +56,16 @@
                         ]
                 },
                 {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":10,"x":272,"texture":"image/international/txt_buy_bullet_zh.png"},
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label",
+                    "props":{"y":11,"x":266,"text":"购买子弹","strokeColor":"#024b7d","stroke":3,"fontSize":30,"color":"#ffffff"},
                     "nodeParent":3,
-                    "label":"Sprite",
+                    "label":"Label",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":36,
+                    "compId":41,
                     "child":[
                         ]
                 }],
@@ -214,22 +217,23 @@
             "props":{"y":322,"x":246,"var":"btn_buy","stateNum":"1","skin":"image/pop/alert/btn_confirm.png"},
             "nodeParent":2,
             "label":"btn_buy",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":34,
             "child":[
                 {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":13,"x":50,"texture":"image/international/txt_buy_zh.png"},
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label",
+                    "props":{"y":14,"x":54,"width":58,"text":"购买","height":28,"fontSize":28,"color":"#983c00"},
                     "nodeParent":34,
-                    "label":"Sprite",
+                    "label":"Label",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":35,
+                    "compId":42,
                     "child":[
                         ]
                 }]

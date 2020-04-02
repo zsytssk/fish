@@ -1,5 +1,5 @@
 import { loaderManager } from 'honor/state';
-import { createScene } from '../utils/tool';
+import { createScene, afterEnable } from '../utils/tool';
 import { HonorScene } from './view';
 import { Scene } from 'laya/display/Scene';
 import { Laya } from 'Laya';
@@ -43,9 +43,6 @@ export class SceneManagerCtor {
         const prev = old_scene ? old_scene.url : undefined;
 
         this.cur_scene = scene;
-        if (scene.onMounted) {
-            scene.onMounted.apply(scene, params);
-        }
         scene.open(true);
         this.onResize(width, height);
 
@@ -111,9 +108,11 @@ export class SceneManagerCtor {
                 }
             }
 
+            afterEnable(scene).then(() => {
+                resolve(scene);
+            });
             const change_data = this.switchScene(params, scene as HonorScene);
             this.callChangeListener('after', change_data.cur, change_data.prev);
-            return resolve(scene);
         });
     }
 }

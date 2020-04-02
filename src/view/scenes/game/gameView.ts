@@ -27,16 +27,13 @@ export default class GameView extends ui.scenes.game.gameUI
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
-            '参数1',
-            '参数2',
         )) as GameView;
         viewState.game = game;
         viewState.ani_wrap = game.ani_wrap;
         return game;
     }
-    public onMounted() {
-        const bg_num = random(1, 4);
-
+    public onEnable() {
+        const bg_num = random(1, 3);
         this.showBubbleRefresh(bg_num);
     }
     public showBubbleRefresh(bg_num?: number) {

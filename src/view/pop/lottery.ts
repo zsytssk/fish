@@ -58,7 +58,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             dialog.initData(data);
         });
     }
-    public onMounted() {
+    public onEnable() {
         if (!this.is_init) {
             this.init();
         }

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":47,
-    "selecteID":22,
+    "selectedBox":9,
+    "selecteID":49,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":48,
+    "maxID":54,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -225,13 +225,14 @@
                     "props":{"y":0,"x":532,"width":190,"height":71},
                     "nodeParent":47,
                     "label":"Box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":20,
                     "child":[
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_charge",
                             "props":{"y":0,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png"},
@@ -244,20 +245,37 @@
                             "compId":10,
                             "child":[
                                 {
-                                    "type":"Image",
-                                    "searchKey":"Image",
-                                    "props":{"y":19,"x":20,"skin":"image/international/txt_hall_charge_zh.png"},
+                                    "x":60,
+                                    "type":"Label",
+                                    "searchKey":"Label",
+                                    "props":{"y":21,"x":22,"text":"充值","fontSize":21,"color":"#3764b2","bold":true},
                                     "nodeParent":10,
-                                    "label":"Image",
-                                    "isDirectory":false,
+                                    "label":"Label",
+                                    "isOpen":null,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":40,
+                                    "hasChild":true,
+                                    "compId":48,
                                     "child":[
-                                        ]
+                                        {
+                                            "type":"GlowFilterSetter",
+                                            "switchAble":true,
+                                            "searchKey":"GlowFilterSetter",
+                                            "removeAble":true,
+                                            "props":{"offY":0,"offX":0,"color":"#fff","blur":2},
+                                            "nodeParent":48,
+                                            "label":"GlowFilterSetter",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":51,
+                                            "child":[
+                                                ]
+                                        }]
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_get",
                             "props":{"y":0,"x":106,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
@@ -270,17 +288,33 @@
                             "compId":9,
                             "child":[
                                 {
-                                    "type":"Image",
-                                    "searchKey":"Image",
-                                    "props":{"y":19,"x":20,"skin":"image/international/txt_hall_excharge_zh.png"},
+                                    "x":60,
+                                    "type":"Label",
+                                    "searchKey":"Label",
+                                    "props":{"y":21,"x":22,"text":"提币","fontSize":21,"color":"#3764b2","bold":true},
                                     "nodeParent":9,
-                                    "label":"Image",
-                                    "isDirectory":false,
+                                    "label":"Label",
+                                    "isOpen":null,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":41,
+                                    "hasChild":true,
+                                    "compId":52,
                                     "child":[
-                                        ]
+                                        {
+                                            "type":"GlowFilterSetter",
+                                            "switchAble":true,
+                                            "searchKey":"GlowFilterSetter",
+                                            "removeAble":true,
+                                            "props":{"offY":0,"offX":0,"color":"#fff","blur":2},
+                                            "nodeParent":52,
+                                            "label":"GlowFilterSetter",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":53,
+                                            "child":[
+                                                ]
+                                        }]
                                 }]
                         }]
                 },

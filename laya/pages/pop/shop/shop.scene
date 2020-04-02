@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":13,
-    "selecteID":44,
+    "selectedBox":14,
+    "selecteID":47,
     "searchKey":"Dialog",
     "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
     "nodeParent":-1,
-    "maxID":45,
+    "maxID":48,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -200,15 +200,15 @@
                     "child":[
                         {
                             "x":45,
-                            "type":"Sprite",
-                            "searchKey":"Sprite",
-                            "props":{"y":6,"x":8,"texture":"image/international/txt_tag_skin_zh.png"},
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":28,"x":12,"width":24,"text":"皮肤","rotation":-48,"height":12,"fontSize":12,"color":"#fffeaa","bold":true},
                             "nodeParent":14,
-                            "label":"Sprite",
+                            "label":"Label",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":38,
+                            "compId":47,
                             "child":[
                                 ]
                         }]
@@ -285,15 +285,15 @@
                     "child":[
                         {
                             "x":45,
-                            "type":"Sprite",
-                            "searchKey":"Sprite",
-                            "props":{"y":7,"x":6,"texture":"image/international/txt_tag_item_zh.png"},
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":28,"x":12.5,"width":24,"text":"道具","rotation":-48,"height":12,"fontSize":12,"color":"#fffeaa","bold":true},
                             "nodeParent":18,
-                            "label":"Sprite",
+                            "label":"Label",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":39,
+                            "compId":45,
                             "child":[
                                 ]
                         }]

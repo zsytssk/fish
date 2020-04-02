@@ -41,7 +41,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                 event.emit(ServerEvent.Hit, {
                     userId: test_data.userId,
                     eid: data.eid,
-                    win: 10,
+                    win: 0,
                     drop: [
                         { itemId: SkillMap.Bomb, itemNum: 10 },
                         { itemId: SkillMap.TrackFish, itemNum: 10 },

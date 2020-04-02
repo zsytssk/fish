@@ -26,10 +26,9 @@ export class DirectorCtor {
     /**
      * 运行场景
      * @param url 场景的url
-     * @param params 场景 onMounted 接收的参数
      */
-    public runScene(url: SceneRefUrl, ...params: any[]): Promise<Scene | void> {
-        return sceneManager.runScene(url, ...params).catch(err => {
+    public runScene(url: SceneRefUrl): Promise<Scene | void> {
+        return sceneManager.runScene(url).catch(err => {
             if (honor.DEBUG_MODE) {
                 console.error(err);
             }
@@ -38,8 +37,6 @@ export class DirectorCtor {
     /**
      * 获取当前正在运行场景
      * @param url 场景的url
-     * .3.3..
-     * @param params 场景 onMounted 接收的参数
      */
     get runningScene(): HonorScene {
         return sceneManager.getCurScene();
@@ -47,25 +44,17 @@ export class DirectorCtor {
     /**
      * 打开弹出层
      * @param url 弹出层
-     * @param params 场景 onMounted 接收的参数
      * @param config 弹出层的配置
      * @param use_exist 使用打开弹出层弹出层
      * @param show_effect 是否使用打开动画
      */
     public openDialog(
         url: DialogRefUrl,
-        params: any[] = [],
         config: HonorDialogConfig = {},
         use_exist = false,
         show_effect = true,
     ) {
-        return dialogManager.openDialog(
-            url,
-            params,
-            config,
-            use_exist,
-            show_effect,
-        );
+        return dialogManager.openDialog(url, config, use_exist, show_effect);
     }
     public load(res: ResItem[] | string[], type?: ViewType) {
         return loaderManager.load(res, type);

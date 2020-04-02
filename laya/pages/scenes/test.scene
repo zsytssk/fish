@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":23,
+    "selecteID":18,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -17,70 +17,15 @@
         }],
     "props":{"width":1334,"sceneColor":"#000000","height":750},
     "nodeParent":-1,
-    "maxID":24,
+    "maxID":27,
     "label":"Scene",
     "isOpen":true,
-    "isDirectory":true,
+    "isDirectory":false,
     "isAniNode":true,
-    "hasChild":true,
+    "hasChild":false,
     "compId":2,
     "child":[
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer",
-            "props":{"y":375,"x":605,"url":"ani/other/award_big.sk"},
-            "nodeParent":2,
-            "label":"SkeletonPlayer",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":18,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"Box",
-            "searchKey":"Box",
-            "props":{"y":243,"x":475,"width":267,"height":265},
-            "nodeParent":2,
-            "label":"Box",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":19,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer",
-            "props":{"y":375.5,"x":608.5,"url":"ani/other/pos_tip.sk"},
-            "nodeParent":2,
-            "label":"SkeletonPlayer",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":22,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer",
-            "props":{"y":438,"x":908,"url":"ani/other/award_circle.sk"},
-            "nodeParent":2,
-            "label":"SkeletonPlayer",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":23,
-            "child":[
-                ]
-        }],
+        ],
     "animations":[
         {
             "nodes":[

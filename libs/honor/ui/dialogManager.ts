@@ -1,5 +1,10 @@
 import { HonorDialog, HonorDialogConfig, DEFAULT_CONFIG } from './view';
-import { injectAfter, createScene } from 'honor/utils/tool';
+import {
+    injectAfter,
+    createScene,
+    afterEnable,
+    afterActive,
+} from 'honor/utils/tool';
 import { loaderManager } from 'honor/state';
 import { Tween } from 'laya/utils/Tween';
 import { Ease } from 'laya/utils/Ease';
@@ -119,7 +124,6 @@ export class DialogManagerCtor {
     /** @todo 逻辑需要整理下 getViewByPool 不再使用... */
     public async openDialog(
         url: DialogRefUrl,
-        params?: any[],
         config?: HonorDialogConfig,
         use_exist?: boolean,
         show_effect?: boolean,
@@ -163,13 +167,8 @@ export class DialogManagerCtor {
 
         /** 设置dialog的配置 */
         const dialog_config = this.setDialogConfig(url, dialog, config);
-        if (dialog.onMounted) {
-            dialog.onMounted(...params);
-        }
-
         // 异步打开弹出层, 用来在外面设置弹出层的大小使 弹出层可以居中...
-        setTimeout(() => {
-            /**  */
+        afterActive(dialog).then(() => {
             const ori_show_effect = dialog.popupEffect;
             if (show_effect !== undefined && show_effect === false) {
                 dialog.popupEffect = null;
@@ -179,12 +178,13 @@ export class DialogManagerCtor {
                 dialog.popupEffect = ori_show_effect;
             }
             this.checkMask();
-        }, 0);
+        });
 
+        await afterEnable(dialog);
         return dialog;
     }
     public toOpenDialog(url: DialogRefUrl): Promise<HonorDialog> {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             /** 使用dialog_pool_list的弹出层 */
             const { dialog_pool_list } = this;
             for (let i = 0; i < dialog_pool_list.length; i++) {
@@ -196,18 +196,21 @@ export class DialogManagerCtor {
                 }
             }
 
+            let new_dialog: HonorDialog;
             /** 创建弹出层 */
             if (typeof url === 'string') {
-                loaderManager.loadScene('Dialog', url).then(_dialog => {
-                    resolve(_dialog as HonorDialog);
-                });
+                new_dialog = (await loaderManager.loadScene(
+                    'Dialog',
+                    url,
+                )) as HonorDialog;
             } else if (typeof url === 'function') {
-                createScene(url).then(dialog => {
+                new_dialog = (await createScene(url).then(dialog => {
                     return resolve(dialog as Dialog);
-                });
+                })) as HonorDialog;
             } else if (url instanceof Dialog) {
-                return resolve(url);
+                new_dialog = url;
             }
+            resolve(new_dialog);
         });
     }
     /** 在dialog关闭之后将没有destroy的dialog放在dialog_pool_list, 下次利用 */

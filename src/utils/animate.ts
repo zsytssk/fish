@@ -397,7 +397,7 @@ export function tween(data: TweenData) {
         );
     });
 }
-export function setStyle(sprite: Props<Sprite>, props: Props<Sprite>) {
+export function setStyle<T>(obj: Partial<T>, props: Partial<T>) {
     if (!props) {
         return;
     }
@@ -405,7 +405,7 @@ export function setStyle(sprite: Props<Sprite>, props: Props<Sprite>) {
         if (!props.hasOwnProperty(key)) {
             continue;
         }
-        sprite[key] = props[key];
+        obj[key] = props[key];
     }
 }
 function jump(sprite: Sprite, props: {}, time_num: number) {

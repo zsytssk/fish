@@ -7,6 +7,8 @@ import { ctrlState } from './ctrlState';
 import { GameCtrl } from './game/gameCtrl';
 // import honor from 'honor';
 import { HallCtrl } from './hall/hallCtrl';
+import { GuideMain } from './guide/guideMain';
+import { gotoGuide } from './guide/guideConfig';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -22,6 +24,7 @@ export class AppCtrl {
 
         return this.startHonor().then(() => {
             HallCtrl.preEnter();
+            gotoGuide('1', '1');
         });
     }
     /** 初始化 honor */

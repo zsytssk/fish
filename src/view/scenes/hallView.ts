@@ -1,4 +1,4 @@
-import honor from 'honor';
+import honor, { HonorScene } from 'honor';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
 import { Label } from 'laya/ui/Label';
@@ -14,7 +14,8 @@ export type CoinData = Array<{
     type: string;
     num: number;
 }>;
-export default class HallView extends ui.scenes.hall.hallUI {
+export default class HallView extends ui.scenes.hall.hallUI
+    implements HonorScene {
     public static preEnter() {
         return honor.director.runScene('scenes/hall/hall.scene');
     }

@@ -35,7 +35,9 @@ export function createSkeleton(path: string, rate?: number, type?: number) {
     const templet = new Templet();
     templet.parseData(png, sk, rate);
 
-    return templet.buildArmature(type);
+    const ske = templet.buildArmature(type);
+
+    return ske;
 }
 
 /**

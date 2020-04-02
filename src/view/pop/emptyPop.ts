@@ -7,7 +7,7 @@ export default class EmptyPop extends Dialog implements HonorDialog {
     public static preEnter() {
         honor.director.openDialog(EmptyPop);
     }
-    public onMounted() {
+    public onEnable() {
         log('EmptyScene enable');
     }
 }

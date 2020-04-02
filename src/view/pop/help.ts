@@ -59,5 +59,5 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
         intro_label.text = intro;
         skill_icon.skin = `image/game/skill_${SkillNameMap[id]}.png`;
     }
-    public onMounted() {}
+    public onEnable() {}
 }

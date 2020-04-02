@@ -45,7 +45,6 @@ export async function showAwardCircle(
                 // ease_fn: Ease.elasticOut,
             });
         });
-        console.log(`test:>2222`, num_label, scale_in);
         circle.once(Event.STOPPED, circle, () => {
             num_label.destroy();
             circle.destroy();

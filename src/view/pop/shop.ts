@@ -85,7 +85,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         );
         log('EmptyScene enable');
     }
-    public onMounted() {
+    public onEnable() {
         if (!this.is_init) {
             this.init();
         }
@@ -135,12 +135,15 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         const { gun_name, gun_id, gun_status, gun_price } = this.gun_list.array[
             index
         ] as GunRenderData;
-        const { name_label, icon, stack_btn } = box;
+        const { name_label, icon, stack_btn, icon_check, select_bd } = box;
         name_label.text = gun_name;
         icon.skin = `image/pop/shop/icon/${gun_id}.png`;
         stack_btn.selectedIndex = gun_status;
         const cur_btn = stack_btn.getChildAt(gun_status) as Button;
         const cur_label = cur_btn.getChildByName('label') as Label;
+
+        icon_check.visible = false;
+        select_bd.visible = false;
         cur_btn.offAll();
         if (gun_status === GunSkinStatus.NoHave) {
             cur_label.text = gun_price + '';
@@ -156,11 +159,14 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 });
             });
         } else if (gun_status === GunSkinStatus.Used) {
+            // cur_btn.visible = false;
             cur_btn.on(Event.CLICK, cur_btn, () => {
-                buyItem(gun_id).then(() => {
-                    this.buyGunSkin(gun_id);
-                });
+                // buyItem(gun_id).then(() => {
+                //     this.buyGunSkin(gun_id);
+                // });
             });
+            icon_check.visible = true;
+            select_bd.visible = true;
         }
     }; // tslint:disable-line
     /** 使用皮肤 */

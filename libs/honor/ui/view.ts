@@ -34,13 +34,11 @@ export interface HonorDialog extends Dialog {
     HonorEffectTween?: Tween;
     config?: HonorDialogConfig;
     /** 弹出层打开之前调用... */
-    onMounted?(...params: any[]): void;
     onResize?(width?: number, height?: number): void;
 }
 
 export interface HonorScene extends Scene {
     onResize?(width: number, height: number): void;
-    onMounted?(...param: any[]): void;
 }
 
 export interface HonorLoadScene extends HonorScene {

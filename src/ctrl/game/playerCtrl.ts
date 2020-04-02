@@ -100,9 +100,11 @@ export class PlayerCtrl {
                     AudioCtrl.play(AudioRes.FlySkill);
                 }
 
-                if (is_cur_player && win > 1000) {
+                if (!win) {
+                    resolve();
+                } else if (is_cur_player && win > 1000) {
                     /** 奖励圆环 */
-                    showAwardCircle(pos, win, is_cur_player);
+                    showAwardCircle(pos, win, is_cur_player).then(resolve);
                 } else {
                     /** 奖励金币动画 */
                     showAwardCoin(pos, end_pos, win, is_cur_player).then(

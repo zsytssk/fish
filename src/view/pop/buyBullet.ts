@@ -8,7 +8,7 @@ export default class BulletBulletPop extends ui.pop.alert.buyBulletUI
     public static preEnter() {
         honor.director.openDialog(BulletBulletPop);
     }
-    public onMounted() {
+    public onEnable() {
         log('EmptyScene enable');
     }
 }
