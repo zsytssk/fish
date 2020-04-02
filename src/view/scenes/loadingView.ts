@@ -14,12 +14,12 @@ export default class Loading extends ui.scenes.loadingUI {
     public onShow() {
         this.open(false);
         honor.director.openDialog(this as HonorDialog);
-        log('LoadingScene onReset');
+        log('LoadingScene onShow');
     }
 
     public onHide() {
         this.close();
-        log('LoadingScene onReset');
+        log('LoadingScene onHide');
     }
 
     public onProgress(val: number) {

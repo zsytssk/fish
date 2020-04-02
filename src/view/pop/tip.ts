@@ -9,7 +9,11 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     public isModal = true;
     public static async tip(msg: string) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(TipPop)) as TipPop;
+        const tip_dialog = (await honor.director.openDialog(TipPop, {
+            beforeOpen(dialog: TipPop) {
+                dialog.analysisSize(msg);
+            },
+        })) as TipPop;
         await tip_dialog.tip(msg);
     }
     /**显示提示信息
@@ -27,7 +31,6 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                     resolve();
                 }
             });
-            this.analysisSize(msg);
             this.setTipText(msg);
         });
     }

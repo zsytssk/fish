@@ -6,7 +6,7 @@ import {
     untilInit,
 } from '../state';
 import { ResItem } from '../utils/loadRes';
-import { DialogRefUrl } from './dialogManager';
+import { DialogOpenOpt } from './dialogManager';
 import { SceneChangeListener, SceneRefUrl } from './SceneManager';
 import { HonorDialogConfig, HonorScene, ViewType } from './view';
 import { Event } from 'laya/events/Event';
@@ -48,13 +48,8 @@ export class DirectorCtor {
      * @param use_exist 使用打开弹出层弹出层
      * @param show_effect 是否使用打开动画
      */
-    public openDialog(
-        url: DialogRefUrl,
-        config: HonorDialogConfig = {},
-        use_exist = false,
-        show_effect = true,
-    ) {
-        return dialogManager.openDialog(url, config, use_exist, show_effect);
+    public openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
+        return dialogManager.openDialog(opt, config);
     }
     public load(res: ResItem[] | string[], type?: ViewType) {
         return loaderManager.load(res, type);

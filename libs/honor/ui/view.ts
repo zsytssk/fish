@@ -17,6 +17,8 @@ export type HonorDialogConfig = {
     shadowColor?: string;
     /** 指定时间内自动关闭，单位为ms，默认不打开此功能 */
     autoClose?: boolean | number;
+    /** 打开之前调用 */
+    beforeOpen?: (dialog: HonorDialog) => void;
 };
 
 export const DEFAULT_CONFIG = {

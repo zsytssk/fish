@@ -76,6 +76,13 @@ const defaultCloseEffect = function(dialog: HonorDialog) {
     );
 };
 
+type DialogOptObj = {
+    dialog_url: DialogRefUrl;
+    use_exist?: boolean;
+    show_effect?: boolean;
+};
+export type DialogOpenOpt = DialogRefUrl | DialogOptObj;
+
 export type DialogRefUrl = string | Ctor<HonorDialog> | HonorDialog;
 type DialogInfo = {
     url: DialogRefUrl;
@@ -105,11 +112,6 @@ export class DialogManagerCtor {
             'doClose',
             this.injectDoCloseAfter.bind(this),
         );
-        injectAfter(
-            dialog_manager,
-            'doOpen',
-            this.injectDoOpenAfter.bind(this),
-        );
         dialog_manager.popupEffectHandler = new Handler(
             dialog_manager,
             defaultPopupEffect,
@@ -122,12 +124,17 @@ export class DialogManagerCtor {
     }
 
     /** @todo 逻辑需要整理下 getViewByPool 不再使用... */
-    public async openDialog(
-        url: DialogRefUrl,
-        config?: HonorDialogConfig,
-        use_exist?: boolean,
-        show_effect?: boolean,
-    ) {
+    public async openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
+        let url = opt as DialogRefUrl;
+        let use_exist: boolean;
+        let show_effect: boolean;
+
+        if ((opt as DialogOptObj).dialog_url) {
+            const opt_obj = opt as DialogOptObj;
+            url = opt_obj.dialog_url;
+            use_exist = opt_obj.use_exist;
+            show_effect = opt_obj.use_exist;
+        }
         const { wait_dialog_task, open_dialog_list } = this;
 
         /** 使用正在打开或者已经打开的弹出层... */
@@ -173,10 +180,15 @@ export class DialogManagerCtor {
             if (show_effect !== undefined && show_effect === false) {
                 dialog.popupEffect = null;
             }
+            if (dialog_config.beforeOpen) {
+                dialog_config.beforeOpen(dialog);
+            }
             dialog.open(dialog_config.closeOther);
             if (ori_show_effect) {
                 dialog.popupEffect = ori_show_effect;
             }
+            this.afterOpen(dialog);
+
             this.checkMask();
         });
 
@@ -269,11 +281,7 @@ export class DialogManagerCtor {
         }
     }
     /** 在dialog打开之后 */
-    private injectDoOpenAfter(
-        dialog_manager: DialogManager,
-        result,
-        dialog: HonorDialog,
-    ) {
+    private afterOpen(dialog: HonorDialog) {
         const config = this.getDialogConfig(dialog);
         if (config && config.autoClose) {
             Laya.timer.once(config.autoClose as number, dialog, dialog.close);
