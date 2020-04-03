@@ -39,7 +39,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         coin_menu.list.array = [];
         coin_menu.list.vScrollBarSkin = '';
         flag_menu.list.array = [];
-        this.activeAni('');
+        this.activeAni('normal');
         coin_menu.list.renderHandler = new Handler(
             this,
             this.coinMenuRender,

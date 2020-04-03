@@ -42,7 +42,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     }
     public onResize() {
         const { width, height } = Laya.stage;
-        const { mask_area, mask_wrap } = this;
+        const { mask_area, mask_wrap, inner } = this;
         if (!mask_area) {
             return;
         }
@@ -57,6 +57,8 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
 
         this.x = (width - this.width) / 2;
         this.y = (height - this.height) / 2;
+
+        inner.width = width > 1334 ? 1334 : width;
     }
     public init() {
         this.initDom();
@@ -125,6 +127,10 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
             callFunc(click_handler);
         });
     }
+    public forceNext() {
+        const { click_handler } = this;
+        callFunc(click_handler);
+    }
     /** 绘制空白区域, 在区域被点击的时候返回resolve
      * @param force 必须点击目标区域...
      */
@@ -139,7 +145,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
             this.click_center = calcCenterShape(shape);
             this.showBlank();
             blank_area.graphics.clear();
-            pointer.show(this.click_center, 'target');
+            // pointer.show(this.click_center, 'target');
             if (shape instanceof Rectangle) {
                 blank_area.graphics.drawRect(
                     shape.x,

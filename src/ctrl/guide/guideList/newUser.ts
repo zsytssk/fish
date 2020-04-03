@@ -1,5 +1,4 @@
-import honor from 'honor';
-import HallView from 'view/scenes/hallView';
+import { HallCtrl } from 'ctrl/hall/hallCtrl';
 import { showPromptByNode } from '../core/guideUtils';
 
 export class NewUserGuide {
@@ -8,13 +7,14 @@ export class NewUserGuide {
     }
 
     public async showStartPrompt() {
-        const cur_scene = honor.director.runningScene as HallView;
-        if (!(cur_scene instanceof HallView)) {
+        const hall_ctrl = await HallCtrl.preEnter();
+        if (!(hall_ctrl instanceof HallCtrl)) {
             return;
         }
         const {
             header: { btn_coin_select },
-        } = cur_scene;
+            guide2,
+        } = hall_ctrl.view;
 
         await showPromptByNode(
             btn_coin_select,
@@ -22,5 +22,14 @@ export class NewUserGuide {
             'bottom',
             true,
         );
+
+        await showPromptByNode(
+            guide2,
+            ['2.选择币种不同<br/> 游戏房间也会随之切换'],
+            'right',
+            true,
+        );
+
+        await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
     }
 }

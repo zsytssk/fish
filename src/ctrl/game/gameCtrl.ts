@@ -50,6 +50,7 @@ export class GameCtrl {
         const game_ctrl = new GameCtrl(view, game_model);
         game_ctrl.init(url);
         setProps(ctrlState, { game: game_ctrl });
+        return game_ctrl;
     }
     private init(url: string) {
         this.initEvent();

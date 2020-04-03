@@ -56,8 +56,8 @@ type Style = {
 };
 
 const default_style = {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 25,
+    color: '#ffe7a7',
 };
 /** 提示弹出层 */
 export class PromptGuide {
@@ -87,7 +87,7 @@ export class PromptGuide {
         };
 
         const { html_div } = view;
-        html_div.style.width = 264;
+        html_div.style.width = 279;
     }
 
     /**
@@ -224,22 +224,24 @@ export class PromptGuide {
         const { style } = this;
         /** 字符串直接截取 */
         if (typeof tip === 'string') {
-            const msg = tip.slice(0, len);
-            result.push({ ...style, msg });
+            const [msg_arr] = spliceStr(tip, len);
+            for (const msg of msg_arr) {
+                result.push({ ...style, msg });
+            }
         } else {
             /** [{color: .., msg:...}, ...]截取数组item+最后一个item中截取字符 */
             for (const item of tip) {
+                // tslint:disable-next-line: prefer-const
                 let { msg, ...props } = item;
-                len = len - msg.length;
-                msg = len >= 0 ? msg : msg.slice(0, len);
+                const [msg_arr, new_len] = spliceStr(msg, len);
+                len = new_len;
                 props = {
                     ...style,
                     ...props,
                 };
-                result.push({
-                    msg,
-                    ...props,
-                });
+                for (const msg_item of msg_arr) {
+                    result.push({ ...props, msg: msg_item });
+                }
                 if (len <= 0) {
                     break;
                 }
@@ -247,6 +249,7 @@ export class PromptGuide {
         }
 
         const result_html = this.jsonToHtml(result);
+        console.log(`test:>`, result_html);
         return result_html;
     }
     /** 将提示的信息json转化为html */
@@ -260,8 +263,13 @@ export class PromptGuide {
                 if (!tip_item.hasOwnProperty(key)) {
                     continue;
                 }
-                const reg = new RegExp('{' + key + '}', 'g');
-                html_item = html_item.replace(reg, tip_item[key]);
+                const str = tip_item[key];
+                if (str === '<br/>') {
+                    html_item = '<br/>';
+                } else {
+                    const reg = new RegExp('{' + key + '}', 'g');
+                    html_item = html_item.replace(reg, tip_item[key]);
+                }
             }
             html += html_item;
         }
@@ -392,3 +400,31 @@ export class PromptGuide {
         view.visible = false;
     }
 }
+
+function spliceStr(str: string, len: number) {
+    const str_arr = str.split('<br/>');
+    const result: string[] = [];
+    if (DataTransferItem.length === 1) {
+        result.push(str.slice(0, len));
+        len = 0;
+    } else {
+        for (let i = 0; i < str_arr.length; i++) {
+            const item = str_arr[i];
+            len = len - item.length;
+            const item_str = len > 0 ? item : item.slice(0, item.length + len);
+            result.push(item_str);
+            if (i !== str_arr.length - 1 && len > 0) {
+                console.log(i, str_arr.length - 1);
+                result.push('<br/>');
+                len--;
+            }
+            if (len <= 0) {
+                break;
+            }
+        }
+    }
+
+    return [result, len] as [string[], number];
+}
+
+(window as any).spliceStr = spliceStr;

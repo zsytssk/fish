@@ -27,10 +27,10 @@ export class GuideMain {
         }
         const guide_dialog = await GuideDialog.preEnter();
 
-        const { prompt_ui, pointer_ui } = guide_dialog;
+        const { prompt_ui, pointer_ui, btn_next } = guide_dialog;
         const prompt = new PromptGuide(prompt_ui, {
-            fontSize: 26,
-            color: '#3d1d14',
+            fontSize: 25,
+            color: '#ffe7a7',
         });
         const pointer = new PointerGuide(pointer_ui);
 
@@ -38,7 +38,7 @@ export class GuideMain {
         this.prompt = prompt;
         this.pointer = pointer;
 
-        setStyle(guide_state, { guide_dialog, prompt, pointer });
+        setStyle(guide_state, { guide_dialog, prompt, pointer, btn_next });
     }
     public async end() {
         const { guide_dialog, prompt } = guide_state;

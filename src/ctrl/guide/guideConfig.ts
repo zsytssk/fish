@@ -18,6 +18,8 @@ export async function gotoGuide(group_id: string, functionId: string) {
     }
 }
 
+(window as any).gotoGuide = gotoGuide;
+
 async function triggerGuide() {
     if (!guide) {
         guide = new GuideMain();

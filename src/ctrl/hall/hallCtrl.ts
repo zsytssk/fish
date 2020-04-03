@@ -25,19 +25,30 @@ export class HallCtrl {
         this.view = view;
         this.init();
     }
+    private static instance: HallCtrl;
     public static async preEnter() {
+        if (this.instance) {
+            return this.instance;
+        }
         const wait_view = HallView.preEnter() as Promise<HallView>;
         return Promise.all([wait_view]).then(([view]) => {
             const ctrl = new HallCtrl(view);
+            this.instance = ctrl;
+            return ctrl;
         });
     }
+
+    public static leave() {
+        this.instance = undefined;
+    }
+
     public enterGame(socketUrl: string) {
-        ctrlState.app.enterGame(socketUrl);
         this.destroy();
+        return ctrlState.app.enterGame(socketUrl);
     }
     public roomIn(...data: Parameters<typeof roomIn>) {
-        roomIn(data[0]).then((url: string) => {
-            this.enterGame(url);
+        return roomIn(data[0]).then((url: string) => {
+            return this.enterGame(url);
         });
     }
     private async init() {
@@ -116,5 +127,6 @@ export class HallCtrl {
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
         disconnectSocket(ServerName.Hall);
+        HallCtrl.leave();
     }
 }
