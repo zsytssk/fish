@@ -4,6 +4,7 @@ import { HallCtrl } from 'ctrl/hall/hallCtrl';
 import { injectAfter } from 'honor/utils/tool';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
+import { GameTestCtrl } from 'ctrl/game/gameTest/gameTestCtrl';
 
 export const game_test = new Test('game', runner => {
     runner.describe('enter_game', (add_player?: boolean) => {
@@ -31,5 +32,8 @@ export const game_test = new Test('game', runner => {
                 resolve();
             });
         });
+    });
+    runner.describe('enter_game_test', (add_player?: boolean) => {
+        GameTestCtrl.preEnter();
     });
 });

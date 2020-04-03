@@ -1,19 +1,19 @@
-import { Observable, Subscriber } from 'rxjs';
 import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
-import { default as random } from 'lodash/random';
 import { createSkeleton } from 'honor/utils/createSkeleton';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
+import { default as random } from 'lodash/random';
+import { Observable, Subscriber } from 'rxjs';
 import { ui } from 'ui/layaMaxUI';
+import { fade_in } from 'utils/animate';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
 import { playSkeleton, playSkeletonOnce } from 'utils/utils';
 import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
-import { Event } from 'laya/events/Event';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { Sprite } from 'laya/display/Sprite';
-import { fade_in } from 'utils/animate';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxPos = 'left' | 'right';
@@ -100,7 +100,6 @@ export default class GameView extends ui.scenes.game.gameUI
         btn_help.scale(scale, scale);
         btn_shop.scale(scale, scale);
         skill_box.scale(scale, scale);
-        console.log(`test:>`, skill_box);
     }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {

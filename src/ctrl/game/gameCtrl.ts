@@ -40,17 +40,35 @@ export class GameCtrl {
     public view: GameView;
     private model: GameModel;
     private cur_player_index: number;
+    public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
     }
+    private static instance: GameCtrl;
+    private static wait_enter: Promise<GameCtrl>;
     public static async preEnter(url: string, game_model: GameModel) {
-        const view = (await GameView.preEnter()) as GameView;
-        await honor.director.load(res.game as ResItem[]);
-        const game_ctrl = new GameCtrl(view, game_model);
-        game_ctrl.init(url);
-        setProps(ctrlState, { game: game_ctrl });
-        return game_ctrl;
+        if (this.instance) {
+            return this.instance;
+        }
+        if (this.wait_enter) {
+            return await this.wait_enter;
+        }
+
+        const wait_view = GameView.preEnter() as Promise<GameView>;
+        const wait_load_res = honor.director.load(res.game as ResItem[]);
+        const wait_enter = Promise.all([wait_view, wait_load_res]).then(
+            ([view]) => {
+                const ctrl = new GameCtrl(view as GameView, game_model);
+                this.instance = ctrl;
+                ctrl.init(url);
+                setProps(ctrlState, { game: ctrl });
+                this.wait_enter = undefined;
+                return ctrl;
+            },
+        );
+        this.wait_enter = wait_enter;
+        return await wait_enter;
     }
     private init(url: string) {
         this.initEvent();
@@ -114,6 +132,7 @@ export class GameCtrl {
 
             const player_view = view.addGun();
             const ctrl = new PlayerCtrl(player_view, player, this);
+            this.player_list.add(ctrl);
         });
         event.on(FreezingComEvent.Freezing, () => {
             AudioCtrl.play(AudioRes.Freeze);

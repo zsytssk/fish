@@ -7,13 +7,13 @@ import { range } from 'lodash';
 import { ServerEvent } from 'data/serverEvent';
 import { Test } from 'testBuilder';
 import { test_data } from '../../../testData';
-import { MockWebSocket } from './mockWebSocket';
 import { sleep } from 'utils/animate';
 import { player_test } from '../../game/player.spec';
 import { game_test } from '../../game/game.spec';
 import { modelState } from 'model/modelState';
 import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
 import { SkillMap } from 'data/config';
+import { MockWebSocket } from 'ctrl/net/mockWebSocket';
 
 export const mock_web_socket_test = new Test('mock_web_socket', runner => {
     runner.describe('create', async () => {

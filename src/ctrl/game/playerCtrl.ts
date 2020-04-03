@@ -40,7 +40,7 @@ export class PlayerCtrl {
      * @param model 玩家对应的model
      */
     constructor(
-        private view: GunBoxView,
+        public view: GunBoxView,
         private model: PlayerModel,
         private game_ctrl: GameCtrl,
     ) {
@@ -261,8 +261,11 @@ export class PlayerCtrl {
     }
     public destroy() {
         const { view } = this;
+
         view.destroy();
         Laya.stage.offAllCaller(this.view);
         this.view = undefined;
+        this.game_ctrl = undefined;
+        this.model = undefined;
     }
 }

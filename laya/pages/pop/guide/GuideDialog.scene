@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":10,
-    "selecteID":9,
+    "selectedBox":2,
+    "selecteID":11,
     "searchKey":"Dialog",
     "props":{"width":1334,"sceneColor":"#000000","runtime":"ctrl/guide/guideDialog.ts","mouseThrough":true,"mouseEnabled":true,"isModal":false,"height":750},
     "nodeParent":-1,
-    "maxID":11,
+    "maxID":13,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -27,6 +27,34 @@
             "compId":6,
             "child":[
                 ]
+        },
+        {
+            "x":15,
+            "type":"Box",
+            "searchKey":"Box,inner",
+            "props":{"y":0,"x":0,"width":1334,"var":"inner","mouseThrough":true,"mouseEnabled":true,"height":750,"centerX":0},
+            "nodeParent":2,
+            "label":"inner",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":10,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Button",
+                    "searchKey":"Button,btn_next",
+                    "props":{"y":654,"visible":false,"var":"btn_next","stateNum":"1","skin":"image/pop/guide/btn_next.png","right":30,"height":68,"anchorY":0.5,"anchorX":0.5},
+                    "nodeParent":10,
+                    "label":"btn_next",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":9,
+                    "child":[
+                        ]
+                }]
         },
         {
             "x":15,
@@ -60,28 +88,28 @@
         },
         {
             "x":15,
-            "type":"Box",
-            "searchKey":"Box,inner",
-            "props":{"width":1334,"var":"inner","height":750,"centerX":0},
+            "type":"Button",
+            "searchKey":"Button,btn_start",
+            "props":{"y":567,"visible":false,"var":"btn_start","stateNum":"1","skin":"image/pop/guide/btn_start.png","right":0},
             "nodeParent":2,
-            "label":"inner",
+            "label":"btn_start",
             "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
-            "compId":10,
+            "compId":11,
             "child":[
                 {
                     "x":30,
-                    "type":"Button",
-                    "searchKey":"Button,btn_next",
-                    "props":{"y":607,"visible":false,"var":"btn_next","stateNum":"1","skin":"image/pop/guide/btn_next.png","right":30},
-                    "nodeParent":10,
-                    "label":"btn_next",
+                    "type":"Label",
+                    "searchKey":"Label",
+                    "props":{"y":59,"x":15,"text":"开始游戏","fontSize":33,"color":"#9f471f","bold":true},
+                    "nodeParent":11,
+                    "label":"Label",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":9,
+                    "compId":12,
                     "child":[
                         ]
                 }]

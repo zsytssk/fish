@@ -18,6 +18,8 @@ export class MockWebSocket implements WebSocketTrait {
         console.log(`mockWebSocket:>`, cmd, data);
     }
     public disconnect() {
+        this.event.destroy();
+        this.sendEvent.destroy();
         console.log('disconnect');
     }
 }

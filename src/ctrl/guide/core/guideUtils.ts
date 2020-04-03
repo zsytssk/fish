@@ -1,12 +1,12 @@
-import { PromptPos, TipData } from './prompt';
-import { guide_state, Shape } from '../guideState';
+import { Laya } from 'Laya';
 import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
 import { Point as LayaPoint } from 'laya/maths/Point';
 import { Rectangle } from 'laya/maths/Rectangle';
-import { Event } from 'laya/events/Event';
-import { Laya } from 'Laya';
-import { fade_in, fade_out } from 'utils/animate';
+import { guide_state, Shape } from '../guideState';
+import { PromptPos, TipData } from './prompt';
 
+export type NextType = 'point' | 'btn' | 'start';
 export function getBoundsOfNode(
     node: Sprite,
     target: Sprite,
@@ -20,9 +20,17 @@ export function getBoundsOfNode(
     );
     end = target.globalToLocal(end, true);
 
-    const { x, y } = start;
-    const width = end.x - x;
-    const height = end.y - y;
+    let { x, y } = start;
+    let width = end.x - x;
+    let height = end.y - y;
+
+    if (width < 0) {
+        x = end.x;
+        y = end.y;
+
+        width = start.x - x;
+        height = start.y - y;
+    }
 
     return {
         x,
@@ -38,6 +46,7 @@ export function getPromptByShape(shape: Shape, pos: PromptPos, space = 10) {
     let result: Point;
     if (shape instanceof Rectangle) {
         const { x, y, width, height } = shape;
+
         switch (pos) {
             case 'top':
                 result = {
@@ -114,13 +123,14 @@ export async function showPromptByNode(
     msg: TipData,
     dir = 'top' as PromptPos,
     force = true,
+    type = 'btn' as NextType,
 ) {
     const { guide_dialog } = guide_state;
     const { x, y, width, height } = getBoundsOfNode(node, guide_dialog);
 
     const shape = new Rectangle(x, y, width, height);
 
-    await showPromptByShape(shape, msg, dir, force);
+    await showPromptByShape(shape, msg, dir, force, type);
 }
 /** 在按钮旁显示提示 高亮提示 */
 export async function showPromptByShape(
@@ -128,21 +138,15 @@ export async function showPromptByShape(
     msg: TipData,
     dir = 'top' as PromptPos,
     force = true,
+    type = 'btn' as NextType,
 ) {
     const extra_space = 20;
     const { guide_dialog, prompt, btn_next } = guide_state;
     shape = extraShape(shape, extra_space);
     const pos = getPromptByShape(shape, dir);
 
-    prompt.prompt({ pos, dir }, msg, false).then(() => {
-        fade_in(btn_next);
-        btn_next.visible = true;
-        btn_next.once(Event.CLICK, btn_next, () => {
-            guide_dialog.forceNext();
-            fade_out(btn_next);
-        });
-    });
-    await guide_dialog.drawBlankWaitClick(shape, force);
+    const wait_prompt = prompt.prompt({ pos, dir }, msg, false);
+    await guide_dialog.drawBlankWaitClick(shape, force, type, wait_prompt);
     await prompt.hide();
     guide_dialog.clearBlank();
 }

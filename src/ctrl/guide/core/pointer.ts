@@ -51,6 +51,11 @@ export class PointerGuide {
 
         fade_in(view, TWEEN_TIME).then(callback);
     }
+    public isShow() {
+        const { view } = this;
+
+        return (view.visible = false);
+    }
     private showPointer(type?: PointerType) {
         type = type ? type : 'static';
 

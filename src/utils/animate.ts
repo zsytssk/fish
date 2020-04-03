@@ -19,13 +19,13 @@ export function sleep(time: number) {
         }, time * 1000);
     });
 }
-export function fade_in(
+export async function fade_in(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
     end_alpha = 1,
 ) {
-    completeAni(sprite);
+    await completeAni(sprite);
     const start_props = {
         alpha: 0,
         visible: true,
@@ -43,8 +43,12 @@ export function fade_in(
         time,
     });
 }
-export function fade_out(sprite: Sprite, time?: number, ease_fn?: string) {
-    completeAni(sprite);
+export async function fade_out(
+    sprite: Sprite,
+    time?: number,
+    ease_fn?: string,
+) {
+    await completeAni(sprite);
     time = time ? time : 700;
     ease_fn = ease_fn || 'circleOut';
     const end_props = {
@@ -60,8 +64,12 @@ export function fade_out(sprite: Sprite, time?: number, ease_fn?: string) {
         sprite.alpha = 1;
     });
 }
-export function scale_in(sprite: Sprite, time?: number, ease_fn?: EaseFn) {
-    completeAni(sprite);
+export async function scale_in(
+    sprite: Sprite,
+    time?: number,
+    ease_fn?: EaseFn,
+) {
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 400;
     const start_props = {
@@ -77,8 +85,8 @@ export function scale_in(sprite: Sprite, time?: number, ease_fn?: EaseFn) {
     };
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
-export function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
-    completeAni(sprite);
+export async function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 400;
     const end_props = {
@@ -90,7 +98,7 @@ export function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
         setStyle(sprite, { visible: false, scaleX: 1, scaleY: 1, alpha: 1 });
     });
 }
-export function slide_up_in(
+export async function slide_up_in(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
@@ -100,7 +108,7 @@ export function slide_up_in(
         const height = sprite.getBounds().height;
         space = height > 50 ? 50 : height;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
 
     ease_fn = ease_fn || 'circleOut';
     time = time || 200;
@@ -179,12 +187,12 @@ export function slide_down_out(
     ease_fn?: string,
     space?: number,
 ) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         if (!space) {
             const height = sprite.getBounds().height;
             space = height > 50 ? 50 : height;
         }
-        completeAni(sprite);
+        await completeAni(sprite);
         /** 因为completeAni 导致的动画完成函数要异步执行
          * 所以为了等待原来的函数执行完成 所以他自己必须异步执行
          */
@@ -203,7 +211,7 @@ export function slide_down_out(
         });
     });
 }
-export function slide_left_in(
+export async function slide_left_in(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
@@ -213,7 +221,7 @@ export function slide_left_in(
         const width = sprite.getBounds().width;
         space = width > 50 ? 50 : width;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
     ease_fn = ease_fn || 'easeIn';
     time = time || 200;
     setStyle(sprite, {
@@ -230,7 +238,7 @@ export function slide_left_in(
     };
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
-export function slide_left_out(
+export async function slide_left_out(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
@@ -240,7 +248,7 @@ export function slide_left_out(
         const width = sprite.getBounds().width;
         space = width > 50 ? 50 : width;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 200;
     const ori_x = sprite.x;
@@ -254,7 +262,7 @@ export function slide_left_out(
         sprite.x = ori_x;
     });
 }
-export function slide_right_in(
+export async function slide_right_in(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
@@ -264,7 +272,7 @@ export function slide_right_in(
         const width = sprite.getBounds().width;
         space = width > 50 ? 50 : width;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleOut';
     time = time || 200;
     setStyle(sprite, {
@@ -281,7 +289,7 @@ export function slide_right_in(
     };
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }
-export function slide_right_out(
+export async function slide_right_out(
     sprite: Sprite,
     time: number,
     ease_fn: EaseFn,
@@ -291,7 +299,7 @@ export function slide_right_out(
         const width = sprite.getBounds().width;
         space = width > 50 ? 50 : width;
     }
-    completeAni(sprite);
+    await completeAni(sprite);
     ease_fn = ease_fn || 'circleIn';
     time = time || 200;
     const ori_x = sprite.x;
@@ -327,14 +335,14 @@ export function blink(sprite: Sprite, time: number) {
         time: time || 300,
     });
 }
-export function move(
+export async function move(
     sprite: Sprite,
     start_pos: Point,
     end_pos: Point,
     time: number,
     ease_fn?: string | FuncVoid,
 ) {
-    completeAni(sprite);
+    await completeAni(sprite);
     setStyle(sprite, start_pos);
 
     return tween({
@@ -353,12 +361,12 @@ type TweenData = {
     ease_fn?: EaseFn;
 };
 export function tween(data: TweenData) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const { sprite, start_props, end_props } = data;
         if (sprite.destroyed) {
             return reject();
         }
-        completeAni(sprite);
+        await completeAni(sprite);
         let { ease_fn } = data;
         let { time } = data;
         const laya_Tween = new Tween();

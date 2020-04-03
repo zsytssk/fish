@@ -26,16 +26,24 @@ export class HallCtrl {
         this.init();
     }
     private static instance: HallCtrl;
+    private static wait_enter: Promise<HallCtrl>;
     public static async preEnter() {
         if (this.instance) {
             return this.instance;
         }
+        if (this.wait_enter) {
+            return await this.wait_enter;
+        }
         const wait_view = HallView.preEnter() as Promise<HallView>;
-        return Promise.all([wait_view]).then(([view]) => {
+        const wait_enter = Promise.all([wait_view]).then(([view]) => {
             const ctrl = new HallCtrl(view);
             this.instance = ctrl;
+            this.wait_enter = undefined;
             return ctrl;
         });
+
+        this.wait_enter = wait_enter;
+        return await wait_enter;
     }
 
     public static leave() {

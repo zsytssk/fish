@@ -7,6 +7,8 @@ import { HitArea } from 'laya/utils/HitArea';
 import { Event } from 'laya/events/Event';
 import { Rectangle } from 'laya/maths/Rectangle';
 import { callFunc } from 'utils/utils';
+import { NextType } from './core/guideUtils';
+import { fade_in, fade_out } from 'utils/animate';
 
 /**
  * @author zhangshiyang
@@ -46,19 +48,21 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
         if (!mask_area) {
             return;
         }
-        mask_area.graphics.clear();
-        mask_area.graphics.drawRect(0, 0, width, height, '#000000');
 
-        mask_area.width = width;
+        const con_width = width > 1920 ? 1920 : width;
+        mask_area.width = con_width;
         mask_area.height = height;
 
-        mask_area.x = (mask_wrap.width - width) / 2;
-        mask_area.y = (mask_wrap.height - height) / 2;
+        mask_area.x = (this.width - mask_area.width) / 2;
+        mask_area.y = (this.height - mask_wrap.height) / 2;
+
+        mask_area.graphics.clear();
+        mask_area.graphics.drawRect(0, 0, mask_area.width, height, '#000000');
 
         this.x = (width - this.width) / 2;
         this.y = (height - this.height) / 2;
 
-        inner.width = width > 1334 ? 1334 : width;
+        inner.width = width > 1920 ? 1920 : width;
     }
     public init() {
         this.initDom();
@@ -84,19 +88,22 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
         blank_area.hitArea = hit_area;
         this.blank_area = blank_area;
 
-        const { width, height } = Laya.stage;
         if (!mask_area) {
             return;
         }
-
-        mask_area.width = width;
-        mask_area.height = height;
-
-        mask_area.x = (mask_wrap.width - width) / 2;
-        mask_area.y = (mask_wrap.height - height) / 2;
-
-        this.x = (width - this.width) / 2;
-        this.y = (height - this.height) / 2;
+        this.onResize();
+    }
+    public setBtnNextDir(dir: 'left' | 'right') {
+        const { btn_next } = this;
+        if (dir === 'left') {
+            btn_next.right = NaN;
+            btn_next.rotation = 180;
+            btn_next.left = 30;
+        } else {
+            btn_next.left = NaN;
+            btn_next.right = 30;
+            btn_next.rotation = 0;
+        }
     }
     public initEvent() {
         const { blank_area, mask_area } = this;
@@ -113,30 +120,59 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
                 pointer.hide();
                 return callFunc(click_handler);
             }
+            if (!pointer.isShow()) {
+                return;
+            }
 
             pointer.show({ x, y });
             pointer.moveToTarget({ x, y }, this.click_center);
-        });
-
-        blank_area.on(Event.CLICK, this, (e: Event) => {
-            const { pointer } = guide_state;
-
-            e.stopPropagation();
-            pointer.hide();
-            const { click_handler } = this;
-            callFunc(click_handler);
         });
     }
     public forceNext() {
         const { click_handler } = this;
         callFunc(click_handler);
+        this.click_handler = undefined;
+    }
+    public showNextHandler(type: NextType, then: Promise<any>) {
+        const { btn_next, btn_start, blank_area } = this;
+        const { pointer } = guide_state;
+
+        then.then(() => {
+            if (type === 'btn') {
+                fade_in(btn_next);
+                btn_next.once(Event.CLICK, btn_next, () => {
+                    this.forceNext();
+                    btn_next.offAll();
+                    fade_out(btn_next);
+                });
+            } else if (type === 'point') {
+                blank_area.once(Event.CLICK, this, (e: Event) => {
+                    blank_area.offAll();
+                    e.stopPropagation();
+                    pointer.hide();
+                    this.forceNext();
+                });
+                pointer.show(this.click_center, 'target');
+            } else if (type === 'start') {
+                // fade_in(btn_start);
+                btn_start.once(Event.CLICK, btn_start, () => {
+                    this.forceNext();
+                    btn_start.offAll();
+                    fade_out(btn_start);
+                });
+            }
+        });
     }
     /** 绘制空白区域, 在区域被点击的时候返回resolve
      * @param force 必须点击目标区域...
      */
-    public drawBlankWaitClick(shape: Shape, force: boolean) {
+    public drawBlankWaitClick(
+        shape: Shape,
+        force: boolean,
+        type: NextType,
+        then: Promise<any>,
+    ) {
         return new Promise((resolve, reject) => {
-            const { pointer } = guide_state;
             const { blank_area } = this;
             const { hit } = blank_area.hitArea;
             this.blank_shape = shape;
@@ -145,7 +181,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
             this.click_center = calcCenterShape(shape);
             this.showBlank();
             blank_area.graphics.clear();
-            // pointer.show(this.click_center, 'target');
+            this.showNextHandler(type, then);
             if (shape instanceof Rectangle) {
                 blank_area.graphics.drawRect(
                     shape.x,

@@ -24,11 +24,11 @@ export class AppModel extends ComponentManager {
         //...
     }
     public enterGame() {
-        const game = new GameModel();
+        let game = this.game;
+        if (!game || game.destroyed) {
+            game = new GameModel();
+        }
         this.game = game;
         return game;
-    }
-    public leaveGame() {
-        this.game = undefined;
     }
 }
