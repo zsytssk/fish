@@ -24,6 +24,7 @@ import { shoal_test } from './app/game/shoal/shoal.spec';
 import { utils_test } from './other/utils.spec';
 import { gun_box_view_test } from './app/view/gunBoxView.spec';
 import { skill_item_view_test } from './app/view/SkillItemView.spec';
+import { guide_test } from './app/guide/guide.spec';
 
 const testScope = new Test('top');
 testScope.addChild(
@@ -50,6 +51,7 @@ testScope.addChild(
     gun_box_view_test,
     utils_test,
     skill_item_view_test,
+    guide_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());

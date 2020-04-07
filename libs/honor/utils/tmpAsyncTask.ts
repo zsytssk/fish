@@ -14,3 +14,30 @@ export function tmpAsyncTask<T extends Promise<any>>(
         });
     });
 }
+
+const task_arr: Array<{
+    dep: any;
+    task: Promise<any>;
+}> = [];
+export function runAsyncTask<T>(fn: () => Promise<T>, dep: any): Promise<T> {
+    for (const item of task_arr) {
+        if (item.dep === dep) {
+            return item.task;
+        }
+    }
+
+    const task = fn();
+    task.then(() => {
+        for (let len = task_arr.length, i = len - 1; i >= 0; i--) {
+            const { task: _task } = task_arr[i];
+            if (task === _task) {
+                task_arr.splice(i);
+                return;
+            }
+        }
+    });
+    task_arr.push({
+        dep,
+        task,
+    });
+}

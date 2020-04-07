@@ -12,12 +12,14 @@ import {
     stageClick,
 } from './utils/testUtils';
 import { getParams } from 'utils/utils';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 
 const testUtils = {
     showNodeZone,
     stageClick,
     getCurPlayer,
     getUserInfo,
+    getSocket,
 };
 injectWindow({ test, testUtils, modelState, ctrlState, viewState, honor });
 

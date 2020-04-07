@@ -18,32 +18,29 @@ import { onHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
 import { initUserInfo } from 'model/userInfo/userInfoUtils';
 import { ctrlState } from 'ctrl/ctrlState';
+import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
 export class HallCtrl {
     public view: HallView;
     constructor(view: HallView) {
         this.view = view;
         this.init();
+
+        console.log(`enter:>HallView`, 1);
     }
     private static instance: HallCtrl;
-    private static wait_enter: Promise<HallCtrl>;
     public static async preEnter() {
         if (this.instance) {
             return this.instance;
         }
-        if (this.wait_enter) {
-            return await this.wait_enter;
-        }
-        const wait_view = HallView.preEnter() as Promise<HallView>;
-        const wait_enter = Promise.all([wait_view]).then(([view]) => {
-            const ctrl = new HallCtrl(view);
-            this.instance = ctrl;
-            this.wait_enter = undefined;
-            return ctrl;
-        });
 
-        this.wait_enter = wait_enter;
-        return await wait_enter;
+        return runAsyncTask(() => {
+            return HallView.preEnter().then((view: HallView) => {
+                const ctrl = new HallCtrl(view);
+                this.instance = ctrl;
+                return ctrl;
+            });
+        }, this);
     }
 
     public static leave() {

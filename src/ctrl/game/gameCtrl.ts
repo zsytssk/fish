@@ -34,6 +34,7 @@ import { AudioRes } from 'data/audioRes';
 import VoicePop from 'view/pop/voice';
 import { Event } from 'laya/events/Event';
 import { log } from 'utils/log';
+import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -46,29 +47,21 @@ export class GameCtrl {
         this.model = model;
     }
     private static instance: GameCtrl;
-    private static wait_enter: Promise<GameCtrl>;
     public static async preEnter(url: string, game_model: GameModel) {
         if (this.instance) {
             return this.instance;
         }
-        if (this.wait_enter) {
-            return await this.wait_enter;
-        }
-
-        const wait_view = GameView.preEnter() as Promise<GameView>;
-        const wait_load_res = honor.director.load(res.game as ResItem[]);
-        const wait_enter = Promise.all([wait_view, wait_load_res]).then(
-            ([view]) => {
+        return runAsyncTask(() => {
+            const wait_view = GameView.preEnter() as Promise<GameView>;
+            const wait_load_res = honor.director.load(res.game as ResItem[]);
+            return Promise.all([wait_view, wait_load_res]).then(([view]) => {
                 const ctrl = new GameCtrl(view as GameView, game_model);
                 this.instance = ctrl;
                 ctrl.init(url);
                 setProps(ctrlState, { game: ctrl });
-                this.wait_enter = undefined;
                 return ctrl;
-            },
-        );
-        this.wait_enter = wait_enter;
-        return await wait_enter;
+            });
+        }, this);
     }
     private init(url: string) {
         this.initEvent();
