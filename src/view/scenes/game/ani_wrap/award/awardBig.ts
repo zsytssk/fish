@@ -21,13 +21,13 @@ export async function showAwardCircle(
     f?: any,
 ) {
     return new Promise((resolve, reject) => {
-        const { ani_wrap } = viewState;
+        const { ani_overlay } = viewState;
         const circle = createSprite('other', 'award_circle') as Skeleton;
         pos = fixCirclePos(pos);
 
         AudioCtrl.play(AudioRes.FlySkill);
         const num_label = showAwardNum(pos, num, is_cur_player);
-        ani_wrap.addChild(circle);
+        ani_overlay.addChild(circle);
         circle.play(0, false);
         circle.pos(pos.x, pos.y);
         scale_in(num_label, 700, (t, b, c, d) => {
@@ -55,13 +55,13 @@ export async function showAwardCircle(
 
 /** 显示奖励的数目 */
 function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
-    const { ani_wrap } = viewState;
+    const { ani_overlay } = viewState;
     const num_label = new Label();
 
     num_label.zOrder = 10;
     num_label.font = is_cur_player ? 'numYellow40' : 'numWhite40';
     num_label.text = '+' + num;
-    ani_wrap.addChild(num_label);
+    ani_overlay.addChild(num_label);
     const bounds_num_label = num_label.getBounds();
     num_label.pivot(bounds_num_label.width / 2, bounds_num_label.height / 2);
     num_label.pos(pos.x, pos.y);

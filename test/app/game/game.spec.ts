@@ -5,6 +5,18 @@ import { injectAfter } from 'honor/utils/tool';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { GameTestCtrl } from 'ctrl/game/gameTest/gameTestCtrl';
+import { sleep } from 'utils/animate';
+
+const a = {
+    b() {
+        return sleep(3).then(() => {
+            console.log(`injectAfter:>`, 1);
+            return sleep(3).then(() => {
+                console.log(`injectAfter:>`, 2);
+            });
+        });
+    },
+};
 
 export const game_test = new Test('game', runner => {
     runner.describe('enter_game', (add_player?: boolean) => {
@@ -17,13 +29,20 @@ export const game_test = new Test('game', runner => {
                     ctrlState.app.enterGame('test');
                 });
             });
+            // injectAfter(a, 'b', () => {
+            //     setTimeout(() => {
+            //         ctrlState.app.enterGame('test');
+            //     });
+            // });
+            // a.b();
 
             if (!add_player) {
                 return resolve();
             }
 
             let running = false;
-            injectAfter(GameCtrl, 'preEnter', () => {
+            injectAfter(GameCtrl, 'preEnter', async () => {
+                await sleep(1);
                 if (running) {
                     resolve();
                     return;

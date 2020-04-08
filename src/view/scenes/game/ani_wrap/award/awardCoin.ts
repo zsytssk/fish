@@ -31,7 +31,7 @@ export async function showAwardCoin(
 
 /** 显示奖励金币 */
 export function createAwardCoin(pos: Point, num: number) {
-    const { ani_wrap } = viewState;
+    const { ani_overlay } = viewState;
     const coin_num =
         num / award_coin_num >= 8 ? 8 : Math.ceil(num / award_coin_num);
     const num_row = coin_num > 4 ? 2 : 1;
@@ -48,7 +48,7 @@ export function createAwardCoin(pos: Point, num: number) {
         for (let j = 0; j < num_row; j++) {
             const coin_view = createCoinAni() as Skeleton;
             coin_view.visible = false;
-            ani_wrap.addChild(coin_view);
+            ani_overlay.addChild(coin_view);
             const x =
                 pos.x +
                 ((coin_width + space_column) * (2 * i + 1 - num_column)) / 2;
@@ -64,7 +64,7 @@ export function createAwardCoin(pos: Point, num: number) {
 
 /** 显示奖励的数目 */
 export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
-    const { ani_wrap } = viewState;
+    const { ani_overlay } = viewState;
     const { upside_down } = viewState.game;
     const bg_ani = createSprite('other', 'award_light') as Skeleton;
     const num_label = new Label();
@@ -76,8 +76,8 @@ export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     if (upside_down) {
         num_label.scaleY = -1;
     }
-    ani_wrap.addChild(num_label);
-    ani_wrap.addChild(bg_ani);
+    ani_overlay.addChild(num_label);
+    ani_overlay.addChild(bg_ani);
     const bounds_num_label = num_label.getBounds();
     num_label.pivot(bounds_num_label.width / 2, bounds_num_label.height / 2);
     num_label.pos(pos.x, pos.y);
@@ -92,12 +92,12 @@ export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
 /** 计算金币的边界... */
 function calcCoinRange(pos: Point, coins_width: number, coins_height: number) {
     let { x, y } = pos;
-    const { ani_wrap } = viewState;
+    const { ani_overlay } = viewState;
     const stage_width = Laya.stage.width;
     const stage_height = Laya.stage.height;
 
-    const start = (ani_wrap.width - stage_width) / 2;
-    const end_pos = stage_width + (ani_wrap.width - stage_width) / 2;
+    const start = (ani_overlay.width - stage_width) / 2;
+    const end_pos = stage_width + (ani_overlay.width - stage_width) / 2;
 
     if (x - coins_width / 2 < start) {
         /* 左边界 */
@@ -139,7 +139,7 @@ function animateCoin(coin_views: Skeleton[], end_pos: Point) {
 const pool = [] as Skeleton[];
 function createCoinAni() {
     let item = pool.pop();
-    if (!item) {
+    if (!item || item.destroyed) {
         item = createSprite('other', 'coin') as Skeleton;
     }
     const { upside_down } = viewState.game;

@@ -8,7 +8,7 @@ import { Event } from 'laya/events/Event';
 let freezing_ani: Skeleton;
 function createFreezingAni() {
     const { ani_wrap } = viewState;
-    if (!freezing_ani) {
+    if (!freezing_ani || freezing_ani.destroyed) {
         freezing_ani = createSprite('other', 'freezing') as Skeleton;
         freezing_ani.pos(ani_wrap.width / 2, ani_wrap.height / 2);
         ani_wrap.addChild(freezing_ani);

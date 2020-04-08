@@ -87,7 +87,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,title",
-                    "props":{"y":19,"x":459,"var":"title","skin":"image/international/title_shop_zh.png"},
+                    "props":{"y":19,"var":"title","skin":"image/international/title_shop_zh.png","centerX":0},
                     "nodeParent":13,
                     "label":"title",
                     "isDirectory":false,

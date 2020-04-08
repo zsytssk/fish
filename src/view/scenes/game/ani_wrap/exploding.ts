@@ -9,7 +9,7 @@ const exploding_ani_arr: Skeleton[] = [];
 function createExplodingAni() {
     const { ani_wrap } = viewState;
     let exploding_ani = exploding_ani_arr.pop();
-    if (!exploding_ani) {
+    if (!exploding_ani|| exploding_ani.destroyed) {
         exploding_ani = createSprite('other', 'exploding') as Skeleton;
         exploding_ani.scale(2, 2);
         exploding_ani.pos(ani_wrap.width / 2, ani_wrap.height / 2);

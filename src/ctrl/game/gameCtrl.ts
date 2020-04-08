@@ -182,6 +182,10 @@ export class GameCtrl {
         return 3 - server_index;
     }
     public onShoot(data: ShootRep) {
+        const { direction } = data;
+        if (!Object.keys(direction).length) {
+            return;
+        }
         this.model.shoot(data);
     }
     public onHit(data: HitRep) {
@@ -256,6 +260,7 @@ export class GameCtrl {
     public destroy() {
         this.view = undefined;
         this.model = undefined;
+        GameCtrl.instance = undefined;
         setProps(ctrlState, { game: undefined });
     }
 }

@@ -94,7 +94,9 @@ export class TrackFishModel extends ComponentManager implements SkillModel {
     public tipTrack() {
         const { gun, skill_core } = this;
         const fish = getAimFish();
-        log('test:>tipTrack', fish, fish.destroyed);
+        if (fish) {
+            log('test:>tipTrack', fish, fish.destroyed);
+        }
         skill_core.activeEvent({
             fish,
             is_tip: true,

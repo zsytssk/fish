@@ -270,6 +270,6 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         resizeParent(btn_label, 30, 142);
 
         /** @lang */
-        // title.skin = ``;
+        title.skin = `image/international/txt_lottery_${lang}.png`;
     }
 }

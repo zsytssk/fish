@@ -5,17 +5,19 @@ import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { injectProto } from 'honor/utils/tool';
 import { FishCtrl } from 'ctrl/game/fishCtrl';
+import { body_test } from './body.spec';
+import { sleep } from 'utils/animate';
 
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
         'add_fish',
-        (typeId: number, pathId: number, time: number) => {
-            // body_test.runTest('show_shape');
-            typeId = typeId || 19;
-            pathId = pathId || 12;
-            time = time || 12;
-            const fish_data = genFishInfo(typeId, pathId, time);
+        async (typeId: number, pathId: number, time: number) => {
+            typeId = typeId || 3;
+            pathId = pathId || 3;
+            time = time || 12 * 100000;
+            const usedTime = time / 2;
+            const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
         },
     );
@@ -126,6 +128,23 @@ export const fish_test = new Test('fish', runner => {
             });
         });
     });
+
+    runner.describe(
+        'fish_shape',
+        async (typeId: number, pathId: number, time: number) => {
+            body_test.runTest('show_shape');
+            for (let i = 6; i < 21; i++) {
+                typeId = i;
+                pathId = pathId || 3;
+                time = time || 100000000;
+                const usedTime = time / 2;
+                const fish_data = genFishInfo(typeId, pathId, time, usedTime);
+                const fish_model = modelState.app.game.addFish(fish_data);
+                await sleep(3);
+                (fish_model as FishModel).destroy();
+            }
+        },
+    );
 });
 
 export function genFishInfo(
@@ -139,7 +158,7 @@ export function genFishInfo(
         fishId: `${typeId}`,
         displaceType: 'path',
         pathNo: `${pathId}`,
-        totalTime: totalTime * 1000,
+        totalTime,
         usedTime,
     } as ServerFishInfo;
 }

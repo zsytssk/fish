@@ -240,7 +240,7 @@ function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {
 
         skills[item.itemId] = {
             item_id,
-            num: is_cur_player ? num : 0,
+            num: is_cur_player ? Number(num) : 0,
             used_time: is_cur_player ? used_time / 1000 : 0,
             cool_time: cool_time / 1000,
         } as SkillInfo;

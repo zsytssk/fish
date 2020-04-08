@@ -33,7 +33,7 @@ export function stopShoalWave() {
 
 function createShoalWaveAni() {
     const { ani_wrap } = viewState;
-    if (!shoal_wave_ani) {
+    if (!shoal_wave_ani || shoal_wave_ani.destroyed) {
         shoal_wave_ani = createSprite('other', 'shoal_wave') as Skeleton;
         shoal_wave_ani.scale(2, 2);
         shoal_wave_ani.pos(ani_wrap.width / 2, ani_wrap.height / 2);

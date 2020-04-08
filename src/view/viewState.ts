@@ -5,8 +5,10 @@ import { Box } from 'laya/ui/Box';
 
 type ViewState = {
     game: GameView;
-    /** 所有的动画的芙父容器 */
+    /** 所有的动画的芙父容器(底层) */
     ani_wrap: Box;
+    /** 所有的动画的芙父容器(上层) */
+    ani_overlay: Box;
 };
 
 export const viewState = {} as ViewState;

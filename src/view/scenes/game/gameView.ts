@@ -7,9 +7,9 @@ import { Event } from 'laya/events/Event';
 import { default as random } from 'lodash/random';
 import { Observable, Subscriber } from 'rxjs';
 import { ui } from 'ui/layaMaxUI';
-import { fade_in } from 'utils/animate';
+import { fade_in, setStyle } from 'utils/animate';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
-import { playSkeleton, playSkeletonOnce } from 'utils/utils';
+import { playSkeleton, playSkeletonOnce, setProps } from 'utils/utils';
 import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
@@ -30,8 +30,8 @@ export default class GameView extends ui.scenes.game.gameUI
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
         )) as GameView;
-        viewState.game = game;
-        viewState.ani_wrap = game.ani_wrap;
+        const { ani_wrap, ani_overlay } = game;
+        setProps(viewState, { game, ani_wrap, ani_overlay });
         return game;
     }
     public onEnable() {
@@ -105,8 +105,8 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
-        const { pool, gun_wrap, ani_wrap, bubble_wall } = this;
-        pool.scaleY = gun_wrap.scaleY = ani_wrap.scaleY = -1;
+        const { pool, gun_wrap, ani_wrap, ani_overlay } = this;
+        pool.scaleY = gun_wrap.scaleY = ani_overlay.scaleY = ani_wrap.scaleY = -1;
         this.upside_down = true;
     }
     public addFish(info: FishViewInfo & { horizon_turn: boolean }) {

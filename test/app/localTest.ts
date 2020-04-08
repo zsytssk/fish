@@ -4,13 +4,17 @@ import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 import { getParams } from 'utils/utils';
+import { modelState } from 'model/modelState';
+import { test_data } from '../testData';
 
 export async function localTest() {
     await mock_web_socket_test.runTest('create');
+    modelState.app.user_info.setUserId(test_data.userId);
     mock_web_socket_test.runTest(ServerEvent.Shoot);
     mock_web_socket_test.runTest(ServerEvent.Hit);
     mock_web_socket_test.runTest(ServerEvent.FishBomb);
     mock_web_socket_test.runTest(ServerEvent.UseBomb);
+    mock_web_socket_test.runTest(ServerEvent.UseLock);
     game_test.runTest('enter_game', [true]).then(() => {
         fish_test.runTest('get_click_fish');
         player_test.runTest('add_cur_player');

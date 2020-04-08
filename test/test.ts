@@ -2,7 +2,7 @@ import { ctrlState } from 'ctrl/ctrlState';
 import honor from 'honor';
 import { modelState } from 'model/modelState';
 import { viewState } from 'view/viewState';
-import { localSocketTest, localTest } from './app/testEnv';
+import { localSocketTest, localTest } from './app/localTest';
 import { test } from './testBuilder';
 import {
     getCurPlayer,

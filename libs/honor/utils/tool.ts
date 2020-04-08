@@ -9,21 +9,27 @@ export function injectAfter<T extends {}, K extends ObjFilterKeys<T, Function>>(
     func: Func<any>,
 ) {
     const ori_fun = instance[fun_name] as Func<any>;
-    instance[fun_name] = function(...params: any[]) {
+    instance[fun_name] = function (...params: any[]) {
         const result = ori_fun.apply(this, [...params]);
-        if (result instanceof Promise) {
-            result.then(() => {
-                func(this, result, ...params);
-            });
-        } else {
+        afterPromise(result, () => {
             func(this, result, ...params);
-        }
+        });
         return result;
     } as any;
 
     return () => {
         instance[fun_name] = ori_fun as any;
     };
+}
+
+function afterPromise(result: any, fun: () => void) {
+    if (result instanceof Promise) {
+        result.then(_result => {
+            afterPromise(_result, fun);
+        });
+    } else {
+        fun();
+    }
 }
 
 export function injectProto<T extends {}, K extends ObjFilterKeys<T, Function>>(
@@ -33,7 +39,7 @@ export function injectProto<T extends {}, K extends ObjFilterKeys<T, Function>>(
     once?: boolean,
 ) {
     const ori_fun = ctor.prototype[fun_name];
-    ctor.prototype[fun_name] = function(...params: any[]) {
+    ctor.prototype[fun_name] = function (...params: any[]) {
         const result = ori_fun.apply(this, [...params]);
         if (result instanceof Promise) {
             result.then(() => {

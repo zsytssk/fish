@@ -40,4 +40,6 @@ export function runAsyncTask<T>(fn: () => Promise<T>, dep: any): Promise<T> {
         dep,
         task,
     });
+
+    return task;
 }

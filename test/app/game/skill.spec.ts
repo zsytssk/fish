@@ -45,20 +45,11 @@ export const skill_test = new Test('skill', runner => {
         fish_test.runTest('add_fish');
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);
-        setTimeout(() => {
-            const fish = [...modelState.app.game.fish_list][0];
-            player.gun.trackFish.track(fish, false);
-
-            player.gun.toggleSpeedUp(true);
-        }, 1000);
+        player.gun.toggleSpeedUp(true);
 
         setTimeout(() => {
             player.gun.toggleSpeedUp(false);
         }, 5000);
-
-        setTimeout(() => {
-            player.gun.trackFish.unTrack();
-        }, 10000);
     });
 
     runner.describe('freezing', () => {

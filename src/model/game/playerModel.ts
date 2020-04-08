@@ -132,7 +132,8 @@ export class PlayerModel extends ComponentManager {
     /** 更新技能的数目 */
     public addSkillNum(id: string, num: number) {
         const skill_model = this.skill_map.get(id);
-        skill_model.skill_core.addNum(num);
+        num = skill_model.skill_core.num + num;
+        skill_model.skill_core.setNum(num);
     }
     public async captureFish(
         pos: Point,

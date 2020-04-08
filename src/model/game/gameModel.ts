@@ -53,6 +53,7 @@ export class GameModel extends ComponentManager {
             this.fish_list.add(fish);
             this.event.emit(GameEvent.AddFish, fish);
             fish.init();
+            return fish;
         } else {
             /** 创建鱼组 */
             const fish_list = createFishGroup(fish_info, this);
@@ -61,6 +62,8 @@ export class GameModel extends ComponentManager {
                 this.event.emit(GameEvent.AddFish, fish);
                 fish.init();
             }
+
+            return fish_list;
         }
     }
     public removeFish(fish: FishModel) {

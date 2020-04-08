@@ -69,6 +69,7 @@ async function cleanDist() {
         '',
     );
     await write(dist_index, index_str);
+    console.log(dist_path);
 }
 
 function genDate() {

@@ -117,7 +117,7 @@ function createAim(type: AimType) {
     const { aim_ani_map } = state;
     const { ani_wrap } = viewState;
     let aim_ani = aim_ani_map.get(type);
-    if (!aim_ani) {
+    if (!aim_ani || aim_ani.destroyed) {
         aim_ani = createSprite('other', type) as Skeleton;
         ani_wrap.addChild(aim_ani);
         aim_ani_map.set(type, aim_ani);

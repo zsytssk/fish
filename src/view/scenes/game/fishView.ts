@@ -25,6 +25,7 @@ export class FishView extends Sprite {
         this.mouseEnabled = true;
         this.mouseThrough = false;
         this.visible = false;
+
     }
     /** 创建 ani and shadow */
     private initAni() {
@@ -40,15 +41,17 @@ export class FishView extends Sprite {
         const [top, right, bottom, left] = offset;
         const width = right + left;
         const height = top + bottom;
-        const pivot_x = top;
-        const pivot_y = left;
+        const pivot_x = left;
+        const pivot_y = top;
         this.size(width, height);
+
         this.pivot(pivot_x, pivot_y);
         fish_ani.pos(pivot_x, pivot_y);
         this.addChild(fish_ani);
         playSkeleton(fish_ani, 0, true);
         this.fish_ani = fish_ani;
         this.turn_ani = turn_ani;
+
     }
     /** 创建 ani and shadow */
     public playSwimAni() {

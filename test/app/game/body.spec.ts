@@ -4,18 +4,19 @@ import * as SAT from 'sat';
 import { Test } from 'testBuilder';
 import GameView from 'view/scenes/game/gameView';
 import honor from 'honor';
+import { Sprite } from 'laya/display/Sprite';
 
 export const body_test = new Test('body', runner => {
     let init_show_shape = false;
     runner.describe('show_shape', () => {
         if (!init_show_shape) {
             init_show_shape = true;
-            const sprite_map = new Map() as Map<BodyCom, Laya.Sprite>;
+            const sprite_map = new Map() as Map<BodyCom, Sprite>;
             /** 绘制形状 */
             injectProto(BodyCom, 'update', (obj: BodyCom) => {
                 let sprite = sprite_map.get(obj);
                 if (!sprite) {
-                    sprite = new Laya.Sprite();
+                    sprite = new Sprite();
                     const game_view = honor.director.runningScene as GameView;
                     sprite.zOrder = 10;
                     game_view.pool.addChild(sprite);
@@ -34,6 +35,10 @@ export const body_test = new Test('body', runner => {
                 }
                 sprite.destroy();
             });
+
+            injectProto(FishView, 'initAni', (obj: FishView) => {
+                obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
+            });
         }
     });
 
@@ -46,7 +51,7 @@ export const body_test = new Test('body', runner => {
 });
 
 /** 绘制形状 */
-function drawShape(node: Laya.Sprite, shapes: ShapeInfo[]) {
+function drawShape(node: Sprite, shapes: ShapeInfo[]) {
     node.graphics.clear();
 
     for (const item of shapes) {

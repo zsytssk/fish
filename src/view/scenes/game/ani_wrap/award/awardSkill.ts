@@ -41,7 +41,7 @@ function createUI() {
     const { ani_wrap } = viewState;
     const { upside_down } = viewState.game;
     let item_ui = pool.pop();
-    if (!item_ui) {
+    if (!item_ui || item_ui.destroyed) {
         item_ui = new SkillItemView();
         // item_ui.num_label.fontSize = 30;
         item_ui.pivot(item_ui.width / 2, item_ui.height / 2);

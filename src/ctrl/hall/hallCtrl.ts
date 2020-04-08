@@ -26,15 +26,12 @@ export class HallCtrl {
     constructor(view: HallView) {
         this.view = view;
         this.init();
-
-        console.log(`enter:>HallView`, 1);
     }
     private static instance: HallCtrl;
-    public static async preEnter() {
+    public static preEnter() {
         if (this.instance) {
             return this.instance;
         }
-
         return runAsyncTask(() => {
             return HallView.preEnter().then((view: HallView) => {
                 const ctrl = new HallCtrl(view);

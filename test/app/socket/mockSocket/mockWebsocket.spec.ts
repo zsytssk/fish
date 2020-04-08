@@ -41,7 +41,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                 event.emit(ServerEvent.Hit, {
                     userId: test_data.userId,
                     eid: data.eid,
-                    win: 0,
+                    win: 100,
                     drop: [
                         { itemId: SkillMap.Bomb, itemNum: 10 },
                         { itemId: SkillMap.TrackFish, itemNum: 10 },
@@ -114,8 +114,6 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
     });
 
     runner.describe('other' + ServerEvent.UseBomb, async () => {
-        mock_web_socket_test.runTest('create');
-        await game_test.runTest('enter_game');
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         player_test.runTest('add_other_player');
 
@@ -141,8 +139,6 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
     });
 
     runner.describe('freeze', async () => {
-        mock_web_socket_test.runTest('create');
-        await game_test.runTest('enter_game');
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
         sendEvent.on(ServerEvent.UseFreeze, () => {
@@ -162,8 +158,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         });
     });
 
-    runner.describe('lock_fish', async () => {
-        mock_web_socket_test.runTest('create');
+    runner.describe(ServerEvent.UseLock, async () => {
         await game_test.runTest('enter_game');
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
@@ -174,21 +169,29 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     return item.id;
                 });
 
-                event.emit(ServerEvent.UseLock, {
-                    userId: test_data.userId,
-                    duration: 0,
-                    count: 1000,
-                    lockedFish: fish_arr[0],
-                } as UseLockRep);
+                event.emit(
+                    ServerEvent.UseLock,
+                    {
+                        userId: test_data.userId,
+                        duration: 0,
+                        count: 1000,
+                        lockedFish: fish_arr[0],
+                    } as UseLockRep,
+                    200,
+                );
             });
         });
         sendEvent.on(ServerEvent.LockFish, (data: LockFishReq) => {
             sleep(0.1).then(() => {
                 const { eid } = data;
-                event.emit(ServerEvent.LockFish, {
-                    userId: test_data.userId,
-                    eid,
-                } as LockFishRep);
+                event.emit(
+                    ServerEvent.LockFish,
+                    {
+                        userId: test_data.userId,
+                        eid,
+                    } as LockFishRep,
+                    200,
+                );
             });
         });
     });

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":2,
-    "selecteID":20,
+    "selectedBox":9,
+    "selecteID":52,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -248,7 +248,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,btn_change_label",
-                                    "props":{"y":21,"var":"btn_change_label","text":"充值","height":21,"fontSize":21,"color":"#3764b2","centerX":0,"bold":true,"align":"center"},
+                                    "props":{"y":21,"var":"btn_change_label","text":"充值","height":21,"fontSize":21,"font":"Arial","color":"#3764b2","centerX":0,"bold":true,"align":"center"},
                                     "nodeParent":10,
                                     "label":"btn_change_label",
                                     "isOpen":null,
@@ -291,7 +291,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,btn_get_label",
-                                    "props":{"y":21,"var":"btn_get_label","text":"提币","fontSize":21,"color":"#3764b2","centerX":0,"bold":true},
+                                    "props":{"y":21,"var":"btn_get_label","text":"提币","fontSize":21,"font":"Arial","color":"#3764b2","centerX":0,"bold":true},
                                     "nodeParent":9,
                                     "label":"btn_get_label",
                                     "isOpen":true,
