@@ -2,6 +2,8 @@ import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerName, ServerEvent } from 'data/serverEvent';
 import { ShopData } from './shop';
 import { LotteryPopData } from './lottery';
+import { ctrlState } from 'ctrl/ctrlState';
+import { modelState } from 'model/modelState';
 
 export function getShopInfo() {
     return new Promise((resolve, reject) => {
@@ -50,6 +52,11 @@ export function buyItem(itemId: string, num = 1) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Buy, (data: BuyRep) => {
+            ctrlState.game.addItemNum({
+                userId: modelState.app.user_info.user_id,
+                id: itemId,
+                num,
+            });
             resolve(true);
         });
         socket.send(ServerEvent.Buy, { itemId, num } as BuyReq);

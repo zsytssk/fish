@@ -87,7 +87,6 @@ export class HallCtrl {
             view.setNickname(nickname);
         });
         view.setFlagData(getAllLangList());
-        user_info.setLang('en' as Lang);
     }
     public selectCoin = (index: number) => {
         if (index === -1) {
@@ -100,7 +99,7 @@ export class HallCtrl {
         const { user_info } = modelState.app;
         const coin_type = list.array[index].coin_name;
         user_info.setCurBalance(coin_type);
-        view.toggleCoinMenu();
+        view.toggleCoinMenu(false);
     }; // tslint:disable-line
     public selectFlag = (index: number) => {
         if (index === -1) {
@@ -114,7 +113,7 @@ export class HallCtrl {
         const flag_type = list.array[index].flag_type;
 
         user_info.setLang(flag_type);
-        view.toggleFlagMenu();
+        view.toggleFlagMenu(false);
     }; // tslint:disable-line
 
     public onUserAccount(data: UserAccountRep) {

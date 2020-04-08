@@ -25,6 +25,11 @@ export class UserInfoModel extends ComponentManager {
     public account_map: AccountMap = new Map();
     constructor() {
         super();
+        this.init();
+    }
+    private init() {
+        const lang = (localStorage.getItem('lang') || 'en') as Lang;
+        this.setLang(lang);
     }
     public get event() {
         let event = this.getCom(EventCom);
@@ -48,6 +53,7 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.lang = lang;
+        localStorage.setItem('lang', lang);
         this.event.emit(UserInfoEvent.LangChange, lang);
     }
     public setUserId(name: string) {

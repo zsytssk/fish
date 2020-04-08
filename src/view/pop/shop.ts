@@ -209,7 +209,6 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             buyItem(item_id, item_num).then(() => {
                 const lang = getLang();
                 const { buySuccess } = InternationalTip[lang];
-
                 TipPop.tip(buySuccess);
             });
         });

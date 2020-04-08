@@ -38,6 +38,11 @@ import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 
+type AddItemInfo = {
+    userId: string;
+    id: string;
+    num: number;
+};
 /** 游戏ctrl */
 export class GameCtrl {
     public view: GameView;
@@ -207,6 +212,11 @@ export class GameCtrl {
         player.updateInfo({
             bullet_cost: multiple,
         });
+    }
+    public addItemNum(data: AddItemInfo) {
+        const { userId, id, num } = data;
+        const player = this.model.getPlayerById(userId);
+        player.addSkillNum(id, num);
     }
     public changeSkin(skinId: string) {
         // 取最后一位
