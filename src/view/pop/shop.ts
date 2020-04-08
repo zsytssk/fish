@@ -9,6 +9,8 @@ import { ui } from 'ui/layaMaxUI';
 import { log } from 'utils/log';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
 import TipPop from './tip';
+import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -83,7 +85,6 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             null,
             false,
         );
-        log('EmptyScene enable');
     }
     public onEnable() {
         if (!this.is_init) {
@@ -98,11 +99,13 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         const gun_arr = [] as GunRenderData[];
         for (const gun_item of gun) {
             const {
-                name: gun_name,
+                name,
                 id: gun_id,
                 status: gun_status,
                 price: gun_price,
             } = gun_item;
+
+            const gun_name = getItemName(gun_id, name);
 
             gun_arr.push({
                 gun_name,
@@ -116,12 +119,13 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         const item_arr = [] as ItemRenderData[];
         for (const item_item of item) {
             const {
-                name: item_name,
+                name,
                 id: item_id,
                 price: item_price,
                 num: item_num,
             } = item_item;
 
+            const item_name = getItemName(item_id, name);
             item_arr.push({
                 item_name,
                 item_id,
@@ -136,6 +140,9 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             index
         ] as GunRenderData;
         const { name_label, icon, stack_btn, icon_check, select_bd } = box;
+        const lang = getLang();
+        const { use, inUse } = InternationalTip[lang];
+
         name_label.text = gun_name;
         icon.skin = `image/pop/shop/icon/${gun_id}.png`;
         stack_btn.selectedIndex = gun_status;
@@ -153,18 +160,14 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 });
             });
         } else if (gun_status === GunSkinStatus.Have) {
+            cur_label.text = use;
             cur_btn.on(Event.CLICK, cur_btn, () => {
                 useGunSkin(gun_id).then(() => {
                     this.useGunSkin(gun_id);
                 });
             });
         } else if (gun_status === GunSkinStatus.Used) {
-            // cur_btn.visible = false;
-            cur_btn.on(Event.CLICK, cur_btn, () => {
-                // buyItem(gun_id).then(() => {
-                //     this.buyGunSkin(gun_id);
-                // });
-            });
+            cur_label.text = inUse;
             icon_check.visible = true;
             select_bd.visible = true;
         }
@@ -204,8 +207,47 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         btn_buy.offAll();
         btn_buy.on(Event.CLICK, btn_buy, () => {
             buyItem(item_id, item_num).then(() => {
-                TipPop.tip('购买成功');
+                const lang = getLang();
+                const { buySuccess } = InternationalTip[lang];
+
+                TipPop.tip(buySuccess);
             });
         });
     }; // tslint:disable-line
+    public onAwake() {
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+    }
+    private initLang(lang: Lang) {
+        const {} = InternationalTip[lang];
+        const { title } = this;
+
+        /** @lang */
+        // title.skin = '';
+    }
+    public destroy() {
+        offLangChange(this);
+    }
+}
+
+function getItemName(id: string, name: string) {
+    const lang = getLang();
+    const { skin, bomb, freeze, lock } = InternationalTip[lang];
+    let suffer_prefix = '';
+    if (name.indexOf('皮肤') !== -1) {
+        suffer_prefix = name.replace('皮肤', '');
+    }
+    let item_name = '';
+    if (id === '2001') {
+        item_name = lock;
+    } else if (id === '2002') {
+        item_name = freeze;
+    } else if (id === '2003') {
+        item_name = bomb;
+    } else {
+        item_name = skin;
+    }
+
+    return item_name + suffer_prefix;
 }

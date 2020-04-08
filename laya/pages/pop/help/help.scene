@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":10,
-    "selecteID":37,
+    "selectedBox":15,
+    "selecteID":56,
     "searchKey":"Dialog",
     "props":{"width":1050,"sceneColor":"#000000","sceneBg":"laya/views/pop/help.png","height":710},
     "nodeParent":-1,
-    "maxID":38,
+    "maxID":57,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -72,10 +72,10 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "searchKey":"Label",
-                    "props":{"y":32,"x":483,"text":"帮助","strokeColor":"#024b7d","stroke":3,"fontSize":43,"color":"#ffffff"},
+                    "searchKey":"Label,title",
+                    "props":{"y":32,"x":483,"var":"title","text":"帮助","strokeColor":"#024b7d","stroke":3,"fontSize":43,"color":"#ffffff"},
                     "nodeParent":10,
-                    "label":"Label",
+                    "label":"title",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
@@ -102,7 +102,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,glr",
-            "props":{"y":120,"x":58,"width":929,"var":"glr","height":536},
+            "props":{"y":123,"x":60.5,"width":929,"var":"glr","height":536},
             "nodeParent":2,
             "label":"glr",
             "isOpen":true,
@@ -115,7 +115,7 @@
                     "x":30,
                     "type":"Tab",
                     "searchKey":"Tab,pagination",
-                    "props":{"y":482,"x":426,"width":76,"selectedIndex":0,"name":"pagination","height":20},
+                    "props":{"y":490,"x":426,"width":76,"selectedIndex":0,"name":"pagination","height":20},
                     "nodeParent":9,
                     "label":"pagination",
                     "isOpen":true,
@@ -153,13 +153,28 @@
                             "compId":36,
                             "child":[
                                 ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Button",
+                            "searchKey":"Button,item2",
+                            "props":{"y":0,"x":112,"width":20,"stateNum":"2","skin":"image/pop/help/pagination.png","name":"item2","height":21},
+                            "nodeParent":11,
+                            "label":"item2",
+                            "isOpen":true,
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":43,
+                            "child":[
+                                ]
                         }]
                 },
                 {
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,con",
-                    "props":{"y":0,"x":2,"width":925,"name":"con","height":462},
+                    "props":{"y":0,"x":2,"width":925,"name":"con","height":488},
                     "nodeParent":9,
                     "label":"con",
                     "isOpen":true,
@@ -172,7 +187,7 @@
                             "x":45,
                             "type":"ViewStack",
                             "searchKey":"ViewStack,list",
-                            "props":{"y":0,"x":0,"width":931,"selectedIndex":1,"name":"list","height":462},
+                            "props":{"y":0,"x":0,"width":931,"selectedIndex":2,"name":"list","height":482},
                             "nodeParent":28,
                             "label":"list",
                             "isOpen":true,
@@ -196,59 +211,82 @@
                                     "child":[
                                         {
                                             "x":75,
-                                            "type":"Image",
-                                            "searchKey":"Image",
-                                            "props":{"y":47,"x":0,"width":925,"skin":"image/pop/help/con_bg.png","sizeGrid":"46,30,42,36","height":410},
+                                            "type":"Box",
+                                            "searchKey":"Box,item0_wrap",
+                                            "props":{"y":0,"x":0,"var":"item0_wrap"},
                                             "nodeParent":16,
-                                            "label":"Image",
-                                            "isDirectory":false,
-                                            "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":31,
-                                            "child":[
-                                                ]
-                                        },
-                                        {
-                                            "x":75,
-                                            "type":"Label",
-                                            "searchKey":"Label",
-                                            "props":{"y":0,"x":0,"width":910,"text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","height":24,"fontSize":21,"color":"#f9fffe"},
-                                            "nodeParent":16,
-                                            "label":"Label",
-                                            "isDirectory":false,
-                                            "isAniNode":true,
-                                            "hasChild":false,
-                                            "compId":29,
-                                            "child":[
-                                                ]
-                                        },
-                                        {
-                                            "x":75,
-                                            "type":"List",
-                                            "searchKey":"List,fish_list",
-                                            "props":{"y":62,"x":13,"width":904,"var":"fish_list","spaceY":20,"spaceX":20,"repeatY":3,"repeatX":8,"height":376},
-                                            "nodeParent":16,
-                                            "label":"fish_list",
-                                            "isOpen":true,
+                                            "label":"item0_wrap",
+                                            "isOpen":null,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
-                                            "compId":30,
+                                            "compId":55,
                                             "child":[
                                                 {
-                                                    "x":90,
-                                                    "type":"UIView",
-                                                    "source":"pop/help/helpItem.scene",
-                                                    "searchKey":"UIView,item",
-                                                    "props":{"y":0,"x":0,"renderType":"render","name":"item"},
-                                                    "nodeParent":30,
-                                                    "label":"item",
+                                                    "type":"Label",
+                                                    "searchKey":"Label,intro1",
+                                                    "props":{"y":0,"x":0,"wordWrap":true,"width":910,"var":"intro1","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f9fffe"},
+                                                    "nodeParent":55,
+                                                    "label":"intro1",
                                                     "isDirectory":false,
-                                                    "isAniNode":false,
+                                                    "isAniNode":true,
                                                     "hasChild":false,
-                                                    "compId":32,
+                                                    "compId":29,
                                                     "child":[
                                                         ]
+                                                },
+                                                {
+                                                    "type":"Box",
+                                                    "searchKey":"Box",
+                                                    "props":{"y":68,"x":0},
+                                                    "nodeParent":55,
+                                                    "label":"Box",
+                                                    "isOpen":false,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":50,
+                                                    "child":[
+                                                        {
+                                                            "type":"Image",
+                                                            "searchKey":"Image",
+                                                            "props":{"width":925,"skin":"image/pop/help/con_bg.png","sizeGrid":"46,30,42,36","height":410},
+                                                            "nodeParent":50,
+                                                            "label":"Image",
+                                                            "isDirectory":false,
+                                                            "isAniNode":true,
+                                                            "hasChild":false,
+                                                            "compId":31,
+                                                            "child":[
+                                                                ]
+                                                        },
+                                                        {
+                                                            "type":"List",
+                                                            "searchKey":"List,fish_list",
+                                                            "props":{"y":16,"x":10,"width":904,"var":"fish_list","spaceY":20,"spaceX":17,"repeatY":3,"repeatX":8,"height":376},
+                                                            "nodeParent":50,
+                                                            "label":"fish_list",
+                                                            "isOpen":false,
+                                                            "isDirectory":true,
+                                                            "isAniNode":true,
+                                                            "hasChild":true,
+                                                            "compId":30,
+                                                            "child":[
+                                                                {
+                                                                    "type":"UIView",
+                                                                    "source":"pop/help/helpItem.scene",
+                                                                    "searchKey":"UIView,item",
+                                                                    "props":{"y":1,"x":0,"renderType":"render","name":"item"},
+                                                                    "nodeParent":30,
+                                                                    "label":"item",
+                                                                    "isDirectory":false,
+                                                                    "isAniNode":false,
+                                                                    "hasChild":false,
+                                                                    "compId":32,
+                                                                    "child":[
+                                                                        ]
+                                                                }]
+                                                        }]
                                                 }]
                                         }]
                                 },
@@ -256,7 +294,7 @@
                                     "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,item1",
-                                    "props":{"y":0,"x":0,"width":924,"var":"item1","height":462},
+                                    "props":{"y":0,"x":0,"width":924,"var":"item1","height":488},
                                     "nodeParent":14,
                                     "label":"item1",
                                     "isOpen":true,
@@ -267,29 +305,134 @@
                                     "child":[
                                         {
                                             "x":75,
-                                            "type":"List",
-                                            "searchKey":"List,skill_list",
-                                            "props":{"y":0,"x":-1,"width":927,"var":"skill_list","spaceY":20,"repeatY":4,"repeatX":1,"height":471},
+                                            "type":"Box",
+                                            "searchKey":"Box,item1_wrap",
+                                            "props":{"y":0,"x":-1,"var":"item1_wrap"},
                                             "nodeParent":15,
-                                            "label":"skill_list",
-                                            "isOpen":true,
+                                            "label":"item1_wrap",
+                                            "isOpen":null,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
-                                            "compId":35,
+                                            "compId":56,
                                             "child":[
                                                 {
-                                                    "x":90,
-                                                    "type":"UIView",
-                                                    "source":"pop/help/skillItem.scene",
-                                                    "searchKey":"UIView,item",
-                                                    "props":{"y":19,"x":-1,"renderType":"render","name":"item"},
-                                                    "nodeParent":35,
-                                                    "label":"item",
+                                                    "type":"Label",
+                                                    "searchKey":"Label,intro2",
+                                                    "props":{"x":1,"wordWrap":true,"width":910,"var":"intro2","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f9fffe"},
+                                                    "nodeParent":56,
+                                                    "label":"intro2",
                                                     "isDirectory":false,
-                                                    "isAniNode":false,
+                                                    "isAniNode":true,
                                                     "hasChild":false,
-                                                    "compId":34,
+                                                    "compId":38,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"List",
+                                                    "searchKey":"List,skill_list",
+                                                    "props":{"y":21,"width":927,"var":"skill_list","spaceY":15,"repeatY":4,"repeatX":1,"height":471},
+                                                    "nodeParent":56,
+                                                    "label":"skill_list",
+                                                    "isOpen":false,
+                                                    "isDirectory":true,
+                                                    "isAniNode":true,
+                                                    "hasChild":true,
+                                                    "compId":35,
+                                                    "child":[
+                                                        {
+                                                            "type":"UIView",
+                                                            "source":"pop/help/skillItem.scene",
+                                                            "searchKey":"UIView,item",
+                                                            "props":{"y":19,"x":-1,"renderType":"render","name":"item"},
+                                                            "nodeParent":35,
+                                                            "label":"item",
+                                                            "isDirectory":false,
+                                                            "isAniNode":false,
+                                                            "hasChild":false,
+                                                            "compId":34,
+                                                            "child":[
+                                                                ]
+                                                        }]
+                                                }]
+                                        }]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Box",
+                                    "searchKey":"Box,item2",
+                                    "props":{"y":0,"x":0,"width":924,"var":"item2","height":462},
+                                    "nodeParent":14,
+                                    "label":"item2",
+                                    "isOpen":true,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":39,
+                                    "child":[
+                                        {
+                                            "x":75,
+                                            "type":"Box",
+                                            "searchKey":"Box,item2_wrap",
+                                            "props":{"y":0,"x":0,"var":"item2_wrap"},
+                                            "nodeParent":39,
+                                            "label":"item2_wrap",
+                                            "isOpen":null,
+                                            "isDirectory":true,
+                                            "isAniNode":true,
+                                            "hasChild":true,
+                                            "compId":54,
+                                            "child":[
+                                                {
+                                                    "type":"Label",
+                                                    "searchKey":"Label,intro3",
+                                                    "props":{"y":0,"x":0,"wordWrap":true,"width":910,"var":"intro3","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f9fffe"},
+                                                    "nodeParent":54,
+                                                    "label":"intro3",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":40,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Label",
+                                                    "searchKey":"Label,intro31",
+                                                    "props":{"y":45,"x":0,"wordWrap":true,"width":910,"var":"intro31","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f9fffe"},
+                                                    "nodeParent":54,
+                                                    "label":"intro31",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":44,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Label",
+                                                    "searchKey":"Label,intro4",
+                                                    "props":{"y":176,"x":0,"wordWrap":true,"width":910,"var":"intro4","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f9fffe"},
+                                                    "nodeParent":54,
+                                                    "label":"intro4",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":52,
+                                                    "child":[
+                                                        ]
+                                                },
+                                                {
+                                                    "type":"Label",
+                                                    "searchKey":"Label,intro41",
+                                                    "props":{"y":221,"x":0,"wordWrap":true,"width":910,"var":"intro41","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f9fffe"},
+                                                    "nodeParent":54,
+                                                    "label":"intro41",
+                                                    "isDirectory":false,
+                                                    "isAniNode":true,
+                                                    "hasChild":false,
+                                                    "compId":53,
                                                     "child":[
                                                         ]
                                                 }]

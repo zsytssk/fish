@@ -172,13 +172,14 @@
                     "props":{"y":0,"x":0,"stateNum":"1","skin":"image/pop/shop/btn_use.png","name":"item1"},
                     "nodeParent":11,
                     "label":"item1",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":14,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,label",
                             "props":{"y":5,"x":9,"width":120,"valign":"middle","text":"使 用","name":"label","height":41,"fontSize":24,"color":"#914516","align":"center"},

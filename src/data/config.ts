@@ -1,3 +1,5 @@
+import { InternationalTip, International } from './internationalConfig';
+
 declare global {
     interface Window {
         CDN_VERSION: string;
@@ -33,6 +35,7 @@ export enum SkillMap {
     Freezing = '2002',
     Bomb = '2003',
     Auto = 'A2004',
+    Super = 'A2004',
 }
 
 export const SkillNameMap = {
@@ -40,4 +43,5 @@ export const SkillNameMap = {
     [SkillMap.Bomb]: 'bomb',
     [SkillMap.TrackFish]: 'aim',
     [SkillMap.Auto]: 'auto',
+    [SkillMap.Super]: 'super',
 };

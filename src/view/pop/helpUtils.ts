@@ -107,17 +107,18 @@ export const test_fish_list = [
 export const test_skill_list = [
     {
         id: SkillMap.Bomb,
-        intro:
-            '冰冻：主动技能，可以通过打死某种鱼获得，也可以购买，使用后冻结当前屏幕内的大 部分鱼',
+        intro: '',
     },
     {
         id: SkillMap.Freezing,
-        intro:
-            '冰冻：主动技能，可以通过打死某种鱼获得，也可以购买，使用后冻结当前屏幕内的大 部分鱼',
+        intro: '',
     },
     {
         id: SkillMap.TrackFish,
-        intro:
-            '冰冻：主动技能，可以通过打死某种鱼获得，也可以购买，使用后冻结当前屏幕内的大 部分鱼',
+        intro: '',
+    },
+    {
+        id: SkillMap.Super,
+        intro: '',
     },
 ];

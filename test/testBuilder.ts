@@ -25,6 +25,8 @@ import { utils_test } from './other/utils.spec';
 import { gun_box_view_test } from './app/view/gunBoxView.spec';
 import { skill_item_view_test } from './app/view/SkillItemView.spec';
 import { guide_test } from './app/guide/guide.spec';
+import { help_test } from './app/pop/help.spec';
+import { pop_test } from './app/pop/pop.spec';
 
 const testScope = new Test('top');
 testScope.addChild(
@@ -52,6 +54,8 @@ testScope.addChild(
     utils_test,
     skill_item_view_test,
     guide_test,
+    help_test,
+    pop_test,
 );
 const testBuilder = new TestBuilderCtor(testScope, { is_on: true });
 testBuilder.enableDisableTest(getTestEnable(), getTestIgnore());

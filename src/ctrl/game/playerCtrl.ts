@@ -29,6 +29,8 @@ import { Sprite } from 'laya/display/Sprite';
 import { log } from 'utils/log';
 import { GameCtrl } from './gameCtrl';
 import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 // prettier-ignore
 const bullet_cost_arr  =
@@ -178,7 +180,9 @@ export class PlayerCtrl {
             setBulletNum(bullet_num);
         });
         gun_event.on(GunEvent.NotEnoughBulletNum, () => {
-            AlertPop.alert('子弹数目不够, 是否购买?').then(type => {
+            const lang = getLang();
+            const { buyBulletTip } = InternationalTip[lang];
+            AlertPop.alert(buyBulletTip).then(type => {
                 if (type === 'confirm') {
                     ShopPop.preEnter();
                 }

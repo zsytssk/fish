@@ -1,4 +1,4 @@
-import { Lang } from 'data/internationalConfig';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 import { modelState } from 'model/modelState';
 import { AccountMap, UserInfoEvent } from 'model/userInfo/userInfoModel';
 
@@ -11,6 +11,16 @@ export function onLangChange(item: any, callback: (lang: Lang) => void) {
             callback(lang);
         }
     });
+}
+export function getLang() {
+    const { user_info } = modelState.app;
+    const { lang } = user_info;
+    return lang;
+}
+
+export function offLangChange(item: any) {
+    const { event } = modelState.app.user_info;
+    event.offAllCaller(item);
 }
 export function onCurBalanceChange(
     item: any,
@@ -30,12 +40,16 @@ export function onNicknameChange(
     callback: (nickname: string) => void,
 ) {
     const { user_info } = modelState.app;
-    const { event, nickname } = user_info;
+    const { event } = user_info;
+    let { nickname } = user_info;
     event.on(UserInfoEvent.NicknameChange, callback, item);
     setTimeout(() => {
-        if (nickname) {
-            callback(nickname);
+        const lang = getLang();
+        const { guest } = InternationalTip[lang];
+        if (!nickname) {
+            nickname = guest;
         }
+        callback(nickname);
     });
 }
 export function onAccountChange(

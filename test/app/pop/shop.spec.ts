@@ -3,18 +3,13 @@ import * as shopData from './shop.json';
 import ShopPop from 'view/pop/shop';
 import honor from 'honor';
 
-export const shop_test = new Test('shop', runner => {
+export const shop_test = new Test('shop', (runner) => {
     runner.describe('open', async () => {
         ShopPop.preEnter();
     });
     runner.describe('render_data', async () => {
-        return new Promise(async resolve => {
-            const shop = (await honor.director.openDialog(
-                ShopPop,
-                undefined,
-                undefined,
-                true,
-            )) as ShopPop;
+        return new Promise(async (resolve) => {
+            const shop = (await honor.director.openDialog(ShopPop)) as ShopPop;
             setTimeout(() => {
                 shop.initData(shopData);
                 resolve();
@@ -23,12 +18,7 @@ export const shop_test = new Test('shop', runner => {
     });
     runner.describe('use_gun_skin', async () => {
         await shop_test.runTest('render_data');
-        const pop = (await honor.director.openDialog(
-            ShopPop,
-            undefined,
-            undefined,
-            true,
-        )) as ShopPop;
+        const pop = (await honor.director.openDialog(ShopPop)) as ShopPop;
         pop.useGunSkin(shopData.gun[1].id);
 
         setTimeout(() => {

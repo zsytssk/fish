@@ -4,11 +4,13 @@ import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 import { ui } from 'ui/layaMaxUI';
-import { onNode } from 'utils/layaUtils';
+import { onNode, resizeParent } from 'utils/layaUtils';
 import { createDarkFilter, playSkeletonOnce } from 'utils/utils';
 import AlertPop from './alert';
 import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
 import TipPop from './tip';
+import { offLangChange, onLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 
 type LotteryData = {
     lottery_id: string;
@@ -118,8 +120,6 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         const is_bullet = lottery_type === 'bullet';
         bullet_icon.visible = bullet_num.visible = is_bullet;
         item_type.visible = item_num.visible = !is_bullet;
-        // light.visible = cur;
-        console.log(`test:>is_cur`, cur, get);
         if (!cur) {
             return;
         }
@@ -197,7 +197,9 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         clearInterval(this.lottery_interval);
     }
     private showLotteryAward() {
-        AlertPop.alert('恭喜你获得...');
+        const lang = getLang();
+        const { luckyDrawTip2 } = InternationalTip[lang];
+        AlertPop.alert(luckyDrawTip2);
     }
     private renderExchange = (box: ExchangeItemUI, index: number) => {
         const {
@@ -208,6 +210,8 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             type_label,
             btn_buy,
         } = box;
+        const lang = getLang();
+        const { remaining } = InternationalTip[lang];
 
         const data = this.exchange_list.array[index] as ExchangeRenderData;
         const {
@@ -221,7 +225,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         price_tag.skin = `image/pop/lottery/tag_${exchange_type}.png`;
         num_label.text = exchange_num + '';
         type_label.text = exchange_type + '';
-        remain_label.text = `剩余${cur_num}/${cost_num}`;
+        remain_label.text = `${remaining}${cur_num}/${cost_num}`;
 
         btn_buy.offAll();
         if (cur_num < cost_num) {
@@ -234,10 +238,13 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         }
     }; // tslint:disable-line
     private async runTicketExchange(index: number) {
+        const lang = getLang();
+        const { buySuccess } = InternationalTip[lang];
+
         const data = this.exchange_list.array[index] as ExchangeRenderData;
         const { exchange_id, cost_num, cur_num } = data as ExchangeRenderData;
         await runTicketExchange(exchange_id);
-        TipPop.tip('购买成功..');
+        TipPop.tip(buySuccess);
         this.exchange_list.array[index] = {
             ...data,
             cur_num: cur_num - cost_num,
@@ -247,5 +254,22 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
     public destroy() {
         super.destroy();
         this.completeLottery();
+        offLangChange(this);
+    }
+    public onAwake() {
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+    }
+    private initLang(lang: Lang) {
+        const { title, btn_label, sub_title, exchange_list } = this;
+        const { luckyDraw, redemption } = InternationalTip[lang];
+        btn_label.text = luckyDraw;
+        sub_title.text = redemption;
+        exchange_list.refresh();
+        resizeParent(btn_label, 30, 142);
+
+        /** @lang */
+        // title.skin = ``;
     }
 }

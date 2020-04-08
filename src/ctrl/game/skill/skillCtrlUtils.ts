@@ -30,11 +30,15 @@ import { AudioRes } from 'data/audioRes';
 import { Laya } from 'Laya';
 import { Event } from 'laya/events/Event';
 import { onMouseMove, offMouseMove } from 'utils/layaUtils';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
+    const lang = getLang();
+    const { buySkillTip, posBombTip } = InternationalTip[lang];
     if (model.skill_core.num <= 0) {
-        AlertPop.alert('你还没有当前技能, 是否购买!').then(type => {
+        AlertPop.alert(buySkillTip).then(type => {
             if (type === 'confirm') {
                 ShopPop.preEnter();
             }
@@ -51,7 +55,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         const socket = getSocket('game');
         socket.send(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
-        TopTipPop.tip('请选择屏幕中的位置放置炸弹', 2);
+        TopTipPop.tip(posBombTip, 2);
         const { pool } = viewState.game;
         const { PoolWidth, PoolHeight } = Config;
         activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
@@ -82,6 +86,8 @@ export function skillActiveHandler(
 ) {
     return new Promise((resolve, reject) => {
         const socket = getSocket('game');
+        const lang = getLang();
+        const { aimFish } = InternationalTip[lang];
         if (model instanceof TrackFishModel) {
             if (!is_cur_player) {
                 return;
@@ -89,7 +95,7 @@ export function skillActiveHandler(
             const { fish, is_tip, gun_pos } = info as TrackActiveData;
             if (is_tip) {
                 // 激活锁定之后 提示选中鱼 选中之后发给服务器...
-                TopTipPop.tip('请选中你要攻击的鱼...', 2);
+                TopTipPop.tip(aimFish, 2);
             }
             const fire = !is_tip;
             activeAimFish(fish, fire, gun_pos);

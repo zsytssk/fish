@@ -12,6 +12,8 @@ import {
     getSocket,
 } from '../net/webSocketWrapUtil';
 import { log } from 'utils/log';
+import { getLang } from './hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 /** 登陆用的脚本 */
 export async function login() {
@@ -70,8 +72,10 @@ export function connectSocket(config: SocketConfig) {
         const socket = await createSocket(config);
 
         waitTokenExpire(socket, () => {
+            const lang = getLang();
+            const { logoutTip } = InternationalTip[lang];
             socket.disconnect();
-            AlertPop.alert('登陆断开, 收否刷新页面!').then(type => {
+            AlertPop.alert(logoutTip).then(type => {
                 if (type === 'confirm') {
                     location.reload();
                 }

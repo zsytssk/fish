@@ -1,3 +1,1 @@
-export function test() {
-    alert('test:>');
-}
+export function test() {}

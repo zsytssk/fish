@@ -4,6 +4,8 @@ import ProgressCtrl from 'utils/progressCtrl';
 import { modelState } from 'model/modelState';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 
 /** 声音的弹出层 */
 export default class VoicePop extends ui.pop.alert.voiceUI
@@ -16,6 +18,10 @@ export default class VoicePop extends ui.pop.alert.voiceUI
         honor.director.openDialog(VoicePop);
     }
     public onAwake() {
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+
         const { voice, music } = modelState.app.setting;
         const { music_progress, voice_progress } = this;
         const music_ctrl = new ProgressCtrl(music_progress, this.onMusicChange);
@@ -41,5 +47,15 @@ export default class VoicePop extends ui.pop.alert.voiceUI
         voice_ctrl.destroy();
         this.music_ctrl.destroy();
         this.voice_ctrl.destroy();
+        offLangChange(this);
+    }
+
+    private initLang(lang: Lang) {
+        const { sound_label, music_label, title } = this;
+        const { music, soundEffects, volumeSetting } = InternationalTip[lang];
+
+        title.text = volumeSetting;
+        sound_label.text = soundEffects;
+        music_label.text = music;
     }
 }

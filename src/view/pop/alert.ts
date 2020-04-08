@@ -3,6 +3,8 @@ import { ui } from 'ui/layaMaxUI';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
 import { Event } from 'laya/events/Event';
+import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
@@ -18,6 +20,9 @@ export default class AlertPop extends ui.pop.alert.alertUI
         return await alert.alert(msg, opt);
     }
     public onAwake() {
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
         this.initEvent();
     }
     private initEvent() {
@@ -55,5 +60,15 @@ export default class AlertPop extends ui.pop.alert.alertUI
         }
         this.close_resolve = undefined;
         super.close(type);
+    }
+    private initLang(lang: Lang) {
+        const { title, btn_confirm_label, btn_cancel_label } = this;
+        const { tips, cancel, confirm } = InternationalTip[lang];
+        title.text = tips;
+        btn_confirm_label.text = confirm;
+        btn_cancel_label.text = cancel;
+    }
+    public destroy() {
+        offLangChange(this);
     }
 }

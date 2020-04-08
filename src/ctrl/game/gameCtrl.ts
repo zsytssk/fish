@@ -35,6 +35,8 @@ import VoicePop from 'view/pop/voice';
 import { Event } from 'laya/events/Event';
 import { log } from 'utils/log';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 /** 游戏ctrl */
 export class GameCtrl {
@@ -93,8 +95,11 @@ export class GameCtrl {
             ShopPop.preEnter();
         });
         btn_leave.on(CLICK, this, (e: Event) => {
+            const lang = getLang();
+            const { leaveTip } = InternationalTip[lang];
+
             e.stopPropagation();
-            AlertPop.alert('确定要离开游戏吗?').then(type => {
+            AlertPop.alert(leaveTip).then(type => {
                 if (type === 'confirm') {
                     sendToSocket(ServerEvent.RoomOut);
                 }
@@ -209,14 +214,16 @@ export class GameCtrl {
         const player = this.model.getPlayerById(
             modelState.app.user_info.user_id,
         );
-        log('接收到useskin', skinId);
+        log('接收到use skin', skinId);
         player.changeSkin(skinId);
     }
     public tableOut(data: TableOutRep) {
         const { model } = this;
         const { userId } = data;
         if (isCurUser(userId)) {
-            AlertPop.alert('你被踢出房间, 刷新重新进入', {
+            const lang = getLang();
+            const { kickedTip } = InternationalTip[lang];
+            AlertPop.alert(kickedTip, {
                 hide_cancel: true,
             }).then(() => {
                 location.reload();

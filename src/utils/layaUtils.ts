@@ -8,11 +8,20 @@ import { Event } from 'laya/events/Event';
 export function onStageClick(
     node: Node,
     callback: (event?: Event) => void,
+    ignore_list?: Node[],
     once = false,
 ) {
     let once_observer: Subscriber<Event>;
     const observer = new Observable((subscriber: Subscriber<Event>) => {
         const fn = (_event: Event) => {
+            if (ignore_list) {
+                const target = _event.target;
+                for (const ignore_item of ignore_list) {
+                    if (isClosest(target, ignore_item)) {
+                        return;
+                    }
+                }
+            }
             subscriber.next(_event);
             once_observer = subscriber;
             if (once) {
@@ -122,4 +131,65 @@ export function offMouseMove(node: Sprite) {
             bind_arr.splice(i, 1);
         }
     }
+}
+
+/** 自适应宽度 */
+export function resizeParent(child: Sprite, space: number, min?: number) {
+    const parent = child.parent as Sprite;
+    resizeContain(parent as Sprite, space);
+
+    console.log(parent.width, parent.width < min);
+    if (min && parent.width < min) {
+        parent.width = min;
+    }
+}
+type Dir = 'horizontal' | 'vertical';
+/** 自适应宽度 */
+export function resizeContain(
+    parent: Sprite,
+    space: number,
+    dir = 'horizontal' as Dir,
+) {
+    const { numChildren } = parent;
+
+    let dist = 0;
+    for (let i = 0; i < numChildren; i++) {
+        const item = parent.getChildAt(i) as Sprite;
+        if (dir === 'horizontal') {
+            item.x = dist;
+        } else {
+            item.y = dist;
+        }
+
+        if (dir === 'horizontal') {
+            if (i !== numChildren - 1) {
+                dist += item.width + space;
+            } else {
+                dist += item.width;
+            }
+        } else {
+            if (i !== numChildren - 1) {
+                dist += item.height + space;
+            } else {
+                dist += item.height;
+            }
+        }
+    }
+    const parent_dist = dist + space;
+    if (dir === 'horizontal') {
+        parent.width = parent_dist;
+    } else {
+        parent.height = parent_dist;
+    }
+}
+
+export function isClosest(dom_item: Node, dom_parent: Node) {
+    if (!dom_item) {
+        return false;
+    }
+    if (dom_item === dom_parent) {
+        return true;
+    }
+    const parent = dom_item.parent;
+    return isClosest(parent, dom_parent);
 }

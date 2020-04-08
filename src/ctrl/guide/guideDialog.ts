@@ -9,6 +9,8 @@ import { Rectangle } from 'laya/maths/Rectangle';
 import { callFunc } from 'utils/utils';
 import { NextType } from './core/guideUtils';
 import { fade_in, fade_out } from 'utils/animate';
+import { onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 
 /**
  * @author zhangshiyang
@@ -21,7 +23,10 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     private mask_area: Sprite;
     private blank_area: Sprite;
     public blank_shape: Shape;
-    public click_handler: FuncVoid;
+    public handler: {
+        next: FuncVoid;
+        skip: FuncVoid;
+    };
     public click_center: Point;
     /** 是否强制点击空白区域 */
     public force: boolean;
@@ -35,6 +40,15 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     }
     public onAwake() {
         this.init();
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+    }
+    private initLang(lang: Lang) {
+        const { tourSkip, tourStart } = InternationalTip[lang];
+        const { start_label, skip_label } = this;
+        skip_label.text = tourSkip;
+        start_label.text = tourStart;
     }
     public static async preEnter() {
         const dialog = (await Honor.director.openDialog(
@@ -106,19 +120,15 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
         }
     }
     public initEvent() {
-        const { blank_area, mask_area } = this;
+        const { btn_skip, mask_area } = this;
         Laya.stage.on(Event.RESIZE, this, this.onResize.bind(this));
         mask_area.on(Event.CLICK, this, (e: Event) => {
             const { force } = this;
             const { pointer } = guide_state;
             const { x, y } = this.getMousePoint();
-            const { click_handler } = this;
-            if (!click_handler) {
-                return;
-            }
             if (!force) {
                 pointer.hide();
-                return callFunc(click_handler);
+                return this.forceNext();
             }
             if (!pointer.isShow()) {
                 return;
@@ -127,11 +137,26 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
             pointer.show({ x, y });
             pointer.moveToTarget({ x, y }, this.click_center);
         });
+
+        btn_skip.on(Event.CLICK, this, (e: Event) => {
+            this.forceSkip();
+        });
     }
     public forceNext() {
-        const { click_handler } = this;
-        callFunc(click_handler);
-        this.click_handler = undefined;
+        const { handler } = this;
+        if (!handler) {
+            return;
+        }
+        callFunc(handler.next);
+        this.handler = undefined;
+    }
+    public forceSkip() {
+        const { handler } = this;
+        if (!handler) {
+            return;
+        }
+        callFunc(handler.skip);
+        this.handler = undefined;
     }
     public showNextHandler(type: NextType, then: Promise<any>) {
         const { btn_next, btn_start, blank_area } = this;
@@ -154,7 +179,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
                 });
                 pointer.show(this.click_center, 'target');
             } else if (type === 'start') {
-                // fade_in(btn_start);
+                fade_in(btn_start);
                 btn_start.once(Event.CLICK, btn_start, () => {
                     this.forceNext();
                     btn_start.offAll();
@@ -176,7 +201,10 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
             const { blank_area } = this;
             const { hit } = blank_area.hitArea;
             this.blank_shape = shape;
-            this.click_handler = resolve;
+            this.handler = {
+                next: resolve,
+                skip: reject,
+            };
             this.force = force;
             this.click_center = calcCenterShape(shape);
             this.showBlank();
@@ -227,12 +255,15 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
         mask_area.graphics.clear();
         hit.clear();
 
-        this.click_handler = undefined;
+        this.handler = undefined;
         this.click_center = undefined;
     }
     public hide() {
         this.clearBlank();
         this.close();
+    }
+    public destroy() {
+        offLangChange(this);
     }
 }
 

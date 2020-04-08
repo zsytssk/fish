@@ -14,6 +14,8 @@ import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxPos = 'left' | 'right';
@@ -185,8 +187,10 @@ export default class GameView extends ui.scenes.game.gameUI
         return gun;
     }
     public setBulletNum(num: number) {
+        const lang = getLang();
+        const { remainingBullet } = InternationalTip[lang];
         const { bullet_num } = this;
-        bullet_num.text = `剩余子弹: ` + num;
+        bullet_num.text = `${remainingBullet}: ` + num;
     }
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
@@ -195,9 +199,12 @@ export default class GameView extends ui.scenes.game.gameUI
         return this.skill_box.auto_launch;
     }
     public setExchangeRate(rate: number, currency: string) {
+        const lang = getLang();
+        const { bullet } = InternationalTip[lang];
+
         const { exchange_rate } = this;
         exchange_rate.innerHTML = exchange_rate_tpl
-            .replace('$0', '子弹')
+            .replace('$0', bullet)
             .replace('$1', rate + '')
             .replace('$2', currency);
     }

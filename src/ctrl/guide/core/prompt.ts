@@ -249,7 +249,6 @@ export class PromptGuide {
         }
 
         const result_html = this.jsonToHtml(result);
-        console.log(`test:>`, result_html);
         return result_html;
     }
     /** 将提示的信息json转化为html */

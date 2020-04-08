@@ -11,102 +11,74 @@ import {
     mockShoot,
     resetMockSocketCtor,
 } from 'ctrl/game/gameTest/utils';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 export class NewUserGuide {
     public async start(guide_group: string) {
         await this.showStartPrompt();
+        await this.next();
     }
 
     public async showStartPrompt() {
-        const { guide_dialog } = guide_state;
+        const lang = getLang();
+        const { tour1, tour2, tour3, tour4, tour5, tour6 } = InternationalTip[
+            lang
+        ];
 
-        const hall_ctrl = await HallCtrl.preEnter();
-        if (!(hall_ctrl instanceof HallCtrl)) {
-            return;
+        let game_ctrl: GameTestCtrl;
+        try {
+            const { guide_dialog } = guide_state;
+
+            const hall_ctrl = await HallCtrl.preEnter();
+            if (!(hall_ctrl instanceof HallCtrl)) {
+                return;
+            }
+
+            await waitCreateSocket(ServerName.Hall);
+            const {
+                header: { btn_coin_select },
+                guide2,
+            } = hall_ctrl.view;
+
+            await showPromptByNode(btn_coin_select, [tour1], 'bottom', true);
+
+            await showPromptByNode(guide2, [tour2], 'right', true);
+
+            // const game_ctrl = await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
+            hall_ctrl.destroy();
+            game_ctrl = await GameTestCtrl.preEnter();
+
+            const { bullet_box } = game_ctrl.view;
+            await sleep(1);
+            const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
+            guide_dialog.setBtnNextDir(dir);
+            await showPromptByNode(bullet_box, [tour3], dir, true);
+
+            const player_ctrl = [...game_ctrl.player_list][0];
+            const cur_gun = player_ctrl.view;
+            await sleep(1);
+            await showPromptByNode(cur_gun, [tour4], dir, true);
+            sleep(2);
+            genFishInfo(game_ctrl);
+
+            const fish = game_ctrl.fish_view;
+            await showPromptByNode(fish, [tour5], 'right', true, 'point');
+
+            await mockShoot();
+
+            await sleep(1);
+
+            const { skill_box } = game_ctrl.view;
+            guide_dialog.setBtnNextDir('right');
+            await showPromptByNode(skill_box, [tour6], dir, true, 'start');
+            resetMockSocketCtor(game_ctrl);
+        } catch (err) {
+            console.log(`NewUserGuide:skip:>`, err);
+            resetMockSocketCtor(game_ctrl);
         }
-
-        await waitCreateSocket(ServerName.Hall);
-        await sleep(1);
-        const {
-            header: { btn_coin_select },
-            guide2,
-        } = hall_ctrl.view;
-        await sleep(1);
-
-        await showPromptByNode(
-            btn_coin_select,
-            ['1.点击下拉按钮选择币种'],
-            'bottom',
-            true,
-        );
-
-        await showPromptByNode(
-            guide2,
-            ['2.选择币种不同<br/> 游戏房间也会随之切换'],
-            'right',
-            true,
-        );
-
-        // const game_ctrl = await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
-        const game_ctrl = await GameTestCtrl.preEnter();
-
-        const { bullet_box } = game_ctrl.view;
-        await sleep(1);
-        const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
-        guide_dialog.setBtnNextDir(dir);
-        await showPromptByNode(
-            bullet_box,
-            [
-                '进入正式场后，系统会自动将您的数字货币兑换成子弹，请放心， 在您离开房间后，所有剩余子弹将会再兑换成您的数字货币',
-            ],
-            dir,
-            true,
-        );
-
-        const { skill_box } = game_ctrl.view;
-        await sleep(1);
-        guide_dialog.setBtnNextDir('right');
-        await showPromptByNode(
-            skill_box,
-            ['可以使用道具，帮助您捕获更多更大的鱼'],
-            dir,
-            true,
-        );
-
-        const player_ctrl = [...game_ctrl.player_list][0];
-        const cur_gun = player_ctrl.view;
-        await sleep(1);
-        await showPromptByNode(
-            cur_gun,
-            ['控制您的炮台，点击并捕捉鱼，获得更多子弹'],
-            dir,
-            true,
-        );
-        sleep(2);
-        genFishInfo(game_ctrl);
-
-        const fish = game_ctrl.fish_view;
-        await showPromptByNode(
-            fish,
-            ['点击屏幕发射子弹，捕捉鱼群，获得更多子弹'],
-            'right',
-            true,
-            'point',
-        );
-
-        await mockShoot();
-
-        const { btn_start } = guide_dialog;
-        btn_start.visible = true;
-        await sleep(0.5);
-        await showPromptByNode(
-            btn_start,
-            ['点击屏幕发射子弹，捕捉鱼群，获得更多子弹, 开始游戏吧'],
-            'left',
-            true,
-            'start',
-        );
-        resetMockSocketCtor(game_ctrl);
-        await hall_ctrl.roomIn({ isTrial: 1, roomId: 1 });
+    }
+    private async next() {
+        await HallCtrl.preEnter();
     }
 }

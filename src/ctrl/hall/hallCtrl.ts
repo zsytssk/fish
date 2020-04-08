@@ -13,6 +13,7 @@ import {
     onCurBalanceChange,
     onLangChange,
     onNicknameChange,
+    offLangChange,
 } from './hallCtrlUtil';
 import { onHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
@@ -86,7 +87,7 @@ export class HallCtrl {
             view.setNickname(nickname);
         });
         view.setFlagData(getAllLangList());
-        user_info.setLang('zh' as Lang);
+        user_info.setLang('en' as Lang);
     }
     public selectCoin = (index: number) => {
         if (index === -1) {
@@ -131,6 +132,7 @@ export class HallCtrl {
     public destroy() {
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
+        offLangChange(this);
         disconnectSocket(ServerName.Hall);
         HallCtrl.leave();
     }

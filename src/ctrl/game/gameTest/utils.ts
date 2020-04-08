@@ -87,7 +87,7 @@ export async function mockSocket() {
     });
 
     sendEvent.on(ServerEvent.Hit, (data: HitReq) => {
-        sleep(1).then(() => {
+        sleep(0.1).then(() => {
             event.emit(ServerEvent.Hit, {
                 userId: user_id,
                 eid: data.eid,
@@ -108,10 +108,13 @@ export async function mockShoot() {
         direction: { x: 1.3, y: -1 },
     } as ShootRep);
 
-    return sleep(1);
+    return sleep(2);
 }
 
 export function resetMockSocketCtor(game_ctrl: GameTestCtrl) {
+    if (!game_ctrl) {
+        return;
+    }
     const { model } = game_ctrl;
     disconnectSocket(ServerName.Game);
     mockSocketCtor(undefined);

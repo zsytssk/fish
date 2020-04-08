@@ -69,14 +69,12 @@ export function hallViewEvent(hall: HallCtrl) {
         hall.roomIn({ roomId: 1, isTrial: 1 });
     });
     btn_coin_select.on(CLICK, hall, (event: Event) => {
-        event.stopPropagation();
         AudioCtrl.play(AudioRes.Click);
-        view.toggleCoinMenu();
+        view.toggleCoinMenu(true);
     });
     flag_box.on(CLICK, hall, (event: Event) => {
-        event.stopPropagation();
         AudioCtrl.play(AudioRes.Click);
-        view.toggleFlagMenu();
+        view.toggleFlagMenu(true);
     });
     onNode(btn_get, CLICK, () => {
         const { cur_balance, lang } = getUserInfo();

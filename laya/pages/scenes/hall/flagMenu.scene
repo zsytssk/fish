@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":8,
+    "selecteID":9,
     "searchKey":"View",
     "props":{"width":87,"sceneColor":"#000000","sceneBg":"laya/views/scenes/hall/flagMenu.png","height":200},
     "nodeParent":-1,

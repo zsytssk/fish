@@ -6,6 +6,8 @@ import { modelState } from 'model/modelState';
 import AlertPop from 'view/pop/alert';
 import { HallCtrl } from './hallCtrl';
 import { login } from './login';
+import { getLang } from './hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 
 /**
  *
@@ -29,7 +31,9 @@ export async function onHallSocket(hall: HallCtrl) {
 
     const [isReplay, socketUrl] = await checkReplay();
     if (isReplay) {
-        AlertPop.alert('你当前在游戏中是否重新进入?').then(type => {
+        const lang = getLang();
+        const { reEnter } = InternationalTip[lang];
+        AlertPop.alert(reEnter).then(type => {
             if (type === 'confirm') {
                 hall.enterGame(socketUrl);
                 return true;

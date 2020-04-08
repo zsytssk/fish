@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":11,
+    "selectedBox":28,
+    "selecteID":29,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -257,13 +257,14 @@
                     "props":{"x":18,"width":268,"var":"bullet_box","pivotY":92,"height":92,"bottom":0},
                     "nodeParent":11,
                     "label":"bullet_box",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":41,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,bullet_box_bg",
                             "props":{"y":0,"x":137,"width":275,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92,"anchorX":0.5},
@@ -278,6 +279,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":45,"x":16,"width":235,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
@@ -290,9 +292,10 @@
                             "compId":28,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
-                                    "props":{"y":8,"x":10,"width":231,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
+                                    "props":{"y":8,"x":10,"width":217,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
                                     "nodeParent":28,
                                     "label":"bullet_num",
                                     "isDirectory":false,
@@ -304,6 +307,7 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement,exchange_rate",
                             "props":{"y":13,"x":38,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">xxx</span> <span></span> </div>","height":29},

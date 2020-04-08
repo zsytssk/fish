@@ -1,3 +1,5 @@
+import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorScene } from 'honor';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
@@ -5,10 +7,9 @@ import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 import { AccountMap } from 'model/userInfo/userInfoModel';
 import { fade_in, fade_out } from 'utils/animate';
-import { log } from 'utils/log';
+import { onStageClick, resizeContain, resizeParent } from 'utils/layaUtils';
 import { playSkeleton } from 'utils/utils';
 import { ui } from '../../ui/layaMaxUI';
-import { onStageClick } from 'utils/layaUtils';
 
 export type CoinData = Array<{
     type: string;
@@ -34,7 +35,8 @@ export default class HallView extends ui.scenes.hall.hallUI
         header_inner.width = inner.width = width;
         console.log(`onResize`, width, height);
     }
-    public onEnable() {
+    public onAwake() {}
+    public onOpened() {
         const { coin_menu, flag_menu } = this.header;
         coin_menu.list.array = [];
         coin_menu.list.vScrollBarSkin = '';
@@ -50,17 +52,48 @@ export default class HallView extends ui.scenes.hall.hallUI
         this.initEvent();
     }
     private initEvent() {
-        onStageClick(this, this.toggleFlagAndCoinMenu);
+        const { coin_menu, flag_menu, btn_coin_select, flag_box } = this.header;
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+        onStageClick(
+            this,
+            () => {
+                this.toggleCoinMenu(false);
+            },
+            [coin_menu, btn_coin_select],
+        );
+
+        onStageClick(
+            this,
+            () => {
+                this.toggleFlagMenu(false);
+            },
+            [flag_menu, flag_box],
+        );
     }
-    private toggleFlagAndCoinMenu = () => {
-        const { coin_menu, flag_menu } = this.header;
-        if (coin_menu.visible) {
-            this.toggleCoinMenu();
-        }
-        if (flag_menu.visible) {
-            this.toggleFlagMenu();
-        }
-    }; // tslint:disable-line
+    private initLang(lang: Lang) {
+        const { match_status } = this;
+        const {
+            btn_get_label,
+            btn_change_label,
+            middle_btn_wrap,
+        } = this.header;
+        const { deposit, withdrawal, stayTuned } = InternationalTip[lang];
+        btn_get_label.text = deposit;
+        btn_change_label.text = withdrawal;
+        match_status.text = stayTuned;
+
+        resizeParent(btn_change_label, 20, 84);
+        resizeParent(btn_get_label, 20, 84);
+        resizeContain(middle_btn_wrap, 10);
+
+        console.log(
+            btn_change_label,
+            btn_change_label.x,
+            btn_change_label.centerX,
+        );
+    }
     /** 显示模式的动画... */
     public activeAni(type: string) {
         const { normal_box, match_box } = this;
@@ -121,12 +154,12 @@ export default class HallView extends ui.scenes.hall.hallUI
         list.array = arr;
         flag_menu.height = bg.height = list.height = arr.length * 61 + 20;
     }
-    public toggleCoinMenu() {
+    public toggleCoinMenu(status: boolean) {
         const { coin_menu, coin_triangle } = this.header;
         if (!coin_menu.list.array.length) {
             return;
         }
-        if (!coin_menu.visible) {
+        if (status) {
             // show
             coin_menu.y = 54;
             fade_in(coin_menu, 300);
@@ -154,9 +187,9 @@ export default class HallView extends ui.scenes.hall.hallUI
             item_coin_name.text = type.toUpperCase();
         }
     }
-    public toggleFlagMenu() {
+    public toggleFlagMenu(status: boolean) {
         const { flag_menu, flag_triangle } = this.header;
-        if (!flag_menu.visible) {
+        if (status) {
             // show
             fade_in(flag_menu, 300);
             flag_triangle.rotation = 180;
@@ -174,6 +207,6 @@ export default class HallView extends ui.scenes.hall.hallUI
     }
     public destroy() {
         super.destroy();
-        log(`destroy`);
+        offLangChange(this);
     }
 }
