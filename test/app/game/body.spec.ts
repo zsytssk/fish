@@ -5,6 +5,8 @@ import { Test } from 'testBuilder';
 import GameView from 'view/scenes/game/gameView';
 import honor from 'honor';
 import { Sprite } from 'laya/display/Sprite';
+import { FishView } from 'view/scenes/game/fishView';
+import { sleep } from '../../utils/testUtils';
 
 export const body_test = new Test('body', runner => {
     let init_show_shape = false;
@@ -36,7 +38,7 @@ export const body_test = new Test('body', runner => {
                 sprite.destroy();
             });
 
-            injectProto(FishView, 'initAni', (obj: FishView) => {
+            injectProto(FishView, 'initAni' as any, (obj: FishView) => {
                 obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
             });
         }

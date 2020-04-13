@@ -26,6 +26,8 @@ export class FishCtrl extends ComponentManager {
         this.initEvent();
     }
     private initEvent() {
+        const { visible } = this.model;
+        this.setVisible(visible);
         const event = this.model.event;
         const { view } = this;
         event.on(FishBombEvent.FishBomb, this.onBomb);

@@ -91,4 +91,6 @@ export const skill_test = new Test('skill', runner => {
             }
         });
     });
+
+    runner.describe('skillItemView', () => {});
 });

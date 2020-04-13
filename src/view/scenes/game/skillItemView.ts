@@ -8,6 +8,10 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     constructor() {
         super();
         this.init();
+
+        if (!(window as any).test1) {
+            (window as any).test1 = this;
+        }
     }
     private init() {
         const { overlay } = this;
@@ -60,7 +64,6 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
             overlay.visible = true;
         } else {
             overlay.visible = false;
-            graphics.clear();
         }
     }
 }

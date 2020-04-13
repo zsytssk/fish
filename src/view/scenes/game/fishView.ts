@@ -25,7 +25,6 @@ export class FishView extends Sprite {
         this.mouseEnabled = true;
         this.mouseThrough = false;
         this.visible = false;
-
     }
     /** 创建 ani and shadow */
     private initAni() {
@@ -51,7 +50,6 @@ export class FishView extends Sprite {
         playSkeleton(fish_ani, 0, true);
         this.fish_ani = fish_ani;
         this.turn_ani = turn_ani;
-
     }
     /** 创建 ani and shadow */
     public playSwimAni() {
