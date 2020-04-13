@@ -1,5 +1,5 @@
 import { ctrlState } from 'ctrl/ctrlState';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { getSocket, waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
 import { ServerEvent, ServerName, ServerErrCode } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
@@ -20,8 +20,8 @@ export async function onHallSocket(hall: HallCtrl) {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.UserAccount,
-            (data: UserAccountRep) => {
-                hall.onUserAccount(data);
+            () => {
+                hall.onUserAccount();
                 resolve();
             },
             hall,

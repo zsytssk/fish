@@ -1,20 +1,36 @@
-import { Handler } from 'Laya/utils/Handler';
-import { SoundManager } from 'Laya/media/SoundManager';
 import { Laya } from 'Laya';
+import { Handler } from 'Laya/utils/Handler';
+import Event from 'comMan/eventExtendCom';
 
+export const AudioEvent = {
+    VoiceChange: 'voice_change',
+    MusicChange: 'music_change',
+};
+export type OnChange = (radio: number) => void;
 /** 音频控制器 */
 export class AudioCtrl {
     private static voice: number;
     private static music: number;
+    private static bg_url: string;
+    public static event = new Event();
     private static sound_manager = Laya.SoundManager;
-    public static setVoice(voice: number) {
-        this.voice = voice;
-        this.sound_manager.setSoundVolume(voice);
+    public static setVoice(radio: number) {
+        const { sound_manager } = this;
+        this.voice = radio;
+        sound_manager.soundMuted = radio === 0.1;
+        sound_manager.setSoundVolume(radio);
+        this.event.emit(AudioEvent.VoiceChange, radio);
     }
-    public static setMusic(music: number) {
-        music = music * 0.8;
-        this.music = music;
-        this.sound_manager.setMusicVolume(music);
+    public static setMusic(radio: number) {
+        const { sound_manager } = this;
+        const isMute = radio === 0;
+        if (isMute !== sound_manager.musicMuted) {
+            sound_manager.musicMuted = isMute;
+            this.playBg(this.bg_url);
+        }
+        sound_manager.setMusicVolume(radio);
+        this.music = radio;
+        this.event.emit(AudioEvent.MusicChange, radio);
     }
     /**
      * 播放音频
@@ -23,34 +39,24 @@ export class AudioCtrl {
      */
     public static play(audio: string, is_bg = false) {
         const music = this.music || 1;
-        const { playSound, playMusic } = this.sound_manager;
-        const play_fn = is_bg ? playMusic : playSound;
+        const { playSound } = this.sound_manager;
 
-        /** 静音不处理 */
-        if (this.isMute(is_bg)) {
-            return;
-        }
-
-        /** 处理播放音乐, 将背景音乐音量调小 */
-        let play_callback = null;
         /** 是否重复播放 */
-        let loops = 1;
-        // 背景音乐
-        if (is_bg) {
-            // 重复播放
-            loops = 0;
+        // 如果是其他音乐 现将背景音乐音量变小 等到音乐放完 再设置回去
+        this.sound_manager.setMusicVolume(music * 0.5);
+        const play_callback = Handler.create(null, () => {
             this.sound_manager.setMusicVolume(music);
-            this.stopAll();
-        } else {
-            // 如果是其他音乐 现将背景音乐音量变小 等到音乐放完 再设置回去
-            this.sound_manager.setMusicVolume(music * 0.5);
-            play_callback = Handler.create(null, () => {
-                this.sound_manager.setMusicVolume(music);
-            });
-        }
-        play_fn(audio, loops, play_callback);
-        /** 50ms后异步执行 */
-        Laya.timer.once(50, this, () => {});
+        });
+        playSound(audio, 1, play_callback);
+    }
+    /**
+     * 播放音频
+     * @param audio 音频地址
+     */
+    public static playBg(audio: string) {
+        const { playMusic } = this.sound_manager;
+        this.bg_url = audio;
+        playMusic(audio);
     }
     /**
      * 停止播放音频
@@ -71,16 +77,5 @@ export class AudioCtrl {
      */
     public static stopAll() {
         this.sound_manager.stopAll();
-    }
-    /** 控制音量 */
-    public static changeVolume(volume: number) {
-        this.sound_manager.setMusicVolume(volume);
-        this.sound_manager.setSoundVolume(volume);
-    }
-    public static isMute(is_bg = false) {
-        if (is_bg) {
-            return this.music === 0;
-        }
-        return this.voice === 0;
     }
 }

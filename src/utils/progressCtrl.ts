@@ -48,6 +48,7 @@ export default class ProgressCtrl {
         const radio = x / width;
         progress_bar.value = radio;
         progress_btn.x = x;
+        this.setProgress(radio);
     }
     private onMouseMove(e: Event) {
         const { view } = this;

@@ -72,7 +72,7 @@ export class GameCtrl {
     }
     private init(url: string) {
         this.initEvent();
-        AudioCtrl.play(AudioRes.GameBg, true);
+        AudioCtrl.playBg(AudioRes.GameBg);
         waitConnectGame(url).then(() => {
             onGameSocket(getSocket('game'), this);
         });

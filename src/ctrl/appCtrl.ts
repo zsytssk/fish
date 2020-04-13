@@ -7,7 +7,8 @@ import { ctrlState } from './ctrlState';
 import { GameCtrl } from './game/gameCtrl';
 // import honor from 'honor';
 import { HallCtrl } from './hall/hallCtrl';
-import { gotoGuide } from './guide/guideConfig';
+import { ServerName, ServerEvent } from 'data/serverEvent';
+import { waitCreateSocket } from './net/webSocketWrapUtil';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -19,7 +20,14 @@ export class AppCtrl {
         ctrlState.app = this;
         const model = new AppModel();
         this.model = model;
+
         model.init();
+
+        waitCreateSocket(ServerName.Hall).then(socket => {
+            socket.event.on(ServerEvent.UserAccount, (data: UserAccountRep) => {
+                model.initUserInfo(data);
+            });
+        });
 
         return this.startHonor().then(() => {
             HallCtrl.preEnter();

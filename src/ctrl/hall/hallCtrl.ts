@@ -17,7 +17,6 @@ import {
 } from './hallCtrlUtil';
 import { onHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
-import { initUserInfo } from 'model/userInfo/userInfoUtils';
 import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
@@ -58,11 +57,10 @@ export class HallCtrl {
         hallViewEvent(this);
         this.initModelEvent();
         await onHallSocket(this).then(enter_game => {
-            initUserInfo();
             if (enter_game) {
                 this.destroy();
             } else {
-                AudioCtrl.play(AudioRes.HallBg, true);
+                AudioCtrl.playBg(AudioRes.HallBg);
             }
         });
     }
@@ -113,14 +111,8 @@ export class HallCtrl {
         view.toggleFlagMenu(false);
     }; // tslint:disable-line
 
-    public onUserAccount(data: UserAccountRep) {
+    public onUserAccount() {
         const { btn_leave, btn_login } = this.view.header;
-        const { userId, showName, balances } = data;
-        const user_info = getUserInfo();
-        user_info.setUserId(userId);
-        user_info.setNickname(showName);
-        user_info.setAccount(balances);
-
         /** 登陆之后显示离开按钮 */
         btn_leave.visible = true;
         btn_login.visible = false;

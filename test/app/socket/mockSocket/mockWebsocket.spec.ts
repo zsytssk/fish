@@ -12,7 +12,7 @@ import { player_test } from '../../game/player.spec';
 import { game_test } from '../../game/game.spec';
 import { modelState } from 'model/modelState';
 import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
-import { SkillMap } from 'data/config';
+import { SkillMap, ItemMap } from 'data/config';
 import { MockWebSocket } from 'ctrl/net/mockWebSocket';
 
 export const mock_web_socket_test = new Test('mock_web_socket', runner => {
@@ -41,10 +41,11 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                 event.emit(ServerEvent.Hit, {
                     userId: test_data.userId,
                     eid: data.eid,
-                    win: 100,
+                    win: 0,
                     drop: [
-                        { itemId: SkillMap.Bomb, itemNum: 10 },
+                        { itemId: '3002', itemNum: 10 },
                         { itemId: SkillMap.TrackFish, itemNum: 10 },
+                        // { itemId: SkillMap.TrackFish, itemNum: 10 },
                     ],
                 } as HitRep);
             });

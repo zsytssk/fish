@@ -16,8 +16,9 @@ export class SettingModel extends ComponentManager {
         super();
         this.addCom(new EventCom());
     }
-    public initAudio() {
-        const [voice, music] = getAudio();
+    public initUserInfo(data: UserAccountRep) {
+        const { userId } = data;
+        const [voice, music] = getAudio(userId);
         this.voice = voice;
         this.music = music;
     }

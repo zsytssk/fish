@@ -16,8 +16,7 @@ export async function awardSkill(
         item_ui.setId(itemId);
         item_ui.setNum(itemNum);
         item_ui.pos(start_pos.x, start_pos.y);
-        console.log(`test:>item_ui`, item_ui.visible);
-        fade_in(item_ui)
+        await fade_in(item_ui)
             .then(() => {
                 return sleep(0.5);
             })

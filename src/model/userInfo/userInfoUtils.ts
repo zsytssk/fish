@@ -1,8 +1,10 @@
-import { getCurUserId, modelState } from 'model/modelState';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { getCurUserId } from 'model/modelState';
+import { Lang } from 'data/internationalConfig';
 
-export function initUserInfo() {
-    modelState.app.setting.initAudio();
+export function getSaveLang() {
+    const user_id = getCurUserId();
+    return (localStorage.getItem('lang') || 'en') as Lang;
 }
 export function getCacheBalance() {
     const user_id = getCurUserId();
@@ -12,10 +14,11 @@ export function setCacheBalance(balance: string) {
     const user_id = getCurUserId();
     return localStorage.setItem(`${user_id}:balance`, balance);
 }
-export function getAudio() {
-    const user_id = getCurUserId();
-    const voice = Number(localStorage.getItem(`${user_id}:voice`)) || 1;
-    const music = Number(localStorage.getItem(`${user_id}:music`)) || 1;
+export function getAudio(user_id: string) {
+    const voice_str = localStorage.getItem(`${user_id}:voice`);
+    const music_str = localStorage.getItem(`${user_id}:music`);
+    const music = music_str ? Number(music_str) : 0.5;
+    const voice = voice_str ? Number(voice_str) : 0.5;
     AudioCtrl.setVoice(voice);
     AudioCtrl.setMusic(music);
     return [voice, music];
