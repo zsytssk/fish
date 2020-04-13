@@ -27,6 +27,8 @@ export function hallViewEvent(hall: HallCtrl) {
         btn_voice,
         flag_box,
         btn_login,
+        coin_menu,
+        flag_menu,
     } = header;
 
     coin_menu_list.selectHandler = new Handler(
@@ -70,11 +72,11 @@ export function hallViewEvent(hall: HallCtrl) {
     });
     btn_coin_select.on(CLICK, hall, (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
-        view.toggleCoinMenu(true);
+        view.toggleCoinMenu(!coin_menu.visible);
     });
     flag_box.on(CLICK, hall, (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
-        view.toggleFlagMenu(true);
+        view.toggleFlagMenu(!flag_menu.visible);
     });
     onNode(btn_get, CLICK, () => {
         const { cur_balance, lang } = getUserInfo();

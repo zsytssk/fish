@@ -121,22 +121,37 @@ export class GameModel extends ComponentManager {
     }
     public activeSkill(skill: SkillMap, data: { user_id: string }) {
         const player = this.getPlayerById(data.user_id);
+        if (!player) {
+            console.error(
+                `Game:>activeSkill:> cant find player:>${data.user_id}`,
+            );
+            return;
+        }
         player.activeSkill(skill, data);
     }
     public resetSkill(skill: SkillMap, user_id: string) {
         const player = this.getPlayerById(user_id);
+        if (!player) {
+            console.error(`Game:>resetSkill:> cant find player:>${user_id}`);
+            return;
+        }
         player.resetSkill(skill);
     }
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);
+        if (!player) {
+            console.error(
+                `Game:>resetSkill:> cant find player:>${data.userId}`,
+            );
+            return;
+        }
         player.gun.addBullet(data.direction);
     }
     public shoalComingTip(reverse: boolean) {
         this.shoal_com.preAddShoal(reverse);
     }
-    public destroy() {
+    public clear() {
         const { fish_list, player_list } = this;
-        this.event.emit(GameEvent.Destroy);
         for (const fish of fish_list) {
             fish.destroy();
         }
@@ -145,6 +160,10 @@ export class GameModel extends ComponentManager {
         }
         this.fish_list.clear();
         this.player_list.clear();
+    }
+    public destroy() {
+        this.event.emit(GameEvent.Destroy);
+        this.clear();
         super.destroy();
     }
 }

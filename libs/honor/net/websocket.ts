@@ -78,7 +78,10 @@ export class WebSocketCtrl {
         this.ws.send(msg);
     }
     private onopen = () => {
+        this.status = 'OPEN';
         const { onInit, onReconnected } = this.handlers;
+
+        this.reconnect_count = 0;
         /** 第一次是初始化, 后面都是重连 */
         if (typeof onInit === 'function') {
             onInit();
@@ -86,7 +89,6 @@ export class WebSocketCtrl {
         } else {
             /** 重连成功 */
             if (typeof onReconnected === 'function') {
-                this.reconnect_count = 0;
                 onReconnected();
             }
         }
@@ -125,24 +127,28 @@ export class WebSocketCtrl {
      * 重连
      */
     public reconnect() {
-        if (this.reconnect_count > this.reconnect_max) {
+        const { reconnect_count, reconnect_max, handlers } = this;
+        this.status = 'CONNECTING';
+        if (reconnect_count > reconnect_max) {
             this.end();
             return;
         }
         if (
-            typeof this.handlers.onReconnect === 'function' &&
-            this.reconnect_count === 0
+            typeof handlers.onReconnect === 'function' &&
+            reconnect_count === 0
         ) {
-            this.handlers.onReconnect();
+            handlers.onReconnect();
         }
-        this.reconnect_count++;
         this.reset();
 
-        /** 延迟两秒重连 */
+        /** 第一次马上重连, 后面 延迟3s重连 */
+        const time = reconnect_count === 0 ? 0 : 3000;
         clearTimeout(this.reconnect_timeout);
         this.reconnect_timeout = setTimeout(() => {
             this.connect();
-        }, 2000) as any;
+        }, time) as any;
+
+        this.reconnect_count++;
     }
     public startHeartBeat() {
         const { heartbeat_time, heartbeat_gap_time } = this;

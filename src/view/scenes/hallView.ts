@@ -1,4 +1,4 @@
-import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { offLangChange, onLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorScene } from 'honor';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
@@ -73,41 +73,55 @@ export default class HallView extends ui.scenes.hall.hallUI
         );
     }
     private initLang(lang: Lang) {
-        const { match_status } = this;
+        const { match_status, match_box, normal_box, btn_play_now } = this;
         const {
             btn_get_label,
             btn_change_label,
             middle_btn_wrap,
         } = this.header;
         const { deposit, withdrawal, stayTuned } = InternationalTip[lang];
+        const map = [
+            ['normal', normal_box],
+            ['match', match_box],
+        ] as Array<[string, Box]>;
+
         btn_get_label.text = deposit;
         btn_change_label.text = withdrawal;
         match_status.text = stayTuned;
 
+        const btn_arr = ['btn_play', 'btn_try'];
+        for (const [key, item] of map) {
+            const ani = item.getChildByName('ani') as Skeleton;
+            playSkeleton(ani, `standby_${lang}`, true);
+            for (const btn_item of btn_arr) {
+                const btn = item.getChildByName(btn_item);
+                const item_ani = btn.getChildByName('ani') as Skeleton;
+                playSkeleton(item_ani, `standby_${lang}`, true);
+            }
+        }
+        const play_now_ani = btn_play_now.getChildByName('ani') as Skeleton;
+        playSkeleton(play_now_ani, `standby_${lang}`, true);
+
         resizeParent(btn_change_label, 20, 84);
         resizeParent(btn_get_label, 20, 84);
         resizeContain(middle_btn_wrap, 10);
-
-        console.log(
-            btn_change_label,
-            btn_change_label.x,
-            btn_change_label.centerX,
-        );
+        this.activeAni('normal');
     }
     /** 显示模式的动画... */
     public activeAni(type: string) {
         const { normal_box, match_box } = this;
-        const map = new Map([
+        const lang = getLang();
+        const map = [
             ['normal', normal_box],
             ['match', match_box],
-        ]);
+        ] as Array<[string, Box]>;
 
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
             if (key === type) {
-                playSkeleton(ani, 'active_zh', true);
+                playSkeleton(ani, `active_${lang}`, true);
             } else {
-                playSkeleton(ani, 'normal_zh', true);
+                playSkeleton(ani, `standby_${lang}`, true);
             }
         }
     }

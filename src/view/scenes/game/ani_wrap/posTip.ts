@@ -21,10 +21,14 @@ export function stopPosTip() {
 
 function createPosTip() {
     const { ani_wrap } = viewState;
+    const { upside_down } = viewState.game;
     if (!pop_tip_ani || pop_tip_ani.destroyed) {
         pop_tip_ani = createSprite('other', 'pos_tip') as Skeleton;
-        ani_wrap.addChild(pop_tip_ani);
-    } else if (!pop_tip_ani.parent) {
+    }
+    if (upside_down) {
+        pop_tip_ani.scaleX = -1;
+    }
+    if (!pop_tip_ani.parent) {
         ani_wrap.addChild(pop_tip_ani);
     }
 }

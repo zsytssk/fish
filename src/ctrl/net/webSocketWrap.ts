@@ -142,7 +142,7 @@ export class WebSocketWrapCtrl extends ComponentManager
         this.event.emit(SocketEvent.End);
     }; //tslint:disable-line
     private onReconnect = () => {
-        this.event.emit(SocketEvent.Reconnected);
+        this.event.emit(SocketEvent.Reconnecting);
     }; //tslint:disable-line
     private onReconnected = () => {
         this.event.emit(SocketEvent.Reconnected);

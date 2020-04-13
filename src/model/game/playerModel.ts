@@ -132,6 +132,10 @@ export class PlayerModel extends ComponentManager {
     /** 更新技能的数目 */
     public addSkillNum(id: string, num: number) {
         const skill_model = this.skill_map.get(id);
+        if (!skill_model) {
+            console.error(`cant find skill for ${id}`);
+            return;
+        }
         num = skill_model.skill_core.num + num;
         skill_model.skill_core.setNum(num);
     }

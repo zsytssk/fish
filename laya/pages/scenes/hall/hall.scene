@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":43,
+    "selectedBox":32,
+    "selecteID":34,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -66,14 +66,13 @@
             "props":{"y":125,"x":799,"var":"normal_box"},
             "nodeParent":2,
             "label":"normal_box",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":11,
             "child":[
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer,ani",
                     "props":{"y":350,"x":168,"url":"image/hall/normal_sign.sk","name":"ani"},
@@ -88,7 +87,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,coin_name",
                     "props":{"y":349,"x":88,"width":136,"valign":"middle","text":"----","name":"coin_name","height":32,"fontSize":21,"color":"#fff580","bold":true,"align":"center"},
@@ -102,13 +100,12 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_play",
                     "props":{"y":400,"x":163,"width":151,"name":"btn_play","height":71},
                     "nodeParent":11,
                     "label":"btn_play",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -116,10 +113,10 @@
                     "child":[
                         {
                             "type":"SkeletonPlayer",
-                            "searchKey":"SkeletonPlayer",
-                            "props":{"y":35.5,"x":75.5,"url":"image/hall/normal_btn.sk"},
+                            "searchKey":"SkeletonPlayer,ani",
+                            "props":{"y":35.5,"x":75.5,"url":"image/hall/normal_btn.sk","name":"ani"},
                             "nodeParent":35,
-                            "label":"SkeletonPlayer",
+                            "label":"ani",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -129,7 +126,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_try",
                     "props":{"y":400,"x":13,"width":151,"name":"btn_try","height":71},
@@ -142,12 +138,11 @@
                     "compId":36,
                     "child":[
                         {
-                            "x":45,
                             "type":"SkeletonPlayer",
-                            "searchKey":"SkeletonPlayer",
-                            "props":{"y":36.5,"x":71.5,"url":"image/hall/try_btn.sk"},
+                            "searchKey":"SkeletonPlayer,ani",
+                            "props":{"y":36.5,"x":71.5,"url":"image/hall/try_btn.sk","name":"ani"},
                             "nodeParent":36,
-                            "label":"SkeletonPlayer",
+                            "label":"ani",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -157,7 +152,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,guide2",
                     "props":{"y":338,"x":67,"width":182,"var":"guide2","height":54},
@@ -228,10 +222,10 @@
                         {
                             "x":45,
                             "type":"SkeletonPlayer",
-                            "searchKey":"SkeletonPlayer",
-                            "props":{"y":35.5,"x":75.5,"url":"image/hall/normal_btn.sk"},
+                            "searchKey":"SkeletonPlayer,ani",
+                            "props":{"y":35.5,"x":75.5,"url":"image/hall/normal_btn.sk","name":"ani"},
                             "nodeParent":31,
-                            "label":"SkeletonPlayer",
+                            "label":"ani",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -257,10 +251,10 @@
                         {
                             "x":45,
                             "type":"SkeletonPlayer",
-                            "searchKey":"SkeletonPlayer",
-                            "props":{"y":36.5,"x":71.5,"url":"image/hall/try_btn.sk"},
+                            "searchKey":"SkeletonPlayer,ani",
+                            "props":{"y":36.5,"x":71.5,"url":"image/hall/try_btn.sk","name":"ani"},
                             "nodeParent":32,
-                            "label":"SkeletonPlayer",
+                            "label":"ani",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -323,30 +317,32 @@
             "props":{"width":1920,"var":"inner","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":3,"centerX":0},
             "nodeParent":2,
             "label":"inner",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":43,
             "child":[
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_play_now",
                     "props":{"y":616,"x":1642,"width":258,"var":"btn_play_now","right":20,"height":111},
                     "nodeParent":43,
                     "label":"btn_play_now",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":39,
                     "child":[
                         {
+                            "x":45,
                             "type":"SkeletonPlayer",
-                            "searchKey":"SkeletonPlayer",
-                            "props":{"y":55.5,"x":129,"url":"image/hall/play_now_btn.sk"},
+                            "searchKey":"SkeletonPlayer,ani",
+                            "props":{"y":55.5,"x":129,"url":"image/hall/play_now_btn.sk","name":"ani"},
                             "nodeParent":39,
-                            "label":"SkeletonPlayer",
+                            "label":"ani",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,

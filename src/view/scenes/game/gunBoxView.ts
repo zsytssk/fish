@@ -125,13 +125,9 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
     public detectDisableChangeBulletCost() {}
     /** 当前玩家的位置展示 */
     public activePosTip() {
-        const { upside_down } = viewState.game;
         const pos_tip = activePosTip();
         this.addChild(pos_tip);
         pos_tip.pos(this.width / 2, this.height / 2);
-        if (upside_down) {
-            pos_tip.scaleX = -1;
-        }
     }
     public stopPosTip() {
         stopPosTip();

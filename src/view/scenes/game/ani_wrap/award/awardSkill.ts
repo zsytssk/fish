@@ -25,7 +25,7 @@ export async function awardSkill(
                 scaleX: 0.4,
                 scaleY: 0.4 * item_ui.scaleY,
             },
-            time: 5 * 1000,
+            time: 1 * 1000,
         }).then(() => {
             recoverUI(item_ui);
         });
