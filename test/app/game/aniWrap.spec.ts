@@ -62,8 +62,10 @@ export const ani_wrap = new Test('ani_wrap', runner => {
         }
     });
 
-    runner.describe('pop_tip', () => {
-        activePosTip();
+    runner.describe('pos_tip', () => {
+        const pop_tip_ani = activePosTip();
+        pop_tip_ani.x = 300;
+        pop_tip_ani.y = 200;
     });
     runner.describe('aim', () => {
         const fish = [...modelState.app.game.fish_list][0];

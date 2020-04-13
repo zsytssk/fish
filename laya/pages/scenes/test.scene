@@ -17,7 +17,7 @@
         }],
     "props":{"width":1334,"sceneColor":"#000000","height":750},
     "nodeParent":-1,
-    "maxID":31,
+    "maxID":32,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -64,20 +64,6 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":29,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer",
-            "props":{"y":523,"x":524,"url":"ani/other/pos_tip.sk"},
-            "nodeParent":2,
-            "label":"SkeletonPlayer",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":30,
             "child":[
                 ]
         }],

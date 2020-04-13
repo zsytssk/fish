@@ -17,7 +17,10 @@ export class AudioCtrl {
     public static setVoice(radio: number) {
         const { sound_manager } = this;
         this.voice = radio;
-        sound_manager.soundMuted = radio === 0.1;
+        const isMute = radio === 0;
+        if (isMute !== sound_manager.musicMuted) {
+            sound_manager.soundMuted = isMute;
+        }
         sound_manager.setSoundVolume(radio);
         this.event.emit(AudioEvent.VoiceChange, radio);
     }
