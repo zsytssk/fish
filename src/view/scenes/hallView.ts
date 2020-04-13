@@ -143,7 +143,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         const arr = [];
         for (const [type, { num, icon }] of data) {
             arr.push({
-                coin_icon: icon || 'image/common/coin/BTC.png',
+                coin_icon: icon || `image/common/coin/BTC.png`,
                 coin_name: type,
                 coin_num: num,
             });

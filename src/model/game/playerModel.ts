@@ -160,7 +160,9 @@ export class PlayerModel extends ComponentManager {
 
         if (drop) {
             for (const item of drop) {
-                this.addSkillNum(item.itemId, item.itemNum);
+                if (SkillMap[item.itemId]) {
+                    this.addSkillNum(item.itemId, item.itemNum);
+                }
             }
         }
     }

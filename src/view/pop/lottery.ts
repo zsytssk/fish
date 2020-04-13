@@ -11,6 +11,7 @@ import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
 import TipPop from './tip';
 import { offLangChange, onLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
+import { ItemMap } from 'data/config';
 
 type LotteryData = {
     lottery_id: string;
@@ -216,13 +217,15 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         const data = this.exchange_list.array[index] as ExchangeRenderData;
         const {
             exchange_type,
+            exchange_id,
             exchange_num,
             cost_num,
             cur_num,
         } = data as ExchangeRenderData;
-
+        let tag = ItemMap[exchange_id] as string;
+        tag = tag ? tag.toLowerCase() : tag;
         price_label.text = cost_num + '';
-        price_tag.skin = `image/pop/lottery/tag_${exchange_type}.png`;
+        price_tag.skin = `image/pop/lottery/tag_${tag}.png`;
         num_label.text = exchange_num + '';
         type_label.text = exchange_type + '';
         remain_label.text = `${remaining}${cur_num}/${cost_num}`;

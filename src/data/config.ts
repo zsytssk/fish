@@ -45,3 +45,9 @@ export const SkillNameMap = {
     [SkillMap.Auto]: 'auto',
     [SkillMap.Super]: 'super',
 };
+
+export const ItemMap = {
+    '3001': 'BTC',
+    '3002': 'ETC',
+    '3003': 'XRP',
+};

@@ -48,7 +48,7 @@ export const ani_wrap = new Test('ani_wrap', runner => {
         }, 3000);
     });
     runner.describe('show_award_circle', (t, d) => {
-        const pos = { x: 1000, y: 300 };
+        const pos = { x: 1200, y: 700 };
         const num = 100000;
         showAwardCircle(pos, num, true, t, d);
     });

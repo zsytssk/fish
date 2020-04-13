@@ -138,7 +138,6 @@ export function resizeParent(child: Sprite, space: number, min?: number) {
     const parent = child.parent as Sprite;
     resizeContain(parent as Sprite, space);
 
-    console.log(parent.width, parent.width < min);
     if (min && parent.width < min) {
         parent.width = min;
     }

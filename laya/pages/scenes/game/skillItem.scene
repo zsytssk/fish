@@ -2,7 +2,6 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":5,
     "searchKey":"View",
     "props":{"width":94,"sceneColor":"#000000","runtime":"view/scenes/game/skillItemView.ts","mouseThrough":false,"mouseEnabled":true,"height":96},
     "nodeParent":-1,

@@ -1,4 +1,5 @@
 import { Laya } from 'Laya';
+import { loop, clear } from './zTimer';
 
 type CountFn = (rate: number) => void;
 
@@ -14,8 +15,8 @@ export function startCount(time: number, delta: number, fn: CountFn) {
     const cur_count_index = count_index++;
     const count = time / delta;
     let i = 0;
-    const count_fn = () => {
-        i++;
+    const count_fn = (n: number) => {
+        i += n;
         if (i >= count) {
             fn(0);
             return clearCount(cur_count_index);
@@ -23,9 +24,9 @@ export function startCount(time: number, delta: number, fn: CountFn) {
         fn((count - i) / count);
     };
 
-    Laya.timer.loop(delta * 1000, null, count_fn);
+    loop(count_fn, delta * 1000, null);
     const off = () => {
-        Laya.timer.clear(null, count_fn);
+        clear(count_fn, null);
     };
     fn(1);
     count_map.set(cur_count_index, off);

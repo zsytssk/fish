@@ -5,6 +5,7 @@ import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Laya } from 'Laya';
 import { Event } from 'laya/events/Event';
 import { Label } from 'laya/ui/Label';
+import { playSkeleton } from 'utils/utils';
 
 const award_coin_num = 8;
 const space_row = 10;
@@ -42,11 +43,11 @@ export function createAwardCoin(pos: Point, num: number) {
         (num_column - 1) * space_column + num_column * coin_width;
     const coins_height = (num_row - 1) * space_row + num_row * coin_height;
 
-    pos = calcCoinRange(pos, coins_width, coins_height);
+    pos = calcPosRange(pos, coins_width / 2, coins_height / 2);
 
     for (let i = 0; i < num_column; i++) {
         for (let j = 0; j < num_row; j++) {
-            const coin_view = createCoinAni() as Skeleton;
+            const coin_view = createAni('coin') as Skeleton;
             coin_view.visible = false;
             ani_overlay.addChild(coin_view);
             const x =
@@ -66,7 +67,7 @@ export function createAwardCoin(pos: Point, num: number) {
 export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     const { ani_overlay } = viewState;
     const { upside_down } = viewState.game;
-    const bg_ani = createSprite('other', 'award_light') as Skeleton;
+    const bg_ani = createAni('award_light') as Skeleton;
     const num_label = new Label();
 
     bg_ani.zOrder = 5;
@@ -85,34 +86,39 @@ export function showAwardNum(pos: Point, num: number, is_cur_player: boolean) {
     bg_ani.once(Event.STOPPED, bg_ani, () => {
         num_label.destroy();
         bg_ani.destroy();
+        tempAni('award_light', bg_ani);
     });
     bg_ani.play(0, false);
 }
 
 /** 计算金币的边界... */
-function calcCoinRange(pos: Point, coins_width: number, coins_height: number) {
+export function calcPosRange(
+    pos: Point,
+    space_width: number,
+    space_height: number,
+) {
     let { x, y } = pos;
     const { ani_overlay } = viewState;
     const stage_width = Laya.stage.width;
     const stage_height = Laya.stage.height;
 
     const start = (ani_overlay.width - stage_width) / 2;
-    const end_pos = stage_width + (ani_overlay.width - stage_width) / 2;
+    const end_pos = start + stage_width;
 
-    if (x - coins_width / 2 < start) {
+    if (x - space_width < start) {
         /* 左边界 */
-        x = start + coins_width / 2;
-    } else if (x - coins_width / 2 > end_pos) {
+        x = start + space_width;
+    } else if (x - space_width > end_pos) {
         /* 右边界 */
-        x = end_pos - coins_width / 2;
+        x = end_pos - space_width;
     }
 
-    if (y - coins_height / 2 < 0) {
+    if (y - space_height < 0) {
         /* 上边界 */
-        y = coins_height / 2;
-    } else if (y - coins_height / 2 > stage_height) {
+        y = space_height;
+    } else if (y + space_height > stage_height) {
         /* 下边界 */
-        y = stage_height - coins_height / 2;
+        y = stage_height - space_height;
     }
     return {
         x,
@@ -132,19 +138,36 @@ function animateCoin(coin_views: Skeleton[], end_pos: Point) {
         await sleep(coin_stop_time + i * 0.2);
         await move(coin_view, start_pos, end_pos, coin_fly_time * 1000);
         coin_view.removeSelf();
-        pool.push(coin_view);
+        tempAni('coin', coin_view);
     });
 }
 
-const pool = [] as Skeleton[];
-function createCoinAni() {
+const pool_map = {} as { [key: string]: Skeleton[] };
+export function createAni(type: string) {
+    let pool = pool_map[type];
+    if (!pool) {
+        pool = [];
+        pool_map[type] = [];
+    }
     let item = pool.pop();
     if (!item || item.destroyed) {
-        item = createSprite('other', 'coin') as Skeleton;
+        item = createSprite('other', type) as Skeleton;
     }
+    playSkeleton(item, 0, true);
     const { upside_down } = viewState.game;
     if (upside_down) {
         item.scaleY = -1;
     }
     return item;
+}
+
+export function tempAni(type: string, ani: Skeleton) {
+    let pool = pool_map[type];
+    if (!pool) {
+        pool = [];
+        pool_map[type] = [];
+    }
+    ani.removeSelf();
+    ani.stop();
+    pool.push(ani);
 }

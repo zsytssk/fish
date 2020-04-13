@@ -2,17 +2,19 @@ import { Test } from 'testBuilder';
 import { startCount, clearCount } from 'utils/count';
 
 export const count_test = new Test('count', runner => {
-    runner.describe('count', () => {
-        const count = startCount(10 * 1000, (10 * 1000) / 12, t => {
+    let i = 0;
+    runner.describe('count', (time: number, delta: number) => {
+        i++;
+        time = time || 10;
+        delta = delta || 0.01;
+
+        console.time('startCount' + i);
+        const count = startCount(time, delta, t => {
             if (t === 0) {
-                return console.log('complete');
+                console.timeEnd('startCount' + i);
+                return;
             }
             console.log(t, Math.floor(11 * t));
         });
-
-        setTimeout(() => {
-            console.log(`test:`, count);
-            clearCount(count);
-        }, 3000);
     });
 });

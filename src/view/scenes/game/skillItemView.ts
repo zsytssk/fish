@@ -1,4 +1,4 @@
-import { SkillNameMap } from 'data/config';
+import { SkillNameMap, ItemMap } from 'data/config';
 import { Sprite } from 'laya/display/Sprite';
 import { ui } from 'ui/layaMaxUI';
 import { playSkeleton, stopSkeleton } from 'utils/utils';
@@ -21,8 +21,13 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     }
     public setId(skill_id: string) {
         const { skill_icon } = this;
-        const name = SkillNameMap[skill_id];
-        skill_icon.skin = `image/game/skill_${name}.png`;
+        let name = SkillNameMap[skill_id];
+        if (name) {
+            skill_icon.skin = `image/game/skill_${name}.png`;
+        } else {
+            name = ItemMap[skill_id];
+            skill_icon.skin = `image/common/coin/${name}.png`;
+        }
     }
     public setNum(num: number) {
         const { num_label } = this;
