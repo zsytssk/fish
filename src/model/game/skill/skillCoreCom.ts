@@ -70,15 +70,10 @@ export class SkillCoreCom extends ComponentManager {
         if (used_time) {
             this.active({
                 used_time,
-                num: num + 9999999,
+                num,
             });
             setProps(this as SkillCoreCom, { used_time: 0 });
         }
-        this.event.emit(SkillEvent.UpdateInfo);
-    }
-    /** 更新数量 */
-    public addNum(num: number) {
-        this.num += num;
         this.event.emit(SkillEvent.UpdateInfo);
     }
     /** 更新数量 */

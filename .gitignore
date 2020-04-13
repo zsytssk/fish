@@ -9,6 +9,7 @@ node_modules/
 release/
 /bin/**
 !/bin/libs/**
+!/bin/favicon/**
 !/bin/index.html
 !/bin/index.js
 .DS_Store

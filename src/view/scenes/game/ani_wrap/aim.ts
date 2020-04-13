@@ -74,7 +74,6 @@ export function activeAimFish(
             const {
                 pos: { x, y },
             } = move_info;
-            log(`test:>`, x, y);
             aim_ani.pos(x, y);
             if (show_points) {
                 createPoints(ori_pos, { x, y });

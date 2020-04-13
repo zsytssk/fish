@@ -75,7 +75,10 @@ export class WebSocketCtrl {
         }
     }
     public send(msg: string) {
-        this.ws.send(msg);
+        const { ws } = this;
+        if (ws) {
+            ws.send(msg);
+        }
     }
     private onopen = () => {
         this.status = 'OPEN';

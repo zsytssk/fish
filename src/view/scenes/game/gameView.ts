@@ -14,8 +14,8 @@ import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
+import { getLang, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from 'data/internationalConfig';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxPos = 'left' | 'right';
@@ -37,6 +37,13 @@ export default class GameView extends ui.scenes.game.gameUI
     public onEnable() {
         const bg_num = random(1, 3);
         this.showBubbleRefresh(bg_num);
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+    }
+    private initLang(lang: Lang) {
+        const { auto_launch_txt } = this.skill_box;
+        auto_launch_txt.skin = `image/international/auto_${lang}.png`;
     }
     public showBubbleRefresh(bg_num?: number) {
         const { bubble_overlay, bg, bubble_wall } = this;
