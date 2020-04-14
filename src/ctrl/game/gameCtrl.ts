@@ -18,7 +18,7 @@ import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
-import GameView, { BulletBoxPos } from 'view/scenes/game/gameView';
+import GameView, { BulletBoxDir } from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import {
     onGameSocket,
@@ -126,7 +126,7 @@ export class GameCtrl {
                 if (server_index > 1) {
                     view.upSideDown();
                 }
-                let pos = 'left' as BulletBoxPos;
+                let pos = 'left' as BulletBoxDir;
                 if (server_index === 1 || server_index === 2) {
                     pos = 'right';
                 }

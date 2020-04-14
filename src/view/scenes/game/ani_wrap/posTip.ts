@@ -1,8 +1,7 @@
-import { createSprite } from 'utils/dataUtil';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { playSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { createAni, tempAni } from './award/awardCoin';
 
 /** 当前用户的位置的动画 */
@@ -21,16 +20,14 @@ export function stopPosTip() {
 
 function createPosTip() {
     const lang = getLang();
-    const { ani_wrap } = viewState;
+    const { ani_overlay } = viewState;
     const { upside_down } = viewState.game;
     if (!pop_tip_ani || pop_tip_ani.destroyed) {
         pop_tip_ani = createAni('pos_tip');
     }
     if (!pop_tip_ani.parent) {
-        ani_wrap.addChild(pop_tip_ani);
+        ani_overlay.addChild(pop_tip_ani);
     }
-    if (upside_down) {
-        pop_tip_ani.scaleX = -1;
-    }
+    pop_tip_ani.scaleX = upside_down ? -1 : 1;
     playSkeleton(pop_tip_ani, lang, true);
 }

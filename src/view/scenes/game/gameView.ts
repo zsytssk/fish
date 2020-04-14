@@ -18,7 +18,7 @@ import { getLang, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from 'data/internationalConfig';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
-export type BulletBoxPos = 'left' | 'right';
+export type BulletBoxDir = 'left' | 'right';
 export default class GameView extends ui.scenes.game.gameUI
     implements HonorScene {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
@@ -26,6 +26,8 @@ export default class GameView extends ui.scenes.game.gameUI
     private fish_click_observer: Subscriber<string>;
     private resize_scale: number;
     private bg_num = 1;
+    private bullet_box_pos: number;
+    private bullet_box_dir: BulletBoxDir;
     public static async preEnter() {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
@@ -55,7 +57,6 @@ export default class GameView extends ui.scenes.game.gameUI
             }
         }
 
-        console.log(`test:>`, bg_num);
         this.bg_num = bg_num;
         bg.skin = `image/game/normal_bg/bg${bg_num}.jpg`;
         bubble_wall.visible = false;
@@ -74,7 +75,7 @@ export default class GameView extends ui.scenes.game.gameUI
         ctrl_box.width = width;
 
         let scale = 1;
-        if (width < 1235) {
+        if (width < 1290) {
             scale = 0.8;
         }
 
@@ -85,6 +86,9 @@ export default class GameView extends ui.scenes.game.gameUI
         if (scale === this.resize_scale) {
             return;
         }
+        this.bullet_box_pos = scale > 0.8 ? 20 : -30;
+        this.setBulletBoxPos(this.bullet_box_dir);
+
         this.resize_scale = scale;
         const {
             btn_gift,
@@ -238,17 +242,19 @@ export default class GameView extends ui.scenes.game.gameUI
         });
     }
     /**  设置子弹box的位置 */
-    public setBulletBoxPos(pos: BulletBoxPos) {
-        const { bullet_box, bullet_box_bg } = this;
+    public setBulletBoxPos(pos: BulletBoxDir) {
+        const { bullet_box, bullet_box_bg, bullet_box_pos } = this;
         if (pos === 'left') {
             bullet_box.right = undefined;
-            bullet_box.left = 15;
+            bullet_box.left = bullet_box_pos;
             bullet_box_bg.scaleX = 1;
         } else if (pos === 'right') {
-            bullet_box.right = 15;
+            bullet_box.right = bullet_box_pos;
             bullet_box.left = undefined;
             bullet_box_bg.scaleX = -1;
         }
+
+        this.bullet_box_dir = pos;
     }
     public getPoolMousePos() {
         const { pool } = this;

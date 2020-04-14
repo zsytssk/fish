@@ -1,20 +1,30 @@
 import { ctrlState } from 'ctrl/ctrlState';
-import { getSocket, waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
+import {
+    getSocket,
+    waitCreateSocket,
+    bindSocketEvent,
+} from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
-import { ServerEvent, ServerName, ServerErrCode } from 'data/serverEvent';
+import {
+    ServerEvent,
+    ServerName,
+    ServerErrCode,
+    ErrorData,
+} from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import AlertPop from 'view/pop/alert';
 import { HallCtrl } from './hallCtrl';
-import { login } from './login';
+import { initHallSocket } from './login';
 import { getLang } from './hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
+import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
 
 /**
  *
  * @return 是否进入游戏
  */
 export async function onHallSocket(hall: HallCtrl) {
-    await login();
+    await initHallSocket();
 
     await new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
@@ -81,4 +91,35 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
             domain: '',
         } as RoomInReq);
     });
+}
+
+let hall_socket: WebSocketTrait;
+export function hallSocket(socket: WebSocketTrait, hall: HallCtrl) {
+    hall_socket = socket;
+    bindSocketEvent(socket, hall, {
+        [ServerEvent.ErrCode]: (res: ErrorData) => {
+            const { code, error } = res;
+            const lang = getLang();
+            const { logoutTip } = InternationalTip[lang];
+            if (code === 1003) {
+                socket.disconnect();
+                AlertPop.alert(logoutTip, {
+                    hide_cancel: true,
+                }).then(() => {
+                    location.reload();
+                });
+            }
+        },
+        [SocketEvent.End]: (res: ErrorData) => {
+            const lang = getLang();
+            const { logoutTip } = InternationalTip[lang];
+            AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
+                location.reload();
+            });
+        },
+    });
+}
+
+export function offHallSocket(hall: HallCtrl) {
+    hall_socket.event.offAllCaller(hall);
 }

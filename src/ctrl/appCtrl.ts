@@ -9,6 +9,8 @@ import { GameCtrl } from './game/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
 import { ServerName, ServerEvent } from 'data/serverEvent';
 import { waitCreateSocket } from './net/webSocketWrapUtil';
+import { Laya } from 'Laya';
+import { sleep } from 'utils/animate';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -22,7 +24,6 @@ export class AppCtrl {
         this.model = model;
 
         model.init();
-
         waitCreateSocket(ServerName.Hall).then(socket => {
             socket.event.on(ServerEvent.UserAccount, (data: UserAccountRep) => {
                 model.initUserInfo(data);
@@ -30,6 +31,9 @@ export class AppCtrl {
         });
 
         return this.startHonor().then(() => {
+            sleep(0.5).then(() => {
+                platform.hideLoading();
+            });
             HallCtrl.preEnter();
             // gotoGuide('1', '1');
         });
@@ -40,6 +44,9 @@ export class AppCtrl {
             defaultVersion: Config.CdnVersion,
             versionPath: `./version.json?v=${Config.CdnVersion}`,
         });
+        if (Laya.Browser.onIOS || Laya.Browser.onAndroid) {
+            Laya.stage.fullScreenEnabled = true;
+        }
         const task1 = honor.director.setLoadPageForScene(
             'scenes/loading.scene',
         );
@@ -47,6 +54,7 @@ export class AppCtrl {
         const task2 = honor.director.load([...res.font]).then(() => {
             honor.utils.registerFontSize(font_list);
         });
+
         await Promise.all([task1, task2]);
     }
     public enterGame(url: string) {

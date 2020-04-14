@@ -48,6 +48,12 @@ export function createAwardCoin(pos: Point, num: number) {
     for (let i = 0; i < num_column; i++) {
         for (let j = 0; j < num_row; j++) {
             const coin_view = createAni('coin') as Skeleton;
+            const { upside_down } = viewState.game;
+            if (upside_down) {
+                coin_view.scaleY = -1;
+            } else {
+                coin_view.scaleY = 1;
+            }
             coin_view.visible = false;
             ani_overlay.addChild(coin_view);
             const x =
@@ -108,7 +114,7 @@ export function calcPosRange(
     if (x - space_width < start) {
         /* 左边界 */
         x = start + space_width;
-    } else if (x - space_width > end_pos) {
+    } else if (x + space_width > end_pos) {
         /* 右边界 */
         x = end_pos - space_width;
     }
@@ -154,10 +160,6 @@ export function createAni(type: string) {
         item = createSprite('other', type) as Skeleton;
     }
     playSkeleton(item, 0, true);
-    const { upside_down } = viewState.game;
-    if (upside_down) {
-        item.scaleY = -1;
-    }
     return item;
 }
 

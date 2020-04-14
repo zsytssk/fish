@@ -18,7 +18,7 @@ export class AudioCtrl {
         const { sound_manager } = this;
         this.voice = radio;
         const isMute = radio === 0;
-        if (isMute !== sound_manager.musicMuted) {
+        if (isMute !== sound_manager.soundMuted) {
             sound_manager.soundMuted = isMute;
         }
         sound_manager.setSoundVolume(radio);
@@ -42,7 +42,11 @@ export class AudioCtrl {
      */
     public static play(audio: string, is_bg = false) {
         const music = this.music || 1;
-        const { playSound } = this.sound_manager;
+        const { playSound, soundMuted } = this.sound_manager;
+
+        if (soundMuted) {
+            return;
+        }
 
         /** 是否重复播放 */
         // 如果是其他音乐 现将背景音乐音量变小 等到音乐放完 再设置回去
@@ -57,8 +61,12 @@ export class AudioCtrl {
      * @param audio 音频地址
      */
     public static playBg(audio: string) {
-        const { playMusic } = this.sound_manager;
+        const { playMusic, musicMuted } = this.sound_manager;
         this.bg_url = audio;
+
+        if (musicMuted) {
+            return;
+        }
         playMusic(audio);
     }
     /**

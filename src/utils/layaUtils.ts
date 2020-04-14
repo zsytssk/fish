@@ -35,7 +35,7 @@ export function onStageClick(
     });
 
     observer.subscribe((_event: Event) => {
-        if (node.destroyed) {
+        if (node && node.destroyed) {
             if (once_observer) {
                 once_observer.complete();
             }
@@ -73,7 +73,7 @@ export function onNode(
             }
             (node as ClickNode).is_disable = true;
             setTimeout(() => {
-                if (node.destroyed) {
+                if (node && node.destroyed) {
                     return;
                 }
                 (node as ClickNode).is_disable = false;
@@ -92,7 +92,7 @@ export function onNode(
     });
 
     observer.pipe(throttleTime(throttle || 1000)).subscribe((_event: Event) => {
-        if (node.destroyed) {
+        if (node && node.destroyed) {
             if (once_observer) {
                 once_observer.complete();
             }
@@ -154,6 +154,9 @@ export function resizeContain(
     let dist = 0;
     for (let i = 0; i < numChildren; i++) {
         const item = parent.getChildAt(i) as Sprite;
+        if (!item.visible) {
+            continue;
+        }
         if (dir === 'horizontal') {
             item.x = dist;
         } else {
@@ -174,11 +177,10 @@ export function resizeContain(
             }
         }
     }
-    const parent_dist = dist + space;
     if (dir === 'horizontal') {
-        parent.width = parent_dist;
+        parent.width = dist;
     } else {
-        parent.height = parent_dist;
+        parent.height = dist;
     }
 }
 

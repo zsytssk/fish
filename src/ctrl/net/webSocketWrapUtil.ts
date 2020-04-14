@@ -69,9 +69,7 @@ export function createComKey(name: string) {
     const comm_key =
         Date.parse(date_str).toString() +
         Date.parse(date_str).toString() +
-        Date.parse(date_str)
-            .toString()
-            .substring(0, 6);
+        Date.parse(date_str).toString().substring(0, 6);
     common_key_map.set(name, comm_key);
     return comm_key;
 }
@@ -80,10 +78,7 @@ export function genUrl(config: Config) {
     const { url, publicKey, code, host, name } = config;
 
     // 临时修改
-    let new_url = `ws://${url}/gws?auth=${getAuth(name, publicKey)}`;
-    if (host) {
-        new_url += `&host=${host}`;
-    }
+    let new_url = `${url}/gws?auth=${getAuth(name, publicKey)}`;
     if (code) {
         new_url += `&code=${code}`;
     }

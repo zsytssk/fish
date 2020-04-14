@@ -4,8 +4,8 @@ import { Tween } from 'laya/utils/Tween';
 import { Ease } from 'laya/utils/Ease';
 import { Handler } from 'laya/utils/Handler';
 
-type EaseFn = Func<void> | string;
-type Sprite = LayaSprite & {
+export type EaseFn = Func<void> | string;
+export type Sprite = LayaSprite & {
     tween?: Tween;
     is_stop?: boolean;
     time_out?: any;

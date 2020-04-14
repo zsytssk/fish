@@ -3,8 +3,15 @@ import { getCurUserId } from 'model/modelState';
 import { Lang } from 'data/internationalConfig';
 
 export function getSaveLang() {
-    const user_id = getCurUserId();
-    return (localStorage.getItem('lang') || 'en') as Lang;
+    const save_lang =
+        localStorage.getItem('lang') || localStorage.getItem('local_lang');
+    let lang: Lang;
+    if (save_lang === 'en-us') {
+        lang = 'en' as Lang;
+    } else if (save_lang === 'zh-Hant') {
+        lang = 'zh' as Lang;
+    }
+    return lang || 'en';
 }
 export function getCacheBalance() {
     const user_id = getCurUserId();

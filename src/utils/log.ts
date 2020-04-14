@@ -1,10 +1,10 @@
 import { getParams } from './utils';
 
 function createLog(type?: string) {
-    if (!getParams('debug')) {
-        // tslint:disable-next-line
-        return () => {};
-    }
+    // if (!getParams('debug')) {
+    //     // tslint:disable-next-line
+    //     return () => {};
+    // }
 
     let log_fun = console[type];
     if (!log_fun) {

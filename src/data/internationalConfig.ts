@@ -302,7 +302,7 @@ export const International = {
         kickedTip: '你被踢出房间, 刷新重新进入?',
         buyBulletTip: '子弹数目不够, 是否购买?',
         buySkillTip: '你还没有当前技能, 是否购买!',
-        logoutTip: '登陆断开, 收否刷新页面!',
+        logoutTip: '登陆断开, 是否刷新页面!',
         posBombTip: '请选择屏幕中的位置放置炸弹',
         aimFish: '请选中你要攻击的鱼',
         help: '帮助',

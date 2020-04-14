@@ -4,10 +4,10 @@ import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 import { getUserInfo } from 'model/modelState';
-import { onNode } from 'utils/layaUtils';
+import { onNode, isClosest } from 'utils/layaUtils';
 import VoicePop from 'view/pop/voice';
 import { HallCtrl } from './hallCtrl';
-import { loginOut } from './login';
+import { logout, login } from './login';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
@@ -72,6 +72,9 @@ export function hallViewEvent(hall: HallCtrl) {
     });
     btn_coin_select.on(CLICK, hall, (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
+        if (isClosest(event.target, coin_menu)) {
+            return;
+        }
         view.toggleCoinMenu(!coin_menu.visible);
     });
     flag_box.on(CLICK, hall, (event: Event) => {
@@ -93,11 +96,12 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
     });
     onNode(btn_login, CLICK, () => {
+        login();
         AudioCtrl.play(AudioRes.Click);
     });
     onNode(btn_leave, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
-        loginOut();
+        logout();
     });
     onNode(btn_voice, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);

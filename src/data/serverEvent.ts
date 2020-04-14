@@ -14,6 +14,11 @@ export enum ServerErrCode {
     AlreadyInRoom = 109,
 }
 
+export type ErrorData = {
+    code: number;
+    error: string;
+};
+
 /** 服务器端的接口 */
 export const ServerEvent = {
     /** 游戏部分 */

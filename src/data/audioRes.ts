@@ -5,7 +5,6 @@ export const AudioRes = {
     Fire: 'sound/fire.mp3',
     Bomb: 'sound/bomb.mp3',
     Freeze: 'sound/freezing.mp3',
-    ChangeSkin: 'sound/change_skin.mp3',
     ShoalComing: 'sound/shoal_coming.mp3',
     CoinFew: 'sound/coin_few.mp3',
     CoinShow: 'sound/coin_show.mp3',

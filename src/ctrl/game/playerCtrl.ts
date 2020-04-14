@@ -122,7 +122,9 @@ export class PlayerCtrl {
             const { bullet_group, velocity } = info;
             const { rage } = gun;
             view.fire(velocity, nickname);
-            view.stopPosTip();
+            if (is_cur_player) {
+                view.stopPosTip();
+            }
             for (const bullet of bullet_group.bullet_list) {
                 const bullet_view = view.addBullet(
                     bullet.skin,
@@ -137,9 +139,6 @@ export class PlayerCtrl {
             view.setDirection(_direction);
         });
         gun_event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
-            if (is_cur_player) {
-                AudioCtrl.play(AudioRes.ChangeSkin);
-            }
             if (is_cur_player) {
                 this.detectDisableChangeBulletCost(level_info.bullet_cost);
             }
@@ -255,7 +254,7 @@ export class PlayerCtrl {
             return;
         }
 
-        AudioCtrl.play(AudioRes.Fire);
+        AudioCtrl.play(AudioRes.Click);
         const next = bullet_cost_arr[next_index];
         this.detectDisableChangeBulletCost(next);
         const _socket = getSocket(ServerName.Game);

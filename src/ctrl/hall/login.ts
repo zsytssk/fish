@@ -16,7 +16,7 @@ import { getLang } from './hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 
 /** 登陆用的脚本 */
-export async function login() {
+export async function initHallSocket() {
     let socket = getSocket(ServerName.Hall);
     if (socket) {
         return true;
@@ -25,8 +25,12 @@ export async function login() {
     return true;
 }
 
-export function loginOut() {
-    localStorage.removeItem('token');
+export function login() {
+    platform.login();
+    disconnectSocket(ServerName.Hall);
+}
+export function logout() {
+    platform.logout();
     disconnectSocket(ServerName.Hall);
 }
 
@@ -54,7 +58,7 @@ export function leaveGame() {
 }
 
 export function getHallSocketInfo(): SocketConfig {
-    const code = localStorage.getItem('code');
+    const code = Config.code;
     const name = ServerName.Hall;
     const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
 
@@ -81,7 +85,7 @@ export function connectSocket(config: SocketConfig) {
                 }
             });
         });
-        const token = localStorage.getItem('token');
+        const token = Config.token;
         if (token) {
             socket.setParams({ jwt: token });
             resolve(socket);

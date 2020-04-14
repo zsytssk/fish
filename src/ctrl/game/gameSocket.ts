@@ -1,6 +1,6 @@
-import { WebSocketTrait } from 'ctrl/net/webSocketWrap';
+import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { GameCtrl } from './gameCtrl';
-import { ServerEvent } from 'data/serverEvent';
+import { ServerEvent, ErrorData } from 'data/serverEvent';
 import { BombInfo } from 'model/game/skill/bombModel';
 import { SkillMap, Config } from 'data/config';
 import { FreezeInfo } from 'model/game/skill/freezeModel';
@@ -12,6 +12,9 @@ import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
 import { PlayerInfo } from 'model/game/playerModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
 import { isCurUser, getCurUserId } from 'model/modelState';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
+import AlertPop from 'view/pop/alert';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
@@ -88,6 +91,24 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.UseSkin]: (data: UseSkinReq) => {
             game.changeSkin(data.skinId);
+        },
+        [ServerEvent.ErrCode]: (res: ErrorData) => {
+            const { code, error } = res;
+            const lang = getLang();
+            const { logoutTip } = InternationalTip[lang];
+            if (code === 1003) {
+                socket.disconnect();
+                AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
+                    location.reload();
+                });
+            }
+        },
+        [SocketEvent.End]: (res: ErrorData) => {
+            const lang = getLang();
+            const { logoutTip } = InternationalTip[lang];
+            AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
+                location.reload();
+            });
         },
     });
 }

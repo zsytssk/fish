@@ -16,7 +16,7 @@ export const fish_test = new Test('fish', runner => {
             typeId = typeId || 3;
             pathId = pathId || 3;
             time = time || 12 * 100000;
-            const usedTime = time / 2;
+            const usedTime = (time * 2) / 3;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
         },

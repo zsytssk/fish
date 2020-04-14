@@ -6,8 +6,14 @@ import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 import { getParams } from 'utils/utils';
 import { modelState } from 'model/modelState';
 import { test_data } from '../testData';
+import * as main from 'main';
+import { injectAfter } from 'honor/utils/tool';
+import honor from 'honor';
+import { Laya } from 'Laya';
+import { Config } from 'data/config';
 
 export async function localTest() {
+    commonTest();
     await mock_web_socket_test.runTest('create');
     modelState.app.user_info.setUserId(test_data.userId);
     mock_web_socket_test.runTest(ServerEvent.Shoot);
@@ -26,6 +32,7 @@ export async function localTest() {
 }
 
 export async function localSocketTest() {
+    commonTest();
     const code = getParams('code');
     if (code) {
         localStorage.setItem('code', code);
@@ -44,4 +51,20 @@ export async function localSocketTest() {
     //         honor.director.closeAllDialogs();
     //     });
     // });
+}
+
+export function commonTest() {
+    injectAfter(honor, 'run', () => {
+        Laya.Browser.onIOS = Laya.Browser.onAndroid = false;
+        // if (location.href.indexOf('debug') === -1) {
+        //     location.href += `&debug=1`;
+        // }
+        const url = getParams('url');
+        const code = getParams('code');
+        if (url) {
+            Config.SocketUrl = `ws://${url}`;
+            Config.code = code;
+            Config.isLogin = true;
+        }
+    });
 }

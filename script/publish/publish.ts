@@ -62,13 +62,17 @@ async function cleanDist() {
     const dist_bin = path.resolve(dist_path, 'bin');
     /** 删除index.html中的webpack-dev-server */
     const dist_index = path.resolve(dist_bin, 'index.html');
+    const dist_index_js = path.resolve(dist_bin, 'index.js');
     let index_str = await readFile(dist_index);
+    let index_js_str = await readFile(dist_index_js);
     index_str = replaceReg(
         index_str,
         /\n\s+<script type="text\/javascript" src="webpack-dev-server.js"><\/script>/g,
         '',
     );
+    index_js_str = replaceReg(index_js_str, /url:\n*\s+'[^']+',\n\s+/g, '');
     await write(dist_index, index_str);
+    await write(dist_index_js, index_js_str);
     console.log(dist_path);
 }
 

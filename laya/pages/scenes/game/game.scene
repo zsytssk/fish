@@ -254,7 +254,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,bullet_box",
-                    "props":{"x":18,"width":268,"var":"bullet_box","pivotY":92,"height":92,"bottom":0},
+                    "props":{"x":18,"width":268,"var":"bullet_box","pivotY":92,"height":92,"bottom":-4},
                     "nodeParent":11,
                     "label":"bullet_box",
                     "isOpen":true,

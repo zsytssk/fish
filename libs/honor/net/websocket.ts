@@ -1,3 +1,5 @@
+import { log } from 'utils/log';
+
 export type Config = {
     url: string;
     handlers: Handlers;
@@ -57,6 +59,7 @@ export class WebSocketCtrl {
         this.connect();
     }
     public connect() {
+        log('WebSocket连接...');
         if (this.ws) {
             return;
         }
@@ -81,6 +84,7 @@ export class WebSocketCtrl {
         }
     }
     private onopen = () => {
+        log('WebSocket连接上了');
         this.status = 'OPEN';
         const { onInit, onReconnected } = this.handlers;
 
@@ -130,6 +134,7 @@ export class WebSocketCtrl {
      * 重连
      */
     public reconnect() {
+        log('WebSocket断线重连');
         const { reconnect_count, reconnect_max, handlers } = this;
         this.status = 'CONNECTING';
         if (reconnect_count > reconnect_max) {
@@ -193,6 +198,7 @@ export class WebSocketCtrl {
     }
     /** 真正的关闭 */
     private end() {
+        log('WebSocket断开连接');
         this.reset();
         this.status = 'CLOSED';
         if (this.handlers.onEnd) {

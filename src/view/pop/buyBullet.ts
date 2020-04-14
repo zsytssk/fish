@@ -19,7 +19,7 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
         const { intro, title, btn_label } = this;
         title.text = buyBullet;
         btn_label.text = purchase;
-        intro.text = `${buyBulletCost}                   EOS`;
+        intro.text = `${buyBulletCost}${purchase}EOS`;
     }
     public destroy() {
         offLangChange(this);

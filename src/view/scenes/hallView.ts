@@ -1,13 +1,15 @@
-import { offLangChange, onLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
+import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorScene } from 'honor';
+import { Laya } from 'Laya';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
+import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 import { AccountMap } from 'model/userInfo/userInfoModel';
 import { fade_in, fade_out } from 'utils/animate';
-import { onStageClick, resizeContain, resizeParent } from 'utils/layaUtils';
+import { onStageClick, resizeContain } from 'utils/layaUtils';
 import { playSkeleton } from 'utils/utils';
 import { ui } from '../../ui/layaMaxUI';
 
@@ -20,12 +22,22 @@ export default class HallView extends ui.scenes.hall.hallUI
     public static preEnter() {
         return honor.director.runScene('scenes/hall/hall.scene');
     }
-    public onResize(width: number, height: number) {
+    public onResize(width?: number, height?: number) {
+        if (!width) {
+            width = Laya.stage.width;
+            height = Laya.stage.height;
+        }
         const {
             width: tw,
             height: th,
             inner,
-            header: { inner: header_inner },
+            header: {
+                inner: header_inner,
+                middle_btn_wrap,
+                btn_right_wrap,
+                left_wrap,
+                right_wrap,
+            },
         } = this;
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
@@ -33,9 +45,17 @@ export default class HallView extends ui.scenes.hall.hallUI
             width = 1334;
         }
         header_inner.width = inner.width = width;
-        console.log(`onResize`, width, height);
+        const radio = width / height;
+        let space = 10 * radio * radio;
+        if (width / height < 1.651) {
+            space = 7 * radio * radio;
+        }
+        resizeContain(left_wrap, space);
+        resizeContain(btn_right_wrap, space);
+        resizeContain(middle_btn_wrap, space);
+        resizeContain(right_wrap, space);
     }
-    public onAwake() {}
+
     public onOpened() {
         const { coin_menu, flag_menu } = this.header;
         coin_menu.list.array = [];
@@ -52,7 +72,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         this.initEvent();
     }
     private initEvent() {
-        const { coin_menu, flag_menu, btn_coin_select, flag_box } = this.header;
+        const { flag_menu, coin_menu, btn_coin_select, flag_box } = this.header;
         onLangChange(this, lang => {
             this.initLang(lang);
         });
@@ -61,7 +81,7 @@ export default class HallView extends ui.scenes.hall.hallUI
             () => {
                 this.toggleCoinMenu(false);
             },
-            [coin_menu, btn_coin_select],
+            [btn_coin_select],
         );
 
         onStageClick(
@@ -74,19 +94,13 @@ export default class HallView extends ui.scenes.hall.hallUI
     }
     private initLang(lang: Lang) {
         const { match_status, match_box, normal_box, btn_play_now } = this;
-        const {
-            btn_get_label,
-            btn_change_label,
-            middle_btn_wrap,
-        } = this.header;
-        const { deposit, withdrawal, stayTuned } = InternationalTip[lang];
+        const { btn_get, btn_charge, middle_btn_wrap } = this.header;
+        const { stayTuned } = InternationalTip[lang];
         const map = [
             ['normal', normal_box],
             ['match', match_box],
         ] as Array<[string, Box]>;
 
-        btn_get_label.text = deposit;
-        btn_change_label.text = withdrawal;
         match_status.text = stayTuned;
 
         const btn_arr = ['btn_play', 'btn_try'];
@@ -102,8 +116,12 @@ export default class HallView extends ui.scenes.hall.hallUI
         const play_now_ani = btn_play_now.getChildByName('ani') as Skeleton;
         playSkeleton(play_now_ani, `standby_${lang}`, true);
 
-        resizeParent(btn_change_label, 20, 84);
-        resizeParent(btn_get_label, 20, 84);
+        (btn_charge.getChildByName(
+            'txt_label',
+        ) as Image).skin = `image/international/charge_${lang}.png`;
+        (btn_get.getChildByName(
+            'txt_label',
+        ) as Image).skin = `image/international/withdraw_${lang}.png`;
         resizeContain(middle_btn_wrap, 10);
         this.activeAni('normal');
     }
@@ -127,7 +145,7 @@ export default class HallView extends ui.scenes.hall.hallUI
     }
     public setNickname(nickname_str: string) {
         const { nickname } = this.header;
-        nickname.text = nickname_str;
+        nickname.text = honor.utils.cutStr(nickname_str, 12);
     }
     public coinMenuRender(box: Box, index: number) {
         const coin_num = box.getChildByName('coin_num') as Label;
@@ -175,7 +193,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         }
         if (status) {
             // show
-            coin_menu.y = 54;
+            coin_menu.y = 60;
             fade_in(coin_menu, 300);
             coin_triangle.rotation = 180;
         } else {

@@ -12,6 +12,9 @@ export const Config = {
     PublicKey:
         'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB',
     SocketUrl: '',
+    code: '',
+    token: '',
+    isLogin: false,
     Host: '',
     /** cdn版本号 */
     CdnVersion: window.CDN_VERSION,
@@ -48,6 +51,6 @@ export const SkillNameMap = {
 
 export const ItemMap = {
     '3001': 'BTC',
-    '3002': 'ETC',
+    '3002': 'ETH',
     '3003': 'XRP',
 };

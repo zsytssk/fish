@@ -58,7 +58,7 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.lang = lang;
-        localStorage.setItem('lang', lang);
+        localStorage.setItem('local_lang', lang);
         this.event.emit(UserInfoEvent.LangChange, lang);
     }
     public setUserId(name: string) {

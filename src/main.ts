@@ -1,12 +1,10 @@
 import { Config } from 'data/config';
-import { getParams } from 'utils/utils';
 
-function init() {
-    Config.SocketUrl = getParams('url');
-    const code = getParams('code');
-    if (code) {
-        localStorage.setItem('code', code);
-    }
+export function init() {
+    const platform_info = platform.getInfo();
+    Config.SocketUrl = platform_info.socket_url;
+    Config.token = platform_info.token;
+    Config.isLogin = platform_info.isLogin;
 }
 
 import('ctrl/appCtrl').then(({ AppCtrl }) => {

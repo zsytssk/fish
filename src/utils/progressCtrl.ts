@@ -79,6 +79,9 @@ export default class ProgressCtrl {
         this.radio = radio;
         progress_bar.value = radio;
         progress_btn.x = radio * width;
+        if (radio < 0.1) {
+            radio = 0;
+        }
         this.on_progress(radio);
     }
     public destroy() {

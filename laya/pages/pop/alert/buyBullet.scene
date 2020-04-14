@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":27,
+    "selectedBox":37,
+    "selecteID":38,
     "searchKey":"Dialog",
     "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/buyBullet.png","height":427},
     "nodeParent":-1,
@@ -59,7 +59,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,title",
-                    "props":{"y":11,"x":266,"var":"title","text":"购买子弹","strokeColor":"#024b7d","stroke":3,"fontSize":30,"color":"#ffffff"},
+                    "props":{"y":11,"var":"title","text":"购买子弹","strokeColor":"#024b7d","stroke":3,"fontSize":30,"color":"#ffffff","centerX":0},
                     "nodeParent":3,
                     "label":"title",
                     "isDirectory":false,
@@ -199,7 +199,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,cost_num",
-                    "props":{"y":0,"x":74,"width":85,"var":"cost_num","text":"1231","height":24,"font":"score_num","align":"center"},
+                    "props":{"y":0,"x":74,"width":85,"visible":false,"var":"cost_num","text":"1231","height":24,"font":"score_num","align":"center"},
                     "nodeParent":37,
                     "label":"cost_num",
                     "isDirectory":false,
@@ -207,7 +207,8 @@
                     "hasChild":false,
                     "compId":38,
                     "child":[
-                        ]
+                        ],
+                    "$HIDDEN":true
                 }]
         },
         {
@@ -227,7 +228,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,btn_label",
-                    "props":{"y":14,"x":54,"width":58,"var":"btn_label","text":"购买","height":28,"fontSize":28,"color":"#983c00"},
+                    "props":{"y":14,"width":58,"var":"btn_label","text":"购买","height":28,"fontSize":28,"color":"#983c00","centerX":0},
                     "nodeParent":34,
                     "label":"btn_label",
                     "isDirectory":false,

@@ -1,5 +1,5 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
+import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
 import { Lang } from 'data/internationalConfig';
 import { ServerName } from 'data/serverEvent';
@@ -15,7 +15,7 @@ import {
     onNicknameChange,
     offLangChange,
 } from './hallCtrlUtil';
-import { onHallSocket, roomIn } from './hallSocket';
+import { onHallSocket, roomIn, hallSocket, offHallSocket } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
 import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
@@ -57,6 +57,7 @@ export class HallCtrl {
         hallViewEvent(this);
         this.initModelEvent();
         await onHallSocket(this).then(enter_game => {
+            hallSocket(getSocket('hall'), this);
             if (enter_game) {
                 this.destroy();
             } else {
@@ -116,11 +117,13 @@ export class HallCtrl {
         /** 登陆之后显示离开按钮 */
         btn_leave.visible = true;
         btn_login.visible = false;
+        this.view.onResize();
     }
     public destroy() {
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
         offLangChange(this);
+        offHallSocket(this);
         disconnectSocket(ServerName.Hall);
         HallCtrl.leave();
     }
