@@ -99,7 +99,7 @@ export function connectSocket(config: SocketConfig) {
                 jwt = await getGuestToken(socket);
             }
             socket.setParams({ jwt });
-            localStorage.setItem('token', jwt);
+            Config.token = jwt;
             log('我自己的token:', jwt);
             resolve(socket);
         });

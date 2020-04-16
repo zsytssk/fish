@@ -3,7 +3,6 @@
         "allowJs": true,
         "experimentalDecorators": true,
         "module": "commonjs",
-        "moduleResolution": "node",
         "resolveJsonModule": true,
         "target": "es6",
         "skipDefaultLibCheck": true,
@@ -12,6 +11,7 @@
         "noEmit": true,
         "sourceMap": true,
         "watch": true,
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "baseUrl": "./",
         "paths": {
