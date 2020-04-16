@@ -1,5 +1,9 @@
-import { isFunc } from './utils';
+import { Laya } from 'Laya';
+import { EventCom } from 'comMan/eventCom';
 
+export const BackgroundMonitorEvent = {
+    VisibleChange: 'VisibleChange',
+};
 /**
  * 后台检测控制器
  * 核心代码来之张笑的 laya.tool.js, 在他的基础上添加一些功能
@@ -10,94 +14,65 @@ export class BackgroundMonitor {
      * 来确定用户离开页面的Interval
      */
     private interval: number;
-    private bind_fns: FuncVoid[] = [];
-    private time_zone: number;
-    private bind_visibility_change_fn: EventListener;
-    private time_out: number;
-    constructor(time_zone?: number) {
-        this.time_zone = time_zone || 1000;
+    public event = new EventCom();
+    constructor() {
+        this.init();
     }
-    public bindEnterBackground(fn: FuncVoid) {
-        if (isFunc(fn)) {
-            this.bind_fns.push(fn);
-        }
-    }
-    private runBindFun() {
-        for (const fn of this.bind_fns) {
-            fn();
-        }
-    }
-    public enableMonitor() {
+    public init() {
         /** 测试环境禁用后台功能 */
         if (document?.visibilityState) {
-            const bind_visibility_change_fn: EventListener = this.visibilityChange.bind(
-                this,
-            );
-
             // 在浏览器中判断页面是否被隐藏
-            document.addEventListener(
+            return document.addEventListener(
                 'visibilitychange',
-                bind_visibility_change_fn,
+                this.visibilityChange,
             );
-            this.bind_visibility_change_fn = bind_visibility_change_fn;
         }
 
         // old browser 的处理函数
-        const Browser = laya.utils.Browser;
+        const Browser = Laya.Browser;
         let last_time = Browser.now();
-        const diff_time = this.time_zone;
+        const diff_time = 1000;
 
         if (!Browser.onAndroid) {
             this.interval = window.setInterval(() => {
                 const now_time = Browser.now();
                 if (now_time - last_time > diff_time) {
                     clearInterval(this.interval);
-                    this.runBindFun();
+                    this.emitEvent(false);
                 }
 
                 last_time = now_time;
             }, 300);
-        } else {
-            let _counter = 0;
-            this.interval = window.setInterval(() => {
-                const now_time = Browser.now();
-
-                if (now_time - last_time > diff_time) {
-                    if (_counter > 1) {
-                        clearInterval(this.interval);
-                        this.runBindFun();
-                    } else {
-                        _counter += 1;
-                    }
-                }
-
-                last_time = now_time;
-            }, 300);
+            return;
         }
+
+        let _counter = 0;
+        this.interval = window.setInterval(() => {
+            const now_time = Browser.now();
+
+            if (now_time - last_time > diff_time) {
+                if (_counter > 1) {
+                    clearInterval(this.interval);
+                    this.emitEvent(false);
+                } else {
+                    _counter += 1;
+                }
+            }
+
+            last_time = now_time;
+        }, 300);
+    }
+    private emitEvent(status: boolean) {
+        this.event.emit(BackgroundMonitorEvent.VisibleChange, status);
     }
     /** 浏览器的visibilityState发生变化的处理函数 */
-    private visibilityChange() {
+    private visibilityChange = () => {
         const visibilityState = document.visibilityState;
         if (visibilityState === 'hidden') {
-            this.time_out = window.setTimeout(() => {
-                this.runBindFun();
-            }, this.time_zone);
+            this.emitEvent(false);
         }
         if (visibilityState === 'visible') {
-            if (this.time_out) {
-                clearTimeout(this.time_out);
-            }
+            this.emitEvent(true);
         }
-    }
-    /** 禁用监控 */
-    public disabledMonitor() {
-        clearInterval(this.interval);
-
-        if (document && document.visibilityState) {
-            document.removeEventListener(
-                'visibilitychange',
-                this.bind_visibility_change_fn,
-            );
-        }
-    }
+    }; // tslint:disable-line
 }

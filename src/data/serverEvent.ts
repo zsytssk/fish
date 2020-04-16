@@ -10,6 +10,8 @@ export const ServerName = {
 export enum ServerErrCode {
     /** token过期 */
     TokenExpire = 1002,
+    /** 异地登陆 */
+    OtherLogin = 1003,
     /** 已经在房间中 */
     AlreadyInRoom = 109,
 }

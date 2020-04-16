@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":10,
-    "selecteID":13,
+    "selecteID":11,
     "searchKey":"View",
     "props":{"width":252,"sceneColor":"#000000","sceneBg":"laya/views/scenes/hall/coin_menu.png","height":356},
     "nodeParent":-1,
@@ -70,23 +70,9 @@
                     "child":[
                         {
                             "x":45,
-                            "type":"Sprite",
-                            "searchKey":"Sprite",
-                            "props":{"y":-3,"x":1,"texture":"image/hall/coin_menu_line.png"},
-                            "nodeParent":10,
-                            "label":"Sprite",
-                            "isDirectory":false,
-                            "isAniNode":false,
-                            "hasChild":false,
-                            "compId":11,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,coin_num",
-                            "props":{"y":1,"x":243,"width":148,"valign":"middle","text":"777","scaleY":1,"right":0,"pivotX":148,"overflow":"visible","name":"coin_num","height":46,"fontSize":20,"color":"#fff","centerY":0,"align":"right"},
+                            "props":{"width":148,"valign":"middle","text":"777","scaleY":1,"right":0,"pivotX":148,"overflow":"visible","name":"coin_num","height":46,"fontSize":20,"color":"#fff","centerY":1,"align":"right"},
                             "nodeParent":10,
                             "label":"coin_num",
                             "isDirectory":false,
@@ -121,6 +107,20 @@
                             "isAniNode":false,
                             "hasChild":false,
                             "compId":16,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite",
+                            "props":{"y":45,"x":3,"texture":"image/hall/coin_menu_line.png"},
+                            "nodeParent":10,
+                            "label":"Sprite",
+                            "isDirectory":false,
+                            "isAniNode":false,
+                            "hasChild":false,
+                            "compId":11,
                             "child":[
                                 ]
                         }]

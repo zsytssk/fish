@@ -8,8 +8,16 @@ export const alert_test = new Test('alert', runner => {
     runner.describe('top_tip', () => {
         TopTipPop.tip('点击屏幕内您想投放炸弹的位置');
     });
-    runner.describe('show_tip', () => {
-        TipPop.tip('this is a test, \nsdfsdfdsfsdf sdfdsfdsfds sdfsdfdsfds');
+    runner.describe('show_tip', async () => {
+        TipPop.tip('this is a test', {
+            count: 10,
+            show_count: true,
+            click_through: false,
+            auto_hide: false,
+        });
+
+        // await sleep(5);
+        // TipPop.hide();
     });
     runner.describe('show_alert', () => {
         AlertPop.alert('this is a test', {

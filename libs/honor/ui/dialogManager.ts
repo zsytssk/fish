@@ -19,7 +19,7 @@ import { Laya } from 'Laya';
  * 全局默认弹出对话框效果，可以设置一个效果代替默认的弹出效果，
  * 如果不想有任何效果，可以赋值为null
  */
-const defaultPopupEffect = function(dialog: HonorDialog) {
+const defaultPopupEffect = function (dialog: HonorDialog) {
     if (dialog.HonorEffectTween) {
         (dialog.HonorEffectTween as Tween).complete();
     }
@@ -48,7 +48,7 @@ const defaultPopupEffect = function(dialog: HonorDialog) {
 /** 全局默认关闭对话框效果，可以设置一个效果代替默认的关闭效果，
  * 如果不想有任何效果，可以赋值为null
  */
-const defaultCloseEffect = function(dialog: HonorDialog) {
+const defaultCloseEffect = function (dialog: HonorDialog) {
     if (dialog.HonorEffectTween) {
         (dialog.HonorEffectTween as Tween).complete();
     }
@@ -77,7 +77,7 @@ const defaultCloseEffect = function(dialog: HonorDialog) {
 };
 
 type DialogOptObj = {
-    dialog_url: DialogRefUrl;
+    dialog: DialogRefUrl;
     use_exist?: boolean;
     show_effect?: boolean;
 };
@@ -122,16 +122,24 @@ export class DialogManagerCtor {
         );
         this.dialog_manager = dialog_manager;
     }
-
+    public onResize(width: number, height: number) {
+        const { open_dialog_list } = this;
+        for (const pop_info of open_dialog_list) {
+            const { dialog } = pop_info;
+            if (dialog.onResize) {
+                dialog.onResize(width, height);
+            }
+        }
+    }
     /** @todo 逻辑需要整理下 getViewByPool 不再使用... */
     public async openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
         let url = opt as DialogRefUrl;
         let use_exist: boolean;
         let show_effect: boolean;
 
-        if ((opt as DialogOptObj).dialog_url) {
+        if ((opt as DialogOptObj).dialog) {
             const opt_obj = opt as DialogOptObj;
-            url = opt_obj.dialog_url;
+            url = opt_obj.dialog;
             use_exist = opt_obj.use_exist;
             show_effect = opt_obj.use_exist;
         }
@@ -176,6 +184,11 @@ export class DialogManagerCtor {
         const dialog_config = this.setDialogConfig(url, dialog, config);
         // 异步打开弹出层, 用来在外面设置弹出层的大小使 弹出层可以居中...
         afterActive(dialog).then(() => {
+            if (dialog.onResize) {
+                const { width, height } = Laya.stage;
+                dialog.onResize(width, height);
+            }
+
             const ori_show_effect = dialog.popupEffect;
             if (show_effect !== undefined && show_effect === false) {
                 dialog.popupEffect = null;

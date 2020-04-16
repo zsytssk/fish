@@ -37,6 +37,7 @@ import { log } from 'utils/log';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
+import { BackgroundMonitorEvent } from 'utils/backgroundMonitor';
 
 type AddItemInfo = {
     userId: string;
@@ -78,6 +79,7 @@ export class GameCtrl {
         });
     }
     private initEvent() {
+        const { bg_monitor } = ctrlState.app;
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
         const { CLICK } = Event;

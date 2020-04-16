@@ -15,10 +15,12 @@ import { isCurUser, getCurUserId } from 'model/modelState';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import AlertPop from 'view/pop/alert';
+import { commonSocket } from 'ctrl/hall/commonSocket';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     game_socket = socket;
+    commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep) => {
             game.onEnterGame(convertEnterGame(data));
@@ -91,24 +93,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.UseSkin]: (data: UseSkinReq) => {
             game.changeSkin(data.skinId);
-        },
-        [ServerEvent.ErrCode]: (res: ErrorData) => {
-            const { code, error } = res;
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            if (code === 1003) {
-                socket.disconnect();
-                AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
-                    location.reload();
-                });
-            }
-        },
-        [SocketEvent.End]: (res: ErrorData) => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
-                location.reload();
-            });
         },
     });
 }

@@ -22,6 +22,7 @@ export class DirectorCtor {
     private onResize() {
         const { width, height } = Laya.stage;
         sceneManager.onResize(width, height);
+        dialogManager.onResize(width, height);
     }
     /**
      * 运行场景

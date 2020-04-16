@@ -3,6 +3,7 @@ import {
     getSocket,
     waitCreateSocket,
     bindSocketEvent,
+    disconnectSocket,
 } from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
 import {
@@ -18,6 +19,7 @@ import { initHallSocket } from './login';
 import { getLang } from './hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
+import { commonSocket } from './commonSocket';
 
 /**
  *
@@ -102,7 +104,7 @@ export function hallSocket(socket: WebSocketTrait, hall: HallCtrl) {
             const lang = getLang();
             const { logoutTip } = InternationalTip[lang];
             if (code === 1003) {
-                socket.disconnect();
+                disconnectSocket(socket.config.name);
                 AlertPop.alert(logoutTip, {
                     hide_cancel: true,
                 }).then(() => {
@@ -118,6 +120,8 @@ export function hallSocket(socket: WebSocketTrait, hall: HallCtrl) {
             });
         },
     });
+
+    commonSocket(socket, hall);
 }
 
 export function offHallSocket(hall: HallCtrl) {

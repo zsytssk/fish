@@ -15,8 +15,8 @@ import { PlayerInfo } from 'model/game/playerModel';
 export function genFishInfo(game_ctrl: GameTestCtrl) {
     const typeId = 1;
     const pathId = 3;
-    const totalTime = 1200 * 1000;
-    const usedTime = 600 * 1000;
+    const totalTime = 1200000 * 1000;
+    const usedTime = totalTime / 2;
     const fish_data = {
         eid: '00' + typeId,
         fishId: `${typeId}`,

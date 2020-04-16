@@ -16,6 +16,7 @@ export function startCount(time: number, delta: number, fn: CountFn) {
     const count = time / delta;
     let i = 0;
     const count_fn = (n: number) => {
+        console.log(count_index);
         i += n;
         if (i >= count) {
             fn(0);
@@ -26,22 +27,25 @@ export function startCount(time: number, delta: number, fn: CountFn) {
 
     loop(count_fn, delta * 1000, null);
     const off = () => {
+        console.log(`startCount:>2`);
         clear(count_fn, null);
     };
     fn(1);
     count_map.set(cur_count_index, off);
+    console.log(`startCount:>1`, cur_count_index);
     return cur_count_index;
 }
 
 /** 清理倒计时 */
 export function clearCount(index: number) {
     const item = count_map.get(index);
+    console.log(`startCount:>3`, index, item);
     if (!item) {
         return;
     }
     count_map.get(index)();
     count_map.delete(index);
     if (count_map.size === 0) {
-        count_index = 0;
+        // count_index = 0;
     }
 }

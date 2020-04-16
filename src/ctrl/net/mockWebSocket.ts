@@ -5,7 +5,9 @@ import { EventCom } from 'comMan/eventCom';
 export class MockWebSocket implements WebSocketTrait {
     public event = new EventCom();
     public sendEvent = new EventCom();
+    public config: Config;
     constructor(config: Config) {
+        this.config = config;
         setTimeout(() => {
             this.event.emit(SocketEvent.Init);
         });

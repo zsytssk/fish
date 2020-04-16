@@ -21,7 +21,7 @@ export type Handlers = {
     /** 关闭 */
     onClose?: () => void;
     /** 重连开始 */
-    onReconnect?: () => void;
+    onReconnect?: (no: number) => void;
     /** 重连结束 */
     onReconnected?: () => void;
     /** 断开连接 */
@@ -78,10 +78,11 @@ export class WebSocketCtrl {
         }
     }
     public send(msg: string) {
-        const { ws } = this;
-        if (ws) {
-            ws.send(msg);
+        const { status, ws } = this;
+        if (status !== 'OPEN') {
+            return console.error(`socket is no connected!`);
         }
+        ws.send(msg);
     }
     private onopen = () => {
         log('WebSocket连接上了');
@@ -145,7 +146,7 @@ export class WebSocketCtrl {
             typeof handlers.onReconnect === 'function' &&
             reconnect_count === 0
         ) {
-            handlers.onReconnect();
+            handlers.onReconnect(reconnect_count);
         }
         this.reset();
 

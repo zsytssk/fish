@@ -87,14 +87,15 @@ export const International = {
         tourSkip: 'Exit',
         tourStart: 'Start',
         tour1: 'Click the drop-down button to select the coin',
-        tour2: 'Game room will change accordingly based on coin selection',
+        tour2: 'Game room will change accordingly <br/>based on coin selection',
         tour3:
             'You only can experience the game in Trial Field, <br/>you can earn coins in the Real Field',
         tour4:
             'System will automatically convert your coins into<br/> bullets after entering Real Field; All your balance<br/> bullet will be converted back to coins after you <br/> leave the room. ',
         tour5:
-            'Control your cannon, click and capture fishes to <br/> gain more bullets',
-        tour6: 'Use items to assist you to capture more and bigger <br/>fishes',
+            'Control your cannon, click and capture fishes<br/> to gain more bullets',
+        tour6:
+            'Use items to assist you to capture more <br/> and bigger fishes',
     },
     [Lang.Kor]: {
         deposit: '충전',
@@ -174,7 +175,7 @@ export const International = {
         tour4:
             '게임이 본격적으로 시작되면 시스템이 자동으로 디지털 화폐를 총알로 바꿔드립니다. 게임방을 떠난 후, 남은 모든 총알은 다시 디지털 화폐로 교환됩니다. ',
         tour5:
-            '포좌를 컨트롤하고 물고기 포획을 클릭하면 더 많은 총알을 받을 수 있습니다.',
+            '포좌를 컨트롤하고 물고기 포획을 클릭하면 더 <br/> 많은 총알을 받을 수 있습니다.',
         tour6:
             '도구를 사용하여 더 많고 더 큰 물고기를 <br/> 포획할 수 있습니다.',
     },
@@ -256,7 +257,7 @@ export const International = {
         tour4:
             '本番ゲームルームに⼊場の際、システムは⾃動的に仮想通貨を弾薬に交換されます。 また、お客様は退場の際、殘りの弾薬が⾃動的に仮想通貨に交換されます。ご安⼼くだ さい。 ',
         tour5:
-            '砲臺をコントロールし、クリックかつ⿂の捕獲、もっと弾薬が獲得可能 ',
+            '砲臺をコントロールし、クリックかつ⿂の捕獲、<br/>もっと弾薬が獲得可能 ',
         tour6: 'スキルの使⽤で、もっと⼤きくて多い⿂を<br/>捕獲可能です。',
     },
     [Lang.Zh]: {
@@ -417,4 +418,15 @@ export const International = {
 
 export const InternationalTip = International as {
     [key: string]: typeof International[Lang.Zh];
+};
+
+const InternationalTip2 = {
+    [Lang.Zh]: {
+        NetError: '网络异常, 正在重新连接',
+        NetComeBack: '欢迎回来!',
+    },
+};
+
+export const InternationalTipOther = InternationalTip2 as {
+    [key: string]: typeof InternationalTip2[Lang.Zh];
 };

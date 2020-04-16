@@ -44,6 +44,7 @@ export interface WebSocketTrait {
     setParams(params: {}): void;
     send(cmd: string, data?: {}): void;
     disconnect(): void;
+    config: Config;
 }
 /** websocket 的 */
 export class WebSocketWrapCtrl extends ComponentManager
@@ -51,7 +52,7 @@ export class WebSocketWrapCtrl extends ComponentManager
     private ws: WebSocketCtrl;
     private params: {} = {};
     public event: EventCom;
-    private config: Config;
+    public config: Config;
     constructor(config: Config) {
         super();
         this.config = config;
@@ -141,8 +142,8 @@ export class WebSocketWrapCtrl extends ComponentManager
     private onEnd = () => {
         this.event.emit(SocketEvent.End);
     }; //tslint:disable-line
-    private onReconnect = () => {
-        this.event.emit(SocketEvent.Reconnecting);
+    private onReconnect = (no: number) => {
+        this.event.emit(SocketEvent.Reconnecting, no);
     }; //tslint:disable-line
     private onReconnected = () => {
         this.event.emit(SocketEvent.Reconnected);

@@ -71,7 +71,7 @@ export class NewUserGuide {
 
             const { skill_box } = game_ctrl.view;
             guide_dialog.setBtnNextDir('right');
-            await showPromptByNode(skill_box, [tour6], dir, true, 'start');
+            await showPromptByNode(skill_box, [tour6], 'top', true, 'start');
             resetMockSocketCtor(game_ctrl);
         } catch (err) {
             console.log(`NewUserGuide:skip:>`, err);

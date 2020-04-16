@@ -12,8 +12,6 @@ import {
     getSocket,
 } from '../net/webSocketWrapUtil';
 import { log } from 'utils/log';
-import { getLang } from './hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
 
 /** 登陆用的脚本 */
 export async function initHallSocket() {
@@ -75,16 +73,6 @@ export function connectSocket(config: SocketConfig) {
     return new Promise(async (resolve, reject) => {
         const socket = await createSocket(config);
 
-        waitTokenExpire(socket, () => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            socket.disconnect();
-            AlertPop.alert(logoutTip).then(type => {
-                if (type === 'confirm') {
-                    location.reload();
-                }
-            });
-        });
         const token = Config.token;
         if (token) {
             socket.setParams({ jwt: token });
@@ -114,16 +102,4 @@ export function getGuestToken(socket: WebSocketTrait) {
         });
         socket.send(ServerEvent.GetGuestToken);
     }) as Promise<string>;
-}
-
-export function waitTokenExpire(socket: WebSocketTrait, callback: FuncVoid) {
-    const { ErrCode } = ServerEvent;
-    const fn = ({ code }: { code: ServerErrCode }) => {
-        if (code === ServerErrCode.TokenExpire) {
-            localStorage.removeItem('token');
-            socket.event.off(ErrCode, fn, socket);
-            callback();
-        }
-    };
-    socket.event.on(ErrCode, fn, socket);
 }

@@ -1,42 +1,85 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { startCount } from 'utils/count';
-import { getStringLength } from 'honor/utils/getStringLength';
-import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from 'data/audioRes';
+import honor, { HonorDialog } from 'honor';
+import { getStringLength } from 'honor/utils/getStringLength';
+import { ui } from 'ui/layaMaxUI';
+import { startCount, clearCount } from 'utils/count';
+import { showNodeZone } from '../../../test/utils/testUtils';
 
+type TipPopOpt = {
+    count: number;
+    show_count?: boolean;
+    click_through?: boolean;
+    auto_hide?: boolean;
+};
+const DefaultOpt = {
+    count: 2,
+    click_through: true,
+    auto_hide: true,
+};
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     public isModal = true;
-    public static async tip(msg: string) {
+    private count_id: number;
+    private static instance: TipPop;
+    public static async tip(msg: string, opt?: TipPopOpt) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(TipPop, {
-            beforeOpen(dialog: TipPop) {
-                dialog.analysisSize(msg);
+        this.instance = (await honor.director.openDialog(
+            { dialog: TipPop, use_exist: true },
+            {
+                beforeOpen(dialog: TipPop) {
+                    dialog.analysisSize(msg);
+                },
             },
-        })) as TipPop;
-        await tip_dialog.tip(msg);
+        )) as TipPop;
+        await this.instance.tip(msg, opt);
     }
-    /**显示提示信息
+    public static async hide() {
+        if (this.instance) {
+            this.instance.close();
+        }
+    }
+    public onResize(width: number, height: number) {
+        this.width = width;
+        this.height = height;
+        this.pivotX = width / 2;
+        this.pivotY = height / 2;
+    }
+    /** 显示提示信息
      * @param msg 提示的信息
      */
-    public tip(msg: string) {
+    public tip(msg: string, opt = {} as TipPopOpt) {
         return new Promise((resolve, reject) => {
             if (!msg) {
                 return resolve();
             }
+            opt = {
+                ...DefaultOpt,
+                ...opt,
+            };
+            const { count, show_count, click_through, auto_hide } = opt;
+            const new_msg = show_count ? `${msg} ${count}` : msg;
 
-            startCount(2, 1, (radio: number) => {
+            this.mouseThrough = click_through;
+            clearCount(this.count_id);
+            this.count_id = startCount(count, 1, (radio: number) => {
+                if (show_count) {
+                    const count_now = Math.floor(count * radio);
+                    this.setTipText(`${msg} ${count_now}`);
+                }
                 if (radio === 0) {
-                    this.close();
+                    if (auto_hide) {
+                        this.close();
+                    }
                     resolve();
                 }
             });
-            this.setTipText(msg);
+            this.show();
+            this.setTipText(new_msg);
         });
     }
     /** 通过文字有多少行来确定高度, 通过一行最多有多少字来确定 宽度 */
     private analysisSize(msg: string) {
-        const { label, bg } = this;
+        const { label, bg, inner } = this;
 
         const line_char_list = msg.split('\n');
         const line_num = line_char_list.length;
@@ -48,8 +91,8 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         height = height > 120 ? height : 120;
 
         // 画一个圆角背景
-        this.width = label.width = bg.width = width;
-        this.height = label.height = bg.height = height;
+        inner.width = label.width = bg.width = width;
+        inner.height = label.height = bg.height = height;
 
         function maxLineCharNum(line_list: string[]) {
             const arr = [];
@@ -62,6 +105,5 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     private setTipText(msg: string) {
         const { label } = this;
         label.text = msg;
-        this.show();
     }
 }

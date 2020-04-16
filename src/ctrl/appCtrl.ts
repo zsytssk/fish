@@ -11,10 +11,12 @@ import { ServerName, ServerEvent } from 'data/serverEvent';
 import { waitCreateSocket } from './net/webSocketWrapUtil';
 import { Laya } from 'Laya';
 import { sleep } from 'utils/animate';
+import { BackgroundMonitor } from 'utils/backgroundMonitor';
 
 /** 顶级 ctrl */
 export class AppCtrl {
     public model: AppModel;
+    public bg_monitor = new BackgroundMonitor();
     constructor() {
         this.startApp();
     }

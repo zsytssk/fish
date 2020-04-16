@@ -38,8 +38,8 @@ export function stageClick() {
     });
 }
 export function showNodeZone(sprite: Sprite) {
-    sprite.graphics.alpha(0.3);
-    sprite.graphics.drawRect(0, 0, sprite.width, sprite.height, '#000');
+    // sprite.graphics.alpha(0.3);
+    sprite.graphics.drawRect(0, 0, sprite.width, sprite.height, 'red');
 }
 export function sleep(time: number) {
     return new Promise((resolve, reject) => {

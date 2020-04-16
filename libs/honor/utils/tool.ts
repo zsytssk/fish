@@ -82,6 +82,9 @@ export function afterActive(node: Sprite) {
 }
 export function afterEnable(node: Node) {
     return new Promise((resolve, reject) => {
+        if (node.active) {
+            return resolve();
+        }
         injectAfter(node, 'onEnable', () => {
             resolve();
         });
