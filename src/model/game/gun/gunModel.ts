@@ -25,6 +25,8 @@ export const GunEvent = {
     CastFish: 'cast_fish',
     /** 等级修改 */
     LevelChange: 'level_change',
+    /** 自动开炮状态 */
+    AutoLaunch: 'auto_launch',
     /** 子弹数目不够 */
     NotEnoughBulletNum: 'not_enough_bullet_num',
 };

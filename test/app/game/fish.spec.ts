@@ -14,9 +14,10 @@ export const fish_test = new Test('fish', runner => {
         'add_fish',
         async (typeId: number, pathId: number, time: number) => {
             typeId = typeId || 3;
-            pathId = pathId || 3;
+            pathId = pathId || 11;
             time = time || 12 * 100000;
-            const usedTime = (time * 2) / 3;
+            // time = time || 12 * 1000;
+            const usedTime = (time * 1) / 6;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
         },
@@ -37,14 +38,14 @@ export const fish_test = new Test('fish', runner => {
 
     runner.describe('fish_ani', () => {
         // body_test.runTest('show_shape');
-        for (const i of range(1, 15)) {
+        for (const i of range(1, 20)) {
             const typeId = i;
-            const pathId = i;
-            const time = 5;
+            const pathId = 1;
+            const time = 30 * 1000;
             const fish_data = genFishInfo(typeId, pathId, time);
             setTimeout(() => {
                 modelState.app.game.addFish(fish_data);
-            }, i * 1000);
+            }, i * 5000);
         }
     });
 

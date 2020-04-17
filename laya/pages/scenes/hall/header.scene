@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":25,
-    "selecteID":34,
+    "selectedBox":56,
+    "selecteID":62,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":61,
+    "maxID":63,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -65,7 +65,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,left_wrap",
-                    "props":{"y":0,"x":9,"var":"left_wrap"},
+                    "props":{"y":0,"x":8,"var":"left_wrap"},
                     "nodeParent":47,
                     "label":"left_wrap",
                     "isOpen":true,
@@ -233,16 +233,17 @@
                             "x":45,
                             "type":"Box",
                             "searchKey":"Box,middle_btn_wrap",
-                            "props":{"x":552,"width":190,"var":"middle_btn_wrap","height":71},
+                            "props":{"y":0,"x":552,"width":183,"var":"middle_btn_wrap","height":71},
                             "nodeParent":56,
                             "label":"middle_btn_wrap",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":20,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_charge",
                                     "props":{"y":0,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png","sizeGrid":"0,36,0,37"},
@@ -255,6 +256,7 @@
                                     "compId":10,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,txt_label",
                                             "props":{"skin":"image/international/charge_zh.png","name":"txt_label","centerY":-4,"centerX":0},
@@ -269,9 +271,10 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_get",
-                                    "props":{"y":0,"x":106,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
+                                    "props":{"y":0,"x":98,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
                                     "nodeParent":20,
                                     "label":"btn_get",
                                     "isOpen":true,
@@ -281,6 +284,7 @@
                                     "compId":9,
                                     "child":[
                                         {
+                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image,txt_label",
                                             "props":{"y":20,"x":20,"skin":"image/international/withdraw_zh.png","name":"txt_label","centerY":-4,"centerX":0},

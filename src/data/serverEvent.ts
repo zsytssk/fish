@@ -14,6 +14,8 @@ export enum ServerErrCode {
     OtherLogin = 1003,
     /** 已经在房间中 */
     AlreadyInRoom = 109,
+    /** 余额不足 */
+    NoMoney = 101,
 }
 
 export type ErrorData = {
@@ -48,6 +50,7 @@ export const ServerEvent = {
     UseBomb: 'useBomb',
     FishBomb: 'fishBomb',
     PowerUp: 'powerUp',
+    autoShoot: 'autoShoot',
     SetRobotReport: 'setRobotReport',
     UseFreeze: 'useFreeze',
     FreezeOver: 'freezeOver',

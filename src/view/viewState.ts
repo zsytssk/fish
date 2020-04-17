@@ -43,6 +43,9 @@ export function getSkillItemByIndex(idx: number) {
 export function getAutoLaunchSkillItem() {
     return viewState.game.getAutoLaunchSkillItem();
 }
+export function setAutoLaunchLight(status: boolean) {
+    return viewState.game.setAutoLaunchLight(status);
+}
 export function convertPosToNode(
     pos: Point,
     ori_node: Sprite,

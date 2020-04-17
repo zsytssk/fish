@@ -1,14 +1,18 @@
-import { modelState } from 'model/modelState';
+import { modelState, getAimFish } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { fish_test } from './fish.spec';
-import { player_id, player_test } from './player.spec';
+import { player_test } from './player.spec';
 import { viewState } from 'view/viewState';
 import SkillItem from 'view/scenes/game/skillItemView';
 import { startCount } from 'utils/count';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { ServerEvent } from 'data/serverEvent';
+import { sleep } from '../../utils/testUtils';
 
 /** 技能的测试 */
 export const skill_test = new Test('skill', runner => {
     runner.describe('auto_launch', () => {
+        const player_id = modelState.app.user_info.user_id;
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);
         player.gun.autoLaunch.active();
@@ -18,7 +22,33 @@ export const skill_test = new Test('skill', runner => {
         }, 5000);
     });
 
+    runner.describe('track_fish_socket', async () => {
+        const socket = getSocket('game');
+        let fish = getAimFish();
+        socket.event.emit(
+            ServerEvent.UseLock,
+            {
+                userId: modelState.app.user_info.user_id,
+                count: 1,
+                duration: 10000,
+                lockedFish: fish.id,
+            },
+            200,
+        );
+        await sleep(2);
+        fish = getAimFish();
+        socket.event.emit(
+            ServerEvent.LockFish,
+            {
+                userId: modelState.app.user_info.user_id,
+                eid: fish.id,
+            },
+            200,
+        );
+    });
+
     runner.describe('track_fish', () => {
+        const player_id = modelState.app.user_info.user_id;
         fish_test.runTest('add_fish');
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);
@@ -42,6 +72,7 @@ export const skill_test = new Test('skill', runner => {
     });
 
     runner.describe('speed_up', () => {
+        const player_id = modelState.app.user_info.user_id;
         fish_test.runTest('add_fish');
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);

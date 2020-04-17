@@ -15,6 +15,7 @@ import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 import GunBoxView from 'view/scenes/game/gunBoxView';
 import {
     getAutoLaunchSkillItem,
+    setAutoLaunchLight,
     getGameView,
     getPoolMousePos,
     getSkillItemByIndex,
@@ -31,10 +32,11 @@ import { GameCtrl } from './gameCtrl';
 import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
+import { getUserInfo } from 'model/modelState';
 
 // prettier-ignore
 const bullet_cost_arr  =
-         [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100, 200, 300, 500, 800, 1000];
+         [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100];
 /** 玩家的控制器 */
 export class PlayerCtrl {
     /**
@@ -172,7 +174,8 @@ export class PlayerCtrl {
             return;
         }
         view.setMySelfStyle();
-        const socket = getSocket('game');
+        const socket = getSocket(ServerName.Game);
+        this.resetGetBulletCost();
 
         player_event.on(PlayerEvent.UpdateInfo, () => {
             const { bullet_num } = this.model;
@@ -206,6 +209,9 @@ export class PlayerCtrl {
             socket.send(ServerEvent.Shoot, {
                 direction: { x, y },
             } as ShootReq);
+        });
+        gun_event.on(GunEvent.AutoLaunch, (is_active: boolean) => {
+            setAutoLaunchLight(is_active);
         });
 
         getGameView().on(Event.CLICK, view, (e: Event) => {
@@ -244,6 +250,17 @@ export class PlayerCtrl {
             darkNode(btn_add);
         }
     }
+    private resetGetBulletCost() {
+        /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
+        const socket = getSocket(ServerName.Game);
+        const { cur_balance, user_id } = getUserInfo();
+        const bullet_cost = localStorage.getItem(`${user_id}:${cur_balance}`);
+        if (bullet_cost) {
+            socket.send(ServerEvent.ChangeTurret, {
+                multiple: Number(bullet_cost),
+            } as ChangeTurretReq);
+        }
+    }
     private sendChangeBulletCost(type: 'add' | 'minus') {
         const { bullet_cost } = this.model;
 
@@ -261,6 +278,10 @@ export class PlayerCtrl {
         _socket.send(ServerEvent.ChangeTurret, {
             multiple: next,
         } as ChangeTurretReq);
+
+        /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
+        const { cur_balance, user_id } = getUserInfo();
+        localStorage.setItem(`${user_id}:${cur_balance}`, next + '');
     }
     public destroy() {
         const { view } = this;

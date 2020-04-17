@@ -6,7 +6,6 @@ import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 import { ui } from 'ui/layaMaxUI';
-import { log } from 'utils/log';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
 import TipPop from './tip';
 import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
@@ -56,9 +55,10 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     private is_init = false;
     public static preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        const shop_dialog = honor.director.openDialog(ShopPop) as Promise<
-            ShopPop
-        >;
+        const shop_dialog = honor.director.openDialog({
+            dialog: ShopPop,
+            use_exist: true,
+        }) as Promise<ShopPop>;
         const shop_data = getShopInfo();
         return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
             dialog.initData(data);
@@ -206,7 +206,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         price_label.text = item_price + '';
         btn_buy.offAll();
         btn_buy.on(Event.CLICK, btn_buy, () => {
-            buyItem(item_id, item_num).then(() => {
+            buyItem(item_id, item_num, item_price).then(() => {
                 const lang = getLang();
                 const { buySuccess } = InternationalTip[lang];
                 TipPop.tip(buySuccess);
@@ -221,7 +221,6 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     private initLang(lang: Lang) {
         const { title } = this;
 
-        /** @lang */
         title.skin = `image/international/title_shop_${lang}.png`;
     }
     public destroy() {

@@ -21,12 +21,14 @@ export class GunAutoLaunchCom extends ComponentManager {
         );
         gun.setStatus(GunStatus.AutoLaunch);
         gun.preAddBullet(gun.direction, true);
+        gun.event.emit(GunEvent.AutoLaunch, true);
     }
     public clear() {
         const { gun } = this;
         const { event } = gun;
         gun.setStatus(GunStatus.Normal);
         event.offAllCaller(this);
+        gun.event.emit(GunEvent.AutoLaunch, false);
     }
     public destroy() {
         this.clear();

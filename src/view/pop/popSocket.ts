@@ -4,6 +4,8 @@ import { ShopData } from './shop';
 import { LotteryPopData } from './lottery';
 import { ctrlState } from 'ctrl/ctrlState';
 import { modelState } from 'model/modelState';
+import { ChangeUserNumInfo } from 'ctrl/game/gameCtrl';
+import { ErrorHandler } from 'ctrl/hall/commonSocket';
 
 export function getShopInfo() {
     return new Promise((resolve, reject) => {
@@ -48,14 +50,33 @@ export function useGunSkin(skin: string) {
         socket.send(ServerEvent.UseSkin, { skinId: skin });
     }) as Promise<boolean>;
 }
-export function buyItem(itemId: string, num = 1) {
+export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Game);
-        socket.event.once(ServerEvent.Buy, (data: BuyRep) => {
-            ctrlState.game.addItemNum({
-                userId: modelState.app.user_info.user_id,
-                id: itemId,
-                num,
+        socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
+            if (code !== 200) {
+                return ErrorHandler(code);
+            }
+
+            const userId = modelState.app.user_info.user_id;
+            const change_arr = [] as ChangeUserNumInfo['change_arr'];
+
+            if (num) {
+                change_arr.push({
+                    id: itemId,
+                    num,
+                    type: 'skill',
+                });
+            }
+            if (-cost_bullet) {
+                change_arr.push({
+                    num: -cost_bullet,
+                    type: 'bullet',
+                });
+            }
+            ctrlState.game.changeUserNumInfo({
+                userId,
+                change_arr,
             });
             resolve(true);
         });

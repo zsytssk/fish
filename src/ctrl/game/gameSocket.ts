@@ -15,7 +15,8 @@ import { isCurUser, getCurUserId } from 'model/modelState';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import AlertPop from 'view/pop/alert';
-import { commonSocket } from 'ctrl/hall/commonSocket';
+import { commonSocket, ErrorHandler, offCommon } from 'ctrl/hall/commonSocket';
+import { AutoLaunchInfo } from 'model/game/skill/autoLaunchModel';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
@@ -35,7 +36,10 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.Shoot]: (data: ShootRep) => {
             game.onShoot(data);
         },
-        [ServerEvent.Hit]: (data: HitRep) => {
+        [ServerEvent.Hit]: (data: HitRep, code: number) => {
+            if (code !== 200) {
+                return ErrorHandler(code);
+            }
             game.onHit(data);
         },
         [ServerEvent.FishBomb]: (data: UseBombRep, code: number) => {
@@ -62,6 +66,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
                 return;
             }
             game.activeSkill(SkillMap.Freezing, convertFreezeData(data));
+        },
+        [ServerEvent.autoShoot]: (data: AutoShootRep) => {
+            const { autoShoot } = data;
+            if (!autoShoot) {
+                game.disableSkill(SkillMap.Auto, data.userId);
+            } else {
+                game.activeSkill(SkillMap.Auto, convertAUtoShootData(data));
+            }
         },
         [ServerEvent.UseLock]: (data: UseLockRep, code: number) => {
             if (code !== 200) {
@@ -98,6 +110,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
 }
 
 export function offGameSocket(game: GameCtrl) {
+    offCommon(game_socket, game);
     game_socket.event.offAllCaller(game);
 }
 export function sendToSocket(...params: [string, any?]) {
@@ -217,6 +230,10 @@ function convertFreezeData(data: UseFreezeRep): FreezeInfo {
     } = data;
     const used_time = 0;
     return { user_id, used_time, num, fish_list };
+}
+function convertAUtoShootData(data: AutoShootRep): AutoLaunchInfo {
+    const { userId: user_id, autoShoot } = data;
+    return { user_id, autoShoot };
 }
 function convertUseLockData(data: UseLockRep): TrackFishActiveInfo {
     const {

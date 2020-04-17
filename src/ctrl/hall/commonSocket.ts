@@ -8,13 +8,16 @@ import {
 import { getLang } from './hallCtrlUtil';
 import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
+import { ctrlState } from 'ctrl/ctrlState';
+import { BgMonitorEvent } from 'utils/bgMonitor';
 
-export function commonSocket(socket: WebSocketTrait, bind: any) {
+export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
-    bindSocketEvent(socket, bind, {
+    bindSocketEvent(socket, bindObj, {
         [ErrCode]: (res: ErrorData) => {
             const lang = getLang();
             const { logoutTip } = InternationalTip[lang];
+            const { OtherLogin } = InternationalTipOther[lang];
             if (res.code === ServerErrCode.TokenExpire) {
                 disconnectSocket(socket.config.name);
                 AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
@@ -22,7 +25,7 @@ export function commonSocket(socket: WebSocketTrait, bind: any) {
                 });
             } else if (res.code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(logoutTip, {
+                AlertPop.alert(OtherLogin, {
                     hide_cancel: true,
                 }).then(() => {
                     location.reload();
@@ -62,6 +65,35 @@ export function commonSocket(socket: WebSocketTrait, bind: any) {
             });
         },
     });
+
+    const { bg_monitor } = ctrlState.app;
+    bg_monitor.event.on(
+        BgMonitorEvent.VisibleChange,
+        status => {
+            if (status) {
+                if (socket.status === 'OPEN') {
+                    tipComeBack();
+                } else {
+                    socket.reconnect();
+                }
+            }
+        },
+        bindObj,
+    );
+}
+
+export function offCommon(socket: WebSocketTrait, bindObj: any) {
+    socket.event.offAllCaller(bindObj);
+    const { bg_monitor } = ctrlState.app;
+    bg_monitor.event.offAllCaller(bindObj);
+}
+
+export function ErrorHandler(code: number) {
+    const lang = getLang();
+    const tip = InternationalTipOther[lang][code];
+    if (tip) {
+        TipPop.tip(tip);
+    }
 }
 
 export function tipComeBack() {

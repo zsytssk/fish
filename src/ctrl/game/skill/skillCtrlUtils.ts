@@ -12,7 +12,7 @@ import {
     TrackActiveData,
 } from 'model/game/skill/trackFishModel';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent } from 'data/serverEvent';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 import { SkillStatus } from 'model/game/skill/skillCoreCom';
 import TopTipPop from 'view/pop/topTip';
@@ -52,7 +52,7 @@ export function skillPreActiveHandler(model: SkillModel) {
 
     if (model instanceof FreezeModel) {
         // 冰冻
-        const socket = getSocket('game');
+        const socket = getSocket(ServerName.Game);
         socket.send(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
         TopTipPop.tip(posBombTip, 2);
@@ -64,7 +64,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         // 炸弹
         onPoolClick().then((pos: Point) => {
             stopAim('aim_big');
-            const socket = getSocket('game');
+            const socket = getSocket(ServerName.Game);
             const fish_list = getBeBombFish(pos);
             socket.send(ServerEvent.UseBomb, {
                 bombPoint: pos,
@@ -72,7 +72,7 @@ export function skillPreActiveHandler(model: SkillModel) {
             } as UseBombReq);
         });
     } else if (model instanceof TrackFishModel) {
-        const socket = getSocket('game');
+        const socket = getSocket(ServerName.Game);
         // 激活锁定
         socket.send(ServerEvent.UseLock);
     }
@@ -85,7 +85,7 @@ export function skillActiveHandler(
     is_cur_player?: boolean,
 ) {
     return new Promise((resolve, reject) => {
-        const socket = getSocket('game');
+        const socket = getSocket(ServerName.Game);
         const lang = getLang();
         const { aimFish } = InternationalTip[lang];
         if (model instanceof TrackFishModel) {

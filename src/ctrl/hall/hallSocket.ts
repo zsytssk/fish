@@ -19,7 +19,7 @@ import { initHallSocket } from './login';
 import { getLang } from './hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
-import { commonSocket } from './commonSocket';
+import { commonSocket, offCommon } from './commonSocket';
 
 /**
  *
@@ -125,5 +125,6 @@ export function hallSocket(socket: WebSocketTrait, hall: HallCtrl) {
 }
 
 export function offHallSocket(hall: HallCtrl) {
+    offCommon(hall_socket, hall);
     hall_socket.event.offAllCaller(hall);
 }

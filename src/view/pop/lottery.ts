@@ -52,9 +52,10 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
     };
     public static preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        const pop = honor.director.openDialog(LotteryPop) as Promise<
-            LotteryPop
-        >;
+        const pop = honor.director.openDialog({
+            dialog: LotteryPop,
+            use_exist: true,
+        }) as Promise<LotteryPop>;
         const exchange_data = getLotteryData();
 
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {
@@ -272,7 +273,6 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         exchange_list.refresh();
         resizeParent(btn_label, 30, 142);
 
-        /** @lang */
         title.skin = `image/international/txt_lottery_${lang}.png`;
     }
 }

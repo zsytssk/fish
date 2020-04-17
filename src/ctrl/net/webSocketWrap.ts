@@ -1,6 +1,6 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { WebSocketCtrl } from 'honor/net/websocket';
+import { WebSocketCtrl, Status } from 'honor/net/websocket';
 import { decrypt, encrypt, genUrl } from './webSocketWrapUtil';
 import { log } from 'utils/log';
 
@@ -44,7 +44,9 @@ export interface WebSocketTrait {
     setParams(params: {}): void;
     send(cmd: string, data?: {}): void;
     disconnect(): void;
+    reconnect(): void;
     config: Config;
+    status: Status;
 }
 /** websocket 的 */
 export class WebSocketWrapCtrl extends ComponentManager
@@ -53,6 +55,7 @@ export class WebSocketWrapCtrl extends ComponentManager
     private params: {} = {};
     public event: EventCom;
     public config: Config;
+
     constructor(config: Config) {
         super();
         this.config = config;
@@ -62,7 +65,9 @@ export class WebSocketWrapCtrl extends ComponentManager
         const event = new EventCom();
         this.addCom(event);
         this.event = event;
-
+        this.connect();
+    }
+    private connect() {
         const new_url = genUrl(this.config);
         const ws = new WebSocketCtrl({
             url: new_url,
@@ -77,6 +82,12 @@ export class WebSocketWrapCtrl extends ComponentManager
             ping_pong_map,
         });
         this.ws = ws;
+    }
+    public get status() {
+        if (this.ws) {
+            return this.ws.status;
+        }
+        return 'CLOSED';
     }
     /** 设置本地默认参数 */
     public setParams(params: {}) {
@@ -107,6 +118,16 @@ export class WebSocketWrapCtrl extends ComponentManager
         this.event.destroy();
         this.ws.disconnect();
         this.ws = undefined;
+    }
+    public reconnect() {
+        const { ws } = this;
+        if (!ws) {
+            return console.error('WebSocketWrapCtrl:> is disconnected!');
+        }
+        if (ws.status !== 'CLOSED') {
+            return;
+        }
+        this.ws.reconnect();
     }
     private onInit = () => {
         this.event.emit(SocketEvent.Init);

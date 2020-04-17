@@ -143,6 +143,10 @@ type UseFreezeRep = {
 type FreezeOverRep = {
     tableId: string;
 };
+type AutoShootRep = {
+    userId: string;
+    autoShoot: boolean;
+};
 type UseLockRep = {
     userId: string;
     count: number;

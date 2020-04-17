@@ -2,7 +2,10 @@ import { SkillCoreCom, SkillInfo, SkillStatus } from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 
-export type AutoLaunchInfo = {} & SkillInfo;
+export type AutoLaunchInfo = {
+    user_id: string;
+    autoShoot: boolean;
+} & SkillInfo;
 
 /** 炸弹技能: 提示用户选中屏幕的位置, 然后就发射炸弹 */
 export class AutoLaunchModel extends ComponentManager implements SkillModel {

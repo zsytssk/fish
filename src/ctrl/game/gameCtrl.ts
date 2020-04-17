@@ -40,16 +40,19 @@ import { InternationalTip } from 'data/internationalConfig';
 import { BgMonitorEvent } from 'utils/bgMonitor';
 import { tipComeBack } from 'ctrl/hall/commonSocket';
 
-type AddItemInfo = {
+export type ChangeUserNumInfo = {
     userId: string;
-    id: string;
-    num: number;
+    change_arr: Array<{
+        id?: string;
+        num: number;
+        type: 'skill' | 'bullet';
+    }>;
 };
 /** 游戏ctrl */
 export class GameCtrl {
     public view: GameView;
     private model: GameModel;
-    private cur_player_index: number;
+    private cur_player: PlayerModel;
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
@@ -76,22 +79,28 @@ export class GameCtrl {
         this.initEvent();
         AudioCtrl.playBg(AudioRes.GameBg);
         waitConnectGame(url).then(() => {
-            onGameSocket(getSocket('game'), this);
+            onGameSocket(getSocket(ServerName.Game), this);
         });
     }
     private initEvent() {
-        const { bg_monitor } = ctrlState.app;
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
         const { CLICK } = Event;
 
-        bg_monitor.event.on(BgMonitorEvent.VisibleChange, status => {
-            if (status) {
-                tipComeBack();
-            }
-        });
-
         this.onModel();
+
+        const { bg_monitor } = ctrlState.app;
+        /** 切换到后台禁用自动开炮 */
+        bg_monitor.event.on(
+            BgMonitorEvent.VisibleChange,
+            (isVisible: boolean) => {
+                if (!isVisible) {
+                    const player = this.cur_player;
+                    player.disableSkill(SkillMap.Auto);
+                }
+            },
+        );
+
         btn_help.on(CLICK, this, (e: Event) => {
             e.stopPropagation();
             HelpPop.preEnter();
@@ -131,7 +140,7 @@ export class GameCtrl {
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
             const { server_index, is_cur_player } = player;
             if (is_cur_player) {
-                this.cur_player_index = server_index;
+                this.cur_player = player;
                 if (server_index > 1) {
                     view.upSideDown();
                 }
@@ -184,8 +193,8 @@ export class GameCtrl {
         view.setExchangeRate(exchange_rate, cur_balance);
     }
     public calcClientIndex(server_index: number) {
-        const { cur_player_index } = this;
-        if (cur_player_index <= 1) {
+        const { cur_player } = this;
+        if (cur_player.server_index <= 1) {
             return server_index;
         }
         return 3 - server_index;
@@ -203,11 +212,14 @@ export class GameCtrl {
     public shoalComingTip(reverse: boolean) {
         this.model.shoalComingTip(reverse);
     }
-    public resetSkill(skill: SkillMap, user_id: string) {
-        this.model.resetSkill(skill, user_id);
-    }
     public activeSkill(skill: SkillMap, data: any) {
         this.model.activeSkill(skill, data);
+    }
+    public disableSkill(skill: SkillMap, user_id: any) {
+        this.model.disableSkill(skill, user_id);
+    }
+    public resetSkill(skill: SkillMap, user_id: string) {
+        this.model.resetSkill(skill, user_id);
     }
     public addFish(fish_list: ServerFishInfo[]) {
         for (const fish of fish_list) {
@@ -226,10 +238,19 @@ export class GameCtrl {
             bullet_cost: multiple,
         });
     }
-    public addItemNum(data: AddItemInfo) {
-        const { userId, id, num } = data;
+    public changeUserNumInfo(data: ChangeUserNumInfo) {
+        const { userId, change_arr } = data;
         const player = this.model.getPlayerById(userId);
-        player.addSkillNum(id, num);
+        for (const item of change_arr) {
+            const { type, num, id } = item;
+            if (type === 'skill') {
+                player.addSkillNum(id, num);
+            } else {
+                player.updateInfo({
+                    bullet_num: player.bullet_num + num,
+                });
+            }
+        }
     }
     public changeSkin(skinId: string) {
         // 取最后一位
@@ -253,6 +274,11 @@ export class GameCtrl {
             });
         } else {
             const player = model.getPlayerById(userId);
+            if (!player) {
+                return console.error(
+                    'Game:>captureFish:> cant find fish or player!!',
+                );
+            }
             player.destroy();
         }
     }

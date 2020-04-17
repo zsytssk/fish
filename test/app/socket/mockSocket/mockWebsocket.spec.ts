@@ -38,16 +38,20 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.Hit, (data: HitReq) => {
             sleep(1).then(() => {
-                event.emit(ServerEvent.Hit, {
-                    userId: test_data.userId,
-                    eid: data.eid,
-                    win: 10000,
-                    drop: [
-                        { itemId: '3002', itemNum: 10 },
-                        { itemId: SkillMap.TrackFish, itemNum: 10 },
-                        // { itemId: SkillMap.TrackFish, itemNum: 10 },
-                    ],
-                } as HitRep);
+                event.emit(
+                    ServerEvent.Hit,
+                    {
+                        userId: test_data.userId,
+                        eid: data.eid,
+                        win: 1,
+                        // drop: [
+                        //     { itemId: '3002', itemNum: 10 },
+                        //     { itemId: SkillMap.TrackFish, itemNum: 10 },
+                        //     // { itemId: SkillMap.TrackFish, itemNum: 10 },
+                        // ],
+                    } as HitRep,
+                    200,
+                );
             });
         });
     });

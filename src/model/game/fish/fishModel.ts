@@ -36,8 +36,8 @@ export type FishData = {
 /** 鱼的状态 */
 export enum FishStatus {
     Normal,
-    Freezed,
     QuickLeave,
+    Freezed,
     Dead,
 }
 export class FishModel extends ComponentManager {
@@ -125,6 +125,9 @@ export class FishModel extends ComponentManager {
         this.status = status;
         this.event.emit(FishEvent.StatusChange, status);
 
+        if (status === FishStatus.Dead) {
+            return;
+        }
         if (status === FishStatus.Freezed) {
             this.move_com.stop();
         } else {

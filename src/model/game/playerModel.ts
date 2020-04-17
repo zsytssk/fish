@@ -125,6 +125,11 @@ export class PlayerModel extends ComponentManager {
         skill_model.active(data);
     }
     /** 重置技能 */
+    public disableSkill(skill: SkillMap) {
+        const skill_model = this.skill_map.get(skill);
+        skill_model.disable();
+    }
+    /** 重置技能 */
     public resetSkill(skill: SkillMap) {
         const skill_model = this.skill_map.get(skill);
         skill_model.reset();

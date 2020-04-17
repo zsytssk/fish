@@ -15,7 +15,7 @@ export default class VoicePop extends ui.pop.alert.voiceUI
     private voice_ctrl: ProgressCtrl;
     public static preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        honor.director.openDialog(VoicePop);
+        honor.director.openDialog({ dialog: VoicePop, use_exist: true });
     }
     public onAwake() {
         onLangChange(this, lang => {

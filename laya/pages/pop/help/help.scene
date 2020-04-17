@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":15,
-    "selecteID":56,
+    "selectedBox":28,
+    "selecteID":14,
     "searchKey":"Dialog",
     "props":{"width":1050,"sceneColor":"#000000","sceneBg":"laya/views/pop/help.png","height":710},
     "nodeParent":-1,
@@ -115,17 +115,16 @@
                     "x":30,
                     "type":"Tab",
                     "searchKey":"Tab,pagination",
-                    "props":{"y":490,"x":426,"width":76,"selectedIndex":0,"name":"pagination","height":20},
+                    "props":{"y":497,"x":396,"width":137,"selectedIndex":0,"name":"pagination","height":20},
                     "nodeParent":9,
                     "label":"pagination",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":11,
                     "child":[
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,item0",
                             "props":{"y":0,"x":0,"width":20,"toggle":false,"stateNum":"2","skin":"image/pop/help/pagination.png","name":"item0","height":21},
@@ -140,7 +139,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,item1",
                             "props":{"y":0,"x":56,"width":20,"stateNum":"2","skin":"image/pop/help/pagination.png","name":"item1","height":21},
@@ -155,7 +153,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,item2",
                             "props":{"y":0,"x":112,"width":20,"stateNum":"2","skin":"image/pop/help/pagination.png","name":"item2","height":21},
@@ -187,17 +184,16 @@
                             "x":45,
                             "type":"ViewStack",
                             "searchKey":"ViewStack,list",
-                            "props":{"y":0,"x":0,"width":931,"selectedIndex":2,"name":"list","height":482},
+                            "props":{"y":7,"x":0,"width":931,"selectedIndex":2,"name":"list","height":482},
                             "nodeParent":28,
                             "label":"list",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":14,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,item0",
                                     "props":{"y":0,"x":0,"width":931,"var":"item0","height":462},
@@ -210,7 +206,6 @@
                                     "compId":16,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item0_wrap",
                                             "props":{"y":0,"x":0,"var":"item0_wrap"},
@@ -291,7 +286,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,item1",
                                     "props":{"y":0,"x":0,"width":924,"var":"item1","height":488},
@@ -304,7 +298,6 @@
                                     "compId":15,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item1_wrap",
                                             "props":{"y":0,"x":-1,"var":"item1_wrap"},
@@ -359,7 +352,6 @@
                                         }]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,item2",
                                     "props":{"y":0,"x":0,"width":924,"var":"item2","height":462},
@@ -372,7 +364,6 @@
                                     "compId":39,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item2_wrap",
                                             "props":{"y":0,"x":0,"var":"item2_wrap"},

@@ -129,6 +129,14 @@ export class GameModel extends ComponentManager {
         }
         player.activeSkill(skill, data);
     }
+    public disableSkill(skill: SkillMap, user_id: string) {
+        const player = this.getPlayerById(user_id);
+        if (!player) {
+            console.error(`Game:>resetSkill:> cant find player:>${user_id}`);
+            return;
+        }
+        player.disableSkill(skill);
+    }
     public resetSkill(skill: SkillMap, user_id: string) {
         const player = this.getPlayerById(user_id);
         if (!player) {

@@ -165,6 +165,7 @@ export default class GameView extends ui.scenes.game.gameUI
             });
         });
     }
+
     /** 获取点击pool中的位置 */
     public onFishClick(): Observable<string> {
         this.offFishClick();
@@ -208,6 +209,9 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     public getAutoLaunchSkillItem() {
         return this.skill_box.auto_launch;
+    }
+    public setAutoLaunchLight(status: boolean) {
+        this.skill_box.auto_launch_light.visible = status;
     }
     public setExchangeRate(rate: number, currency: string) {
         const lang = getLang();
