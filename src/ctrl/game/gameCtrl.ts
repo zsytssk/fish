@@ -37,7 +37,8 @@ import { log } from 'utils/log';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
-import { BackgroundMonitorEvent } from 'utils/backgroundMonitor';
+import { BgMonitorEvent } from 'utils/bgMonitor';
+import { tipComeBack } from 'ctrl/hall/commonSocket';
 
 type AddItemInfo = {
     userId: string;
@@ -83,6 +84,12 @@ export class GameCtrl {
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
         const { CLICK } = Event;
+
+        bg_monitor.event.on(BgMonitorEvent.VisibleChange, status => {
+            if (status) {
+                tipComeBack();
+            }
+        });
 
         this.onModel();
         btn_help.on(CLICK, this, (e: Event) => {

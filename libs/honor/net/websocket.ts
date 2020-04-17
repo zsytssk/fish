@@ -135,6 +135,10 @@ export class WebSocketCtrl {
      * 重连
      */
     public reconnect() {
+        if (this.status === 'CONNECTING') {
+            return;
+        }
+
         log('WebSocket断线重连');
         const { reconnect_count, reconnect_max, handlers } = this;
         this.status = 'CONNECTING';

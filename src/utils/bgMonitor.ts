@@ -1,14 +1,14 @@
 import { Laya } from 'Laya';
 import { EventCom } from 'comMan/eventCom';
 
-export const BackgroundMonitorEvent = {
+export const BgMonitorEvent = {
     VisibleChange: 'VisibleChange',
 };
 /**
  * 后台检测控制器
  * 核心代码来之张笑的 laya.tool.js, 在他的基础上添加一些功能
  */
-export class BackgroundMonitor {
+export class BgMonitor {
     /** 用来通过计算window.
      * setInterval缓慢执行的时间差,
      * 来确定用户离开页面的Interval
@@ -63,7 +63,7 @@ export class BackgroundMonitor {
         }, 300);
     }
     private emitEvent(status: boolean) {
-        this.event.emit(BackgroundMonitorEvent.VisibleChange, status);
+        this.event.emit(BgMonitorEvent.VisibleChange, status);
     }
     /** 浏览器的visibilityState发生变化的处理函数 */
     private visibilityChange = () => {

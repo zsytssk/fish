@@ -45,22 +45,13 @@ export function commonSocket(socket: WebSocketTrait, bind: any) {
         },
         /** 重连 */
         [SocketEvent.Reconnected]: (try_no: number) => {
-            const lang = getLang();
-            const { NetComeBack } = InternationalTipOther[lang];
-            TipPop.tip(NetComeBack);
+            tipComeBack();
         },
         /** 重连 */
         [SocketEvent.Reconnecting]: try_no => {
             const lang = getLang();
             const { NetError } = InternationalTipOther[lang];
-            TipPop.tip(NetError, {
-                count: 20,
-                show_count: true,
-                auto_hide: false,
-                click_through: false,
-            }).then(type => {
-                location.reload();
-            });
+            tipCount(NetError, 20);
         },
         /** 断开连接 */
         [SocketEvent.End]: (res: ErrorData) => {
@@ -70,5 +61,19 @@ export function commonSocket(socket: WebSocketTrait, bind: any) {
                 location.reload();
             });
         },
+    });
+}
+
+export function tipComeBack() {
+    const lang = getLang();
+    const { NetComeBack } = InternationalTipOther[lang];
+    TipPop.tip(NetComeBack);
+}
+export function tipCount(msg: string, count: number) {
+    TipPop.tip(msg, {
+        count,
+        show_count: true,
+        auto_hide: false,
+        click_through: false,
     });
 }
