@@ -57,7 +57,6 @@ export class HallCtrl {
         hallViewEvent(this);
         this.initModelEvent();
         await onHallSocket(this).then(enter_game => {
-            hallSocket(getSocket('hall'), this);
             if (enter_game) {
                 this.destroy();
             } else {

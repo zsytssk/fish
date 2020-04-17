@@ -47,17 +47,17 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             });
         },
         /** 重连 */
-        [SocketEvent.Reconnected]: (try_no: number) => {
+        [SocketEvent.Reconnected]: () => {
             tipComeBack();
         },
         /** 重连 */
-        [SocketEvent.Reconnecting]: try_no => {
+        [SocketEvent.Reconnecting]: () => {
             const lang = getLang();
             const { NetError } = InternationalTipOther[lang];
             tipCount(NetError, 20);
         },
         /** 断开连接 */
-        [SocketEvent.End]: (res: ErrorData) => {
+        [SocketEvent.End]: () => {
             const lang = getLang();
             const { logoutTip } = InternationalTip[lang];
             AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {

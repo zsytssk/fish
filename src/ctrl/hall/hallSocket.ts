@@ -1,36 +1,33 @@
-import { ctrlState } from 'ctrl/ctrlState';
+import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
 import {
     getSocket,
-    waitCreateSocket,
     bindSocketEvent,
-    disconnectSocket,
+    offSocketEvent,
 } from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
-import {
-    ServerEvent,
-    ServerName,
-    ServerErrCode,
-    ErrorData,
-} from 'data/serverEvent';
+import { InternationalTip } from 'data/internationalConfig';
+import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import AlertPop from 'view/pop/alert';
-import { HallCtrl } from './hallCtrl';
-import { initHallSocket } from './login';
-import { getLang } from './hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { commonSocket, offCommon } from './commonSocket';
+import { HallCtrl } from './hallCtrl';
+import { getLang } from './hallCtrlUtil';
+import { initHallSocket } from './login';
 
 /**
  *
  * @return 是否进入游戏
  */
+let hall_socket: WebSocketTrait;
 export async function onHallSocket(hall: HallCtrl) {
     await initHallSocket();
 
+    /** 连接socket */
     await new Promise((resolve, reject) => {
-        const socket = getSocket(ServerName.Hall);
-        socket.event.once(
+        hall_socket = getSocket(ServerName.Hall);
+        bindHallSocket(hall_socket, hall);
+
+        hall_socket.event.once(
             ServerEvent.UserAccount,
             () => {
                 hall.onUserAccount();
@@ -38,14 +35,14 @@ export async function onHallSocket(hall: HallCtrl) {
             },
             hall,
         );
-        socket.send(ServerEvent.UserAccount, { domain: Config.Host });
+        hall_socket.send(ServerEvent.UserAccount, { domain: Config.Host });
     });
 
     const [isReplay, socketUrl] = await checkReplay();
     if (isReplay) {
         const lang = getLang();
         const { reEnter } = InternationalTip[lang];
-        AlertPop.alert(reEnter).then(type => {
+        return AlertPop.alert(reEnter).then(type => {
             if (type === 'confirm') {
                 hall.enterGame(socketUrl);
                 return true;
@@ -53,6 +50,21 @@ export async function onHallSocket(hall: HallCtrl) {
         });
     }
     return false;
+}
+
+export function offHallSocket(hall: HallCtrl) {
+    offSocketEvent(hall_socket, hall);
+    offCommon(hall_socket, hall);
+}
+function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
+    commonSocket(socket, hall);
+
+    bindSocketEvent(socket, hall, {
+        /** 重连 */
+        [SocketEvent.Reconnected]: () => {
+            socket.send(ServerEvent.UserAccount);
+        },
+    });
 }
 
 export async function checkReplay() {
@@ -93,38 +105,4 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
             domain: '',
         } as RoomInReq);
     });
-}
-
-let hall_socket: WebSocketTrait;
-export function hallSocket(socket: WebSocketTrait, hall: HallCtrl) {
-    hall_socket = socket;
-    bindSocketEvent(socket, hall, {
-        [ServerEvent.ErrCode]: (res: ErrorData) => {
-            const { code, error } = res;
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            if (code === 1003) {
-                disconnectSocket(socket.config.name);
-                AlertPop.alert(logoutTip, {
-                    hide_cancel: true,
-                }).then(() => {
-                    location.reload();
-                });
-            }
-        },
-        [SocketEvent.End]: (res: ErrorData) => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
-                location.reload();
-            });
-        },
-    });
-
-    commonSocket(socket, hall);
-}
-
-export function offHallSocket(hall: HallCtrl) {
-    offCommon(hall_socket, hall);
-    hall_socket.event.offAllCaller(hall);
 }
