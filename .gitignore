@@ -1,20 +1,21 @@
-﻿# script config
-/script/calcPathLen/path.json
+﻿node_modules/
 
+.DS_Store
 
-node_modules/
-
-/laya/views
-
+# build file
 release/
-/bin/**
-!/bin/libs/**
-!/bin/favicon/**
+/bin/*
+!/bin/bitgame/
+!/bin/favicon/
 !/bin/index.html
 !/bin/index.js
-.DS_Store
-/src/ui/layaMaxUI.ts
-script/**/config.json
 
+# laya file
+/laya/views
+/src/ui/layaMaxUI.ts
 #IDE编译调试的会修改此文件格式
 /src/GameConfig.ts
+
+
+# script config
+script/**/config.json

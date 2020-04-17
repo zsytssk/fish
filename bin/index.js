@@ -5,7 +5,7 @@ paladin.checkComponents({
         if (res.launch) {
             paladin.comps.launch.show({
                 design: { width: 1334, height: 750, mode: 'horizontal' },
-                logo: { url: './libs/logo.png' },
+                logo: { url: './bitgame/logo.png' },
                 load: { color: '#6d8ac8' },
                 tips: { color: '#6d8ac8' },
                 notice: { color: '#6d8ac8' },
