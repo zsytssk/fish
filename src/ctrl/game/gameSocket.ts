@@ -123,7 +123,15 @@ export type EnterGameData = {
 };
 let items_template: ServerItemInfo[];
 export function convertEnterGame(data: EnterGameRep) {
-    const { rate, users: users_source, items, fish, frozen, frozenLeft } = data;
+    const {
+        isTrial,
+        rate,
+        users: users_source,
+        items,
+        fish,
+        frozen,
+        frozenLeft,
+    } = data;
     const users = [] as PlayerInfo[];
     items_template = items;
 
@@ -182,6 +190,7 @@ export function convertEnterGame(data: EnterGameRep) {
     }
 
     return {
+        isTrial,
         exchange_rate: rate,
         fish,
         users,
@@ -225,11 +234,11 @@ function convertFreezeData(data: UseFreezeRep): FreezeInfo {
     const {
         userId: user_id,
         count: num,
-        // duration: used_time,
+        duration,
         frozenFishList: fish_list,
     } = data;
     const used_time = 0;
-    return { user_id, used_time, num, fish_list };
+    return { user_id, used_time, num, fish_list, duration };
 }
 function convertAUtoShootData(data: AutoShootRep): AutoLaunchInfo {
     const { userId: user_id, autoShoot } = data;

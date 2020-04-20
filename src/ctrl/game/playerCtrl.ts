@@ -252,9 +252,12 @@ export class PlayerCtrl {
     }
     private resetGetBulletCost() {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
+        const { isTrial } = this.game_ctrl;
         const socket = getSocket(ServerName.Game);
         const { cur_balance, user_id } = getUserInfo();
-        const bullet_cost = localStorage.getItem(`${user_id}:${cur_balance}`);
+        const bullet_cost = localStorage.getItem(
+            `${user_id}:${cur_balance}:${isTrial}`,
+        );
         if (bullet_cost) {
             socket.send(ServerEvent.ChangeTurret, {
                 multiple: Number(bullet_cost),
@@ -262,6 +265,7 @@ export class PlayerCtrl {
         }
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
+        const { isTrial } = this.game_ctrl;
         const { bullet_cost } = this.model;
 
         const index = bullet_cost_arr.indexOf(bullet_cost);
@@ -281,7 +285,7 @@ export class PlayerCtrl {
 
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { cur_balance, user_id } = getUserInfo();
-        localStorage.setItem(`${user_id}:${cur_balance}`, next + '');
+        localStorage.setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }
     public destroy() {
         const { view } = this;

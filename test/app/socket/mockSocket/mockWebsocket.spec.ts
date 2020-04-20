@@ -43,12 +43,12 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     {
                         userId: test_data.userId,
                         eid: data.eid,
-                        win: 1,
-                        // drop: [
-                        //     { itemId: '3002', itemNum: 10 },
-                        //     { itemId: SkillMap.TrackFish, itemNum: 10 },
-                        //     // { itemId: SkillMap.TrackFish, itemNum: 10 },
-                        // ],
+                        win: 100,
+                        drop: [
+                            { itemId: '3002', itemNum: 10 },
+                            { itemId: SkillMap.TrackFish, itemNum: 10 },
+                            // { itemId: SkillMap.TrackFish, itemNum: 10 },
+                        ],
                     } as HitRep,
                     200,
                 );

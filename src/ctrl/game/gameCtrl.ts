@@ -50,6 +50,7 @@ export type ChangeUserNumInfo = {
 };
 /** 游戏ctrl */
 export class GameCtrl {
+    public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
     private cur_player: PlayerModel;
@@ -95,10 +96,10 @@ export class GameCtrl {
             BgMonitorEvent.VisibleChange,
             (isVisible: boolean) => {
                 if (!isVisible) {
-                    const player = this.cur_player;
-                    player.disableSkill(SkillMap.Auto);
+                    this.cur_player?.disableSkill(SkillMap.Auto);
                 }
             },
+            this,
         );
 
         btn_help.on(CLICK, this, (e: Event) => {
@@ -175,6 +176,7 @@ export class GameCtrl {
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
         const { model, view } = this;
         const {
+            isTrial,
             fish,
             users,
             frozen,
@@ -184,6 +186,7 @@ export class GameCtrl {
         } = data;
         const { cur_balance } = getUserInfo();
 
+        this.isTrial = isTrial;
         this.addPlayers(users);
         this.addFish(fish);
         /** 复盘冰冻 */
@@ -293,9 +296,11 @@ export class GameCtrl {
         }
     }
     public destroy() {
+        const { bg_monitor } = ctrlState.app;
         this.view = undefined;
         this.model = undefined;
         GameCtrl.instance = undefined;
         setProps(ctrlState, { game: undefined });
+        bg_monitor.event.offAllCaller(this);
     }
 }

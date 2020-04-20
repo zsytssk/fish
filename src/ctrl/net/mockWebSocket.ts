@@ -1,11 +1,14 @@
 import { WebSocketTrait, Config, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { EventCom } from 'comMan/eventCom';
+import { Status } from 'honor/net/websocket';
 
 /** 本地测试数据的socket... */
 export class MockWebSocket implements WebSocketTrait {
     public event = new EventCom();
     public sendEvent = new EventCom();
     public config: Config;
+    public reconnect() {}
+    public status = 'OPEN' as Status;
     constructor(config: Config) {
         this.config = config;
         setTimeout(() => {

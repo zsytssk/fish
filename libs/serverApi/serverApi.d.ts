@@ -80,6 +80,7 @@ type ServerAddFishRep = {
 
 /** 复盘 */
 type EnterGameRep = {
+    isTrial: 0 | 1;
     roomId: number;
     rate: number;
     tableId: string;

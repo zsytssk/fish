@@ -125,9 +125,6 @@ export class FishModel extends ComponentManager {
         this.status = status;
         this.event.emit(FishEvent.StatusChange, status);
 
-        if (status === FishStatus.Dead) {
-            return;
-        }
         if (status === FishStatus.Freezed) {
             this.move_com.stop();
         } else {

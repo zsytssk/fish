@@ -45,7 +45,9 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     private initLang(lang: Lang) {
         const { auto_launch_txt } = this.skill_box;
-        auto_launch_txt.skin = `image/international/auto_${lang}.png`;
+        const status = this.skill_box.auto_launch_light.visible;
+        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        auto_launch_txt.skin = `image/international/${skin_name}.png`;
     }
     public showBubbleRefresh(bg_num?: number) {
         const { bubble_overlay, bg, bubble_wall } = this;
@@ -211,7 +213,10 @@ export default class GameView extends ui.scenes.game.gameUI
         return this.skill_box.auto_launch;
     }
     public setAutoLaunchLight(status: boolean) {
+        const lang = getLang();
         this.skill_box.auto_launch_light.visible = status;
+        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        this.skill_box.auto_launch_txt.skin = `image/international/${skin_name}.png`;
     }
     public setExchangeRate(rate: number, currency: string) {
         const lang = getLang();

@@ -22,8 +22,8 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
     public isModal = true;
     private slider_glr: LayaSlider;
     private times_tpl: string;
-    public static preEnter() {
-        honor.director.openDialog({ dialog: HelpPop, use_exist: true });
+    public static async preEnter() {
+        await honor.director.openDialog({ dialog: HelpPop, use_exist: true });
     }
     public onAwake() {
         onLangChange(this, lang => {

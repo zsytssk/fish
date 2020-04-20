@@ -35,6 +35,7 @@ export type MoveUpdateComposeFn = (move_info: MoveInfo) => MoveInfo;
 type FishGroupItemUpdate = {
     id: number;
     update_fn: MoveUpdateFn;
+    isStop: boolean;
 };
 /** 创建鱼组 */
 export function createFishGroup(
@@ -68,6 +69,7 @@ export function createFishGroup(
                         sub_fn(_move_info);
                     },
                     id: index,
+                    isStop: false,
                 });
             },
             () => {
@@ -82,12 +84,32 @@ export function createFishGroup(
                 }
             },
             () => {
-                // start
-                move_com.start();
+                // destroy
+                for (const item of update_fn_list) {
+                    if (item.id === index) {
+                        item.isStop = false;
+                    }
+                }
+                const hasStopItem = [...update_fn_list].find(
+                    item => item.isStop === true,
+                );
+                if (!hasStopItem) {
+                    move_com.start();
+                }
             },
             () => {
-                // stop
-                move_com.stop();
+                // destroy
+                for (const item of update_fn_list) {
+                    if (item.id === index) {
+                        item.isStop = true;
+                    }
+                }
+                const hasMoveItem = [...update_fn_list].find(
+                    item => item.isStop === false,
+                );
+                if (!hasMoveItem) {
+                    move_com.stop();
+                }
             },
         ];
     };

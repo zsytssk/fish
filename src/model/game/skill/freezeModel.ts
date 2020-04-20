@@ -6,6 +6,7 @@ import { ComponentManager } from 'comMan/component';
 export type FreezeInfo = {
     user_id: string;
     fish_list: string[];
+    duration: number;
 } & SkillActiveInfo;
 /** 冰冻技能 */
 export class FreezeModel extends ComponentManager implements SkillModel {
