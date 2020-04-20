@@ -219,9 +219,12 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         });
     }
     private initLang(lang: Lang) {
-        const { title } = this;
+        const { title, item_tag, skin_tag } = this;
+        const { skin, item } = InternationalTip[lang];
 
         title.skin = `image/international/title_shop_${lang}.png`;
+        item_tag.text = item;
+        skin_tag.text = skin;
     }
     public destroy() {
         offLangChange(this);

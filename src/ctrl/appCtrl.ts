@@ -53,9 +53,11 @@ export class AppCtrl {
             'scenes/loading.scene',
         );
         // const task2 = honor.director.setLoadPageForDialog('scenes/loading.scene');
-        const task2 = honor.director.load([...res.font]).then(() => {
-            honor.utils.registerFontSize(font_list);
-        });
+        const task2 = honor.director
+            .load([...res.common, ...res.font])
+            .then(() => {
+                honor.utils.registerFontSize(font_list);
+            });
 
         await Promise.all([task1, task2]);
     }

@@ -2,10 +2,12 @@ import { SPRITE } from './sprite';
 import { getGunSkinMap } from 'utils/dataUtil';
 import { AudioRes } from './audioRes';
 import { Loader } from 'laya/net/Loader';
+import { AlertRes } from 'view/pop/alert';
 
 export const res = {
     font: [],
     audio: [],
+    common: [],
     game: [
         {
             url: `res/image/game.png`,
@@ -118,4 +120,11 @@ for (const key in AudioRes) {
         url,
         type: Loader.SOUND,
     });
+}
+for (const key in AlertRes) {
+    if (!AlertRes.hasOwnProperty(key)) {
+        continue;
+    }
+    const url = AlertRes[key];
+    res.common.push(url);
 }
