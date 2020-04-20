@@ -5,7 +5,7 @@ import { ServerEvent, ServerName } from 'data/serverEvent';
 import { FishModel } from 'model/game/fish/fishModel';
 import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
-import { AutoLaunchModel } from 'model/game/skill/autoLaunchModel';
+import { AutoShootModel } from 'model/game/skill/autoShootModel';
 import SAT from 'sat';
 import { darkNode, unDarkNode } from 'utils/utils';
 import AlertPop from 'view/pop/alert';
@@ -14,8 +14,8 @@ import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 import GunBoxView from 'view/scenes/game/gunBoxView';
 import {
-    getAutoLaunchSkillItem,
-    setAutoLaunchLight,
+    getAutoShootSkillItem,
+    setAutoShootLight,
     getGameView,
     getPoolMousePos,
     getSkillItemByIndex,
@@ -152,10 +152,10 @@ export class PlayerCtrl {
 
         let index = 0;
         for (const [, skill_model] of skill_map) {
-            if (skill_model instanceof AutoLaunchModel) {
+            if (skill_model instanceof AutoShootModel) {
                 if (is_cur_player) {
-                    const auto_launch_view = getAutoLaunchSkillItem();
-                    this.handleAutoLaunch(skill_model, auto_launch_view);
+                    const auto_shoot_view = getAutoShootSkillItem();
+                    this.handleAutoShoot(skill_model, auto_shoot_view);
                 }
                 continue;
             } else {
@@ -210,8 +210,8 @@ export class PlayerCtrl {
                 direction: { x, y },
             } as ShootReq);
         });
-        gun_event.on(GunEvent.AutoLaunch, (is_active: boolean) => {
-            setAutoLaunchLight(is_active);
+        gun_event.on(GunEvent.AutoShoot, (is_active: boolean) => {
+            setAutoShootLight(is_active);
         });
 
         getGameView().on(Event.CLICK, view, (e: Event) => {
@@ -231,10 +231,10 @@ export class PlayerCtrl {
             this.sendChangeBulletCost('add');
         });
     }
-    private handleAutoLaunch(model: AutoLaunchModel, view: Sprite) {
+    private handleAutoShoot(model: AutoShootModel, view: Sprite) {
         view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
-            log('auto launch');
+            log('auto shoot');
             model.toggle();
         });
     }

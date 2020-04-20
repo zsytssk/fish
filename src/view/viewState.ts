@@ -40,11 +40,11 @@ export function getPoolMousePos() {
 export function getSkillItemByIndex(idx: number) {
     return viewState.game.getSkillItemByIndex(idx);
 }
-export function getAutoLaunchSkillItem() {
-    return viewState.game.getAutoLaunchSkillItem();
+export function getAutoShootSkillItem() {
+    return viewState.game.getAutoShootSkillItem();
 }
-export function setAutoLaunchLight(status: boolean) {
-    return viewState.game.setAutoLaunchLight(status);
+export function setAutoShootLight(status: boolean) {
+    return viewState.game.setAutoShootLight(status);
 }
 export function convertPosToNode(
     pos: Point,

@@ -4,7 +4,7 @@ import { TimeoutCom } from 'comMan/timeoutCom';
 import { Config } from 'data/config';
 import * as SAT from 'sat';
 import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
-import { GunAutoLaunchCom } from '../com/gunAutoLaunchCom';
+import { GunAutoShootCom } from '../com/gunAutoShootCom';
 import { FishModel } from '../fish/fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
@@ -26,7 +26,7 @@ export const GunEvent = {
     /** 等级修改 */
     LevelChange: 'level_change',
     /** 自动开炮状态 */
-    AutoLaunch: 'auto_launch',
+    AutoShoot: 'auto_shoot',
     /** 子弹数目不够 */
     NotEnoughBulletNum: 'not_enough_bullet_num',
 };
@@ -47,7 +47,7 @@ export type AddBulletInfo = {
 
 export enum GunStatus {
     Normal,
-    AutoLaunch,
+    AutoShoot,
     LockFish,
 }
 /** 炮台数据类 */
@@ -75,7 +75,7 @@ export class GunModel extends ComponentManager {
     /** 是否加速  */
     public is_speedup = false;
     /** 是否加速  */
-    public launch_space = Config.LaunchSpace;
+    public shoot_space = Config.ShootTimeSpace;
     /** 枪是否打开, 用来控制发射子弹的间隔 */
     private is_on = true;
     /** 枪是狂暴 */
@@ -120,7 +120,7 @@ export class GunModel extends ComponentManager {
         const timeout = this.getCom(TimeoutCom);
         timeout.createTimeout(() => {
             this.event.emit(GunEvent.DirectionChange, direction);
-        }, this.launch_space);
+        }, this.shoot_space);
     }
     public changeSkin(skinId: string) {
         this.skin = skinId;
@@ -131,7 +131,7 @@ export class GunModel extends ComponentManager {
         if (bullet_cost === this.bullet_cost && !force) {
             return;
         }
-        const { skin, timeout, event, launch_space } = this;
+        const { skin, timeout, event, shoot_space } = this;
         const { level_skin, hole_num } = getGunLevelSkinInfo(bullet_cost);
         this.bullet_cost = bullet_cost;
         this.skin_level = level_skin;
@@ -144,7 +144,7 @@ export class GunModel extends ComponentManager {
                 level_skin,
                 hole_num,
             } as LevelInfo);
-        }, launch_space);
+        }, shoot_space);
     }
     public setStatus(status: GunStatus) {
         if (status === this.status) {
@@ -161,30 +161,23 @@ export class GunModel extends ComponentManager {
         event.emit(GunEvent.SpeedUpStatus, is_speedup);
         if (is_speedup === true) {
             /** 开启 */
-            this.launch_space = Config.LaunchSpace / 2;
+            this.shoot_space = Config.ShootTimeSpace / 2;
         } else {
             /** 禁用 */
-            this.launch_space = Config.LaunchSpace;
+            this.shoot_space = Config.ShootTimeSpace;
         }
     }
     /** 自动发射的处理 */
-    public get autoLaunch() {
-        let auto_launch = this.getCom(GunAutoLaunchCom);
-        if (!auto_launch) {
-            auto_launch = new GunAutoLaunchCom(this);
-            this.addCom(auto_launch);
+    public get autoShoot() {
+        let auto_shoot = this.getCom(GunAutoShootCom);
+        if (!auto_shoot) {
+            auto_shoot = new GunAutoShootCom(this);
+            this.addCom(auto_shoot);
         }
-        return auto_launch;
+        return auto_shoot;
     }
     public preAddBullet(velocity: SAT.Vector, force = false) {
-        const {
-            status,
-            is_on,
-            event,
-            launch_space,
-            player,
-            bullet_cost,
-        } = this;
+        const { status, is_on, event, shoot_space, player, bullet_cost } = this;
 
         if (player.bullet_num - bullet_cost < 0) {
             event.emit(GunEvent.NotEnoughBulletNum);
@@ -196,7 +189,7 @@ export class GunModel extends ComponentManager {
         velocity = velocity.clone().normalize();
         this.setDirection(velocity);
 
-        if (!force && status === GunStatus.AutoLaunch) {
+        if (!force && status === GunStatus.AutoShoot) {
             return;
         }
 
@@ -211,7 +204,7 @@ export class GunModel extends ComponentManager {
         timeout.createTimeout(() => {
             this.is_on = true;
             event.emit(GunEvent.SwitchOn);
-        }, launch_space);
+        }, shoot_space);
     }
     public addBullet(direction: Point) {
         const {

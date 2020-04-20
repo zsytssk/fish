@@ -25,7 +25,7 @@ export const Config = {
     /** 子弹运行的宽度 */
     BulletZoneWidth: 1334,
     /** 自动攻击的间隔 ms */
-    LaunchSpace: 200,
+    ShootTimeSpace: 200,
     /** 炸弹的区域 */
     BombRadius: 300,
     /** 鱼潮 清理鱼的时间 */

@@ -4,7 +4,7 @@ import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
 import { SkillMap } from 'data/config';
 import { ServerEvent } from 'data/serverEvent';
 import { PlayerInfo } from 'model/game/playerModel';
-import { AutoLaunchInfo } from 'model/game/skill/autoLaunchModel';
+import { AutoShootInfo } from 'model/game/skill/autoShootModel';
 import { BombInfo } from 'model/game/skill/bombModel';
 import { FreezeInfo } from 'model/game/skill/freezeModel';
 import {
@@ -237,7 +237,7 @@ function convertFreezeData(data: UseFreezeRep): FreezeInfo {
     const used_time = 0;
     return { user_id, used_time, num, fish_list, duration };
 }
-function convertAUtoShootData(data: AutoShootRep): AutoLaunchInfo {
+function convertAUtoShootData(data: AutoShootRep): AutoShootInfo {
     const { userId: user_id, autoShoot } = data;
     return { user_id, autoShoot };
 }

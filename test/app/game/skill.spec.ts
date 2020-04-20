@@ -15,10 +15,10 @@ export const skill_test = new Test('skill', runner => {
         const player_id = modelState.app.user_info.user_id;
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);
-        player.gun.autoLaunch.active();
+        player.gun.autoShoot.active();
 
         setTimeout(() => {
-            player.gun.autoLaunch.clear();
+            player.gun.autoShoot.clear();
         }, 5000);
     });
 

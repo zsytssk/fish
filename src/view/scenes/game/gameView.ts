@@ -44,10 +44,10 @@ export default class GameView extends ui.scenes.game.gameUI
         });
     }
     private initLang(lang: Lang) {
-        const { auto_launch_txt } = this.skill_box;
-        const status = this.skill_box.auto_launch_light.visible;
+        const { auto_shoot_txt } = this.skill_box;
+        const status = this.skill_box.auto_shoot_light.visible;
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
-        auto_launch_txt.skin = `image/international/${skin_name}.png`;
+        auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     public showBubbleRefresh(bg_num?: number) {
         const { bubble_overlay, bg, bubble_wall } = this;
@@ -209,10 +209,10 @@ export default class GameView extends ui.scenes.game.gameUI
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
     }
-    public getAutoLaunchSkillItem() {
+    public getAutoShootSkillItem() {
         return this.skill_box.auto_launch;
     }
-    public setAutoLaunchLight(status: boolean) {
+    public setAutoShootLight(status: boolean) {
         const lang = getLang();
         this.skill_box.auto_launch_light.visible = status;
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
