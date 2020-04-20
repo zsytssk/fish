@@ -153,7 +153,7 @@ export class GameModel extends ComponentManager {
             );
             return;
         }
-        player.gun.addBullet(data.direction);
+        player.gun.addBullet(data.direction, !player.is_cur_player);
     }
     public shoalComingTip(reverse: boolean) {
         this.shoal_com.preAddShoal(reverse);

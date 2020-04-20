@@ -206,7 +206,8 @@ export class GunModel extends ComponentManager {
             event.emit(GunEvent.SwitchOn);
         }, shoot_space);
     }
-    public addBullet(direction: Point) {
+    /** 为了防止网络延迟导致炮台抖动, 本人的炮台角度 不跟随服务端 */
+    public addBullet(direction: Point, syncDirec = true) {
         const {
             bullet_cost,
             skin,
@@ -219,7 +220,9 @@ export class GunModel extends ComponentManager {
         const { x, y } = direction;
 
         const velocity = new SAT.Vector(x, y).normalize();
-        this.setDirection(velocity);
+        if (syncDirec) {
+            this.setDirection(velocity);
+        }
         const bullets_pos = getBulletStartPos(
             player.server_index,
             velocity.clone(),

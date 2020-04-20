@@ -58,9 +58,9 @@ export const International = {
         leaveTip: 'Confirm to leave the game?',
         reEnter: 'You are in the game now, do you want to re-enter?',
         kickedTip: 'You have been kicked, refresh to re-enter the room?',
-        buyBulletTip: 'Insufficient bullet, proceed to purchase? ',
-        buySkillTip: 'You don’t have this skill, proceed to purchase? ',
-        logoutTip: 'Login disconnected, refresh current page? ',
+        buyBulletTip: 'Insufficient bullet, proceed to purchase?',
+        buySkillTip: 'You don’t have this skill, proceed to purchase?',
+        logoutTip: 'Login disconnected, refresh current page?',
         posBombTip: 'Please select a location on the screen to place the bomb',
         aimFish: 'Please select the fish you want to attack',
         help: 'Help',
@@ -72,20 +72,20 @@ export const International = {
         help2Super:
             'Super Skill: Passive skill, it will be automatically triggered after certain number of fish are captured by player. It increases bullet power and doubles the rate of fire.',
         help2Freeze:
-            'Frozen Skill: Active skill, it can be obtained by killing certain types of fish, or can be purchased. It can freeze most of the fishes on the current screen. ',
+            'Frozen Skill: Active skill, it can be obtained by killing certain types of fish, or can be purchased. It can freeze most of the fishes on the current screen.',
         help2Lock:
             'Lock Skill: Active skill, it can be obtained by killing certain types of fish, or can be purchased. It can automatically lock the fish with the highest Fish Point on the current screen, or players can also click to select a fish to lock.',
         help2Bomb:
             'Bomb: Active skill, can be purchased. it will randomly kill a group of fish on the screen.',
-        help3: '3. Available multiple of cannon: ',
+        help3: '3. Available multiple of cannon:',
         help31: '1,2,3,4,5,10,15,20,30,50,80,100',
-        help4: '4. Other instructions ',
+        help4: '4. Other instructions',
         help41:
-            'Redemption: Player can get some Fish Vouchers after capturing certain type of fish. The Fish Vouchers can be used for redeem rewards.  ',
+            'Redemption: Player can get some Fish Vouchers after capturing certain type of fish. The Fish Vouchers can be used for redeem rewards. ',
         help42:
-            'Lucky draw: Player will qualify 1 lucky draw after capturing 10 fishes with 100 Fish Point at least, the rewards includes bullet and currency. ',
+            'Lucky draw: Player will qualify 1 lucky draw after capturing 10 fishes with 100 Fish Point at least, the rewards includes bullet and currency.',
         help43:
-            'Purchase: Player can purchase bullets inside the hall, and purchase cannon skin or bullet effect by clicking the cannon in the game. ',
+            'Purchase: Player can purchase bullets inside the hall, and purchase cannon skin or bullet effect by clicking the cannon in the game.',
         tourSkip: 'Exit',
         tourStart: 'Start',
         tour1: 'Click the drop-down button to select the coin',
@@ -93,7 +93,7 @@ export const International = {
         tour3:
             'You only can experience the game in Trial Field, <br/>you can earn coins in the Real Field',
         tour4:
-            'System will automatically convert your coins into<br/> bullets after entering Real Field; All your balance<br/> bullet will be converted back to coins after you <br/> leave the room. ',
+            'System will automatically convert your coins into<br/> bullets after entering Real Field; All your balance<br/> bullet will be converted back to coins after you <br/> leave the room.',
         tour5:
             'Control your cannon, click and capture fishes<br/> to gain more bullets',
         tour6:
@@ -152,7 +152,7 @@ export const International = {
         help2:
             '2. 기능 사용 설명: 게임 진행중 플레이어는 다음과 같은 기능을 사용할 수 있습니다.',
         help2Super:
-            '슈퍼기능: 자동 기능, 플레이어가 일정량의 물고기를 포획한 후 자동으로 발사 됩니다. ',
+            '슈퍼기능: 자동 기능, 플레이어가 일정량의 물고기를 포획한 후 자동으로 발사 됩니다.',
         help2Freeze:
             '얼음 기능:수동 기능, 일정한 량의 물고기를 포획하면 받을 수 있 구매도 가능합니다. 해당 기능을 사용하면 게임중 대부분의 물고기들은 움직이지 않습니다.',
         help2Lock:
@@ -175,7 +175,7 @@ export const International = {
         tour3:
             '시연장에서 유저는 체험만 가능하고 기엠장에서는 디지털 화폐를 획득할 수 있습니다',
         tour4:
-            '게임이 본격적으로 시작되면 시스템이 자동으로 디지털 화폐를 총알로 바꿔드립니다. 게임방을 떠난 후, 남은 모든 총알은 다시 디지털 화폐로 교환됩니다. ',
+            '게임이 본격적으로 시작되면 시스템이 자동으로 디지털 화폐를 총알로 바꿔드립니다. 게임방을 떠난 후, 남은 모든 총알은 다시 디지털 화폐로 교환됩니다.',
         tour5:
             '포좌를 컨트롤하고 물고기 포획을 클릭하면 더 <br/> 많은 총알을 받을 수 있습니다.',
         tour6:
@@ -197,11 +197,11 @@ export const International = {
         remainingBullet: '弾薬',
         guest: 'ゲスト',
         volumeSetting: '⾳量設定',
-        music: '⾳楽 ',
+        music: '⾳楽',
         soundEffects: '⾳聲効果',
         tips: '提示',
         cancel: 'キャンセル',
-        confirm: '確認 ',
+        confirm: '確認',
         luckyDraw: '抽選',
         redemption: '交換',
         buySuccess: '購⼊完了',
@@ -213,7 +213,7 @@ export const International = {
         freeze: '冷凍',
         bomb: '爆弾',
         voucher: '賞券',
-        use: '使⽤ ',
+        use: '使⽤',
         inUse: '使⽤中',
         item: 'スキル',
         youAreHere: 'ここにいる',
@@ -223,43 +223,43 @@ export const International = {
         reEnter: '　現在ゲーム中ですが、再び開始しますか？',
         kickedTip: 'プレールームから出てました。もう⼀度⼊場します か？',
         buyBulletTip: '弾薬殘數が不⾜になり、ご購⼊しますか。',
-        buySkillTip: 'スキルまだない、ご購⼊しますか。 ',
+        buySkillTip: 'スキルまだない、ご購⼊しますか。',
         logoutTip: 'ログイン接続できません。ページを再読み込みしますか。',
         posBombTip: '畫⾯中、爆弾を置く場所を選択してください。',
         aimFish: '攻撃したい⿂を選択してください。',
         help: 'ヘルプ',
         times: '倍',
         help1:
-            '⿂ポイント説明：それぞれの⿂ポイントの數値は異なります。１つの⿂を捕獲すること により、獲得弾薬は現在使⽤中の砲臺の倍數をかける⿂ポイントの數値となります。 例えば、50倍の⿂を捕獲する場合は、10倍で撃ちまして、獲得弾薬は50X10=500となり ます。それぞれのポイントは以下のようです。 ',
+            '⿂ポイント説明：それぞれの⿂ポイントの數値は異なります。１つの⿂を捕獲すること により、獲得弾薬は現在使⽤中の砲臺の倍數をかける⿂ポイントの數値となります。 例えば、50倍の⿂を捕獲する場合は、10倍で撃ちまして、獲得弾薬は50X10=500となり ます。それぞれのポイントは以下のようです。',
         help2:
-            'スキル使⽤説明：プレーヤーはゲーム中で以下のスキルで使⽤可能です。 ',
+            'スキル使⽤説明：プレーヤーはゲーム中で以下のスキルで使⽤可能です。',
         help2Super:
-            'スーパースキル：受動スキル、プレーヤーが捕獲した⿂におけて、⼀定の數量に達 すると、弾薬の威⼒が増加し、攻撃スピードが加速となります。 ',
+            'スーパースキル：受動スキル、プレーヤーが捕獲した⿂におけて、⼀定の數量に達 すると、弾薬の威⼒が増加し、攻撃スピードが加速となります。',
         help2Freeze:
-            '冷凍スキル：主動スキル、特定な⿂を攻撃することによって獲得し、もしくは購⼊ もできます。使⽤後、畫⾯內の多數な⿂を凍結されます。 ',
+            '冷凍スキル：主動スキル、特定な⿂を攻撃することによって獲得し、もしくは購⼊ もできます。使⽤後、畫⾯內の多數な⿂を凍結されます。',
         help2Lock:
-            'ロックスキル：主動スキル、特定な⿂を攻撃することによって獲得し、もしくは購 ⼊もできます。使⽤後、畫⾯內の⾼の⿂ポイントに⾃動的に的中し、プレーヤー が⾃由選択もできます。 ',
+            'ロックスキル：主動スキル、特定な⿂を攻撃することによって獲得し、もしくは購 ⼊もできます。使⽤後、畫⾯內の⾼の⿂ポイントに⾃動的に的中し、プレーヤー が⾃由選択もできます。',
         help2Bomb:
-            '爆弾：主動スキル、購⼊で獲得できます。使⽤後、畫⾯內のランダムで１つ群の⿂ に攻撃します。 ',
-        help3: '選択可能の倍數は以下のようです。 ',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100 ',
-        help4: 'その他説明： ',
+            '爆弾：主動スキル、購⼊で獲得できます。使⽤後、畫⾯內のランダムで１つ群の⿂ に攻撃します。',
+        help3: '選択可能の倍數は以下のようです。',
+        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
+        help4: 'その他説明：',
         help41:
             '交換：プレーヤーは、特定な⿂を捕獲することにより、⿂券が獲得できます。その ⼀定の數量の⿂券を収集すると、景品と交換可能です',
         help42:
-            '抽選：プレーヤーは、10匹100ポイント以上の⿂を捕獲すると、1回の抽選に參加可 能です。景品は弾薬と通貨を含みます。 ',
+            '抽選：プレーヤーは、10匹100ポイント以上の⿂を捕獲すると、1回の抽選に參加可 能です。景品は弾薬と通貨を含みます。',
         help43:
             '購⼊：プレーヤーは、ホームで購⼊ボタンをクリックし、弾薬を購⼊できます。ま た、ゲーム中で砲臺ボタンをクリックし、砲臺スタイルと弾薬特効を購⼊できま す。スキルの數は0の時、スキルボタンを押して購⼊できます。',
         tourSkip: 'Exit',
         tourStart: 'Start',
         tour1: 'ボタンで通貨タイプを選択',
-        tour2: '通貨タイプが異なることにより、ゲーム ルームが切替されます。 ',
+        tour2: '通貨タイプが異なることにより、ゲーム ルームが切替されます。',
         tour3:
-            '體験ルームプレーはゲームの體験のみ可能です。本番プレールームで仮想通貨が獲得 可能です。 ',
+            '體験ルームプレーはゲームの體験のみ可能です。本番プレールームで仮想通貨が獲得 可能です。',
         tour4:
-            '本番ゲームルームに⼊場の際、システムは⾃動的に仮想通貨を弾薬に交換されます。 また、お客様は退場の際、殘りの弾薬が⾃動的に仮想通貨に交換されます。ご安⼼くだ さい。 ',
+            '本番ゲームルームに⼊場の際、システムは⾃動的に仮想通貨を弾薬に交換されます。 また、お客様は退場の際、殘りの弾薬が⾃動的に仮想通貨に交換されます。ご安⼼くだ さい。',
         tour5:
-            '砲臺をコントロールし、クリックかつ⿂の捕獲、<br/>もっと弾薬が獲得可能 ',
+            '砲臺をコントロールし、クリックかつ⿂の捕獲、<br/>もっと弾薬が獲得可能',
         tour6: 'スキルの使⽤で、もっと⼤きくて多い⿂を<br/>捕獲可能です。',
     },
     [Lang.Zh]: {
@@ -321,7 +321,7 @@ export const International = {
             '锁定技能：主动技能，可以通过打死某些鱼获得，也可购买，使用后会 自动锁定当前屏幕内鱼分最高的那条鱼，玩家也可以自己点击选择某一条鱼。',
         help2Bomb: '炸弹：主动技能，购买获得，使用后会随机炸死屏幕内的一群鱼。',
         help3: '3. 可选的炮倍数如下：',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100 ',
+        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
         help4: '4. 其他说明',
         help41:
             '兑换：玩家捕获某些鱼时，会得到一些鱼券，收集一定数量的鱼券可以兑换奖品。',
@@ -398,7 +398,7 @@ export const International = {
             '鎖定技能：主動技能，可以通過打死某些魚獲得，也可購買，使用後會 自動鎖定當前屏幕內魚分最高的那條魚，玩家也可以自己點擊選擇某一條魚。',
         help2Bomb: '炸彈：主動技能，購買獲得，使用後會隨機炸死屏幕內的一群魚。',
         help3: '3. 可選的炮倍數如下：',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100 ',
+        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
         help4: '4.	其他說明',
         help41:
             '兌換：玩家捕獲某些魚時，會得到一些魚券，收集一定數量的魚券可以兌換獎品。',
