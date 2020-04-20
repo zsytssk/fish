@@ -104,7 +104,13 @@ export class BulletModel extends ComponentManager {
     }; // tslint:disable-line
     private onHit = (fish: FishModel) => {
         const { cast_fn } = this;
-        cast_fn(fish);
+
+        /** 异步处理时为了, 让所有的子弹全部更新位置之后处理
+         * 不然的话就会出现击中鱼时 子弹的位置存在很多的差别...
+         */
+        setTimeout(() => {
+            cast_fn(fish);
+        });
     }; // tslint:disable-line
     /** 创建鱼网... */
     public addNet = (show_cast: boolean) => {

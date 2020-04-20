@@ -79,6 +79,7 @@ export function getBulletStartPos(
 ): Point[] {
     const offsets = Coordinates.bullet_offset[skin];
     const result: Point[] = [];
+    const offset_h = direction.clone().normalize().scale(30, 30);
     const offset_v = direction
         .clone()
         .normalize()
@@ -112,8 +113,8 @@ export function getBulletStartPos(
             angle = vectorToAngle(direction) - Math.PI / 2;
         }
         vector = vector.rotate(angle);
-        x = gun_global_pos.x + vector.x + nv.x;
-        y = gun_global_pos.y + vector.y + nv.y;
+        x = gun_global_pos.x + vector.x + nv.x + offset_h.x;
+        y = gun_global_pos.y + vector.y + nv.y + offset_h.y;
         result.push({ x, y });
     }
     return result;

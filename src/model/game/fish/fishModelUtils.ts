@@ -187,7 +187,7 @@ export function createBombBody() {
 export async function playerCaptureFish(
     player: PlayerModel,
     fish: FishModel,
-    info: HitRep,
+    info: Partial<HitRep>,
 ) {
     const pos = await fish.beCapture();
     const { drop, win } = info;

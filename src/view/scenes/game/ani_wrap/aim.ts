@@ -6,7 +6,6 @@ import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Image } from 'laya/ui/Image';
-import { log } from 'utils/log';
 
 /** 追踪子弹的动画 */
 type AimState = {

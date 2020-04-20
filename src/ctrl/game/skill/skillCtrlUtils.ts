@@ -1,34 +1,32 @@
-import { SkillModel } from 'model/game/skill/skillModel';
-import {
-    onPoolClick,
-    onFishClick,
-    offFishClick,
-    viewState,
-} from 'view/viewState';
-import { FreezeModel } from 'model/game/skill/freezeModel';
-import { BombModel } from 'model/game/skill/bombModel';
-import { LockFishModel, LockActiveData } from 'model/game/skill/lockFishModel';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
-import { SkillStatus } from 'model/game/skill/skillCoreCom';
-import TopTipPop from 'view/pop/topTip';
+import { AudioRes } from 'data/audioRes';
 import { Config } from 'data/config';
-import {
-    activeAim,
-    stopAim,
-    activeAimFish,
-} from 'view/scenes/game/ani_wrap/aim';
+import { InternationalTip } from 'data/internationalConfig';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 import { getBeBombFish } from 'model/game/fish/fishModelUtils';
+import { BombModel } from 'model/game/skill/bombModel';
+import { FreezeModel } from 'model/game/skill/freezeModel';
+import { LockActiveData, LockFishModel } from 'model/game/skill/lockFishModel';
+import { SkillStatus } from 'model/game/skill/skillCoreCom';
+import { SkillModel } from 'model/game/skill/skillModel';
+import { offMouseMove, onMouseMove } from 'utils/layaUtils';
 import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
-import { Laya } from 'Laya';
-import { Event } from 'laya/events/Event';
-import { onMouseMove, offMouseMove } from 'utils/layaUtils';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
+import TopTipPop from 'view/pop/topTip';
+import {
+    activeAim,
+    activeAimFish,
+    stopAim,
+} from 'view/scenes/game/ani_wrap/aim';
+import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
+import {
+    offFishClick,
+    onFishClick,
+    onPoolClick,
+    viewState,
+} from 'view/viewState';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
@@ -60,6 +58,7 @@ export function skillPreActiveHandler(model: SkillModel) {
 
         // 炸弹
         onPoolClick().then((pos: Point) => {
+            offMouseMove(pool);
             stopAim('aim_big');
             const socket = getSocket(ServerName.Game);
             const fish_list = getBeBombFish(pos);

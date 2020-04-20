@@ -31,7 +31,10 @@ export class AutoShootModel extends ComponentManager implements SkillModel {
         this.skill_core.init();
     }
     public reset() {
-        this.skill_core.reset();
+        const { skill_core } = this;
+        const { player } = skill_core;
+        player.gun.autoShoot.clear();
+        skill_core.reset();
     }
     public active() {
         // 激活
@@ -44,8 +47,7 @@ export class AutoShootModel extends ComponentManager implements SkillModel {
     }
     public disable() {
         const { skill_core } = this;
-        const { player } = skill_core;
-        player.gun.autoShoot.clear();
-        skill_core.disable();
+        skill_core.reset();
+        this.reset();
     }
 }

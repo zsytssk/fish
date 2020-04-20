@@ -71,6 +71,7 @@ type ServerFishInfo = {
 type ServerItemInfo = {
     itemId: string;
     count: number;
+    duration: number;
     coolTime: number;
     usedTime: number;
 };

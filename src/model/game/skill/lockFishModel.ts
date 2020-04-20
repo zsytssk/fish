@@ -1,6 +1,11 @@
 import SAT from 'sat';
 import { getFishById, getAimFish } from 'model/modelState';
-import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
+import {
+    SkillCoreCom,
+    SkillInfo,
+    SkillActiveInfo,
+    SkillStatus,
+} from './skillCoreCom';
 import { SkillModel } from './skillModel';
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
@@ -14,6 +19,7 @@ export type LockFishActiveInfo = {
     fish: string;
     /** 是否是提示 */
     is_tip?: boolean;
+    duration?: number;
 } & SkillActiveInfo;
 
 export interface LockFishInitInfo extends SkillInfo {
@@ -77,12 +83,12 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         const { skill_core } = this;
         const { fish, is_tip } = info;
 
-        skill_core.active(info).then((is_complete: boolean) => {
-            if (is_complete) {
-                this.unLock();
-            }
-        });
         if (is_tip) {
+            skill_core.active(info, status => {
+                if (status === SkillStatus.Disable) {
+                    this.unLock();
+                }
+            });
             return this.tipLock();
         }
         const fish_model = getFishById(fish);

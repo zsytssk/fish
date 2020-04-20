@@ -38,7 +38,7 @@ export class SkillCtrl {
             if (status === SkillStatus.Active) {
                 view.highlight();
                 // ...
-            } else {
+            } else if (status === SkillStatus.Disable || SkillStatus.Normal) {
                 view.unHighlight();
                 skillDisableHandler(model);
             }

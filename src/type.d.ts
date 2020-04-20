@@ -31,3 +31,7 @@ type NoReadOnlyProps<T> = Pick<T, WritableKeys<T>>;
 type B<T> = Readonly<T>;
 
 declare let ENV: string;
+
+type Without<T, K> = {
+    [L in Exclude<keyof T, K>]: T[L];
+};

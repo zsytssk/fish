@@ -235,21 +235,23 @@ function convertFreezeData(data: UseFreezeRep): FreezeInfo {
         frozenFishList: fish_list,
     } = data;
     const used_time = 0;
-    return { user_id, used_time, num, fish_list, duration };
+    return { user_id, used_time, num, fish_list, duration: duration / 1000 };
 }
 function convertAUtoShootData(data: AutoShootRep): AutoShootInfo {
     const { userId: user_id, autoShoot } = data;
     return { user_id, autoShoot };
 }
 function convertUseLockData(data: UseLockRep): LockFishActiveInfo {
-    const {
-        userId: user_id,
-        count: num,
-        // duration: used_time,
-        lockedFish: fish,
-    } = data;
+    const { userId: user_id, count: num, duration, lockedFish: fish } = data;
     const used_time = 0;
-    return { user_id, used_time, num, fish, is_tip: true };
+    return {
+        user_id,
+        used_time,
+        num,
+        fish,
+        is_tip: true,
+        duration: duration / 1000,
+    };
 }
 function convertLockFishData(data: LockFishReq): LockFishActiveInfo {
     const { userId: user_id, eid: fish } = data;
@@ -264,6 +266,7 @@ function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {
             count: num,
             usedTime: used_time,
             coolTime: cool_time,
+            duration,
         } = item;
 
         skills[item.itemId] = {
@@ -271,6 +274,7 @@ function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {
             num: is_cur_player ? Number(num) : 0,
             used_time: is_cur_player ? used_time / 1000 : 0,
             cool_time: cool_time / 1000,
+            duration: duration / 1000,
         } as SkillInfo;
     }
 
