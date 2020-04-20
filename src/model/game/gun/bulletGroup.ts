@@ -1,4 +1,4 @@
-import { LockTarget } from 'model/game/com/moveCom/moveLockCom';
+import { LockTarget } from 'model/game/com/moveCom/lockMoveCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { BulletInfo, BulletModel } from './bulletModel';
 import { GunModel } from './gunModel';

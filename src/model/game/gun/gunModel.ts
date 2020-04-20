@@ -8,7 +8,7 @@ import { GunAutoShootCom } from '../com/gunAutoShootCom';
 import { FishModel } from '../fish/fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
-import { LockTarget } from '../com/moveCom/moveLockCom';
+import { LockTarget } from '../com/moveCom/lockMoveCom';
 
 export const GunEvent = {
     /** 通知ctrl添加子弹 -> 发送给服务端... */

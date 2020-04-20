@@ -3,8 +3,8 @@ import { EventCom } from 'comMan/eventCom';
 import { Config } from 'data/config';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
-import { MoveLockCom, LockTarget } from '../com/moveCom/moveLockCom';
-import { MoveVelocityCom } from '../com/moveCom/moveVelocityCom';
+import { LockMoveCom, LockTarget } from '../com/moveCom/lockMoveCom';
+import { VelocityMoveCom } from '../com/moveCom/velocityMoveCom';
 import { FishModel } from '../fish/fishModel';
 import { ModelEvent } from '../../modelEvent';
 import { getCollisionFish } from '../../modelState';
@@ -60,12 +60,12 @@ export class BulletModel extends ComponentManager {
         if (!lock) {
             const shapes = getShapes('bullet');
             const body_com = new BodyCom(shapes);
-            move_com = new MoveVelocityCom(pos, velocity);
+            move_com = new VelocityMoveCom(pos, velocity);
             com_list.push(move_com, body_com);
             move_com.onUpdate(this.onMoveChange);
             this.body = body_com;
         } else {
-            move_com = new MoveLockCom(pos, velocity, lock, this.onHit);
+            move_com = new LockMoveCom(pos, velocity, lock, this.onHit);
             com_list.push(move_com);
             move_com.onUpdate(this.onLockMoveChange);
         }

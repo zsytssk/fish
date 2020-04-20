@@ -5,7 +5,7 @@ import { getCollisionAllFish, getFishById } from 'model/modelState';
 import { getSpriteInfo, isBombFish } from 'utils/dataUtil';
 import { createFishDisplace } from 'utils/displace/displaceUtil';
 import { BodyCom } from '../com/bodyCom';
-import { MoveDisplaceCom } from '../com/moveCom/moveDisplaceCom';
+import { DisplaceMoveCom } from '../com/moveCom/displaceMoveCom';
 import { GameModel } from '../gameModel';
 import { PlayerModel, CaptureGain } from '../playerModel';
 import { FishBombCom } from './fishBombCom';
@@ -15,7 +15,7 @@ import { FishModel, FishData } from './fishModel';
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
     const { eid: id, fishId: type, score } = data;
     const displace = createFishDisplace(data);
-    const move_com = new MoveDisplaceCom(displace);
+    const move_com = new DisplaceMoveCom(displace);
     const fish = new FishModel(
         {
             id,
@@ -52,7 +52,7 @@ export function createFishGroup(
         return result;
     }
     const displace = createFishDisplace(data);
-    const move_com = new MoveDisplaceCom(displace);
+    const move_com = new DisplaceMoveCom(displace);
 
     /**  onUpdate + destroy 需要提前处理,
      * onUpdate 在原来的update基础上需要加上相对的 pos

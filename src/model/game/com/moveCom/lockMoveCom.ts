@@ -7,7 +7,7 @@ export interface LockTarget {
 export type OnHit = (target: LockTarget) => void;
 
 /** 锁定 移动控制 */
-export class MoveLockCom implements MoveCom {
+export class LockMoveCom implements MoveCom {
     private target: LockTarget;
     private pos: Point;
     /** 初始位置, 为了计算追踪子弹有没有击中目标 */

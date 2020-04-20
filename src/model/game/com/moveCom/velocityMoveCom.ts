@@ -3,7 +3,7 @@ import { clearTick, createTick } from '../../../../utils/tick';
 import { Config } from 'data/config';
 
 /** 速度 移动控制 */
-export class MoveVelocityCom implements MoveCom {
+export class VelocityMoveCom implements MoveCom {
     private pos: Point;
     private velocity: SAT.Vector;
     private update_fn: MoveUpdateFn;
