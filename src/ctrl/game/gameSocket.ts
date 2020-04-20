@@ -1,22 +1,19 @@
-import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
-import { GameCtrl } from './gameCtrl';
-import { ServerEvent, ErrorData } from 'data/serverEvent';
+import { commonSocket, ErrorHandler, offCommon } from 'ctrl/hall/commonSocket';
+import { WebSocketTrait } from 'ctrl/net/webSocketWrap';
+import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
+import { SkillMap } from 'data/config';
+import { ServerEvent } from 'data/serverEvent';
+import { PlayerInfo } from 'model/game/playerModel';
+import { AutoLaunchInfo } from 'model/game/skill/autoLaunchModel';
 import { BombInfo } from 'model/game/skill/bombModel';
-import { SkillMap, Config } from 'data/config';
 import { FreezeInfo } from 'model/game/skill/freezeModel';
 import {
-    TrackFishActiveInfo,
-    TrackFishInitInfo,
-} from 'model/game/skill/trackFishModel';
-import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
-import { PlayerInfo } from 'model/game/playerModel';
+    LockFishActiveInfo,
+    LockFishInitInfo,
+} from 'model/game/skill/lockFishModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
-import { isCurUser, getCurUserId } from 'model/modelState';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import AlertPop from 'view/pop/alert';
-import { commonSocket, ErrorHandler, offCommon } from 'ctrl/hall/commonSocket';
-import { AutoLaunchInfo } from 'model/game/skill/autoLaunchModel';
+import { getCurUserId, isCurUser } from 'model/modelState';
+import { GameCtrl } from './gameCtrl';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
@@ -80,14 +77,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
-            game.activeSkill(SkillMap.TrackFish, convertUseLockData(data));
+            game.activeSkill(SkillMap.LockFish, convertUseLockData(data));
         },
         [ServerEvent.LockFish]: (data: LockFishReq, code: number) => {
             if (code !== 200) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
-            game.activeSkill(SkillMap.TrackFish, convertLockFishData(data));
+            game.activeSkill(SkillMap.LockFish, convertLockFishData(data));
         },
         [ServerEvent.AddFish]: (data: ServerAddFishRep) => {
             game.addFish(data.fish);
@@ -151,11 +148,11 @@ export function convertEnterGame(data: EnterGameRep) {
         const skills = genSkillMap(items, is_cur_player);
 
         if (lockFish) {
-            skills[SkillMap.TrackFish] = {
-                ...skills[SkillMap.TrackFish],
+            skills[SkillMap.LockFish] = {
+                ...skills[SkillMap.LockFish],
                 lock_fish: lockFish,
                 lock_left: lockLeft / 1000,
-            } as TrackFishInitInfo;
+            } as LockFishInitInfo;
         }
 
         const player_info = {
@@ -244,7 +241,7 @@ function convertAUtoShootData(data: AutoShootRep): AutoLaunchInfo {
     const { userId: user_id, autoShoot } = data;
     return { user_id, autoShoot };
 }
-function convertUseLockData(data: UseLockRep): TrackFishActiveInfo {
+function convertUseLockData(data: UseLockRep): LockFishActiveInfo {
     const {
         userId: user_id,
         count: num,
@@ -254,7 +251,7 @@ function convertUseLockData(data: UseLockRep): TrackFishActiveInfo {
     const used_time = 0;
     return { user_id, used_time, num, fish, is_tip: true };
 }
-function convertLockFishData(data: LockFishReq): TrackFishActiveInfo {
+function convertLockFishData(data: LockFishReq): LockFishActiveInfo {
     const { userId: user_id, eid: fish } = data;
     return { user_id, fish };
 }

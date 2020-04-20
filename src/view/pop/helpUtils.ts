@@ -37,7 +37,7 @@ export function getSkillIntroList(lang: Lang) {
             intro: help2Freeze,
         },
         {
-            id: SkillMap.TrackFish,
+            id: SkillMap.LockFish,
             intro: help2Lock,
         },
         // {

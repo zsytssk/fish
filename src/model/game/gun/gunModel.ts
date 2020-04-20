@@ -8,7 +8,7 @@ import { GunAutoLaunchCom } from '../com/gunAutoLaunchCom';
 import { FishModel } from '../fish/fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
-import { TrackTarget } from '../com/moveCom/moveTrackCom';
+import { LockTarget } from '../com/moveCom/moveLockCom';
 
 export const GunEvent = {
     /** 通知ctrl添加子弹 -> 发送给服务端... */
@@ -42,13 +42,13 @@ export type LevelInfo = {
 export type AddBulletInfo = {
     bullet_group: BulletGroup;
     velocity: SAT.Vector;
-    track: TrackTarget;
+    lock: LockTarget;
 };
 
 export enum GunStatus {
     Normal,
     AutoLaunch,
-    TrackFish,
+    LockFish,
 }
 /** 炮台数据类 */
 export class GunModel extends ComponentManager {
@@ -69,7 +69,7 @@ export class GunModel extends ComponentManager {
     /** 所属的玩家 */
     public player: PlayerModel;
     /** 追踪的鱼 */
-    public track_fish: FishModel;
+    public lock_fish: FishModel;
     /** 炮台的状态 */
     public status = GunStatus.Normal;
     /** 是否加速  */
@@ -190,7 +190,7 @@ export class GunModel extends ComponentManager {
             event.emit(GunEvent.NotEnoughBulletNum);
             return;
         }
-        if (!force && status === GunStatus.TrackFish) {
+        if (!force && status === GunStatus.LockFish) {
             return;
         }
         velocity = velocity.clone().normalize();
@@ -218,7 +218,7 @@ export class GunModel extends ComponentManager {
             bullet_cost,
             skin,
             skin_level: level_skin,
-            track_fish: track,
+            lock_fish: lock,
             player,
             event,
             bullet_list,
@@ -235,14 +235,14 @@ export class GunModel extends ComponentManager {
         const info: BulletGroupInfo = {
             bullets_pos,
             velocity,
-            track,
+            lock,
         };
         const bullet_group = new BulletGroup(info, this);
         bullet_list.add(bullet_group);
         event.emit(GunEvent.AddBullet, {
             bullet_group,
             velocity,
-            track,
+            lock,
         } as AddBulletInfo);
         bullet_group.init();
 
@@ -261,7 +261,7 @@ export class GunModel extends ComponentManager {
             bullet.destroy();
         }
         this.player = undefined;
-        this.track_fish = undefined;
+        this.lock_fish = undefined;
         this.setStatus(GunStatus.Normal);
         this.toggleSpeedUp(false);
         this.bullet_list.clear();

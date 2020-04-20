@@ -7,10 +7,7 @@ import {
 } from 'view/viewState';
 import { FreezeModel } from 'model/game/skill/freezeModel';
 import { BombModel } from 'model/game/skill/bombModel';
-import {
-    TrackFishModel,
-    TrackActiveData,
-} from 'model/game/skill/trackFishModel';
+import { LockFishModel, LockActiveData } from 'model/game/skill/lockFishModel';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent, ServerName } from 'data/serverEvent';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
@@ -71,7 +68,7 @@ export function skillPreActiveHandler(model: SkillModel) {
                 fishList: fish_list,
             } as UseBombReq);
         });
-    } else if (model instanceof TrackFishModel) {
+    } else if (model instanceof LockFishModel) {
         const socket = getSocket(ServerName.Game);
         // 激活锁定
         socket.send(ServerEvent.UseLock);
@@ -88,11 +85,11 @@ export function skillActiveHandler(
         const socket = getSocket(ServerName.Game);
         const lang = getLang();
         const { aimFish } = InternationalTip[lang];
-        if (model instanceof TrackFishModel) {
+        if (model instanceof LockFishModel) {
             if (!is_cur_player) {
                 return;
             }
-            const { fish, is_tip, gun_pos } = info as TrackActiveData;
+            const { fish, is_tip, gun_pos } = info as LockActiveData;
             if (is_tip) {
                 // 激活锁定之后 提示选中鱼 选中之后发给服务器...
                 TopTipPop.tip(aimFish, 2);
@@ -120,7 +117,7 @@ export function skillActiveHandler(
 /** 技能的disabled处理 */
 export function skillDisableHandler(model: SkillModel) {
     return new Promise((resolve, reject) => {
-        if (model instanceof TrackFishModel) {
+        if (model instanceof LockFishModel) {
             stopAim('aim');
             offFishClick();
         } else {

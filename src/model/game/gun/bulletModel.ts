@@ -3,7 +3,7 @@ import { EventCom } from 'comMan/eventCom';
 import { Config } from 'data/config';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
-import { MoveTrackCom, TrackTarget } from '../com/moveCom/moveTrackCom';
+import { MoveLockCom, LockTarget } from '../com/moveCom/moveLockCom';
 import { MoveVelocityCom } from '../com/moveCom/moveVelocityCom';
 import { FishModel } from '../fish/fishModel';
 import { ModelEvent } from '../../modelEvent';
@@ -22,7 +22,7 @@ export type BulletInfo = {
     bullet_cost: number;
     skin_level: string;
     skin: string;
-    track?: TrackTarget;
+    lock?: LockTarget;
     cast_fn?: CastFn;
 };
 /** 子弹数据类 */
@@ -38,7 +38,7 @@ export class BulletModel extends ComponentManager {
     /** 速度 */
     public velocity: SAT.Vector;
     public cast_fn: CastFn;
-    public track: TrackTarget;
+    public lock: LockTarget;
     public event: EventCom;
     private body: BodyCom;
     private move_com: MoveCom;
@@ -52,12 +52,12 @@ export class BulletModel extends ComponentManager {
         this.initCom();
     }
     private initCom() {
-        const { pos, velocity, track } = this;
+        const { pos, velocity, lock } = this;
         const event = new EventCom();
         const com_list: Component[] = [event];
 
         let move_com: MoveCom;
-        if (!track) {
+        if (!lock) {
             const shapes = getShapes('bullet');
             const body_com = new BodyCom(shapes);
             move_com = new MoveVelocityCom(pos, velocity);
@@ -65,9 +65,9 @@ export class BulletModel extends ComponentManager {
             move_com.onUpdate(this.onMoveChange);
             this.body = body_com;
         } else {
-            move_com = new MoveTrackCom(pos, velocity, track, this.onHit);
+            move_com = new MoveLockCom(pos, velocity, lock, this.onHit);
             com_list.push(move_com);
-            move_com.onUpdate(this.onTrackMoveChange);
+            move_com.onUpdate(this.onLockMoveChange);
         }
 
         this.move_com = move_com;
@@ -93,7 +93,7 @@ export class BulletModel extends ComponentManager {
         }
     }; // tslint:disable-line
     /** 追踪鱼不需要进行碰撞检测, 不需要body */
-    private onTrackMoveChange = (move_info: MoveInfo) => {
+    private onLockMoveChange = (move_info: MoveInfo) => {
         const { pos, velocity: direction } = move_info;
 
         this.event.emit(BulletEvent.Move, {

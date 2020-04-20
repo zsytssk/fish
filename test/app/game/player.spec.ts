@@ -29,8 +29,8 @@ export const player_test = new Test('player', runner => {
                     cool_time: 10,
                     used_time: 0,
                 },
-                [SkillMap.TrackFish]: {
-                    item_id: SkillMap.TrackFish,
+                [SkillMap.LockFish]: {
+                    item_id: SkillMap.LockFish,
                     num: 20,
                     cool_time: 10,
                     used_time: 0,

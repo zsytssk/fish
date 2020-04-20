@@ -46,7 +46,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                         win: 100,
                         drop: [
                             { itemId: '3002', itemNum: 10 },
-                            { itemId: SkillMap.TrackFish, itemNum: 10 },
+                            { itemId: SkillMap.LockFish, itemNum: 10 },
                             // { itemId: SkillMap.TrackFish, itemNum: 10 },
                         ],
                     } as HitRep,

@@ -32,7 +32,7 @@ export const Config = {
     ClearFishTime: 2.5,
 };
 export enum SkillMap {
-    TrackFish = '2001',
+    LockFish = '2001',
     Freezing = '2002',
     Bomb = '2003',
     Auto = 'A2004',
@@ -42,7 +42,7 @@ export enum SkillMap {
 export const SkillNameMap = {
     [SkillMap.Freezing]: 'freeze',
     [SkillMap.Bomb]: 'bomb',
-    [SkillMap.TrackFish]: 'aim',
+    [SkillMap.LockFish]: 'aim',
     [SkillMap.Auto]: 'auto',
     [SkillMap.Super]: 'super',
 };
