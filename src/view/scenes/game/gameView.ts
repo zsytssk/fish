@@ -210,13 +210,13 @@ export default class GameView extends ui.scenes.game.gameUI
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
     }
     public getAutoShootSkillItem() {
-        return this.skill_box.auto_launch;
+        return this.skill_box.auto_shoot;
     }
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
-        this.skill_box.auto_launch_light.visible = status;
+        this.skill_box.auto_shoot_light.visible = status;
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
-        this.skill_box.auto_launch_txt.skin = `image/international/${skin_name}.png`;
+        this.skill_box.auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     public setExchangeRate(rate: number, currency: string) {
         const lang = getLang();

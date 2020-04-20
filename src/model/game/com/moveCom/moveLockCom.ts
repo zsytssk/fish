@@ -6,7 +6,7 @@ export interface LockTarget {
 }
 export type OnHit = (target: LockTarget) => void;
 
-/** 追踪目标 移动控制 */
+/** 锁定 移动控制 */
 export class MoveLockCom implements MoveCom {
     private target: LockTarget;
     private pos: Point;
@@ -26,7 +26,7 @@ export class MoveLockCom implements MoveCom {
         on_hit: OnHit,
     ) {
         this.target = target;
-        this.pos = pos;
+        this.pos = { ...pos };
         this.start_pos = { ...pos };
         this.velocity_size = velocity.len();
         this.on_hit = on_hit;
@@ -63,10 +63,10 @@ export class MoveLockCom implements MoveCom {
         pos.y += velocity.y * t;
 
         if (this.detectOnHit()) {
-            this.update_fn({ pos: this.pos, velocity });
+            this.update_fn({ pos: { ...target.pos }, velocity });
             this.on_hit(target);
         } else {
-            this.update_fn({ pos: this.pos, velocity });
+            this.update_fn({ pos: { ...this.pos }, velocity });
         }
     }; //tslint:disable-line
     private detectOnHit() {

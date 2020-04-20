@@ -96,6 +96,7 @@ export class BulletModel extends ComponentManager {
     private onLockMoveChange = (move_info: MoveInfo) => {
         const { pos, velocity: direction } = move_info;
 
+        this.pos = { ...move_info.pos };
         this.event.emit(BulletEvent.Move, {
             pos,
             velocity: direction,

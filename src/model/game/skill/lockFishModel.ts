@@ -144,7 +144,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         gun_event.on(
             GunEvent.SwitchOn,
             () => {
-                gun.preAddBullet(gun.direction, true);
+                // gun.preAddBullet(gun.direction, true);
             },
             this,
         );

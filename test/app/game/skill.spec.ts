@@ -6,12 +6,13 @@ import { viewState } from 'view/viewState';
 import SkillItem from 'view/scenes/game/skillItemView';
 import { startCount } from 'utils/count';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent } from 'data/serverEvent';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 import { sleep } from '../../utils/testUtils';
+import { getBeBombFish } from 'model/game/fish/fishModelUtils';
 
 /** 技能的测试 */
 export const skill_test = new Test('skill', runner => {
-    runner.describe('auto_launch', () => {
+    runner.describe('auto_shoot', () => {
         const player_id = modelState.app.user_info.user_id;
         player_test.runTest('add_player');
         const player = modelState.app.game.getPlayerById(player_id);
@@ -20,6 +21,27 @@ export const skill_test = new Test('skill', runner => {
         setTimeout(() => {
             player.gun.autoShoot.clear();
         }, 5000);
+    });
+
+    runner.describe('auto_bomb', async () => {
+        const socket = getSocket(ServerName.Game);
+        const pos = { x: 939, y: 348 };
+        const fish_old_list = [...modelState.app.game.fish_list].map(item => {
+            return item.id;
+        });
+        await sleep(5);
+        const fish_new_list = [...modelState.app.game.fish_list].map(item => {
+            return item.id;
+        });
+        const fish_list = fish_old_list.filter(item => {
+            return fish_new_list.indexOf(item) === -1;
+        });
+        // const fish_list = getBeBombFish(pos);
+        socket.send(ServerEvent.UseBomb, {
+            bombPoint: pos,
+            fishList: [...fish_list],
+            // fishList: [...fish_list],
+        } as UseBombReq);
     });
 
     runner.describe('track_fish_socket', async () => {
