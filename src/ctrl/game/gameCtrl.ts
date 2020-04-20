@@ -279,7 +279,7 @@ export class GameCtrl {
             const player = model.getPlayerById(userId);
             if (!player) {
                 return console.error(
-                    'Game:>captureFish:> cant find fish or player!!',
+                    `Game:>captureFish:> cant find player for userId=${userId}!`,
                 );
             }
             player.destroy();

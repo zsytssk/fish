@@ -89,4 +89,15 @@ export const player_test = new Test('player', runner => {
             other_player = modelState.app.game.addPlayer(player_data);
         }
     });
+
+    runner.describe('list_player_id', () => {
+        const player_list = modelState.app.game['player_list'];
+        for (const player of player_list) {
+            console.log(
+                `${player.server_index}:>${player.user_id}${
+                    player.is_cur_player ? ':>(self)' : ''
+                }`,
+            );
+        }
+    });
 });
