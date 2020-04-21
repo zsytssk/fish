@@ -12,6 +12,8 @@ import TipPop from './tip';
 import { offLangChange, onLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
 import { ItemMap } from 'data/config';
+import { ctrlState } from 'ctrl/ctrlState';
+import { modelState } from 'model/modelState';
 
 type LotteryData = {
     lottery_id: string;
@@ -115,13 +117,15 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
     }
     private renderLottery = (box: LotteryItemUI, index: number) => {
         const { light, item_num, item_type, bullet_icon, bullet_num } = box;
-        const { cur, get, lottery_type, lottery_num } = this.lottery_list.array[
-            index
-        ] as LotteryRenderData;
+        const data = this.lottery_list.array[index] as LotteryRenderData;
+        const { cur, get, lottery_type, lottery_num } = data;
 
         const is_bullet = lottery_type === 'bullet';
         bullet_icon.visible = bullet_num.visible = is_bullet;
         item_type.visible = item_num.visible = !is_bullet;
+        item_type.text = lottery_type;
+        bullet_num.text = item_num.text = lottery_num + '';
+
         if (!cur) {
             return;
         }
@@ -133,12 +137,9 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             });
         } else {
             playSkeletonOnce(light, ani_name).then(() => {
-                this.showLotteryAward();
+                this.showLotteryAward(data);
             });
         }
-
-        item_type.text = lottery_type;
-        bullet_num.text = item_num.text = lottery_num + '';
     }; // tslint:disable-line
     private runLottery() {
         const { remain_info, progress, lottery_remain } = this;
@@ -198,10 +199,26 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         btn_lottery.disabled = false;
         clearInterval(this.lottery_interval);
     }
-    private showLotteryAward() {
+    private showLotteryAward(data: LotteryRenderData) {
         const lang = getLang();
-        const { luckyDrawTip2 } = InternationalTip[lang];
-        AlertPop.alert(luckyDrawTip2);
+        const { luckyDrawTip2, bullet } = InternationalTip[lang];
+        const { lottery_type, lottery_num } = data;
+        const is_bullet = lottery_type === 'bullet';
+        const name = is_bullet ? bullet : 'lottery_type';
+        const userId = modelState.app.user_info.user_id;
+
+        if (is_bullet) {
+            ctrlState.game.changeUserNumInfo({
+                userId,
+                change_arr: [
+                    {
+                        num: lottery_num,
+                        type: 'bullet',
+                    },
+                ],
+            });
+        }
+        AlertPop.alert(luckyDrawTip2 + `${lottery_num}${name}`);
     }
     private renderExchange = (box: ExchangeItemUI, index: number) => {
         const {

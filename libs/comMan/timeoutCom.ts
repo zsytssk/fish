@@ -4,7 +4,7 @@ type TimeoutFn = () => void;
 export class TimeoutCom implements Component {
     private timeout_list: Set<number> = new Set();
     private interval_list: Set<number> = new Set();
-    public createTimeout(fn: TimeoutFn, time?: number) {
+    public createTimeout(fn: TimeoutFn, time: number = 0) {
         const timeout: number = setTimeout(() => {
             fn();
             this.timeout_list.delete(timeout);

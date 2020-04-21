@@ -8,10 +8,12 @@ import {
 } from 'view/scenes/game/ani_wrap/shoalWave';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 import { activePosTip } from 'view/scenes/game/ani_wrap/posTip';
-import { activeAimFish } from 'view/scenes/game/ani_wrap/aim';
+import { activeAimFish, createPoints } from 'view/scenes/game/ani_wrap/aim';
 import { modelState } from 'model/modelState';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
+import { FishEvent } from 'model/game/fish/fishModel';
+import SAT from 'sat';
 
 /** 冰冻 鱼群 爆炸 瞄准...测试 */
 export const ani_wrap = new Test('ani_wrap', runner => {
@@ -68,7 +70,18 @@ export const ani_wrap = new Test('ani_wrap', runner => {
         pop_tip_ani.y = 200;
     });
     runner.describe('aim', () => {
+        const gun = [...modelState.app.game['player_list']][0].gun;
         const fish = [...modelState.app.game.fish_list][0];
-        activeAimFish(fish, false, { x: 100, y: 100 });
+        fish.event.on(FishEvent.Move, () => {
+            const { pos } = fish;
+            const x = pos.x - gun.pos.x;
+            const y = pos.y - gun.pos.y;
+            gun.setDirection(new SAT.Vector(x, y));
+            activeAimFish(fish, false, gun.pos);
+        });
+    });
+
+    runner.describe('aim2', (end_pos = { x: 1000, y: 300 }) => {
+        createPoints({ x: 100, y: 300 }, end_pos);
     });
 });

@@ -74,20 +74,26 @@ export function activeAimFish(
                 pos: { x, y },
             } = move_info;
             aim_ani.pos(x, y);
+
             if (show_points) {
-                createPoints(ori_pos, { x, y });
+                createPoints({ x, y }, ori_pos);
             }
         },
         aim_ani,
     );
-    fish.event.on(FishEvent.Destroy, () => {
-        stopAim('aim');
-        fish.event.offAllCaller(aim_ani);
-    });
+    fish.event.on(
+        FishEvent.Destroy,
+        () => {
+            stopAim('aim');
+            fish.event.offAllCaller(aim_ani);
+        },
+        aim_ani,
+    );
 }
 
 /** 消除动画 */
 export function stopAim(type: AimType = 'aim') {
+    console.warn(type);
     const { aim_ani_map, fish, point_list } = state;
     const aim_ani = aim_ani_map.get(type);
 
@@ -126,17 +132,15 @@ function createAim(type: AimType) {
 }
 
 /** 创建点 */
-function createPoints(aim_pos: Point, ori_pos: Point) {
+export function createPoints(aim_pos: Point, ori_pos: Point) {
     /** 瞄准路线点之间的距离 */
     const { point_list } = state;
     const { ani_wrap } = viewState;
     /** 瞄准圈的半径 */
-
     const path = new SAT.Vector(aim_pos.x - ori_pos.x, aim_pos.y - ori_pos.y);
     const len = path.len();
     const path_normal = path.clone().normalize();
     const point_num = Math.ceil(len / point_space);
-
     handlePointNum(point_num);
     /** 将要显示的点数从开始点开始, 沿着path的方向, 每point_space一个新的点 */
     for (let i = 0; i < point_num; i++) {
@@ -155,19 +159,20 @@ function createPoints(aim_pos: Point, ori_pos: Point) {
 /** 通过点的数目来创建|销毁 节点 */
 function handlePointNum(point_num: number) {
     const { point_list, points_temp } = state;
-
-    if (point_list.length < point_num) {
-        for (let i = point_list.length; i < point_num; i++) {
+    const ori_len = point_list.length;
+    if (ori_len < point_num) {
+        for (let i = ori_len; i < point_num; i++) {
             const point_view =
                 points_temp.pop() || createImg('image/game/aim_point');
+            point_view.pivot(19 / 2, 19 / 2);
             point_list.push(point_view);
-            point_view.pivot(point_view.width / 2, point_view.height / 2);
         }
-    } else if (point_list.length > point_num) {
-        for (let i = point_list.length - 1; i >= point_num; i--) {
+    } else if (ori_len > point_num) {
+        for (let i = ori_len - 1; i >= point_num; i--) {
             const point = point_list[i];
             point.removeSelf();
             points_temp.push(point);
+            point_list.splice(i, 1);
         }
     }
 }
@@ -175,8 +180,11 @@ function handlePointNum(point_num: number) {
 /** 清理 *点* */
 function clearPoints() {
     const { point_list, points_temp } = state;
-    for (const point of point_list) {
+    const ori_len = point_list.length;
+    for (let i = ori_len - 1; i >= 0; i--) {
+        const point = point_list[i];
         point.removeSelf();
         points_temp.push(point);
+        point_list.splice(i, 1);
     }
 }

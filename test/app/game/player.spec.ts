@@ -17,7 +17,7 @@ export const player_test = new Test('player', runner => {
             server_index: 0,
             bullet_cost: 1,
             bullet_num: 100000000,
-            gun_skin: '3',
+            gun_skin: '1',
             nickname: test_data.nickname,
             avatar: 'test',
             need_emit: true,

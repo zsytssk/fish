@@ -10,6 +10,7 @@ import { ModelEvent } from '../../modelEvent';
 import { getCollisionFish } from '../../modelState';
 import { NetModel } from './netModel';
 import { setProps } from 'utils/utils';
+import { TimeoutCom } from 'comMan/timeoutCom';
 
 export const BulletEvent = {
     Move: 'move',
@@ -69,7 +70,7 @@ export class BulletModel extends ComponentManager {
             com_list.push(move_com);
             move_com.onUpdate(this.onLockMoveChange);
         }
-
+        com_list.push(new TimeoutCom());
         this.move_com = move_com;
         this.event = event;
         this.addCom(...com_list);
@@ -103,12 +104,19 @@ export class BulletModel extends ComponentManager {
         } as MoveInfo);
     }; // tslint:disable-line
     private onHit = (fish: FishModel) => {
-        const { cast_fn } = this;
+        const { cast_fn, move_com } = this;
+
+        /** onHit 之后就无需updatePos,防止因为 setTimeout导致的时间差
+         * 在destroy之后继续 cast_fn
+         */
+        move_com.destroy();
+        this.delCom(move_com);
+        this.move_com = undefined;
 
         /** 异步处理时为了, 让所有的子弹全部更新位置之后处理
          * 不然的话就会出现击中鱼时 子弹的位置存在很多的差别...
          */
-        setTimeout(() => {
+        this.getCom(TimeoutCom).createTimeout(() => {
             cast_fn(fish);
         });
     }; // tslint:disable-line

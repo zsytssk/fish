@@ -53,7 +53,6 @@ export class GameCtrl {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
-    private cur_player: PlayerModel;
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
@@ -96,7 +95,7 @@ export class GameCtrl {
             BgMonitorEvent.VisibleChange,
             (isVisible: boolean) => {
                 if (!isVisible) {
-                    this.cur_player?.disableSkill(SkillMap.Auto);
+                    this.model.getCurPlayer().disableSkill(SkillMap.Auto);
                 }
             },
             this,
@@ -141,7 +140,6 @@ export class GameCtrl {
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
             const { server_index, is_cur_player } = player;
             if (is_cur_player) {
-                this.cur_player = player;
                 if (server_index > 1) {
                     view.upSideDown();
                 }
@@ -196,7 +194,7 @@ export class GameCtrl {
         view.setExchangeRate(exchange_rate, cur_balance);
     }
     public calcClientIndex(server_index: number) {
-        const { cur_player } = this;
+        const cur_player = this.model.getCurPlayer();
         if (cur_player.server_index <= 1) {
             return server_index;
         }

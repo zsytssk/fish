@@ -2,7 +2,7 @@ import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
-import { Config } from 'data/config';
+import { Config, SkillMap } from 'data/config';
 import { InternationalTip } from 'data/internationalConfig';
 import { ServerEvent, ServerName } from 'data/serverEvent';
 import { getBeBombFish } from 'model/game/fish/fishModelUtils';
@@ -27,11 +27,12 @@ import {
     onPoolClick,
     viewState,
 } from 'view/viewState';
+import { getAimFish, modelState } from 'model/modelState';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
     const lang = getLang();
-    const { buySkillTip, posBombTip } = InternationalTip[lang];
+    const { buySkillTip, posBombTip, aimFish } = InternationalTip[lang];
     if (model.skill_core.num <= 0) {
         AlertPop.alert(buySkillTip).then(type => {
             if (type === 'confirm') {
@@ -68,9 +69,19 @@ export function skillPreActiveHandler(model: SkillModel) {
             } as UseBombReq);
         });
     } else if (model instanceof LockFishModel) {
-        const socket = getSocket(ServerName.Game);
-        // 激活锁定
-        socket.send(ServerEvent.UseLock);
+        const fish = getAimFish();
+        const player = modelState.app.game.getCurPlayer();
+
+        TopTipPop.tip(aimFish, 2);
+        activeAimFish(fish, false, player.gun.pos);
+        // 选中鱼
+        onFishClick().subscribe((fish_id: string) => {
+            const socket = getSocket(ServerName.Game);
+            socket.send(ServerEvent.UseLock);
+            socket.send(ServerEvent.LockFish, {
+                eid: fish_id,
+            } as LockFishReq);
+        });
     }
 }
 

@@ -143,7 +143,10 @@ export function getLotteryData(): Promise<LotteryPopData> {
 export function runLottery() {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Game);
-        socket.event.once(ServerEvent.Lottery, (data: LotteryRep) => {
+        socket.event.once(ServerEvent.Lottery, (data: LotteryRep, code) => {
+            if (code !== 200) {
+                return;
+            }
             resolve(data.id);
         });
         socket.send(ServerEvent.Lottery);

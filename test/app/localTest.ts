@@ -11,6 +11,7 @@ import { injectAfter } from 'honor/utils/tool';
 import honor from 'honor';
 import { Laya } from 'Laya';
 import { Config } from 'data/config';
+import { ani_wrap } from './game/aniWrap.spec';
 
 export async function localTest() {
     commonTest();
@@ -28,6 +29,7 @@ export async function localTest() {
         player_test.runTest('add_other_player', [2]);
         player_test.runTest('add_other_player', [3]);
         fish_test.runTest('add_fish');
+        ani_wrap.runTest('aim2');
     });
 }
 

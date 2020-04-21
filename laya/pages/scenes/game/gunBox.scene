@@ -1,8 +1,7 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":8,
-    "selecteID":18,
+    "selectedBox":2,
     "searchKey":"View",
     "props":{"y":111,"x":111,"width":223,"sceneColor":"#000000","runtime":"view/scenes/game/gunBoxView.ts","mouseThrough":true,"mouseEnabled":true,"height":223,"anchorY":0.5,"anchorX":0.5},
     "nodeParent":-1,
