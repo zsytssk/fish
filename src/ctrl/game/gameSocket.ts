@@ -14,6 +14,7 @@ import {
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
 import { getCurUserId, isCurUser } from 'model/modelState';
 import { GameCtrl } from './gameCtrl';
+import { changeBulletNum } from './gameCtrlUtils';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
@@ -100,8 +101,11 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
             game.changeBulletCost(data);
         },
-        [ServerEvent.UseSkin]: (data: UseSkinReq) => {
+        [ServerEvent.UseSkin]: (data: UseSkinRep) => {
             game.changeSkin(data.skinId);
+        },
+        [ServerEvent.ExchangeBullet]: (data: ExchangeBullet) => {
+            changeBulletNum(data.balance);
         },
     });
 }
@@ -110,7 +114,9 @@ export function offGameSocket(game: GameCtrl) {
     offCommon(game_socket, game);
     game_socket.event.offAllCaller(game);
 }
-export function sendToSocket(...params: [string, any?]) {
+export function sendToGameSocket(
+    ...params: Parameters<WebSocketTrait['send']>
+) {
     game_socket.send(...params);
 }
 

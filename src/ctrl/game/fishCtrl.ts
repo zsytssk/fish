@@ -8,7 +8,7 @@ import {
     FishBombInfo,
 } from 'model/game/fish/fishBombCom';
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
-import { sendToSocket } from './gameSocket';
+import { sendToGameSocket } from './gameSocket';
 import { ServerEvent } from 'data/serverEvent';
 
 /** 鱼的控制器 */
@@ -52,7 +52,7 @@ export class FishCtrl extends ComponentManager {
         const { id: eid } = this.model;
         const { pos: bombPoint, fish_list: fishList, need_emit } = data;
         if (need_emit) {
-            sendToSocket(ServerEvent.FishBomb, {
+            sendToGameSocket(ServerEvent.FishBomb, {
                 bombPoint,
                 eid,
                 fishList,

@@ -244,7 +244,11 @@ type UseSkinReq = {
     skinId: string;
 };
 type UseSkinRep = UseSkinReq;
-
+type ExchangeBullet = {
+    userId: string;
+    msg: 'success';
+    balance: number;
+};
 type ItemPrice = {
     id: string;
     count: number;

@@ -16,6 +16,8 @@ export enum ServerErrCode {
     AlreadyInRoom = 109,
     /** 余额不足 */
     NoMoney = 101,
+    /** 重新带入 */
+    ReExchange = 112,
 }
 
 export type ErrorData = {
@@ -54,6 +56,7 @@ export const ServerEvent = {
     SetRobotReport: 'setRobotReport',
     UseFreeze: 'useFreeze',
     FreezeOver: 'freezeOver',
+    ExchangeBullet: 'exchangeBullet',
 
     /** 其他部分 */
     ErrCode: 'conn::error',

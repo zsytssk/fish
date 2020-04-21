@@ -104,12 +104,13 @@ export class SkillCoreCom extends ComponentManager {
             return false;
         }
         const { cool_time, event } = this;
-        const { used_time, duration } = info;
+        const { used_time, duration, num } = info;
         /** 倒计时的时间间隔 */
         const count_delta = 0.05;
         const cool_remain_time = cool_time - used_time;
         const duration_remain_time = duration - used_time;
 
+        this.setNum(num);
         this.setStatus(SkillStatus.Active);
         this.count_index = startCount(
             cool_remain_time,

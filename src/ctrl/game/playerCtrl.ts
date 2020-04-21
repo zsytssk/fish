@@ -1,7 +1,7 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
-import { ServerEvent, ServerName } from 'data/serverEvent';
+import { ServerEvent, ServerErrCode } from 'data/serverEvent';
 import { FishModel } from 'model/game/fish/fishModel';
 import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
@@ -33,6 +33,8 @@ import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { getUserInfo } from 'model/modelState';
+import { sendToGameSocket } from './gameSocket';
+import { ErrorHandler } from 'ctrl/hall/commonSocket';
 
 // prettier-ignore
 const bullet_cost_arr  =
@@ -174,7 +176,6 @@ export class PlayerCtrl {
             return;
         }
         view.setMySelfStyle();
-        const socket = getSocket(ServerName.Game);
         this.resetGetBulletCost();
 
         player_event.on(PlayerEvent.UpdateInfo, () => {
@@ -182,13 +183,7 @@ export class PlayerCtrl {
             setBulletNum(bullet_num);
         });
         gun_event.on(GunEvent.NotEnoughBulletNum, () => {
-            const lang = getLang();
-            const { buyBulletTip } = InternationalTip[lang];
-            AlertPop.alert(buyBulletTip).then(type => {
-                if (type === 'confirm') {
-                    ShopPop.preEnter();
-                }
-            });
+            ErrorHandler(ServerErrCode.ReExchange);
         });
         gun_event.on(
             GunEvent.CastFish,
@@ -197,7 +192,7 @@ export class PlayerCtrl {
                     fish: { id: eid },
                     level: multiple,
                 } = data;
-                socket.send(ServerEvent.Hit, {
+                sendToGameSocket(ServerEvent.Hit, {
                     eid,
                     multiple,
                 } as HitReq);
@@ -206,7 +201,7 @@ export class PlayerCtrl {
         gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
             const { x, y } = velocity;
             AudioCtrl.play(AudioRes.Fire);
-            socket.send(ServerEvent.Shoot, {
+            sendToGameSocket(ServerEvent.Shoot, {
                 direction: { x, y },
             } as ShootReq);
         });
@@ -253,13 +248,12 @@ export class PlayerCtrl {
     private resetGetBulletCost() {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { isTrial } = this.game_ctrl;
-        const socket = getSocket(ServerName.Game);
         const { cur_balance, user_id } = getUserInfo();
         const bullet_cost = localStorage.getItem(
             `${user_id}:${cur_balance}:${isTrial}`,
         );
         if (bullet_cost) {
-            socket.send(ServerEvent.ChangeTurret, {
+            sendToGameSocket(ServerEvent.ChangeTurret, {
                 multiple: Number(bullet_cost),
             } as ChangeTurretReq);
         }
@@ -278,8 +272,7 @@ export class PlayerCtrl {
         AudioCtrl.play(AudioRes.Click);
         const next = bullet_cost_arr[next_index];
         this.detectDisableChangeBulletCost(next);
-        const _socket = getSocket(ServerName.Game);
-        _socket.send(ServerEvent.ChangeTurret, {
+        sendToGameSocket(ServerEvent.ChangeTurret, {
             multiple: next,
         } as ChangeTurretReq);
 

@@ -35,7 +35,7 @@ export async function onHallSocket(hall: HallCtrl) {
             },
             hall,
         );
-        hall_socket.send(ServerEvent.UserAccount, { domain: Config.Host });
+        sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
     });
 
     const [isReplay, socketUrl] = await checkReplay();
@@ -51,7 +51,11 @@ export async function onHallSocket(hall: HallCtrl) {
     }
     return false;
 }
-
+export function sendToHallSocket(
+    ...params: Parameters<WebSocketTrait['send']>
+) {
+    hall_socket.send(...params);
+}
 export function offHallSocket(hall: HallCtrl) {
     offSocketEvent(hall_socket, hall);
     offCommon(hall_socket, hall);
@@ -62,7 +66,7 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
     bindSocketEvent(socket, hall, {
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
-            socket.send(ServerEvent.UserAccount);
+            sendToHallSocket(ServerEvent.UserAccount);
         },
     });
 }

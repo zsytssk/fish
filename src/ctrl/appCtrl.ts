@@ -12,11 +12,13 @@ import { waitCreateSocket } from './net/webSocketWrapUtil';
 import { Laya } from 'Laya';
 import { sleep } from 'utils/animate';
 import { BgMonitor } from 'utils/bgMonitor';
+import { KeyBoardNumber } from 'utils/layaKeyboard';
 
 /** 顶级 ctrl */
 export class AppCtrl {
     public model: AppModel;
     public bg_monitor = new BgMonitor();
+    public keyboard_number = new KeyBoardNumber();
     constructor() {
         this.startApp();
     }

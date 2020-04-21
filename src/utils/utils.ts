@@ -139,12 +139,13 @@ export function createRedFilter() {
     return new ColorFilter(redMat);
 }
 
-export function createDarkFilter() {
+export function createDarkFilter(radio: number = 0.7) {
+    const mat_val = 1 - radio;
     // prettier-ignore
     const mat = [
-        0.5, 0, 0, 0, 0,
-        0, 0.5, 0, 0, 0,
-        0, 0, 0.5, 0, 0,
+        mat_val, 0, 0, 0, 0,
+        0, mat_val, 0, 0, 0,
+        0, 0, mat_val, 0, 0,
         0, 0, 0, 1, 0,
     ];
     return new ColorFilter(mat);
@@ -162,9 +163,7 @@ export function unDarkNode(node: Sprite) {
 }
 
 export function genRandomStr() {
-    return Math.random()
-        .toString()
-        .replace('0.', '');
+    return Math.random().toString().replace('0.', '');
 }
 
 let param_map: { [key: string]: string };

@@ -422,12 +422,16 @@ export const InternationalTip = International as {
     [key: string]: typeof International[Lang.Zh];
 };
 
+/** - @ques 翻译给徐磊 */
 const InternationalTip2 = {
     [Lang.Zh]: {
         NetError: '网络异常, 正在重新连接',
         NetComeBack: '欢迎回来!',
         OtherLogin: '异地登录，请刷新重试',
+        InputEmptyWarn: '输入的值不能为空...!',
+        Delete: '删除',
         [ServerErrCode.NoMoney]: '余额不足!',
+        [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
     },
 };
 

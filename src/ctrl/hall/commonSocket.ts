@@ -10,6 +10,8 @@ import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
 import { ctrlState } from 'ctrl/ctrlState';
 import { BgMonitorEvent } from 'utils/bgMonitor';
+import { sendToGameSocket } from 'ctrl/game/gameSocket';
+import { disableAutoShoot } from 'ctrl/game/gameCtrlUtils';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -91,6 +93,15 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
 export function ErrorHandler(code: number) {
     const lang = getLang();
     const tip = InternationalTipOther[lang][code];
+    if (code === ServerErrCode.ReExchange) {
+        disableAutoShoot();
+        return AlertPop.alert(tip).then(type => {
+            if (type === 'confirm') {
+                return sendToGameSocket(ServerEvent.ExchangeBullet);
+            }
+            sendToGameSocket(ServerEvent.RoomOut);
+        });
+    }
     if (tip) {
         TipPop.tip(tip);
     }

@@ -14,6 +14,7 @@ import { Lang, InternationalTip } from 'data/internationalConfig';
 import { ItemMap } from 'data/config';
 import { ctrlState } from 'ctrl/ctrlState';
 import { modelState } from 'model/modelState';
+import { changeBulletNum } from 'ctrl/game/gameCtrlUtils';
 
 type LotteryData = {
     lottery_id: string;
@@ -204,19 +205,10 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         const { luckyDrawTip2, bullet } = InternationalTip[lang];
         const { lottery_type, lottery_num } = data;
         const is_bullet = lottery_type === 'bullet';
-        const name = is_bullet ? bullet : 'lottery_type';
-        const userId = modelState.app.user_info.user_id;
+        const name = is_bullet ? bullet : lottery_type;
 
         if (is_bullet) {
-            ctrlState.game.changeUserNumInfo({
-                userId,
-                change_arr: [
-                    {
-                        num: lottery_num,
-                        type: 'bullet',
-                    },
-                ],
-            });
+            changeBulletNum(lottery_num);
         }
         AlertPop.alert(luckyDrawTip2 + `${lottery_num}${name}`);
     }

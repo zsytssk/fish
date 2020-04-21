@@ -22,7 +22,7 @@ import GameView, { BulletBoxDir } from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import {
     onGameSocket,
-    sendToSocket,
+    sendToGameSocket,
     offGameSocket,
     convertEnterGame,
 } from './gameSocket';
@@ -39,6 +39,7 @@ import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { BgMonitorEvent } from 'utils/bgMonitor';
 import { tipComeBack } from 'ctrl/hall/commonSocket';
+import { disableAutoShoot } from './gameCtrlUtils';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -95,7 +96,7 @@ export class GameCtrl {
             BgMonitorEvent.VisibleChange,
             (isVisible: boolean) => {
                 if (!isVisible) {
-                    this.model.getCurPlayer().disableSkill(SkillMap.Auto);
+                    disableAutoShoot();
                 }
             },
             this,
@@ -124,7 +125,7 @@ export class GameCtrl {
             e.stopPropagation();
             AlertPop.alert(leaveTip).then(type => {
                 if (type === 'confirm') {
-                    sendToSocket(ServerEvent.RoomOut);
+                    sendToGameSocket(ServerEvent.RoomOut);
                 }
             });
         });

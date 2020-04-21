@@ -28,6 +28,7 @@ import {
     viewState,
 } from 'view/viewState';
 import { getAimFish, modelState } from 'model/modelState';
+import { sendToGameSocket } from '../gameSocket';
 
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
@@ -48,8 +49,7 @@ export function skillPreActiveHandler(model: SkillModel) {
 
     if (model instanceof FreezeModel) {
         // 冰冻
-        const socket = getSocket(ServerName.Game);
-        socket.send(ServerEvent.UseFreeze);
+        sendToGameSocket(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
         TopTipPop.tip(posBombTip, 2);
         const { pool } = viewState.game;
@@ -61,9 +61,8 @@ export function skillPreActiveHandler(model: SkillModel) {
         onPoolClick().then((pos: Point) => {
             offMouseMove(pool);
             stopAim('aim_big');
-            const socket = getSocket(ServerName.Game);
             const fish_list = getBeBombFish(pos);
-            socket.send(ServerEvent.UseBomb, {
+            sendToGameSocket(ServerEvent.UseBomb, {
                 bombPoint: pos,
                 fishList: fish_list,
             } as UseBombReq);
@@ -76,9 +75,8 @@ export function skillPreActiveHandler(model: SkillModel) {
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
         onFishClick().subscribe((fish_id: string) => {
-            const socket = getSocket(ServerName.Game);
-            socket.send(ServerEvent.UseLock);
-            socket.send(ServerEvent.LockFish, {
+            sendToGameSocket(ServerEvent.UseLock);
+            sendToGameSocket(ServerEvent.LockFish, {
                 eid: fish_id,
             } as LockFishReq);
         });
@@ -92,7 +90,6 @@ export function skillActiveHandler(
     is_cur_player?: boolean,
 ) {
     return new Promise((resolve, reject) => {
-        const socket = getSocket(ServerName.Game);
         const lang = getLang();
         const { aimFish } = InternationalTip[lang];
         if (model instanceof LockFishModel) {
@@ -109,7 +106,7 @@ export function skillActiveHandler(
 
             // 选中鱼
             onFishClick().subscribe((fish_id: string) => {
-                socket.send(ServerEvent.LockFish, {
+                sendToGameSocket(ServerEvent.LockFish, {
                     eid: fish_id,
                 } as LockFishReq);
             });

@@ -1,4 +1,4 @@
-// v1.2.2
+// v1.2.1
 //是否使用IDE自带的node环境和插件，设置false后，则使用自己环境(使用命令行方式执行)
 const useIDENode = process.argv[0].indexOf("LayaAir") > -1 ? true : false;
 const useCMDNode = process.argv[1].indexOf("layaair2-cmd") > -1 ? true : false;
@@ -93,14 +93,12 @@ function layaExpPlugin(options) {
 
         renderChunk(code, chunk, options) {
             let replacestr = opt.addLayaExpAt;
-            let SourceMap = null;
-            let _code = code;
             if (!replacestr)
-                return { code: _code, map: SourceMap };
+                return code;
 
             let p = code.lastIndexOf(replacestr);
             if (p < 0)
-                return { code: _code, map: SourceMap };
+                return code;
 
             let expstr = 'Laya=window.Laya;\n';
             let islayalib = opt.isLayaLib;
@@ -116,8 +114,7 @@ function layaExpPlugin(options) {
             }
             // 插入导出的模块
             let st = 'window.Laya=window.Laya||{};\n';
-            _code = st+code.substr(0, p) + expstr + code.substr(p + replacestr.length);
-            return { code: _code, map: SourceMap }
+            return st+code.substr(0, p) + expstr + code.substr(p + replacestr.length);
         }
     });
 }
