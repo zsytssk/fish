@@ -1,5 +1,7 @@
 import { Test } from 'testBuilder';
 import { createTick, clearTick } from 'utils/tick';
+import { tween } from 'utils/layaTween';
+import LotteryPop from 'view/pop/lottery';
 
 export const laya_test = new Test('laya', runner => {
     const duration = 300000;
@@ -30,5 +32,13 @@ export const laya_test = new Test('laya', runner => {
                 clearTick(tick_id);
             }
         });
+    });
+    // tick 不掉帧
+    runner.describe('tween', async () => {
+        const lottery = await LotteryPop.preEnter();
+        await tween(5000, radio => {
+            console.log(`tween:>`, radio);
+        });
+        console.log(`tween:>end`);
     });
 });

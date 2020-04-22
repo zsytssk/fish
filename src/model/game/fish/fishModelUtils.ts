@@ -189,14 +189,14 @@ export async function playerCaptureFish(
     fish: FishModel,
     info: Partial<HitRep>,
 ) {
+    if (isBombFish(fish)) {
+        const fish_bomb_com = fish.getCom(FishBombCom);
+        fish_bomb_com.active(player.need_emit);
+    }
     const pos = await fish.beCapture();
     const { drop, win } = info;
     if (!pos) {
         console.error(`cant find fish pos`);
     }
     player.captureFish(pos, { win, drop } as CaptureGain);
-    if (isBombFish(fish)) {
-        const fish_bomb_com = fish.getCom(FishBombCom);
-        fish_bomb_com.active(player.need_emit);
-    }
 }

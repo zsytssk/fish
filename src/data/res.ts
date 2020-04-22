@@ -97,6 +97,7 @@ for (let i = 1; i <= 3; i++) {
 export const font_list = [
     'font/score_num',
     'font/numYellow40',
+    'font/lottery',
     'font/numWhite40',
 ];
 for (const font of font_list) {

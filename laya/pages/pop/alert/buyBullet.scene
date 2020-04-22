@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":37,
-    "selecteID":38,
+    "selectedBox":2,
+    "selecteID":37,
     "searchKey":"Dialog",
     "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/buyBullet.png","height":427},
     "nodeParent":-1,
@@ -186,30 +186,16 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,intro",
-            "props":{"y":270,"x":233,"width":184,"var":"intro","valign":"middle","text":"需要花费                  EOS","height":27,"fontSize":18,"color":"#71422b","align":"left"},
+            "props":{"y":270,"x":233,"width":184,"var":"intro","valign":"middle","text":"需要花费 xxx EOS","height":27,"fontSize":18,"color":"#71422b","align":"left"},
             "nodeParent":2,
             "label":"intro",
             "isOpen":true,
-            "isDirectory":true,
+            "isDirectory":false,
             "isAniNode":true,
-            "hasChild":true,
+            "hasChild":false,
             "compId":37,
             "child":[
-                {
-                    "x":30,
-                    "type":"Label",
-                    "searchKey":"Label,cost_num",
-                    "props":{"y":0,"x":74,"width":85,"visible":false,"var":"cost_num","text":"1231","height":24,"font":"score_num","align":"center"},
-                    "nodeParent":37,
-                    "label":"cost_num",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":38,
-                    "child":[
-                        ],
-                    "$HIDDEN":true
-                }]
+                ]
         },
         {
             "x":15,

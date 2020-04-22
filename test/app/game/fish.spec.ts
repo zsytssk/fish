@@ -13,7 +13,7 @@ export const fish_test = new Test('fish', runner => {
     runner.describe(
         'add_fish',
         async (typeId: number, pathId: number, time: number) => {
-            typeId = typeId || 3;
+            typeId = typeId || 9;
             pathId = pathId || 11;
             // pathId = pathId || 3;
             // time = time || 12 * 100000;

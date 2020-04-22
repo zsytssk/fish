@@ -18,7 +18,7 @@ import { KeyBoardNumber } from 'utils/layaKeyboard';
 export class AppCtrl {
     public model: AppModel;
     public bg_monitor = new BgMonitor();
-    public keyboard_number = new KeyBoardNumber();
+    public keyboard_number: KeyBoardNumber;
     constructor() {
         this.startApp();
     }
@@ -35,10 +35,12 @@ export class AppCtrl {
         });
 
         return this.startHonor().then(() => {
+            this.keyboard_number = new KeyBoardNumber();
             sleep(0.5).then(() => {
                 platform.hideLoading();
             });
             HallCtrl.preEnter();
+
             // gotoGuide('1', '1');
         });
     }

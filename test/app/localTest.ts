@@ -29,7 +29,7 @@ export async function localTest() {
         player_test.runTest('add_other_player', [2]);
         player_test.runTest('add_other_player', [3]);
         fish_test.runTest('add_fish');
-        ani_wrap.runTest('aim2');
+        // ani_wrap.runTest('aim2');
     });
 }
 
