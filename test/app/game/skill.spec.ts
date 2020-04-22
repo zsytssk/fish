@@ -8,7 +8,7 @@ import { startCount } from 'utils/count';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent, ServerName } from 'data/serverEvent';
 import { sleep } from '../../utils/testUtils';
-import { getBeBombFish } from 'model/game/fish/fishModelUtils';
+import { getBeBombFishIds } from 'model/game/fish/fishModelUtils';
 
 /** 技能的测试 */
 export const skill_test = new Test('skill', runner => {

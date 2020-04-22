@@ -21,6 +21,10 @@ export function isCurUser(id: string) {
     return id === modelState.app.user_info.user_id;
 }
 /** 获取鱼 */
+export function getCurPlayer() {
+    return modelState.app.game.getCurPlayer();
+}
+/** 获取鱼 */
 export function getPlayerById(id: string) {
     const { game } = modelState.app;
     return game.getPlayerById(id);
@@ -67,10 +71,10 @@ export function getCollisionAllFish(
         if (contain_list.indexOf(fish) !== -1) {
             continue;
         }
-        const { body, visible } = fish;
+        const { body, visible, be_capture } = fish;
 
         /** 鱼还没有显示 不需要做碰撞检测... */
-        if (!visible) {
+        if (!visible || be_capture) {
             continue;
         }
 

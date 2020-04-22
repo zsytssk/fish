@@ -11,6 +11,7 @@
     },
     "scripts": {
         "start": "webpack-dev-server --ENV=DEV --mode development",
+        "build": "ts-node --project ./script/tsconfig.json --files ./script/publish/publish.ts",
         "webpack-dev": "webpack --ENV=DEV --mode development",
         "webpack-test": "webpack --ENV=TEST --mode development",
         "webpack-test-server": "webpack-dev-server --ENV=TEST --mode development",
@@ -20,7 +21,6 @@
         "genVersion": "node ./script/genVersion/genVersion.js genVersion",
         "updateSdk": "ts-node --project ./script/tsconfig.json --files ./script/game.client.sdk/game.client.sdk.ts",
         "updateSdkSource": "ts-node --project ./script/tsconfig.json --files ./script/game.client.sdk/game.client.sdk.ts updateSdkSource",
-        "publish": "ts-node --project ./script/tsconfig.json --files ./script/publish/publish.ts",
         "test": "node  ./script/test.js"
     },
     "devDependencies": {

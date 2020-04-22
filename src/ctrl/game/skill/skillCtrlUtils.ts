@@ -1,16 +1,16 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
-import { Config, SkillMap } from 'data/config';
+import { Config } from 'data/config';
 import { InternationalTip } from 'data/internationalConfig';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { getBeBombFish } from 'model/game/fish/fishModelUtils';
+import { ServerEvent } from 'data/serverEvent';
+import { getBeBombFishIds } from 'model/game/fish/fishModelUtils';
 import { BombModel } from 'model/game/skill/bombModel';
 import { FreezeModel } from 'model/game/skill/freezeModel';
 import { LockActiveData, LockFishModel } from 'model/game/skill/lockFishModel';
 import { SkillStatus } from 'model/game/skill/skillCoreCom';
 import { SkillModel } from 'model/game/skill/skillModel';
+import { getAimFish, modelState } from 'model/modelState';
 import { offMouseMove, onMouseMove } from 'utils/layaUtils';
 import AlertPop from 'view/pop/alert';
 import ShopPop from 'view/pop/shop';
@@ -27,9 +27,19 @@ import {
     onPoolClick,
     viewState,
 } from 'view/viewState';
-import { getAimFish, modelState } from 'model/modelState';
 import { sendToGameSocket } from '../gameSocket';
 
+/** 二次点击取消激活状态 */
+export function skillNormalActiveHandler(model: SkillModel) {
+    if (model.skill_core.status !== SkillStatus.PreActive) {
+        return;
+    }
+    model.skill_core.setStatus(SkillStatus.Normal);
+    if (model instanceof BombModel) {
+        TopTipPop.hide();
+        stopAim('aim_big');
+    }
+}
 /** 技能的激活前的处理 */
 export function skillPreActiveHandler(model: SkillModel) {
     const lang = getLang();
@@ -42,6 +52,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         });
         return;
     }
+    /** 二次点击取消激活状态 */
     if (model.skill_core.status !== SkillStatus.Normal) {
         return;
     }
@@ -61,7 +72,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         onPoolClick().then((pos: Point) => {
             offMouseMove(pool);
             stopAim('aim_big');
-            const fish_list = getBeBombFish(pos);
+            const fish_list = getBeBombFishIds(pos);
             sendToGameSocket(ServerEvent.UseBomb, {
                 bombPoint: pos,
                 fishList: fish_list,
@@ -75,10 +86,12 @@ export function skillPreActiveHandler(model: SkillModel) {
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
         onFishClick().subscribe((fish_id: string) => {
-            sendToGameSocket(ServerEvent.UseLock);
+            // sendToGameSocket(ServerEvent.UseLock);
+            offFishClick();
             sendToGameSocket(ServerEvent.LockFish, {
                 eid: fish_id,
-            } as LockFishReq);
+                needActive: true,
+            } as LockFishRep);
         });
     }
 }
@@ -108,7 +121,7 @@ export function skillActiveHandler(
             onFishClick().subscribe((fish_id: string) => {
                 sendToGameSocket(ServerEvent.LockFish, {
                     eid: fish_id,
-                } as LockFishReq);
+                } as LockFishRep);
             });
             // ...
         } else if (model instanceof BombModel) {

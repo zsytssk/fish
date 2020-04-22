@@ -10,6 +10,7 @@ import { buyItem, getShopInfo, useGunSkin } from './popSocket';
 import TipPop from './tip';
 import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
+import BuyBulletPop from './buyBullet';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -206,11 +207,17 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         price_label.text = item_price + '';
         btn_buy.offAll();
         btn_buy.on(Event.CLICK, btn_buy, () => {
-            buyItem(item_id, item_num, item_price).then(() => {
-                const lang = getLang();
-                const { buySuccess } = InternationalTip[lang];
-                TipPop.tip(buySuccess);
+            BuyBulletPop.preEnter({
+                type: item_name,
+                id: item_id,
+                num: item_num,
+                price: item_price,
             });
+            // buyItem(item_id, item_num, item_price).then(() => {
+            //     const lang = getLang();
+            //     const { buySuccess } = InternationalTip[lang];
+            //     TipPop.tip(buySuccess);
+            // });
         });
     }; // tslint:disable-line
     public onAwake() {

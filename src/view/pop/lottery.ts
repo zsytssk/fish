@@ -1,21 +1,18 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { changeBulletNum } from 'ctrl/game/gameCtrlUtils';
+import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { AudioRes } from 'data/audioRes';
+import { ItemMap } from 'data/config';
+import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 import { ui } from 'ui/layaMaxUI';
+import { tween } from 'utils/layaTween';
 import { onNode, resizeParent } from 'utils/layaUtils';
 import { createDarkFilter, playSkeletonOnce } from 'utils/utils';
-import AlertPop from './alert';
 import { getLotteryData, runLottery, runTicketExchange } from './popSocket';
-import TipPop from './tip';
-import { offLangChange, onLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { ItemMap } from 'data/config';
-import { changeBulletNum } from 'ctrl/game/gameCtrlUtils';
 import RewardPop from './reward';
-import { Tween } from 'laya/utils/Tween';
-import { tween } from 'utils/layaTween';
 
 type LotteryData = {
     lottery_id: string;
@@ -151,10 +148,6 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         light.visible = true;
         if (ani_name === 'move') {
             light_circle.visible = true;
-            // light.playbackRate(3);
-            // playSkeletonOnce(light, ani_name).then(() => {
-            //     light.visible = false;
-            // });
         } else {
             light.playbackRate(1);
             playSkeletonOnce(light, ani_name).then(() => {
@@ -175,6 +168,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             await this.runLotteryAni(id);
             lottery_num = lottery_num - lottery_cost;
             progress.value = lottery_num / lottery_cost;
+            remain_info.lottery_num = lottery_num;
             lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         });
     }
@@ -189,54 +183,60 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
                 return item.lottery_id === id;
             });
 
-            let index = 0;
-            tween(5000, radio => {
-                console.log(`tween:>`, radio);
-            });
-            const dist_num = dist_index + 40;
-            this.lottery_interval = setInterval(() => {
-                const cur_index = index % arr.length;
+            const dist_num = dist_index + 20;
+            let end = false;
+            tween(3000, radio => {
+                const cur_index = Math.round(radio * dist_num);
+                const round_index = cur_index % 5;
+                if (end) {
+                    return;
+                }
+                if (radio === 1) {
+                    end = true;
+                }
                 for (let i = 0; i < arr.length; i++) {
                     const item = arr[i];
                     item.get = false;
-                    if (i === cur_index) {
+                    if (i === round_index) {
                         item.cur = true;
                     } else {
                         item.cur = false;
                     }
                 }
-                if (index >= dist_num) {
-                    arr[dist_index].get = true;
-                    arr[dist_index].cur = true;
-                    this.completeLottery();
-                    lottery_list.refresh();
-                    resolve();
-                    return;
-                }
-                lottery_list.refresh();
-                index++;
-            }, 80) as any;
-        });
-    }
-    public testAni(cur_index: number, end: boolean) {
-        const { lottery_list, btn_lottery } = this;
-        const arr = lottery_list.array as LotteryRenderData[];
-
-        btn_lottery.disabled = true;
-
-        for (let i = 0; i < arr.length; i++) {
-            const item = arr[i];
-            item.get = false;
-            if (i === cur_index) {
-                item.cur = true;
                 if (end) {
-                    item.get = true;
+                    arr[round_index].get = true;
+                    arr[round_index].cur = true;
+                    this.completeLottery();
+                    resolve();
                 }
-            } else {
-                item.cur = false;
-            }
-        }
-        lottery_list.refresh();
+
+                lottery_list.refresh();
+            });
+
+            // let index = 0;
+            // this.lottery_interval = setInterval(() => {
+            //     const cur_index = index % arr.length;
+            //     for (let i = 0; i < arr.length; i++) {
+            //         const item = arr[i];
+            //         item.get = false;
+            //         if (i === cur_index) {
+            //             item.cur = true;
+            //         } else {
+            //             item.cur = false;
+            //         }
+            //     }
+            //     if (index >= dist_num) {
+            //         arr[dist_index].get = true;
+            //         arr[dist_index].cur = true;
+            //         this.completeLottery();
+            //         lottery_list.refresh();
+            //         resolve();
+            //         return;
+            //     }
+            //     lottery_list.refresh();
+            //     index++;
+            // }, 80) as any;
+        });
     }
     private completeLottery() {
         const { btn_lottery } = this;
@@ -281,7 +281,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         item_type.skin = `image/pop/lottery/txt_${exchange_type.toLowerCase()}.png`;
         remain_label.text = `${remaining}${cur_num}/${cost_num}`;
 
-        let scale = 1 / (num_str.length / 4);
+        let scale = 1 / (num_str.length / 3);
         scale = scale > 1 ? 1 : scale;
         num_label.scale(scale, scale);
 

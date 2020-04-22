@@ -1,45 +1,44 @@
 import { ctrlState } from 'ctrl/ctrlState';
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { HallCtrl } from 'ctrl/hall/hallCtrl';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { waitConnectGame } from 'ctrl/hall/login';
 import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { AudioRes } from 'data/audioRes';
 import { SkillMap } from 'data/config';
+import { InternationalTip } from 'data/internationalConfig';
 import { res } from 'data/res';
-import { ServerName, ServerEvent } from 'data/serverEvent';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
+import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
+import { Event } from 'laya/events/Event';
 import { FreezingComEvent } from 'model/game/com/gameFreezeCom';
 import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
 import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
-import { isCurUser, getUserInfo, modelState } from 'model/modelState';
+import { getUserInfo, isCurUser, modelState } from 'model/modelState';
+import { BgMonitorEvent } from 'utils/bgMonitor';
+import { log } from 'utils/log';
 import { setProps } from 'utils/utils';
 import AlertPop from 'view/pop/alert';
 import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
+import ShopPop from 'view/pop/shop';
+import VoicePop from 'view/pop/voice';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import GameView, { BulletBoxDir } from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
+import { disableCurUserOperation } from './gameCtrlUtils';
 import {
+    convertEnterGame,
+    offGameSocket,
     onGameSocket,
     sendToGameSocket,
-    offGameSocket,
-    convertEnterGame,
 } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
-import ShopPop from 'view/pop/shop';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
-import VoicePop from 'view/pop/voice';
-import { Event } from 'laya/events/Event';
-import { log } from 'utils/log';
-import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { BgMonitorEvent } from 'utils/bgMonitor';
-import { tipComeBack } from 'ctrl/hall/commonSocket';
-import { disableAutoShoot } from './gameCtrlUtils';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -96,7 +95,7 @@ export class GameCtrl {
             BgMonitorEvent.VisibleChange,
             (isVisible: boolean) => {
                 if (!isVisible) {
-                    disableAutoShoot();
+                    disableCurUserOperation();
                 }
             },
             this,

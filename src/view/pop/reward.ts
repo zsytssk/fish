@@ -50,6 +50,7 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
 
         const is_bullet = type === 'bullet';
         const name = is_bullet ? bullet : type;
+        const num_str = num + '';
         if (is_bullet) {
             txt_label.text = luckyDrawTip2 + `${name}x${num}`;
         } else {
@@ -59,11 +60,15 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
         item_num.visible = item_type.visible = bullet_icon.visible = bullet_num.visible = false;
         if (is_bullet) {
             bullet_icon.visible = bullet_num.visible = true;
-            bullet_num.text = num + '';
+            bullet_num.text = num_str;
         } else {
             item_num.visible = item_type.visible = true;
-            item_num.text = num + '';
+            item_num.text = num_str;
             item_type.skin = `image/pop/lottery/txt_${type.toLowerCase()}.png`;
         }
+
+        let scale = 1 / (num_str.length / 4);
+        scale = scale > 1 ? 1 : scale;
+        item_num.scale(scale, scale);
     }
 }

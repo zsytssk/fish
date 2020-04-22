@@ -3,6 +3,10 @@ import { PlayerInfo } from 'model/game/playerModel';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { test_data } from '../../testData';
+import { GunEvent } from 'model/game/gun/gunModel';
+import { FishModel } from 'model/game/fish/fishModel';
+import { sendToGameSocket } from 'ctrl/game/gameSocket';
+import { ServerEvent } from 'data/serverEvent';
 
 /** @type {PlayerModel} 的测试 */
 export const player_test = new Test('player', runner => {
@@ -14,8 +18,8 @@ export const player_test = new Test('player', runner => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 0,
-            bullet_cost: 1,
+            server_index: 2,
+            bullet_cost: 3,
             bullet_num: 100000000,
             gun_skin: '1',
             nickname: test_data.nickname,
@@ -99,5 +103,27 @@ export const player_test = new Test('player', runner => {
                 }`,
             );
         }
+    });
+
+    runner.describe('repeat_hit', () => {
+        const cur_player = modelState.app.game.getCurPlayer();
+        cur_player.gun.event.on(
+            GunEvent.CastFish,
+            (data: { fish: FishModel; level: number }) => {
+                const {
+                    fish: { id: eid },
+                    level: multiple,
+                } = data;
+                sendToGameSocket(ServerEvent.Hit, {
+                    eid,
+                    multiple,
+                } as HitReq);
+
+                sendToGameSocket(ServerEvent.Hit, {
+                    eid,
+                    multiple,
+                } as HitReq);
+            },
+        );
     });
 });

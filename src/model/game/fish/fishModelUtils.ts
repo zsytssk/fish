@@ -9,7 +9,7 @@ import { DisplaceMoveCom } from '../com/moveCom/displaceMoveCom';
 import { GameModel } from '../gameModel';
 import { PlayerModel, CaptureGain } from '../playerModel';
 import { FishBombCom } from './fishBombCom';
-import { FishModel, FishData } from './fishModel';
+import { FishModel, FishData, FishEvent } from './fishModel';
 
 /** 创建鱼 move_com在外面创建 */
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
@@ -163,14 +163,17 @@ export function createFishGroup(
 }
 
 /** 获取被炸弹炸到的鱼 */
-export function getBeBombFish(pos: Point): string[] {
+export function getBeBombFishIds(pos: Point): string[] {
+    return getBeBombFish(pos).map(item => {
+        return item.id;
+    });
+}
+export function getBeBombFish(pos: Point): FishModel[] {
     const body = createBombBody();
     body.update(pos);
     const fish_list = getCollisionAllFish(body);
     body.destroy();
-    return fish_list.map(item => {
-        return item.id;
-    });
+    return fish_list;
 }
 
 /** 创建炸弹的body */
@@ -199,4 +202,20 @@ export async function playerCaptureFish(
         console.error(`cant find fish pos`);
     }
     player.captureFish(pos, { win, drop } as CaptureGain);
+}
+
+export function waitFishDestroy(fish: FishModel) {
+    const { event } = fish;
+    return new Promise((resolve, reject) => {
+        if (fish.destroyed) {
+            return setTimeout(resolve);
+        }
+        event.once(
+            FishEvent.Destroy,
+            () => {
+                setTimeout(resolve);
+            },
+            this,
+        );
+    });
 }

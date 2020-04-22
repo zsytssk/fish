@@ -70,7 +70,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
             }
             if (-cost_bullet) {
                 change_arr.push({
-                    num: -cost_bullet,
+                    num: -cost_bullet * num,
                     type: 'bullet',
                 });
             }

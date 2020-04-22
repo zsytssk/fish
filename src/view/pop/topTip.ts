@@ -12,13 +12,21 @@ export default class TopTipPop extends ui.pop.alert.topTipUI
     implements HonorDialog {
     public isShowEffect = false;
     public isPopupCenter = false;
+    public static instance: TopTipPop;
     constructor() {
         super();
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
         const tip_dialog = (await honor.director.openDialog(url)) as TopTipPop;
+        this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
+    }
+    public static async hide() {
+        const { instance } = this;
+        if (instance?.visible) {
+            instance?.close();
+        }
     }
     /**显示提示信息
      * @param msg 提示的信息

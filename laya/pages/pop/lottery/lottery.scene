@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":23,
+    "selectedBox":44,
+    "selecteID":46,
     "searchKey":"Dialog",
     "props":{"width":1030,"sceneColor":"#000000","sceneBg":"laya/views/pop/lottery.png","height":710},
     "nodeParent":-1,
@@ -196,7 +196,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_lottery",
-                    "props":{"y":152.5,"x":753,"var":"btn_lottery","stateNum":"1","skin":"image/pop/lottery/btn_get_lottery.png"},
+                    "props":{"y":156.5,"x":753,"var":"btn_lottery","stateNum":"1","skin":"image/pop/lottery/btn_get_lottery.png"},
                     "nodeParent":13,
                     "label":"btn_lottery",
                     "isOpen":true,
@@ -224,29 +224,29 @@
                     "x":30,
                     "type":"ProgressBar",
                     "searchKey":"ProgressBar,progress",
-                    "props":{"y":176,"x":62,"width":657,"var":"progress","skin":"image/loading/progress.png","height":18},
+                    "props":{"y":175,"x":155,"width":483,"var":"progress","skin":"image/pop/lottery/progress.png","sizeGrid":"0,42,3,11","height":18},
                     "nodeParent":13,
                     "label":"progress",
-                    "isDirectory":false,
+                    "isOpen":true,
+                    "isDirectory":true,
                     "isAniNode":true,
-                    "hasChild":false,
+                    "hasChild":true,
                     "compId":44,
                     "child":[
-                        ]
-                },
-                {
-                    "x":30,
-                    "type":"Label",
-                    "searchKey":"Label,lottery_remain",
-                    "props":{"y":159.5,"x":316.5,"width":148,"var":"lottery_remain","valign":"middle","text":"100/1000","strokeColor":"#391b06","stroke":2,"height":30,"fontSize":24,"color":"#fff","bold":true,"align":"center"},
-                    "nodeParent":13,
-                    "label":"lottery_remain",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":46,
-                    "child":[
-                        ]
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,lottery_remain",
+                            "props":{"y":-19,"x":167,"width":148,"var":"lottery_remain","valign":"middle","text":"100/1000","strokeColor":"#391b06","stroke":2,"height":30,"fontSize":24,"color":"#fff","bold":true,"align":"center"},
+                            "nodeParent":44,
+                            "label":"lottery_remain",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":46,
+                            "child":[
+                                ]
+                        }]
                 }]
         },
         {

@@ -74,6 +74,7 @@ export class BulletGroup extends ComponentManager {
             bullet.addNet(is_cur_player);
         }
         bullet_list.clear();
+        this.destroy();
     }; //tslint:disable-line
 
     public destroy() {

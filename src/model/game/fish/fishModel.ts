@@ -59,6 +59,8 @@ export class FishModel extends ComponentManager {
     public visible = false;
     /** 鱼分 */
     public score: number;
+    /** 鱼分 */
+    public be_capture: boolean;
     private game: GameModel;
     public event: EventCom;
     public body: BodyCom;
@@ -147,6 +149,7 @@ export class FishModel extends ComponentManager {
     /** 被捉住 */
     public beCapture(): Promise<Point> {
         return new Promise((resolve, reject) => {
+            this.be_capture = true;
             if (this.event) {
                 const { pos } = this;
                 this.event.emit(FishEvent.BeCapture, () => {

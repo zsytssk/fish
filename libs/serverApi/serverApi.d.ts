@@ -156,11 +156,13 @@ type UseLockRep = {
     duration: number;
 };
 /** 锁定鱼 */
-type LockFishRep = {
+type LockFishReq = {
     eid: string;
 };
-type LockFishReq = {
+type LockFishRep = {
     userId: string;
+    duration: number;
+    needActive: boolean;
     eid: string;
 };
 type FishBombReq = {

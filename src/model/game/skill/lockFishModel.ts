@@ -20,6 +20,7 @@ export type LockFishActiveInfo = {
     /** 是否是提示 */
     is_tip?: boolean;
     duration?: number;
+    needActive: boolean;
 } & SkillActiveInfo;
 
 export interface LockFishInitInfo extends SkillInfo {
@@ -62,7 +63,11 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         skill_core.init();
         if (lock_fish) {
             timeout.createTimeout(() => {
-                this.active({ fish: lock_fish, used_time: lock_left });
+                this.active({
+                    fish: lock_fish,
+                    used_time: lock_left,
+                    needActive: false,
+                });
             });
         }
         this.gun = this.skill_core.player.gun;
@@ -81,15 +86,14 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     public active(info: LockFishActiveInfo) {
         // 激活
         const { skill_core } = this;
-        const { fish, is_tip } = info;
+        const { fish, needActive } = info;
 
-        if (is_tip) {
+        if (needActive) {
             skill_core.active(info, status => {
                 if (status === SkillStatus.Disable) {
                     this.unLock();
                 }
             });
-            return this.tipLock();
         }
         const fish_model = getFishById(fish);
         if (!fish_model) {
@@ -181,7 +185,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         const { x: gx, y: gy } = gun.pos;
         gun.setDirection(new SAT.Vector(x - gx, y - gy));
     }; // tslint:disable-line: semicolon
-    private unLock = () => {
+    public unLock = () => {
         const { fish, gun, bullet_list } = this;
         const { player } = gun;
         if (!fish) {

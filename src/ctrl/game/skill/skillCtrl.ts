@@ -5,8 +5,10 @@ import {
     skillActiveHandler,
     skillDisableHandler,
     skillPreActiveHandler,
+    skillNormalActiveHandler,
 } from './skillCtrlUtils';
 import { Event } from 'laya/events/Event';
+import { BombModel } from 'model/game/skill/bombModel';
 
 export class SkillCtrl {
     private is_cur_player = false;
@@ -37,9 +39,16 @@ export class SkillCtrl {
         event.on(SkillEvent.StatusChange, (status: SkillStatus) => {
             if (status === SkillStatus.Active) {
                 view.highlight();
-            } else if (status === SkillStatus.Disable || SkillStatus.Normal) {
+            } else if (
+                status === SkillStatus.Disable ||
+                status === SkillStatus.Normal
+            ) {
                 view.unHighlight();
                 skillDisableHandler(model);
+            } else if (status === SkillStatus.PreActive) {
+                if (model instanceof BombModel) {
+                    view.highlight();
+                }
             }
         });
         event.on(SkillEvent.UpdateInfo, () => {
@@ -50,7 +59,11 @@ export class SkillCtrl {
         });
         view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
-            skillPreActiveHandler(model);
+            if (model.skill_core.status === SkillStatus.Normal) {
+                skillPreActiveHandler(model);
+            } else if (model.skill_core.status === SkillStatus.PreActive) {
+                skillNormalActiveHandler(model);
+            }
         });
     }
     private setInfo() {

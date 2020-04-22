@@ -10,6 +10,7 @@ import {
 import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
 import { sendToGameSocket } from './gameSocket';
 import { ServerEvent } from 'data/serverEvent';
+import { waitFishDestroy } from 'model/game/fish/fishModelUtils';
 
 /** 鱼的控制器 */
 export class FishCtrl extends ComponentManager {
@@ -48,16 +49,27 @@ export class FishCtrl extends ComponentManager {
             this.destroy();
         });
     }
-    public onBomb = (data: FishBombInfo) => {
+    public onBomb = async (data: FishBombInfo) => {
         const { id: eid } = this.model;
-        const { pos: bombPoint, fish_list: fishList, need_emit } = data;
-        if (need_emit) {
-            sendToGameSocket(ServerEvent.FishBomb, {
-                bombPoint,
-                eid,
-                fishList,
-            } as FishBombReq);
+        const { pos: bombPoint, fish_list, need_emit } = data;
+        if (!need_emit) {
+            return;
         }
+
+        await waitFishDestroy(this.model);
+        /** 在销毁的时候才发送命令给服务器 防止 将已经杀死的鱼发送给服务器 */
+        const fishList = [] as string[];
+        for (const fish of fish_list) {
+            if (!fish.destroyed) {
+                fishList.push(fish.id);
+            }
+        }
+
+        sendToGameSocket(ServerEvent.FishBomb, {
+            bombPoint,
+            eid,
+            fishList,
+        } as FishBombReq);
     }; //tslint:disable-line
     public setVisible = (visible: boolean) => {
         this.view.setVisible(visible);

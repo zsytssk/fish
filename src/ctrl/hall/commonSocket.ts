@@ -1,17 +1,17 @@
-import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
+import { ctrlState } from 'ctrl/ctrlState';
+import { disableCurUserOperation } from 'ctrl/game/gameCtrlUtils';
+import { sendToGameSocket } from 'ctrl/game/gameSocket';
+import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
 import { bindSocketEvent, disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent, ServerErrCode, ErrorData } from 'data/serverEvent';
 import {
     InternationalTip,
     InternationalTipOther,
 } from 'data/internationalConfig';
-import { getLang } from './hallCtrlUtil';
+import { ErrorData, ServerErrCode, ServerEvent } from 'data/serverEvent';
+import { BgMonitorEvent } from 'utils/bgMonitor';
 import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
-import { ctrlState } from 'ctrl/ctrlState';
-import { BgMonitorEvent } from 'utils/bgMonitor';
-import { sendToGameSocket } from 'ctrl/game/gameSocket';
-import { disableAutoShoot } from 'ctrl/game/gameCtrlUtils';
+import { getLang } from './hallCtrlUtil';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -94,7 +94,7 @@ export function ErrorHandler(code: number) {
     const lang = getLang();
     const tip = InternationalTipOther[lang][code];
     if (code === ServerErrCode.ReExchange) {
-        disableAutoShoot();
+        disableCurUserOperation();
         return AlertPop.alert(tip).then(type => {
             if (type === 'confirm') {
                 return sendToGameSocket(ServerEvent.ExchangeBullet);

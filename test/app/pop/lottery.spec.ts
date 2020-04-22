@@ -38,7 +38,6 @@ export const lottery_test = new Test('lottery', runner => {
         await tween(5000, radio => {
             const cur_index = Math.round(radio * num);
             const cur_round_index = cur_index % 5;
-            console.log(`tween:>`, cur_index);
             if (end) {
                 return;
             }

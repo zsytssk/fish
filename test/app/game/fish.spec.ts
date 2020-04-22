@@ -13,8 +13,8 @@ export const fish_test = new Test('fish', runner => {
     runner.describe(
         'add_fish',
         async (typeId: number, pathId: number, time: number) => {
-            typeId = typeId || 9;
-            pathId = pathId || 11;
+            typeId = 20;
+            pathId = pathId || 19;
             // pathId = pathId || 3;
             // time = time || 12 * 100000;
             time = time || 40 * 1000;
@@ -108,20 +108,17 @@ export const fish_test = new Test('fish', runner => {
         game.addFish(fish_data);
     });
 
-    runner.describe(
-        'fish_direct_test',
-        (typeId: number, pathId: number, time: number) => {
-            // body_test.runTest('show_shape');
-            typeId = typeId || 20;
-            for (const i of range(1, 21)) {
-                typeId = typeId || 1;
-                pathId = i;
-                time = time || 15;
-                const fish_data = genFishInfo(typeId, pathId, time);
-                modelState.app.game.addFish(fish_data);
-            }
-        },
-    );
+    runner.describe('fish_direct_test', async () => {
+        // body_test.runTest('show_shape');
+        const typeId = 20;
+        for (const i of range(1, 21)) {
+            const pathId = i;
+            const time = 15000;
+            const fish_data = genFishInfo(typeId, pathId, time);
+            modelState.app.game.addFish(fish_data);
+            await sleep(15);
+        }
+    });
 
     runner.describe('get_click_fish', () => {
         injectProto(FishCtrl, 'initEvent' as any, (fish: FishCtrl) => {
@@ -129,6 +126,15 @@ export const fish_test = new Test('fish', runner => {
                 console.log(fish['model']);
             });
         });
+    });
+
+    runner.describe('list_player_id', () => {
+        const fish_list = modelState.app.game['fish_list'];
+        const id_list = [...fish_list].map(fish => {
+            return fish.id;
+        });
+
+        console.log(`fish_list:>`, id_list);
     });
 
     runner.describe(
@@ -147,6 +153,16 @@ export const fish_test = new Test('fish', runner => {
             }
         },
     );
+
+    runner.describe('bomb_other_fish', () => {
+        for (const i of range(9, 11)) {
+            const typeId = i;
+            const pathId = 11;
+            const time = (30 - i) * 1000;
+            const fish_data = genFishInfo(typeId, pathId, time);
+            modelState.app.game.addFish(fish_data);
+        }
+    });
 });
 
 export function genFishInfo(

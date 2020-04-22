@@ -39,6 +39,7 @@ export function activeAimFish(
     show_points?: boolean,
     ori_pos?: Point,
 ) {
+    console.warn(`activeAimFish`);
     const aim_ani = createAim('aim');
     const { fish: ori_fish } = state;
     const { pos } = fish;
@@ -93,7 +94,6 @@ export function activeAimFish(
 
 /** 消除动画 */
 export function stopAim(type: AimType = 'aim') {
-    console.warn(type);
     const { aim_ani_map, fish, point_list } = state;
     const aim_ani = aim_ani_map.get(type);
 

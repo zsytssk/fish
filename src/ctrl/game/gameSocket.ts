@@ -73,14 +73,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
                 game.activeSkill(SkillMap.Auto, convertAUtoShootData(data));
             }
         },
-        [ServerEvent.UseLock]: (data: UseLockRep, code: number) => {
-            if (code !== 200) {
-                game.resetSkill(SkillMap.Freezing, getCurUserId());
-                return;
-            }
-            game.activeSkill(SkillMap.LockFish, convertUseLockData(data));
-        },
-        [ServerEvent.LockFish]: (data: LockFishReq, code: number) => {
+        // [ServerEvent.UseLock]: (data: UseLockRep, code: number) => {
+        //     if (code !== 200) {
+        //         game.resetSkill(SkillMap.Freezing, getCurUserId());
+        //         return;
+        //     }
+        //     game.activeSkill(SkillMap.LockFish, convertUseLockData(data));
+        // },
+        [ServerEvent.LockFish]: (data: LockFishRep, code: number) => {
             if (code !== 200) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
@@ -247,21 +247,27 @@ function convertAUtoShootData(data: AutoShootRep): AutoShootInfo {
     const { userId: user_id, autoShoot } = data;
     return { user_id, autoShoot };
 }
-function convertUseLockData(data: UseLockRep): LockFishActiveInfo {
-    const { userId: user_id, count: num, duration, lockedFish: fish } = data;
-    const used_time = 0;
+// function convertUseLockData(data: UseLockRep): LockFishActiveInfo {
+//     const { userId: user_id, count: num, duration, lockedFish: fish } = data;
+//     const used_time = 0;
+//     return {
+//         user_id,
+//         used_time,
+//         num,
+//         fish,
+//         is_tip: true,
+//         duration: duration / 1000,
+//     };
+// }
+function convertLockFishData(data: LockFishRep): LockFishActiveInfo {
+    const { userId: user_id, eid: fish, needActive, duration } = data;
     return {
         user_id,
-        used_time,
-        num,
         fish,
-        is_tip: true,
+        needActive,
         duration: duration / 1000,
+        used_time: 0,
     };
-}
-function convertLockFishData(data: LockFishReq): LockFishActiveInfo {
-    const { userId: user_id, eid: fish } = data;
-    return { user_id, fish };
 }
 
 function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {

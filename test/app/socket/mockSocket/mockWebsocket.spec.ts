@@ -143,7 +143,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         });
     });
 
-    runner.describe('freeze', async () => {
+    runner.describe(ServerEvent.UseFreeze, async () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
         sendEvent.on(ServerEvent.UseFreeze, () => {
@@ -153,12 +153,16 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     return item.id;
                 });
 
-                event.emit(ServerEvent.UseFreeze, {
-                    userId: test_data.userId,
-                    duration: 0,
-                    count: 1000,
-                    frozenFishList: fish_arr,
-                } as UseFreezeRep);
+                event.emit(
+                    ServerEvent.UseFreeze,
+                    {
+                        userId: test_data.userId,
+                        duration: 10000,
+                        count: 1000,
+                        frozenFishList: fish_arr,
+                    } as UseFreezeRep,
+                    200,
+                );
             });
         });
     });
@@ -186,7 +190,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                 );
             });
         });
-        sendEvent.on(ServerEvent.LockFish, (data: LockFishReq) => {
+        sendEvent.on(ServerEvent.LockFish, (data: LockFishRep) => {
             sleep(0.1).then(() => {
                 const { eid } = data;
                 event.emit(
@@ -194,7 +198,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     {
                         userId: test_data.userId,
                         eid,
-                    } as LockFishRep,
+                    } as LockFishReq,
                     200,
                 );
             });
