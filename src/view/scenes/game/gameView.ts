@@ -6,6 +6,7 @@ import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { default as random } from 'lodash/random';
 import { Observable, Subscriber } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { ui } from 'ui/layaMaxUI';
 import { fade_in, setStyle } from 'utils/animate';
 import { createSprite, getSpriteInfo } from 'utils/dataUtil';
@@ -24,6 +25,7 @@ export default class GameView extends ui.scenes.game.gameUI
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
     private fish_click_observer: Subscriber<string>;
+    private pool_click_observer: Subscriber<Point>;
     private resize_scale: number;
     private bg_num = 1;
     private bullet_box_pos: number;
@@ -153,25 +155,41 @@ export default class GameView extends ui.scenes.game.gameUI
         return net;
     }
     /** 获取点击pool中的位置 */
-    public onPoolClick(): Promise<Point> {
-        return new Promise((resolve, reject) => {
+    public onPoolClick(once = false): Observable<Point> {
+        this.offPoolClick();
+        const observable = new Observable(subscriber => {
             const { pool } = this;
-            pool.once(Event.CLICK, pool, (e: Event) => {
-                e.stopPropagation();
+            const fun = (e: Event) => {
                 const { x, y } = pool.getMousePoint();
-
-                resolve({
-                    x,
-                    y,
-                });
+                e.stopPropagation();
+                subscriber.next({ x, y });
+            };
+            subscriber.add(() => {
+                pool.off(Event.CLICK, pool, fun);
             });
-        });
+            pool.on(Event.CLICK, pool, fun);
+            this.pool_click_observer = subscriber;
+        }) as Observable<Point>;
+
+        if (once) {
+            return observable.pipe(first());
+        } else {
+            return observable;
+        }
+    }
+    /** 获取点击pool中的位置 */
+    public offPoolClick() {
+        const { pool_click_observer } = this;
+        if (pool_click_observer) {
+            pool_click_observer.unsubscribe();
+            this.pool_click_observer = undefined;
+        }
     }
 
     /** 获取点击pool中的位置 */
-    public onFishClick(): Observable<string> {
+    public onFishClick(once = false): Observable<string> {
         this.offFishClick();
-        return new Observable(subscriber => {
+        const observable = new Observable(subscriber => {
             const { pool } = this;
             const fun = (e: Event) => {
                 e.stopPropagation();
@@ -186,12 +204,19 @@ export default class GameView extends ui.scenes.game.gameUI
             pool.on(Event.CLICK, pool, fun);
             this.fish_click_observer = subscriber;
         }) as Observable<string>;
+
+        if (once) {
+            return observable.pipe(first());
+        } else {
+            return observable;
+        }
     }
     /** 获取点击pool中的位置 */
     public offFishClick() {
-        const { fish_click_observer: click_fish_observer } = this;
-        if (click_fish_observer) {
-            click_fish_observer.complete();
+        const { fish_click_observer } = this;
+        if (fish_click_observer) {
+            fish_click_observer.unsubscribe();
+            this.fish_click_observer = undefined;
         }
     }
     public addGun() {

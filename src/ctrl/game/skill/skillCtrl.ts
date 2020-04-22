@@ -44,6 +44,8 @@ export class SkillCtrl {
                 status === SkillStatus.Normal
             ) {
                 view.unHighlight();
+
+                view.clearCoolTime();
                 skillDisableHandler(model);
             } else if (status === SkillStatus.PreActive) {
                 if (model instanceof BombModel) {

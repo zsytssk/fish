@@ -42,7 +42,7 @@ export const player_test = new Test('player', runner => {
                 [SkillMap.Bomb]: {
                     item_id: SkillMap.Bomb,
                     num: 20,
-                    cool_time: 10,
+                    cool_time: 3,
                     used_time: 0,
                 },
             },

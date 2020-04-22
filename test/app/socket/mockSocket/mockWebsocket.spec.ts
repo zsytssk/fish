@@ -91,6 +91,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     } as UseBombRep,
                     200,
                 );
+                sleep(0.2).then(() => {
+                    event.emit(ServerEvent.UseBomb, {}, 100);
+                });
             });
         });
     });

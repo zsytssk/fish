@@ -25,6 +25,7 @@ import {
     offFishClick,
     onFishClick,
     onPoolClick,
+    offPoolClick,
     viewState,
 } from 'view/viewState';
 import { sendToGameSocket } from '../gameSocket';
@@ -69,7 +70,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         onMouseMove(pool, pos => activeAim(pos));
 
         // 炸弹
-        onPoolClick().then((pos: Point) => {
+        onPoolClick(true).subscribe((pos: Point) => {
             offMouseMove(pool);
             stopAim('aim_big');
             const fish_list = getBeBombFishIds(pos);
@@ -85,9 +86,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         TopTipPop.tip(aimFish, 2);
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
-        onFishClick().subscribe((fish_id: string) => {
-            // sendToGameSocket(ServerEvent.UseLock);
-            offFishClick();
+        onFishClick(true).subscribe((fish_id: string) => {
             sendToGameSocket(ServerEvent.LockFish, {
                 eid: fish_id,
                 needActive: true,
@@ -140,6 +139,8 @@ export function skillDisableHandler(model: SkillModel) {
         if (model instanceof LockFishModel) {
             stopAim('aim');
             offFishClick();
+        } else if (model instanceof BombModel) {
+            offPoolClick();
         } else {
             resolve();
         }

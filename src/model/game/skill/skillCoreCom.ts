@@ -104,7 +104,9 @@ export class SkillCoreCom extends ComponentManager {
             return false;
         }
         const { cool_time, event } = this;
-        const { used_time, duration, num } = info;
+        const { used_time, num } = info;
+
+        const duration = info.duration || used_time;
         /** 倒计时的时间间隔 */
         const count_delta = 0.05;
         const cool_remain_time = cool_time - used_time;

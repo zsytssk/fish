@@ -22,14 +22,17 @@ export function addBullet(skin: string, rage: boolean) {
 export function addNet(skin: string) {
     return viewState.game.addNet(skin);
 }
-export function onPoolClick() {
-    return viewState.game.onPoolClick();
+export function onPoolClick(once: boolean = false) {
+    return viewState.game.onPoolClick(once);
+}
+export function offPoolClick() {
+    return viewState.game.offPoolClick();
 }
 export function setBulletNum(num: number) {
     return viewState.game.setBulletNum(num);
 }
-export function onFishClick() {
-    return viewState.game.onFishClick();
+export function onFishClick(once: boolean = false) {
+    return viewState.game.onFishClick(once);
 }
 export function offFishClick() {
     return viewState.game.offFishClick();

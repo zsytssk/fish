@@ -71,4 +71,10 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
             overlay.visible = false;
         }
     }
+    /** 显示技能的冷却时间 */
+    public clearCoolTime() {
+        const { overlay } = this;
+
+        overlay.visible = false;
+    }
 }

@@ -25,9 +25,6 @@ export class BombModel extends ComponentManager implements SkillModel {
         this.addCom(skill_core);
         this.skill_core = skill_core;
     }
-    public reset() {
-        this.skill_core.reset();
-    }
     public init() {
         this.skill_core.init();
     }
@@ -52,6 +49,10 @@ export class BombModel extends ComponentManager implements SkillModel {
             return;
         }
         skill_core.active({ num, used_time });
+    }
+    public reset() {
+        const { skill_core } = this;
+        skill_core.reset();
     }
     public disable() {
         const { skill_core } = this;
