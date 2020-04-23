@@ -9,6 +9,7 @@ import {
 } from './skillCtrlUtils';
 import { Event } from 'laya/events/Event';
 import { BombModel } from 'model/game/skill/bombModel';
+import { Laya } from 'Laya';
 
 export class SkillCtrl {
     private is_cur_player = false;

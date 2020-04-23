@@ -9,6 +9,7 @@ import { Context } from "../../../resource/Context";
 import { ICreateResource } from "../../../resource/ICreateResource";
 import { RenderTextureDepthFormat } from "../../../resource/RenderTextureFormat";
 import { Texture2D } from "../../../resource/Texture2D";
+import { TextureDecodeFormat } from "../../../resource/TextureDecodeFormat";
 import { Handler } from "../../../utils/Handler";
 import { Timer } from "../../../utils/Timer";
 import { ISubmit } from "../../../webgl/submit/ISubmit";
@@ -18,7 +19,7 @@ import { WebGLContext } from "../../../webgl/WebGLContext";
 import { Animator } from "../../component/Animator";
 import { Script3D } from "../../component/Script3D";
 import { SimpleSingletonList } from "../../component/SimpleSingletonList";
-import { FrustumCulling } from "../../graphics/FrustumCulling";
+import { FrustumCulling, CameraCullInfo } from "../../graphics/FrustumCulling";
 import { Cluster } from "../../graphics/renderPath/Cluster";
 import { SphericalHarmonicsL2 } from "../../graphics/SphericalHarmonicsL2";
 import { Input3D } from "../../Input3D";
@@ -36,7 +37,6 @@ import { RenderTexture } from "../../resource/RenderTexture";
 import { TextureCube } from "../../resource/TextureCube";
 import { Shader3D } from "../../shader/Shader3D";
 import { ShaderData } from "../../shader/ShaderData";
-import { ParallelSplitShadowMap } from "../../shadowMap/ParallelSplitShadowMap";
 import { Utils3D } from "../../utils/Utils3D";
 import { BaseCamera } from "../BaseCamera";
 import { Camera, CameraClearFlags } from "../Camera";
@@ -45,6 +45,8 @@ import { AlternateLightQueue, DirectionLightQueue, LightQueue } from "../light/L
 import { PointLight } from "../light/PointLight";
 import { SpotLight } from "../light/SpotLight";
 import { Material } from "../material/Material";
+import { PBRMaterial } from "../material/PBRMaterial";
+import { PBRRenderQuality } from "../material/PBRRenderQuality";
 import { RenderState } from "../material/RenderState";
 import { PixelLineMaterial } from "../pixelLine/PixelLineMaterial";
 import { PixelLineSprite3D } from "../pixelLine/PixelLineSprite3D";
@@ -52,13 +54,11 @@ import { BaseRender } from "../render/BaseRender";
 import { RenderContext3D } from "../render/RenderContext3D";
 import { RenderElement } from "../render/RenderElement";
 import { RenderQueue } from "../render/RenderQueue";
-import { RenderableSprite3D } from "../RenderableSprite3D";
-import { Sprite3D } from "../Sprite3D";
 import { BoundsOctree } from "./BoundsOctree";
+import { Lightmap } from "./Lightmap";
 import { Scene3DShaderDeclaration } from "./Scene3DShaderDeclaration";
-import { PBRMaterial } from "../material/PBRMaterial";
-import { PBRRenderQuality } from "../material/PBRRenderQuality";
-import { TextureDecodeFormat } from "../../../resource/TextureDecodeFormat";
+import { ShadowCasterPass } from "../../shadowMap/ShadowCasterPass";
+import { DefineDatas } from "../../shader/DefineDatas";
 
 /**
  * 环境光模式
@@ -78,6 +78,8 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	private static _lightTexture: Texture2D;
 	/** @internal */
 	private static _lightPixles: Float32Array;
+	/** @internal */
+	static _shadowCasterPass: ShadowCasterPass = new ShadowCasterPass();
 
 	/**Hierarchy资源。*/
 	static HIERARCHY: string = "HIERARCHY";
@@ -130,17 +132,12 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	static SPOTLIGHTCOLOR: number = Shader3D.propertyNameToID("u_SpotLight.color");
 	//------------------legacy lighting-------------------------------
 
-
-	static SHADOWDISTANCE: number = Shader3D.propertyNameToID("u_shadowPSSMDistance");
-	static SHADOWLIGHTVIEWPROJECT: number = Shader3D.propertyNameToID("u_lightShadowVP");
-	static SHADOWMAPPCFOFFSET: number = Shader3D.propertyNameToID("u_shadowPCFoffset");
-	static SHADOWMAPTEXTURE1: number = Shader3D.propertyNameToID("u_shadowMap1");
-	static SHADOWMAPTEXTURE2: number = Shader3D.propertyNameToID("u_shadowMap2");
-	static SHADOWMAPTEXTURE3: number = Shader3D.propertyNameToID("u_shadowMap3");
-
 	static AMBIENTCOLOR: number = Shader3D.propertyNameToID("u_AmbientColor");
 	static REFLECTIONTEXTURE: number = Shader3D.propertyNameToID("u_ReflectTexture");
 	static TIME: number = Shader3D.propertyNameToID("u_Time");
+
+	/** @internal */
+	static _configDefineValues: DefineDatas = new DefineDatas();
 
 
 	/**
@@ -163,15 +160,30 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		Scene3DShaderDeclaration.SHADERDEFINE_DIRECTIONLIGHT = Shader3D.getDefineByName("DIRECTIONLIGHT");
 		Scene3DShaderDeclaration.SHADERDEFINE_POINTLIGHT = Shader3D.getDefineByName("POINTLIGHT");
 		Scene3DShaderDeclaration.SHADERDEFINE_SPOTLIGHT = Shader3D.getDefineByName("SPOTLIGHT");
-		Scene3DShaderDeclaration.SHADERDEFINE_CAST_SHADOW = Shader3D.getDefineByName("CASTSHADOW");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PSSM1 = Shader3D.getDefineByName("SHADOWMAP_PSSM1");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PSSM2 = Shader3D.getDefineByName("SHADOWMAP_PSSM2");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PSSM3 = Shader3D.getDefineByName("SHADOWMAP_PSSM3");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PCF_NO = Shader3D.getDefineByName("SHADOWMAP_PCF_NO");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PCF1 = Shader3D.getDefineByName("SHADOWMAP_PCF1");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PCF2 = Shader3D.getDefineByName("SHADOWMAP_PCF2");
-		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_PCF3 = Shader3D.getDefineByName("SHADOWMAP_PCF3");
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW = Shader3D.getDefineByName("SHADOW");
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_CASCADE = Shader3D.getDefineByName("SHADOW_CASCADE");
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SOFT_SHADOW_LOW = Shader3D.getDefineByName("SHADOW_SOFT_SHADOW_LOW");
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SOFT_SHADOW_HIGH = Shader3D.getDefineByName("SHADOW_SOFT_SHADOW_HIGH");
 		Scene3DShaderDeclaration.SHADERDEFINE_GI_AMBIENT_SH = Shader3D.getDefineByName("GI_AMBIENT_SH");
+
+
+		var config: Config3D = Config3D._config;
+		var configShaderValue: DefineDatas = Scene3D._configDefineValues;
+		(config._multiLighting) || (configShaderValue.add(Shader3D.SHADERDEFINE_LEGACYSINGALLIGHTING));
+		if (LayaGL.layaGPUInstance._isWebGL2)
+			configShaderValue.add(Shader3D.SHADERDEFINE_GRAPHICS_API_GLES3);
+		else
+			configShaderValue.add(Shader3D.SHADERDEFINE_GRAPHICS_API_GLES2);
+		switch (config.pbrRenderQuality) {
+			case PBRRenderQuality.High:
+				configShaderValue.add(PBRMaterial.SHADERDEFINE_LAYA_PBR_BRDF_HIGH)
+				break;
+			case PBRRenderQuality.Low:
+				configShaderValue.add(PBRMaterial.SHADERDEFINE_LAYA_PBR_BRDF_LOW)
+				break;
+			default:
+				throw "Scene3D:unknown shader quality.";
+		}
 	}
 
 
@@ -200,7 +212,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	public _alternateLights: AlternateLightQueue = new AlternateLightQueue();
 
 	/** @internal */
-	private _lightmaps: Texture2D[] = [];
+	private _lightmaps: Lightmap[] = [];
 	/** @internal */
 	private _skyRenderer: SkyRenderer = new SkyRenderer();
 	/** @internal */
@@ -226,6 +238,8 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** @internal */
 	private _reflectionIntensity: number = 1.0;
 
+	/** @internal */
+	_mainLight: DirectionLight;
 	/** @internal */
 	_physicsSimulation: PhysicsSimulation;
 	/** @internal */
@@ -259,8 +273,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** 是否启用灯光。*/
 	enableLight: boolean = true;
 
-	//阴影相关变量
-	parallelSplitShadowMaps: ParallelSplitShadowMap[];
 	/** @internal */
 	_debugTool: PixelLineSprite3D;
 
@@ -476,6 +488,36 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	}
 
 	/**
+	 * 光照贴图数组,返回值为浅拷贝数组。
+	 */
+	get lightmaps(): Lightmap[] {
+		return this._lightmaps.slice();
+	}
+
+	set lightmaps(value: Lightmap[]) {
+		var maps: Lightmap[] = this._lightmaps;
+		if (maps) {
+			for (var i: number = 0, n: number = maps.length; i < n; i++) {
+				var map: Lightmap = maps[i];
+				map.lightmapColor._removeReference();
+				map.lightmapDirection._removeReference();
+			}
+		}
+		if (value) {
+			var count: number = value.length;
+			maps.length = count;
+			for (i = 0; i < count; i++) {
+				var map: Lightmap = value[i];
+				map.lightmapColor && map.lightmapColor._addReference();
+				map.lightmapDirection && map.lightmapDirection._addReference();
+				maps[i] = map;
+			}
+		} else {
+			maps.length = 0;
+		}
+	}
+
+	/**
 	 * 创建一个 <code>Scene3D</code> 实例。
 	 */
 	constructor() {
@@ -484,7 +526,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			this._physicsSimulation = new PhysicsSimulation(Scene3D.physicsSettings);
 
 		this._shaderValues = new ShaderData(null);
-		this.parallelSplitShadowMaps = [];
 
 		this.enableFog = false;
 		this.fogStart = 300;
@@ -495,18 +536,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		this.reflection = TextureCube.blackTexture;
 		for (var i: number = 0; i < 7; i++)
 			this._shCoefficients[i] = new Vector4();
-		var config: Config3D = Config3D._config;
-		(config._multiLighting) || (this._shaderValues.addDefine(Shader3D.SHADERDEFINE_LEGACYSINGALLIGHTING));
-		switch (config.pbrRenderQuality) {
-			case PBRRenderQuality.High:
-				this._shaderValues.addDefine(PBRMaterial.SHADERDEFINE_LAYA_PBR_BRDF_HIGH)
-				break;
-			case PBRRenderQuality.Low:
-				this._shaderValues.addDefine(PBRMaterial.SHADERDEFINE_LAYA_PBR_BRDF_LOW)
-				break;
-			default:
-				throw "Scene3D:unknown shader quality.";
-		}
 
 		this._shaderValues.setVector(Scene3D.REFLECTIONCUBE_HDR_PARAMS, this._reflectionCubeHDRParams);
 
@@ -561,19 +590,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		shaderValues.setVector(Scene3D.AMBIENTSHBG, optSH[4]);
 		shaderValues.setVector(Scene3D.AMBIENTSHBB, optSH[5]);
 		shaderValues.setVector(Scene3D.AMBIENTSHC, optSH[6]);
-	}
-
-	/**
-	 * @internal
-	 */
-	private _setLightmapToChildNode(sprite: Sprite3D): void {
-		if (sprite instanceof RenderableSprite3D)
-			((<RenderableSprite3D>sprite))._render._applyLightMapParams();
-
-		var children: any[] = sprite._children;
-		for (var i: number = 0, n: number = children.length; i < n; i++)
-
-			this._setLightmapToChildNode(children[i]);
 	}
 
 	/**
@@ -757,7 +773,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/**
 	 * @internal
 	 */
-	protected _prepareSceneToRender(): void {
+	private _prepareSceneToRender(): void {
 		var shaderValues: ShaderData = this._shaderValues;
 		var multiLighting: boolean = Config3D._config._multiLighting;
 		if (multiLighting) {
@@ -770,6 +786,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			var dirElements: DirectionLight[] = this._directionLights._elements;
 			if (dirCount > 0) {
 				var sunLightIndex: number = this._directionLights.getSunLight();//get the brightest light as sun
+				this._mainLight = dirElements[sunLightIndex];
 				for (var i: number = 0; i < dirCount; i++ , curCount++) {
 					var dirLight: DirectionLight = dirElements[i];
 					var dir: Vector3 = dirLight._direction;
@@ -856,6 +873,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		else {
 			if (this._directionLights._length > 0) {
 				var dirLight: DirectionLight = this._directionLights._elements[0];
+				this._mainLight = dirLight;
 				Vector3.scale(dirLight.color, dirLight._intensity, dirLight._intensityColor);
 
 				dirLight.transform.worldMatrix.getForward(dirLight._direction);
@@ -961,7 +979,12 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	_preCulling(context: RenderContext3D, camera: Camera, shader: Shader3D, replacementTag: string): void {
-		FrustumCulling.renderObjectCulling(camera, this, context, shader, replacementTag, false);
+		var cameraCullInfo: CameraCullInfo = FrustumCulling._cameraCullInfo;
+		cameraCullInfo.position = camera._transform.position;
+		cameraCullInfo.cullingMask = camera.cullingMask;
+		cameraCullInfo.boundFrustum = camera.boundFrustum;
+		cameraCullInfo.useOcclusionCulling = camera.useOcclusionCulling;
+		FrustumCulling.renderObjectCulling(cameraCullInfo, this, context, shader, replacementTag, false);
 	}
 
 	/**
@@ -1007,7 +1030,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 						case RenderTextureDepthFormat.STENCIL_8:
 							flag |= gl.STENCIL_BUFFER_BIT;
 							break;
-						case RenderTextureDepthFormat.DEPTHSTENCIL_16_8:
+						case RenderTextureDepthFormat.DEPTHSTENCIL_24_8:
 							flag |= gl.DEPTH_BUFFER_BIT;
 							flag |= gl.STENCIL_BUFFER_BIT;
 							break;
@@ -1031,7 +1054,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 						case RenderTextureDepthFormat.STENCIL_8:
 							flag = gl.STENCIL_BUFFER_BIT;
 							break;
-						case RenderTextureDepthFormat.DEPTHSTENCIL_16_8:
+						case RenderTextureDepthFormat.DEPTHSTENCIL_24_8:
 							flag = gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT;
 							break;
 					}
@@ -1082,11 +1105,21 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		var lightMapsData: any[] = data.lightmaps;
 		if (lightMapsData) {
 			var lightMapCount: number = lightMapsData.length;
-			var lightmaps: Texture2D[] = [];
-			for (var i: number = 0; i < lightMapCount; i++)
-				lightmaps[i] = Loader.getRes(lightMapsData[i].path);
-
-			this.setlightmaps(lightmaps);
+			var lightmaps: Lightmap[] = new Array(lightMapCount);
+			for (var i: number = 0; i < lightMapCount; i++) {
+				var lightMap: Lightmap = new Lightmap();
+				var lightMapData: any = lightMapsData[i];
+				if (lightMapData.path) {//兼容
+					lightMap.lightmapColor = Loader.getRes(lightMapData.path);
+				}
+				else {
+					lightMap.lightmapColor = Loader.getRes(lightMapData.color.path);
+					if (lightMapData.direction)
+						lightMap.lightmapDirection = Loader.getRes(lightMapData.direction.path);
+				}
+				lightmaps[i] = lightMap;
+			}
+			this.lightmaps = lightmaps;
 		}
 
 		var ambientColorData: any[] = data.ambientColor;
@@ -1199,37 +1232,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	}
 
 	/**
-	 * 设置光照贴图。
-	 * @param value 光照贴图。
-	 */
-	setlightmaps(value: Texture2D[]): void {
-		var maps: Texture2D[] = this._lightmaps;
-		for (var i: number = 0, n: number = maps.length; i < n; i++)
-			maps[i]._removeReference();
-		if (value) {
-			var count: number = value.length;
-			maps.length = count;
-			for (i = 0; i < count; i++) {
-				var lightMap: Texture2D = value[i];
-				lightMap._addReference();
-				maps[i] = lightMap;
-			}
-		} else {
-			throw new Error("Scene3D: value value can't be null.");
-		}
-		for (i = 0, n = this._children.length; i < n; i++)
-			this._setLightmapToChildNode(this._children[i]);
-	}
-
-	/**
-	 * 获取光照贴图浅拷贝列表。
-	 * @return 获取光照贴图浅拷贝列表。
-	 */
-	getlightmaps(): Texture2D[] {
-		return this._lightmaps.slice();//slice()防止修改数组内容
-	}
-
-	/**
 	 * @inheritDoc
 	 * @override
 	 */
@@ -1248,7 +1250,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		this._renders = null;
 		this._cameraPool = null;
 		this._octree = null;
-		this.parallelSplitShadowMaps = null;
 		this._physicsSimulation && this._physicsSimulation._destroy();
 		Loader.clearRes(this.url);
 	}
@@ -1330,6 +1331,42 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	set reflectionMode(value: number) {
 		this._reflectionMode = value;
 
+	}
+
+	/**
+	 * @deprecated
+	 * 设置光照贴图。
+	 * @param value 光照贴图。
+	 */
+	setlightmaps(value: Texture2D[]): void {
+		var maps: Lightmap[] = this._lightmaps;
+		for (var i: number = 0, n: number = maps.length; i < n; i++)
+			maps[i].lightmapColor._removeReference();
+		if (value) {
+			var count: number = value.length;
+			maps.length = count;
+			for (i = 0; i < count; i++) {
+				var lightMap: Texture2D = value[i];
+				lightMap._addReference();
+				(maps[i]) || (maps[i] = new Lightmap());
+				maps[i].lightmapColor = lightMap;
+			}
+		} else {
+			throw new Error("Scene3D: value value can't be null.");
+		}
+	}
+
+	/**
+	 * @deprecated
+	 * 获取光照贴图浅拷贝列表。
+	 * @return 获取光照贴图浅拷贝列表。
+	 */
+	getlightmaps(): Texture2D[] {
+		var lightmapColors: Texture2D[] = new Array(this._lightmaps.length);
+		for (var i: number = 0; i < this._lightmaps.length; i++) {
+			lightmapColors[i] = this._lightmaps[i].lightmapColor;
+		}
+		return lightmapColors;//slice()防止修改数组内容
 	}
 
 }

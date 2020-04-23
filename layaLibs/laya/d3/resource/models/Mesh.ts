@@ -73,7 +73,7 @@ export class Mesh extends Resource implements IClone {
 	/**
 	 * 加载网格模板。
 	 * @param url 模板地址。
-	 * @param complete 完成回掉。
+	 * @param complete 完成回调。
 	 */
 	static load(url: string, complete: Handler): void {
 		ILaya.loader.create(url, complete, null, Mesh.MESH);
@@ -750,14 +750,18 @@ export class Mesh extends Resource implements IClone {
 
 		var i: number;
 		var boneNames: string[] = this._boneNames;
-		var destBoneNames: string[] = destMesh._boneNames = [];
-		for (i = 0; i < boneNames.length; i++)
-			destBoneNames[i] = boneNames[i];
+		if (boneNames) {
+			var destBoneNames: string[] = destMesh._boneNames = [];
+			for (i = 0; i < boneNames.length; i++)
+				destBoneNames[i] = boneNames[i];
+		}
 
 		var inverseBindPoses: Matrix4x4[] = this._inverseBindPoses;
-		var destInverseBindPoses: Matrix4x4[] = destMesh._inverseBindPoses = [];
-		for (i = 0; i < inverseBindPoses.length; i++)
-			destInverseBindPoses[i] = inverseBindPoses[i];
+		if (inverseBindPoses) {
+			var destInverseBindPoses: Matrix4x4[] = destMesh._inverseBindPoses = [];
+			for (i = 0; i < inverseBindPoses.length; i++)
+				destInverseBindPoses[i] = inverseBindPoses[i];
+		}
 
 		var cacheLength: number = this._skinnedMatrixCaches.length;
 		destMesh._skinnedMatrixCaches.length = cacheLength;

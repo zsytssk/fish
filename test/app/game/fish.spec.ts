@@ -154,11 +154,12 @@ export const fish_test = new Test('fish', runner => {
         },
     );
 
-    runner.describe('bomb_other_fish', () => {
+    runner.describe('bomb_other_fish', async () => {
         for (const i of range(9, 11)) {
             const typeId = i;
             const pathId = 11;
-            const time = (30 - i) * 1000;
+            const time = 20000;
+            await sleep(3);
             const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
         }

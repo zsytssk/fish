@@ -34,7 +34,7 @@ import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { getUserInfo } from 'model/modelState';
 import { sendToGameSocket } from './gameSocket';
-import { ErrorHandler } from 'ctrl/hall/commonSocket';
+import { errorHandler } from 'ctrl/hall/commonSocket';
 
 // prettier-ignore
 const bullet_cost_arr  =
@@ -183,7 +183,7 @@ export class PlayerCtrl {
             setBulletNum(bullet_num);
         });
         gun_event.on(GunEvent.NotEnoughBulletNum, () => {
-            ErrorHandler(ServerErrCode.ReExchange);
+            errorHandler(ServerErrCode.ReExchange);
         });
         gun_event.on(
             GunEvent.CastFish,

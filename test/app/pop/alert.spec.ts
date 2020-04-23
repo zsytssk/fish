@@ -3,6 +3,7 @@ import TipPop from 'view/pop/tip';
 import AlertPop from 'view/pop/alert';
 import TopTipPop from 'view/pop/topTip';
 import { sleep } from '../../utils/testUtils';
+import { asyncOnly, clearAsyncOnly } from 'utils/asyncQue';
 
 export const alert_test = new Test('alert', runner => {
     runner.describe('top_tip', () => {
@@ -27,5 +28,20 @@ export const alert_test = new Test('alert', runner => {
         sleep(3).then(() => {
             AlertPop.alert('this is a test');
         });
+    });
+
+    runner.describe('show_alert_only', async (name?: string, msg?: string) => {
+        name = name || 'test';
+        const data = await asyncOnly(
+            name,
+            () => {
+                return AlertPop.alert(msg || 'this is a test').then(type => {
+                    clearAsyncOnly(name);
+                    return type;
+                });
+            },
+            true,
+        );
+        console.log(data);
     });
 });

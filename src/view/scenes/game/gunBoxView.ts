@@ -1,5 +1,5 @@
 import { LevelInfo } from 'model/game/gun/gunModel';
-import { asyncQue, stopAsyncQue } from 'utils/asyncQue';
+import { asyncQue, clearAsyncQue } from 'utils/asyncQue';
 import { getGunSkinMap } from 'utils/dataUtil';
 import { vectorToDegree } from 'utils/mathUtils';
 import {
@@ -115,7 +115,7 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
          */
         clearTimeout(this.time_out);
         this.time_out = setTimeout(() => {
-            stopAsyncQue(`${nickname}:fire`);
+            clearAsyncQue(`${nickname}:fire`);
         }, 250) as any;
         this.setDirection(direction);
     }

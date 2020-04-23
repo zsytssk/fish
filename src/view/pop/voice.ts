@@ -1,6 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
-import ProgressCtrl from 'utils/progressCtrl';
+import LayaProgressCtrl from 'utils/LayaProgressCtrl';
 import { modelState } from 'model/modelState';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
@@ -11,8 +11,8 @@ import { Lang, InternationalTip } from 'data/internationalConfig';
 export default class VoicePop extends ui.pop.alert.voiceUI
     implements HonorDialog {
     public isModal = true;
-    private music_ctrl: ProgressCtrl;
-    private voice_ctrl: ProgressCtrl;
+    private music_ctrl: LayaProgressCtrl;
+    private voice_ctrl: LayaProgressCtrl;
     public static preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
         honor.director.openDialog({ dialog: VoicePop, use_exist: true });
@@ -24,8 +24,14 @@ export default class VoicePop extends ui.pop.alert.voiceUI
 
         const { voice, music } = modelState.app.setting;
         const { music_progress, voice_progress } = this;
-        const music_ctrl = new ProgressCtrl(music_progress, this.onMusicChange);
-        const voice_ctrl = new ProgressCtrl(voice_progress, this.onVoiceChange);
+        const music_ctrl = new LayaProgressCtrl(
+            music_progress,
+            this.onMusicChange,
+        );
+        const voice_ctrl = new LayaProgressCtrl(
+            voice_progress,
+            this.onVoiceChange,
+        );
 
         voice_ctrl.setProgress(voice);
         music_ctrl.setProgress(music);

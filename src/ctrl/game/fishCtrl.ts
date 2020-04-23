@@ -64,7 +64,6 @@ export class FishCtrl extends ComponentManager {
                 fishList.push(fish.id);
             }
         }
-        activeExploding(bombPoint);
         sendToGameSocket(ServerEvent.FishBomb, {
             bombPoint,
             eid,

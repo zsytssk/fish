@@ -12,6 +12,7 @@ import { BgMonitorEvent } from 'utils/bgMonitor';
 import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
 import { getLang } from './hallCtrlUtil';
+import { asyncOnly } from 'utils/asyncQue';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -90,16 +91,18 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
     bg_monitor.event.offAllCaller(bindObj);
 }
 
-export function ErrorHandler(code: number) {
+export function errorHandler(code: number) {
     const lang = getLang();
     const tip = InternationalTipOther[lang][code];
     if (code === ServerErrCode.ReExchange) {
         disableCurUserOperation();
-        return AlertPop.alert(tip).then(type => {
-            if (type === 'confirm') {
-                return sendToGameSocket(ServerEvent.ExchangeBullet);
-            }
-            sendToGameSocket(ServerEvent.RoomOut);
+        return asyncOnly(tip, () => {
+            return AlertPop.alert(tip).then(type => {
+                if (type === 'confirm') {
+                    return sendToGameSocket(ServerEvent.ExchangeBullet);
+                }
+                sendToGameSocket(ServerEvent.RoomOut);
+            });
         });
     }
     if (tip) {

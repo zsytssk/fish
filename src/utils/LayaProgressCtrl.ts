@@ -9,7 +9,7 @@ export type ProgressUI = Sprite & {
     progress_bar: ProgressBar;
 };
 /** 控制进度的ctrl */
-export default class ProgressCtrl {
+export default class LayaProgressCtrl {
     /** 控制的ui */
     private view: ProgressUI;
     /** 改变progress的执行函数 */

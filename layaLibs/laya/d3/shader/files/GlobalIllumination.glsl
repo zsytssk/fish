@@ -60,17 +60,37 @@ uniform vec4 u_ReflectCubeHDRParams;
 	}
 #endif
 
+mediump vec3 layaDecodeDirectionalLightmap (mediump vec3 color, lowp vec4 dirTex, mediump vec3 normalWorld)
+{
+    // In directional (non-specular) mode Enlighten bakes dominant light direction
+    // in a way, that using it for half Lambert and then dividing by a "rebalancing coefficient"
+    // gives a result close to plain diffuse response lightmaps, but normalmapped.
+
+    // Note that dir is not unit length on purpose. Its length is "directionality", like
+    // for the directional specular lightmaps.
+	lowp vec3 directional=dirTex.xyz - 0.5;
+	directional.x=-directional.x;//NOTE:because coord System
+    mediump float halfLambert = dot(normalWorld,directional) + 0.5;
+
+    return color * halfLambert / max(1e-4, dirTex.w);
+}
 
 vec3 layaGIBase(LayaGIInput giInput,mediump float occlusion, mediump vec3 normalWorld)
 {
 	vec3 indirectDiffuse;
 	#ifdef LIGHTMAP	
-		indirectDiffuse =decodeHDR(texture2D(u_LightMap, giInput.lightmapUV),5.0);
+		mediump vec3 bakedColor =decodeHDR(texture2D(u_LightMap, giInput.lightmapUV),5.0);
+		#ifdef LIGHTMAP_DIRECTIONAL
+			lowp vec4 bakedDirTex = texture2D (u_LightMapDirection, giInput.lightmapUV);
+            indirectDiffuse = layaDecodeDirectionalLightmap (bakedColor, bakedDirTex, normalWorld);
+		#else //unDirectional lightmap
+			indirectDiffuse = bakedColor;
+		#endif
 	#else
 		#ifdef GI_AMBIENT_SH
 			indirectDiffuse = shadeSHPerPixel(normalWorld);
 		#else
-			indirectDiffuse = u_AmbientColor;//already in gamma space
+			indirectDiffuse = u_AmbientColor; //already in gamma space
 		#endif
 	#endif
 
@@ -111,6 +131,5 @@ LayaGI layaGlobalIllumination(LayaGIInput giInput,mediump float occlusion, mediu
 	gi.specular = layaGIIndirectSpecular(giInput,occlusion, uvwRoughness);
 	return gi;
 }
-
 
 

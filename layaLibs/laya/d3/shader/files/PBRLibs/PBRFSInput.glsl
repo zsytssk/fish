@@ -51,6 +51,9 @@ uniform float u_SmoothnessScale;
 #ifdef LIGHTMAP
 	varying vec2 v_LightMapUV;
 	uniform sampler2D u_LightMap;
+	#ifdef LIGHTMAP_DIRECTIONAL
+		uniform sampler2D u_LightMapDirection;
+	#endif
 #endif
 
 varying vec3 v_Normal; 
@@ -93,14 +96,8 @@ varying vec3 v_EyeVec;
 //后面考虑宏TODO
 varying vec3 v_PositionWorld;
 
-varying float v_posViewZ;
-#ifdef RECEIVESHADOW
-	#if defined(SHADOWMAP_PSSM2)||defined(SHADOWMAP_PSSM3)
-		uniform mat4 u_lightShadowVP[4];
-	#endif
-	#ifdef SHADOWMAP_PSSM1 
-		varying vec4 v_lightMVPPos;
-	#endif
+#if defined(CALCULATE_SHADOWS)&&!defined(SHADOW_CASCADE)
+	varying vec4 v_ShadowCoord;
 #endif
 
 
@@ -121,7 +118,7 @@ mediump float lerpOneTo(mediump float b, mediump float t)
 	}
 #endif
 
-mediump float alpha(vec2 uv)
+mediump float getAlpha(vec2 uv)
 {
 	#ifdef SMOOTHNESSSOURCE_ALBEDOTEXTURE_ALPHA
 		return u_AlbedoColor.a;
@@ -134,7 +131,7 @@ mediump float alpha(vec2 uv)
 	#endif
 }
 
-mediump float occlusion(vec2 uv)
+mediump float getOcclusion(vec2 uv)
 {
 	#ifdef OCCLUSIONTEXTURE
 		mediump float occ = texture2D(u_OcclusionTexture, uv).g;
@@ -154,7 +151,7 @@ mediump vec3 albedo(vec2 uv)
 	//TODO:Detail Texture
 }
 
-mediump vec2 metallicGloss(vec2 uv)
+mediump vec2 getMetallicGloss(vec2 uv)
 {
 	mediump vec2 ms;//x is metallic,y is smoothness
 	#ifdef METALLICGLOSSTEXTURE

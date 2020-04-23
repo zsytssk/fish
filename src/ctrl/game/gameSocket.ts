@@ -1,4 +1,4 @@
-import { commonSocket, ErrorHandler, offCommon } from 'ctrl/hall/commonSocket';
+import { commonSocket, errorHandler, offCommon } from 'ctrl/hall/commonSocket';
 import { WebSocketTrait } from 'ctrl/net/webSocketWrap';
 import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
 import { SkillMap } from 'data/config';
@@ -36,7 +36,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             if (code !== 200) {
-                return ErrorHandler(code);
+                return errorHandler(code);
             }
             game.onHit(data);
         },

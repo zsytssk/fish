@@ -59,7 +59,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
     runner.describe(ServerEvent.Shoot, async () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
-            sleep(1).then(() => {
+            sleep(0.1).then(() => {
                 event.emit(ServerEvent.Shoot, {
                     userId: test_data.userId,
                     direction: data.direction,
@@ -111,12 +111,16 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                     });
                 }
 
-                event.emit(ServerEvent.FishBomb, {
-                    userId: test_data.userId,
-                    bombPoint,
-                    count: 1000,
-                    killedFish: fish_arr,
-                } as UseBombRep);
+                event.emit(
+                    ServerEvent.FishBomb,
+                    {
+                        userId: test_data.userId,
+                        bombPoint,
+                        count: 1000,
+                        killedFish: [],
+                    } as UseBombRep,
+                    200,
+                );
             });
         });
     });

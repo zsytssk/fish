@@ -5,7 +5,7 @@ import { LotteryPopData } from './lottery';
 import { ctrlState } from 'ctrl/ctrlState';
 import { modelState } from 'model/modelState';
 import { ChangeUserNumInfo } from 'ctrl/game/gameCtrl';
-import { ErrorHandler } from 'ctrl/hall/commonSocket';
+import { errorHandler } from 'ctrl/hall/commonSocket';
 
 export function getShopInfo() {
     return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
             if (code !== 200) {
-                return ErrorHandler(code);
+                return errorHandler(code);
             }
 
             const userId = modelState.app.user_info.user_id;
