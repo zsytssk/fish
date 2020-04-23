@@ -1,6 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
-import LayaProgressCtrl from 'utils/LayaProgressCtrl';
+import LayaProgressCtrl from 'utils/layaProgressCtrl';
 import { modelState } from 'model/modelState';
 import { AudioRes } from 'data/audioRes';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
