@@ -28,6 +28,7 @@ export class BulletCtrl {
         view.scale(0.8, 0.8);
         playSkeleton(view, getBulletAniSkin(skin_level), true);
         // playSkeleton(view, skin_level, true);
+        view.zOrder = 301;
     }
     private initEvent() {
         const { view } = this;

@@ -2,6 +2,8 @@ import { AppModel } from './appModel';
 import { BodyCom } from './game/com/bodyCom';
 import { detectCollision } from './game/com/bodyComUtil';
 import { FishModel } from './game/fish/fishModel';
+import { Laya } from 'Laya';
+import { Config } from 'data/config';
 
 type ModelState = {
     app: AppModel;
@@ -40,8 +42,12 @@ export function getFishById(id: string) {
  */
 export function getAimFish() {
     const { game } = modelState.app;
-    const fish_list = game.getAllFish();
-    fish_list.sort((a, b) => {
+    let fish_list = game.getAllFish();
+    fish_list = fish_list.filter(fish => {
+        return fish.visible && detectInScreen(fish.pos);
+    });
+
+    fish_list = fish_list.sort((a, b) => {
         return b.score - a.score;
     });
 
@@ -50,6 +56,18 @@ export function getAimFish() {
             return fish;
         }
     }
+}
+/** 获取锁定提示鱼
+ * 满足两个条件 分数最高 + 没有游离屏幕...
+ */
+export function detectInScreen(pos: Point) {
+    const { width } = Laya.stage;
+    const { PoolWidth: pool_width } = Config;
+    const start = (pool_width - width) / 2;
+    const end = start + width;
+    const { x } = pos;
+
+    return x > start && x < end;
 }
 /** 检测碰撞到鱼: 获取第一个 */
 export function getCollisionFish(ori_body: BodyCom) {
@@ -71,10 +89,10 @@ export function getCollisionAllFish(
         if (contain_list.indexOf(fish) !== -1) {
             continue;
         }
-        const { body, visible, be_capture } = fish;
+        const { body, visible } = fish;
 
         /** 鱼还没有显示 不需要做碰撞检测... */
-        if (!visible || be_capture) {
+        if (!visible) {
             continue;
         }
 

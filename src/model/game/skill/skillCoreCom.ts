@@ -44,6 +44,7 @@ export const SkillEvent = {
     UpdateRadio: 'update_radio',
     ActiveSkill: 'active_skill',
     DisableSkill: 'disable_skill',
+    Destroy: 'destroy',
 };
 export class SkillCoreCom extends ComponentManager {
     /** 技能对应的id */
@@ -137,6 +138,10 @@ export class SkillCoreCom extends ComponentManager {
     }
     /** 重置 */
     public reset() {
+        if (this.status === SkillStatus.Active) {
+            return;
+        }
+        console.warn(`SkillCoreCom:>reset:>`);
         this.setStatus(SkillStatus.Normal);
         clearCount(this.count_index);
     }
@@ -146,7 +151,9 @@ export class SkillCoreCom extends ComponentManager {
     }
     /** 清除 */
     public destroy() {
+        this.event.emit(SkillEvent.Destroy);
         this.setStatus(SkillStatus.Normal);
         clearCount(this.count_index);
+        super.destroy();
     }
 }

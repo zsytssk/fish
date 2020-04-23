@@ -18,7 +18,7 @@ export async function localTest() {
     await mock_web_socket_test.runTest('create');
     modelState.app.user_info.setUserId(test_data.userId);
     mock_web_socket_test.runTest(ServerEvent.Shoot);
-    mock_web_socket_test.runTest(ServerEvent.Hit);
+    // mock_web_socket_test.runTest(ServerEvent.Hit);
     mock_web_socket_test.runTest(ServerEvent.FishBomb);
     mock_web_socket_test.runTest(ServerEvent.UseBomb);
     mock_web_socket_test.runTest(ServerEvent.UseLock);

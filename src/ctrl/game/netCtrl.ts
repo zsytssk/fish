@@ -25,6 +25,7 @@ export class NetCtrl {
         }
         playSkeleton(view, skin_level, false);
         this.initEvent();
+        view.zOrder = 301;
     }
     private initEvent() {
         const { view } = this;

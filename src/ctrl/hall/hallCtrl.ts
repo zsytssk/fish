@@ -15,7 +15,7 @@ import {
     onNicknameChange,
     offLangChange,
 } from './hallCtrlUtil';
-import { onHallSocket, roomIn, hallSocket, offHallSocket } from './hallSocket';
+import { onHallSocket, roomIn, offHallSocket } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
 import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
@@ -27,7 +27,7 @@ export class HallCtrl {
         this.init();
     }
     private static instance: HallCtrl;
-    public static preEnter() {
+    public static async preEnter() {
         if (this.instance) {
             return this.instance;
         }

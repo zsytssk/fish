@@ -47,6 +47,11 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
         border_light.visible = false;
         stopSkeleton(border_light);
     }
+    public setShortcut(name: string) {
+        const { shortcut_label } = this;
+        shortcut_label.visible = true;
+        shortcut_label.text = name;
+    }
     /** 显示技能的冷却时间 */
     public showCoolTime(radio: number) {
         const { cool_mask, overlay } = this;

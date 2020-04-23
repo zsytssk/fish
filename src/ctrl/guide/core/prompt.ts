@@ -413,7 +413,6 @@ function spliceStr(str: string, len: number) {
             const item_str = len > 0 ? item : item.slice(0, item.length + len);
             result.push(item_str);
             if (i !== str_arr.length - 1 && len > 0) {
-                console.log(i, str_arr.length - 1);
                 result.push('<br/>');
                 len--;
             }

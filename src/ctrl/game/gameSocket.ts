@@ -260,13 +260,14 @@ function convertAUtoShootData(data: AutoShootRep): AutoShootInfo {
 //     };
 // }
 function convertLockFishData(data: LockFishRep): LockFishActiveInfo {
-    const { userId: user_id, eid: fish, needActive, duration } = data;
+    const { userId: user_id, eid: fish, needActive, duration, count } = data;
     return {
         user_id,
         fish,
         needActive,
         duration: duration / 1000,
         used_time: 0,
+        num: Number(count),
     };
 }
 

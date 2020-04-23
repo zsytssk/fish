@@ -98,6 +98,7 @@ export class BulletModel extends ComponentManager {
         const { pos, velocity: direction } = move_info;
 
         this.pos = { ...move_info.pos };
+        this.velocity = direction;
         this.event.emit(BulletEvent.Move, {
             pos,
             velocity: direction,

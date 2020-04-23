@@ -43,5 +43,6 @@ const GuideConfig = {
     '1': async () => {
         const in_power = new NewUserGuide();
         await in_power.start('1');
+        localStorage.setItem('guide', 'end');
     },
 };

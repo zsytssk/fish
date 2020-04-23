@@ -13,6 +13,7 @@ import { Laya } from 'Laya';
 import { sleep } from 'utils/animate';
 import { BgMonitor } from 'utils/bgMonitor';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
+import { gotoGuide } from './guide/guideConfig';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -22,7 +23,7 @@ export class AppCtrl {
     constructor() {
         this.startApp();
     }
-    public startApp() {
+    public async startApp() {
         ctrlState.app = this;
         const model = new AppModel();
         this.model = model;
@@ -34,15 +35,17 @@ export class AppCtrl {
             });
         });
 
-        return this.startHonor().then(() => {
-            this.keyboard_number = new KeyBoardNumber();
-            sleep(0.5).then(() => {
-                platform.hideLoading();
-            });
-            HallCtrl.preEnter();
-
-            // gotoGuide('1', '1');
+        await this.startHonor();
+        this.keyboard_number = new KeyBoardNumber();
+        await sleep(0.5).then(() => {
+            platform.hideLoading();
         });
+        await HallCtrl.preEnter();
+        await sleep(1);
+        if (localStorage.getItem('guide') !== 'end') {
+            gotoGuide('1', '1');
+        }
+        // Loading.instance.event_com.on(Loading.)
     }
     /** 初始化 honor */
     private async startHonor() {

@@ -1,11 +1,11 @@
 import { createImg } from 'honor/utils/createSkeleton';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Image } from 'laya/ui/Image';
 import { FishEvent, FishModel } from 'model/game/fish/fishModel';
 import * as SAT from 'sat';
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { Image } from 'laya/ui/Image';
 
 /** 追踪子弹的动画 */
 type AimState = {
@@ -39,7 +39,6 @@ export function activeAimFish(
     show_points?: boolean,
     ori_pos?: Point,
 ) {
-    console.warn(`activeAimFish`);
     const aim_ani = createAim('aim');
     const { fish: ori_fish } = state;
     const { pos } = fish;

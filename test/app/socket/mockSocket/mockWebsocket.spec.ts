@@ -59,10 +59,10 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
     runner.describe(ServerEvent.Shoot, async () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
-            sleep(0.1).then(() => {
+            sleep(1).then(() => {
                 event.emit(ServerEvent.Shoot, {
                     userId: test_data.userId,
-                    direction: data.direction,
+                    direction: { x: 1, y: 1 },
                 } as ShootRep);
             });
         });
@@ -178,36 +178,25 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         await game_test.runTest('enter_game');
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
-        sendEvent.on(ServerEvent.UseLock, () => {
-            sleep(0.1).then(() => {
-                const fish_model_arr = modelState.app.game.getAllFish();
-                const fish_arr = fish_model_arr.map(item => {
-                    return item.id;
-                });
-
-                event.emit(
-                    ServerEvent.UseLock,
-                    {
-                        userId: test_data.userId,
-                        duration: 0,
-                        count: 1000,
-                        lockedFish: fish_arr[0],
-                    } as UseLockRep,
-                    200,
-                );
-            });
-        });
+        let needActive = true;
         sendEvent.on(ServerEvent.LockFish, (data: LockFishRep) => {
             sleep(0.1).then(() => {
                 const { eid } = data;
                 event.emit(
                     ServerEvent.LockFish,
                     {
+                        needActive,
+                        duration: 3000,
+                        count: 1000,
                         userId: test_data.userId,
                         eid,
                     } as LockFishReq,
                     200,
                 );
+
+                if (needActive) {
+                    needActive = false;
+                }
             });
         });
     });

@@ -1,20 +1,23 @@
-import SkillItemView from 'view/scenes/game/skillItemView';
-import { SkillModel } from 'model/game/skill/skillModel';
+import { BombModel } from 'model/game/skill/bombModel';
 import { SkillEvent, SkillStatus } from 'model/game/skill/skillCoreCom';
+import { SkillModel } from 'model/game/skill/skillModel';
+import { Subscription } from 'rxjs';
+import SkillItemView from 'view/scenes/game/skillItemView';
 import {
+    onTrigger,
     skillActiveHandler,
     skillDisableHandler,
-    skillPreActiveHandler,
     skillNormalActiveHandler,
+    skillPreActiveHandler,
+    getShortcut,
 } from './skillCtrlUtils';
-import { Event } from 'laya/events/Event';
-import { BombModel } from 'model/game/skill/bombModel';
-import { Laya } from 'Laya';
+import { LockFishModel } from 'model/game/skill/lockFishModel';
 
 export class SkillCtrl {
     private is_cur_player = false;
     private view: SkillItemView;
     private model: SkillModel;
+    private bindTrigger: Subscription;
     /**
      * @param view 对应的动画
      * @param model 对应的model
@@ -49,7 +52,10 @@ export class SkillCtrl {
                 view.clearCoolTime();
                 skillDisableHandler(model);
             } else if (status === SkillStatus.PreActive) {
-                if (model instanceof BombModel) {
+                if (
+                    model instanceof BombModel ||
+                    model instanceof LockFishModel
+                ) {
                     view.highlight();
                 }
             }
@@ -60,8 +66,11 @@ export class SkillCtrl {
         event.on(SkillEvent.UpdateRadio, (radio: number) => {
             view.showCoolTime(radio);
         });
-        view.on(Event.CLICK, view, (e: Event) => {
-            e.stopPropagation();
+        event.on(SkillEvent.Destroy, () => {
+            this.destroy();
+        });
+        view.setShortcut(getShortcut(model));
+        this.bindTrigger = onTrigger(model, view).subscribe(() => {
             if (model.skill_core.status === SkillStatus.Normal) {
                 skillPreActiveHandler(model);
             } else if (model.skill_core.status === SkillStatus.PreActive) {
@@ -77,5 +86,8 @@ export class SkillCtrl {
         }
         view.setId(item_id);
         view.setNum(num);
+    }
+    private destroy() {
+        this.bindTrigger.unsubscribe();
     }
 }

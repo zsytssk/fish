@@ -164,6 +164,7 @@ type LockFishRep = {
     duration: number;
     needActive: boolean;
     eid: string;
+    count: number;
 };
 type FishBombReq = {
     bombPoint: Point;
