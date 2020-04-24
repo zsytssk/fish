@@ -42,7 +42,7 @@ export function createFishGroup(
     data: ServerFishInfo,
     game: GameModel,
 ): FishModel[] {
-    const { fishId: groupType, group } = data;
+    const { fishId: groupType, group, score } = data;
     const result = [] as FishModel[];
     const { group: sprite_group } = getSpriteInfo(
         'fish',
@@ -122,7 +122,7 @@ export function createFishGroup(
     });
     for (let i = 0; i < group.length; i++) {
         const { type, pos } = sprite_group[i];
-        const { eid: id, score } = group[i];
+        const { eid: id } = group[i];
         const [onUpdate, destroy, start, stop] = createUpdateFn(
             (move_info: MoveInfo) => {
                 const { pos: _pos, ...other } = move_info;

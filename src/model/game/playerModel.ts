@@ -184,6 +184,7 @@ export class PlayerModel extends ComponentManager {
         for (const [, skill] of skill_map) {
             skill.destroy();
         }
+
         gun.destroy();
         game.removePlayer(this);
         this.event.emit(PlayerEvent.Destroy);

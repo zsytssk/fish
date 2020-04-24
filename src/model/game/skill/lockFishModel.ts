@@ -17,9 +17,8 @@ import { log } from 'utils/log';
 export type LockFishActiveInfo = {
     user_id?: string;
     fish: string;
-    /** 是否是提示 */
-    is_tip?: boolean;
     duration?: number;
+    /** 是否激活 */
     needActive: boolean;
 } & SkillActiveInfo;
 
@@ -59,16 +58,19 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     }
     public init() {
         const { timeout, skill_core } = this;
-        const { lock_fish, lock_left } = this.init_info;
-        skill_core.init();
-        if (lock_fish) {
+        const { lock_fish, lock_left, ...other } = this.init_info;
+
+        if (lock_left) {
             timeout.createTimeout(() => {
                 this.active({
+                    ...other,
                     fish: lock_fish,
-                    used_time: lock_left,
-                    needActive: false,
+                    duration: lock_left + other.used_time,
+                    needActive: true,
                 });
             });
+        } else {
+            skill_core.init();
         }
         this.gun = this.skill_core.player.gun;
     }
@@ -88,6 +90,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         const { skill_core } = this;
         const { fish, needActive } = info;
 
+        console.warn(`test:>lockFish:>1:>`, info);
         if (needActive) {
             skill_core.active(info, status => {
                 if (status === SkillStatus.Disable) {
@@ -95,6 +98,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
                 }
             });
         }
+
         const fish_model = getFishById(fish);
         if (!fish_model) {
             return console.error(`cant find fish for eid=${fish}`);
@@ -213,5 +217,16 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     public disable() {
         const { skill_core } = this;
         skill_core.disable();
+    }
+    public destroy() {
+        const { fish } = this;
+        fish?.event?.offAllCaller(this);
+        this.unLock();
+
+        this.fish = undefined;
+        this.skill_core = undefined;
+        this.gun = undefined;
+
+        super.destroy();
     }
 }

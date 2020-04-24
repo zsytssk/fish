@@ -4,6 +4,7 @@
 
 # build file
 release/
+/build/
 /bin/*
 !/bin/bitgame/
 !/bin/favicon/

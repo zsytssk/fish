@@ -168,11 +168,11 @@ export class GameModel extends ComponentManager {
     }
     public clear() {
         const { fish_list, player_list } = this;
-        for (const fish of fish_list) {
-            fish.destroy();
-        }
         for (const player of player_list) {
             player.destroy();
+        }
+        for (const fish of fish_list) {
+            fish.destroy();
         }
         this.fish_list.clear();
         this.player_list.clear();

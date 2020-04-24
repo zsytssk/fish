@@ -1,3 +1,5 @@
+import { getLang, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from 'data/internationalConfig';
 import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
@@ -8,15 +10,14 @@ import { default as random } from 'lodash/random';
 import { Observable, Subscriber } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { ui } from 'ui/layaMaxUI';
-import { fade_in, setStyle } from 'utils/animate';
-import { createSprite, getSpriteInfo } from 'utils/dataUtil';
+import { fade_in } from 'utils/animate';
+import { getSpriteInfo } from 'utils/dataUtil';
 import { playSkeleton, playSkeletonOnce, setProps } from 'utils/utils';
+import { createSkeletonPool } from 'view/viewStateUtils';
 import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
-import { getLang, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
@@ -140,7 +141,7 @@ export default class GameView extends ui.scenes.game.gameUI
         const { path } = getSpriteInfo('bullet', skin) as SpriteInfo;
         let bullet: Skeleton;
         if (!rage) {
-            bullet = createSkeleton(path);
+            bullet = createSkeletonPool('bullet', skin) as Skeleton;
         } else {
             bullet = createSkeleton(`${path}_rage`);
         }
@@ -150,7 +151,7 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     public addNet(skin: string) {
         const { pool } = this;
-        const net = createSprite('net', skin);
+        const net = createSkeletonPool('net', skin);
         pool.addChild(net);
         return net;
     }

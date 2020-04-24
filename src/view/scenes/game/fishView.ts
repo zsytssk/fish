@@ -5,6 +5,7 @@ import { createRedFilter, playSkeleton, stopSkeleton } from 'utils/utils';
 import { vectorToDegree } from 'utils/mathUtils';
 import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { createSkeletonPool, recoverSkeletonPool } from 'view/viewStateUtils';
 
 export type FishViewInfo = {
     type: string;
@@ -34,7 +35,8 @@ export class FishView extends Sprite {
             return;
         }
         const { type } = this.info;
-        const fish_ani = createSkeleton('ani/fish/fish' + type);
+        const fish_ani = createSkeletonPool('fish', type) as Skeleton;
+        // const fish_ani = createSkeleton('ani/fish/fish' + type);
         const { offset, turn_ani } = getSpriteInfo(
             'fish',
             type,
@@ -125,6 +127,8 @@ export class FishView extends Sprite {
         });
     }
     public destroy() {
+        const { type } = this.info;
+        recoverSkeletonPool('fish', type, this.fish_ani);
         clearTimeout(this.time_out);
         super.destroy();
     }

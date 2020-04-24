@@ -64,9 +64,11 @@ export function commonTest() {
         const url = getParams('url');
         const code = getParams('code');
         if (url) {
-            Config.SocketUrl = url;
-            Config.code = code;
+            Config.SocketUrl = `ws://` + url;
+        }
+        if (code) {
             Config.isLogin = true;
+            Config.code = code;
         }
     });
 }

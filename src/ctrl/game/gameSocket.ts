@@ -158,6 +158,7 @@ export function convertEnterGame(data: EnterGameRep) {
                 ...skills[SkillMap.LockFish],
                 lock_fish: lockFish,
                 lock_left: lockLeft / 1000,
+                needActive: true,
             } as LockFishInitInfo;
         }
 

@@ -46,7 +46,6 @@ type ServerFishInfo = {
     fishId: string;
     group?: {
         eid: string;
-        score: number;
         index: number;
     }[];
     displaceType: displaceType;

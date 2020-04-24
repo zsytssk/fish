@@ -44,3 +44,15 @@ var platform = {
 };
 
 // loadLib('./js/bundle.js?v=' + CDN_VERSION);
+// var platform = {
+//     hideLoading() {},
+//     login() {},
+//     logout() {},
+//     getInfo() {
+//         return {
+//             isLogin: true,
+//             token: '',
+//             socket_url: '',
+//         };
+//     },
+// };

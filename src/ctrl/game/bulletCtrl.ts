@@ -6,6 +6,7 @@ import { ModelEvent } from 'model/modelEvent';
 import { addNet } from 'view/viewState';
 import { playSkeleton } from 'utils/utils';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { recoverSkeletonPool } from 'view/viewStateUtils';
 
 /** 子弹的控制器 */
 export class BulletCtrl {
@@ -31,7 +32,6 @@ export class BulletCtrl {
         view.zOrder = 301;
     }
     private initEvent() {
-        const { view } = this;
         const { event } = this.model;
 
         event.on(BulletEvent.Move, this.syncPos);
@@ -40,7 +40,7 @@ export class BulletCtrl {
             const net_ctrl = new NetCtrl(net_view, net_model);
         });
         event.on(ModelEvent.Destroy, () => {
-            view.destroy();
+            this.destroy();
         });
     }
     private syncPos = () => {
@@ -59,6 +59,10 @@ export class BulletCtrl {
         view.rotation = angle;
         view.pos(pos.x, pos.y);
     }; // tslint:disable-line
+    public destroy() {
+        this.model.event.offAllCaller(this);
+        recoverSkeletonPool('bullet', this.model.skin, this.view);
+    }
 }
 
 function getBulletAniSkin(skin_level: string) {

@@ -111,10 +111,23 @@ export class SkillCoreCom extends ComponentManager {
         /** 倒计时的时间间隔 */
         const count_delta = 0.05;
         const cool_remain_time = cool_time - used_time;
-        const duration_remain_time = duration - used_time;
+        let duration_remain_time = duration - used_time;
+
+        /**
+         * 如果 duration === cool_time, 有时候 duration > cool_time;
+         * 这会导致disable无法执行
+         */
+        if (duration_remain_time > cool_remain_time) {
+            duration_remain_time = cool_remain_time;
+        }
 
         this.setNum(num);
         this.setStatus(SkillStatus.Active);
+        console.warn(
+            `test:>lockFish:>2:>`,
+            cool_remain_time,
+            duration_remain_time,
+        );
         this.count_index = startCount(
             cool_remain_time,
             count_delta,

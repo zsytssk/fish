@@ -50,12 +50,7 @@ export function getAimFish() {
     fish_list = fish_list.sort((a, b) => {
         return b.score - a.score;
     });
-
-    for (const fish of fish_list) {
-        if (fish.visible) {
-            return fish;
-        }
-    }
+    return fish_list[0];
 }
 /** 获取锁定提示鱼
  * 满足两个条件 分数最高 + 没有游离屏幕...

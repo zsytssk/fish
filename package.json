@@ -11,7 +11,7 @@
     },
     "scripts": {
         "start": "webpack-dev-server --ENV=DEV --mode development",
-        "build": "ts-node --project ./script/tsconfig.json --files ./script/publish/publish.ts",
+        "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
         "webpack-dev": "webpack --ENV=DEV --mode development",
         "webpack-test": "webpack --ENV=TEST --mode development",
         "webpack-test-server": "webpack-dev-server --ENV=TEST --mode development",

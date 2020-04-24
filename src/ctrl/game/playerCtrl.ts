@@ -1,40 +1,35 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { errorHandler } from 'ctrl/hall/commonSocket';
 import { AudioRes } from 'data/audioRes';
-import { ServerEvent, ServerErrCode } from 'data/serverEvent';
+import { ServerErrCode, ServerEvent } from 'data/serverEvent';
+import { Laya } from 'Laya';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
 import { FishModel } from 'model/game/fish/fishModel';
 import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
 import { AutoShootModel } from 'model/game/skill/autoShootModel';
+import { getUserInfo } from 'model/modelState';
 import SAT from 'sat';
+import { log } from 'utils/log';
 import { darkNode, unDarkNode } from 'utils/utils';
-import AlertPop from 'view/pop/alert';
-import ShopPop from 'view/pop/shop';
+import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 import GunBoxView from 'view/scenes/game/gunBoxView';
 import {
     getAutoShootSkillItem,
-    setAutoShootLight,
     getGameView,
     getPoolMousePos,
     getSkillItemByIndex,
+    setAutoShootLight,
     setBulletNum,
 } from 'view/viewState';
 import { BulletCtrl } from './bulletCtrl';
-import { SkillCtrl } from './skill/skillCtrl';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { Event } from 'laya/events/Event';
-import { Laya } from 'Laya';
-import { Sprite } from 'laya/display/Sprite';
-import { log } from 'utils/log';
 import { GameCtrl } from './gameCtrl';
-import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { getUserInfo } from 'model/modelState';
 import { sendToGameSocket } from './gameSocket';
-import { errorHandler } from 'ctrl/hall/commonSocket';
+import { SkillCtrl } from './skill/skillCtrl';
 
 // prettier-ignore
 const bullet_cost_arr  =

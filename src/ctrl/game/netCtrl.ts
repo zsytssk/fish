@@ -3,6 +3,7 @@ import { ModelEvent } from 'model/modelEvent';
 import { playSkeleton } from 'utils/utils';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { viewState } from 'view/viewState';
+import { recoverSkeletonPool } from 'view/viewStateUtils';
 
 /** 网的控制器 */
 export class NetCtrl {
@@ -32,11 +33,11 @@ export class NetCtrl {
         const { event } = this.model;
 
         event.on(ModelEvent.Destroy, () => {
+            const { skin } = this.model;
             setTimeout(() => {
-                if (!view.destroyed) {
-                    view.destroy();
-                }
+                recoverSkeletonPool('net', skin, this.view);
             }, 1000);
+            event.offAllCaller(this);
         });
     }
 }

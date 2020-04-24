@@ -72,7 +72,10 @@ export class FishModel extends ComponentManager {
     private initCom(data: FishData) {
         const { type, id, score } = data;
 
-        setProps(this as FishModel, { type, id, score } as FishData);
+        setProps(
+            this as FishModel,
+            { type, id, score: score || 0 } as FishData,
+        );
         const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;
         if (sprite_info.ani_type === 'horizon_turn') {
