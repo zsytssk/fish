@@ -3,26 +3,25 @@ import { ui } from 'ui/layaMaxUI';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
 import { Event } from 'laya/events/Event';
-import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
-    hide_cancel: boolean;
+    hide_cancel?: boolean;
+    confirm_text?: string;
 };
 export default class AlertPop extends ui.pop.alert.alertUI
     implements HonorDialog {
     public isModal = true;
     public close_resolve: (type: CloseType) => void;
+    public zOrder = 100;
     public static async alert(msg: string, opt?: Opt) {
         AudioCtrl.play(AudioRes.PopShow);
         const alert = (await honor.director.openDialog(AlertPop)) as AlertPop;
         return await alert.alert(msg, opt);
     }
     public onAwake() {
-        onLangChange(this, lang => {
-            this.initLang(lang);
-        });
         this.initEvent();
     }
     private initEvent() {
@@ -37,9 +36,11 @@ export default class AlertPop extends ui.pop.alert.alertUI
         });
     }
     public alert(msg: string, opt = {} as Opt) {
+        this.initLang();
+
         return new Promise((resolve, reject) => {
-            const { hide_cancel } = opt;
-            const { label, btn_cancel, btn_confirm } = this;
+            const { hide_cancel, confirm_text } = opt;
+            const { label, btn_cancel, btn_confirm, btn_confirm_label } = this;
             label.text = msg;
             this.close_resolve = resolve;
 
@@ -50,18 +51,23 @@ export default class AlertPop extends ui.pop.alert.alertUI
                 btn_cancel.visible = true;
                 btn_confirm.x = 255;
             }
+
+            if (confirm_text) {
+                btn_confirm_label.text = confirm_text;
+            }
         }) as Promise<CloseType>;
     }
     public close(type: CloseType) {
         AudioCtrl.play(AudioRes.Click);
-        const { close_resolve } = this;
+        const { close_resolve, btn_confirm_label } = this;
         if (close_resolve) {
             close_resolve(type);
         }
         this.close_resolve = undefined;
         super.close(type);
     }
-    private initLang(lang: Lang) {
+    private initLang() {
+        const lang = getLang();
         const { title, btn_confirm_label, btn_cancel_label } = this;
         const { tips, cancel, confirm } = InternationalTip[lang];
         title.text = tips;

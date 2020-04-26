@@ -433,6 +433,7 @@ const InternationalTip2 = {
         buyTip: '确认花费$1个$2, 购买$3个$4.',
         beyondBulletNum: '超出当前的子弹数目',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
+        noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
     },
 };

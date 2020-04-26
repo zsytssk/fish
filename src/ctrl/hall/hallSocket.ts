@@ -99,7 +99,7 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
                     }
                     return;
                 } else if (code !== 200) {
-                    errorHandler(code);
+                    return errorHandler(code);
                 }
                 resolve(_data.socketUrl);
             },

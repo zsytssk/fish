@@ -12,6 +12,7 @@ import {
     getSocket,
 } from '../net/webSocketWrapUtil';
 import { log } from 'utils/log';
+import { saveItem, getItem } from 'utils/localStorage';
 
 /** 登陆用的脚本 */
 export async function initHallSocket() {
@@ -80,9 +81,13 @@ export function connectSocket(config: SocketConfig) {
             return;
         }
 
-        /** 获取token */
+        /** 获取 本地保存的 token */
+        token = getItem('local_token');
+        if (!token) {
+            token = await getGuestToken(socket);
+            saveItem('local_token', token, 7);
+        }
         /** 游客的token */
-        token = await getGuestToken(socket);
         socket.setParams({ jwt: token });
         Config.token = token;
         log('我自己的token:', token);
@@ -93,8 +98,8 @@ export function onSocketCreate(name: string) {}
 
 export function getGuestToken(socket: WebSocketTrait) {
     return new Promise((resolve, reject) => {
-        socket.event.once(ServerEvent.GetGuestToken, (token: string) => {
-            resolve(token);
+        socket.event.once(ServerEvent.GetGuestToken, (res: { jwt: string }) => {
+            resolve(res.jwt);
         });
         socket.send(ServerEvent.GetGuestToken);
     }) as Promise<string>;

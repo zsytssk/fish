@@ -97,7 +97,7 @@ export async function mockSocket() {
                 {
                     userId: user_id,
                     eid: data.eid,
-                    win: 1,
+                    win: 2,
                 } as HitRep,
                 200,
             );

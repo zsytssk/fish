@@ -128,7 +128,10 @@ export class FishView extends Sprite {
     }
     public destroy() {
         const { type } = this.info;
+
+        this.fish_ani.filters = [];
         recoverSkeletonPool('fish', type, this.fish_ani);
+
         clearTimeout(this.time_out);
         super.destroy();
     }

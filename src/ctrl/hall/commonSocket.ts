@@ -63,7 +63,10 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         [SocketEvent.End]: () => {
             const lang = getLang();
             const { logoutTip } = InternationalTip[lang];
-            AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
+
+            AlertPop.alert(logoutTip, {
+                hide_cancel: true,
+            }).then(type => {
                 location.reload();
             });
         },
@@ -94,6 +97,8 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
 export function errorHandler(code: number) {
     const lang = getLang();
     const tip = InternationalTipOther[lang][code];
+    const { noMoneyConfirm } = InternationalTipOther[lang];
+
     if (code === ServerErrCode.ReExchange) {
         disableCurUserOperation();
         return asyncOnly(tip, () => {
@@ -105,11 +110,13 @@ export function errorHandler(code: number) {
             });
         });
     } else if (code === ServerErrCode.NoMoney) {
-        return AlertPop.alert(tip).then(type => {
-            if (type === 'confirm') {
-                return console.warn('调用充值接口');
-            }
-        });
+        return AlertPop.alert(tip, { confirm_text: noMoneyConfirm }).then(
+            type => {
+                if (type === 'confirm') {
+                    return console.warn('调用充值接口');
+                }
+            },
+        );
     }
     if (tip) {
         TipPop.tip(tip);

@@ -23,6 +23,7 @@ export const alert_test = new Test('alert', runner => {
     runner.describe('show_alert', () => {
         AlertPop.alert('this is a test', {
             hide_cancel: true,
+            confirm_text: 'reeresrs',
         });
 
         sleep(3).then(() => {

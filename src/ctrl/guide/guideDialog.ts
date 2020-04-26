@@ -30,7 +30,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     public click_center: Point;
     /** 是否强制点击空白区域 */
     public force: boolean;
-    public zOrder = 100;
+    public zOrder = 99;
     constructor() {
         super();
         this.isShowEffect = undefined;

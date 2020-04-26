@@ -156,7 +156,7 @@ export const fish_test = new Test('fish', runner => {
 
     runner.describe('bomb_other_fish', async () => {
         for (const i of range(9, 11)) {
-            const typeId = i;
+            const typeId = 20;
             const pathId = i;
             const time = 20000000;
             const fish_data = genFishInfo(typeId, pathId, time, time / 3);

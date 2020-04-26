@@ -304,10 +304,10 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Circle',
-                    radius: 60,
+                    radius: 80,
                     position: {
                         x: 0,
-                        y: -10,
+                        y: 10,
                     },
                 },
                 // {
@@ -358,18 +358,18 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Box',
-                    width: 180,
+                    width: 220,
                     height: 80,
                 },
-                {
-                    type: 'Box',
-                    width: 20,
-                    height: 80,
-                    position: {
-                        x: -130,
-                        y: 0,
-                    },
-                },
+                // {
+                //     type: 'Box',
+                //     width: 20,
+                //     height: 80,
+                //     position: {
+                //         x: -130,
+                //         y: 0,
+                //     },
+                // },
             ],
         },
     },

@@ -18,6 +18,9 @@ export function getCacheBalance() {
     return localStorage.getItem(`${user_id}:balance`);
 }
 export function setCacheBalance(balance: string) {
+    if (balance === undefined) {
+        return;
+    }
     const user_id = getCurUserId();
     return localStorage.setItem(`${user_id}:balance`, balance);
 }

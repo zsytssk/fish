@@ -31,6 +31,7 @@ export async function localTest() {
         player_test.runTest('add_other_player', [2]);
         player_test.runTest('add_other_player', [3]);
         fish_test.runTest('add_fish');
+        fish_test.runTest('add_fish_group');
         body_test.runTest('show_shape');
     });
 }
