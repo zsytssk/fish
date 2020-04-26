@@ -73,7 +73,7 @@ export function connectSocket(config: SocketConfig) {
     return new Promise(async (resolve, reject) => {
         const socket = await createSocket(config);
 
-        const token = Config.token;
+        let token = Config.token;
         if (token) {
             socket.setParams({ jwt: token });
             resolve(socket);
@@ -81,16 +81,12 @@ export function connectSocket(config: SocketConfig) {
         }
 
         /** 获取token */
-        socket.event.once(SocketEvent.GetToken, async (jwt: string) => {
-            /** 游客的token */
-            if (!jwt) {
-                jwt = await getGuestToken(socket);
-            }
-            socket.setParams({ jwt });
-            Config.token = jwt;
-            log('我自己的token:', jwt);
-            resolve(socket);
-        });
+        /** 游客的token */
+        token = await getGuestToken(socket);
+        socket.setParams({ jwt: token });
+        Config.token = token;
+        log('我自己的token:', token);
+        resolve(socket);
     }) as Promise<WebSocketTrait>;
 }
 export function onSocketCreate(name: string) {}

@@ -9,7 +9,7 @@ import { InternationalTip } from 'data/internationalConfig';
 import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import AlertPop from 'view/pop/alert';
-import { commonSocket, offCommon } from './commonSocket';
+import { commonSocket, offCommon, errorHandler } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 import { getLang } from './hallCtrlUtil';
 import { initHallSocket } from './login';
@@ -98,6 +98,8 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
                         resolve(socketUrl);
                     }
                     return;
+                } else if (code !== 200) {
+                    errorHandler(code);
                 }
                 resolve(_data.socketUrl);
             },

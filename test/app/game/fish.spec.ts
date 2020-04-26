@@ -13,12 +13,12 @@ export const fish_test = new Test('fish', runner => {
     runner.describe(
         'add_fish',
         async (typeId: number, pathId: number, time: number) => {
-            typeId = 20;
+            typeId = 16;
             pathId = pathId || 19;
             // pathId = pathId || 3;
-            // time = time || 12 * 100000;
-            time = time || 40 * 1000;
-            const usedTime = (time * 1) / 6;
+            time = time || 12 * 100000;
+            // time = time || 40 * 1000;
+            const usedTime = (time * 1) / 3;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
         },

@@ -139,6 +139,7 @@ export function bindSocketEvent(
         event.on(key, bind_info[key], bind_obj);
     }
 }
+
 export function offSocketEvent(socket: WebSocketTrait, bind_obj: any) {
     const { event } = socket;
     event.offAllCaller(bind_obj);

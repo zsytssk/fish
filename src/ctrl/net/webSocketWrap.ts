@@ -30,13 +30,13 @@ const ping_pong_map = {
 /** 默认socket的事件 */
 export const SocketEvent = {
     Init: 'init',
-    GetToken: 'get_token',
     Connect: 'connect',
     Reconnecting: 'reconnecting',
     Reconnected: 'reconnected',
     Close: 'close',
     Error: 'error',
     End: 'end',
+    CheckError: 'CheckError',
 };
 
 export interface WebSocketTrait {
@@ -147,9 +147,9 @@ export class WebSocketWrapCtrl extends ComponentManager
                 const { cmd, res, code, msg } = data;
                 this.event.emit(cmd, res, code, msg);
                 break;
-            case ServerMsgType.PingTimeOut:
-                const { jwt } = JSON.parse(data_str);
-                this.event.emit(SocketEvent.GetToken, jwt);
+                // case ServerMsgType.PingTimeOut:
+                //     const { jwt } = JSON.parse(data_str);
+                //     this.event.emit(SocketEvent.GetToken, jwt);
                 break;
             case ServerMsgType.Error:
                 break;
@@ -157,6 +157,10 @@ export class WebSocketWrapCtrl extends ComponentManager
                 break;
         }
     }; //tslint:disable-line
+    private emitEvent(cmd: string, res: any, code: number, msg: string) {
+        if (code !== 200) {
+        }
+    }
     private onClose = () => {
         this.event.emit(SocketEvent.Close);
     }; //tslint:disable-line

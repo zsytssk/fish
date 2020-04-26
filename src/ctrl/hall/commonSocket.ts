@@ -104,6 +104,12 @@ export function errorHandler(code: number) {
                 sendToGameSocket(ServerEvent.RoomOut);
             });
         });
+    } else if (code === ServerErrCode.NoMoney) {
+        return AlertPop.alert(tip).then(type => {
+            if (type === 'confirm') {
+                return console.warn('调用充值接口');
+            }
+        });
     }
     if (tip) {
         TipPop.tip(tip);

@@ -310,22 +310,22 @@ export let SHAPE: ShapeOriData = {
                         y: -10,
                     },
                 },
-                {
-                    type: 'Circle',
-                    radius: 30,
-                    position: {
-                        x: -90,
-                        y: -90,
-                    },
-                },
-                {
-                    type: 'Circle',
-                    radius: 35,
-                    position: {
-                        x: 90,
-                        y: -100,
-                    },
-                },
+                // {
+                //     type: 'Circle',
+                //     radius: 30,
+                //     position: {
+                //         x: -90,
+                //         y: -90,
+                //     },
+                // },
+                // {
+                //     type: 'Circle',
+                //     radius: 35,
+                //     position: {
+                //         x: 90,
+                //         y: -100,
+                //     },
+                // },
             ],
         },
         '17': {

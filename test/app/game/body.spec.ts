@@ -6,7 +6,6 @@ import GameView from 'view/scenes/game/gameView';
 import honor from 'honor';
 import { Sprite } from 'laya/display/Sprite';
 import { FishView } from 'view/scenes/game/fishView';
-import { sleep } from '../../utils/testUtils';
 
 export const body_test = new Test('body', runner => {
     let init_show_shape = false;

@@ -12,6 +12,7 @@ import honor from 'honor';
 import { Laya } from 'Laya';
 import { Config } from 'data/config';
 import { ani_wrap } from './game/aniWrap.spec';
+import { body_test } from './game/body.spec';
 
 export async function localTest() {
     commonTest();
@@ -29,7 +30,8 @@ export async function localTest() {
         player_test.runTest('add_other_player', [1]);
         player_test.runTest('add_other_player', [2]);
         player_test.runTest('add_other_player', [3]);
-        fish_test.runTest('bomb_other_fish');
+        fish_test.runTest('add_fish');
+        body_test.runTest('show_shape');
     });
 }
 

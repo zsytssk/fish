@@ -79,20 +79,28 @@ export async function mockSocket() {
 
     sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
         sleep(0.01).then(() => {
-            event.emit(ServerEvent.Shoot, {
-                userId: user_id,
-                direction: data.direction,
-            } as ShootRep);
+            event.emit(
+                ServerEvent.Shoot,
+                {
+                    userId: user_id,
+                    direction: data.direction,
+                } as ShootRep,
+                200,
+            );
         });
     });
 
     sendEvent.on(ServerEvent.Hit, (data: HitReq) => {
         sleep(0.1).then(() => {
-            event.emit(ServerEvent.Hit, {
-                userId: user_id,
-                eid: data.eid,
-                win: 1,
-            } as HitRep);
+            event.emit(
+                ServerEvent.Hit,
+                {
+                    userId: user_id,
+                    eid: data.eid,
+                    win: 1,
+                } as HitRep,
+                200,
+            );
         });
     });
 
