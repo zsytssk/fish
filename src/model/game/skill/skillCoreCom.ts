@@ -123,11 +123,6 @@ export class SkillCoreCom extends ComponentManager {
 
         this.setNum(num);
         this.setStatus(SkillStatus.Active);
-        console.warn(
-            `test:>lockFish:>2:>`,
-            cool_remain_time,
-            duration_remain_time,
-        );
         this.count_index = startCount(
             cool_remain_time,
             count_delta,

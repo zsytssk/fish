@@ -61,7 +61,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
             sleep(0.1).then(() => {
                 event.emit(ServerEvent.Shoot, {
-                    userId: test_data.userId,
+                    userId: data.userId,
                     direction: data.direction,
                 } as ShootRep);
             });

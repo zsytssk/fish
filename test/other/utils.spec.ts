@@ -1,6 +1,6 @@
 import { Test } from 'testBuilder';
 import { vectorToDegree } from 'utils/mathUtils';
-import { saveItem, getItem } from 'utils/localStorage';
+import { setItem, getItem } from 'utils/localStorage';
 
 export const utils_test = new Test('utils', runner => {
     runner.describe(
@@ -12,7 +12,7 @@ export const utils_test = new Test('utils', runner => {
     runner.describe('local_storage', () => {
         const time_day = 10 / (24 * 60 * 60);
         const time_stamp = time_day * (24 * 60 * 60 * 1000);
-        saveItem('test', 'hello world!', time_day);
+        setItem('test', 'hello world!', time_day);
 
         console.log(getItem('test1'));
         setTimeout(() => {

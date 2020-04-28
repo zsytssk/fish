@@ -1,3 +1,5 @@
+import { Lang } from './internationalConfig';
+
 declare global {
     interface Window {
         CDN_VERSION: string;
@@ -12,6 +14,7 @@ export const Config = {
     SocketUrl: '',
     code: '',
     token: '',
+    lang: 'en' as Lang,
     isLogin: false,
     Host: '',
     /** cdn版本号 */

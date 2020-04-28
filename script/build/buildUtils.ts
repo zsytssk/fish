@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as readline from 'readline';
-import { compress } from '../compressImg/compressImg';
 import { genVersion } from '../genVersion/genVersion';
 import { readFile } from '../zutil/ls/asyncUtil';
 import { excuse } from '../zutil/ls/exec';
@@ -40,6 +39,8 @@ export async function build(type: BuildType = 'prod') {
 }
 
 export async function afterBuild(push = false) {
+    const { project_path, dist_path } = await getConfig();
+    const dist_bin = path.resolve(dist_path, 'bin');
     await genVersion();
     await copyBinToDist();
     await cleanDist();

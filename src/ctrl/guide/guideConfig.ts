@@ -1,5 +1,6 @@
 import { GuideMain } from './guideMain';
 import { NewUserGuide } from './guideList/newUser';
+import { setItem } from 'utils/localStorage';
 
 /**
  * @author zhangshiyang
@@ -43,6 +44,6 @@ const GuideConfig = {
     '1': async () => {
         const in_power = new NewUserGuide();
         await in_power.start('1');
-        localStorage.setItem('guide', 'end');
+        setItem('guide', 'end');
     },
 };

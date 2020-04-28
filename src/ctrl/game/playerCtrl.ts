@@ -30,6 +30,7 @@ import { BulletCtrl } from './bulletCtrl';
 import { GameCtrl } from './gameCtrl';
 import { sendToGameSocket } from './gameSocket';
 import { SkillCtrl } from './skill/skillCtrl';
+import { getItem } from 'utils/localStorage';
 
 // prettier-ignore
 const bullet_cost_arr  =
@@ -166,6 +167,19 @@ export class PlayerCtrl {
             index++;
         }
 
+        gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
+            const { need_emit, user_id } = this.model;
+            if (!need_emit) {
+                return;
+            }
+            const { x, y } = velocity;
+            AudioCtrl.play(AudioRes.Fire);
+            sendToGameSocket(ServerEvent.Shoot, {
+                direction: { x, y },
+                userId: user_id,
+            } as ShootReq);
+        });
+
         /** 当前用户的处理 */
         if (!is_cur_player) {
             return;
@@ -193,13 +207,6 @@ export class PlayerCtrl {
                 } as HitReq);
             },
         );
-        gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
-            const { x, y } = velocity;
-            AudioCtrl.play(AudioRes.Fire);
-            sendToGameSocket(ServerEvent.Shoot, {
-                direction: { x, y },
-            } as ShootReq);
-        });
         gun_event.on(GunEvent.AutoShoot, (is_active: boolean) => {
             setAutoShootLight(is_active);
         });
@@ -244,9 +251,7 @@ export class PlayerCtrl {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { isTrial } = this.game_ctrl;
         const { cur_balance, user_id } = getUserInfo();
-        const bullet_cost = localStorage.getItem(
-            `${user_id}:${cur_balance}:${isTrial}`,
-        );
+        const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
         if (bullet_cost) {
             sendToGameSocket(ServerEvent.ChangeTurret, {
                 multiple: Number(bullet_cost),
@@ -273,7 +278,7 @@ export class PlayerCtrl {
 
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { cur_balance, user_id } = getUserInfo();
-        localStorage.setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
+        setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }
     public destroy() {
         const { view } = this;

@@ -7,6 +7,9 @@ import { GunEvent } from 'model/game/gun/gunModel';
 import { FishModel } from 'model/game/fish/fishModel';
 import { sendToGameSocket } from 'ctrl/game/gameSocket';
 import { ServerEvent } from 'data/serverEvent';
+import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+import { MockWebSocket } from 'ctrl/net/mockWebSocket';
+import { sleep } from '../../utils/testUtils';
 
 /** @type {PlayerModel} 的测试 */
 export const player_test = new Test('player', runner => {
@@ -18,7 +21,7 @@ export const player_test = new Test('player', runner => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 2,
+            server_index: 3,
             bullet_cost: 3,
             bullet_num: 100000000,
             gun_skin: '1',
@@ -51,7 +54,7 @@ export const player_test = new Test('player', runner => {
     });
 
     let i = 0;
-    runner.describe('add_other_player', (seat_index: number) => {
+    runner.describe('add_other_player', async (seat_index: number) => {
         const other_id = test_data.otherUserId + i;
         i++;
 
@@ -68,7 +71,7 @@ export const player_test = new Test('player', runner => {
                 nickname: test_data.otherNickname,
                 avatar: 'test',
                 is_cur_player: false,
-                need_emit: false,
+                need_emit: true,
                 skills: {
                     '1': {
                         item_id: '1',
@@ -91,6 +94,27 @@ export const player_test = new Test('player', runner => {
                 },
             } as PlayerInfo;
             other_player = modelState.app.game.addPlayer(player_data);
+
+            await sleep(2);
+            const { event } = getSocket('game') as MockWebSocket;
+            event.emit(
+                ServerEvent.autoShoot,
+                {
+                    userId: other_id,
+                    autoShoot: true,
+                } as AutoShootRep,
+                200,
+            );
+
+            await sleep(5);
+            event.emit(
+                ServerEvent.autoShoot,
+                {
+                    userId: other_id,
+                    autoShoot: false,
+                } as AutoShootRep,
+                200,
+            );
         }
     });
 

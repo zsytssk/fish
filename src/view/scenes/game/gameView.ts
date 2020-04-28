@@ -52,6 +52,12 @@ export default class GameView extends ui.scenes.game.gameUI
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
         auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
+    /** 设置游客样式 */
+    public setTrialStyle() {
+        const { btn_gift, btn_shop } = this;
+        btn_gift.visible = false;
+        btn_shop.visible = false;
+    }
     public showBubbleRefresh(bg_num?: number) {
         const { bubble_overlay, bg, bubble_wall } = this;
 
@@ -253,6 +259,7 @@ export default class GameView extends ui.scenes.game.gameUI
             .replace('$0', bullet)
             .replace('$1', rate + '')
             .replace('$2', currency);
+        exchange_rate.style.font = '20px Arial';
     }
     public setEnergyRadio(radio: number) {
         const { energy_bar } = this.skill_box;

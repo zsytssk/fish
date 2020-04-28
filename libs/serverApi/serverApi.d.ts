@@ -96,6 +96,7 @@ type RoomOutRep = {
 };
 type ShootReq = {
     direction: Point;
+    userId: string;
 };
 type ShootRep = {
     userId: string;

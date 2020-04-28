@@ -36,9 +36,10 @@ var platform = {
     },
     getInfo() {
         return {
-            isLogin: localStorage.getItem('isLogin'),
-            token: localStorage.getItem('jwtToken'),
-            socket_url: localStorage.getItem('ws'),
+            isLogin: paladin.sys.config.isLogin,
+            token: paladin.sys.config.jwtToken,
+            lang: paladin.sys.config.lang,
+            socket_url: paladin.sys.config.ws,
         };
     },
 };

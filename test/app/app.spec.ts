@@ -13,6 +13,16 @@ export const app_test = new Test('app', runner => {
     runner.describe('set_lang', (lang: Lang) => {
         modelState.app.user_info.setLang(lang);
     });
+    runner.describe('set_local_storage', (lang: Lang) => {
+        var fn1 = localStorage.clear;
+        localStorage.clear = function (...params) {
+            console.error(`test:>`, ...params);
+            fn1.bind(localStorage, ...params);
+        };
+        setTimeout(() => {
+            localStorage.clear();
+        }, 5000);
+    });
     runner.describe('keyboard', () => {
         const lang = getLang();
         const { confirm } = InternationalTip[lang];

@@ -1,10 +1,10 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":9,
+    "selectedBox":9,
+    "selecteID":6,
     "searchKey":"Dialog",
-    "props":{"width":450,"sceneColor":"#000000","runtime":"view/pop/tip.ts","mouseThrough":false,"mouseEnabled":true,"height":75},
+    "props":{"width":450,"sceneColor":"#ffffff","runtime":"view/pop/tip.ts","mouseThrough":false,"mouseEnabled":true,"height":75},
     "nodeParent":-1,
     "maxID":10,
     "label":"Dialog",
@@ -21,16 +21,17 @@
             "props":{"var":"inner","centerY":0,"centerX":0},
             "nodeParent":2,
             "label":"inner",
-            "isOpen":null,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":9,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,bg",
-                    "props":{"var":"bg","top":0,"skin":"image/pop/alert/bg_pop_tip.png","sizeGrid":"25,25,25,25","right":0,"left":0,"bottom":0,"alpha":0.8},
+                    "props":{"var":"bg","top":0,"skin":"image/pop/alert/bg_pop_tip.png","sizeGrid":"25,25,25,25","right":0,"left":0,"bottom":0,"alpha":0.6},
                     "nodeParent":9,
                     "label":"bg",
                     "isDirectory":false,
@@ -41,6 +42,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,label",
                     "props":{"y":0,"x":0,"width":451,"var":"label","valign":"middle","text":"this is a test","leading":5,"height":73,"fontSize":24,"color":"#fff","align":"center"},

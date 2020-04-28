@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":11,
+    "selectedBox":29,
+    "selecteID":29,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -282,7 +282,7 @@
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image",
-                            "props":{"y":45,"x":16,"width":235,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","height":39},
+                            "props":{"y":45,"x":16,"width":235,"skin":"image/game/account_bd_bg.png","sizeGrid":"0,17,0,17","rotation":0,"height":39},
                             "nodeParent":41,
                             "label":"Image",
                             "isOpen":true,
@@ -295,7 +295,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,bullet_num",
-                                    "props":{"y":8,"x":10,"width":217,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"SimHei","color":"#fdf7d3","align":"center"},
+                                    "props":{"y":8,"x":10,"width":217,"var":"bullet_num","valign":"middle","text":"剩余子弹:","height":20,"fontSize":20,"font":"Arial","color":"#fdf7d3","align":"center"},
                                     "nodeParent":28,
                                     "label":"bullet_num",
                                     "isDirectory":false,

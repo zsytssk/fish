@@ -1,18 +1,13 @@
 import { Config } from 'data/config';
-import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
-import AlertPop from 'view/pop/alert';
-import {
-    Config as SocketConfig,
-    SocketEvent,
-    WebSocketTrait,
-} from '../net/webSocketWrap';
+import { ServerEvent, ServerName } from 'data/serverEvent';
+import { getItem, setItem } from 'utils/localStorage';
+import { log } from 'utils/log';
+import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
 import {
     createSocket,
     disconnectSocket,
     getSocket,
 } from '../net/webSocketWrapUtil';
-import { log } from 'utils/log';
-import { saveItem, getItem } from 'utils/localStorage';
 
 /** 登陆用的脚本 */
 export async function initHallSocket() {
@@ -85,7 +80,7 @@ export function connectSocket(config: SocketConfig) {
         token = getItem('local_token');
         if (!token) {
             token = await getGuestToken(socket);
-            saveItem('local_token', token, 7);
+            setItem('local_token', token, 7);
         }
         /** 游客的token */
         socket.setParams({ jwt: token });

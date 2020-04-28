@@ -85,9 +85,9 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         const line_num = line_char_list.length;
         const max_lin_char = maxLineCharNum(line_char_list);
 
-        let width = 100 + max_lin_char * 18; // 每增加一个字增加的宽度
+        let width = 100 + max_lin_char * 15; // 每增加一个字增加的宽度
         let height = 50 + line_num * 30; // 每增加一行增加的高度
-        width = width > 550 ? width : 550;
+        width = width > 300 ? width : 300;
         height = height > 120 ? height : 120;
 
         // 画一个圆角背景

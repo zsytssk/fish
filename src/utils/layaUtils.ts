@@ -151,12 +151,17 @@ export function resizeContain(
 ) {
     const { numChildren } = parent;
 
+    const children = [];
     let dist = 0;
     for (let i = 0; i < numChildren; i++) {
         const item = parent.getChildAt(i) as Sprite;
         if (!item.visible) {
             continue;
         }
+        children.push(item);
+    }
+    for (let i = 0; i < children.length; i++) {
+        const item = children[i];
         if (dir === 'horizontal') {
             item.x = dist;
         } else {
@@ -164,19 +169,20 @@ export function resizeContain(
         }
 
         if (dir === 'horizontal') {
-            if (i !== numChildren - 1) {
+            if (i !== children.length - 1) {
                 dist += item.width + space;
             } else {
                 dist += item.width;
             }
         } else {
-            if (i !== numChildren - 1) {
+            if (i !== children.length - 1) {
                 dist += item.height + space;
             } else {
                 dist += item.height;
             }
         }
     }
+
     if (dir === 'horizontal') {
         parent.width = dist;
     } else {

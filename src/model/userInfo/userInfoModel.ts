@@ -1,7 +1,9 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { Lang } from 'data/internationalConfig';
-import { getCacheBalance, setCacheBalance, getSaveLang } from './userInfoUtils';
+import { getCacheBalance, setCacheBalance } from './userInfoUtils';
+import { Config } from 'data/config';
+import { setItem } from 'utils/localStorage';
 
 /** 账户信息修改 */
 export const UserInfoEvent = {
@@ -27,7 +29,7 @@ export class UserInfoModel extends ComponentManager {
         super();
     }
     public init() {
-        const lang = getSaveLang();
+        const lang = Config.lang;
         this.setLang(lang);
     }
     public initUserInfo(data: UserAccountRep) {
@@ -58,7 +60,7 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.lang = lang;
-        localStorage.setItem('local_lang', lang);
+        setItem('local_lang', lang);
         this.event.emit(UserInfoEvent.LangChange, lang);
     }
     public setUserId(name: string) {

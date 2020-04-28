@@ -4,6 +4,7 @@ type PlatformInfo = {
     isLogin: boolean;
     token: string;
     socket_url: string;
+    lang: string;
 };
 declare const platform: {
     hideLoading(): void;

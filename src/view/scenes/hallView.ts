@@ -144,8 +144,23 @@ export default class HallView extends ui.scenes.hall.hallUI
         }
     }
     public setNickname(nickname_str: string) {
-        const { nickname } = this.header;
+        const { nickname, user_box } = this.header;
         nickname.text = honor.utils.cutStr(nickname_str, 12);
+        // if (nickname_str !== 'GUEST') {
+        //     return (user_box.visible = false);
+        // }
+        user_box.visible = true;
+
+        /** @test */
+        if (nickname_str !== 'GUEST') {
+            return;
+        }
+        /** @testEnd */
+
+        onLangChange(this, lang => {
+            const { guest } = InternationalTip[lang];
+            nickname.text = guest;
+        });
     }
     public coinMenuRender(box: Box, index: number) {
         const coin_num = box.getChildByName('coin_num') as Label;

@@ -185,6 +185,9 @@ export class GameCtrl {
         const { cur_balance } = getUserInfo();
 
         this.isTrial = isTrial;
+        if (isTrial) {
+            view.setTrialStyle();
+        }
         this.addPlayers(users);
         this.addFish(fish);
         /** 复盘冰冻 */

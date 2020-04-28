@@ -112,10 +112,6 @@ export class HallCtrl {
     }; // tslint:disable-line
 
     public onUserAccount() {
-        const { btn_leave, btn_login } = this.view.header;
-        /** 登陆之后显示离开按钮 */
-        btn_leave.visible = true;
-        btn_login.visible = false;
         this.view.onResize();
     }
     public destroy() {

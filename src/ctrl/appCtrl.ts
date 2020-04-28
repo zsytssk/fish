@@ -14,6 +14,7 @@ import { sleep } from 'utils/animate';
 import { BgMonitor } from 'utils/bgMonitor';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
 import { gotoGuide } from './guide/guideConfig';
+import { getItem } from 'utils/localStorage';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -42,7 +43,7 @@ export class AppCtrl {
         });
         await HallCtrl.preEnter();
         await sleep(1);
-        if (localStorage.getItem('guide') !== 'end') {
+        if (getItem('guide') !== 'end') {
             gotoGuide('1', '1');
         }
         // Loading.instance.event_com.on(Loading.)

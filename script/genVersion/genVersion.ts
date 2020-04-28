@@ -24,12 +24,13 @@ export async function genVersion() {
 async function getFileMd5(file: string): Promise<string> {
     return new Promise((resolve, reject) => {
         file = path.resolve(project_folder, file);
-        md5File(file, (err, hash) => {
-            if (err) {
-                return reject(err);
-            }
-            hash = hash.substr(0, 8);
-            resolve(hash);
-        });
+        return md5File(file)
+            .then(hash => {
+                hash = hash.substr(0, 8);
+                resolve(hash);
+            })
+            .catch(err => {
+                reject(err);
+            });
     });
 }
