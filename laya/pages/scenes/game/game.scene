@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":29,
-    "selecteID":29,
+    "selectedBox":41,
+    "selecteID":26,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -267,7 +267,7 @@
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image,bullet_box_bg",
-                            "props":{"y":0,"x":137,"width":275,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","height":92,"anchorX":0.5},
+                            "props":{"y":0,"x":131,"width":302,"var":"bullet_box_bg","skin":"image/game/account_bg.png","sizeGrid":"0,91,0,17","pivotX":139,"height":92},
                             "nodeParent":41,
                             "label":"bullet_box_bg",
                             "isOpen":true,
