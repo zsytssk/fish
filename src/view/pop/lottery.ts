@@ -312,9 +312,9 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         this.exchange_list.refresh();
     }
     public destroy() {
-        super.destroy();
         this.completeLottery();
         offLangChange(this);
+        super.destroy();
     }
     public onAwake() {
         onLangChange(this, lang => {

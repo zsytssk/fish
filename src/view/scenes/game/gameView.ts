@@ -1,4 +1,4 @@
-import { getLang, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { getLang, onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from 'data/internationalConfig';
 import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
@@ -301,5 +301,9 @@ export default class GameView extends ui.scenes.game.gameUI
     public getPoolMousePos() {
         const { pool } = this;
         return pool.getMousePoint();
+    }
+    public destroy() {
+        offLangChange(this);
+        super.destroy();
     }
 }

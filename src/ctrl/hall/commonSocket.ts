@@ -117,6 +117,8 @@ export function errorHandler(code: number) {
                 }
             },
         );
+    } else if (code === ServerErrCode.NeedLogin) {
+        return platform.login();
     }
     if (tip) {
         TipPop.tip(tip);

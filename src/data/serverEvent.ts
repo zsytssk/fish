@@ -18,6 +18,8 @@ export enum ServerErrCode {
     NoMoney = 101,
     /** 重新带入 */
     ReExchange = 112,
+    /** 需要登陆 */
+    NeedLogin = 114,
 }
 
 export type ErrorData = {

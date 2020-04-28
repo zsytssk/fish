@@ -200,3 +200,31 @@ export function isClosest(dom_item: Node, dom_parent: Node) {
     const parent = dom_item.parent;
     return isClosest(parent, dom_parent);
 }
+
+export function getRectRadiusPath(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+) {
+    return [
+        ['moveTo', x + radius, y],
+        ['lineTo', x + width - radius, y],
+        ['arcTo', x + width, y, x + width, y + radius, radius],
+        ['lineTo', x + width, y + height - radius],
+        [
+            'arcTo',
+            x + width,
+            y + height,
+            x + width - radius,
+            y + height,
+            radius,
+        ],
+        ['lineTo', x + radius, y + height],
+        ['arcTo', x, y + height, x, y + height - radius, radius],
+        ['lineTo', x, y + radius],
+        ['arcTo', x, y, x + radius, y, radius],
+        ['closePath'],
+    ];
+}

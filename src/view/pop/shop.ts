@@ -7,7 +7,6 @@ import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 import { ui } from 'ui/layaMaxUI';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
-import TipPop from './tip';
 import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
 import BuyBulletPop from './buyBullet';
@@ -235,6 +234,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
     public destroy() {
         offLangChange(this);
+        super.destroy();
     }
 }
 

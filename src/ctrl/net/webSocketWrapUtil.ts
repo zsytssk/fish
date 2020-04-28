@@ -8,6 +8,7 @@ import {
 } from './webSocketWrap';
 import { EventCom } from 'comMan/eventCom';
 import { Utils } from 'laya/utils/Utils';
+import { Observable, Subscriber } from 'rxjs';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();
@@ -48,6 +49,31 @@ export function waitCreateSocket(name: string) {
             },
         );
     }) as Promise<WebSocketTrait>;
+}
+export function onCreateSocket(name: string, once?: boolean) {
+    const observer = new Observable(
+        (subscriber: Subscriber<WebSocketTrait>) => {
+            const fn = (_name: string, _socket: WebSocketTrait) => {
+                if (_name === name) {
+                    subscriber.next(_socket);
+                    if (once) {
+                        subscriber.complete();
+                    }
+                }
+            };
+            socket_map_event.on(SocketMapEvent.Create, fn, null);
+            subscriber.add(() => {
+                socket_map_event.off(SocketMapEvent.Create, null, fn);
+            });
+
+            const socket = socket_map.get(name);
+            if (socket) {
+                fn(name, socket);
+            }
+        },
+    );
+
+    return observer;
 }
 
 export function mockSocketCtor(ctor: Ctor<WebSocketTrait>) {

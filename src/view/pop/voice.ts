@@ -48,12 +48,13 @@ export default class VoicePop extends ui.pop.alert.voiceUI
     }; // tslint:disable-line
     public destroy() {
         const { music_ctrl, voice_ctrl } = this;
-        super.destroy();
+        offLangChange(this);
         music_ctrl.destroy();
         voice_ctrl.destroy();
         this.music_ctrl.destroy();
         this.voice_ctrl.destroy();
-        offLangChange(this);
+
+        super.destroy();
     }
 
     private initLang(lang: Lang) {

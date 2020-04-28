@@ -253,7 +253,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         flag.skin = `image/common/flag/flag_${type}.png`;
     }
     public destroy() {
-        super.destroy();
         offLangChange(this);
+        super.destroy();
     }
 }

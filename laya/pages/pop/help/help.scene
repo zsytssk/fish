@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":54,
-    "selecteID":53,
+    "selectedBox":9,
+    "selecteID":28,
     "searchKey":"Dialog",
-    "props":{"width":1050,"sceneColor":"#000000","sceneBg":"laya/views/pop/help.png","height":710},
+    "props":{"width":1004,"sceneColor":"#000000","sceneBg":"laya/views/pop/help.png","height":710},
     "nodeParent":-1,
-    "maxID":57,
+    "maxID":64,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -18,7 +18,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,bg",
-            "props":{"y":0,"x":0,"width":1056,"var":"bg","height":702},
+            "props":{"y":0,"x":0,"width":1004,"var":"bg","height":702},
             "nodeParent":2,
             "label":"bg",
             "isOpen":true,
@@ -29,15 +29,15 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":0,"texture":"image/pop/help/help_bg_01.png"},
+                    "type":"Image",
+                    "searchKey":"Image",
+                    "props":{"y":0,"x":0,"skin":"image/pop/help/help_bg_01.png"},
                     "nodeParent":10,
-                    "label":"Sprite",
+                    "label":"Image",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":3,
+                    "compId":57,
                     "child":[
                         ]
                 },
@@ -45,7 +45,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"y":136,"x":7,"width":1055,"skin":"image/pop/help/help_bg_02.png","sizeGrid":"0,107,0,59","height":569},
+                    "props":{"y":128,"x":0,"width":1004,"skin":"image/pop/help/help_bg_02.png","sizeGrid":"0,57,0,57","height":569},
                     "nodeParent":10,
                     "label":"Image",
                     "isDirectory":false,
@@ -57,23 +57,9 @@
                 },
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":0,"texture":"image/pop/help/help_bg_01.png"},
-                    "nodeParent":10,
-                    "label":"Sprite",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":6,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,title",
-                    "props":{"y":32,"x":483,"var":"title","text":"帮助","strokeColor":"#024b7d","stroke":3,"fontSize":43,"color":"#ffffff"},
+                    "props":{"y":1,"x":363,"width":277,"var":"title","valign":"middle","text":"帮助","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":43,"color":"#ffffff","centerX":0,"align":"center"},
                     "nodeParent":10,
                     "label":"title",
                     "isDirectory":false,
@@ -87,7 +73,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,close",
-                    "props":{"y":5,"x":959,"stateNum":"1","skin":"image/pop/help/btn_close.png","name":"close"},
+                    "props":{"y":0,"x":931,"stateNum":"1","skin":"image/pop/help/btn_close.png","name":"close"},
                     "nodeParent":10,
                     "label":"close",
                     "isDirectory":false,
@@ -96,13 +82,55 @@
                     "compId":8,
                     "child":[
                         ]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":611,"x":964.5,"texture":"image/pop/help/bg_item2.png"},
+                    "nodeParent":10,
+                    "label":"Sprite",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":61,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":-24,"x":-21,"texture":"image/pop/help/bg_item4.png"},
+                    "nodeParent":10,
+                    "label":"Sprite",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":62,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":-17,"x":783,"texture":"image/pop/help/bg_item1.png"},
+                    "nodeParent":10,
+                    "label":"Sprite",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":63,
+                    "child":[
+                        ]
                 }]
         },
         {
             "x":15,
             "type":"Box",
             "searchKey":"Box,glr",
-            "props":{"y":123,"x":60.5,"width":929,"var":"glr","height":536},
+            "props":{"y":95,"x":37,"width":929,"var":"glr","height":536},
             "nodeParent":2,
             "label":"glr",
             "isOpen":true,
@@ -115,7 +143,7 @@
                     "x":30,
                     "type":"Tab",
                     "searchKey":"Tab,pagination",
-                    "props":{"y":497,"x":396,"width":137,"selectedIndex":0,"name":"pagination","height":20},
+                    "props":{"y":536,"x":396,"width":137,"selectedIndex":0,"name":"pagination","height":20},
                     "nodeParent":9,
                     "label":"pagination",
                     "isOpen":false,
@@ -171,7 +199,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,con",
-                    "props":{"y":0,"x":2,"width":925,"name":"con","height":488},
+                    "props":{"y":0,"x":2,"width":925,"name":"con","height":527},
                     "nodeParent":9,
                     "label":"con",
                     "isOpen":true,
@@ -184,7 +212,7 @@
                             "x":45,
                             "type":"ViewStack",
                             "searchKey":"ViewStack,list",
-                            "props":{"y":7,"x":0,"width":931,"selectedIndex":2,"name":"list","height":482},
+                            "props":{"y":7,"x":0,"width":931,"selectedIndex":2,"name":"list","height":503},
                             "nodeParent":28,
                             "label":"list",
                             "isOpen":true,
@@ -197,17 +225,16 @@
                                     "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,item0",
-                                    "props":{"y":0,"x":0,"width":931,"var":"item0","height":462},
+                                    "props":{"y":0,"x":0,"width":931,"var":"item0","height":495},
                                     "nodeParent":14,
                                     "label":"item0",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":16,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item0_wrap",
                                             "props":{"y":0,"x":0,"var":"item0_wrap"},
@@ -220,7 +247,6 @@
                                             "compId":55,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro1",
                                                     "props":{"y":0,"x":0,"wordWrap":true,"width":910,"var":"intro1","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -234,7 +260,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Box",
                                                     "searchKey":"Box",
                                                     "props":{"y":68,"x":0},
@@ -247,7 +272,6 @@
                                                     "compId":50,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"Image",
                                                             "searchKey":"Image",
                                                             "props":{"width":925,"skin":"image/pop/help/con_bg.png","sizeGrid":"46,30,42,36","height":410},
@@ -261,7 +285,6 @@
                                                                 ]
                                                         },
                                                         {
-                                                            "x":105,
                                                             "type":"List",
                                                             "searchKey":"List,fish_list",
                                                             "props":{"y":16,"x":10,"width":904,"var":"fish_list","spaceY":20,"spaceX":17,"repeatY":3,"repeatX":8,"height":376},
@@ -298,14 +321,13 @@
                                     "props":{"y":0,"x":0,"width":924,"var":"item1","height":488},
                                     "nodeParent":14,
                                     "label":"item1",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":15,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item1_wrap",
                                             "props":{"y":0,"x":-1,"var":"item1_wrap"},
@@ -318,7 +340,6 @@
                                             "compId":56,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro2",
                                                     "props":{"x":1,"wordWrap":true,"width":910,"var":"intro2","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -332,7 +353,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"List",
                                                     "searchKey":"List,skill_list",
                                                     "props":{"y":21,"width":927,"var":"skill_list","spaceY":15,"repeatY":4,"repeatX":1,"height":471},
@@ -345,7 +365,6 @@
                                                     "compId":35,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"UIView",
                                                             "source":"pop/help/skillItem.scene",
                                                             "searchKey":"UIView,item",
@@ -366,17 +385,16 @@
                                     "x":60,
                                     "type":"Box",
                                     "searchKey":"Box,item2",
-                                    "props":{"y":0,"x":0,"width":924,"var":"item2","height":462},
+                                    "props":{"y":0,"x":0,"width":924,"var":"item2","height":497},
                                     "nodeParent":14,
                                     "label":"item2",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":39,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item2_wrap",
                                             "props":{"y":0,"x":0,"var":"item2_wrap"},
@@ -389,7 +407,6 @@
                                             "compId":54,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro3",
                                                     "props":{"y":0,"x":0,"wordWrap":true,"width":910,"var":"intro3","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -403,7 +420,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro31",
                                                     "props":{"y":45,"x":0,"wordWrap":true,"width":910,"var":"intro31","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -417,7 +433,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro4",
                                                     "props":{"y":176,"x":0,"wordWrap":true,"width":910,"var":"intro4","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -431,7 +446,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro41",
                                                     "props":{"y":221,"x":0,"wordWrap":true,"width":910,"var":"intro41","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},

@@ -8,7 +8,7 @@ import { GameCtrl } from './game/gameCtrl';
 // import honor from 'honor';
 import { HallCtrl } from './hall/hallCtrl';
 import { ServerName, ServerEvent } from 'data/serverEvent';
-import { waitCreateSocket } from './net/webSocketWrapUtil';
+import { waitCreateSocket, onCreateSocket } from './net/webSocketWrapUtil';
 import { Laya } from 'Laya';
 import { sleep } from 'utils/animate';
 import { BgMonitor } from 'utils/bgMonitor';
@@ -30,7 +30,7 @@ export class AppCtrl {
         this.model = model;
 
         model.init();
-        waitCreateSocket(ServerName.Hall).then(socket => {
+        onCreateSocket(ServerName.Hall).subscribe(socket => {
             socket.event.on(ServerEvent.UserAccount, (data: UserAccountRep) => {
                 model.initUserInfo(data);
             });

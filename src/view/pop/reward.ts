@@ -1,6 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { ui } from 'ui/layaMaxUI';
-import { getLang, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { getLang, onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from 'data/internationalConfig';
 import { Event } from 'laya/events/Event';
 
@@ -20,7 +20,6 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
         pop.showReward(data);
     }
     public onAwake() {
-        const {} = this;
         onLangChange(this, lang => {
             this.initLang(lang);
         });
@@ -70,5 +69,9 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
         let scale = 1 / (num_str.length / 4);
         scale = scale > 1 ? 1 : scale;
         item_num.scale(scale, scale);
+    }
+    public destroy() {
+        offLangChange(this);
+        super.destroy();
     }
 }

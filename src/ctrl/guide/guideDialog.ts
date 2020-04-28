@@ -9,8 +9,10 @@ import { Rectangle } from 'laya/maths/Rectangle';
 import { callFunc } from 'utils/utils';
 import { NextType } from './core/guideUtils';
 import { fade_in, fade_out } from 'utils/animate';
-import { onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
+import { Image } from 'laya/ui/Image';
+import { getRectRadiusPath } from 'utils/layaUtils';
 
 /**
  * @author zhangshiyang
@@ -87,7 +89,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
         this.cacheAs = 'bitmap';
         const mask_area = new Laya.Sprite();
         mask_wrap.addChild(mask_area);
-        mask_area.alpha = 0.5;
+        mask_area.alpha = 0.8;
         mask_area.mouseEnabled = true;
         this.mask_area = mask_area;
 
@@ -211,20 +213,20 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
             blank_area.graphics.clear();
             this.showNextHandler(type, then);
             if (shape instanceof Rectangle) {
-                blank_area.graphics.drawRect(
+                const path = getRectRadiusPath(
                     shape.x,
                     shape.y,
                     shape.width,
                     shape.height,
-                    '#000000',
+                    10,
                 );
-                hit.drawRect(
-                    shape.x,
-                    shape.y,
-                    shape.width,
-                    shape.height,
-                    '#000000',
-                );
+
+                blank_area.graphics.drawPath(0, 0, path, {
+                    fillStyle: '#00ffff',
+                });
+                hit.drawRect(shape.x, shape.y, shape.width, shape.height, {
+                    fillStyle: '#FFFFFF',
+                });
             } else {
                 blank_area.graphics.drawCircle(
                     shape.x,
@@ -264,6 +266,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     }
     public destroy() {
         offLangChange(this);
+        super.destroy();
     }
 }
 

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":2,
-    "selecteID":58,
+    "selectedBox":47,
+    "selecteID":56,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -65,7 +65,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,left_wrap",
-                    "props":{"y":0,"var":"left_wrap","left":25},
+                    "props":{"y":0,"var":"left_wrap","left":30},
                     "nodeParent":47,
                     "label":"left_wrap",
                     "isOpen":false,

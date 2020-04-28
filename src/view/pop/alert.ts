@@ -1,10 +1,10 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { AudioRes } from 'data/audioRes';
+import { InternationalTip } from 'data/internationalConfig';
+import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
-import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
+import { ui } from 'ui/layaMaxUI';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
@@ -73,9 +73,6 @@ export default class AlertPop extends ui.pop.alert.alertUI
         title.text = tips;
         btn_confirm_label.text = confirm;
         btn_cancel_label.text = cancel;
-    }
-    public destroy() {
-        offLangChange(this);
     }
 }
 

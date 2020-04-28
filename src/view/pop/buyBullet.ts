@@ -26,9 +26,10 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
     public isModal = true;
     private buy_info: BuyInfo;
     public static async preEnter(info: BuyInfo) {
-        const dialog = (await honor.director.openDialog(
-            BuyBulletPop,
-        )) as BuyBulletPop;
+        const dialog = (await honor.director.openDialog({
+            dialog: BuyBulletPop,
+            use_exist: true,
+        })) as BuyBulletPop;
         dialog.buy(info);
     }
     public onAwake() {
@@ -114,7 +115,13 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
         const { intro, buy_info } = this;
         const { purchase, buyBulletCost, bullet } = InternationalTip[lang];
         const { price, num } = buy_info;
-        intro.text = `${buyBulletCost}${purchase}${price * num}${bullet}`;
+        if (lang === 'en') {
+            intro.text = `${buyBulletCost} ${purchase} ${
+                price * num
+            } ${bullet}`;
+        } else {
+            intro.text = `${buyBulletCost}${purchase}${price * num} ${bullet}`;
+        }
     }
     private initLang(lang: Lang) {
         const { purchase } = InternationalTip[lang];
@@ -137,6 +144,7 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
     }
     public destroy() {
         offLangChange(this);
+        super.destroy();
     }
 }
 

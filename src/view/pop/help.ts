@@ -116,5 +116,6 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
     }
     public destroy() {
         offLangChange(this);
+        super.destroy();
     }
 }
