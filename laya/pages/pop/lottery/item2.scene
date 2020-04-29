@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":15,
+    "selecteID":8,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -132,7 +132,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,remain_label",
-            "props":{"y":150,"x":44,"width":125,"var":"remain_label","valign":"middle","text":"剩余10/20","stroke":1,"height":22,"fontSize":18,"color":"#fff","bold":true,"align":"center"},
+            "props":{"y":150,"x":44,"width":125,"var":"remain_label","valign":"middle","text":"剩余10/20","strokeColor":"#621615","stroke":2,"height":22,"fontSize":18,"color":"#ffffff","bold":true,"align":"center"},
             "nodeParent":2,
             "label":"remain_label",
             "isDirectory":false,

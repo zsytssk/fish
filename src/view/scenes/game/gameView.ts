@@ -59,7 +59,7 @@ export default class GameView extends ui.scenes.game.gameUI
         btn_shop.visible = false;
     }
     public showBubbleRefresh(bg_num?: number) {
-        const { bubble_overlay, bg, bubble_wall } = this;
+        const { bubble_overlay, bg, bubble_wall, bubble_ani } = this;
 
         if (!bg_num) {
             bg_num = this.bg_num + 1;
@@ -67,11 +67,13 @@ export default class GameView extends ui.scenes.game.gameUI
                 bg_num = 1;
             }
         }
-
         this.bg_num = bg_num;
         bg.skin = `image/game/normal_bg/bg${bg_num}.jpg`;
+        bubble_ani.url = `image/game/bg_normal${bg_num}.sk`;
         bubble_wall.visible = false;
-        playSkeletonOnce(bubble_overlay, 'hide').then(() => {
+
+        (window as any).bubble_overlay = bubble_overlay;
+        playSkeletonOnce(bubble_overlay, 0).then(() => {
             fade_in(bubble_wall, 300, '', 0.3);
             playSkeleton(bubble_wall, 2, true);
         });

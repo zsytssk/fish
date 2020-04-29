@@ -96,7 +96,7 @@ export function playSkeleton(ani: Skeleton, ...params: Params) {
     });
 }
 
-export function playSkeletonOnce(ani: Skeleton, ani_name: string) {
+export function playSkeletonOnce(ani: Skeleton, ani_name: string | number) {
     return new Promise((resolve, reject) => {
         ani.once(Event.STOPPED, ani, () => {
             resolve();

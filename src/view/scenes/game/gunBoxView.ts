@@ -12,6 +12,7 @@ import { ui } from '../../../ui/layaMaxUI';
 import { addBullet, viewState } from '../../viewState';
 import { activePosTip, stopPosTip } from './ani_wrap/posTip';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { GlowFilter } from 'laya/filters/GlowFilter';
 
 /** 炮台的view */
 export default class GunBoxView extends ui.scenes.game.gunBoxUI {
@@ -56,9 +57,14 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         let gun_skin: string;
         for (const [ani_name, ani_id] of ani_map) {
             const name = `${ani_name}${ani_id}`;
-            const ani_node = this[ani_name];
+            const ani_node = this[ani_name] as Skeleton;
             if (ani_name === 'gun') {
                 gun_skin = name;
+            }
+            if (ani_name === 'light') {
+                if (skin === '3') {
+                    ani_node.alpha = 0.6;
+                }
             }
             ani_node.url = `ani/gun/${name}.sk`;
             ani_node.visible = true;

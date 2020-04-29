@@ -30,7 +30,7 @@ import { BulletCtrl } from './bulletCtrl';
 import { GameCtrl } from './gameCtrl';
 import { sendToGameSocket } from './gameSocket';
 import { SkillCtrl } from './skill/skillCtrl';
-import { getItem } from 'utils/localStorage';
+import { getItem, setItem } from 'utils/localStorage';
 
 // prettier-ignore
 const bullet_cost_arr  =

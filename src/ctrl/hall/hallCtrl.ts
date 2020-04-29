@@ -19,6 +19,7 @@ import { onHallSocket, roomIn, offHallSocket } from './hallSocket';
 import { hallViewEvent } from './hallViewEvent';
 import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
+import { getItem, setItem } from 'utils/localStorage';
 
 export class HallCtrl {
     public view: HallView;
@@ -49,6 +50,7 @@ export class HallCtrl {
         return ctrlState.app.enterGame(socketUrl);
     }
     public roomIn(...data: Parameters<typeof roomIn>) {
+        setItem('roomIn', JSON.stringify(data[0]));
         return roomIn(data[0]).then((url: string) => {
             return this.enterGame(url);
         });

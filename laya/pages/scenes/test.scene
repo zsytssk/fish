@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":33,
+    "selecteID":38,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -15,9 +15,9 @@
             "type":0,
             "id":2
         }],
-    "props":{"width":1334,"sceneColor":"#000000","height":750},
+    "props":{"width":1334,"sceneColor":"#fff","height":750},
     "nodeParent":-1,
-    "maxID":34,
+    "maxID":39,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -29,13 +29,13 @@
             "x":15,
             "type":"SkeletonPlayer",
             "searchKey":"SkeletonPlayer",
-            "props":{"y":298,"x":291,"url":"ani/fish/fish5.sk"},
+            "props":{"y":470,"x":366,"url":"ani/gun/light11.sk"},
             "nodeParent":2,
             "label":"SkeletonPlayer",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":27,
+            "compId":37,
             "child":[
                 ]
         },
@@ -43,55 +43,13 @@
             "x":15,
             "type":"SkeletonPlayer",
             "searchKey":"SkeletonPlayer",
-            "props":{"y":398,"x":964,"url":"ani/fish/fish2.sk"},
+            "props":{"y":470,"x":580,"url":"ani/gun/light21.sk"},
             "nodeParent":2,
             "label":"SkeletonPlayer",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":28,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"Box",
-            "searchKey":"Box",
-            "props":{"y":121,"x":481,"width":86,"height":305},
-            "nodeParent":2,
-            "label":"Box",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":29,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer",
-            "props":{"y":375,"x":777,"url":"ani/fish/fish9.sk"},
-            "nodeParent":2,
-            "label":"SkeletonPlayer",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":32,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"SkeletonPlayer",
-            "searchKey":"SkeletonPlayer",
-            "props":{"y":352,"x":750,"url":"ani/other/pos_tip.sk"},
-            "nodeParent":2,
-            "label":"SkeletonPlayer",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":33,
+            "compId":38,
             "child":[
                 ]
         }],

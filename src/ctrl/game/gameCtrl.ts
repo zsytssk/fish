@@ -296,6 +296,9 @@ export class GameCtrl {
             HallCtrl.preEnter();
         }
     }
+    public reset() {
+        this.model.clear();
+    }
     public destroy() {
         const { bg_monitor } = ctrlState.app;
         this.view = undefined;

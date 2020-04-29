@@ -9,7 +9,7 @@ import { ui } from 'ui/layaMaxUI';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
 import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
-import BuyBulletPop from './buyBullet';
+import BuyBulletPop, { buySkinAlert } from './buyBullet';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -155,8 +155,13 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         if (gun_status === GunSkinStatus.NoHave) {
             cur_label.text = gun_price + '';
             cur_btn.on(Event.CLICK, cur_btn, () => {
-                buyItem(gun_id).then(() => {
-                    this.buyGunSkin(gun_id);
+                buySkinAlert(gun_price, gun_name).then(_status => {
+                    if (!_status) {
+                        return;
+                    }
+                    buyItem(gun_id, 1, gun_price).then(() => {
+                        this.buyGunSkin(gun_id);
+                    });
                 });
             });
         } else if (gun_status === GunSkinStatus.Have) {

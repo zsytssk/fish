@@ -49,17 +49,11 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
             this.changeNum('add');
         });
         btn_buy.on(CLICK, this, () => {
-            const { id, num, price } = this.buy_info;
             const lang = getLang();
-            const { bullet, buySuccess } = InternationalTip[lang];
-            const { buyTip } = InternationalTipOther[lang];
-            const tip = buyTip
-                .replace(`$1`, num * price + '')
-                .replace(`$2`, bullet)
-                .replace(`$3`, num + '')
-                .replace(`$4`, getSkillName(id));
-            AlertPop.alert(tip).then(type => {
-                if (type === 'confirm') {
+            const { buySuccess } = InternationalTip[lang];
+            const { id, num, price } = this.buy_info;
+            buyItemAlert(num, price, id).then(status => {
+                if (status) {
                     buyItem(id, num, price).then(() => {
                         TipPop.tip(buySuccess);
                         this.close();
@@ -160,4 +154,44 @@ export function getSkillName(id: string) {
         case SkillMap.LockFish:
             return lock;
     }
+}
+
+export function buyItemAlert(num: number, price: number, id: string) {
+    return new Promise((resolve, reject) => {
+        const lang = getLang();
+        const { bullet, buySuccess } = InternationalTip[lang];
+        const { buyItemTip: buyTip } = InternationalTipOther[lang];
+        const tip = buyTip
+            .replace(`$1`, num * price + '')
+            .replace(`$2`, bullet)
+            .replace(`$3`, num + '')
+            .replace(`$4`, getSkillName(id));
+
+        AlertPop.alert(tip).then(type => {
+            if (type === 'confirm') {
+                resolve(true);
+            } else {
+                reject();
+            }
+        });
+    });
+}
+export function buySkinAlert(price: number, name: string) {
+    return new Promise((resolve, reject) => {
+        const lang = getLang();
+        const { bullet } = InternationalTip[lang];
+        const { buySkinTip } = InternationalTipOther[lang];
+        const tip = buySkinTip
+            .replace(`$1`, price + '')
+            .replace(`$2`, bullet)
+            .replace(`$3`, name);
+
+        AlertPop.alert(tip).then(type => {
+            if (type === 'confirm') {
+                resolve(true);
+            } else {
+                reject();
+            }
+        });
+    });
 }

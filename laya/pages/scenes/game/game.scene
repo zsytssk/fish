@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":41,
-    "selecteID":26,
+    "selectedBox":2,
+    "selecteID":44,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/game/gameView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":46,
+    "maxID":47,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -80,10 +80,10 @@
                 {
                     "x":30,
                     "type":"SkeletonPlayer",
-                    "searchKey":"SkeletonPlayer",
-                    "props":{"y":376,"x":960,"url":"image/game/bg_normal.sk"},
+                    "searchKey":"SkeletonPlayer,bubble_ani",
+                    "props":{"y":376,"x":960,"var":"bubble_ani","url":"image/game/bg_normal1.sk"},
                     "nodeParent":10,
-                    "label":"SkeletonPlayer",
+                    "label":"bubble_ani",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
@@ -363,6 +363,7 @@
             "props":{"y":393,"x":893,"var":"bubble_overlay","url":"ani/other/bubble_overlay.sk"},
             "nodeParent":2,
             "label":"bubble_overlay",
+            "isOpen":true,
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
@@ -370,7 +371,7 @@
             "child":[
                 ],
             "$LOCKED":true,
-            "$HIDDEN":true
+            "$HIDDEN":false
         }],
     "animations":[
         {

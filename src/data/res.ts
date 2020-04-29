@@ -13,14 +13,6 @@ export const res = {
             url: `res/image/game.png`,
             type: Loader.IMAGE,
         },
-        {
-            url: `image/game/bg_normal.sk`,
-            type: Loader.BUFFER,
-        },
-        {
-            url: `image/game/bg_normal.png`,
-            type: Loader.IMAGE,
-        },
     ],
 };
 
@@ -28,10 +20,6 @@ for (const top_type in SPRITE) {
     if (!SPRITE.hasOwnProperty(top_type)) {
         continue;
     }
-    // console.log(`test:>`, top_type);
-    // if (top_type !== 'other' && top_type !== 'fish') {
-    //     continue;
-    // }
     const item_map = SPRITE[top_type];
     for (const sub_type in item_map) {
         if (!item_map.hasOwnProperty(sub_type)) {

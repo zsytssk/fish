@@ -28,10 +28,12 @@ export async function localTest() {
     game_test.runTest('enter_game', [true]).then(() => {
         fish_test.runTest('get_click_fish');
         player_test.runTest('add_cur_player');
+        player_test.runTest('add_other_player', [1]);
         player_test.runTest('add_other_player', [2]);
-        fish_test.runTest('add_fish');
-        fish_test.runTest('add_fish_group');
-        body_test.runTest('show_shape');
+        player_test.runTest('add_other_player', [3]);
+        fish_test.runTest('fish_ani');
+        // fish_test.runTest('add_fish_group');
+        // body_test.runTest('show_shape');
     });
 }
 

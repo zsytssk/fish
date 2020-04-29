@@ -1,5 +1,5 @@
 import { commonSocket, errorHandler, offCommon } from 'ctrl/hall/commonSocket';
-import { WebSocketTrait } from 'ctrl/net/webSocketWrap';
+import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
 import { SkillMap } from 'data/config';
 import { ServerEvent } from 'data/serverEvent';
@@ -73,13 +73,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
                 game.activeSkill(SkillMap.Auto, convertAUtoShootData(data));
             }
         },
-        // [ServerEvent.UseLock]: (data: UseLockRep, code: number) => {
-        //     if (code !== 200) {
-        //         game.resetSkill(SkillMap.Freezing, getCurUserId());
-        //         return;
-        //     }
-        //     game.activeSkill(SkillMap.LockFish, convertUseLockData(data));
-        // },
         [ServerEvent.LockFish]: (data: LockFishRep, code: number) => {
             if (code !== 200) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
@@ -106,6 +99,10 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet) => {
             changeBulletNum(data.balance);
+        },
+        [SocketEvent.Reconnected]: () => {
+            game.reset();
+            socket.send(ServerEvent.EnterGame);
         },
     });
 }

@@ -37,16 +37,15 @@ export const fish_test = new Test('fish', runner => {
         },
     );
 
-    runner.describe('fish_ani', () => {
-        // body_test.runTest('show_shape');
-        for (const i of range(1, 20)) {
+    runner.describe('fish_ani', async () => {
+        for (const i of range(1, 11)) {
             const typeId = i;
-            const pathId = 1;
+            const pathId = 62;
             const time = 30 * 1000;
-            const fish_data = genFishInfo(typeId, pathId, time);
-            setTimeout(() => {
-                modelState.app.game.addFish(fish_data);
-            }, i * 5000);
+            const fish_data = genFishInfo(typeId, pathId, time, time / 3);
+
+            modelState.app.game.addFish(fish_data);
+            await sleep(10);
         }
     });
 
@@ -116,7 +115,7 @@ export const fish_test = new Test('fish', runner => {
             const time = 15000;
             const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
-            await sleep(15);
+            await sleep(5);
         }
     });
 

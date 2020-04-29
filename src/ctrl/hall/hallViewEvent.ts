@@ -8,6 +8,11 @@ import { onNode, isClosest } from 'utils/layaUtils';
 import VoicePop from 'view/pop/voice';
 import { HallCtrl } from './hallCtrl';
 import { logout, login } from './login';
+import { getItem, setItem } from 'utils/localStorage';
+import { roomIn } from './hallSocket';
+import { playSkeleton, playSkeletonOnce } from 'utils/utils';
+import { getLang } from './hallCtrlUtil';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
@@ -67,8 +72,12 @@ export function hallViewEvent(hall: HallCtrl) {
         hall.roomIn({ roomId: 2, isTrial: 1 });
     });
     onNode(btn_play_now, CLICK, async () => {
+        const lang = getLang();
+        const ani = btn_play_now.getChildByName('ani') as Skeleton;
         AudioCtrl.play(AudioRes.Click);
-        hall.roomIn({ roomId: 1, isTrial: 1 });
+        playSkeletonOnce(ani, `active_${lang}`).then(() => {
+            hall.roomIn(getRoomInData());
+        });
     });
     btn_coin_select.on(CLICK, hall, (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
@@ -107,4 +116,19 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         VoicePop.preEnter();
     });
+}
+
+type Data = Parameters<typeof roomIn>[0];
+export function getRoomInData(): Data {
+    const save_str = getItem('roomIn');
+    if (save_str) {
+        return JSON.parse(save_str);
+    }
+    return {
+        roomId: 1,
+        isTrial: 1,
+    };
+}
+export function setRoomInData(data: Data) {
+    setItem('roomIn', JSON.stringify(data));
 }

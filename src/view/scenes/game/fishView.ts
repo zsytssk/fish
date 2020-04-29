@@ -1,11 +1,12 @@
-import { createSkeleton } from 'honor/utils/createSkeleton';
-import { getSpriteInfo } from 'utils/dataUtil';
+import { createSkeleton, createImg } from 'honor/utils/createSkeleton';
+import { getSpriteInfo, getShadowInfo } from 'utils/dataUtil';
 import { FishSpriteInfo } from 'data/sprite';
 import { createRedFilter, playSkeleton, stopSkeleton } from 'utils/utils';
 import { vectorToDegree } from 'utils/mathUtils';
 import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { createSkeletonPool, recoverSkeletonPool } from 'view/viewStateUtils';
+import { ShadowItemInfo } from 'data/coordinate';
 
 export type FishViewInfo = {
     type: string;
@@ -15,6 +16,7 @@ export class FishView extends Sprite {
     private fish_ani: Skeleton;
     private shadow_node: Sprite;
     public info: FishViewInfo;
+    public shadow_info: ShadowItemInfo;
     private pool: Sprite;
     private time_out: number;
     private turn_ani: boolean;
@@ -27,16 +29,16 @@ export class FishView extends Sprite {
         this.mouseThrough = false;
         this.visible = false;
 
-        // window.fish = this;
+        (window as any).fish = this;
     }
     /** 创建 ani and shadow */
     private initAni() {
+        const { pool } = this;
         if (this.fish_ani) {
             return;
         }
         const { type } = this.info;
         const fish_ani = createSkeletonPool('fish', type) as Skeleton;
-        // const fish_ani = createSkeleton('ani/fish/fish' + type);
         const { offset, turn_ani } = getSpriteInfo(
             'fish',
             type,
@@ -54,6 +56,18 @@ export class FishView extends Sprite {
         playSkeleton(fish_ani, 0, true);
         this.fish_ani = fish_ani;
         this.turn_ani = turn_ani;
+        const shadow = createImg(`image/game/shadow`);
+        shadow.pivot(shadow.texture.width / 2, shadow.texture.height / 2);
+        pool.addChild(shadow);
+
+        const shadow_info = getShadowInfo(type);
+        this.shadow_node = shadow;
+        this.shadow_info = shadow_info;
+        if (shadow_info.scaleX || shadow_info.scaleY) {
+            shadow.scale(shadow_info.scaleX || 1, shadow_info.scaleY || 1);
+        }
+
+        this.zOrder = Number(type);
     }
     /** 创建 ani and shadow */
     public playSwimAni() {
@@ -82,7 +96,7 @@ export class FishView extends Sprite {
     }
     /** 同步位置 */
     public syncPos(pos: Point, velocity: SAT.Vector, horizon_turn: boolean) {
-        const { turn_ani, fish_ani, visible } = this;
+        const { turn_ani, fish_ani, visible, shadow_node, shadow_info } = this;
 
         if (!visible) {
             return;
@@ -105,9 +119,11 @@ export class FishView extends Sprite {
             }
         } else {
             this.rotation = angle;
+            shadow_node.rotation = angle + 90;
         }
 
         this.pos(pos.x, pos.y);
+        shadow_node.pos(pos.x + shadow_info.x, pos.y + shadow_info.y);
     }
     public beCastAni() {
         return new Promise((resolve, reject) => {

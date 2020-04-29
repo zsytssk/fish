@@ -471,17 +471,20 @@ type TweenLoopParam = {
     ease_fn?: EaseFn;
     is_jump?: boolean;
     end_jump?: boolean;
+    step_fn?: (index: number) => void;
 };
-export async function tweenLoop({
+export function tweenLoop({
     sprite,
     props_arr,
     time,
     ease_fn,
     is_jump,
     end_jump,
+    step_fn,
 }: TweenLoopParam) {
     const len = props_arr.length;
     let i = 0;
+    let n = 0;
     stopAni(sprite);
     /** 等待原来的动画结束再继续执行 */
     function runItem() {
@@ -508,13 +511,16 @@ export async function tweenLoop({
                 sprite,
                 start_props,
                 time,
+            }).then(() => {
+                step_fn(n);
+                setTimeout(runItem, 0);
             });
         }
         i++;
+        n++;
         if (i >= len) {
             i = 0;
         }
-        (sprite as Sprite).time_out = setTimeout(runItem, time);
     }
     runItem();
 }

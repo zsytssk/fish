@@ -1,14 +1,13 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from 'data/audioRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { Event } from 'laya/events/Event';
+import { Sprite } from 'laya/display/Sprite';
 import { Label } from 'laya/ui/Label';
 import { Ease } from 'laya/utils/Ease';
-import { completeAni, EaseFn, tweenLoop, tween } from 'utils/animate';
+import { completeAni, EaseFn, stopAni, tween, tweenLoop } from 'utils/animate';
+import { playSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
 import { calcPosRange, createAni, tempAni } from './awardCoin';
-import { playSkeleton } from 'utils/utils';
-import { Sprite } from 'laya/display/Sprite';
 
 const circle_width = 270;
 const circle_height = 270;
@@ -21,7 +20,7 @@ export async function showAwardCircle(
     e?: any,
     f?: any,
 ) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const { ani_overlay } = viewState;
         const circle = createAni('award_circle') as Skeleton;
         const { upside_down } = viewState.game;
@@ -40,31 +39,41 @@ export async function showAwardCircle(
         ani_overlay.addChild(circle);
         playSkeleton(circle, 0, false);
         circle.pos(pos.x, pos.y);
-        scale_in(num_label, radio, 700, (t, b, c, d) => {
-            return Ease.elasticOut(t, b, c, d, e, f);
-        }).then(() => {
-            tweenLoop({
-                sprite: num_label,
-                props_arr: [
-                    { rotation: 0 },
-                    { rotation: -30 },
-                    { rotation: 0 },
-                    { rotation: 30 },
-                ],
-                time: 120,
-            });
-        });
-        circle.once(Event.STOPPED, circle, () => {
-            num_label.destroy();
-            tempAni('award_circle', circle);
-            resolve();
+        await scale_in(
+            num_label,
+            {
+                x: Math.abs(radio) * 1.5,
+                y: radio * 1.5,
+            },
+            400,
+            (t, b, c, d) => {
+                return Ease.elasticOut(t, b, c, d, e, f);
+            },
+        );
+        tweenLoop({
+            sprite: num_label,
+            props_arr: [
+                { rotation: 0 },
+                { rotation: -30 },
+                { rotation: 0 },
+                { rotation: 30 },
+            ],
+            time: 80,
+            step_fn(index) {
+                if (index === 10) {
+                    tempAni('award_circle', circle);
+                    num_label.destroy();
+                    stopAni(num_label);
+                    resolve();
+                }
+            },
         });
     });
 }
 
 export async function scale_in(
     sprite: Sprite,
-    radio: number,
+    radio: Point,
     time?: number,
     ease_fn?: EaseFn,
 ) {
@@ -73,14 +82,14 @@ export async function scale_in(
     time = time || 400;
     const start_props = {
         alpha: 0.2,
-        scaleX: 0.2,
-        scaleY: 0.2 * radio,
+        scaleX: 0.2 * radio.x,
+        scaleY: 0.2 * radio.y,
         visible: true,
     };
     const end_props = {
         alpha: 1,
-        scaleX: 1,
-        scaleY: 1 * radio,
+        scaleX: 1 * radio.x,
+        scaleY: 1 * radio.y,
     };
     return tween({ sprite, start_props, end_props, time, ease_fn });
 }

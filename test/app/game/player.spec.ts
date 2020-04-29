@@ -21,8 +21,8 @@ export const player_test = new Test('player', runner => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 3,
-            bullet_cost: 3,
+            server_index: 0,
+            bullet_cost: 100,
             bullet_num: 100000000,
             gun_skin: '1',
             nickname: test_data.nickname,
@@ -67,7 +67,7 @@ export const player_test = new Test('player', runner => {
                 server_index: seat_index,
                 bullet_cost: Math.pow(10, i),
                 bullet_num: 10000,
-                gun_skin: '4',
+                gun_skin: `${i + 1}`,
                 nickname: test_data.otherNickname,
                 avatar: 'test',
                 is_cur_player: false,
@@ -95,26 +95,26 @@ export const player_test = new Test('player', runner => {
             } as PlayerInfo;
             other_player = modelState.app.game.addPlayer(player_data);
 
-            await sleep(2);
-            const { event } = getSocket('game') as MockWebSocket;
-            event.emit(
-                ServerEvent.autoShoot,
-                {
-                    userId: other_id,
-                    autoShoot: true,
-                } as AutoShootRep,
-                200,
-            );
+            // await sleep(2);
+            // const { event } = getSocket('game') as MockWebSocket;
+            // event.emit(
+            //     ServerEvent.autoShoot,
+            //     {
+            //         userId: other_id,
+            //         autoShoot: true,
+            //     } as AutoShootRep,
+            //     200,
+            // );
 
-            await sleep(5);
-            event.emit(
-                ServerEvent.autoShoot,
-                {
-                    userId: other_id,
-                    autoShoot: false,
-                } as AutoShootRep,
-                200,
-            );
+            // await sleep(5);
+            // event.emit(
+            //     ServerEvent.autoShoot,
+            //     {
+            //         userId: other_id,
+            //         autoShoot: false,
+            //     } as AutoShootRep,
+            //     200,
+            // );
         }
     });
 

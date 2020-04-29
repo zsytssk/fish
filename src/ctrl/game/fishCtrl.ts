@@ -48,7 +48,6 @@ export class FishCtrl extends ComponentManager {
         event.on(FishEvent.Destroy, () => {
             this.destroy();
         });
-        view.zOrder = this.model.score;
     }
     public onBomb = async (data: FishBombInfo) => {
         const { id: eid } = this.model;

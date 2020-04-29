@@ -66,6 +66,10 @@ export function getShapeInfo(type: SpriteType, level?: number | string) {
     }
     return shape_info;
 }
+/** 获取形状信息 */
+export function getShadowInfo(type: string) {
+    return Coordinates.shadowPos[type] || Coordinates.shadowPos.default;
+}
 
 /**
  * 获取子弹发射的开始位置, 返回的子弹发射开始位置数组, 多个表示多个子弹同时发射

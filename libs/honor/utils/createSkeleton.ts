@@ -63,5 +63,6 @@ export function createAnimation(path: string): Animation {
 export function createImg(path: string): Image {
     const sprite = new Image();
     sprite.loadImage(path + '.png');
+    sprite.autoSize = true;
     return sprite;
 }
