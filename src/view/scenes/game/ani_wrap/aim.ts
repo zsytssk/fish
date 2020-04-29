@@ -39,6 +39,9 @@ export function activeAimFish(
     show_points?: boolean,
     ori_pos?: Point,
 ) {
+    if (!fish) {
+        return;
+    }
     const aim_ani = createAim('aim');
     const { fish: ori_fish } = state;
     const { pos } = fish;

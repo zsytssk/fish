@@ -7,6 +7,7 @@ import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { createSkeletonPool, recoverSkeletonPool } from 'view/viewStateUtils';
 import { ShadowItemInfo } from 'data/coordinate';
+import { viewState } from 'view/viewState';
 
 export type FishViewInfo = {
     type: string;
@@ -33,7 +34,6 @@ export class FishView extends Sprite {
     }
     /** 创建 ani and shadow */
     private initAni() {
-        const { pool } = this;
         if (this.fish_ani) {
             return;
         }
@@ -56,18 +56,33 @@ export class FishView extends Sprite {
         playSkeleton(fish_ani, 0, true);
         this.fish_ani = fish_ani;
         this.turn_ani = turn_ani;
+        this.initShadow();
+
+        this.zOrder = Number(type);
+    }
+    /** 创建鱼的阴影 */
+    private initShadow() {
+        const { pool } = this;
+        const { type } = this.info;
+        const { upside_down } = viewState.game;
         const shadow = createImg(`image/game/shadow`);
         shadow.pivot(shadow.texture.width / 2, shadow.texture.height / 2);
         pool.addChild(shadow);
 
         const shadow_info = getShadowInfo(type);
         this.shadow_node = shadow;
-        this.shadow_info = shadow_info;
+
+        if (upside_down) {
+            this.shadow_info = {
+                ...shadow_info,
+                y: -shadow_info.y,
+            };
+        } else {
+            this.shadow_info = shadow_info;
+        }
         if (shadow_info.scaleX || shadow_info.scaleY) {
             shadow.scale(shadow_info.scaleX || 1, shadow_info.scaleY || 1);
         }
-
-        this.zOrder = Number(type);
     }
     /** 创建 ani and shadow */
     public playSwimAni() {

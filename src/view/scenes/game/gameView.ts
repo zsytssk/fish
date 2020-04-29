@@ -56,7 +56,6 @@ export default class GameView extends ui.scenes.game.gameUI
     public setTrialStyle() {
         const { btn_gift, btn_shop } = this;
         btn_gift.visible = false;
-        btn_shop.visible = false;
     }
     public showBubbleRefresh(bg_num?: number) {
         const { bubble_overlay, bg, bubble_wall, bubble_ani } = this;
@@ -67,6 +66,7 @@ export default class GameView extends ui.scenes.game.gameUI
                 bg_num = 1;
             }
         }
+        bg_num = 1;
         this.bg_num = bg_num;
         bg.skin = `image/game/normal_bg/bg${bg_num}.jpg`;
         bubble_ani.url = `image/game/bg_normal${bg_num}.sk`;

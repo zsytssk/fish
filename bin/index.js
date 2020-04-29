@@ -1,3 +1,6 @@
+//-----libs-begin-----
+
+//-----libs-end-------
 // // 游戏启动
 paladin.checkComponents({
     list: ['launch'],

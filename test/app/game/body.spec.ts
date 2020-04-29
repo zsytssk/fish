@@ -49,6 +49,12 @@ export const body_test = new Test('body', runner => {
         b.translate(100, 100);
         console.log(`test:>`, a, b);
     });
+    runner.describe('test_sat', () => {
+        const a = new SAT.Box(new SAT.Vector(100, 100), 300, 300).toPolygon();
+        const b = new SAT.Box(new SAT.Vector(0, 0), 300, 300).toPolygon();
+        b.translate(100, 100);
+        console.log(`test:>`, a, b);
+    });
 });
 
 /** 绘制形状 */

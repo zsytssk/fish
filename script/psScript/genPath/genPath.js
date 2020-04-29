@@ -16,10 +16,12 @@ for (var k = 0; k < layers.length; k++) {
     path_data[layerName] = pathInfo;
 }
 
-var filePath = new File($.fileName).parent.parent.parent + '/src/data/path.ts';
+var filePath =
+    new File($.fileName).parent.parent.parent.parent + '/src/data/path.ts';
 var f = new File(filePath);
 var path_str =
     'export const PATH : {[key: string]: number[][];}= ' +
     JSON.stringify(path_data) +
     ';';
+alert(filePath);
 writeFile(filePath, path_str);

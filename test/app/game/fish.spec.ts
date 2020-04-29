@@ -7,6 +7,9 @@ import { injectProto } from 'honor/utils/tool';
 import { FishCtrl } from 'ctrl/game/fishCtrl';
 import { body_test } from './body.spec';
 import { sleep } from 'utils/animate';
+import { FishView } from 'view/scenes/game/fishView';
+import { Label } from 'laya/ui/Label';
+import { DisplaceMoveCom } from 'model/game/com/moveCom/displaceMoveCom';
 
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
@@ -14,25 +17,46 @@ export const fish_test = new Test('fish', runner => {
         'add_fish',
         async (typeId: number, pathId: number, time: number) => {
             typeId = 16;
-            pathId = pathId || 19;
+            pathId = pathId || 2;
             // pathId = pathId || 3;
             time = time || 12 * 100000;
             // time = time || 40 * 1000;
-            const usedTime = (time * 1) / 3;
+            const usedTime = (time * 1) / 2;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
         },
     );
 
+    type FishModelPath = FishModel & {
+        path_no: number;
+    };
     runner.describe(
         'fish_path',
-        (typeId: number, pathId: number, time: number) => {
-            for (const i of range(1, 21)) {
-                typeId = typeId || 1;
+        async (typeId: number, pathId: number, time: number) => {
+            injectProto(FishCtrl, 'init' as any, async (obj: FishCtrl) => {
+                await sleep(1);
+                const model = obj['model'] as FishModelPath;
+                const view = obj['view'];
+                const label = new Label();
+                label.fontSize = 100;
+                label.text = model.path_no + '';
+                label.width = view.width;
+                label.color = 'red';
+                label.align = 'center';
+                view.addChild(label);
+                label.zOrder = 100;
+            });
+
+            for (const i of range(1, 100)) {
+                typeId = 15;
                 pathId = i;
-                time = time || 15;
-                const fish_data = genFishInfo(typeId, pathId, time);
-                modelState.app.game.addFish(fish_data);
+                time = time || 12;
+                const fish_data = genFishInfo(typeId, pathId, time * 1000);
+                const fishModel = modelState.app.game.addFish(
+                    fish_data,
+                ) as FishModelPath;
+                fishModel.path_no = pathId;
+                await sleep(time);
             }
         },
     );
@@ -112,6 +136,17 @@ export const fish_test = new Test('fish', runner => {
         const typeId = 20;
         for (const i of range(1, 21)) {
             const pathId = i;
+            const time = 15000;
+            const fish_data = genFishInfo(typeId, pathId, time);
+            modelState.app.game.addFish(fish_data);
+            await sleep(5);
+        }
+    });
+    runner.describe('fish_shadow', async () => {
+        // body_test.runTest('show_shape');
+        for (const i of range(1, 21)) {
+            const typeId = i;
+            const pathId = 2;
             const time = 15000;
             const fish_data = genFishInfo(typeId, pathId, time);
             modelState.app.game.addFish(fish_data);
