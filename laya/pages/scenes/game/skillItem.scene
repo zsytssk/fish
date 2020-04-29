@@ -60,7 +60,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,num_label",
-            "props":{"y":59,"x":8,"width":78,"var":"num_label","valign":"middle","text":"0","strokeColor":"#000","stroke":3,"height":28,"fontSize":24,"color":"#ffffff","bold":true,"align":"right"},
+            "props":{"y":59,"x":8,"width":78,"var":"num_label","valign":"middle","text":"99999+","strokeColor":"#000","stroke":3,"height":28,"fontSize":24,"color":"#ffffff","bold":true,"align":"right"},
             "nodeParent":2,
             "label":"num_label",
             "isOpen":true,

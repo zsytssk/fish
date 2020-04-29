@@ -32,8 +32,8 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     public setNum(num: number) {
         const { num_label } = this;
         let num_str = num + '';
-        if (num > 999999) {
-            num_str = `999999+`;
+        if (num > 99999) {
+            num_str = `99999+`;
         }
         num_label.text = num_str;
     }

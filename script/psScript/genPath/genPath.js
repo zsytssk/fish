@@ -23,5 +23,4 @@ var path_str =
     'export const PATH : {[key: string]: number[][];}= ' +
     JSON.stringify(path_data) +
     ';';
-alert(filePath);
 writeFile(filePath, path_str);
