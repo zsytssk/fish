@@ -1,16 +1,18 @@
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { SpriteInfo } from 'data/sprite';
 import { getSpriteInfo, createSprite } from 'utils/dataUtil';
-import { createSkeleton } from 'honor/utils/createSkeleton';
+import { createSkeleton, createImg } from 'honor/utils/createSkeleton';
+import { Image } from 'laya/ui/Image';
+import { Sprite } from 'laya/display/Sprite';
 
-const SkeletonPoolMap = {} as {
-    [key: string]: Skeleton[];
+const PoolMap = {} as {
+    [key: string]: (Skeleton | Sprite)[];
 };
 
 type SkeletonPoolType = 'fish' | 'bullet' | 'net' | 'other';
 export function createSkeletonPool(type: SkeletonPoolType, id: string) {
     const map_key = `${type}:${id}`;
-    const ani = SkeletonPoolMap[map_key]?.pop();
+    const ani = PoolMap[map_key]?.pop();
     if (ani) {
         return ani;
     }
@@ -34,12 +36,32 @@ export function recoverSkeletonPool(
         return;
     }
     const map_key = `${type}:${id}`;
-    let arr = SkeletonPoolMap[map_key];
+    let arr = PoolMap[map_key];
     if (!arr) {
-        arr = SkeletonPoolMap[map_key] = [];
+        arr = PoolMap[map_key] = [];
     }
     ani.offAll();
     ani.stop();
     ani.removeSelf();
     arr.push(ani);
+}
+
+export function createImgPool(url: string) {
+    const img = PoolMap[url]?.pop();
+    if (img) {
+        return img;
+    }
+    return createImg(url);
+}
+export function recoverImgPool(url: string, img: Sprite) {
+    if (img.destroyed) {
+        return;
+    }
+    const map_key = url;
+    let arr = PoolMap[map_key];
+    if (!arr) {
+        arr = PoolMap[map_key] = [];
+    }
+    img.removeSelf();
+    arr.push(img);
 }

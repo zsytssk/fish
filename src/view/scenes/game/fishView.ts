@@ -5,7 +5,12 @@ import { createRedFilter, playSkeleton, stopSkeleton } from 'utils/utils';
 import { vectorToDegree } from 'utils/mathUtils';
 import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { createSkeletonPool, recoverSkeletonPool } from 'view/viewStateUtils';
+import {
+    createSkeletonPool,
+    recoverSkeletonPool,
+    createImgPool,
+    recoverImgPool,
+} from 'view/viewStateUtils';
 import { ShadowItemInfo } from 'data/coordinate';
 import { viewState } from 'view/viewState';
 
@@ -65,7 +70,7 @@ export class FishView extends Sprite {
         const { pool } = this;
         const { type } = this.info;
         const { upside_down } = viewState.game;
-        const shadow = createImg(`image/game/shadow`);
+        const shadow = createImgPool(`image/game/shadow`);
         shadow.pivot(shadow.texture.width / 2, shadow.texture.height / 2);
         pool.addChild(shadow);
 
@@ -162,6 +167,10 @@ export class FishView extends Sprite {
 
         this.fish_ani.filters = [];
         recoverSkeletonPool('fish', type, this.fish_ani);
+        recoverImgPool(`image/game/shadow`, this.shadow_node);
+
+        this.fish_ani = undefined;
+        this.shadow_node = undefined;
 
         clearTimeout(this.time_out);
         super.destroy();
