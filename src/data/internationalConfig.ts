@@ -436,6 +436,8 @@ const InternationalTip2 = {
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
+        [ServerErrCode.TrialTime]: '已超出试玩时长，请去正式场进行游戏',
+        [ServerErrCode.TrialNotBullet]: '弹不足，请重新进入或去正式场进行游戏',
     },
 };
 

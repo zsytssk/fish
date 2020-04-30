@@ -13,6 +13,7 @@ export default class TopTipPop extends ui.pop.alert.topTipUI
     public isShowEffect = false;
     public isPopupCenter = false;
     public static instance: TopTipPop;
+    public zOrder = 100;
     constructor() {
         super();
     }

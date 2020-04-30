@@ -42,6 +42,47 @@ for (const top_type in SPRITE) {
     }
 }
 
+/** gun */
+for (let i = 1; i <= 3; i++) {
+    for (let j = 1; j <= 3; j++) {
+        const ani_map = getGunSkinMap(`${i}`, `${j}`);
+        for (const [ani_name, ani_id] of ani_map) {
+            const name = `${ani_name}${ani_id}`;
+            res.game.push(
+                {
+                    url: `ani/gun/${name}.sk`,
+                    type: Loader.BUFFER,
+                },
+                {
+                    url: `ani/gun/${name}.png`,
+                    type: Loader.IMAGE,
+                },
+            );
+        }
+    }
+
+    res.game.push(
+        {
+            url: `ani/gun/bullet${i}.sk`,
+            type: Loader.BUFFER,
+        },
+        {
+            url: `ani/gun/bullet${i}.png`,
+            type: Loader.IMAGE,
+        },
+    );
+    res.game.push(
+        {
+            url: `ani/gun/net${i}.sk`,
+            type: Loader.BUFFER,
+        },
+        {
+            url: `ani/gun/net${i}.png`,
+            type: Loader.IMAGE,
+        },
+    );
+}
+
 export const font_list = [
     'font/score_num',
     'font/numYellow40',

@@ -2,12 +2,21 @@ import { ctrlState } from 'ctrl/ctrlState';
 import { disableCurUserOperation } from 'ctrl/game/gameCtrlUtils';
 import { sendToGameSocket } from 'ctrl/game/gameSocket';
 import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
-import { bindSocketEvent, disconnectSocket } from 'ctrl/net/webSocketWrapUtil';
+import {
+    bindSocketEvent,
+    disconnectSocket,
+    getSocket,
+} from 'ctrl/net/webSocketWrapUtil';
 import {
     InternationalTip,
     InternationalTipOther,
 } from 'data/internationalConfig';
-import { ErrorData, ServerErrCode, ServerEvent } from 'data/serverEvent';
+import {
+    ErrorData,
+    ServerErrCode,
+    ServerEvent,
+    ServerName,
+} from 'data/serverEvent';
 import { BgMonitorEvent } from 'utils/bgMonitor';
 import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
@@ -119,6 +128,16 @@ export function errorHandler(code: number) {
         );
     } else if (code === ServerErrCode.NeedLogin) {
         return platform.login();
+    } else if (
+        code === ServerErrCode.TrialTime ||
+        code === ServerErrCode.TrialNotBullet
+    ) {
+        AlertPop.alert(InternationalTipOther[lang][code], {
+            hide_cancel: true,
+        }).then(() => {
+            const socket = getSocket(ServerName.Game);
+            socket.send(ServerEvent.RoomOut);
+        });
     }
     if (tip) {
         TipPop.tip(tip);

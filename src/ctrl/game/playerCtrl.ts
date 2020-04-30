@@ -192,7 +192,11 @@ export class PlayerCtrl {
             setBulletNum(bullet_num);
         });
         gun_event.on(GunEvent.NotEnoughBulletNum, () => {
-            errorHandler(ServerErrCode.ReExchange);
+            if (this.game_ctrl.isTrial) {
+                errorHandler(ServerErrCode.TrialNotBullet);
+            } else {
+                errorHandler(ServerErrCode.ReExchange);
+            }
         });
         gun_event.on(
             GunEvent.CastFish,

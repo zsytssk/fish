@@ -13,6 +13,7 @@ import { commonSocket, offCommon, errorHandler } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 import { getLang } from './hallCtrlUtil';
 import { initHallSocket } from './login';
+import TopTipPop from 'view/pop/topTip';
 
 /**
  *
@@ -42,11 +43,9 @@ export async function onHallSocket(hall: HallCtrl) {
     if (isReplay) {
         const lang = getLang();
         const { reEnter } = InternationalTip[lang];
-        return AlertPop.alert(reEnter).then(type => {
-            if (type === 'confirm') {
-                hall.enterGame(socketUrl);
-                return true;
-            }
+        hall.enterGame(socketUrl);
+        return TopTipPop.tip(reEnter).then(() => {
+            return true;
         });
     }
     return false;

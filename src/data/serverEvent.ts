@@ -20,6 +20,10 @@ export enum ServerErrCode {
     ReExchange = 112,
     /** 需要登陆 */
     NeedLogin = 114,
+    /** TrialTime */
+    TrialTime = 117,
+    /** TrialNotBullet */
+    TrialNotBullet = 116,
 }
 
 export type ErrorData = {
