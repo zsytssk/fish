@@ -1,8 +1,13 @@
-import { listenLocal, test, preBuild, build, afterBuild } from './buildUtils';
+import { test, preBuild, build, afterBuild } from './buildUtils';
+import { listenLocal } from '../zutil/utils/utils';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
 
-export const build_tips = `请选择要执行的命令\n 1.编译代码(prod) \n 2.本地编译代码(test) 提交  \n 3.本地编译代码(prod) 提交 \n > `;
+export const build_tips = [
+    `1.编译代码(prod)`,
+    `2.本地编译代码(test) 提交`,
+    `3.本地编译代码(prod) 提交`,
+];
 
 const buildMap = {
     '1': async () => {
@@ -25,7 +30,7 @@ const buildMap = {
 const actionMap = {
     async buildMap() {
         for (let i = 0; i < 50; i++) {
-            const listen_type = await listenLocal();
+            const listen_type = await listenLocal(build_tips);
             console.time(`buildType:${listen_type}, costTime:`);
             if (buildMap[listen_type]) {
                 await buildMap[listen_type]();

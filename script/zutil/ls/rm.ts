@@ -4,8 +4,7 @@ import {
     readdir,
     rmdir,
     unlink,
-    isEmpty,
-    sleep,
+    waitFolderEmpty,
 } from './asyncUtil';
 
 export async function rm(path: string) {
@@ -49,13 +48,4 @@ export async function clear(path: string) {
             await unlink(curPath);
         }
     }
-}
-
-async function waitFolderEmpty(dir: string) {
-    const is_empty = await isEmpty(dir);
-    if (is_empty) {
-        return true;
-    }
-    await sleep(0.5);
-    return await waitFolderEmpty(dir);
 }

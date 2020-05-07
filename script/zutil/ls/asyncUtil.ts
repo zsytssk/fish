@@ -100,3 +100,12 @@ export function isEmpty(dirname: string): Promise<boolean> {
         });
     });
 }
+
+export async function waitFolderEmpty(dir: string): Promise<any> {
+    const is_empty = await isEmpty(dir);
+    if (is_empty) {
+        return true;
+    }
+    await sleep(0.5);
+    return await waitFolderEmpty(dir);
+}

@@ -101,24 +101,4 @@ function genDate() {
     }, '');
 }
 
-// 监听本地
-export async function listenLocal() {
-    return new Promise((resolve, reject) => {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-
-        console.log('--------------------');
-        console.log();
-        console.log();
-
-        rl.question(build_tips, answer => {
-            console.log(`选中${answer}`);
-            rl.close();
-            resolve(answer);
-        });
-    }) as Promise<string>;
-}
-
 export async function test() {}
