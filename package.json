@@ -46,6 +46,7 @@
         "babel-runtime": "^6.26.0",
         "bezier-js": "^2.6.1",
         "crypto-js": "^4.0.0",
+        "es6-promise": "^4.2.8",
         "js-base64": "^2.5.2",
         "jsencrypt": "^3.0.0-rc.1",
         "lodash": "^4.17.15",

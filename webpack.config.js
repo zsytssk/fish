@@ -12,10 +12,10 @@ const common_config = {
     },
     resolve: {
         modules: [
-            path.resolve('./layaLibs'),
+            path.resolve('./node_modules'),
+            path.resolve('./library'),
             path.resolve('./libs'),
             path.resolve('./src'),
-            path.resolve('./node_modules'),
         ],
         extensions: ['.ts', '.js', '.json'],
     },
