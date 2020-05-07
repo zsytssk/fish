@@ -6,9 +6,12 @@ import { waitConnectGame } from 'ctrl/hall/login';
 import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
 import { SkillMap } from 'data/config';
-import { InternationalTip } from 'data/internationalConfig';
+import {
+    InternationalTip,
+    InternationalTipOther,
+} from 'data/internationalConfig';
 import { res } from 'data/res';
-import { ServerEvent, ServerName } from 'data/serverEvent';
+import { ServerEvent, ServerName, ServerErrCode } from 'data/serverEvent';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
@@ -256,25 +259,29 @@ export class GameCtrl {
             }
         }
     }
-    public changeSkin(skinId: string) {
+    public changeSkin(data: UseSkinRep) {
+        let { skinId } = data;
+        const { userId } = data;
         // 取最后一位
         skinId = skinId.charAt(skinId.length - 1);
-        const player = this.model.getPlayerById(
-            modelState.app.user_info.user_id,
-        );
+        const player = this.model.getPlayerById(userId);
         log('接收到use skin', skinId);
         player.changeSkin(skinId);
     }
     public tableOut(data: TableOutRep) {
         const { model } = this;
-        const { userId } = data;
+        const { userId, isTimeOut } = data;
         if (isCurUser(userId)) {
             const lang = getLang();
             const { kickedTip } = InternationalTip[lang];
-            AlertPop.alert(kickedTip, {
+            const timeout_tip =
+                InternationalTipOther[lang][ServerErrCode.TrialTimeGame];
+            const tip = isTimeOut ? timeout_tip : kickedTip;
+            disableCurUserOperation();
+            AlertPop.alert(tip, {
                 hide_cancel: true,
             }).then(() => {
-                location.reload();
+                this.roomOut({ userId });
             });
         } else {
             const player = model.getPlayerById(userId);

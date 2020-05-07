@@ -287,8 +287,9 @@ export class PlayerCtrl {
     public destroy() {
         const { view } = this;
 
+        getGameView().offAllCaller(view);
+        Laya.stage.offAllCaller(view);
         view.destroy();
-        Laya.stage.offAllCaller(this.view);
         this.view = undefined;
         this.game_ctrl = undefined;
         this.model = undefined;

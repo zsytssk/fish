@@ -83,10 +83,22 @@ export class GameModel extends ComponentManager {
         return [...fish_list];
     }
     public captureFish(info: HitRep) {
-        const player = this.getPlayerById(info.userId);
-        const fish = this.getFishById(info.eid);
-        if (!fish || !player) {
-            console.error('Game:>captureFish:> cant find fish or player!!');
+        const { userId, eid, backAmount } = info;
+        const player = this.getPlayerById(userId);
+        const fish = this.getFishById(eid);
+
+        if (!player) {
+            console.error(`Game:>captureFish:> cant find player for ${userId}`);
+            return;
+        }
+        if (backAmount) {
+            player.updateInfo({
+                bullet_num: player.bullet_num + backAmount,
+            });
+        }
+
+        if (!fish) {
+            console.error(`Game:>captureFish:> cant find fish for ${eid}`);
             return;
         }
         playerCaptureFish(player, fish, info);

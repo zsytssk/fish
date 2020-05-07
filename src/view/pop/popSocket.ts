@@ -47,7 +47,10 @@ export function useGunSkin(skin: string) {
         socket.event.once(ServerEvent.UseSkin, (data: UseSkinReq) => {
             resolve(true);
         });
-        socket.send(ServerEvent.UseSkin, { skinId: skin });
+        socket.send(ServerEvent.UseSkin, {
+            skinId: skin,
+            userId: modelState.app.user_info.user_id,
+        });
     }) as Promise<boolean>;
 }
 export function buyItem(itemId: string, num?: number, cost_bullet?: number) {

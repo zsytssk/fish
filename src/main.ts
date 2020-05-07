@@ -25,7 +25,7 @@ export function init() {
 export function covertLang(ori_lang: string) {
     const save_lang = ori_lang;
     let lang: Lang = Lang.Zh;
-    if (save_lang === 'en-us') {
+    if (save_lang === 'en') {
         lang = 'en' as Lang;
     } else if (save_lang === 'zh-Hant') {
         lang = 'hk' as Lang;

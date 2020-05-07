@@ -26,6 +26,8 @@ export enum ServerErrCode {
     TrialNotBullet = 116,
     /** 大厅 room in */
     TrialTimeHall = 507,
+    /** 网络异常 */
+    NetError = 511,
 }
 
 export type ErrorData = {

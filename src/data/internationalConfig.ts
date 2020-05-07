@@ -439,6 +439,7 @@ const InternationalTip2 = {
         [ServerErrCode.TrialTimeGame]: '已超出试玩时长，请去正式场进行游戏',
         [ServerErrCode.TrialNotBullet]:
             '子弹不足，请重新进入或去正式场进行游戏',
+        [ServerErrCode.NetError]: '网络异常, 请刷新重试',
     },
 };
 

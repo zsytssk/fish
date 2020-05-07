@@ -22,6 +22,7 @@ import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
 import { getLang } from './hallCtrlUtil';
 import { asyncOnly } from 'utils/asyncQue';
+import { removeItem } from 'utils/localStorage';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -31,6 +32,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             const { logoutTip } = InternationalTip[lang];
             const { OtherLogin } = InternationalTipOther[lang];
             if (res.code === ServerErrCode.TokenExpire) {
+                removeItem('local_token');
                 disconnectSocket(socket.config.name);
                 AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
                     location.reload();
@@ -132,14 +134,22 @@ export function errorHandler(code: number) {
         code === ServerErrCode.TrialTimeGame ||
         code === ServerErrCode.TrialNotBullet
     ) {
-        AlertPop.alert(InternationalTipOther[lang][code], {
+        return AlertPop.alert(InternationalTipOther[lang][code], {
             hide_cancel: true,
         }).then(() => {
             const socket = getSocket(ServerName.Game);
             socket.send(ServerEvent.RoomOut);
         });
     } else if (code === ServerErrCode.TrialTimeHall) {
-        TipPop.tip(InternationalTipOther[lang][ServerErrCode.TrialTimeGame]);
+        return TipPop.tip(
+            InternationalTipOther[lang][ServerErrCode.TrialTimeGame],
+        );
+    } else if (code === ServerErrCode.NetError) {
+        return AlertPop.alert(InternationalTipOther[lang][code], {
+            hide_cancel: true,
+        }).then(() => {
+            location.reload();
+        });
     }
     if (tip) {
         TipPop.tip(tip);

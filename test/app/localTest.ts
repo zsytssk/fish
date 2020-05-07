@@ -20,18 +20,18 @@ export async function localTest() {
     await mock_web_socket_test.runTest('create');
     modelState.app.user_info.setUserId(test_data.userId);
     mock_web_socket_test.runTest(ServerEvent.Shoot);
-    // mock_web_socket_test.runTest(ServerEvent.Hit);
+    mock_web_socket_test.runTest(ServerEvent.Hit);
     mock_web_socket_test.runTest(ServerEvent.FishBomb);
     mock_web_socket_test.runTest(ServerEvent.UseBomb);
     mock_web_socket_test.runTest(ServerEvent.UseLock);
     mock_web_socket_test.runTest(ServerEvent.UseFreeze);
     game_test.runTest('enter_game', [true]).then(() => {
-        fish_test.runTest('get_click_fish');
+        // fish_test.runTest('get_click_fish');
         player_test.runTest('add_cur_player');
         // player_test.runTest('add_other_player', [1]);
         // player_test.runTest('add_other_player', [2]);
         // player_test.runTest('add_other_player', [3]);
-        // fish_test.runTest('fish_path');
+        fish_test.runTest('fish_path');
         // fish_test.runTest('fish_shadow');
         // fish_test.runTest('add_fish_group');
         // body_test.runTest('show_shape');

@@ -41,6 +41,7 @@ export enum SkillMap {
     Auto = 'A2004',
     Super = 'A2004',
 }
+export function isSkill(id: string) {}
 
 export const SkillNameMap = {
     [SkillMap.Freezing]: 'freeze',

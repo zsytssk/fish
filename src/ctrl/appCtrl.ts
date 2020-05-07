@@ -54,9 +54,9 @@ export class AppCtrl {
             defaultVersion: Config.CdnVersion,
             versionPath: `./version.json?v=${Config.CdnVersion}`,
         });
-        if (Laya.Browser.onIOS || Laya.Browser.onAndroid) {
-            Laya.stage.fullScreenEnabled = true;
-        }
+        // if (Laya.Browser.onIOS || Laya.Browser.onAndroid) {
+        //     Laya.stage.fullScreenEnabled = true;
+        // }
         const task1 = honor.director.setLoadPageForScene(
             'scenes/loading.scene',
         );

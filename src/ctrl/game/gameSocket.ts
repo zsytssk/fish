@@ -28,7 +28,10 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
-        [ServerEvent.TableOut]: (data: TableOutRep) => {
+        [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
+            if (code !== 200) {
+                return errorHandler(code);
+            }
             game.tableOut(data);
         },
         [ServerEvent.Shoot]: (data: ShootRep) => {
@@ -95,14 +98,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.changeBulletCost(data);
         },
         [ServerEvent.UseSkin]: (data: UseSkinRep) => {
-            game.changeSkin(data.skinId);
+            game.changeSkin(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet) => {
             changeBulletNum(data.balance);
         },
         [SocketEvent.Reconnected]: () => {
             game.reset();
-            socket.send(ServerEvent.EnterGame);
+            socket.send(ServerEvent.EnterGame, { replay: true });
         },
     });
 }

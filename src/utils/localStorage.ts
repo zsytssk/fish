@@ -1,3 +1,6 @@
+export function removeItem(key: string) {
+    localStorage.removeItem(key);
+}
 export function setItem(key: string, data: string, expire_day = 0) {
     if (expire_day) {
         const expire_time = Number(expire_day) * 24 * 60 * 60 * 1000;

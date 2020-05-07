@@ -21,6 +21,7 @@ type CheckReplayRep = {
     socketUrl: string;
 };
 type TableOutRep = {
+    isTimeOut: boolean;
     userId: string;
 };
 type TableInRep = {
@@ -112,6 +113,7 @@ type HitDrop = {
 };
 type HitRep = {
     userId?: string;
+    backAmount?: number;
     eid: string;
     bet?: string;
     win: number;
@@ -245,6 +247,7 @@ type BuyRep = {
 
 type UseSkinReq = {
     skinId: string;
+    userId: string;
 };
 type UseSkinRep = UseSkinReq;
 type ExchangeBullet = {
