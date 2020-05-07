@@ -24,9 +24,8 @@
         "test": "node  ./script/test.js"
     },
     "devDependencies": {
-        "pngquant": "^3.0.0",
-        "ts-loader": "^7.0.1",
-        "typescript": "^3.8.3",
+        "ts-loader": "^7.0.2",
+        "typescript": "^3.9.0-beta",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3"
@@ -41,9 +40,6 @@
         "es6-map": "^0.1.5",
         "es6-promise": "^4.2.8",
         "es6-set": "^0.1.5",
-        "imagemin": "^7.0.1",
-        "imagemin-mozjpeg": "^8.0.0",
-        "imagemin-pngquant": "^8.0.0",
         "js-base64": "^2.5.2",
         "jsencrypt": "^3.0.0-rc.1",
         "lodash": "^4.17.15",
@@ -51,7 +47,7 @@
         "rxjs": "^6.5.5",
         "sat": "^0.8.0",
         "socket.io-client": "^2.3.0",
-        "tslint": "^6.1.1",
+        "tslint": "^6.1.2",
         "webpack-glsl-loader": "^1.0.1"
     },
     "repository": {

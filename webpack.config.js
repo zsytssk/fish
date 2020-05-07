@@ -53,10 +53,11 @@ const dev_config = {
 };
 
 const prod_config = {
-    entry: ['./src/main.ts'],
+    entry: ['es6-promise', './src/main.ts'],
 };
 const prod_ts_compile_option = {
-    sourceMap: false,
+    target: 'es5',
+    lib: ['es2015.promise'],
 };
 
 module.exports = (env, argv) => {
@@ -66,9 +67,11 @@ module.exports = (env, argv) => {
         dev_config.devServer.contentBase = dist_folder;
     }
     if (argv.mode === 'development') {
-        return Object.assign(common_config, dev_config);
+        const result = { ...common_config, ...dev_config };
+        return result;
     } else {
         common_config.module.rules[0].options.compilerOptions = prod_ts_compile_option;
-        return Object.assign(common_config, prod_config);
+        const result = { ...common_config, ...prod_config };
+        return result;
     }
 };

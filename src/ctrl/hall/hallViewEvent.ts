@@ -57,11 +57,21 @@ export function hallViewEvent(hall: HallCtrl) {
 
     onNode(btn_normal_play, CLICK, async (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
-        hall.roomIn({ roomId: 1, isTrial: 0 });
+        const lang = getLang();
+        const ani = btn_normal_play.getChildByName('ani') as Skeleton;
+        playSkeletonOnce(ani, `active_${lang}`).then(() => {
+            hall.roomIn({ roomId: 1, isTrial: 0 });
+            playSkeleton(ani, `standby_${lang}`, true);
+        });
     });
     onNode(btn_normal_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        hall.roomIn({ roomId: 1, isTrial: 1 });
+        const lang = getLang();
+        const ani = btn_normal_try.getChildByName('ani') as Skeleton;
+        playSkeletonOnce(ani, `active_${lang}`).then(() => {
+            hall.roomIn({ roomId: 1, isTrial: 1 });
+            playSkeleton(ani, `standby_${lang}`, true);
+        });
     });
     onNode(btn_match_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
@@ -77,6 +87,7 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         playSkeletonOnce(ani, `active_${lang}`).then(() => {
             hall.roomIn(getRoomInData());
+            playSkeleton(ani, `standby_${lang}`, true);
         });
     });
     btn_coin_select.on(CLICK, hall, (event: Event) => {

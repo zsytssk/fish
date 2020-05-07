@@ -42,11 +42,8 @@ export async function onHallSocket(hall: HallCtrl) {
     const [isReplay, socketUrl] = await checkReplay();
     if (isReplay) {
         const lang = getLang();
-        const { reEnter } = InternationalTip[lang];
         hall.enterGame(socketUrl);
-        return TopTipPop.tip(reEnter).then(() => {
-            return true;
-        });
+        return true;
     }
     return false;
 }

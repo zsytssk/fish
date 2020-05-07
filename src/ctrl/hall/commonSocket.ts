@@ -129,7 +129,7 @@ export function errorHandler(code: number) {
     } else if (code === ServerErrCode.NeedLogin) {
         return platform.login();
     } else if (
-        code === ServerErrCode.TrialTime ||
+        code === ServerErrCode.TrialTimeGame ||
         code === ServerErrCode.TrialNotBullet
     ) {
         AlertPop.alert(InternationalTipOther[lang][code], {
@@ -138,6 +138,8 @@ export function errorHandler(code: number) {
             const socket = getSocket(ServerName.Game);
             socket.send(ServerEvent.RoomOut);
         });
+    } else if (code === ServerErrCode.TrialTimeHall) {
+        TipPop.tip(InternationalTipOther[lang][ServerErrCode.TrialTimeGame]);
     }
     if (tip) {
         TipPop.tip(tip);

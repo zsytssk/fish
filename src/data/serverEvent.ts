@@ -20,10 +20,12 @@ export enum ServerErrCode {
     ReExchange = 112,
     /** 需要登陆 */
     NeedLogin = 114,
-    /** TrialTime */
-    TrialTime = 117,
+    /** TrialTime - hit */
+    TrialTimeGame = 117,
     /** TrialNotBullet */
     TrialNotBullet = 116,
+    /** 大厅 room in */
+    TrialTimeHall = 507,
 }
 
 export type ErrorData = {
