@@ -12,6 +12,7 @@ import {
     playerCaptureFish,
 } from './fish/fishModelUtils';
 import { ModelEvent } from 'model/modelEvent';
+import { window } from 'rxjs/operators';
 
 export const GameEvent = {
     /** 添加鱼 */

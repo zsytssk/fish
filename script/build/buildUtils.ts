@@ -72,7 +72,7 @@ async function cleanDist() {
     );
     await write(dist_index, index_str);
     let index_js_str = await readFile(dist_index_js);
-    index_js_str = replaceReg(index_js_str, /url:\n*\s+'[^']+',\n\s+/g, '');
+    index_js_str = replaceReg(index_js_str, /\surl:\n*\s+'[^']+',\n\s+/g, ' ');
     await write(dist_index_js, index_js_str);
     console.log(dist_path);
 }

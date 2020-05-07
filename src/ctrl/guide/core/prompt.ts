@@ -403,7 +403,7 @@ export class PromptGuide {
 function spliceStr(str: string, len: number) {
     const str_arr = str.split('<br/>');
     const result: string[] = [];
-    if (DataTransferItem.length === 1) {
+    if (str.length === 1) {
         result.push(str.slice(0, len));
         len = 0;
     } else {

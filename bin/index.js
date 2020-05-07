@@ -1,7 +1,6 @@
 //-----libs-begin-----
 
 //-----libs-end-------
-// // // 游戏启动
 // paladin.checkComponents({
 //     list: ['launch'],
 //     success(res) {
@@ -20,43 +19,42 @@
 // window.screenOrientation = 'sensor_landscape';
 // // 游戏初始化
 // paladin.init({
-//     url:
-//         'http://47.101.172.184:8103/platform/game/domains?host=47.101.172.184:8001',
-//     files: ['./js/bundle.js?v=' + CDN_VERSION],
-//     loadType: 2,
-//     success: function (res) {},
-// });
+url: 'http://47.101.172.184:8103/platform/game/domains?host=47.101.172.184:8001',
+    //     files: ['./js/bundle.js?v=' + CDN_VERSION],
+    //     loadType: 2,
+    //     success: function (res) {},
+    // });
 
-// var platform = {
-//     hideLoading() {
-//         paladin.comps.launch.hide();
-//     },
-//     login() {
-//         paladin.account.login();
-//     },
-//     logout() {
-//         paladin.account.logout();
-//     },
-//     getInfo() {
-//         return {
-//             isLogin: paladin.sys.config.isLogin,
-//             token: paladin.sys.config.jwtToken,
-//             lang: paladin.sys.config.lang,
-//             socket_url: paladin.sys.config.ws,
-//         };
-//     },
-// };
+    // var platform = {
+    //     hideLoading() {
+    //         paladin.comps.launch.hide();
+    //     },
+    //     login() {
+    //         paladin.account.login();
+    //     },
+    //     logout() {
+    //         paladin.account.logout();
+    //     },
+    //     getInfo() {
+    //         return {
+    //             isLogin: paladin.sys.config.isLogin,
+    //             token: paladin.sys.config.jwtToken,
+    //             lang: paladin.sys.config.lang,
+    //             socket_url: paladin.sys.config.ws,
+    //         };
+    //     },
+    // };
 
-loadLib('./js/bundle.js?v=' + CDN_VERSION);
+    loadLib('./js/bundle.js?v=' + CDN_VERSION);
 var platform = {
     hideLoading: function () {},
     login: function () {},
     logout: function () {},
     getInfo: function () {
         return {
-            isLogin: true,
+            isLogin: false,
             token: '',
-            socket_url: '',
+            socket_url: 'ws://47.101.172.184:8101',
         };
     },
 };

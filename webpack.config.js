@@ -8,7 +8,6 @@ const common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
         filename: 'js/bundle.js',
-        // path: path.resolve('D:\\zsytssk\\test\\weFish\\miniprogram'),
         path: path.join(__dirname, 'bin'),
     },
     resolve: {
@@ -24,10 +23,14 @@ const common_config = {
         rules: [
             {
                 test: /(\.ts|\.js)$/,
-                loader: 'ts-loader',
-                options: {
-                    transpileOnly: true,
-                },
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                        },
+                    },
+                ],
             },
             {
                 test: /(\.glsl|.fs|.vs)$/,
@@ -53,11 +56,7 @@ const dev_config = {
 };
 
 const prod_config = {
-    entry: ['es6-promise', './src/main.ts'],
-};
-const prod_ts_compile_option = {
-    target: 'es5',
-    lib: ['es2015.promise'],
+    entry: ['./src/main.ts'],
 };
 
 module.exports = (env, argv) => {
@@ -70,7 +69,7 @@ module.exports = (env, argv) => {
         const result = { ...common_config, ...dev_config };
         return result;
     } else {
-        common_config.module.rules[0].options.compilerOptions = prod_ts_compile_option;
+        common_config.module.rules[0].use.unshift({ loader: 'babel-loader' });
         const result = { ...common_config, ...prod_config };
         return result;
     }
