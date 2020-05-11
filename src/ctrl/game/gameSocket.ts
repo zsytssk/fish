@@ -21,7 +21,10 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     game_socket = socket;
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
-        [ServerEvent.EnterGame]: (data: EnterGameRep) => {
+        [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
+            if (code !== 200) {
+                return errorHandler(code);
+            }
             game.onEnterGame(convertEnterGame(data));
         },
         [ServerEvent.TableIn]: (data: TableInRep) => {

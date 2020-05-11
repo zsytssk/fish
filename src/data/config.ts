@@ -19,6 +19,7 @@ export const Config = {
     Host: '',
     /** cdn版本号 */
     CdnVersion: window.CDN_VERSION,
+    cndUrl: '',
     /** 子弹速度 */
     BulletSpeed: 25,
     /** 水池的宽度 */

@@ -19,6 +19,7 @@ export {
 
 export type GameConfig = any;
 export type HonorExternConfig = {
+    basePath?: string;
     versionPath?: string;
     defaultVersion?: string;
 };
@@ -46,6 +47,7 @@ async function run(
     if ((Laya as any).DebugPanel) {
         (Laya as any).DebugPanel.enable();
     }
+    URL.basePath = extern_config.basePath || URL.basePath;
     Laya.stage.scaleMode = game_config.scaleMode;
     Laya.stage.screenMode = game_config.screenMode;
     Laya.stage.alignV = game_config.alignV;
@@ -63,7 +65,7 @@ async function run(
     if (game_config.stat) {
         Stat.show(0, 0);
     }
-    Laya.alertGlobalError = false;
+    Laya.alertGlobalError(false);
 
     let { defaultVersion } = extern_config;
     defaultVersion = defaultVersion || '0';

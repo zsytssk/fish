@@ -19,6 +19,7 @@ export function init() {
     Config.SocketUrl = platform_info.socket_url;
     Config.token = platform_info.token;
     Config.isLogin = platform_info.isLogin;
+    Config.cndUrl = platform_info.cdn;
     Config.lang = covertLang(platform_info.lang);
 }
 

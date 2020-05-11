@@ -5,6 +5,7 @@ type PlatformInfo = {
     token: string;
     socket_url: string;
     lang: string;
+    cdn: string;
 };
 declare const platform: {
     hideLoading(): void;

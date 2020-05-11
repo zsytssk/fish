@@ -303,8 +303,8 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             cur_num,
             exchange_type,
         } = data as ExchangeRenderData;
-        await runTicketExchange(exchange_id);
-        RewardPop.preEnter({ type: exchange_type, num: cost_num });
+        const { num } = await runTicketExchange(exchange_id);
+        RewardPop.preEnter({ type: exchange_type, num });
         this.exchange_list.array[index] = {
             ...data,
             cur_num: cur_num - cost_num,

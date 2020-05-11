@@ -162,9 +162,9 @@ export function runTicketExchange(itemId: string) {
         socket.event.once(
             ServerEvent.TicketExchange,
             (data: TicketExchangeRep) => {
-                resolve(data.itemId);
+                resolve(data);
             },
         );
         socket.send(ServerEvent.TicketExchange, { itemId });
-    }) as Promise<string>;
+    }) as Promise<TicketExchangeRep>;
 }

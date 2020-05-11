@@ -53,6 +53,7 @@ export class AppCtrl {
         await honor.run(GameConfig, {
             defaultVersion: Config.CdnVersion,
             versionPath: `./version.json?v=${Config.CdnVersion}`,
+            basePath: Config.cndUrl,
         });
         // if (Laya.Browser.onIOS || Laya.Browser.onAndroid) {
         //     Laya.stage.fullScreenEnabled = true;

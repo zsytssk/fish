@@ -98,6 +98,9 @@ export class PlayerModel extends ComponentManager {
     public updateInfo(info: Partial<PlayerInfo>) {
         const { bullet_cost } = info;
         setProps(this as PlayerModel, info);
+        if (info.bullet_num) {
+            console.warn(`bullet_num:>1`, info.bullet_num);
+        }
         if (info.bullet_cost) {
             this.gun.setBulletCost(bullet_cost);
         }

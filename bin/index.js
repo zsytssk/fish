@@ -39,6 +39,7 @@ var platform = {
             token: paladin.sys.config.jwtToken,
             lang: paladin.sys.config.lang,
             socket_url: paladin.sys.config.ws,
+            cdn: paladin.sys.config.cdn,
         };
     },
 };
