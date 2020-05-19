@@ -87,28 +87,28 @@ type AwaitOnlyItem = {
 const await_only_map: AwaitOnlyMap = new Map();
 
 /** 多次调用同一个 promise, 只会运行一次
- * @param asyncId 异步函数唯一标识
+ * @param async_id 异步函数唯一标识
  * @param async_fn 运行的异步函数
  * @param temp 是否缓存, 默认 temp=false在 async_fn 结束之后就会清理
  * 如果 temp=true, async_fn 结束之后 需要使用 {rejectAsyncOnly} 来清理缓存
  */
 export function asyncOnly<T>(
-    asyncId: string,
+    async_id: string,
     async_fn: AsyncOnlyFn<T>,
     temp = false,
 ): Promise<T> {
     return new Promise((resolve, reject) => {
-        let await_item = await_only_map.get(asyncId);
+        let await_item = await_only_map.get(async_id);
         if (!await_item) {
             let wait = async_fn();
             if (!temp) {
                 wait = wait
                     .then(data => {
-                        await_only_map.delete(asyncId);
+                        await_only_map.delete(async_id);
                         return data;
                     })
                     .catch(error => {
-                        await_only_map.delete(asyncId);
+                        await_only_map.delete(async_id);
                         throw error;
                     });
             }
@@ -117,7 +117,7 @@ export function asyncOnly<T>(
                 reject,
                 resolve,
             } as AwaitOnlyItem;
-            await_only_map.set(asyncId, await_item);
+            await_only_map.set(async_id, await_item);
         }
         await_item.wait
             .then(data => {

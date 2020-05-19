@@ -76,6 +76,7 @@ export const ServerEvent = {
     LotteryList: 'lotteryList',
     ExchangeList: 'exchangeList',
     TicketExchange: 'ticketExchange',
+    NeedEmitUser: 'needEmitUser',
     ShopList: 'shopList',
     UseSkin: 'useSkin',
     Buy: 'buy',

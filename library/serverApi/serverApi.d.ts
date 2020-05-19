@@ -39,6 +39,7 @@ type ServerUserInfo = {
     turretSkin: string;
     lockFish: string;
     lockLeft: number;
+    needEmit: boolean;
 };
 
 type displaceType = 'path' | 'fun';
@@ -98,11 +99,9 @@ type RoomOutRep = {
 type ShootReq = {
     direction: Point;
     userId: string;
+    robotId: string;
 };
-type ShootRep = {
-    userId: string;
-    direction: Point;
-};
+type ShootRep = ShootReq;
 type HitReq = {
     eid: string;
     multiple: number;
@@ -280,3 +279,8 @@ type ExchangeListRep = {
     list: ExchangeItemData[];
 };
 type TicketExchangeRep = ExchangeItemData;
+
+type NeedEmitUserRep = {
+    userId: string;
+    robotIds: string[];
+};

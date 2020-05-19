@@ -31,6 +31,13 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
+        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep) => {
+            if (!isCurUser(data.userId)) {
+                return;
+            }
+
+            game.setPlayersEmit(data.robotIds);
+        },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
             if (code !== 200) {
                 return errorHandler(code);
@@ -151,9 +158,10 @@ export function convertEnterGame(data: EnterGameRep) {
             turretSkin: gun_skin,
             lockFish,
             lockLeft,
+            needEmit,
         } = user_source;
         const is_cur_player = isCurUser(user_id);
-        const need_emit = isCurUser(user_id);
+        const need_emit = isCurUser(user_id) || needEmit;
         const skills = genSkillMap(items, is_cur_player);
 
         if (lockFish) {

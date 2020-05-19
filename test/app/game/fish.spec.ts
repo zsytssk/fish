@@ -1,15 +1,13 @@
+import { FishCtrl } from 'ctrl/game/fishCtrl';
+import { injectProto } from 'honor/utils/tool';
+import { Label } from 'laya/ui/Label';
 import { range } from 'lodash';
 import { FishEvent, FishModel } from 'model/game/fish/fishModel';
 import { GameEvent } from 'model/game/gameModel';
 import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
-import { injectProto } from 'honor/utils/tool';
-import { FishCtrl } from 'ctrl/game/fishCtrl';
-import { body_test } from './body.spec';
 import { sleep } from 'utils/animate';
-import { FishView } from 'view/scenes/game/fishView';
-import { Label } from 'laya/ui/Label';
-import { DisplaceMoveCom } from 'model/game/com/moveCom/displaceMoveCom';
+import { body_test } from './body.spec';
 
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
@@ -157,7 +155,7 @@ export const fish_test = new Test('fish', runner => {
     runner.describe('get_click_fish', () => {
         injectProto(FishCtrl, 'initEvent' as any, (fish: FishCtrl) => {
             fish['view'].once('click', null, () => {
-                console.log(fish['model']);
+                console.log(`click_fish:>`, fish['view'], fish['model']);
             });
         });
     });

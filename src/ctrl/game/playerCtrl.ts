@@ -10,7 +10,7 @@ import { FishModel } from 'model/game/fish/fishModel';
 import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
 import { AutoShootModel } from 'model/game/skill/autoShootModel';
-import { getUserInfo } from 'model/modelState';
+import { getUserInfo, getCurPlayer } from 'model/modelState';
 import SAT from 'sat';
 import { log } from 'utils/log';
 import { darkNode, unDarkNode } from 'utils/utils';
@@ -168,16 +168,22 @@ export class PlayerCtrl {
         }
 
         gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
-            const { need_emit, user_id } = this.model;
+            const { need_emit, user_id, is_cur_player: is_cur } = this.model;
             if (!need_emit) {
                 return;
             }
             const { x, y } = velocity;
             AudioCtrl.play(AudioRes.Fire);
-            sendToGameSocket(ServerEvent.Shoot, {
+            const data = {
                 direction: { x, y },
                 userId: user_id,
-            } as ShootReq);
+            } as ShootReq;
+
+            if (!is_cur) {
+                data.robotId = user_id;
+                data.userId = getCurPlayer().user_id;
+            }
+            sendToGameSocket(ServerEvent.Shoot, data);
         });
 
         /** 当前用户的处理 */

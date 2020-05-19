@@ -179,9 +179,12 @@ export class GunModel extends ComponentManager {
     public preAddBullet(velocity: SAT.Vector, force = false) {
         const { status, is_on, event, shoot_space, player, bullet_cost } = this;
 
-        if (player.bullet_num - bullet_cost < 0) {
-            event.emit(GunEvent.NotEnoughBulletNum);
-            return;
+        /** 当前用户的特殊处理 */
+        if (player.is_cur_player) {
+            if (player.bullet_num - bullet_cost < 0) {
+                event.emit(GunEvent.NotEnoughBulletNum);
+                return;
+            }
         }
         if (!force && status === GunStatus.LockFish) {
             return;

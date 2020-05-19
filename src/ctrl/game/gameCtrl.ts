@@ -211,6 +211,10 @@ export class GameCtrl {
         if (!Object.keys(direction).length) {
             return;
         }
+        /** 自己发射的特殊处理 */
+        if (data.robotId) {
+            data.userId = data.robotId;
+        }
         this.model.shoot(data);
     }
     public onHit(data: HitRep) {
@@ -236,6 +240,14 @@ export class GameCtrl {
     public addPlayers(player_list: PlayerInfo[]) {
         for (const player of player_list) {
             this.model.addPlayer(player);
+        }
+    }
+    public setPlayersEmit(ids: string[]) {
+        for (const item of ids) {
+            const player = this.model.getPlayerById(item);
+            if (player) {
+                player.updateInfo({ need_emit: true });
+            }
         }
     }
     public changeBulletCost(data: ChangeTurretRep) {
