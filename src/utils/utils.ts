@@ -155,6 +155,53 @@ export function createGLowRedFilter() {
     return new GlowFilter('#ff0000', 10, 0, 0);
 }
 
+export function createColorFilter(
+    r: number | string,
+    g?: number,
+    b?: number,
+    a: number = 255,
+) {
+    if (typeof r === 'string') {
+        const rgb = hexToRgb(r);
+        r = rgb.r;
+        g = rgb.g;
+        b = rgb.b;
+        a = 255;
+    }
+    r = r / 255;
+    g = g / 255;
+    b = b / 255;
+    a = a / 255;
+
+    // prettier-ignore
+    const redMat = [
+        r, 0, 0, 0, 0, // R
+        0, g, 0, 0, 0, // G
+        0, 0, b, 0, 0, // B
+        0, 0, 0, a, 0, // A
+    ];
+
+    // 创建一个颜色滤镜对象,红色
+    return new ColorFilter(redMat);
+}
+
+export function hexToRgb(hex: string) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
+        return r + r + g + g + b + b;
+    });
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+        ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16),
+          }
+        : null;
+}
+
 export function darkNode(node: Sprite) {
     node.filters = [createDarkFilter()];
 }

@@ -340,8 +340,12 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Box',
-                    width: 70,
-                    height: 150,
+                    width: 100,
+                    height: 200,
+                    position: {
+                        x: 0,
+                        y: -20,
+                    },
                 },
             ],
         },

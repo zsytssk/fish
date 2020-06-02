@@ -1,7 +1,16 @@
-import { createSkeleton, createImg } from 'honor/utils/createSkeleton';
+import {
+    createSkeleton,
+    createImg,
+    createSprite,
+} from 'honor/utils/createSkeleton';
 import { getSpriteInfo, getShadowInfo } from 'utils/dataUtil';
 import { FishSpriteInfo } from 'data/sprite';
-import { createRedFilter, playSkeleton, stopSkeleton } from 'utils/utils';
+import {
+    createRedFilter,
+    playSkeleton,
+    stopSkeleton,
+    createColorFilter,
+} from 'utils/utils';
 import { vectorToDegree } from 'utils/mathUtils';
 import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
@@ -13,6 +22,7 @@ import {
 } from 'view/viewStateUtils';
 import { ShadowItemInfo } from 'data/coordinate';
 import { viewState } from 'view/viewState';
+import { Texture } from 'laya/resource/Texture';
 
 export type FishViewInfo = {
     type: string;
@@ -43,11 +53,11 @@ export class FishView extends Sprite {
             return;
         }
         const { type } = this.info;
-        const fish_ani = createSkeletonPool('fish', type) as Skeleton;
         const { offset, turn_ani } = getSpriteInfo(
             'fish',
             type,
         ) as FishSpriteInfo;
+        const fish_ani = this.createFishAni();
         const [top, right, bottom, left] = offset;
         const width = right + left;
         const height = top + bottom;
@@ -64,6 +74,34 @@ export class FishView extends Sprite {
         this.initShadow();
 
         this.zOrder = Number(type);
+    }
+    private createFishAni() {
+        const { type } = this.info;
+        const { coin_flag, coin_color } = getSpriteInfo(
+            'fish',
+            type,
+        ) as FishSpriteInfo;
+        const fish_ani = createSkeletonPool(
+            'fish',
+            type,
+            null,
+            coin_flag ? 1 : undefined,
+        ) as Skeleton;
+
+        createSprite(
+            'http://static.btgame.club/public-test/img/coin/15905807097032UL8JD1K.png',
+        ).then(img => {
+            img.filters = [createColorFilter(coin_color)];
+            const texture = img.drawToTexture(
+                img.width,
+                img.height,
+                0,
+                0,
+            ) as Texture;
+
+            fish_ani.setSlotSkin('huobi', texture);
+        });
+        return fish_ani;
     }
     /** 创建鱼的阴影 */
     private initShadow() {

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":3,
+    "selectedBox":23,
+    "selecteID":24,
     "searchKey":"Dialog",
     "props":{"width":1030,"sceneColor":"#000000","sceneBg":"laya/views/pop/lottery.png","height":710},
     "nodeParent":-1,

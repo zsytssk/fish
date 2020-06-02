@@ -2,6 +2,8 @@ import { Templet } from 'laya/ani/bone/Templet';
 import { loader } from 'Laya';
 import { Animation } from 'laya/display/Animation';
 import { Image } from 'laya/ui/Image';
+import { Sprite } from 'laya/display/Sprite';
+import { Handler } from 'laya/utils/Handler';
 
 const temple_pool: {
     [key: string]: Templet;
@@ -65,4 +67,21 @@ export function createImg(path: string): Image {
     sprite.loadImage(path + '.png');
     sprite.autoSize = true;
     return sprite;
+}
+
+/**
+ * 创建帧动画
+ * @param path 动画的路径
+ */
+export function createSprite(path: string): Promise<Sprite> {
+    return new Promise((resolve, reject) => {
+        const sprite = new Sprite();
+        sprite.loadImage(
+            path,
+            Handler.create(null, () => {
+                sprite.autoSize = true;
+                resolve(sprite);
+            }),
+        );
+    });
 }

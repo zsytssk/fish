@@ -19,7 +19,7 @@ export const body_test = new Test('body', runner => {
                 if (!sprite) {
                     sprite = new Sprite();
                     const game_view = honor.director.runningScene as GameView;
-                    sprite.zOrder = 10;
+                    sprite.zOrder = 100;
                     game_view.pool.addChild(sprite);
                     sprite_map.set(obj, sprite);
                     sprite.alpha = 0.5;
@@ -37,9 +37,9 @@ export const body_test = new Test('body', runner => {
                 sprite.destroy();
             });
 
-            // injectProto(FishView, 'initAni' as any, (obj: FishView) => {
-            //     obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
-            // });
+            injectProto(FishView, 'initAni' as any, (obj: FishView) => {
+                obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
+            });
         }
     });
 

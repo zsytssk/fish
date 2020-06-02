@@ -115,32 +115,13 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         };
     }
     private renderLottery = (box: LotteryItemUI, index: number) => {
-        const {
-            light,
-            item_num,
-            item_type,
-            bullet_icon,
-            bullet_num,
-            light_circle,
-        } = box;
+        const { light, light_circle, box_ani } = box;
         const data = this.lottery_list.array[index] as LotteryRenderData;
-        const { cur, get, lottery_type, lottery_num } = data;
+        const { cur, get, lottery_num } = data;
 
-        const num_str = lottery_num + '';
-        const is_bullet = lottery_type === 'bullet';
-
-        bullet_icon.visible = bullet_num.visible = is_bullet;
-        item_type.visible = item_num.visible = !is_bullet;
-        if (!is_bullet) {
-            item_type.skin = `image/pop/lottery/txt_${lottery_type.toLowerCase()}.png`;
-        }
-
-        let scale = 1 / (num_str.length / 4);
-        scale = scale > 1 ? 1 : scale;
-        item_num.scale(scale, scale);
-        bullet_num.text = item_num.text = num_str;
         light_circle.visible = false;
         light.visible = false;
+        box_ani.stop();
         if (!cur) {
             return;
         }

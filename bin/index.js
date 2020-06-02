@@ -16,8 +16,7 @@ paladin.checkComponents({
 window.screenOrientation = 'sensor_landscape';
 // 游戏初始化
 paladin.init({
-    url:
-        'http://47.101.172.184:8103/platform/game/domains?host=47.101.172.184:8001',
+    url: 'http://fish.btgame.club/platform/game/domains?host=fish.btgame.club',
     files: ['./js/bundle.js?v=' + CDN_VERSION],
     loadType: 2,
     success: function (res) {},

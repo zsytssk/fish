@@ -10,14 +10,19 @@ const PoolMap = {} as {
 };
 
 type SkeletonPoolType = 'fish' | 'bullet' | 'net' | 'other';
-export function createSkeletonPool(type: SkeletonPoolType, id: string) {
+export function createSkeletonPool(
+    type: SkeletonPoolType,
+    id: string,
+    rate?: number,
+    build_type?: number,
+) {
     const map_key = `${type}:${id}`;
     const ani = PoolMap[map_key]?.pop();
     if (ani) {
         return ani;
     }
     if (type === 'fish') {
-        return createSkeleton('ani/fish/fish' + id);
+        return createSkeleton('ani/fish/fish' + id, rate, build_type);
     } else if (type === 'bullet') {
         const path = (getSpriteInfo(type, id) as SpriteInfo)?.path;
         return createSkeleton(path);

@@ -8,20 +8,57 @@ import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
 import { sleep } from 'utils/animate';
 import { body_test } from './body.spec';
+import { FishView } from 'view/scenes/game/fishView';
+import { TextTexture } from 'laya/webgl/text/TextTexture';
+import { Image } from 'laya/ui/Image';
+import { Texture } from 'laya/resource/Texture';
+import { Loader } from 'laya/net/Loader';
+import { createColorFilter } from 'utils/utils';
+import { Sprite } from 'laya/display/Sprite';
+import { Handler } from 'laya/utils/Handler';
+import { createSprite } from 'honor/utils/createSkeleton';
 
 /** @type {FishModel} 的测试 */
 export const fish_test = new Test('fish', runner => {
     runner.describe(
         'add_fish',
         async (typeId: number, pathId: number, time: number) => {
-            typeId = 16;
+            typeId = 18;
             pathId = pathId || 2;
             // pathId = pathId || 3;
-            time = time || 12 * 100000;
+            time = time || 12 * 1000000;
             // time = time || 40 * 1000;
             const usedTime = (time * 1) / 2;
+            // const usedTime = 0;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
+        },
+    );
+
+    runner.describe(
+        'fish_view',
+        async (typeId: number, pathId: number, time: number) => {
+            for (const i of range(16, 21)) {
+                typeId = i;
+                pathId = i;
+                time = time || 12;
+                const fish_data = genFishInfo(typeId, pathId, time * 1000);
+                const fishModel = modelState.app.game.addFish(
+                    fish_data,
+                ) as FishModelPath;
+                fishModel.path_no = pathId;
+                await sleep(time);
+            }
+
+            // typeId = 20;
+            // pathId = pathId || 2;
+            // // pathId = pathId || 3;
+            // time = time || 12 * 1000;
+            // // time = time || 40 * 1000;
+            // const usedTime = (time * 1) / 2;
+            // // const usedTime = 0;
+            // const fish_data = genFishInfo(typeId, pathId, time, usedTime);
+            // modelState.app.game.addFish(fish_data);
         },
     );
 
