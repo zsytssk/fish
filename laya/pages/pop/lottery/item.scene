@@ -2,11 +2,11 @@
     "x":0,
     "type":"View",
     "selectedBox":18,
-    "selecteID":22,
+    "selecteID":26,
     "searchKey":"View",
     "props":{"width":119,"sceneColor":"#000000","height":119},
     "nodeParent":-1,
-    "maxID":23,
+    "maxID":27,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -89,13 +89,28 @@
                     "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer,box_ani",
-                    "props":{"y":60.5,"x":59.5,"var":"box_ani","url":"image/pop/lottery/box.sk"},
+                    "props":{"y":61,"x":60,"width":1,"visible":false,"var":"box_ani","url":"image/pop/lottery/box.sk","height":100},
                     "nodeParent":18,
                     "label":"box_ani",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":22,
+                    "child":[
+                        ],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,box_img",
+                    "props":{"y":25,"x":21,"var":"box_img","skin":"image/pop/lottery/box_normal.png"},
+                    "nodeParent":18,
+                    "label":"box_img",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":26,
                     "child":[
                         ]
                 }]
