@@ -1,13 +1,13 @@
 {
     "x":0,
-    "type":"Scene",
-    "selectedBox":34,
-    "selecteID":35,
-    "searchKey":"Scene",
-    "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/record/itemRecord.png","height":634},
+    "type":"Dialog",
+    "selectedBox":2,
+    "selecteID":41,
+    "searchKey":"Dialog",
+    "props":{"width":1061,"sceneColor":"#000000","height":634},
     "nodeParent":-1,
-    "maxID":36,
-    "label":"Scene",
+    "maxID":43,
+    "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
     "isAniNode":true,
@@ -38,7 +38,8 @@
                     "hasChild":false,
                     "compId":3,
                     "child":[
-                        ]
+                        ],
+                    "$HIDDEN":false
                 },
                 {
                     "type":"Sprite",
@@ -51,7 +52,8 @@
                     "hasChild":false,
                     "compId":5,
                     "child":[
-                        ]
+                        ],
+                    "$HIDDEN":false
                 },
                 {
                     "type":"Sprite",
@@ -64,7 +66,8 @@
                     "hasChild":false,
                     "compId":6,
                     "child":[
-                        ]
+                        ],
+                    "$HIDDEN":false
                 },
                 {
                     "type":"Image",
@@ -77,53 +80,40 @@
                     "hasChild":false,
                     "compId":7,
                     "child":[
-                        ]
+                        ],
+                    "$HIDDEN":false
                 }],
-            "$HIDDEN":true
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"Label",
+            "searchKey":"Label,title",
+            "props":{"y":16,"width":277,"var":"title","valign":"middle","text":"道具存量","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":43,"color":"#ffffff","centerX":0,"align":"center"},
+            "nodeParent":2,
+            "label":"title",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":42,
+            "child":[
+                ],
+            "$HIDDEN":false
         },
         {
             "x":15,
             "type":"Sprite",
-            "searchKey":"Sprite,close",
-            "props":{"y":4,"x":952,"var":"close","texture":"image/pop/record/close.png"},
+            "searchKey":"Sprite,btn_close",
+            "props":{"y":4,"x":952,"var":"btn_close","texture":"image/pop/record/close.png"},
             "nodeParent":2,
-            "label":"close",
+            "label":"btn_close",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
             "compId":8,
             "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"UIView",
-            "source":"pop/record/selectCoinBox.scene",
-            "searchKey":"UIView,select_coin_menu",
-            "props":{"y":81,"x":63,"var":"select_coin_menu"},
-            "nodeParent":2,
-            "label":"select_coin_menu",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":10,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"UIView",
-            "source":"pop/record/selectItemBox.scene",
-            "searchKey":"UIView,select_item_menu",
-            "props":{"y":82,"x":343,"var":"select_item_menu"},
-            "nodeParent":2,
-            "label":"select_item_menu",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":12,
-            "child":[
-                ]
+                ],
+            "$HIDDEN":false
         },
         {
             "x":15,
@@ -140,11 +130,11 @@
             "child":[
                 {
                     "type":"Image",
-                    "searchKey":"Image",
-                    "props":{"width":935,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","height":400},
+                    "searchKey":"Image,title_box",
+                    "props":{"width":935,"var":"title_box","skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","height":400},
                     "nodeParent":15,
-                    "label":"Image",
-                    "isOpen":false,
+                    "label":"title_box",
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -162,7 +152,8 @@
                             "hasChild":false,
                             "compId":16,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Label",
@@ -176,7 +167,8 @@
                             "hasChild":false,
                             "compId":17,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Label",
@@ -190,7 +182,8 @@
                             "hasChild":false,
                             "compId":18,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Label",
@@ -204,7 +197,8 @@
                             "hasChild":false,
                             "compId":19,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         },
                         {
                             "type":"Label",
@@ -217,9 +211,10 @@
                             "hasChild":false,
                             "compId":20,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         }],
-                    "$HIDDEN":true
+                    "$HIDDEN":false
                 },
                 {
                     "type":"List",
@@ -257,7 +252,8 @@
                                     "hasChild":false,
                                     "compId":23,
                                     "child":[
-                                        ]
+                                        ],
+                                    "$HIDDEN":false
                                 },
                                 {
                                     "type":"Label",
@@ -271,7 +267,8 @@
                                     "hasChild":false,
                                     "compId":24,
                                     "child":[
-                                        ]
+                                        ],
+                                    "$HIDDEN":false
                                 },
                                 {
                                     "type":"Label",
@@ -285,7 +282,8 @@
                                     "hasChild":false,
                                     "compId":25,
                                     "child":[
-                                        ]
+                                        ],
+                                    "$HIDDEN":false
                                 },
                                 {
                                     "type":"Label",
@@ -299,7 +297,8 @@
                                     "hasChild":false,
                                     "compId":26,
                                     "child":[
-                                        ]
+                                        ],
+                                    "$HIDDEN":false
                                 },
                                 {
                                     "type":"Label",
@@ -312,7 +311,8 @@
                                     "hasChild":false,
                                     "compId":27,
                                     "child":[
-                                        ]
+                                        ],
+                                    "$HIDDEN":false
                                 },
                                 {
                                     "type":"Sprite",
@@ -325,10 +325,14 @@
                                     "hasChild":false,
                                     "compId":28,
                                     "child":[
-                                        ]
-                                }]
-                        }]
-                }]
+                                        ],
+                                    "$HIDDEN":false
+                                }],
+                            "$HIDDEN":false
+                        }],
+                    "$HIDDEN":false
+                }],
+            "$HIDDEN":false
         },
         {
             "x":15,
@@ -337,27 +341,25 @@
             "props":{"y":545,"x":270,"width":502,"height":47},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":30,
             "child":[
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_prev",
                     "props":{"var":"btn_prev","stateNum":"1","skin":"image/pop/record/btn_pagination1.png"},
                     "nodeParent":30,
                     "label":"btn_prev",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":29,
                     "child":[
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":8,"x":23,"texture":"image/pop/record/left.png"},
@@ -368,24 +370,24 @@
                             "hasChild":false,
                             "compId":31,
                             "child":[
-                                ]
-                        }]
+                                ],
+                            "$HIDDEN":false
+                        }],
+                    "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_next",
                     "props":{"y":4,"x":434,"var":"btn_next","stateNum":"1","skin":"image/pop/record/btn_pagination1.png"},
                     "nodeParent":30,
                     "label":"btn_next",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":32,
                     "child":[
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":6,"x":26,"texture":"image/pop/record/next.png"},
@@ -396,24 +398,24 @@
                             "hasChild":false,
                             "compId":33,
                             "child":[
-                                ]
-                        }]
+                                ],
+                            "$HIDDEN":false
+                        }],
+                    "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button",
                     "props":{"y":3,"x":71,"stateNum":"1","skin":"image/pop/record/btn_pagination2.png"},
                     "nodeParent":30,
                     "label":"Button",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":34,
                     "child":[
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":5,"x":8,"width":54,"valign":"middle","text":"1","height":29,"fontSize":25,"color":"#06684a","bold":true,"align":"center"},
@@ -424,9 +426,120 @@
                             "hasChild":false,
                             "compId":35,
                             "child":[
-                                ]
-                        }]
-                }]
+                                ],
+                            "$HIDDEN":false
+                        }],
+                    "$HIDDEN":false
+                }],
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"Box",
+            "searchKey":"Box,search_box",
+            "props":{"y":86,"x":63,"var":"search_box"},
+            "nodeParent":2,
+            "label":"search_box",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":41,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite,btn_search",
+                    "props":{"y":1,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
+                    "nodeParent":41,
+                    "label":"btn_search",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":36,
+                    "child":[
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":6,"x":8,"width":103,"valign":"middle","text":"查询","height":34,"fontSize":25,"color":"#255a85","align":"center"},
+                            "nodeParent":36,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":37,
+                            "child":[
+                                ],
+                            "$HIDDEN":false
+                        }],
+                    "$HIDDEN":false
+                },
+                {
+                    "x":30,
+                    "type":"UIView",
+                    "source":"pop/record/itemMenu.scene",
+                    "searchKey":"UIView,item_menu",
+                    "props":{"y":39,"x":280,"visible":false,"var":"item_menu"},
+                    "nodeParent":41,
+                    "label":"item_menu",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":39,
+                    "child":[
+                        ],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"UIView",
+                    "source":"pop/record/coinMenu.scene",
+                    "searchKey":"UIView,coin_menu",
+                    "props":{"y":39,"width":250,"visible":false,"var":"coin_menu","height":345},
+                    "nodeParent":41,
+                    "label":"coin_menu",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":40,
+                    "child":[
+                        ],
+                    "$HIDDEN":true
+                },
+                {
+                    "x":30,
+                    "type":"UIView",
+                    "source":"pop/record/selectItemBox.scene",
+                    "searchKey":"UIView,select_item",
+                    "props":{"y":0,"x":280,"var":"select_item"},
+                    "nodeParent":41,
+                    "label":"select_item",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":12,
+                    "child":[
+                        ],
+                    "$HIDDEN":false
+                },
+                {
+                    "x":30,
+                    "type":"UIView",
+                    "source":"pop/record/selectCoinBox.scene",
+                    "searchKey":"UIView,select_coin",
+                    "props":{"var":"select_coin"},
+                    "nodeParent":41,
+                    "label":"select_coin",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":10,
+                    "child":[
+                        ],
+                    "$HIDDEN":false
+                }],
+            "$HIDDEN":false
         }],
     "animations":[
         {
@@ -436,5 +549,6 @@
             "id":1,
             "frameRate":24,
             "action":0
-        }]
+        }],
+    "$HIDDEN":false
 }

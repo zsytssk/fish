@@ -52,6 +52,7 @@ const dev_config = {
         host: '0.0.0.0',
         contentBase: path.join(__dirname, 'bin'),
         disableHostCheck: true,
+        port: 3000,
     },
 };
 

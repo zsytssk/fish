@@ -2,18 +2,13 @@ import { Config } from 'data/config';
 import { Lang } from 'data/internationalConfig';
 import { AppCtrl } from './ctrl/appCtrl';
 
-Math.log2 =
-    Math.log2 ||
-    function (x) {
-        return Math.log(x) * Math.LOG2E;
-    };
+import './polyfill';
 
 function main() {
     init();
     new AppCtrl(); // tslint:disable-line
 }
 main();
-
 export function init() {
     const platform_info = platform.getInfo();
     Config.SocketUrl = platform_info.socket_url;

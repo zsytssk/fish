@@ -14,6 +14,7 @@ import { Config } from 'data/config';
 import { ani_wrap } from './game/aniWrap.spec';
 import { body_test } from './game/body.spec';
 import { Lang } from 'data/internationalConfig';
+import { record_test } from './pop/record.spec';
 
 export async function localTest() {
     commonTest();
@@ -66,6 +67,8 @@ export function commonTest() {
         // if (location.href.indexOf('debug') === -1) {
         //     location.href += `&debug=1`;
         // }
+
+        record_test.runTest('open_item_record');
         const url = getParams('url');
         const code = getParams('code');
         if (url) {

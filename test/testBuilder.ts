@@ -27,9 +27,11 @@ import { skill_item_view_test } from './app/view/SkillItemView.spec';
 import { guide_test } from './app/guide/guide.spec';
 import { help_test } from './app/pop/help.spec';
 import { pop_test } from './app/pop/pop.spec';
+import { record_test } from './app/pop/record.spec';
 
 const testScope = new Test('top');
 testScope.addChild(
+    record_test,
     ani_wrap,
     app_test,
     body_test,

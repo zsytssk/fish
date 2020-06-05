@@ -100,7 +100,7 @@
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image,coin_icon",
-                            "props":{"y":5,"x":3,"width":35,"skin":"image/common/coin/BTC.png","name":"coin_icon","height":35},
+                            "props":{"y":6,"x":3,"width":30,"skin":"image/common/coin/BTC.png","name":"coin_icon","height":30},
                             "nodeParent":10,
                             "label":"coin_icon",
                             "isDirectory":false,

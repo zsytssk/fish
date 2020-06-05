@@ -1,19 +1,19 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
+import { ctrlState } from 'ctrl/ctrlState';
+import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { SkillMap } from 'data/config';
 import {
-    Lang,
     InternationalTip,
     InternationalTipOther,
+    Lang,
 } from 'data/internationalConfig';
-import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
+import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
+import { getCurPlayer } from 'model/modelState';
+import { ui } from 'ui/layaMaxUI';
 import { addZeroToNum } from 'utils/utils';
-import { SkillNameMap, SkillMap } from 'data/config';
-import { ctrlState } from 'ctrl/ctrlState';
-import { getCurUserId, getCurPlayer } from 'model/modelState';
-import TipPop from './tip';
 import AlertPop from './alert';
 import { buyItem } from './popSocket';
+import TipPop from './tip';
 
 type BuyInfo = {
     type: string;
