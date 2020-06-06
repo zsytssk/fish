@@ -227,3 +227,35 @@ export function getParams(key: string) {
     }
     return param_map[key];
 }
+
+export function getDateFromNow(a: number) {
+    const date1 = new Date();
+    const time1 =
+        date1.getFullYear() +
+        '-' +
+        (date1.getMonth() + 1) +
+        '-' +
+        date1.getDate();
+
+    const dateEnd = new Date(time1);
+    const dateStart = new Date(time1);
+
+    dateStart.setDate(date1.getDate() + a);
+    dateEnd.setDate(date1.getDate() + a + 1);
+    const m = dateStart.getMonth() + 1;
+    const d = dateStart.getDate();
+    console.log(`test:>getDateFromNow`, dateStart);
+
+    return {
+        date_str: formatDate(m) + '/' + formatDate(d),
+        start: dateStart.valueOf(),
+        end: dateEnd.valueOf(),
+    };
+}
+
+export function formatDate(a: number): string {
+    if (a < 10) {
+        return '0' + a;
+    }
+    return '' + a;
+}

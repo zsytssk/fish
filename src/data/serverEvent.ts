@@ -67,6 +67,8 @@ export const ServerEvent = {
     UseFreeze: 'useFreeze',
     FreezeOver: 'freezeOver',
     ExchangeBullet: 'exchangeBullet',
+    GetItemList: 'getItemList',
+    GetBulletList: 'getBulletList',
 
     /** 其他部分 */
     ErrCode: 'conn::error',

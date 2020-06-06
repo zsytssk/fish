@@ -13,6 +13,8 @@ import { roomIn } from './hallSocket';
 import { playSkeleton, playSkeletonOnce } from 'utils/utils';
 import { getLang } from './hallCtrlUtil';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
+import GameRecord from 'view/pop/record/gameRecord';
+import ItemRecord from 'view/pop/record/itemRecord';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
@@ -34,6 +36,8 @@ export function hallViewEvent(hall: HallCtrl) {
         btn_login,
         coin_menu,
         flag_menu,
+        btn_game_record,
+        btn_item_record,
     } = header;
 
     coin_menu_list.selectHandler = new Handler(
@@ -126,6 +130,14 @@ export function hallViewEvent(hall: HallCtrl) {
     onNode(btn_voice, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         VoicePop.preEnter();
+    });
+    onNode(btn_game_record, CLICK, () => {
+        AudioCtrl.play(AudioRes.Click);
+        GameRecord.preEnter();
+    });
+    onNode(btn_item_record, CLICK, () => {
+        AudioCtrl.play(AudioRes.Click);
+        ItemRecord.preEnter();
     });
 }
 

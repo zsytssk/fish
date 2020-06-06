@@ -3,7 +3,6 @@ import { Lang } from 'data/internationalConfig';
 import { AppCtrl } from './ctrl/appCtrl';
 
 import './polyfill';
-
 function main() {
     init();
     new AppCtrl(); // tslint:disable-line

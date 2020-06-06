@@ -1,12 +1,11 @@
-import { ui } from 'ui/layaMaxUI';
-import honor, { HonorDialog } from 'honor';
 import { onAccountChange } from 'ctrl/hall/hallCtrlUtil';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import { Handler } from 'laya/utils/Handler';
-import { SelectCtrl } from './selectCtrl';
-import { Sprite } from 'laya/display/Sprite';
+import honor, { HonorDialog } from 'honor';
 import { afterActive } from 'honor/utils/tool';
+import { AccountMap } from 'model/userInfo/userInfoModel';
+import { ui } from 'ui/layaMaxUI';
 import { getSkillName } from '../buyBullet';
+import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
+import { SelectCtrl } from './selectCtrl';
 
 type CoinData = {
     coin_icon: string;
@@ -20,21 +19,28 @@ type ItemData = {
 };
 type SelectItem = InstanceType<typeof ItemRecord>['select_item'];
 
-const ItemList = ['2001', '2002', '2003'];
-
 export default class ItemRecord extends ui.pop.record.itemRecordUI
     implements HonorDialog {
     public isModal = true;
     private select_coin_ctrl: SelectCtrl;
     private select_item_ctrl: SelectCtrl;
+    private pagination_ctrl: PaginationCtrl;
+    private all_list: GetItemListItemRep[];
     public static async preEnter() {
         const item_record = (await honor.director.openDialog(
             ItemRecord,
         )) as ItemRecord;
+        return item_record;
     }
     public onAwake() {
         afterActive(this);
-        const { select_item, select_coin, item_menu, coin_menu } = this;
+        const {
+            select_item,
+            select_coin,
+            item_menu,
+            coin_menu,
+            btn_search,
+        } = this;
 
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
@@ -43,31 +49,44 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         });
         select_coin_ctrl.init();
 
-        const item_list = ItemList.map(item => {
-            return { item_name: getSkillName(item), item_id: item };
-        });
         const select_item_ctrl = new SelectCtrl(select_item, item_menu);
         select_item_ctrl.setRender(this.renderSelectItem);
         select_item_ctrl.init();
-        select_item_ctrl.setList(item_list);
+        const ItemList = ['2001', '2002', '2003'].map(item => {
+            return { item_name: getSkillName(item), item_id: item };
+        });
+        select_item_ctrl.setList(ItemList);
+
+        const pagination_ctrl = new PaginationCtrl(this.pagination);
+        pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
+            const { all_list } = this;
+            const list: GetItemListItemRep[] = [];
+            for (let i = range[0]; i < range[1]; i++) {
+                list.push(all_list[i]);
+            }
+            this.renderRecordList(list);
+        });
+        this.pagination_ctrl = pagination_ctrl;
+
+        btn_search.on('click', null, () => {
+            this.search();
+        });
 
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_item_ctrl = select_item_ctrl;
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
-        // console.log(box.parent);
         const { coin_icon, coin_name } = box;
         const { coin_icon: icon, coin_name: name } = data;
         coin_icon.skin = icon;
         coin_name.text = name;
     }
     private renderSelectItem(box: SelectItem, data: ItemData) {
-        // console.log(box.parent);
         const { item_name: item_name_label } = box;
         const { item_name } = data;
         item_name_label.text = item_name;
     }
-    public renderCoinMenu(data: AccountMap) {
+    private renderCoinMenu(data: AccountMap) {
         const { select_coin_ctrl } = this;
         const arr: CoinData[] = [];
         for (const [type, { icon }] of data) {
@@ -77,5 +96,34 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             });
         }
         select_coin_ctrl.setList(arr);
+    }
+    private search() {
+        const { select_coin_ctrl, select_item_ctrl, pagination_ctrl } = this;
+        const coin_data = select_coin_ctrl.getCurData();
+        const item_data = select_item_ctrl.getCurData();
+        pagination_ctrl.update(200, 20);
+    }
+    public setList(data: GetItemListItemRep[]) {
+        this.all_list = data;
+        this.pagination_ctrl.update(data.length, 9);
+    }
+    private renderRecordList(data: GetItemListItemRep[]) {
+        const { record_list } = this;
+        record_list.array = data.map(item => {
+            return {
+                buy_total: item.buyTotal,
+                remain: item.remain,
+                type: item.type,
+                give_total: item.giveTotal,
+                no: item.currency,
+            };
+        });
+    }
+    public destroy() {
+        this.select_coin_ctrl.destroy();
+        this.select_item_ctrl.destroy();
+        this.select_coin_ctrl = undefined;
+        this.select_item_ctrl = undefined;
+        super.destroy();
     }
 }

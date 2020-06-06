@@ -284,3 +284,11 @@ type NeedEmitUserRep = {
     userId: string;
     robotIds: string[];
 };
+
+type GetItemListItemRep = {
+    type: string;
+    buyTotal: number;
+    giveTotal: number;
+    remain: number;
+    currency: string;
+};

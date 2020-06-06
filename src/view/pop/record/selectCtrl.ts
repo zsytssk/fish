@@ -35,7 +35,6 @@ export class SelectCtrl {
             (index: number) => {
                 select_list.visible = false;
                 if (index === -1) {
-                    this.select_index = -1;
                     return;
                 }
                 if (!select_list.list.array.length) {
@@ -78,8 +77,12 @@ export class SelectCtrl {
             select_list.list.selectedIndex = 0;
         }
     }
-    public getIndex() {
-        return this.select_list.list;
+    public getCurIndex() {
+        return this.select_index;
+    }
+    public getCurData() {
+        console.log(this.select_list.list.array, this.select_index);
+        return this.select_list.list.array[this.select_index];
     }
     public destroy() {
         this.select_box = undefined;
