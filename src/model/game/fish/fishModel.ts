@@ -32,6 +32,7 @@ export type FishData = {
     type: string;
     id: string;
     score: number;
+    currency: string;
 };
 /** 鱼的状态 */
 export enum FishStatus {
@@ -63,6 +64,7 @@ export class FishModel extends ComponentManager {
     private game: GameModel;
     public event: EventCom;
     public body: BodyCom;
+    public currency: string;
     constructor(data: FishData, game: GameModel) {
         super();
 
@@ -70,11 +72,11 @@ export class FishModel extends ComponentManager {
         this.initCom(data);
     }
     private initCom(data: FishData) {
-        const { type, id, score } = data;
+        const { type, id, score, currency } = data;
 
         setProps(
             this as FishModel,
-            { type, id, score: score || 0 } as FishData,
+            { type, id, score: score || 0, currency } as FishData,
         );
         const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;

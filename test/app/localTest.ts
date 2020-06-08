@@ -68,7 +68,7 @@ export function commonTest() {
         //     location.href += `&debug=1`;
         // }
 
-        record_test.runTest('open_item_record');
+        // record_test.runTest('open_item_record');
         const url = getParams('url');
         const code = getParams('code');
         if (url) {

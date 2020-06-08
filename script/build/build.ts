@@ -5,8 +5,9 @@ const type = process.argv.slice(2)[0] || 'buildMap';
 
 export const build_tips = [
     `1.编译代码(prod)`,
-    `2.本地编译代码(test) 提交`,
-    `3.本地编译代码(prod) 提交`,
+    `2.本地编译代码(test)`,
+    `3.本地编译代码(test) 提交`,
+    `4.本地编译代码(prod) 提交`,
 ];
 
 const buildMap = {
@@ -21,6 +22,11 @@ const buildMap = {
         await afterBuild(true);
     },
     '3': async () => {
+        await preBuild();
+        await build('test');
+        await afterBuild(true);
+    },
+    '4': async () => {
         await preBuild();
         await build('prod');
         await afterBuild(true);

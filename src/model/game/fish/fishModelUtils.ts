@@ -13,17 +13,19 @@ import { FishModel, FishData, FishEvent } from './fishModel';
 
 /** 创建鱼 move_com在外面创建 */
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
-    const { eid: id, fishId: type, score } = data;
+    const { eid: id, fishId: type, score, currencyFish } = data;
     const displace = createFishDisplace(data);
+    if (!displace) {
+        return;
+    }
     const move_com = new DisplaceMoveCom(displace);
-    const fish = new FishModel(
-        {
-            id,
-            type,
-            score,
-        } as FishData,
-        game,
-    );
+    const fish_data: FishData = {
+        id,
+        type,
+        score,
+        currency: currencyFish,
+    };
+    const fish = new FishModel(fish_data, game);
     fish.setMoveCom(move_com);
     if (isBombFish(fish)) {
         fish.addCom(new FishBombCom(fish));
@@ -42,7 +44,7 @@ export function createFishGroup(
     data: ServerFishInfo,
     game: GameModel,
 ): FishModel[] {
-    const { fishId: groupType, group, score } = data;
+    const { fishId: groupType, group, score, currencyFish } = data;
     const result = [] as FishModel[];
     const { group: sprite_group } = getSpriteInfo(
         'fish',
@@ -145,14 +147,13 @@ export function createFishGroup(
             onUpdate,
             destroy,
         } as MoveCom;
-        const fish = new FishModel(
-            {
-                id,
-                type,
-                score,
-            } as FishData,
-            game,
-        );
+        const fish_data: FishData = {
+            id,
+            type,
+            score,
+            currency: currencyFish,
+        };
+        const fish = new FishModel(fish_data, game);
         fish.setMoveCom(_move_com);
         if (isBombFish(fish)) {
             fish.addCom(new FishBombCom(fish));

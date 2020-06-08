@@ -1,5 +1,5 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getCurUserId } from 'model/modelState';
+import { getCurUserId, getUserInfo } from 'model/modelState';
 import { Lang } from 'data/internationalConfig';
 import { getItem, setItem } from 'utils/localStorage';
 
@@ -32,4 +32,10 @@ export function setMusic(music: number) {
     const user_id = getCurUserId();
     AudioCtrl.setMusic(music);
     setItem(`${user_id}:music`, music + '');
+}
+
+export function getCurrencyIcon(currency?: string) {
+    const { account_map } = getUserInfo();
+    console.log(account_map);
+    return account_map.get(currency)?.icon;
 }

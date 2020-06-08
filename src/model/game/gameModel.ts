@@ -51,6 +51,9 @@ export class GameModel extends ComponentManager {
         if (!group) {
             /** 创建单个鱼 */
             const fish = createFish(fish_info, this);
+            if (!fish) {
+                return;
+            }
             this.fish_list.add(fish);
             this.event.emit(GameEvent.AddFish, fish);
             fish.init();

@@ -129,9 +129,11 @@ function createIndex(index: number, is_cur?: boolean) {
     label.fontSize = 25;
     label.bold = true;
     if (is_cur) {
-        label.color = '#fff';
+        label.color = '#492b00';
+        button.skin = 'image/pop/record/btn_pagination0.png';
     } else {
         label.color = '#06684a';
+        button.skin = 'image/pop/record/btn_pagination2.png';
     }
     label.align = 'center';
     label.valign = 'middle';

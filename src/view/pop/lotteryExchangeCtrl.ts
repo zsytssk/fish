@@ -4,11 +4,12 @@ import { ui } from 'ui/layaMaxUI';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { ItemMap } from 'data/config';
-import { createDarkFilter } from 'utils/utils';
+import { createDarkFilter, createColorFilter } from 'utils/utils';
 import { Event } from 'laya/events/Event';
 import { runTicketExchange } from './popSocket';
 import RewardPop from './reward';
 import { afterActive } from 'honor/utils/tool';
+import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 
 type Item =
     | ui.pop.lottery.item2oneUI
@@ -83,7 +84,11 @@ export class LotteryExchangeCtrl {
         tag = tag ? tag.toLowerCase() : tag;
         const num_str = exchange_num + '';
         price_label.text = cost_num + '';
-        coin_icon.loadImage(`image/pop/lottery/tag_${tag}.png`);
+        const icon_url = getCurrencyIcon(exchange_type);
+        coin_icon.skin = icon_url;
+        // coin_icon.skin =
+        //     'http://static.btgame.club/public-test/img/coin/15905806992912UL8JD1I.png';
+        coin_icon.filters = [createColorFilter('#64280e')];
         num_label.text = num_str;
         item_type.skin = `image/pop/lottery/txt_${exchange_type.toLowerCase()}.png`;
         remain_label.text = `${remaining}${cur_num}/${cost_num}`;

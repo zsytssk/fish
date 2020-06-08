@@ -32,7 +32,10 @@ import ShopPop from 'view/pop/shop';
 import VoicePop from 'view/pop/voice';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
-import GameView, { BulletBoxDir } from 'view/scenes/game/gameView';
+import GameView, {
+    BulletBoxDir,
+    AddFishViewInfo,
+} from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
 import { disableCurUserOperation } from './gameCtrlUtils';
 import {
@@ -42,6 +45,7 @@ import {
     sendToGameSocket,
 } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
+import { FishViewInfo } from 'view/scenes/game/fishView';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -136,8 +140,14 @@ export class GameCtrl {
         const { event } = this.model;
         const { view } = this;
         event.on(GameEvent.AddFish, (fish: FishModel) => {
-            const { type, id, horizon_turn } = fish;
-            const fish_view = view.addFish({ type, id, horizon_turn });
+            const { type, id, horizon_turn, currency } = fish;
+            const fish_view_info: AddFishViewInfo = {
+                type,
+                currency,
+                id,
+                horizon_turn,
+            };
+            const fish_view = view.addFish(fish_view_info);
             const ctrl = new FishCtrl(fish_view, fish);
         });
         event.on(GameEvent.AddPlayer, (player: PlayerModel) => {

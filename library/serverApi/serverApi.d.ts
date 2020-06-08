@@ -66,6 +66,7 @@ type ServerFishInfo = {
     frozen?: boolean;
     startTime?: number;
     inScreen?: boolean;
+    currencyFish?: string;
     /** 鱼分数 */
     score: number;
 };

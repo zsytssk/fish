@@ -23,10 +23,12 @@ import {
 import { ShadowItemInfo } from 'data/coordinate';
 import { viewState } from 'view/viewState';
 import { Texture } from 'laya/resource/Texture';
+import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 
 export type FishViewInfo = {
     type: string;
     id: string;
+    currency: string;
 };
 export class FishView extends Sprite {
     private fish_ani: Skeleton;
@@ -76,7 +78,7 @@ export class FishView extends Sprite {
         this.zOrder = Number(type);
     }
     private createFishAni() {
-        const { type } = this.info;
+        const { type, currency } = this.info;
         const { coin_flag, coin_color } = getSpriteInfo(
             'fish',
             type,
@@ -88,19 +90,24 @@ export class FishView extends Sprite {
             coin_flag ? 1 : undefined,
         ) as Skeleton;
 
-        createSprite(
-            'http://static.btgame.club/public-test/img/coin/15905807097032UL8JD1K.png',
-        ).then(img => {
-            img.filters = [createColorFilter(coin_color)];
-            const texture = img.drawToTexture(
-                img.width,
-                img.height,
-                0,
-                0,
-            ) as Texture;
+        // 鱼身上添加icon的样式。。。
+        if (coin_flag) {
+            const fish_icon = getCurrencyIcon(currency);
+            if (fish_icon) {
+                createSprite(fish_icon).then(img => {
+                    img.filters = [createColorFilter(coin_color)];
+                    const texture = img.drawToTexture(
+                        img.width,
+                        img.height,
+                        0,
+                        0,
+                    ) as Texture;
 
-            fish_ani.setSlotSkin('huobi', texture);
-        });
+                    fish_ani.setSlotSkin('huobi', texture);
+                });
+            }
+        }
+
         return fish_ani;
     }
     /** 创建鱼的阴影 */

@@ -79,7 +79,7 @@ async function cleanDist() {
 
 export async function pushRemote() {
     const { dist_path } = await getConfig();
-    await excuse('git acppo', { path: dist_path, output: true });
+    await excuse('git acpp', { path: dist_path, output: true });
 }
 
 function genDate() {

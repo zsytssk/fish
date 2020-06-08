@@ -7,6 +7,7 @@ import {
 } from 'data/internationalConfig';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 
 export const app_test = new Test('app', runner => {
     runner.describe('enter_game', () => {});
@@ -39,5 +40,9 @@ export const app_test = new Test('app', runner => {
                 },
             });
         }, 3000);
+    });
+
+    runner.describe('test', (lang: Lang) => {
+        getCurrencyIcon();
     });
 });

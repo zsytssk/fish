@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":17,
+    "selectedBox":12,
+    "selecteID":21,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -130,7 +130,7 @@
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image,coin_icon",
-                            "props":{"y":5,"x":13.5,"width":20,"var":"coin_icon","skin":"image/pop/lottery/tag_coin_bg.png","height":20},
+                            "props":{"y":4,"x":12,"width":22,"var":"coin_icon","skin":"image/pop/lottery/tag_coin_bg.png","height":22},
                             "nodeParent":12,
                             "label":"coin_icon",
                             "isDirectory":false,

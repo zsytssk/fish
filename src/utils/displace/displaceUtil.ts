@@ -367,6 +367,10 @@ export function createFishDisplace(data: ServerFishInfo) {
             } else if (pathList) {
                 path_arr = pathList;
             }
+            if (!path_arr) {
+                console.error(`cant find path for no:${pathNo}`);
+                return;
+            }
             curve_list = createCurvesByPath(path_arr, fishId);
             break;
         default:

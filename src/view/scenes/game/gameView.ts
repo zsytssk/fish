@@ -19,6 +19,8 @@ import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
 
+export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
+
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
 export default class GameView extends ui.scenes.game.gameUI
@@ -133,7 +135,7 @@ export default class GameView extends ui.scenes.game.gameUI
         pool.scaleY = gun_wrap.scaleY = ani_overlay.scaleY = ani_wrap.scaleY = -1;
         this.upside_down = true;
     }
-    public addFish(info: FishViewInfo & { horizon_turn: boolean }) {
+    public addFish(info: AddFishViewInfo) {
         const { pool, upside_down } = this;
         const { horizon_turn } = info;
         const fish = new FishView(info, pool);
