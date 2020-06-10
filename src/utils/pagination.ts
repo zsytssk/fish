@@ -43,6 +43,12 @@ export class Pagination {
         this.cur_page = 0;
         this.analyse();
     }
+    public reset() {
+        this.item_total_num = 0;
+        this.item_page_num = 0;
+        this.pagination_num = 0;
+        this.cur_page = 0;
+    }
     public next() {
         const { has_next } = this;
         if (!has_next) {

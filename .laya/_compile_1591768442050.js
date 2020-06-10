@@ -1,4 +1,4 @@
-// v1.2.3
+// v1.2.2
 //是否使用IDE自带的node环境和插件，设置false后，则使用自己环境(使用命令行方式执行)
 const useIDENode = process.argv[0].indexOf("LayaAir") > -1 ? true : false;
 const useCMDNode = process.argv[1].indexOf("layaair2-cmd") > -1 ? true : false;
@@ -122,7 +122,7 @@ function layaExpPlugin(options) {
     });
 }
 
-let layaFiles = [path.join(workSpaceDir.replace("/.laya/publish.js", "").replace("\\.laya\\publish.js", ""), "libs", "laya", "net", "HttpRequest.ts")];
+let layaFiles = [];
 let layaexpreplace = '//__LAYARPLACEMENTHERE__//';
 
 var curPackFiles = null;  //当前包的所有的文件

@@ -247,7 +247,7 @@ export function getDateFromNow(a: number) {
     console.log(`test:>getDateFromNow`, dateStart);
 
     return {
-        date_str: formatDate(m) + '/' + formatDate(d),
+        date_str: formatDate(m) + '-' + formatDate(d),
         start: dateStart.valueOf(),
         end: dateEnd.valueOf(),
     };

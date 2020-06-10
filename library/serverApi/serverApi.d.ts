@@ -287,11 +287,13 @@ type NeedEmitUserRep = {
 };
 
 type GetItemListItemRep = {
-    type: string;
-    buyTotal: number;
+    name: string;
+    buyNum: number;
     giveTotal: number;
-    remain: number;
+    curNum: number;
+    prizeNum: number;
     currency: string;
+    itemId: string;
 };
 
 type GetItemListReq = {
@@ -307,12 +309,14 @@ type GetBulletReq = {
     startTime: number;
     endTime: number;
     pageNum: number;
+    pageSize: number;
 };
 type GetBulletItemRep = {
-    e: string;
-    b: number;
-    p: number;
+    cost: number;
+    prize: number;
+    currency: string;
 };
 type GetBulletListRep = {
     list: GetBulletItemRep[];
+    total: number;
 };

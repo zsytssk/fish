@@ -25,9 +25,12 @@ export class PaginationCtrl extends EventCom {
         view.removeChildren();
         this.pagination = new Pagination();
     }
+    public reset() {
+        this.pagination.reset();
+    }
     public update(total: number, page_size: number) {
         this.pagination.updateData(total, page_size);
-        this.render(this.pagination.output());
+        this.render(this.pagination.output(), false);
     }
     private triggerAction(action: PaginationItem) {
         const { pagination } = this;
@@ -50,12 +53,20 @@ export class PaginationCtrl extends EventCom {
         }
         this.render(pagination.output());
     }
-    private render(data: RenderData) {
+    private render(data: RenderData, trigger_change = true) {
         const { view } = this;
         const { pagination_arr, cur_page, item_range } = data;
 
+        console.log(pagination_arr, cur_page);
         view.removeChildren();
-        console.log(pagination_arr);
+        if (pagination_arr.length <= 1) {
+            this.emit(PaginationEvent.Change, {
+                cur: cur_page,
+                range: item_range,
+                trigger_change,
+            });
+            return;
+        }
         for (const item of pagination_arr) {
             let btn: Button;
             switch (item) {
@@ -83,7 +94,12 @@ export class PaginationCtrl extends EventCom {
 
         resizeContain(view, 10);
         view.x = ((view.parent as Sprite).width - view.width) / 2;
-        this.emit(PaginationEvent.Change, { cur: cur_page, range: item_range });
+
+        this.emit(PaginationEvent.Change, {
+            cur: cur_page,
+            range: item_range,
+            trigger_change,
+        });
     }
 }
 

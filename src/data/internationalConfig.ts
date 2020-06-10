@@ -441,6 +441,8 @@ const InternationalTip2 = {
         gameNo: '场次',
         remainingNum: '剩余数量',
         gameListTitle: '游戏存量',
+        cost: '消耗',
+        prize: '收益',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -466,6 +468,8 @@ const InternationalTip2 = {
         gameNo: 'Sessions',
         remainingNum: 'Amount remaining',
         gameListTitle: 'Game data',
+        cost: 'Use up',
+        prize: 'Earnings',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -494,6 +498,8 @@ const InternationalTip2 = {
         gameNo: 'セッション',
         remainingNum: '残高',
         gameListTitle: 'ゲーム記録',
+        cost: '消費する',
+        prize: '収益',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',

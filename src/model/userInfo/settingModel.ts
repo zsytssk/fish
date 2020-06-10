@@ -6,6 +6,7 @@ export const SettingEvent = {
     VoiceChange: 'voice_change',
     MusicChange: 'music_change',
 };
+
 /** 设置数据 */
 export class SettingModel extends ComponentManager {
     /** 声音 */

@@ -1,15 +1,17 @@
-import { onAccountChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import {
+    offBindEvent,
+    onAccountChange,
+    onLangChange,
+} from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTipOther, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
-import { afterActive } from 'honor/utils/tool';
+import { Label } from 'laya/ui/Label';
 import { AccountMap } from 'model/userInfo/userInfoModel';
 import { ui } from 'ui/layaMaxUI';
-import { getSkillName } from '../buyBullet';
-import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
-import { SelectCtrl } from './selectCtrl';
 import { getDateFromNow } from 'utils/utils';
 import { getBulletList } from '../popSocket';
-import { Lang, InternationalTipOther } from 'data/internationalConfig';
-import { Label } from 'laya/ui/Label';
+import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
+import { SelectCtrl } from './selectCtrl';
 
 type CoinData = {
     coin_icon: string;
@@ -21,7 +23,7 @@ type DateData = ReturnType<typeof getDateFromNow>;
 type SelectItem = InstanceType<typeof GameRecord>['select_item'];
 
 const DateList: DateData[] = [];
-for (let i = -1; i >= -7; i--) {
+for (let i = 0; i >= -7; i--) {
     DateList.push(getDateFromNow(i));
 }
 
@@ -54,28 +56,32 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         });
         select_coin_ctrl.init();
 
-        const select_item_ctrl = new SelectCtrl(select_item, date_menu);
-        select_item_ctrl.setRender(this.renderSelectItem);
-        select_item_ctrl.init();
-        select_item_ctrl.setList(DateList);
+        const select_date_ctrl = new SelectCtrl(select_item, date_menu);
+        select_date_ctrl.setRender(this.renderSelectItem);
+        select_date_ctrl.init();
+        select_date_ctrl.setList(DateList);
 
         const pagination_ctrl = new PaginationCtrl(this.pagination);
-        pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
-            const { all_list } = this;
-            const list: GetItemListItemRep[] = [];
-            for (let i = range[0]; i < range[1]; i++) {
-                list.push(all_list[i]);
-            }
-            this.renderRecordList(list);
-        });
+        pagination_ctrl.on(
+            PaginationEvent.Change,
+            ({ cur, trigger_change }) => {
+                if (trigger_change) {
+                    this.search(cur);
+                }
+            },
+        );
         this.pagination_ctrl = pagination_ctrl;
 
         btn_search.on('click', null, () => {
+            this.pagination_ctrl.reset();
+            this.search(1);
+        });
+        setTimeout(() => {
             this.search();
         });
 
         this.select_coin_ctrl = select_coin_ctrl;
-        this.select_date_ctrl = select_item_ctrl;
+        this.select_date_ctrl = select_date_ctrl;
 
         onLangChange(this, lang => {
             this.initLang(lang);
@@ -83,14 +89,14 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
     }
     private initLang(lang: Lang) {
         const {
-            itemListTitle,
+            gameListTitle,
             search,
             gameNo,
             remainingNum,
         } = InternationalTipOther[lang];
         const { title, title_box, btn_search_label } = this;
 
-        title.text = itemListTitle;
+        title.text = gameListTitle;
         const arr = [remainingNum, gameNo];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
@@ -119,43 +125,33 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         }
         select_coin_ctrl.setList(arr);
     }
-    private search() {
-        const {
-            select_coin_ctrl,
-            select_date_ctrl: select_item_ctrl,
-            pagination_ctrl,
-        } = this;
+    private search(pageNum = 1) {
+        const { select_coin_ctrl, select_date_ctrl, pagination_ctrl } = this;
         const coin_data = select_coin_ctrl.getCurData();
-        const date_data = select_item_ctrl.getCurData();
+        const date_data = select_date_ctrl.getCurData();
 
         getBulletList({
             currency: coin_data.coin_name,
             startTime: date_data.start,
             endTime: date_data.end,
-            pageNum: 0,
+            pageNum,
+            pageSize: 9,
         }).then(data => {
-            console.log(`test:>`, data);
-            this.all_list = data.list;
-            pagination_ctrl.update(data.list.length, 9);
+            pagination_ctrl.update(data.total, 9);
+            this.renderRecordList(data.list);
         });
     }
-    public setList(data: GetItemListItemRep[]) {
-        this.all_list = data;
-        this.pagination_ctrl.update(data.length, 9);
-    }
-    private renderRecordList(data: GetItemListItemRep[]) {
+    private renderRecordList(data: GetBulletItemRep[]) {
         const { record_list } = this;
         record_list.array = data.map(item => {
             return {
-                buy_total: item.buyTotal,
-                remain: item.remain,
-                type: item.type,
-                give_total: item.giveTotal,
-                no: item.currency,
+                prize: item.prize + item.currency,
+                cost: item.cost ? item.cost + item.currency : 0,
             };
         });
     }
     public destroy() {
+        offBindEvent(this);
         this.select_coin_ctrl.destroy();
         this.select_date_ctrl.destroy();
         this.select_coin_ctrl = undefined;

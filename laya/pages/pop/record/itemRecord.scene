@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":36,
-    "selecteID":37,
+    "selectedBox":2,
+    "selecteID":24,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","height":634},
     "nodeParent":-1,
-    "maxID":45,
+    "maxID":47,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -482,36 +482,6 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite,btn_search",
-                    "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
-                    "nodeParent":41,
-                    "label":"btn_search",
-                    "isOpen":true,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":36,
-                    "child":[
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,btn_search_label",
-                            "props":{"y":6,"x":8,"width":103,"var":"btn_search_label","valign":"middle","text":"查询1","height":34,"fontSize":25,"color":"#255a85","align":"center"},
-                            "nodeParent":36,
-                            "label":"btn_search_label",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":37,
-                            "child":[
-                                ],
-                            "$HIDDEN":false
-                        }],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/itemMenu.scene",
                     "searchKey":"UIView,item_menu",
@@ -572,6 +542,35 @@
                     "compId":10,
                     "child":[
                         ],
+                    "$HIDDEN":false
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite,btn_search",
+                    "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
+                    "nodeParent":41,
+                    "label":"btn_search",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":45,
+                    "child":[
+                        {
+                            "type":"Label",
+                            "searchKey":"Label,btn_search_label",
+                            "props":{"y":6,"x":5,"width":114,"var":"btn_search_label","valign":"middle","text":"查询","height":34,"fontSize":22,"color":"#255a85","align":"center"},
+                            "nodeParent":45,
+                            "label":"btn_search_label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":46,
+                            "child":[
+                                ],
+                            "$HIDDEN":false
+                        }],
                     "$HIDDEN":false
                 }],
             "$HIDDEN":false

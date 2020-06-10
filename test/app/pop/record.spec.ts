@@ -11,10 +11,10 @@ export const record_test = new Test('record', runner => {
 const testData: GetItemListItemRep[] = [];
 for (let i = 0; i < 1000; i++) {
     testData.push({
-        type: `${i}`,
-        buyTotal: 100,
+        name: `${i}`,
+        buyNum: 100,
         giveTotal: 100,
-        remain: 100,
+        curNum: 100,
         currency: 'Btc',
     });
 }

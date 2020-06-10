@@ -183,12 +183,12 @@ export function getBulletList(data: GetBulletReq) {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.GetBulletList,
-            (_data: GetItemListRep) => {
+            (_data: GetBulletListRep) => {
                 resolve(_data);
             },
         );
         socket.send(ServerEvent.GetBulletList, {
             ...data,
         });
-    }) as Promise<GetItemListRep>;
+    }) as Promise<GetBulletListRep>;
 }

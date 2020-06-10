@@ -1,4 +1,8 @@
-import { onAccountChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
+import {
+    onAccountChange,
+    onLangChange,
+    offBindEvent,
+} from 'ctrl/hall/hallCtrlUtil';
 import honor, { HonorDialog } from 'honor';
 import { afterActive } from 'honor/utils/tool';
 import { AccountMap } from 'model/userInfo/userInfoModel';
@@ -81,6 +85,9 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         btn_search.on('click', null, () => {
             this.search();
         });
+        setTimeout(() => {
+            this.search();
+        });
 
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_item_ctrl = select_item_ctrl;
@@ -146,15 +153,16 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const { record_list } = this;
         record_list.array = data.map(item => {
             return {
-                buy_total: item.buyTotal,
-                remain: item.remain,
-                type: item.type,
-                give_total: item.giveTotal,
+                buy_total: item.buyNum,
+                remain: item.curNum,
+                type: getSkillName(item.itemId),
+                give_total: item.prizeNum,
                 no: item.currency,
             };
         });
     }
     public destroy() {
+        offBindEvent(this);
         this.select_coin_ctrl.destroy();
         this.select_item_ctrl.destroy();
         this.select_coin_ctrl = undefined;

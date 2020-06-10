@@ -1,4 +1,4 @@
-// v1.7.0
+// v1.6.5
 //是否使用IDE自带的node环境和插件，设置false后，则使用自己环境(使用命令行方式执行)
 const useIDENode = process.argv[0].indexOf("LayaAir") > -1 ? true : false;
 const useCMDNode = process.argv[1].indexOf("layaair2-cmd") > -1 ? true : false;
@@ -29,7 +29,7 @@ global.workSpaceDir = workSpaceDir;
 
 // 结合compile.js使用
 global.publish = true;
-const fileList = ["compile.js", "publish_xmgame.js", "publish_oppogame.js", "publish_vivogame.js", "publish_biligame.js", "publish_alipaygame.js", "publish_wxgame.js", "publish_bdgame.js", "publish_qqgame.js"];
+const fileList = ["compile.js", "publish_xmgame.js", "publish_oppogame.js", "publish_vivogame.js", "publish_alipaygame.js", "publish_wxgame.js", "publish_bdgame.js", "publish_qqgame.js"];
 requireDir('./', {
 	filter: function (fullPath) {
 		// 只用到了compile.js和publish.js
@@ -151,8 +151,6 @@ gulp.task("clearReleaseDir", ["compile"], function (cb) {
 				delList = delList.concat(`!${releaseDir}`, `!${releaseDir}/{game.js,game.json,project.swan.json,swan-game-adapter.js}`);
 			} else if (platform === "Alipaygame") {
 				delList = delList.concat(`!${releaseDir}`, `!${releaseDir}/{game.js,game.json,my-adapter.js}`);
-			} else if (platform === "biligame") {
-				delList = delList.concat(`!${releaseDir}`, `!${releaseDir}/{game.js,game.json,weapp-adapter.js}`);
 			}
 		}
 		del(delList, { force: true }).then(paths => {
@@ -250,9 +248,6 @@ gulp.task("es6toes5", platformCopyTask, function() {
 			presets: ['@babel/env'],
 			compact: true
 		})) 
-		.on('error', function (err) {
-			console.warn(err.toString());
-		})
 		.pipe(gulp.dest(releaseDir));
 	}
 })
@@ -320,50 +315,11 @@ gulp.task("version1", ["compressImage"], function () {
 	}
 });
 
-// 更新index.js的hash值
-gulp.task("renameIndexJs", ["version1"], function (cb) {
-	if (config.version) {
-		let versionPath = releaseDir + "/version.json";
-		let versionCon = fs.readFileSync(versionPath, "utf8");
-		versionCon = JSON.parse(versionCon);
-		let indexJSPath;
-		let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
-		indexJSPath = releaseDir + "/" + indexJsStr;
-
-		return new Promise((resolve, reject) => {
-			let srcList = [versionPath, indexJSPath];
-			gulp.src(srcList)
-				.pipe(revCollector())
-				.pipe(gulp.dest(releaseDir));
-			setTimeout(resolve, 1500);
-		}).then(function() {
-			return new Promise(async function(resolve, reject) {
-				// index-xxx.js => index.js
-				let indexJsOrigin = path.join(releaseDir, "index.js")
-				fs.renameSync(indexJSPath, indexJsOrigin);
-				gulp.src(indexJsOrigin, { base: releaseDir })
-					.pipe(rev())
-					.pipe(gulp.dest(releaseDir))
-					.pipe(revdel())
-					.pipe(rev.manifest({
-						path: versionPath,
-						merge: true
-					}))
-					.pipe(gulp.dest("./")); // 注意，这里不能是releaseDir (https://segmentfault.com/q/1010000002876613)
-				setTimeout(cb, 2000);
-			})
-		}).catch(function(e) {
-			throw e;
-		})
-	} else {
-		cb();
-	}
-});
-
-// 替换index.html/game.js/main.js以及index.js里面的变化的文件名
-gulp.task("version2", ["renameIndexJs"], function () {
+// 替换index.js里面的变化的文件名
+gulp.task("version2", ["version1"], function () {
 	if (config.version) {
 		//替换index.html和index.js里面的文件名称
+
 		let htmlPath = releaseDir + "/index.html";
 		let versionPath = releaseDir + "/version.json";
 		let gameJSPath = releaseDir + "/game.js";
