@@ -449,9 +449,66 @@ const InternationalTip2 = {
             '子弹不足，请重新进入或去正式场进行游戏',
         [ServerErrCode.NetError]: '网络异常, 请刷新重试',
     },
+    [Lang.En]: {
+        NetError: 'Internet connection error, reconnecting',
+        NetComeBack: 'Welcome back!',
+        OtherLogin: 'Log-in error ,please refresh and try again. ',
+        InputEmptyWarn: 'Blank MUST be filled in',
+        Delete: 'Delete',
+        buyItemTip: 'Confirm cost $1 $2,purchase $3 $4.',
+        buySkinTip: 'Confirm cost $1 个 $2,purchase $3.',
+        beyondBulletNum: 'Ammunition limit exceeded',
+        itemListTitle: 'Item capacity',
+        itemList1: 'Items',
+        itemList2: 'Sum of purchase',
+        itemList3: 'Sum of prizes',
+        search: 'Inquire',
+        gameNo: 'Sessions',
+        remainingNum: 'Amount remaining',
+        gameListTitle: 'Game data',
+        [ServerErrCode.NoMoney]:
+            'Insufficient funds, please add funds or change to another currency.',
+        noMoneyConfirm: 'Add funds',
+        [ServerErrCode.ReExchange]:
+            'Insufficient ammunition. Would you like to continue to exchange?',
+        [ServerErrCode.TrialTimeGame]:
+            'The trial time has ended, please go to the official game to continue playing.',
+        [ServerErrCode.TrialNotBullet]:
+            'Out of ammo, please reload the game or go the official game to continue.',
+        [ServerErrCode.NetError]: 'Network error, please reload the game ',
+    },
+    [Lang.Jp]: {
+        NetError: '異常なネットワーク、再接続',
+        NetComeBack: 'お帰りなさい！',
+        OtherLogin: 'サイト外でログオフし、更新して再試行してください',
+        InputEmptyWarn: '入力した値は空にできません...！',
+        Delete: '削除する',
+        buyItemTip: '費用$1$2、購入$3$4を確認します。',
+        buySkinTip: '确认花费$1个$2, 购买$3.',
+        beyondBulletNum: '費用$1$2、購入$3を確認します。',
+        itemListTitle: 'アイテムの在庫',
+        itemList1: '道具',
+        itemList2: '合計購入金額',
+        itemList3: 'ゲームギフトの合計',
+        search: '問い合わせ',
+        gameNo: 'セッション',
+        remainingNum: '残高',
+        gameListTitle: 'ゲーム記録',
+        [ServerErrCode.NoMoney]:
+            '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
+        noMoneyConfirm: 'チャージ',
+        [ServerErrCode.ReExchange]:
+            '弾丸が不十分な場合は、引き換えてください！',
+        [ServerErrCode.TrialTimeGame]:
+            '体験期間が過ぎました。会場でご利用ください。',
+        [ServerErrCode.TrialNotBullet]:
+            '弾丸が足りません。再入力するか、公式会場でプレイしてください。',
+        [ServerErrCode.NetError]:
+            'ネットワークが異常です。更新してもう一度お試しください。',
+    },
 };
 
-const arr = [Lang.Zh, Lang.En, Lang.Jp, Lang.Kor, Lang.Zh_HK];
+const arr = [Lang.Kor, Lang.Zh_HK];
 for (const item of arr) {
     InternationalTip2[item] = InternationalTip2[Lang.Zh];
 }
