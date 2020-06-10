@@ -168,3 +168,27 @@ export function runTicketExchange(itemId: string) {
         socket.send(ServerEvent.TicketExchange, { itemId });
     }) as Promise<TicketExchangeRep>;
 }
+
+export function getItemList(data: GetItemListReq) {
+    return new Promise((resolve, reject) => {
+        const socket = getSocket(ServerName.Hall);
+        socket.event.once(ServerEvent.GetItemList, (_data: GetItemListRep) => {
+            resolve(_data);
+        });
+        socket.send(ServerEvent.GetItemList, { ...data });
+    }) as Promise<GetItemListRep>;
+}
+export function getBulletList(data: GetBulletReq) {
+    return new Promise((resolve, reject) => {
+        const socket = getSocket(ServerName.Hall);
+        socket.event.once(
+            ServerEvent.GetBulletList,
+            (_data: GetItemListRep) => {
+                resolve(_data);
+            },
+        );
+        socket.send(ServerEvent.GetBulletList, {
+            ...data,
+        });
+    }) as Promise<GetItemListRep>;
+}

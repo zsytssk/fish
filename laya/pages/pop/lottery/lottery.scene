@@ -2,7 +2,7 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
-    "selecteID":50,
+    "selecteID":5,
     "searchKey":"Dialog",
     "props":{"width":1030,"sceneColor":"#000000","sceneBg":"laya/views/pop/lottery.png","height":710},
     "nodeParent":-1,
@@ -21,13 +21,14 @@
             "props":{"y":-2,"x":-1,"var":"bg"},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":3,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":77,"x":26,"width":990,"skin":"image/pop/shop/bg.png","sizeGrid":"0,42,0,42","height":629},
@@ -41,6 +42,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":12,"texture":"image/pop/shop/top_bg.png"},
@@ -54,6 +56,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"x":379,"texture":"image/pop/shop/title_bg.png"},
@@ -67,6 +70,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":654,"x":969,"texture":"image/pop/shop/star.png"},
@@ -80,6 +84,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,title",
                     "props":{"y":19,"var":"title","skin":"image/international/txt_lottery_zh.png","centerX":0},
@@ -93,6 +98,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":344,"x":515,"url":"image/pop/shop/shop_bulb.sk"},

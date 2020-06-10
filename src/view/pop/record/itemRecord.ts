@@ -1,4 +1,4 @@
-import { onAccountChange } from 'ctrl/hall/hallCtrlUtil';
+import { onAccountChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import honor, { HonorDialog } from 'honor';
 import { afterActive } from 'honor/utils/tool';
 import { AccountMap } from 'model/userInfo/userInfoModel';
@@ -6,6 +6,13 @@ import { ui } from 'ui/layaMaxUI';
 import { getSkillName } from '../buyBullet';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
+import { getItemList } from '../popSocket';
+import {
+    Lang,
+    InternationalTip,
+    InternationalTipOther,
+} from 'data/internationalConfig';
+import { Label } from 'laya/ui/Label';
 
 type CoinData = {
     coin_icon: string;
@@ -33,7 +40,6 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         return item_record;
     }
     public onAwake() {
-        afterActive(this);
         const {
             select_item,
             select_coin,
@@ -48,6 +54,10 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             this.renderCoinMenu(data);
         });
         select_coin_ctrl.init();
+
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
 
         const select_item_ctrl = new SelectCtrl(select_item, item_menu);
         select_item_ctrl.setRender(this.renderSelectItem);
@@ -75,6 +85,25 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_item_ctrl = select_item_ctrl;
     }
+    private initLang(lang: Lang) {
+        const {
+            itemListTitle,
+            search,
+            itemList1,
+            itemList2,
+            itemList3,
+            gameNo,
+            remainingNum,
+        } = InternationalTipOther[lang];
+        const { title, title_box, btn_search_label } = this;
+
+        title.text = itemListTitle;
+        const arr = [itemList1, itemList2, itemList3, remainingNum, gameNo];
+        for (let i = 0; i < title_box.numChildren; i++) {
+            (title_box.getChildAt(i) as Label).text = arr[i];
+        }
+        btn_search_label.text = search;
+    }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;
         const { coin_icon: icon, coin_name: name } = data;
@@ -101,7 +130,13 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const { select_coin_ctrl, select_item_ctrl, pagination_ctrl } = this;
         const coin_data = select_coin_ctrl.getCurData();
         const item_data = select_item_ctrl.getCurData();
-        pagination_ctrl.update(200, 20);
+        getItemList({
+            itemId: item_data.item_id,
+            currency: coin_data.coin_name,
+        }).then(data => {
+            this.all_list = data.list;
+            pagination_ctrl.update(data.list.length, 9);
+        });
     }
     public setList(data: GetItemListItemRep[]) {
         this.all_list = data;

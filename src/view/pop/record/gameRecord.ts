@@ -1,4 +1,4 @@
-import { onAccountChange } from 'ctrl/hall/hallCtrlUtil';
+import { onAccountChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import honor, { HonorDialog } from 'honor';
 import { afterActive } from 'honor/utils/tool';
 import { AccountMap } from 'model/userInfo/userInfoModel';
@@ -7,6 +7,9 @@ import { getSkillName } from '../buyBullet';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 import { getDateFromNow } from 'utils/utils';
+import { getBulletList } from '../popSocket';
+import { Lang, InternationalTipOther } from 'data/internationalConfig';
+import { Label } from 'laya/ui/Label';
 
 type CoinData = {
     coin_icon: string;
@@ -36,7 +39,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         return game_record;
     }
     public onAwake() {
-        afterActive(this);
         const {
             select_item,
             select_coin,
@@ -74,6 +76,26 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
 
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_date_ctrl = select_item_ctrl;
+
+        onLangChange(this, lang => {
+            this.initLang(lang);
+        });
+    }
+    private initLang(lang: Lang) {
+        const {
+            itemListTitle,
+            search,
+            gameNo,
+            remainingNum,
+        } = InternationalTipOther[lang];
+        const { title, title_box, btn_search_label } = this;
+
+        title.text = itemListTitle;
+        const arr = [remainingNum, gameNo];
+        for (let i = 0; i < title_box.numChildren; i++) {
+            (title_box.getChildAt(i) as Label).text = arr[i];
+        }
+        btn_search_label.text = search;
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;
@@ -105,8 +127,17 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         } = this;
         const coin_data = select_coin_ctrl.getCurData();
         const date_data = select_item_ctrl.getCurData();
-        console.log(coin_data, date_data);
-        // pagination_ctrl.update(200, 20);
+
+        getBulletList({
+            currency: coin_data.coin_name,
+            startTime: date_data.start,
+            endTime: date_data.end,
+            pageNum: 0,
+        }).then(data => {
+            console.log(`test:>`, data);
+            this.all_list = data.list;
+            pagination_ctrl.update(data.list.length, 9);
+        });
     }
     public setList(data: GetItemListItemRep[]) {
         this.all_list = data;

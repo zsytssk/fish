@@ -293,3 +293,26 @@ type GetItemListItemRep = {
     remain: number;
     currency: string;
 };
+
+type GetItemListReq = {
+    itemId: string;
+    currency: string;
+};
+type GetItemListRep = {
+    list: GetItemListItemRep[];
+};
+
+type GetBulletReq = {
+    currency: string;
+    startTime: number;
+    endTime: number;
+    pageNum: number;
+};
+type GetBulletItemRep = {
+    e: string;
+    b: number;
+    p: number;
+};
+type GetBulletListRep = {
+    list: GetBulletItemRep[];
+};

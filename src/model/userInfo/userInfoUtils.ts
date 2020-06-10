@@ -36,6 +36,5 @@ export function setMusic(music: number) {
 
 export function getCurrencyIcon(currency?: string) {
     const { account_map } = getUserInfo();
-    console.log(account_map);
     return account_map.get(currency)?.icon;
 }
