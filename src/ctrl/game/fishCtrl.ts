@@ -31,23 +31,35 @@ export class FishCtrl extends ComponentManager {
         this.setVisible(visible);
         const event = this.model.event;
         const { view } = this;
-        event.on(FishBombEvent.FishBomb, this.onBomb);
-        event.on(FishEvent.VisibleChange, this.setVisible);
+        event.on(FishBombEvent.FishBomb, this.onBomb, this);
+        event.on(FishEvent.VisibleChange, this.setVisible, this);
         event.on(FishEvent.Move, this.syncPos);
-        event.on(FishEvent.BeCast, () => {
-            view.beCastAni();
-        });
-        event.on(FishEvent.BeCapture, this.beCapture);
-        event.on(FishEvent.StatusChange, (status: FishStatus) => {
-            if (status === FishStatus.Freezed) {
-                view.stopSwimAni();
-            } else {
-                view.playSwimAni();
-            }
-        });
-        event.on(FishEvent.Destroy, () => {
-            this.destroy();
-        });
+        event.on(
+            FishEvent.BeCast,
+            () => {
+                view.beCastAni();
+            },
+            this,
+        );
+        event.on(FishEvent.BeCapture, this.beCapture, this);
+        event.on(
+            FishEvent.StatusChange,
+            (status: FishStatus) => {
+                if (status === FishStatus.Freezed) {
+                    view.stopSwimAni();
+                } else {
+                    view.playSwimAni();
+                }
+            },
+            this,
+        );
+        event.on(
+            FishEvent.Destroy,
+            () => {
+                this.destroy();
+            },
+            this,
+        );
     }
     public onBomb = async (data: FishBombInfo) => {
         const { id: eid } = this.model;
@@ -86,7 +98,10 @@ export class FishCtrl extends ComponentManager {
     }; // tslint:disable-line
     public destroy() {
         const { view } = this;
+        this.model?.event?.offAllCaller(this);
         view.destroy();
         super.destroy();
+
+        this.model = undefined;
     }
 }

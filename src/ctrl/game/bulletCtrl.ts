@@ -34,14 +34,22 @@ export class BulletCtrl {
     private initEvent() {
         const { event } = this.model;
 
-        event.on(BulletEvent.Move, this.syncPos);
-        event.on(BulletEvent.AddNet, (net_model: NetModel) => {
-            const net_view = addNet(net_model.skin) as Skeleton;
-            const net_ctrl = new NetCtrl(net_view, net_model);
-        });
-        event.on(ModelEvent.Destroy, () => {
-            this.destroy();
-        });
+        event.on(BulletEvent.Move, this.syncPos, this);
+        event.on(
+            BulletEvent.AddNet,
+            (net_model: NetModel) => {
+                const net_view = addNet(net_model.skin) as Skeleton;
+                const net_ctrl = new NetCtrl(net_view, net_model);
+            },
+            this,
+        );
+        event.on(
+            ModelEvent.Destroy,
+            () => {
+                this.destroy();
+            },
+            this,
+        );
     }
     private syncPos = () => {
         const { view } = this;
@@ -60,8 +68,9 @@ export class BulletCtrl {
         view.pos(pos.x, pos.y);
     }; // tslint:disable-line
     public destroy() {
-        this.model.event.offAllCaller(this);
         recoverSkeletonPool('bullet', this.model.skin, this.view);
+        this.model?.event?.offAllCaller(this);
+        this.model = undefined;
     }
 }
 

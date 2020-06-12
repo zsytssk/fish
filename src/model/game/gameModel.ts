@@ -131,6 +131,9 @@ export class GameModel extends ComponentManager {
             }
         }
     }
+    public getPlayers() {
+        return this.player_list;
+    }
     public getPlayerById(id: string) {
         const { player_list } = this;
         for (const player of player_list) {

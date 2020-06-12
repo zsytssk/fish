@@ -45,21 +45,37 @@ export class GameTestCtrl {
     private onModel() {
         const { event } = this.model;
         const { view } = this;
-        event.on(GameEvent.AddFish, (fish: FishModel) => {
-            console.log(`test:>AddFish`, fish);
-            const { type, id, horizon_turn } = fish;
-            const fish_view = view.addFish({ type, id, horizon_turn });
-            this.fish_view = fish_view;
-            const ctrl = new FishCtrl(fish_view, fish);
-        });
-        event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
-            const player_view = view.addGun();
-            const ctrl = new PlayerCtrl(player_view, player, this as any);
-            this.player_list.add(ctrl);
-        });
-        event.on(GameEvent.Destroy, () => {
-            this.destroy();
-        });
+        event.on(
+            GameEvent.AddFish,
+            (fish: FishModel) => {
+                const { type, id, horizon_turn, currency } = fish;
+                const fish_view = view.addFish({
+                    type,
+                    id,
+                    horizon_turn,
+                    currency,
+                });
+                this.fish_view = fish_view;
+                const ctrl = new FishCtrl(fish_view, fish);
+            },
+            this,
+        );
+        event.on(
+            GameEvent.AddPlayer,
+            (player: PlayerModel) => {
+                const player_view = view.addGun();
+                const ctrl = new PlayerCtrl(player_view, player, this as any);
+                this.player_list.add(ctrl);
+            },
+            this,
+        );
+        event.on(
+            GameEvent.Destroy,
+            () => {
+                this.destroy();
+            },
+            this,
+        );
     }
 
     public calcClientIndex(server_index = 1) {
@@ -80,11 +96,12 @@ export class GameTestCtrl {
         this.player_list.delete(ctrl);
     }
     public destroy() {
-        this.view = undefined;
-        this.model = undefined;
-
-        this.player_list = new Set();
         offGameSocket(this as any);
+        this.model?.event?.offAllCaller(this);
+
+        this.model = undefined;
+        this.view = undefined;
         setProps(ctrlState, { game: undefined });
+        this.player_list = new Set();
     }
 }

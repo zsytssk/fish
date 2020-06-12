@@ -1,22 +1,21 @@
 import {
+    offBindEvent,
     onAccountChange,
     onLangChange,
-    offBindEvent,
 } from 'ctrl/hall/hallCtrlUtil';
+import {
+    InternationalTipOther,
+    Lang,
+    InternationalTip,
+} from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
-import { afterActive } from 'honor/utils/tool';
+import { Label } from 'laya/ui/Label';
 import { AccountMap } from 'model/userInfo/userInfoModel';
 import { ui } from 'ui/layaMaxUI';
 import { getSkillName } from '../buyBullet';
+import { getItemList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
-import { getItemList } from '../popSocket';
-import {
-    Lang,
-    InternationalTip,
-    InternationalTipOther,
-} from 'data/internationalConfig';
-import { Label } from 'laya/ui/Label';
 
 type CoinData = {
     coin_icon: string;
@@ -38,9 +37,10 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
     private pagination_ctrl: PaginationCtrl;
     private all_list: GetItemListItemRep[];
     public static async preEnter() {
-        const item_record = (await honor.director.openDialog(
-            ItemRecord,
-        )) as ItemRecord;
+        const item_record = (await honor.director.openDialog({
+            dialog: ItemRecord,
+            use_exist: true,
+        })) as ItemRecord;
         return item_record;
     }
     public onAwake() {
@@ -70,6 +70,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             return { item_name: getSkillName(item), item_id: item };
         });
         select_item_ctrl.setList(ItemList);
+        select_item_ctrl.setCurIndex(0);
 
         const pagination_ctrl = new PaginationCtrl(this.pagination);
         pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
@@ -102,9 +103,11 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             gameNo,
             remainingNum,
         } = InternationalTipOther[lang];
-        const { title, title_box, btn_search_label } = this;
+        const { noData } = InternationalTip[lang];
+        const { title, title_box, btn_search_label, empty_tip } = this;
 
         title.text = itemListTitle;
+        empty_tip.text = noData;
         const arr = [itemList1, itemList2, itemList3, remainingNum, gameNo];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
@@ -134,15 +137,22 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         select_coin_ctrl.setList(arr);
     }
     private search() {
-        const { select_coin_ctrl, select_item_ctrl, pagination_ctrl } = this;
-        const coin_data = select_coin_ctrl.getCurData();
-        const item_data = select_item_ctrl.getCurData();
+        const {
+            empty_tip,
+            select_coin_ctrl,
+            select_item_ctrl,
+            pagination_ctrl,
+        } = this;
+        const coin_data = select_coin_ctrl.getCurData() || {};
+        const item_data = select_item_ctrl.getCurData() || {};
+        this.renderRecordList([]);
         getItemList({
             itemId: item_data.item_id,
             currency: coin_data.coin_name,
         }).then(data => {
             this.all_list = data.list;
-            pagination_ctrl.update(data.list.length, 9);
+            empty_tip.visible = !data.list.length;
+            pagination_ctrl.update(data.list.length, 10);
         });
     }
     public setList(data: GetItemListItemRep[]) {
@@ -151,6 +161,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
     }
     private renderRecordList(data: GetItemListItemRep[]) {
         const { record_list } = this;
+
         record_list.array = data.map(item => {
             return {
                 buy_total: item.buyNum,

@@ -71,7 +71,7 @@ export class LotteryExchangeCtrl {
             item_type,
         } = item;
         const lang = getLang();
-        const { remaining } = InternationalTip[lang];
+        const { Num } = InternationalTip[lang];
 
         const {
             exchange_type,
@@ -91,7 +91,7 @@ export class LotteryExchangeCtrl {
         coin_icon.filters = [createColorFilter('#64280e')];
         num_label.text = num_str;
         item_type.skin = `image/pop/lottery/txt_${exchange_type.toLowerCase()}.png`;
-        remain_label.text = `${remaining}${cur_num}/${cost_num}`;
+        remain_label.text = `${Num}${cur_num}/${cost_num}`;
 
         let scale = 1 / (num_str.length / 3);
         scale = scale > 1 ? 1 : scale;

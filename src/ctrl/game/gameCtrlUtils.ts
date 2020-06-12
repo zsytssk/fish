@@ -26,3 +26,13 @@ export function disableCurUserOperation() {
     const lock_skill = cur_player.getSkill(SkillMap.LockFish) as LockFishModel;
     lock_skill.unLock();
 }
+
+/** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
+export function disableAllUserOperation() {
+    const players = modelState.app.game.getPlayers();
+    for (const player of players) {
+        player.disableSkill(SkillMap.Auto);
+        const lock_skill = player.getSkill(SkillMap.LockFish) as LockFishModel;
+        lock_skill.unLock();
+    }
+}

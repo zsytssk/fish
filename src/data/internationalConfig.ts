@@ -98,6 +98,7 @@ export const International = {
             'Control your cannon, click and capture fishes<br/> to gain more bullets',
         tour6:
             'Use items to assist you to capture more <br/> and bigger fishes',
+        noData: 'No data',
     },
     [Lang.Kor]: {
         deposit: '충전',
@@ -180,6 +181,7 @@ export const International = {
             '포좌를 컨트롤하고 물고기 포획을 클릭하면 더 <br/> 많은 총알을 받을 수 있습니다.',
         tour6:
             '도구를 사용하여 더 많고 더 큰 물고기를 <br/> 포획할 수 있습니다.',
+        noData: '데이터 없 음',
     },
     [Lang.Jp]: {
         deposit: '⼊⾦',
@@ -261,6 +263,7 @@ export const International = {
         tour5:
             '砲臺をコントロールし、クリックかつ⿂の捕獲、<br/>もっと弾薬が獲得可能',
         tour6: 'スキルの使⽤で、もっと⼤きくて多い⿂を<br/>捕獲可能です。',
+        noData: 'データなし',
     },
     [Lang.Zh]: {
         deposit: '充值',
@@ -338,6 +341,7 @@ export const International = {
             '进入正式场后，系统会自动将您的数字货币兑换成子弹；请放心，在您离开房间后，所有剩余子弹将会再兑换成您的数字货币',
         tour5: '控制您的炮台，点击并捕捉鱼群，获得更多子弹',
         tour6: '可以使用道具，帮助您捕获<br/>更多更大的鱼',
+        noData: '暂无数据',
     },
     [Lang.Zh_HK]: {
         deposit: '充值',
@@ -415,6 +419,7 @@ export const International = {
             '進入正式場後，係統會自動將您的數字貨幣兌換成子彈；請放心，在您離開房間後，所有剩餘子彈將會再兌換成您的數字貨幣',
         tour5: '控製您的炮臺，點擊並捕捉魚群，獲得更多子彈',
         tour6: '可以使用道具，幫助您捕獲<br/>更多更大的魚',
+        noData: '暫無數據',
     },
 };
 
@@ -440,9 +445,10 @@ const InternationalTip2 = {
         search: '查询',
         gameNo: '场次',
         remainingNum: '剩余数量',
-        gameListTitle: '游戏存量',
+        gameListTitle: '游戏记录',
         cost: '消耗',
         prize: '收益',
+        noData: '暂无数据',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -470,6 +476,7 @@ const InternationalTip2 = {
         gameListTitle: 'Game data',
         cost: 'Use up',
         prize: 'Earnings',
+        noData: '暂无数据',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -500,6 +507,7 @@ const InternationalTip2 = {
         gameListTitle: 'ゲーム記録',
         cost: '消費する',
         prize: '収益',
+        noData: '暂无数据',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',

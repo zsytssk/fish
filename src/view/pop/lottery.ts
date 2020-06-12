@@ -95,6 +95,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             progress,
             lottery_remain,
             lottery_exchange_ctrl,
+            btn_lottery,
         } = this;
 
         const lottery_arr = [] as LotteryRenderData[];
@@ -110,6 +111,10 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
+        console.log(`test:>lottery`, val);
+        if (val < 1) {
+            btn_lottery.disabled = true;
+        }
         lottery_exchange_ctrl.renderData(exchange);
 
         this.remain_info = {
@@ -145,7 +150,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         }
     }; // tslint:disable-line
     private runLottery() {
-        const { remain_info, progress, lottery_remain } = this;
+        const { remain_info, progress, lottery_remain, btn_lottery } = this;
         let { lottery_num } = remain_info;
         const { lottery_cost } = remain_info;
 
@@ -159,6 +164,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
             progress.value = lottery_num / lottery_cost;
             remain_info.lottery_num = lottery_num;
             lottery_remain.text = `${lottery_num}/${lottery_cost}`;
+            btn_lottery.disabled = lottery_num < lottery_cost;
         });
     }
     /** 抽奖动画 */

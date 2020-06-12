@@ -32,43 +32,63 @@ export class SkillCtrl {
     private initEvent() {
         const { view, model, is_cur_player } = this;
         const { event } = model.skill_core;
-        event.on(SkillEvent.ActiveSkill, (info: any) => {
-            skillActiveHandler(model, info, is_cur_player);
-        });
+        event.on(
+            SkillEvent.ActiveSkill,
+            (info: any) => {
+                skillActiveHandler(model, info, is_cur_player);
+            },
+            this,
+        );
 
         // 非当前用户不需要绑定界面事件..
         if (!view) {
             return;
         }
-        event.on(SkillEvent.StatusChange, (status: SkillStatus) => {
-            if (status === SkillStatus.Active) {
-                view.highlight();
-            } else if (
-                status === SkillStatus.Disable ||
-                status === SkillStatus.Normal
-            ) {
-                view.unHighlight();
-
-                view.clearCoolTime();
-                skillDisableHandler(model);
-            } else if (status === SkillStatus.PreActive) {
-                if (
-                    model instanceof BombModel ||
-                    model instanceof LockFishModel
-                ) {
+        event.on(
+            SkillEvent.StatusChange,
+            (status: SkillStatus) => {
+                if (status === SkillStatus.Active) {
                     view.highlight();
+                } else if (
+                    status === SkillStatus.Disable ||
+                    status === SkillStatus.Normal
+                ) {
+                    view.unHighlight();
+
+                    view.clearCoolTime();
+                    skillDisableHandler(model);
+                } else if (status === SkillStatus.PreActive) {
+                    if (
+                        model instanceof BombModel ||
+                        model instanceof LockFishModel
+                    ) {
+                        view.highlight();
+                    }
                 }
-            }
-        });
-        event.on(SkillEvent.UpdateInfo, () => {
-            this.setInfo();
-        });
-        event.on(SkillEvent.UpdateRadio, (radio: number) => {
-            view.showCoolTime(radio);
-        });
-        event.on(SkillEvent.Destroy, () => {
-            this.destroy();
-        });
+            },
+            this,
+        );
+        event.on(
+            SkillEvent.UpdateInfo,
+            () => {
+                this.setInfo();
+            },
+            this,
+        );
+        event.on(
+            SkillEvent.UpdateRadio,
+            (radio: number) => {
+                view.showCoolTime(radio);
+            },
+            this,
+        );
+        event.on(
+            SkillEvent.Destroy,
+            () => {
+                this.destroy();
+            },
+            this,
+        );
         view.setShortcut(getShortcut(model));
         this.bindTrigger = onTrigger(model, view).subscribe(() => {
             if (model.skill_core.status === SkillStatus.Normal) {
@@ -88,6 +108,9 @@ export class SkillCtrl {
         view.setNum(num);
     }
     private destroy() {
+        this.model?.skill_core?.event?.offAllCaller(this);
         this.bindTrigger.unsubscribe();
+
+        this.model = undefined;
     }
 }

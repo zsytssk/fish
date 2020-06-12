@@ -114,36 +114,53 @@ export class PlayerCtrl {
                     );
                 }
             },
+            this,
         );
-        player_event.on(PlayerEvent.Destroy, () => {
-            this.destroy();
-        });
-        gun_event.on(GunEvent.AddBullet, (info: AddBulletInfo) => {
-            const { bullet_group, velocity } = info;
-            const { rage } = gun;
-            view.fire(velocity, nickname);
-            if (is_cur_player) {
-                view.stopPosTip();
-            }
-            for (const bullet of bullet_group.bullet_list) {
-                const bullet_view = view.addBullet(
-                    bullet.skin,
-                    rage,
-                ) as Skeleton;
-                const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
-            }
-        });
+        player_event.on(
+            PlayerEvent.Destroy,
+            () => {
+                this.destroy();
+            },
+            this,
+        );
+        gun_event.on(
+            GunEvent.AddBullet,
+            (info: AddBulletInfo) => {
+                const { bullet_group, velocity } = info;
+                const { rage } = gun;
+                view.fire(velocity, nickname);
+                if (is_cur_player) {
+                    view.stopPosTip();
+                }
+                for (const bullet of bullet_group.bullet_list) {
+                    const bullet_view = view.addBullet(
+                        bullet.skin,
+                        rage,
+                    ) as Skeleton;
+                    const bullet_ctrl = new BulletCtrl(bullet_view, bullet);
+                }
+            },
+            this,
+        );
 
         view.setDirection(direction);
-        gun_event.on(GunEvent.DirectionChange, (_direction: SAT.Vector) => {
-            view.setDirection(_direction);
-        });
-        gun_event.on(GunEvent.LevelChange, (level_info: LevelInfo) => {
-            if (is_cur_player) {
-                this.detectDisableChangeBulletCost(level_info.bullet_cost);
-            }
-            view.setBulletCost(level_info);
-        });
+        gun_event.on(
+            GunEvent.DirectionChange,
+            (_direction: SAT.Vector) => {
+                view.setDirection(_direction);
+            },
+            this,
+        );
+        gun_event.on(
+            GunEvent.LevelChange,
+            (level_info: LevelInfo) => {
+                if (is_cur_player) {
+                    this.detectDisableChangeBulletCost(level_info.bullet_cost);
+                }
+                view.setBulletCost(level_info);
+            },
+            this,
+        );
         view.on(Event.CLICK, view, (e: Event) => {
             e.stopPropagation();
         });
@@ -167,24 +184,32 @@ export class PlayerCtrl {
             index++;
         }
 
-        gun_event.on(GunEvent.WillAddBullet, (velocity: SAT.Vector) => {
-            const { need_emit, user_id, is_cur_player: is_cur } = this.model;
-            if (!need_emit) {
-                return;
-            }
-            const { x, y } = velocity;
-            AudioCtrl.play(AudioRes.Fire);
-            const data = {
-                direction: { x, y },
-                userId: user_id,
-            } as ShootReq;
+        gun_event.on(
+            GunEvent.WillAddBullet,
+            (velocity: SAT.Vector) => {
+                const {
+                    need_emit,
+                    user_id,
+                    is_cur_player: is_cur,
+                } = this.model;
+                if (!need_emit) {
+                    return;
+                }
+                const { x, y } = velocity;
+                AudioCtrl.play(AudioRes.Fire);
+                const data = {
+                    direction: { x, y },
+                    userId: user_id,
+                } as ShootReq;
 
-            if (!is_cur) {
-                data.robotId = user_id;
-                data.userId = getCurPlayer().user_id;
-            }
-            sendToGameSocket(ServerEvent.Shoot, data);
-        });
+                if (!is_cur) {
+                    data.robotId = user_id;
+                    data.userId = getCurPlayer().user_id;
+                }
+                sendToGameSocket(ServerEvent.Shoot, data);
+            },
+            this,
+        );
 
         /** 当前用户的处理 */
         if (!is_cur_player) {
@@ -193,17 +218,25 @@ export class PlayerCtrl {
         view.setMySelfStyle();
         this.resetGetBulletCost();
 
-        player_event.on(PlayerEvent.UpdateInfo, () => {
-            const { bullet_num } = this.model;
-            setBulletNum(bullet_num);
-        });
-        gun_event.on(GunEvent.NotEnoughBulletNum, () => {
-            if (this.game_ctrl.isTrial) {
-                errorHandler(ServerErrCode.TrialNotBullet);
-            } else {
-                errorHandler(ServerErrCode.ReExchange);
-            }
-        });
+        player_event.on(
+            PlayerEvent.UpdateInfo,
+            () => {
+                const { bullet_num } = this.model;
+                setBulletNum(bullet_num);
+            },
+            this,
+        );
+        gun_event.on(
+            GunEvent.NotEnoughBulletNum,
+            () => {
+                if (this.game_ctrl.isTrial) {
+                    errorHandler(ServerErrCode.TrialNotBullet);
+                } else {
+                    errorHandler(ServerErrCode.ReExchange);
+                }
+            },
+            this,
+        );
         gun_event.on(
             GunEvent.CastFish,
             (data: { fish: FishModel; level: number }) => {
@@ -216,10 +249,15 @@ export class PlayerCtrl {
                     multiple,
                 } as HitReq);
             },
+            this,
         );
-        gun_event.on(GunEvent.AutoShoot, (is_active: boolean) => {
-            setAutoShootLight(is_active);
-        });
+        gun_event.on(
+            GunEvent.AutoShoot,
+            (is_active: boolean) => {
+                setAutoShootLight(is_active);
+            },
+            this,
+        );
 
         getGameView().on(Event.CLICK, view, (e: Event) => {
             const click_pos = getPoolMousePos();
@@ -291,10 +329,19 @@ export class PlayerCtrl {
         setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }
     public destroy() {
-        const { view } = this;
+        const {
+            view,
+            model: {
+                gun: { event: gun_event },
+                event: player_event,
+            },
+        } = this;
 
         getGameView().offAllCaller(view);
         Laya.stage.offAllCaller(view);
+        player_event.offAllCaller(this);
+        gun_event.offAllCaller(this);
+
         view.destroy();
         this.view = undefined;
         this.game_ctrl = undefined;

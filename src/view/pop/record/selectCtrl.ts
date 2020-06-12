@@ -72,16 +72,14 @@ export class SelectCtrl {
     public setList(list: any[]) {
         const { select_list } = this;
         select_list.list.array = list;
-
-        if (this.select_index === -1) {
-            select_list.list.selectedIndex = 0;
-        }
     }
     public getCurIndex() {
         return this.select_index;
     }
+    public setCurIndex(index: number) {
+        this.select_list.list.selectedIndex = index;
+    }
     public getCurData() {
-        console.log(this.select_list.list.array, this.select_index);
         return this.select_list.list.array[this.select_index];
     }
     public destroy() {

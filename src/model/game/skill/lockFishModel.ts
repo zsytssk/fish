@@ -171,9 +171,13 @@ export class LockFishModel extends ComponentManager implements SkillModel {
                     const { bullet_group } = info;
                     this.bullet_list.add(bullet_group);
                     /** 子弹销毁的时候需要冲列表中销毁... */
-                    bullet_group.event.on(BulletGroupEvent.Destroy, () => {
-                        this.bullet_list.delete(bullet_group);
-                    });
+                    bullet_group.event.on(
+                        BulletGroupEvent.Destroy,
+                        () => {
+                            this.bullet_list.delete(bullet_group);
+                        },
+                        this,
+                    );
                 }
             },
             this,

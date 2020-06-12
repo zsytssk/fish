@@ -50,7 +50,7 @@ export class HallCtrl {
         return ctrlState.app.enterGame(socketUrl);
     }
     public roomIn(...data: Parameters<typeof roomIn>) {
-        return roomIn(data[0]).then((url: string) => {
+        return roomIn(data[0], this).then((url: string) => {
             setRoomInData(data[0]);
             return this.enterGame(url);
         });

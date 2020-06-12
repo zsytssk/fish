@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":44,
+    "selecteID":29,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -64,7 +64,6 @@
             "compId":10,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,bg",
                     "props":{"var":"bg","skin":"image/game/normal_bg/bg1.jpg","centerY":0,"centerX":0},
@@ -78,7 +77,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer,bubble_ani",
                     "props":{"y":376,"x":960,"var":"bubble_ani","url":"image/game/bg_normal1.sk"},
@@ -93,7 +91,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":375,"x":960,"url":"image/game/wave.sk","scaleY":4,"scaleX":4},
@@ -174,7 +171,7 @@
             "props":{"y":0,"width":1334,"var":"ctrl_box","mouseThrough":true,"mouseEnabled":true,"height":750,"centerX":0},
             "nodeParent":2,
             "label":"ctrl_box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,

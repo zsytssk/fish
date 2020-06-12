@@ -238,9 +238,9 @@ export default class GameView extends ui.scenes.game.gameUI
     }
     public setBulletNum(num: number) {
         const lang = getLang();
-        const { remainingBullet } = InternationalTip[lang];
+        const { NumBullet } = InternationalTip[lang];
         const { bullet_num } = this;
-        bullet_num.text = `${remainingBullet}: ` + num;
+        bullet_num.text = `${NumBullet}: ` + num;
     }
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;

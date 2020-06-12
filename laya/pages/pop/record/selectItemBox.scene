@@ -60,7 +60,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,item_name",
-            "props":{"y":11,"x":8,"width":193,"var":"item_name","text":"冰冻","height":20,"fontSize":20,"color":"#fff392"},
+            "props":{"y":11,"x":8,"width":193,"var":"item_name","height":20,"fontSize":20,"color":"#fff392"},
             "nodeParent":2,
             "label":"item_name",
             "isDirectory":false,

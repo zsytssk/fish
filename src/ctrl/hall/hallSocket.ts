@@ -39,7 +39,7 @@ export async function onHallSocket(hall: HallCtrl) {
         sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
     });
 
-    const [isReplay, socketUrl] = await checkReplay();
+    const [isReplay, socketUrl] = await checkReplay(hall);
     if (isReplay) {
         const lang = getLang();
         hall.enterGame(socketUrl);
@@ -67,29 +67,36 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
     });
 }
 
-export async function checkReplay() {
+export async function checkReplay(hall: HallCtrl) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
-        socket.event.once(ServerEvent.CheckReplay, (data: CheckReplayRep) => {
-            const { isReplay, socketUrl } = data;
-            if (isReplay) {
+        socket.event.once(
+            ServerEvent.CheckReplay,
+            (data: CheckReplayRep) => {
+                const { isReplay, socketUrl } = data;
+                if (isReplay) {
+                    resolve([isReplay, socketUrl]);
+                    return;
+                }
                 resolve([isReplay, socketUrl]);
-                return;
-            }
-            resolve([isReplay, socketUrl]);
-        });
+            },
+            hall,
+        );
         socket.send(ServerEvent.CheckReplay);
     }) as Promise<[boolean, string?]>;
 }
 
-export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
+export function roomIn(
+    data: { isTrial: 0 | 1; roomId: number },
+    hall: HallCtrl,
+) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.RoomIn,
             async (_data: RoomInRep, code, msg) => {
                 if (code === ServerErrCode.AlreadyInRoom) {
-                    const [isReplay, socketUrl] = await checkReplay();
+                    const [isReplay, socketUrl] = await checkReplay(hall);
                     if (isReplay) {
                         resolve(socketUrl);
                     }
@@ -99,6 +106,7 @@ export function roomIn(data: { isTrial: 0 | 1; roomId: number }) {
                 }
                 resolve(_data.socketUrl);
             },
+            hall,
         );
         const currency = modelState.app.user_info.cur_balance;
         socket.send(ServerEvent.RoomIn, {

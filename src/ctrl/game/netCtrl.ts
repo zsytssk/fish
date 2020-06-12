@@ -32,12 +32,16 @@ export class NetCtrl {
         const { view } = this;
         const { event } = this.model;
 
-        event.on(ModelEvent.Destroy, () => {
-            const { skin } = this.model;
-            setTimeout(() => {
-                recoverSkeletonPool('net', skin, this.view);
-            }, 1000);
-            event.offAllCaller(this);
-        });
+        event.on(
+            ModelEvent.Destroy,
+            () => {
+                const { skin } = this.model;
+                setTimeout(() => {
+                    recoverSkeletonPool('net', skin, this.view);
+                }, 1000);
+                event.offAllCaller(this);
+            },
+            this,
+        );
     }
 }

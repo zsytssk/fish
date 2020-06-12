@@ -37,7 +37,10 @@ import GameView, {
     AddFishViewInfo,
 } from 'view/scenes/game/gameView';
 import { FishCtrl } from './fishCtrl';
-import { disableCurUserOperation } from './gameCtrlUtils';
+import {
+    disableCurUserOperation,
+    disableAllUserOperation,
+} from './gameCtrlUtils';
 import {
     convertEnterGame,
     offGameSocket,
@@ -139,50 +142,74 @@ export class GameCtrl {
     private onModel() {
         const { event } = this.model;
         const { view } = this;
-        event.on(GameEvent.AddFish, (fish: FishModel) => {
-            const { type, id, horizon_turn, currency } = fish;
-            const fish_view_info: AddFishViewInfo = {
-                type,
-                currency,
-                id,
-                horizon_turn,
-            };
-            const fish_view = view.addFish(fish_view_info);
-            const ctrl = new FishCtrl(fish_view, fish);
-        });
-        event.on(GameEvent.AddPlayer, (player: PlayerModel) => {
-            const { server_index, is_cur_player } = player;
-            if (is_cur_player) {
-                if (server_index > 1) {
-                    view.upSideDown();
+        event.on(
+            GameEvent.AddFish,
+            (fish: FishModel) => {
+                const { type, id, horizon_turn, currency } = fish;
+                const fish_view_info: AddFishViewInfo = {
+                    type,
+                    currency,
+                    id,
+                    horizon_turn,
+                };
+                const fish_view = view.addFish(fish_view_info);
+                const ctrl = new FishCtrl(fish_view, fish);
+            },
+            this,
+        );
+        event.on(
+            GameEvent.AddPlayer,
+            (player: PlayerModel) => {
+                const { server_index, is_cur_player } = player;
+                if (is_cur_player) {
+                    if (server_index > 1) {
+                        view.upSideDown();
+                    }
+                    let pos = 'left' as BulletBoxDir;
+                    if (server_index === 1 || server_index === 2) {
+                        pos = 'right';
+                    }
+                    view.setBulletBoxPos(pos);
                 }
-                let pos = 'left' as BulletBoxDir;
-                if (server_index === 1 || server_index === 2) {
-                    pos = 'right';
-                }
-                view.setBulletBoxPos(pos);
-            }
 
-            const player_view = view.addGun();
-            const ctrl = new PlayerCtrl(player_view, player, this);
-            this.player_list.add(ctrl);
-        });
-        event.on(FreezingComEvent.Freezing, () => {
-            AudioCtrl.play(AudioRes.Freeze);
-            activeFreeze();
-        });
-        event.on(FreezingComEvent.UnFreezing, () => {
-            stopFreeze();
-        });
-        event.on(ShoalEvent.PreAddShoal, reverse => {
-            AudioCtrl.play(AudioRes.ShoalComing);
-            activeShoalWave(reverse).then(() => {
-                view.showBubbleRefresh();
-            });
-        });
-        event.on(GameEvent.Destroy, () => {
-            this.destroy();
-        });
+                const player_view = view.addGun();
+                const ctrl = new PlayerCtrl(player_view, player, this);
+                this.player_list.add(ctrl);
+            },
+            this,
+        );
+        event.on(
+            FreezingComEvent.Freezing,
+            () => {
+                AudioCtrl.play(AudioRes.Freeze);
+                activeFreeze();
+            },
+            this,
+        );
+        event.on(
+            FreezingComEvent.UnFreezing,
+            () => {
+                stopFreeze();
+            },
+            this,
+        );
+        event.on(
+            ShoalEvent.PreAddShoal,
+            reverse => {
+                AudioCtrl.play(AudioRes.ShoalComing);
+                activeShoalWave(reverse).then(() => {
+                    view.showBubbleRefresh();
+                });
+            },
+            this,
+        );
+        event.on(
+            GameEvent.Destroy,
+            () => {
+                this.destroy();
+            },
+            this,
+        );
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
         const { model, view } = this;
@@ -299,7 +326,9 @@ export class GameCtrl {
             const timeout_tip =
                 InternationalTipOther[lang][ServerErrCode.TrialTimeGame];
             const tip = isTimeOut ? timeout_tip : kickedTip;
-            disableCurUserOperation();
+            disableAllUserOperation();
+            offGameSocket(this);
+            disconnectSocket(ServerName.Game);
             AlertPop.alert(tip, {
                 hide_cancel: true,
             }).then(() => {
@@ -330,10 +359,11 @@ export class GameCtrl {
     }
     public destroy() {
         const { bg_monitor } = ctrlState.app;
+        this.model?.event.offAllCaller(this);
+        bg_monitor.event.offAllCaller(this);
         this.view = undefined;
         this.model = undefined;
         GameCtrl.instance = undefined;
         setProps(ctrlState, { game: undefined });
-        bg_monitor.event.offAllCaller(this);
     }
 }

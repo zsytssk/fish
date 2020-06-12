@@ -55,7 +55,7 @@ export function hallViewEvent(hall: HallCtrl) {
 
     const { CLICK } = Event;
     const btn_normal_try = normal_box.getChildByName('btn_try') as Sprite;
-    const btn_normal_play = normal_box.getChildByName('btn_play') as Sprite;
+    const btn_normal_play = normal_box.getChildByName('btn_play') as Skeleton;
     const btn_match_try = match_box.getChildByName('btn_try') as Sprite;
     const btn_match_play = match_box.getChildByName('btn_play') as Sprite;
 
@@ -68,6 +68,7 @@ export function hallViewEvent(hall: HallCtrl) {
             playSkeleton(ani, `standby_${lang}`, true);
         });
     });
+
     onNode(btn_normal_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
         const lang = getLang();
