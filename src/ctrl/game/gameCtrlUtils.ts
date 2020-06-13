@@ -31,6 +31,9 @@ export function disableCurUserOperation() {
 export function disableAllUserOperation() {
     const players = modelState.app.game.getPlayers();
     for (const player of players) {
+        if (!player.need_emit) {
+            continue;
+        }
         player.disableSkill(SkillMap.Auto);
         const lock_skill = player.getSkill(SkillMap.LockFish) as LockFishModel;
         lock_skill.unLock();
