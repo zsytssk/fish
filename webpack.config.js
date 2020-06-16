@@ -26,9 +26,12 @@ const common_config = {
                 test: /(\.ts|\.js)$/,
                 use: [
                     {
+                        loader: 'thread-loader',
+                    },
+                    {
                         loader: 'ts-loader',
                         options: {
-                            transpileOnly: true,
+                            happyPackMode: true,
                         },
                     },
                 ],
@@ -58,7 +61,6 @@ const dev_config = {
         disableHostCheck: true,
         port: 3000,
         open: true,
-        hot: true,
         openPage: 'http://localhost:3000',
     },
 };
@@ -77,7 +79,9 @@ module.exports = (env, argv) => {
     if (argv.mode === 'development') {
         result = { ...common_config, ...dev_config };
     } else {
-        common_config.module.rules[0].use.unshift({ loader: 'babel-loader' });
+        common_config.module.rules[0].use.splice(1, 0, {
+            loader: 'babel-loader',
+        });
         result = { ...common_config, ...prod_config };
     }
     return result;

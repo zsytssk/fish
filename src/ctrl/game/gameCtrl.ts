@@ -6,7 +6,7 @@ import { waitConnectGame } from 'ctrl/hall/login';
 import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
 import { SkillMap } from 'data/config';
-import { InternationalTip, InternationalTip } from 'data/internationalConfig';
+import { InternationalTip } from 'data/internationalConfig';
 import { res } from 'data/res';
 import { ServerEvent, ServerName, ServerErrCode } from 'data/serverEvent';
 import honor from 'honor';

@@ -7,7 +7,7 @@ import {
     disconnectSocket,
     getSocket,
 } from 'ctrl/net/webSocketWrapUtil';
-import { InternationalTip, InternationalTip } from 'data/internationalConfig';
+import { InternationalTip } from 'data/internationalConfig';
 import {
     ErrorData,
     ServerErrCode,

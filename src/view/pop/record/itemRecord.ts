@@ -3,11 +3,7 @@ import {
     onAccountChange,
     onLangChange,
 } from 'ctrl/hall/hallCtrlUtil';
-import {
-    InternationalTip,
-    Lang,
-    InternationalTip,
-} from 'data/internationalConfig';
+import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
 import { Label } from 'laya/ui/Label';
 import { AccountMap } from 'model/userInfo/userInfoModel';

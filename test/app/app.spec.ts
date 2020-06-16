@@ -1,10 +1,6 @@
 import { Test } from 'testBuilder';
 import { modelState } from 'model/modelState';
-import {
-    Lang,
-    InternationalTip,
-    InternationalTip,
-} from 'data/internationalConfig';
+import { Lang, InternationalTip } from 'data/internationalConfig';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';

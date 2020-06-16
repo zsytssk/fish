@@ -1,11 +1,7 @@
 import { ctrlState } from 'ctrl/ctrlState';
 import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { SkillMap } from 'data/config';
-import {
-    InternationalTip,
-    InternationalTip,
-    Lang,
-} from 'data/internationalConfig';
+import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 import { getCurPlayer } from 'model/modelState';
