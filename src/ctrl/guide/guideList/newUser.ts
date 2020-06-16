@@ -63,7 +63,13 @@ export class NewUserGuide {
             genFishInfo(game_ctrl);
 
             const fish = game_ctrl.fish_view;
-            await showPromptByNode(fish, [tour5], 'right', true, 'point');
+            await showPromptByNode(
+                { sprite: fish, shape: 'circle' },
+                [tour5],
+                'right',
+                true,
+                'point',
+            );
 
             await mockShoot();
 

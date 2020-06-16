@@ -60,7 +60,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,coin_name",
-            "props":{"y":10,"x":43,"width":167,"var":"coin_name","overflow":"hidden","height":20,"fontSize":20,"color":"#fff392"},
+            "props":{"y":12,"x":43,"width":167,"var":"coin_name","valign":"middle","overflow":"hidden","height":20,"fontSize":20,"color":"#fff392"},
             "nodeParent":2,
             "label":"coin_name",
             "isDirectory":false,

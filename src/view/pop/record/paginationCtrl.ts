@@ -55,9 +55,14 @@ export class PaginationCtrl extends EventCom {
     }
     private render(data: RenderData, trigger_change = true) {
         const { view } = this;
-        const { pagination_arr, cur_page, item_range } = data;
+        const {
+            pagination_arr,
+            cur_page,
+            item_range,
+            has_prev,
+            has_next,
+        } = data;
 
-        console.log(pagination_arr, cur_page);
         view.removeChildren();
         if (pagination_arr.length <= 1) {
             this.emit(PaginationEvent.Change, {
@@ -72,9 +77,11 @@ export class PaginationCtrl extends EventCom {
             switch (item) {
                 case 'prev':
                     btn = createPrev();
+                    btn.disabled = !has_prev;
                     break;
                 case 'next':
                     btn = createNext();
+                    btn.disabled = !has_next;
                     break;
                 case 'left_spread':
                     btn = createSpread();
@@ -92,7 +99,7 @@ export class PaginationCtrl extends EventCom {
             view.addChild(btn);
         }
 
-        resizeContain(view, 10);
+        resizeContain(view, 5);
         view.x = ((view.parent as Sprite).width - view.width) / 2;
 
         this.emit(PaginationEvent.Change, {

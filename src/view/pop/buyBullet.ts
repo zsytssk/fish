@@ -3,7 +3,7 @@ import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { SkillMap } from 'data/config';
 import {
     InternationalTip,
-    InternationalTipOther,
+    InternationalTip,
     Lang,
 } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
@@ -74,7 +74,7 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
     private setNum(num: number) {
         const { price } = this.buy_info;
         const lang = getLang();
-        const { beyondBulletNum } = InternationalTipOther[lang];
+        const { beyondBulletNum } = InternationalTip[lang];
         const user = getCurPlayer();
         if (num * price > user.bullet_num) {
             TipPop.tip(beyondBulletNum);
@@ -160,7 +160,7 @@ export function buyItemAlert(num: number, price: number, id: string) {
     return new Promise((resolve, reject) => {
         const lang = getLang();
         const { bullet, buySuccess } = InternationalTip[lang];
-        const { buyItemTip: buyTip } = InternationalTipOther[lang];
+        const { buyItemTip: buyTip } = InternationalTip[lang];
         const tip = buyTip
             .replace(`$1`, num * price + '')
             .replace(`$2`, bullet)
@@ -180,7 +180,7 @@ export function buySkinAlert(price: number, name: string) {
     return new Promise((resolve, reject) => {
         const lang = getLang();
         const { bullet } = InternationalTip[lang];
-        const { buySkinTip } = InternationalTipOther[lang];
+        const { buySkinTip } = InternationalTip[lang];
         const tip = buySkinTip
             .replace(`$1`, price + '')
             .replace(`$2`, bullet)

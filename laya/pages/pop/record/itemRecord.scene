@@ -2,9 +2,9 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
-    "selecteID":47,
+    "selecteID":42,
     "searchKey":"Dialog",
-    "props":{"width":1061,"sceneColor":"#000000","height":634},
+    "props":{"width":994,"sceneColor":"#000000","height":604},
     "nodeParent":-1,
     "maxID":48,
     "label":"Dialog",
@@ -18,19 +18,20 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,bg",
-            "props":{"y":0,"x":0,"var":"bg"},
+            "props":{"y":-15,"x":-24,"var":"bg"},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":null,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":9,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
-                    "props":{"y":0,"x":0,"texture":"image/pop/record/bg-top.png"},
+                    "props":{"y":0,"x":0,"texture":"image/pop/record/bg-top-1.png"},
                     "nodeParent":9,
                     "label":"Sprite",
                     "isDirectory":false,
@@ -42,6 +43,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":150,"x":0,"texture":"image/pop/record/bg-left.png"},
@@ -56,6 +58,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":150,"x":929,"texture":"image/pop/record/bg-right.png"},
@@ -70,9 +73,10 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"y":150,"x":76,"width":854,"skin":"image/pop/record/bg-con.png","sizeGrid":"0,5,0,5","height":484},
+                    "props":{"y":150,"x":76,"width":854,"skin":"image/pop/record/bg-con.png","sizeGrid":"0,5,0,5,1","height":484},
                     "nodeParent":9,
                     "label":"Image",
                     "isDirectory":false,
@@ -89,7 +93,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,title",
-            "props":{"y":16,"width":277,"var":"title","valign":"middle","text":"道具存量1","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":43,"color":"#ffffff","centerX":0,"align":"center"},
+            "props":{"y":0,"width":277,"var":"title","valign":"middle","text":"道具存量1","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":36,"color":"#ffffff","centerX":0,"align":"center"},
             "nodeParent":2,
             "label":"title",
             "isDirectory":false,
@@ -104,7 +108,7 @@
             "x":15,
             "type":"Button",
             "searchKey":"Button,close",
-            "props":{"y":4,"x":954.5,"stateNum":"1","skin":"image/pop/record/close.png","name":"close"},
+            "props":{"y":1,"x":929.5,"stateNum":"1","skin":"image/pop/record/close.png","name":"close"},
             "nodeParent":2,
             "label":"close",
             "isDirectory":false,
@@ -118,16 +122,17 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,content",
-            "props":{"y":136,"x":53,"width":935,"var":"content","height":400},
+            "props":{"y":134,"x":30,"width":935,"var":"content","height":400},
             "nodeParent":2,
             "label":"content",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":15,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,con_bg",
                     "props":{"width":935,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","name":"con_bg","height":400},
@@ -143,6 +148,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,title_box",
                     "props":{"y":0,"x":0,"width":935,"var":"title_box","height":40},
@@ -155,6 +161,7 @@
                     "compId":44,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,type",
                             "props":{"y":2,"x":0,"width":190,"valign":"middle","text":"道具类型1","name":"type","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -170,6 +177,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,buy_total",
                             "props":{"y":2,"x":186,"width":190,"valign":"middle","text":"购买数量总和1","name":"buy_total","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -185,6 +193,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,give_total",
                             "props":{"y":2,"x":373,"width":190,"valign":"middle","text":"游戏赠送总和1","name":"give_total","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -200,6 +209,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,remain",
                             "props":{"y":2,"x":559,"width":190,"valign":"middle","text":"剩余数量1","name":"remain","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -215,6 +225,7 @@
                             "$HIDDEN":false
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,no",
                             "props":{"y":2,"x":745,"width":190,"valign":"middle","text":"场次1","name":"no","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -230,6 +241,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"List",
                     "searchKey":"List,record_list",
                     "props":{"y":40,"x":5,"width":924,"var":"record_list","repeatY":10,"height":365},
@@ -242,6 +254,7 @@
                     "compId":21,
                     "child":[
                         {
+                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,item",
                             "props":{"y":0,"x":-6,"width":935,"renderType":"render","name":"item","height":35},
@@ -254,6 +267,7 @@
                             "compId":22,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,type",
                                     "props":{"y":-1,"x":0,"width":190,"valign":"middle","text":"道具类型","name":"type","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -269,6 +283,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,buy_total",
                                     "props":{"y":0,"x":186,"width":190,"valign":"middle","text":"道具类型","name":"buy_total","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -284,6 +299,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,give_total",
                                     "props":{"y":0,"x":373,"width":190,"valign":"middle","text":"道具类型","name":"give_total","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -299,6 +315,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,remain",
                                     "props":{"y":0,"x":559,"width":190,"valign":"middle","text":"道具类型","name":"remain","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -314,6 +331,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,no",
                                     "props":{"y":0,"x":745,"width":190,"valign":"middle","text":"道具类型","name":"no","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -328,6 +346,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite",
                                     "props":{"y":35,"x":1,"texture":"image/pop/record/list-line.png"},
@@ -351,7 +370,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,empty_tip",
-            "props":{"y":317,"x":402,"width":190,"visible":false,"var":"empty_tip","valign":"middle","text":"暂无数据","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
+            "props":{"y":316,"x":384,"width":190,"visible":false,"var":"empty_tip","valign":"middle","text":"暂无数据","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
             "nodeParent":2,
             "label":"empty_tip",
             "isOpen":true,
@@ -367,7 +386,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,pagination",
-            "props":{"y":553,"width":657,"var":"pagination","height":47,"centerX":0},
+            "props":{"y":537,"width":657,"var":"pagination","height":47,"centerX":0},
             "nodeParent":2,
             "label":"pagination",
             "isOpen":false,
@@ -466,17 +485,16 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,search_box",
-            "props":{"y":86,"x":63,"var":"search_box"},
+            "props":{"y":83,"x":32,"var":"search_box"},
             "nodeParent":2,
             "label":"search_box",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":41,
             "child":[
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/itemMenu.scene",
                     "searchKey":"UIView,item_menu",
@@ -492,7 +510,6 @@
                     "$HIDDEN":true
                 },
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/coinMenu.scene",
                     "searchKey":"UIView,coin_menu",
@@ -508,7 +525,6 @@
                     "$HIDDEN":true
                 },
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/selectItemBox.scene",
                     "searchKey":"UIView,select_item",
@@ -524,7 +540,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/selectCoinBox.scene",
                     "searchKey":"UIView,select_coin",
@@ -540,7 +555,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,btn_search",
                     "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},

@@ -3,7 +3,7 @@ import { modelState } from 'model/modelState';
 import {
     Lang,
     InternationalTip,
-    InternationalTipOther,
+    InternationalTip,
 } from 'data/internationalConfig';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
@@ -27,7 +27,7 @@ export const app_test = new Test('app', runner => {
     runner.describe('keyboard', () => {
         const lang = getLang();
         const { confirm } = InternationalTip[lang];
-        const { InputEmptyWarn, Delete } = InternationalTipOther[lang];
+        const { InputEmptyWarn, Delete } = InternationalTip[lang];
         const keyboard = new KeyBoardNumber();
         setTimeout(() => {
             keyboard.enter('1', {

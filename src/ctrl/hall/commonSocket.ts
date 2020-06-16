@@ -7,10 +7,7 @@ import {
     disconnectSocket,
     getSocket,
 } from 'ctrl/net/webSocketWrapUtil';
-import {
-    InternationalTip,
-    InternationalTipOther,
-} from 'data/internationalConfig';
+import { InternationalTip, InternationalTip } from 'data/internationalConfig';
 import {
     ErrorData,
     ServerErrCode,
@@ -30,7 +27,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         [ErrCode]: (res: ErrorData) => {
             const lang = getLang();
             const { logoutTip } = InternationalTip[lang];
-            const { OtherLogin } = InternationalTipOther[lang];
+            const { OtherLogin } = InternationalTip[lang];
             if (res.code === ServerErrCode.TokenExpire) {
                 removeItem('local_token');
                 disconnectSocket(socket.config.name);
@@ -52,7 +49,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             if (try_no !== 0) {
                 return;
             }
-            const { NetError } = InternationalTipOther[lang];
+            const { NetError } = InternationalTip[lang];
             TipPop.tip(NetError, {
                 count: 20,
                 show_count: true,
@@ -63,12 +60,6 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
             tipComeBack();
-        },
-        /** 重连 */
-        [SocketEvent.Reconnecting]: () => {
-            const lang = getLang();
-            const { NetError } = InternationalTipOther[lang];
-            tipCount(NetError, 20);
         },
         /** 断开连接 */
         [SocketEvent.End]: () => {
@@ -107,8 +98,8 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
 
 export function errorHandler(code: number) {
     const lang = getLang();
-    const tip = InternationalTipOther[lang][code];
-    const { noMoneyConfirm } = InternationalTipOther[lang];
+    const tip = InternationalTip[lang][code];
+    const { noMoneyConfirm } = InternationalTip[lang];
 
     if (code === ServerErrCode.ReExchange) {
         disableCurUserOperation();
@@ -134,18 +125,16 @@ export function errorHandler(code: number) {
         code === ServerErrCode.TrialTimeGame ||
         code === ServerErrCode.TrialNotBullet
     ) {
-        return AlertPop.alert(InternationalTipOther[lang][code], {
+        return AlertPop.alert(InternationalTip[lang][code], {
             hide_cancel: true,
         }).then(() => {
             const socket = getSocket(ServerName.Game);
             socket.send(ServerEvent.RoomOut);
         });
     } else if (code === ServerErrCode.TrialTimeHall) {
-        return TipPop.tip(
-            InternationalTipOther[lang][ServerErrCode.TrialTimeGame],
-        );
+        return TipPop.tip(InternationalTip[lang][ServerErrCode.TrialTimeGame]);
     } else if (code === ServerErrCode.NetError) {
-        return AlertPop.alert(InternationalTipOther[lang][code], {
+        return AlertPop.alert(InternationalTip[lang][code], {
             hide_cancel: true,
         }).then(() => {
             location.reload();
@@ -158,7 +147,7 @@ export function errorHandler(code: number) {
 
 export function tipComeBack() {
     const lang = getLang();
-    const { NetComeBack } = InternationalTipOther[lang];
+    const { NetComeBack } = InternationalTip[lang];
     TipPop.tip(NetComeBack);
 }
 export function tipCount(msg: string, count: number) {

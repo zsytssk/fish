@@ -117,18 +117,39 @@ export function awaitStageClick() {
     });
 }
 
+type NodeInfo = {
+    sprite: Sprite;
+    shape: 'circle' | 'rect';
+};
 /** 在按钮旁显示提示 高亮提示 */
 export async function showPromptByNode(
-    node: Sprite,
+    nodeInfo: Sprite | NodeInfo,
     msg: TipData,
     dir = 'top' as PromptPos,
     force = true,
     type = 'btn' as NextType,
 ) {
+    let node: Sprite;
+    let shape_type = 'rect';
+    if ((nodeInfo as NodeInfo).sprite) {
+        node = (nodeInfo as NodeInfo).sprite;
+        shape_type = (nodeInfo as NodeInfo).shape;
+    } else {
+        node = nodeInfo as Sprite;
+    }
     const { guide_dialog } = guide_state;
     const { x, y, width, height } = getBoundsOfNode(node, guide_dialog);
 
-    const shape = new Rectangle(x, y, width, height);
+    let shape: Shape;
+    if (shape_type === 'rect') {
+        shape = new Rectangle(x, y, width, height);
+    } else {
+        shape = {
+            x: x + width / 2,
+            y: y + height / 2,
+            radius: Math.max(width, height),
+        };
+    }
 
     await showPromptByShape(shape, msg, dir, force, type);
 }

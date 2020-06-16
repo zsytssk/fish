@@ -13,6 +13,7 @@ import { playSkeletonOnce } from 'utils/utils';
 import { LotteryExchangeCtrl } from './lotteryExchangeCtrl';
 import { getLotteryData, runLottery } from './popSocket';
 import RewardPop from './reward';
+import { sleep } from 'utils/animate';
 
 type LotteryData = {
     lottery_id: string;
@@ -115,7 +116,12 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         if (val < 1) {
             btn_lottery.disabled = true;
         }
-        lottery_exchange_ctrl.renderData(exchange);
+        lottery_exchange_ctrl.renderData([
+            ...exchange,
+            // ...exchange,
+            // ...exchange,
+            // ...exchange,
+        ]);
 
         this.remain_info = {
             lottery_num,
@@ -201,8 +207,10 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
                 if (end) {
                     arr[round_index].get = true;
                     arr[round_index].cur = true;
-                    this.completeLottery();
-                    resolve();
+                    sleep(2).then(() => {
+                        this.completeLottery();
+                        resolve();
+                    });
                 }
 
                 lottery_list.refresh();

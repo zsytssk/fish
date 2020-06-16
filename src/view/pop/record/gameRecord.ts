@@ -4,7 +4,7 @@ import {
     onLangChange,
 } from 'ctrl/hall/hallCtrlUtil';
 import {
-    InternationalTipOther,
+    InternationalTip,
     Lang,
     InternationalTip,
 } from 'data/internationalConfig';
@@ -94,9 +94,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         });
     }
     private initLang(lang: Lang) {
-        const { gameListTitle, search, prize, cost } = InternationalTipOther[
-            lang
-        ];
+        const { gameListTitle, search, prize, cost } = InternationalTip[lang];
         const { noData } = InternationalTip[lang];
         const { title, title_box, btn_search_label, empty_tip } = this;
 
@@ -158,8 +156,8 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         const { record_list } = this;
         record_list.array = data.map(item => {
             return {
-                prize: item.prize ? item.prize + item.currency : 0,
-                cost: item.cost ? item.cost + item.currency : 0,
+                prize: item.prize ? `${item.prize}  ${item.currency}` : 0,
+                cost: item.cost ? `${item.cost}  ${item.currency}` : 0,
             };
         });
     }

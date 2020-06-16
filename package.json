@@ -12,12 +12,6 @@
     "scripts": {
         "start": "webpack-dev-server --ENV=DEV --mode development",
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
-        "webpack-dev": "webpack --ENV=DEV --mode development",
-        "webpack-test": "webpack --ENV=TEST --mode development",
-        "webpack-test-server": "webpack-dev-server --ENV=TEST --mode development",
-        "webpack-prod": "webpack --ENV=PROD --mode production",
-        "webpack-prod-server": "webpack-dev-server --ENV=DEV --mode development",
-        "compressImg": "node ./script/compressImg/compressImg.js compressImg",
         "test": "node  ./script/test.js"
     },
     "devDependencies": {
@@ -44,7 +38,6 @@
         "bezier-js": "^2.6.1",
         "crypto-js": "^4.0.0",
         "es6-promise": "^4.2.8",
-        "happypack": "^5.0.1",
         "js-base64": "^2.5.2",
         "jsencrypt": "^3.0.0-rc.1",
         "lodash": "^4.17.15",

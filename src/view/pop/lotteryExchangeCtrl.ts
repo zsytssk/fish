@@ -37,6 +37,12 @@ export class LotteryExchangeCtrl {
         } else if (length === 5) {
             ItemCtor = ui.pop.lottery.item2fiveUI;
             space = 5;
+        } else if (length === 2) {
+            ItemCtor = ui.pop.lottery.item2twoUI;
+            space = 50;
+        } else if (length === 3) {
+            space = 80;
+            ItemCtor = ui.pop.lottery.item2UI;
         } else {
             ItemCtor = ui.pop.lottery.item2UI;
         }
@@ -46,7 +52,6 @@ export class LotteryExchangeCtrl {
             this.item_list.push(item);
             await afterActive(item);
             item.x = width;
-            console.log(`test:>`, width);
             width += item.width;
             if (index !== data.length - 1) {
                 width += space;

@@ -6,10 +6,7 @@ import { waitConnectGame } from 'ctrl/hall/login';
 import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
 import { SkillMap } from 'data/config';
-import {
-    InternationalTip,
-    InternationalTipOther,
-} from 'data/internationalConfig';
+import { InternationalTip, InternationalTip } from 'data/internationalConfig';
 import { res } from 'data/res';
 import { ServerEvent, ServerName, ServerErrCode } from 'data/serverEvent';
 import honor from 'honor';
@@ -324,7 +321,7 @@ export class GameCtrl {
             const lang = getLang();
             const { kickedTip } = InternationalTip[lang];
             const timeout_tip =
-                InternationalTipOther[lang][ServerErrCode.TrialTimeGame];
+                InternationalTip[lang][ServerErrCode.TrialTimeGame];
             const tip = isTimeOut ? timeout_tip : kickedTip;
             disableAllUserOperation();
             offGameSocket(this);

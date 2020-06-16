@@ -3,7 +3,6 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const findParam = require('./script/findEnv');
-const HappyPack = require('happypack');
 
 const ENV = JSON.stringify(findParam('ENV'));
 const common_config = {
@@ -25,7 +24,14 @@ const common_config = {
         rules: [
             {
                 test: /(\.ts|\.js)$/,
-                use: ['happypack/loader'],
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                        },
+                    },
+                ],
             },
             {
                 test: /(\.glsl|.fs|.vs)$/,
@@ -36,16 +42,6 @@ const common_config = {
     plugins: [
         new webpack.DefinePlugin({ ENV }),
         new WebpackBar({ color: 'green' }),
-        new HappyPack({
-            loaders: [
-                {
-                    loader: 'ts-loader',
-                    options: {
-                        happyPackMode: true,
-                    },
-                },
-            ],
-        }),
     ],
 };
 
@@ -62,6 +58,7 @@ const dev_config = {
         disableHostCheck: true,
         port: 3000,
         open: true,
+        hot: true,
         openPage: 'http://localhost:3000',
     },
 };
@@ -76,13 +73,12 @@ module.exports = (env, argv) => {
         common_config.output.path = dist_folder;
         dev_config.devServer.contentBase = dist_folder;
     }
+    let result;
     if (argv.mode === 'development') {
-        const result = { ...common_config, ...dev_config };
-        return result;
-        // return result;
+        result = { ...common_config, ...dev_config };
     } else {
         common_config.module.rules[0].use.unshift({ loader: 'babel-loader' });
-        const result = { ...common_config, ...prod_config };
-        return result;
+        result = { ...common_config, ...prod_config };
     }
+    return result;
 };

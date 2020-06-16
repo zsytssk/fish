@@ -1,3 +1,6 @@
+//-----libs-begin-----
+
+//-----libs-end-------
 paladin.checkComponents({
     list: ['launch'],
     success: function (res) {
@@ -16,7 +19,7 @@ paladin.checkComponents({
 window.screenOrientation = 'sensor_landscape';
 // 游戏初始化
 paladin.init({
-    // url: 'http://fish.btgame.club/platform/game/domains',
+    url: 'http://fish.btgame.club/platform/game/domains',
     files: ['./js/bundle.js?v=' + CDN_VERSION],
     loadType: 2,
     success: function (res) {},

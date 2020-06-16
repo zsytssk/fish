@@ -4,7 +4,7 @@ import {
     onLangChange,
 } from 'ctrl/hall/hallCtrlUtil';
 import {
-    InternationalTipOther,
+    InternationalTip,
     Lang,
     InternationalTip,
 } from 'data/internationalConfig';
@@ -70,7 +70,6 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             return { item_name: getSkillName(item), item_id: item };
         });
         select_item_ctrl.setList(ItemList);
-        select_item_ctrl.setCurIndex(0);
 
         const pagination_ctrl = new PaginationCtrl(this.pagination);
         pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
@@ -102,7 +101,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             itemList3,
             gameNo,
             remainingNum,
-        } = InternationalTipOther[lang];
+        } = InternationalTip[lang];
         const { noData } = InternationalTip[lang];
         const { title, title_box, btn_search_label, empty_tip } = this;
 
@@ -166,7 +165,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             return {
                 buy_total: item.buyNum,
                 remain: item.curNum,
-                type: getSkillName(item.itemId),
+                type: getSkillName(item.itemId + ''),
                 give_total: item.prizeNum,
                 no: item.currency,
             };
