@@ -10,7 +10,7 @@ import { WebGL } from 'laya/webgl/WebGL';
 import { Stage } from 'laya/display/Stage';
 import { Utils } from 'laya/utils/Utils';
 import { URL } from 'laya/net/URL';
-export {
+export type {
     HonorDialog,
     HonorDialogConfig,
     HonorScene,
