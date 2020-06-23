@@ -76,9 +76,6 @@ export class DirectorCtor {
         dialogManager.closeAllDialogs();
     }
 
-    public setLoadViewVisible(type: ViewType, visible: boolean, force = false) {
-        loaderManager.setLoadViewVisible(type, visible, force);
-    }
     /** 设置scene loading页面
      */
     public setLoadPageForScene(url: string) {

@@ -72,7 +72,10 @@ export class GameCtrl {
         }
         return runAsyncTask(() => {
             const wait_view = GameView.preEnter() as Promise<GameView>;
-            const wait_load_res = honor.director.load(res.game as ResItem[]);
+            const wait_load_res = honor.director.load(
+                res.game as ResItem[],
+                'Scene',
+            );
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
                 const ctrl = new GameCtrl(view as GameView, game_model);
                 this.instance = ctrl;

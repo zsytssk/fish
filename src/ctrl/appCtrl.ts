@@ -63,7 +63,7 @@ export class AppCtrl {
         );
         // const task2 = honor.director.setLoadPageForDialog('scenes/loading.scene');
         const task2 = honor.director
-            .load([...res.common, ...res.font])
+            .load([...res.common, ...res.font], 'Scene')
             .then(() => {
                 honor.utils.registerFontSize(font_list);
             });

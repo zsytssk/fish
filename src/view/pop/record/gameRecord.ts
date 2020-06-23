@@ -34,7 +34,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
     private select_coin_ctrl: SelectCtrl;
     private select_date_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
-    private all_list: GetItemListItemRep[];
     public static async preEnter() {
         const game_record = (await honor.director.openDialog({
             dialog: GameRecord,

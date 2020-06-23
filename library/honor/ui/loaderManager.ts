@@ -3,31 +3,29 @@ import { ResItem, loadRes } from 'honor/utils/loadRes';
 import { Scene } from 'laya/display/Scene';
 import { Dialog } from 'laya/ui/Dialog';
 import { Handler } from 'laya/utils/Handler';
+import { sleep } from 'utils/animate';
 
 type LoadingMap = Map<ViewType, HonorLoadScene>;
 
 export class LoaderManagerCtor {
-    /** 强制, toggleLoading不在有效, 用于有多个loading的情形, 一直显示loading */
-    public force = false;
+    private load_tasks: Set<Promise<any>> = new Set();
     private load_map = new Map() as LoadingMap;
     public loadScene(type: ViewType, url: string) {
-        return new Promise((resolve, reject) => {
+        const load_task = new Promise((resolve, reject) => {
             const ctor = type === 'Scene' ? Scene : Dialog;
             ctor.load(
                 url,
                 Handler.create(this, (_scene: HonorView) => {
                     resolve(_scene);
-                    this.toggleLoading(type, false);
                 }),
                 Handler.create(this, this.setLoadProgress, [type], false),
             );
-            this.toggleLoading(type, true);
         });
+        this.addLoadTask(type, load_task);
+        return load_task;
     }
     public load(res: ResItem[] | string[], type?: ViewType) {
-        return new Promise(async (resolve, reject) => {
-            this.toggleLoading(type, true);
-
+        const load_task = new Promise(async (resolve, reject) => {
             let load_progress_fn;
             if (type) {
                 load_progress_fn = (val: number) => {
@@ -37,32 +35,27 @@ export class LoaderManagerCtor {
             await loadRes(res, load_progress_fn);
 
             /** 如果显示loading, 最少显示500ms */
-            this.toggleLoading(type, false);
             return resolve();
         });
+        this.addLoadTask(type, load_task);
+        return load_task;
     }
-
-    public toggleLoading(type: ViewType, status: boolean) {
+    public addLoadTask(type: ViewType, load_task: Promise<any>) {
         if (!type) {
             return;
         }
-        if (this.force) {
-            return;
-        }
-        let time = 0;
-        if (status === false) {
-            time = 1000;
-        }
-        clearTimeout(
-            this[`${type}_timeout_${status}` as keyof LoaderManagerCtor] as any,
-        );
-        console.log(`test:>toggleLoading`, type, status);
-        this[
-            `${type}_timeout_${status}` as keyof LoaderManagerCtor
-        ] = setTimeout(() => {
-            this.setLoadViewVisible(type, status);
-        }, time) as any;
+        const { load_tasks } = this;
+        /** loading 最少显示一秒 */
+        this.setLoadViewVisible(type, true);
+        const wait_close = Promise.all([load_task, sleep(1)]).then(() => {
+            load_tasks.delete(wait_close);
+            if (load_tasks.size === 0) {
+                this.setLoadViewVisible(type, false);
+            }
+        });
+        this.load_tasks.add(wait_close);
     }
+
     public async setLoadView(type: ViewType, url: string) {
         const ctor = type === 'Scene' ? Scene : Dialog;
         const scene: HonorLoadScene = await new Promise((resolve, reject) => {
@@ -76,12 +69,8 @@ export class LoaderManagerCtor {
 
         this.load_map.set(type, scene);
     }
-    /**
-     * @param force 强制, toggleLoading不在有效
-     */
-    public setLoadViewVisible(type: ViewType, visible: boolean, force = false) {
+    public setLoadViewVisible(type: ViewType, visible: boolean) {
         const load_scene = this.load_map.get(type);
-        this.force = force;
         if (!load_scene) {
             return;
         }

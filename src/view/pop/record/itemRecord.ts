@@ -16,6 +16,7 @@ import { SelectCtrl } from './selectCtrl';
 type CoinData = {
     coin_icon: string;
     coin_name: string;
+    coin_id: string;
 };
 type SelectCoin = InstanceType<typeof ItemRecord>['select_coin'];
 
@@ -48,6 +49,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             btn_search,
         } = this;
 
+        coin_menu.list.vScrollBarSkin = '';
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
         onAccountChange(this, (data: AccountMap) => {
@@ -59,13 +61,16 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             this.initLang(lang);
         });
 
+        item_menu.list.vScrollBarSkin = '';
         const select_item_ctrl = new SelectCtrl(select_item, item_menu);
         select_item_ctrl.setRender(this.renderSelectItem);
         select_item_ctrl.init();
         const ItemList = ['2001', '2002', '2003'].map(item => {
             return { item_name: getSkillName(item), item_id: item };
         });
+        ItemList.unshift({ item_name: 'All', item_id: undefined });
         select_item_ctrl.setList(ItemList);
+        select_item_ctrl.setCurIndex(0);
 
         const pagination_ctrl = new PaginationCtrl(this.pagination);
         pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
@@ -123,13 +128,20 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
     private renderCoinMenu(data: AccountMap) {
         const { select_coin_ctrl } = this;
         const arr: CoinData[] = [];
+        arr.push({
+            coin_icon: '',
+            coin_name: 'All',
+            coin_id: undefined,
+        });
         for (const [type, { icon }] of data) {
             arr.push({
                 coin_icon: icon,
                 coin_name: type,
+                coin_id: type,
             });
         }
         select_coin_ctrl.setList(arr);
+        select_coin_ctrl.setCurIndex(0);
     }
     private search() {
         const {
@@ -143,7 +155,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         this.renderRecordList([]);
         getItemList({
             itemId: item_data.item_id,
-            currency: coin_data.coin_name,
+            currency: coin_data.coin_id,
         }).then(data => {
             this.all_list = data.list;
             empty_tip.visible = !data.list.length;
