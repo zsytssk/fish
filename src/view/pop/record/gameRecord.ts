@@ -12,6 +12,7 @@ import { getDateFromNow } from 'utils/utils';
 import { getBulletList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
+import { onNode } from 'utils/layaUtils';
 
 type CoinData = {
     coin_icon: string;
@@ -74,7 +75,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         );
         this.pagination_ctrl = pagination_ctrl;
 
-        btn_search.on('click', null, () => {
+        onNode(btn_search, 'click', () => {
             this.pagination_ctrl.reset();
             this.search(1);
         });

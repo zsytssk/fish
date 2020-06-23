@@ -162,7 +162,6 @@ export class Pagination {
         } = this;
 
         const pagination_arr = [] as PaginationItem[];
-        pagination_arr.push('prev');
         if (pagination_range[0] > 0) {
             pagination_arr.push(0);
         }
@@ -180,7 +179,10 @@ export class Pagination {
         if (pagination_range[1] < page_num) {
             pagination_arr.push(page_num - 1);
         }
-        pagination_arr.push('next');
+        if (pagination_arr.length > 0) {
+            pagination_arr.unshift('prev');
+            pagination_arr.push('next');
+        }
         return {
             cur_page,
             item_range,
