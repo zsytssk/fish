@@ -166,6 +166,9 @@ export class FishModel extends ComponentManager {
         });
     }
     public destroy() {
+        if (this.destroyed) {
+            return;
+        }
         this.event.emit(FishEvent.Destroy);
         this.setStatus(FishStatus.Dead);
         this.game.removeFish(this);

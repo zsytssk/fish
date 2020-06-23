@@ -56,6 +56,7 @@ export class LoaderManagerCtor {
         clearTimeout(
             this[`${type}_timeout_${status}` as keyof LoaderManagerCtor] as any,
         );
+        console.log(`test:>toggleLoading`, type, status);
         this[
             `${type}_timeout_${status}` as keyof LoaderManagerCtor
         ] = setTimeout(() => {

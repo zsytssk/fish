@@ -75,9 +75,19 @@ export class SkillCtrl {
             },
             this,
         );
+
+        let i = 0;
         event.on(
             SkillEvent.UpdateRadio,
             (radio: number) => {
+                if (i % 3 && radio !== 1) {
+                    i++;
+                    return;
+                }
+                i++;
+                if (radio === 1) {
+                    i = 0;
+                }
                 view.showCoolTime(radio);
             },
             this,

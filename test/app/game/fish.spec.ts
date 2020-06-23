@@ -177,6 +177,7 @@ export const fish_test = new Test('fish', runner => {
             await sleep(5);
         }
     });
+
     runner.describe('fish_shadow', async () => {
         // body_test.runTest('show_shape');
         for (const i of range(1, 21)) {

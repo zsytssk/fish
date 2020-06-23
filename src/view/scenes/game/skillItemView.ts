@@ -58,8 +58,10 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
         const graphics = cool_mask.graphics;
         const radius = 60;
         const end_angle = 360 - 90;
-        const angle = (1 - radio) * 360 - 90;
+        const angle = Math.round((1 - radio) * 360 - 90);
         graphics.clear();
+
+        console.log(`test:>showCoolTime`, angle, end_angle);
         if (radio !== 0) {
             graphics.drawPie(
                 40,

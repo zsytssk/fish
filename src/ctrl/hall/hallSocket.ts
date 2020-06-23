@@ -14,6 +14,7 @@ import { HallCtrl } from './hallCtrl';
 import { getLang } from './hallCtrlUtil';
 import { initHallSocket } from './login';
 import TopTipPop from 'view/pop/topTip';
+import { sleep } from 'utils/animate';
 
 /**
  *
@@ -41,7 +42,6 @@ export async function onHallSocket(hall: HallCtrl) {
 
     const [isReplay, socketUrl] = await checkReplay(hall);
     if (isReplay) {
-        const lang = getLang();
         hall.enterGame(socketUrl);
         return true;
     }
