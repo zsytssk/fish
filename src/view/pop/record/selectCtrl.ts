@@ -73,6 +73,9 @@ export class SelectCtrl {
         const { select_list } = this;
         select_list.list.array = list;
     }
+    public getList() {
+        return this.select_list.list.array;
+    }
     public getCurIndex() {
         return this.select_index;
     }

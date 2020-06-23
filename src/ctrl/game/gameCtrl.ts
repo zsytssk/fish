@@ -364,6 +364,7 @@ export class GameCtrl {
         this.view = undefined;
         this.model = undefined;
         GameCtrl.instance = undefined;
+        honor.director.closeAllDialogs();
         setProps(ctrlState, { game: undefined });
     }
 }

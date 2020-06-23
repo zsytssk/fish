@@ -34,6 +34,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
     private select_coin_ctrl: SelectCtrl;
     private select_date_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
+    private isInit = false;
     public static async preEnter() {
         const game_record = (await honor.director.openDialog({
             dialog: GameRecord,
@@ -50,6 +51,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
             btn_search,
         } = this;
 
+        coin_menu.list.vScrollBarSkin = '';
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
         onAccountChange(this, (data: AccountMap) => {
@@ -57,6 +59,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         });
         select_coin_ctrl.init();
 
+        date_menu.list.vScrollBarSkin = '';
         const select_date_ctrl = new SelectCtrl(select_item, date_menu);
         select_date_ctrl.setRender(this.renderSelectItem);
         select_date_ctrl.init();
@@ -79,7 +82,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
             this.search(1);
         });
         setTimeout(() => {
-            this.search(1);
+            this.search(1, true);
         });
 
         this.select_coin_ctrl = select_coin_ctrl;
@@ -87,6 +90,15 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
 
         onLangChange(this, lang => {
             this.initLang(lang);
+        });
+    }
+    public onEnable() {
+        if (!this.isInit) {
+            this.isInit = true;
+            return;
+        }
+        setTimeout(() => {
+            this.search(1, true);
         });
     }
     private initLang(lang: Lang) {
@@ -137,7 +149,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         this.renderRecordList([]);
         const pageSize = 10;
         getBulletList({
-            currency: all ? undefined : coin_data.coin_name,
+            currency: all ? '-1' : coin_data.coin_name,
             startTime: date_data.start,
             endTime: date_data.end,
             pageNum,
@@ -146,6 +158,19 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
             pagination_ctrl.update(data.total, pageSize);
             this.renderRecordList(data.list);
             empty_tip.visible = !data.list.length;
+            if (data.time) {
+                const coin_list = select_coin_ctrl.getList() as CoinData[];
+                const date_list = select_date_ctrl.getList() as DateData[];
+                const coin_index = coin_list.findIndex(item => {
+                    return item.coin_name === data.currency;
+                });
+                const date_index = date_list.findIndex(item => {
+                    return item.start < data.time && item.end > data.time;
+                });
+
+                select_coin_ctrl.setCurIndex(coin_index);
+                select_date_ctrl.setCurIndex(date_index);
+            }
         });
     }
     private renderRecordList(data: GetBulletItemRep[]) {

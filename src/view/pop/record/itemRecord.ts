@@ -33,6 +33,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
     private select_item_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
     private all_list: GetItemListItemRep[];
+    private isInit = false;
     public static async preEnter() {
         const item_record = (await honor.director.openDialog({
             dialog: ItemRecord,
@@ -93,6 +94,18 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_item_ctrl = select_item_ctrl;
     }
+    public onEnable() {
+        if (!this.isInit) {
+            this.isInit = true;
+            return;
+        }
+        const { select_coin_ctrl, select_item_ctrl } = this;
+        select_coin_ctrl.setCurIndex(0);
+        select_item_ctrl.setCurIndex(0);
+        setTimeout(() => {
+            this.search();
+        });
+    }
     private initLang(lang: Lang) {
         const {
             itemListTitle,
@@ -150,12 +163,15 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             select_item_ctrl,
             pagination_ctrl,
         } = this;
+
         const coin_data = select_coin_ctrl.getCurData() || {};
         const item_data = select_item_ctrl.getCurData() || {};
+        const itemId = item_data.item_id;
+        const currency = coin_data.coin_id;
         this.renderRecordList([]);
         getItemList({
-            itemId: item_data.item_id,
-            currency: coin_data.coin_id,
+            itemId,
+            currency,
         }).then(data => {
             this.all_list = data.list;
             empty_tip.visible = !data.list.length;

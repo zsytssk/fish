@@ -20,6 +20,7 @@ import { hallViewEvent, setRoomInData } from './hallViewEvent';
 import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { getItem, setItem } from 'utils/localStorage';
+import honor from 'honor';
 
 export class HallCtrl {
     public view: HallView;
@@ -122,6 +123,7 @@ export class HallCtrl {
         offLangChange(this);
         offHallSocket(this);
         disconnectSocket(ServerName.Hall);
+        honor.director.closeAllDialogs();
         HallCtrl.leave();
     }
 }

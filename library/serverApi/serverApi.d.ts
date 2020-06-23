@@ -319,4 +319,6 @@ type GetBulletItemRep = {
 type GetBulletListRep = {
     list: GetBulletItemRep[];
     total: number;
+    time: number;
+    currency: string;
 };
