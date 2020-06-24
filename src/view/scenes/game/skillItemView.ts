@@ -63,16 +63,7 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
 
         console.log(`test:>showCoolTime`, angle, end_angle);
         if (radio !== 0) {
-            graphics.drawPie(
-                40,
-                41,
-                radius,
-                angle,
-                end_angle,
-                '#fff',
-                '#fff',
-                0,
-            );
+            graphics.drawPie(40, 41, radius, angle, end_angle, '#fff');
             overlay.visible = true;
         } else {
             overlay.visible = false;
