@@ -224,7 +224,7 @@ export class GunModel extends ComponentManager {
         const velocity = new SAT.Vector(x, y).normalize();
 
         /** 本地钱不够 就不认服务端的发射命令 */
-        if (player.bullet_num < bullet_cost) {
+        if (player.bullet_num < bullet_cost && player.is_cur_player) {
             return;
         }
         if (syncDirec) {

@@ -19,7 +19,7 @@ const buildMap = {
     '2': async () => {
         await preBuild();
         await build('test');
-        await afterBuild(true);
+        await afterBuild(false);
     },
     '3': async () => {
         await preBuild();
