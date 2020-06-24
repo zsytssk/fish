@@ -74,6 +74,6 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     public clearCoolTime() {
         const { overlay } = this;
 
-        overlay.visible = false;
+        // overlay.visible = false;
     }
 }
