@@ -6,7 +6,6 @@ export function onKeyBoardEvent(code: number) {
     return fromEvent(document, 'keydown').pipe(
         filter((e: KeyboardEvent) => e.keyCode === code),
         map(e => {
-            console.log(`onKeyBoardEvent:>`);
             e.preventDefault();
             return e;
         }),

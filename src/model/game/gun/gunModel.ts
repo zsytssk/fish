@@ -221,8 +221,12 @@ export class GunModel extends ComponentManager {
             bullet_list,
         } = this;
         const { x, y } = direction;
-
         const velocity = new SAT.Vector(x, y).normalize();
+
+        /** 本地钱不够 就不认服务端的发射命令 */
+        if (player.bullet_num < bullet_cost) {
+            return;
+        }
         if (syncDirec) {
             this.setDirection(velocity);
         }

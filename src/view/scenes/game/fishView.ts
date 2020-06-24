@@ -210,7 +210,9 @@ export class FishView extends Sprite {
     public destroy() {
         const { type } = this.info;
 
-        this.fish_ani.filters = [];
+        if (this?.fish_ani?.filters) {
+            this.fish_ani.filters = [];
+        }
         this.shadow_node.rotation = 0;
         recoverSkeletonPool('fish', type, this.fish_ani);
         recoverImgPool(`image/game/shadow`, this.shadow_node);
