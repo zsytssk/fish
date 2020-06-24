@@ -192,3 +192,15 @@ export function getBulletList(data: GetBulletReq) {
         });
     }) as Promise<GetBulletListRep>;
 }
+export function getRecentBullet() {
+    return new Promise((resolve, reject) => {
+        const socket = getSocket(ServerName.Hall);
+        socket.event.once(
+            ServerEvent.GetRecentBullet,
+            (_data: GetRecentBulletRep) => {
+                resolve(_data);
+            },
+        );
+        socket.send(ServerEvent.GetRecentBullet);
+    }) as Promise<GetRecentBulletRep>;
+}

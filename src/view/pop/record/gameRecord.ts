@@ -9,7 +9,7 @@ import { Label } from 'laya/ui/Label';
 import { AccountMap } from 'model/userInfo/userInfoModel';
 import { ui } from 'ui/layaMaxUI';
 import { getDateFromNow } from 'utils/utils';
-import { getBulletList } from '../popSocket';
+import { getBulletList, getRecentBullet } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 import { onNode } from 'utils/layaUtils';
@@ -34,7 +34,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
     private select_coin_ctrl: SelectCtrl;
     private select_date_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
-    private isInit = false;
     public static async preEnter() {
         const game_record = (await honor.director.openDialog({
             dialog: GameRecord,
@@ -49,8 +48,10 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
             date_menu,
             coin_menu,
             btn_search,
+            record_list,
         } = this;
 
+        record_list.array = [];
         coin_menu.list.vScrollBarSkin = '';
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
@@ -81,9 +82,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
             this.pagination_ctrl.reset();
             this.search(1);
         });
-        setTimeout(() => {
-            this.search(1, true);
-        });
 
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_date_ctrl = select_date_ctrl;
@@ -93,12 +91,20 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         });
     }
     public onEnable() {
-        if (!this.isInit) {
-            this.isInit = true;
-            return;
-        }
-        setTimeout(() => {
-            this.search(1, true);
+        const { select_coin_ctrl, select_date_ctrl } = this;
+        getRecentBullet().then(data => {
+            const coin_list = select_coin_ctrl.getList() as CoinData[];
+            const date_list = select_date_ctrl.getList() as DateData[];
+            const coin_index = coin_list.findIndex(item => {
+                return item.coin_name === data.currency;
+            });
+            const date_index = date_list.findIndex(item => {
+                return item.start < data.time && item.end > data.time;
+            });
+            select_coin_ctrl.setCurIndex(coin_index);
+            select_date_ctrl.setCurIndex(date_index);
+
+            this.search(1);
         });
     }
     private initLang(lang: Lang) {
@@ -136,7 +142,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         }
         select_coin_ctrl.setList(arr);
     }
-    private search(pageNum = 1, all = false) {
+    private search(pageNum = 1) {
         const {
             select_coin_ctrl,
             select_date_ctrl,
@@ -149,7 +155,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         this.renderRecordList([]);
         const pageSize = 10;
         getBulletList({
-            currency: all ? '-1' : coin_data.coin_name,
+            currency: coin_data.coin_name,
             startTime: date_data.start,
             endTime: date_data.end,
             pageNum,
@@ -158,19 +164,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
             pagination_ctrl.update(data.total, pageSize);
             this.renderRecordList(data.list);
             empty_tip.visible = !data.list.length;
-            if (data.time) {
-                const coin_list = select_coin_ctrl.getList() as CoinData[];
-                const date_list = select_date_ctrl.getList() as DateData[];
-                const coin_index = coin_list.findIndex(item => {
-                    return item.coin_name === data.currency;
-                });
-                const date_index = date_list.findIndex(item => {
-                    return item.start < data.time && item.end > data.time;
-                });
-
-                select_coin_ctrl.setCurIndex(coin_index);
-                select_date_ctrl.setCurIndex(date_index);
-            }
         });
     }
     private renderRecordList(data: GetBulletItemRep[]) {

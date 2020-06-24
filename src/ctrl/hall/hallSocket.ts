@@ -42,6 +42,7 @@ export async function onHallSocket(hall: HallCtrl) {
 
     const [isReplay, socketUrl] = await checkReplay(hall);
     if (isReplay) {
+        debugger;
         hall.enterGame(socketUrl);
         return true;
     }

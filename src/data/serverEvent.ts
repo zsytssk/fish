@@ -69,6 +69,7 @@ export const ServerEvent = {
     ExchangeBullet: 'exchangeBullet',
     GetItemList: 'getItemList',
     GetBulletList: 'getBulletList',
+    GetRecentBullet: 'getRecentBullet',
 
     /** 其他部分 */
     ErrCode: 'conn::error',
