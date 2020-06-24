@@ -17,6 +17,7 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
         const { overlay } = this;
         const cool_mask = new Sprite();
         overlay.mask = cool_mask;
+        overlay.visible = true;
         this.cool_mask = cool_mask;
     }
     public setId(skill_id: string) {
@@ -64,9 +65,9 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
         console.log(`test:>showCoolTime`, angle, end_angle);
         if (radio !== 0) {
             graphics.drawPie(40, 41, radius, angle, end_angle, '#fff');
-            overlay.visible = true;
+            // overlay.visible = true;
         } else {
-            overlay.visible = false;
+            // overlay.visible = false;
         }
     }
     /** 显示技能的冷却时间 */

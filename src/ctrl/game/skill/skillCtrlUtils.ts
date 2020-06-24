@@ -46,9 +46,12 @@ export function skillNormalActiveHandler(model: SkillModel) {
         stopAim('aim');
     }
     if (model instanceof BombModel) {
+        const { pool } = viewState.game;
+
         TopTipPop.hide();
         stopAim('aim_big');
         offPoolClick();
+        offMouseMove(pool);
     }
 }
 /** 技能的激活前的处理 */
