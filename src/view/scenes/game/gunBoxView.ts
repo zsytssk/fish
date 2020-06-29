@@ -102,9 +102,9 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         setGunDirection(this, degree);
     }
     /** 开火: 设置炮台方向+开火动画 */
-    public fire(direction: SAT.Vector, nickname: string) {
+    public fire(direction: SAT.Vector, userOnlyKey: string) {
         const { gun } = this;
-        const name = `${nickname}:fire`;
+        const name = `${userOnlyKey}:fire`;
 
         /** 为了防止fire动画被打断, 需要将动画放在队列中一个个执行 */
         asyncQue(name, () => {
@@ -121,7 +121,7 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
          */
         clearTimeout(this.time_out);
         this.time_out = setTimeout(() => {
-            clearAsyncQue(`${nickname}:fire`);
+            clearAsyncQue(`${userOnlyKey}:fire`);
         }, 250) as any;
         this.setDirection(direction);
     }

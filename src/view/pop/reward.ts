@@ -8,6 +8,10 @@ type RewardData = {
     type: string;
     num: number;
 };
+
+const tip_tpl1 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span>$1</span><span color="#ffdd76">$2</span></div>`;
+
+const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span color="#ffdd76">$2</span><span color="#ffdd76">$1</span></div>`;
 /** 恭喜获得提示框 */
 export default class RewardPop extends ui.pop.lottery.rewardUI
     implements HonorDialog {
@@ -45,15 +49,22 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
             bullet_num,
             txt_label,
         } = this;
+
         const { type, num } = data;
 
         const is_bullet = type === 'bullet';
         const name = is_bullet ? bullet : type;
         const num_str = num + '';
         if (is_bullet) {
-            txt_label.text = luckyDrawTip2 + `${name}x${num}`;
+            txt_label.innerHTML = tip_tpl1
+                .replace('$0', luckyDrawTip2)
+                .replace('$1', name)
+                .replace('$2', `x${num}`);
         } else {
-            txt_label.text = luckyDrawTip2 + `${num}${name}`;
+            txt_label.innerHTML = tip_tpl2
+                .replace('$0', luckyDrawTip2)
+                .replace('$1', name)
+                .replace('$2', `${num}`);
         }
 
         item_num.visible = item_type.visible = bullet_icon.visible = bullet_num.visible = false;

@@ -92,7 +92,6 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         const { lottery, exchange, lottery_cost, lottery_num } = data;
         const {
             lottery_list,
-            exchange_list,
             progress,
             lottery_remain,
             lottery_exchange_ctrl,
@@ -107,20 +106,28 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
                 get: false,
             });
         }
+        if (lottery_arr.length < 5) {
+            for (let i = 0; i < 5 - lottery_arr.length + 1; i++) {
+                lottery_arr.push({
+                    lottery_id: 'xx',
+                    lottery_type: 'xx',
+                    lottery_num: 0,
+                    cur: false,
+                    get: false,
+                });
+            }
+        }
 
         const val = lottery_num / lottery_cost;
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
         console.log(`test:>lottery`, val);
-        if (val < 1) {
-            btn_lottery.disabled = true;
-        }
+        btn_lottery.disabled = val < 1;
         lottery_exchange_ctrl.renderData([
             ...exchange,
-            // ...exchange,
-            // ...exchange,
-            // ...exchange,
+            ...exchange,
+            ...exchange,
         ]);
 
         this.remain_info = {

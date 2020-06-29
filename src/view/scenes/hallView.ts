@@ -72,7 +72,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         this.initEvent();
     }
     private initEvent() {
-        const { flag_menu, coin_menu, btn_coin_select, flag_box } = this.header;
+        const { flag_menu, btn_coin_select, flag_box } = this.header;
         onLangChange(this, lang => {
             this.initLang(lang);
         });
@@ -136,26 +136,16 @@ export default class HallView extends ui.scenes.hall.hallUI
 
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
-            if (key === type) {
-                playSkeleton(ani, `active_${lang}`, true);
-            } else {
-                playSkeleton(ani, `standby_${lang}`, true);
-            }
+            playSkeleton(ani, `standby_${lang}`, true);
         }
     }
     public setNickname(nickname_str: string) {
         const { nickname, user_box } = this.header;
         nickname.text = honor.utils.cutStr(nickname_str, 12);
-        // if (nickname_str !== 'GUEST') {
-        //     return (user_box.visible = false);
-        // }
-        user_box.visible = true;
-
-        /** @test */
         if (nickname_str !== 'GUEST') {
-            return;
+            return (user_box.visible = false);
         }
-        /** @testEnd */
+        user_box.visible = true;
 
         onLangChange(this, lang => {
             const { guest } = InternationalTip[lang];

@@ -10,6 +10,7 @@ import { WebGL } from 'laya/webgl/WebGL';
 import { Stage } from 'laya/display/Stage';
 import { Utils } from 'laya/utils/Utils';
 import { URL } from 'laya/net/URL';
+import { Config } from 'Config';
 export type {
     HonorDialog,
     HonorDialogConfig,
@@ -41,6 +42,8 @@ async function run(
     game_config: GameConfig,
     extern_config: HonorExternConfig = {},
 ) {
+    Laya.Config.isAntialias = true;
+    Laya.Config.useRetinalCanvas = true;
     // 根据IDE设置初始化引擎
     Laya.init(game_config.width, game_config.height, WebGL);
     Laya.stage.frameRate = Stage.FRAME_SLOW;
@@ -54,7 +57,6 @@ async function run(
     Laya.stage.alignH = game_config.alignH;
     // 兼容微信不支持加载scene后缀场景
     URL.exportSceneToJson = game_config.exportSceneToJson;
-
     // 打开调试面板（通过IDE设置调试模式，或者url地址增加debug=true参数，均可打开调试面板）
     if (game_config.debug || Utils.getQueryString('debug') === 'true') {
         DEBUG_MODE = true;

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":25,
-    "selecteID":29,
+    "selectedBox":56,
+    "selecteID":25,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -118,7 +118,7 @@
                             "x":45,
                             "type":"Box",
                             "searchKey":"Box,btn_coin_select",
-                            "props":{"y":5,"x":225,"width":271,"var":"btn_coin_select","height":56},
+                            "props":{"y":9,"x":225,"width":271,"var":"btn_coin_select","height":56},
                             "nodeParent":56,
                             "label":"btn_coin_select",
                             "isOpen":true,

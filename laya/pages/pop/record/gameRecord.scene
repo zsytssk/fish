@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":4,
+    "selectedBox":3,
+    "selecteID":12,
     "searchKey":"Dialog",
     "props":{"width":725,"sceneColor":"#000000","height":604},
     "nodeParent":-1,
@@ -27,6 +27,21 @@
             "hasChild":true,
             "compId":3,
             "child":[
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image",
+                    "props":{"y":150,"x":75,"width":584,"skin":"image/pop/record/bg-con.png","sizeGrid":"6,2,2,14,1","height":484},
+                    "nodeParent":3,
+                    "label":"Image",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":12,
+                    "child":[
+                        ],
+                    "$HIDDEN":false
+                },
                 {
                     "x":30,
                     "type":"Sprite",
@@ -68,21 +83,6 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":11,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
-                    "type":"Image",
-                    "searchKey":"Image",
-                    "props":{"y":150,"x":76,"width":582,"skin":"image/pop/record/bg-con.png","sizeGrid":"6,2,2,14,1","height":484},
-                    "nodeParent":3,
-                    "label":"Image",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":12,
                     "child":[
                         ],
                     "$HIDDEN":false
@@ -199,14 +199,13 @@
                     "props":{"y":40,"x":5,"width":666,"var":"record_list","rotation":0,"repeatY":10,"repeatX":1,"height":361},
                     "nodeParent":6,
                     "label":"record_list",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":20,
                     "child":[
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,item",
                             "props":{"y":0,"x":104,"width":458,"renderType":"render","name":"item","height":35},
@@ -219,7 +218,6 @@
                             "compId":21,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,cost",
                                     "props":{"y":1,"x":0,"width":190,"valign":"middle","text":"道具类型","name":"cost","height":34,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -234,7 +232,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,prize",
                                     "props":{"y":1,"x":268,"width":190,"valign":"middle","text":"剩余数量","name":"prize","height":34,"fontSize":20,"color":"#fff","align":"center"},
@@ -250,10 +247,9 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite",
-                                    "props":{"y":35,"x":-234,"texture":"image/pop/record/list-line.png"},
+                                    "props":{"y":35,"x":-71,"width":600,"texture":"image/pop/record/list-line.png"},
                                     "nodeParent":21,
                                     "label":"Sprite",
                                     "isDirectory":false,
@@ -274,7 +270,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,empty_tip",
-            "props":{"y":317,"x":267,"width":190,"visible":false,"var":"empty_tip","valign":"middle","text":"暂无数据","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
+            "props":{"y":317,"x":267,"width":190,"var":"empty_tip","valign":"middle","text":"暂无数据","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
             "nodeParent":2,
             "label":"empty_tip",
             "isOpen":true,

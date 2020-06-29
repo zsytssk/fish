@@ -13,6 +13,7 @@ import {
 } from 'ctrl/game/gameTest/utils';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
+import honor from 'honor';
 
 export class NewUserGuide {
     public async start(guide_group: string) {
@@ -49,10 +50,13 @@ export class NewUserGuide {
             hall_ctrl.destroy();
             game_ctrl = await GameTestCtrl.preEnter();
 
+            honor.director.openDialog(guide_dialog);
             const { bullet_box } = game_ctrl.view;
             await sleep(1);
+            console.log(`guide1`, bullet_box);
             const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
             guide_dialog.setBtnNextDir(dir);
+            console.log(`guide2`, bullet_box);
             await showPromptByNode(bullet_box, [tour3], dir, true);
 
             const player_ctrl = [...game_ctrl.player_list][0];

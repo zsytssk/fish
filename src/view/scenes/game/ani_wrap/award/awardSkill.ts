@@ -1,19 +1,23 @@
 import { viewState } from 'view/viewState';
 import SkillItemView from 'view/scenes/game/skillItemView';
 import { tween, sleep, fade_in } from 'utils/animate';
-import { setProps } from 'utils/utils';
+import { setProps, createColorFilter } from 'utils/utils';
+import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
+import { createSprite } from 'honor/utils/createSkeleton';
 
 const pool = [] as SkillItemView[];
 export async function awardSkill(
     start_pos: Point,
     end_pos: Point,
     data: HitDrop[],
+    currency: string,
 ) {
     for (const drop_item of data) {
         const { itemNum, itemId } = drop_item;
 
         const item_ui = createUI();
-        item_ui.setId(itemId);
+        const icon = getCurrencyIcon(currency);
+        item_ui.setIcon(icon);
         item_ui.setNum(itemNum);
         item_ui.pos(start_pos.x, start_pos.y);
         await fade_in(item_ui)

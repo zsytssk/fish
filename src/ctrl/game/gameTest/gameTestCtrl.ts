@@ -34,7 +34,7 @@ export class GameTestCtrl {
             return ctrl;
         });
 
-        return await wait_enter;
+        return wait_enter;
     }
     constructor(public view: GameView, public model: GameModel) {
         this.onModel();

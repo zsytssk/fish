@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":25,
-    "selecteID":5,
+    "selectedBox":21,
+    "selecteID":8,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -135,7 +135,7 @@
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image,item_type",
-                            "props":{"y":52,"x":-33,"width":60,"var":"item_type","skin":"image/pop/lottery/txt_btc.png","pivotY":14,"pivotX":30,"height":28,"centerX":0},
+                            "props":{"y":52,"x":-33,"var":"item_type","skin":"image/pop/lottery/txt_btc.png","pivotY":14,"pivotX":30,"centerX":0},
                             "nodeParent":18,
                             "label":"item_type",
                             "isDirectory":false,
@@ -221,16 +221,17 @@
                     "props":{"y":0,"x":97,"width":280,"skin":"image/pop/lottery/remain_bg.png","sizeGrid":"10,21,10,23","height":43},
                     "nodeParent":25,
                     "label":"Image",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":21,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,remain_label",
-                            "props":{"y":10,"x":7,"width":266,"var":"remain_label","valign":"middle","text":"剩余10/20","height":22,"fontSize":18,"color":"#ffffff","bold":true,"align":"center"},
+                            "props":{"y":10,"x":7,"width":266,"var":"remain_label","valign":"middle","text":"剩余10/20","height":22,"fontSize":18,"color":"#fdf3cf","bold":true,"align":"center"},
                             "nodeParent":21,
                             "label":"remain_label",
                             "isDirectory":false,

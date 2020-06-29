@@ -72,7 +72,7 @@ export class PlayerCtrl {
         const {
             view,
             model: {
-                nickname,
+                user_id,
                 gun,
                 is_cur_player,
                 skill_map,
@@ -97,7 +97,8 @@ export class PlayerCtrl {
                 if (is_cur_player) {
                     /** 飞行技能 */
                     if (drop) {
-                        awardSkill(pos, end_pos, drop);
+                        const { cur_balance } = getUserInfo();
+                        awardSkill(pos, end_pos, drop, cur_balance);
                     }
                     AudioCtrl.play(AudioRes.FlySkill);
                 }
@@ -128,7 +129,7 @@ export class PlayerCtrl {
             (info: AddBulletInfo) => {
                 const { bullet_group, velocity } = info;
                 const { rage } = gun;
-                view.fire(velocity, nickname);
+                view.fire(velocity, user_id);
                 if (is_cur_player) {
                     view.stopPosTip();
                 }

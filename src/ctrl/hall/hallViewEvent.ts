@@ -54,8 +54,10 @@ export function hallViewEvent(hall: HallCtrl) {
     );
 
     const { CLICK } = Event;
+    const normal_ani = normal_box.getChildByName('ani') as Skeleton;
     const btn_normal_try = normal_box.getChildByName('btn_try') as Sprite;
     const btn_normal_play = normal_box.getChildByName('btn_play') as Skeleton;
+    const match_ani = match_box.getChildByName('ani') as Skeleton;
     const btn_match_try = match_box.getChildByName('btn_try') as Sprite;
     const btn_match_play = match_box.getChildByName('btn_play') as Sprite;
 
@@ -63,8 +65,11 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         const lang = getLang();
         const ani = btn_normal_play.getChildByName('ani') as Skeleton;
-        playSkeletonOnce(ani, `active_${lang}`).then(() => {
-            hall.roomIn({ roomId: 1, isTrial: 0 });
+        const ani_play = playSkeletonOnce(normal_ani, `active_${lang}`);
+        const btn_play = playSkeletonOnce(ani, `active_${lang}`);
+
+        Promise.all([btn_play, ani_play]).then(() => {
+            hall.roomIn({ roomId: 1, isTrial: 0 }, hall);
             playSkeleton(ani, `standby_${lang}`, true);
         });
     });
@@ -73,25 +78,30 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         const lang = getLang();
         const ani = btn_normal_try.getChildByName('ani') as Skeleton;
-        playSkeletonOnce(ani, `active_${lang}`).then(() => {
-            hall.roomIn({ roomId: 1, isTrial: 1 });
+        const btn_play = playSkeletonOnce(ani, `active_${lang}`);
+        const ani_play = playSkeletonOnce(normal_ani, `active_${lang}`);
+
+        Promise.all([btn_play, ani_play]).then(() => {
+            hall.roomIn({ roomId: 1, isTrial: 1 }, hall);
             playSkeleton(ani, `standby_${lang}`, true);
         });
     });
     onNode(btn_match_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        hall.roomIn({ roomId: 2, isTrial: 0 });
+        hall.roomIn({ roomId: 2, isTrial: 0 }, hall);
     });
     onNode(btn_match_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
-        hall.roomIn({ roomId: 2, isTrial: 1 });
+        hall.roomIn({ roomId: 2, isTrial: 1 }, hall);
     });
     onNode(btn_play_now, CLICK, async () => {
         const lang = getLang();
         const ani = btn_play_now.getChildByName('ani') as Skeleton;
         AudioCtrl.play(AudioRes.Click);
-        playSkeletonOnce(ani, `active_${lang}`).then(() => {
-            hall.roomIn(getRoomInData());
+        const ani_play = playSkeletonOnce(normal_ani, `active_${lang}`);
+        const btn_play = playSkeletonOnce(ani, `active_${lang}`);
+        Promise.all([btn_play, ani_play]).then(() => {
+            hall.roomIn(getRoomInData(), hall);
             playSkeleton(ani, `standby_${lang}`, true);
         });
     });

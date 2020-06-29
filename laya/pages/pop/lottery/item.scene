@@ -1,7 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":2,
+    "selectedBox":18,
+    "selecteID":26,
     "searchKey":"View",
     "props":{"width":119,"sceneColor":"#000000","height":119},
     "nodeParent":-1,
@@ -17,7 +18,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box",
-            "props":{"y":-1,"x":-1,"width":121,"height":121},
+            "props":{"y":-1,"x":-1},
             "nodeParent":2,
             "label":"Box",
             "isOpen":true,
@@ -45,7 +46,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"width":119,"skin":"image/pop/lottery/lottery_item_bg.png","height":119},
+                    "props":{"y":0,"x":-3,"width":128,"skin":"image/pop/lottery/lottery_item_bg.png","height":128},
                     "nodeParent":18,
                     "label":"Image",
                     "isOpen":false,
@@ -57,7 +58,7 @@
                         {
                             "type":"Sprite",
                             "searchKey":"Sprite",
-                            "props":{"y":-15,"x":-15,"texture":"image/pop/lottery/lottery_item_light.png"},
+                            "props":{"y":-16,"x":-16,"texture":"image/pop/lottery/lottery_item_light.png"},
                             "nodeParent":16,
                             "label":"Sprite",
                             "isDirectory":false,
@@ -82,7 +83,7 @@
                     "compId":21,
                     "child":[
                         ],
-                    "$HIDDEN":false
+                    "$HIDDEN":true
                 },
                 {
                     "x":30,
@@ -103,7 +104,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,box_img",
-                    "props":{"y":25,"x":21,"var":"box_img","skin":"image/pop/lottery/box_normal.png"},
+                    "props":{"y":25,"x":22,"var":"box_img","skin":"image/pop/lottery/box_normal.png"},
                     "nodeParent":18,
                     "label":"box_img",
                     "isDirectory":false,

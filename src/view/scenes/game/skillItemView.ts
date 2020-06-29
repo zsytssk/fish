@@ -29,6 +29,10 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
             skill_icon.skin = `image/common/coin/${name}.png`;
         }
     }
+    public setIcon(url: string) {
+        const { skill_icon } = this;
+        skill_icon.skin = url;
+    }
     public setNum(num: number) {
         const { num_label } = this;
         let num_str = num + '';
@@ -61,7 +65,6 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
         const angle = Math.round((1 - radio) * 360 - 90);
         graphics.clear();
 
-        console.log(`test:>showCoolTime`, angle, end_angle);
         if (radio !== 0) {
             graphics.drawPie(40, 41, radius, angle, end_angle, '#fff');
             overlay.visible = true;

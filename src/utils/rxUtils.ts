@@ -3,7 +3,7 @@ import { filter, map } from 'rxjs/operators';
 import { Sprite } from 'laya/display/Sprite';
 
 export function onKeyBoardEvent(code: number) {
-    return fromEvent(document, 'keydown').pipe(
+    return fromEvent(document.body, 'keydown').pipe(
         filter((e: KeyboardEvent) => e.keyCode === code),
         map(e => {
             e.preventDefault();
