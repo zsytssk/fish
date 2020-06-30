@@ -9,7 +9,6 @@ import {
     skillDisableHandler,
     skillNormalActiveHandler,
     skillPreActiveHandler,
-    getShortcut,
 } from './skillCtrlUtils';
 import { LockFishModel } from 'model/game/skill/lockFishModel';
 
@@ -99,7 +98,7 @@ export class SkillCtrl {
             },
             this,
         );
-        view.setShortcut(getShortcut(model));
+        // view.setShortcut(getShortcut(model));
         this.bindTrigger = onTrigger(model, view).subscribe(() => {
             if (model.skill_core.status === SkillStatus.Normal) {
                 skillPreActiveHandler(model);

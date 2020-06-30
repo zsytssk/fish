@@ -59,7 +59,7 @@ export function createImgPool(url: string) {
     return createImg(url);
 }
 export function recoverImgPool(url: string, img: Sprite) {
-    if (img.destroyed) {
+    if (!img || img?.destroyed) {
         return;
     }
     const map_key = url;

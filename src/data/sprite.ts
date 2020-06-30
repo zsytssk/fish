@@ -35,6 +35,7 @@ export type FishSpriteInfo = SpriteInfo & {
     coin_flag?: true;
     coin_pos?: Point;
     coin_color?: string;
+    scale?: number;
 };
 export interface GameSprite {
     /** 枪 */
@@ -133,80 +134,95 @@ export let SPRITE: GameSprite = {
             offset: [50, 41, 33, 43],
             path: 'ani/fish/fish1',
             ani_type: 'horizon_turn',
+            scale: 0.7,
         },
         '2': {
             type: 'DragonBone',
             offset: [63, 50, 62, 50],
             path: 'ani/fish/fish2',
+            scale: 0.7,
         },
         '3': {
             type: 'DragonBone',
             offset: [47, 67, 38, 58],
             path: 'ani/fish/fish3',
             ani_type: 'horizon_turn',
+            scale: 0.7,
         },
         '4': {
             type: 'DragonBone',
             offset: [82, 90, 86, 91],
             path: 'ani/fish/fish4',
+            scale: 0.8,
         },
         '5': {
             type: 'DragonBone',
             offset: [137, 43, 168, 43],
             path: 'ani/fish/fish5',
+            scale: 0.7,
         },
         '6': {
             type: 'DragonBone',
             offset: [49, 47, 36, 44],
             path: 'ani/fish/fish6',
             ani_type: 'horizon_turn',
+            scale: 0.7,
         },
         '7': {
             type: 'DragonBone',
             offset: [47, 56, 38, 55],
             path: 'ani/fish/fish7',
             ani_type: 'horizon_turn',
+            scale: 0.7,
         },
         '8': {
             type: 'DragonBone',
             offset: [44, 79, 120, 80],
             path: 'ani/fish/fish8',
+            scale: 0.8,
         },
         '9': {
             type: 'DragonBone',
             offset: [85, 93, 88, 86],
             path: 'ani/fish/fish9',
+            scale: 0.8,
         },
         '10': {
             type: 'DragonBone',
             offset: [84, 91, 87, 88],
             path: 'ani/fish/fish10',
+            scale: 0.8,
         },
         '11': {
             type: 'DragonBone',
             offset: [86, 72, 150, 68],
             path: 'ani/fish/fish11',
             ani_type: 'horizon_turn',
+            scale: 0.8,
         },
         '12': {
             type: 'DragonBone',
             offset: [176, 74, 175, 75],
             path: 'ani/fish/fish12',
+            scale: 0.8,
         },
         '13': {
             type: 'DragonBone',
             offset: [162, 103, 201, 102],
             path: 'ani/fish/fish13',
+            scale: 0.9,
         },
         '14': {
             type: 'DragonBone',
             offset: [148, 99, 311, 99],
             path: 'ani/fish/fish14',
+            scale: 0.9,
         },
         '15': {
             type: 'DragonBone',
             offset: [229, 157, 290, 156],
             path: 'ani/fish/fish15',
+            scale: 0.9,
         },
         '16': {
             type: 'DragonBone',
@@ -216,6 +232,7 @@ export let SPRITE: GameSprite = {
             turn_ani: true,
             coin_flag: true,
             coin_color: '#ffd52c',
+            scale: 0.9,
         },
         '17': {
             type: 'DragonBone',
@@ -223,6 +240,7 @@ export let SPRITE: GameSprite = {
             path: 'ani/fish/fish17',
             coin_flag: true,
             coin_color: '#af5200',
+            scale: 0.9,
         },
         '18': {
             type: 'DragonBone',
@@ -230,6 +248,7 @@ export let SPRITE: GameSprite = {
             path: 'ani/fish/fish18',
             coin_flag: true,
             coin_color: '#412770',
+            scale: 0.9,
         },
         '19': {
             type: 'DragonBone',
@@ -239,6 +258,7 @@ export let SPRITE: GameSprite = {
             turn_ani: true,
             coin_flag: true,
             coin_color: '#ffde00',
+            scale: 0.9,
         },
         '20': {
             type: 'DragonBone',
@@ -248,6 +268,7 @@ export let SPRITE: GameSprite = {
             turn_ani: true,
             coin_flag: true,
             coin_color: '#7a3f04',
+            scale: 0.9,
             coin_pos: {
                 x: 50,
                 y: -30,

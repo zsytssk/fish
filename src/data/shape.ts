@@ -83,7 +83,7 @@ export let SHAPE: ShapeOriData = {
                 {
                     type: 'Box',
                     width: 30,
-                    height: 80,
+                    height: 60,
                     position: {
                         x: 0,
                         y: -15,
@@ -230,7 +230,7 @@ export let SHAPE: ShapeOriData = {
                 {
                     type: 'Box',
                     width: 70,
-                    height: 250,
+                    height: 220,
                     position: {
                         x: 0,
                         y: 25,
@@ -242,7 +242,7 @@ export let SHAPE: ShapeOriData = {
                     height: 30,
                     position: {
                         x: 0,
-                        y: 190,
+                        y: 160,
                     },
                 },
             ],
@@ -273,8 +273,8 @@ export let SHAPE: ShapeOriData = {
             shape_list: [
                 {
                     type: 'Box',
-                    width: 150,
-                    height: 350,
+                    width: 110,
+                    height: 300,
                     position: {
                         x: 0,
                         y: -10,
@@ -282,20 +282,20 @@ export let SHAPE: ShapeOriData = {
                 },
                 {
                     type: 'Box',
-                    width: 50,
-                    height: 90,
+                    width: 30,
+                    height: 80,
                     position: {
                         x: 0,
-                        y: 215,
+                        y: 180,
                     },
                 },
                 {
                     type: 'Box',
-                    width: 150,
-                    height: 50,
+                    width: 100,
+                    height: 30,
                     position: {
                         x: 0,
-                        y: 290,
+                        y: 230,
                     },
                 },
             ],
@@ -310,22 +310,6 @@ export let SHAPE: ShapeOriData = {
                         y: 10,
                     },
                 },
-                // {
-                //     type: 'Circle',
-                //     radius: 30,
-                //     position: {
-                //         x: -90,
-                //         y: -90,
-                //     },
-                // },
-                // {
-                //     type: 'Circle',
-                //     radius: 35,
-                //     position: {
-                //         x: 90,
-                //         y: -100,
-                //     },
-                // },
             ],
         },
         '17': {
@@ -365,15 +349,6 @@ export let SHAPE: ShapeOriData = {
                     width: 220,
                     height: 80,
                 },
-                // {
-                //     type: 'Box',
-                //     width: 20,
-                //     height: 80,
-                //     position: {
-                //         x: -130,
-                //         y: 0,
-                //     },
-                // },
             ],
         },
     },

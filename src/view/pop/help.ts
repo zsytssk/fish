@@ -18,12 +18,18 @@ type SkillItemData = {
     id: string;
     intro: string;
 };
+
+console.log(ui.pop.help.helpUI);
 export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
     public isModal = true;
     private slider_glr: LayaSlider;
     private times_tpl: string;
-    public static async preEnter() {
-        await honor.director.openDialog({ dialog: HelpPop, use_exist: true });
+    public static async preEnter(index = 0) {
+        const help_pop = (await honor.director.openDialog({
+            dialog: HelpPop,
+            use_exist: true,
+        })) as HelpPop;
+        help_pop.goto(index);
     }
     public onAwake() {
         onLangChange(this, lang => {
@@ -47,6 +53,9 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
             false,
         );
         fish_list.array = test_fish_list;
+    }
+    public goto(index: number) {
+        this.slider_glr.goto(index);
     }
     private fishListRender(item: ui.pop.help.helpItemUI, index: number) {
         const { times_tpl } = this;

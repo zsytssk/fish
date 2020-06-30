@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { write } from '../zutil/ls/write';
-import { stringify } from '../zutil/utils/stringify';
+import { write } from '../../zutil/ls/write';
+import { stringify } from '../../zutil/utils/stringify';
 import GroupData from './group.origin.json';
 
 /** 生成鱼组数据脚本 */

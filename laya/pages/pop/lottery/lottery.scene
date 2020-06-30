@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":20,
-    "selecteID":22,
+    "selectedBox":2,
+    "selecteID":51,
     "searchKey":"Dialog",
     "props":{"width":1030,"sceneColor":"#000000","sceneBg":"laya/views/pop/lottery.png","height":710},
     "nodeParent":-1,
-    "maxID":51,
+    "maxID":52,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -21,13 +21,14 @@
             "props":{"y":-2,"x":-3,"var":"bg"},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":3,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":77,"x":26,"width":990,"skin":"image/pop/shop/bg.png","sizeGrid":"0,42,0,42","height":629},
@@ -41,6 +42,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":12,"texture":"image/pop/shop/top_bg.png"},
@@ -54,6 +56,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"x":379,"texture":"image/pop/shop/title_bg.png"},
@@ -67,6 +70,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":654,"x":969,"texture":"image/pop/shop/star.png"},
@@ -80,9 +84,10 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,title",
-                    "props":{"y":19,"var":"title","skin":"image/international/txt_lottery_zh.png","centerX":0},
+                    "props":{"y":22,"var":"title","skin":"image/international/txt_lottery_zh.png","centerX":0},
                     "nodeParent":3,
                     "label":"title",
                     "isDirectory":false,
@@ -93,6 +98,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"SkeletonPlayer",
                     "searchKey":"SkeletonPlayer",
                     "props":{"y":344,"x":515,"url":"image/pop/shop/shop_bulb.sk"},
@@ -183,7 +189,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_lottery",
-                    "props":{"y":165,"x":741,"var":"btn_lottery","stateNum":"1","skin":"image/pop/lottery/btn_get_lottery.png"},
+                    "props":{"y":165,"x":737,"var":"btn_lottery","stateNum":"1","skin":"image/pop/lottery/btn_get_lottery.png"},
                     "nodeParent":13,
                     "label":"btn_lottery",
                     "isOpen":true,
@@ -293,6 +299,20 @@
                     "child":[
                         ]
                 }]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "searchKey":"Button,btn_help",
+            "props":{"y":158,"x":937,"width":43,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","height":47},
+            "nodeParent":2,
+            "label":"btn_help",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":51,
+            "child":[
+                ]
         }],
     "animations":[
         {

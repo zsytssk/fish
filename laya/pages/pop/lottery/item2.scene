@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":18,
+    "selectedBox":5,
+    "selecteID":7,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -93,16 +93,17 @@
             "props":{"y":177,"x":37,"var":"btn_buy","stateNum":"1","skin":"image/pop/lottery/btn_lottery_bug.png"},
             "nodeParent":2,
             "label":"btn_buy",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":5,
             "child":[
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,price_label",
-                    "props":{"y":12,"x":65,"width":51,"var":"price_label","text":"500","height":24,"fontSize":24,"color":"#174c7d","align":"right"},
+                    "props":{"y":12,"x":65,"width":53,"var":"price_label","text":"500","height":24,"fontSize":24,"color":"#174c7d","bold":true,"align":"right"},
                     "nodeParent":5,
                     "label":"price_label",
                     "isDirectory":false,
@@ -113,6 +114,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,price_tag",
                     "props":{"y":8.5,"x":22,"width":45,"var":"price_tag","skin":"image/pop/lottery/tag_bg.png","height":33},
@@ -125,6 +127,7 @@
                     "compId":12,
                     "child":[
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,coin_icon",
                             "props":{"y":4,"x":12,"width":22,"var":"coin_icon","skin":"image/pop/lottery/tag_coin_bg.png","height":22},
@@ -184,7 +187,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,item_type",
-                    "props":{"y":52,"x":-33,"var":"item_type","skin":"image/pop/lottery/txt_btc.png","pivotY":14,"pivotX":30,"centerX":0},
+                    "props":{"y":57,"var":"item_type","skin":"image/pop/lottery/txt_busdt.png","pivotY":14,"pivotX":30,"centerX":0},
                     "nodeParent":18,
                     "label":"item_type",
                     "isDirectory":false,

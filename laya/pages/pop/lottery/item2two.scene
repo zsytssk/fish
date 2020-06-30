@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":18,
-    "selecteID":15,
+    "selectedBox":5,
+    "selecteID":7,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -104,7 +104,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,price_label",
-                    "props":{"y":12,"x":65,"width":51,"var":"price_label","text":"500","height":24,"fontSize":24,"color":"#174c7d","align":"right"},
+                    "props":{"y":12,"x":65,"width":51,"var":"price_label","text":"500","height":24,"fontSize":24,"color":"#174c7d","bold":true,"align":"right"},
                     "nodeParent":5,
                     "label":"price_label",
                     "isDirectory":false,

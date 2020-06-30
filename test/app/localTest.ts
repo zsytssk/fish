@@ -27,11 +27,11 @@ export async function localTest() {
     // mock_web_socket_test.runTest(ServerEvent.UseLock);
     // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
     game_test.runTest('enter_game', [true]).then(() => {
-        fish_test.runTest('fish_view');
+        fish_test.runTest('add_fish');
         player_test.runTest('add_cur_player');
-        // player_test.runTest('add_other_player', [1]);
-        // player_test.runTest('add_other_player', [2]);
-        // player_test.runTest('add_other_player', [3]);
+        player_test.runTest('add_other_player', [1]);
+        player_test.runTest('add_other_player', [2]);
+        player_test.runTest('add_other_player', [3]);
         // fish_test.runTest('fish_view');
         // fish_test.runTest('fish_shadow');
         // fish_test.runTest('add_fish_group');

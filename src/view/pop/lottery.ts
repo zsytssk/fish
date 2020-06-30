@@ -14,6 +14,7 @@ import { LotteryExchangeCtrl } from './lotteryExchangeCtrl';
 import { getLotteryData, runLottery } from './popSocket';
 import RewardPop from './reward';
 import { sleep } from 'utils/animate';
+import HelpPop from './help';
 
 type LotteryData = {
     lottery_id: string;
@@ -243,8 +244,12 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         this.lottery_exchange_ctrl = undefined;
     }
     public onAwake() {
+        const { btn_help } = this;
         onLangChange(this, lang => {
             this.initLang(lang);
+        });
+        btn_help.on(Event.CLICK, this, () => {
+            HelpPop.preEnter(2);
         });
     }
     private initLang(lang: Lang) {

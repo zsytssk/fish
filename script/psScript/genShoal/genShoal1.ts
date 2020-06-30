@@ -1,7 +1,7 @@
 import * as path from 'path';
-import { write } from '../zutil/ls/write';
+import { write } from '../../zutil/ls/write';
 import shoal_data from './data/shoal1.source.json';
-import { stringify } from '../zutil/utils/stringify';
+import { stringify } from '../../zutil/utils/stringify';
 import { fixNum } from './utils';
 
 const shoalId = 'R1';

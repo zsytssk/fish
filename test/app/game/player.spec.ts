@@ -22,7 +22,7 @@ export const player_test = new Test('player', runner => {
         const player_data = {
             user_id: test_data.userId,
             server_index: 0,
-            bullet_cost: 100,
+            bullet_cost: 1,
             bullet_num: 100000000,
             gun_skin: '1',
             nickname: test_data.nickname,

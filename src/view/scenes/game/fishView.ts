@@ -80,7 +80,7 @@ export class FishView extends Sprite {
     }
     private createFishAni() {
         const { type, currency } = this.info;
-        const { coin_flag, coin_color } = getSpriteInfo(
+        const { coin_flag, coin_color, scale } = getSpriteInfo(
             'fish',
             type,
         ) as FishSpriteInfo;
@@ -119,6 +119,10 @@ export class FishView extends Sprite {
                     fish_ani.setSlotSkin('huobi', texture);
                 });
             }
+        }
+
+        if (scale) {
+            fish_ani.scale(scale, scale);
         }
 
         return fish_ani;
