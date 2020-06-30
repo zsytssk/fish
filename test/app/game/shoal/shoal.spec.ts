@@ -20,7 +20,7 @@ export const shoal_test = new Test('shoal', runner => {
 });
 
 function addShoal(data: typeof Shoal1Data) {
-    const total_time = 100000;
+    const total_time = 30000;
     const { fish } = data;
     const result = [] as ServerFishInfo[];
     for (const fish_item of fish) {

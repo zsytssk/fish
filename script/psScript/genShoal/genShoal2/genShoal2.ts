@@ -4,12 +4,13 @@ import shoal_data from '../data/shoal2.source.json';
 import { stringify } from '../../../zutil/utils/stringify';
 import { genLineTypeFish, genLineFun } from '../utils';
 import { ShoalFishInfo, displaceType } from '../shoal';
-import { formatType3Arr, genType3 } from './genShoal2Utils';
+import { formatType3Arr, genType3Path } from './genShoal2Utils';
 
 const {
     bounds: { width: psd_width },
     shoalId,
     fish_map,
+    path: path_data,
 } = shoal_data;
 const pool_width = 1920;
 const all_width = psd_width + pool_width;
@@ -86,34 +87,6 @@ for (const fish_type2 of fish_type2_arr) {
 
 /** 正弦曲线 */
 const type3_fish = [] as ShoalFishInfo[];
-const arr1 = [
-    120,
-    (Math.PI * 2) / 1710,
-    225,
-    (780 * (Math.PI * 2)) / 1710,
-    [0, 1920],
-];
-const arr2 = [
-    -120,
-    -(Math.PI * 2) / 1710,
-    750 - 225,
-    ((780 + 1920) * (Math.PI * 2)) / 1710,
-    [1920, 0],
-];
-const arr3 = [
-    120,
-    -(Math.PI * 2) / 1710,
-    225,
-    ((780 + 1920) * (Math.PI * 2)) / 1710,
-    [1920, 0],
-];
-const arr4 = [
-    -120,
-    (Math.PI * 2) / 1710,
-    750 - 225,
-    (780 * (Math.PI * 2)) / 1710,
-    [0, 1920],
-];
 const type3_arr1 = formatType3Arr(fish_map['2'], start_x);
 const type3_arr2 = formatType3Arr(fish_map['3'], start_x);
 const type3_arr3 = formatType3Arr(fish_map['4'], start_x);
@@ -136,15 +109,17 @@ for (const fish of type3_arr1) {
     const endTimeRadio =
         (type3_all_radio * (x + pool_width)) / type3_all_len +
         type3_start_radio1;
-    const data = genType3({
+    const data = genType3Path({
         fish,
         startTimeRadio,
         endTimeRadio,
-        params: arr1,
+        params: path_data['2'],
         displaceLen: pool_width,
+        reverse: true,
     });
     type3_fish.push(data);
 }
+
 for (const fish of type3_arr2) {
     const {
         pos: { x },
@@ -154,15 +129,16 @@ for (const fish of type3_arr2) {
     const endTimeRadio =
         (type3_all_radio * (x + pool_width)) / type3_all_len +
         type3_start_radio1;
-    const data = genType3({
+    const data = genType3Path({
         fish,
         startTimeRadio,
         endTimeRadio,
-        params: arr2,
+        params: path_data['3'],
         displaceLen: pool_width,
     });
     type3_fish.push(data);
 }
+
 for (const fish of type3_arr3) {
     const {
         pos: { x },
@@ -172,15 +148,16 @@ for (const fish of type3_arr3) {
     const endTimeRadio =
         (type3_all_radio * (x + pool_width)) / type3_all_len +
         type3_start_radio2;
-    const data = genType3({
+    const data = genType3Path({
         fish,
         startTimeRadio,
         endTimeRadio,
-        params: arr3,
+        params: path_data['4'],
         displaceLen: pool_width,
     });
     type3_fish.push(data);
 }
+
 for (const fish of type3_arr4) {
     const {
         pos: { x },
@@ -190,18 +167,40 @@ for (const fish of type3_arr4) {
     const endTimeRadio =
         (type3_all_radio * (x + pool_width)) / type3_all_len +
         type3_start_radio2;
-    const data = genType3({
+
+    const data = genType3Path({
         fish,
         startTimeRadio,
         endTimeRadio,
-        params: arr4,
+        params: revertPath(path_data['5']),
         displaceLen: pool_width,
     });
     type3_fish.push(data);
 }
 
+function revertPath(path_arr: number[][]) {
+    const result = [];
+    for (const path_item of path_arr) {
+        let temp = [];
+        const temp_result = [];
+        for (const [index, item] of path_item.entries()) {
+            temp.push(item);
+            if (temp.length === 2) {
+                temp_result.push(temp);
+                temp = [];
+            }
+        }
+        result.push((temp_result.reverse() as any).flat());
+    }
+
+    return [...result].reverse();
+}
+
 write(
-    path.resolve(__dirname, '../data/shoal2.json'),
+    // path.resolve(__dirname, '../data/shoal2.json'),
+    path.resolve(
+        '/Users/zsy/Documents/zsytssk/github/fish/test/app/game/shoal/shoal2.json',
+    ),
     stringify({
         shoalId,
         totalTime: 30,

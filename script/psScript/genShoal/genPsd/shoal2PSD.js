@@ -9,17 +9,13 @@ var shoal = {
 };
 
 var result = {};
+var path_data = {};
 var type_name = [];
 var layers = getAllLayers(doc, true);
 for (var i = 0; i < layers.length; i++) {
     var layer = layers[i];
     var fold_name = layer.parent.name;
     var fold_index = type_name.indexOf(fold_name);
-    var layer_name = parseInt(layer.name);
-    var fishType = layer_name ? layer_name : '';
-    if (!fishType) {
-        continue;
-    }
 
     if (fold_index === -1) {
         fold_index = type_name.push(layer.parent.name) - 1;
@@ -27,17 +23,17 @@ for (var i = 0; i < layers.length; i++) {
     if (!result[fold_index]) {
         result[fold_index] = [];
     }
-    var layer_bounds = getLayerBound(layer);
-    var pos = {
-        x: layer_bounds.x + layer_bounds.width / 2,
-        y: layer_bounds.y + layer_bounds.height / 2,
-    };
-    result[fold_index].push({
-        pos: pos,
-        fishType: fishType,
-    });
+    var fish_data = genFishData(layer);
+    if (fish_data) {
+        fish_data = genFishData(layer);
+        result[fold_index].push(fish_data);
+    } else {
+        var pathInfo = genPathInfo(doc, layer);
+        if (pathInfo) {
+            path_data[fold_index] = pathInfo;
+        }
+    }
 }
-
 var filePath = new File($.fileName).parent.parent + '/data/shoal2.source.json';
 writeFile(filePath, {
     shoalId: 'R2',
@@ -45,5 +41,23 @@ writeFile(filePath, {
         width: parseInt(doc.width),
         height: parseInt(doc.height),
     },
+    path: path_data,
     fish_map: result,
 });
+
+function genFishData(layer) {
+    var layer_name = parseInt(layer.name);
+    var fishType = layer_name ? layer_name : '';
+    if (!fishType) {
+        return;
+    }
+    var layer_bounds = getLayerBound(layer);
+    var pos = {
+        x: layer_bounds.x + layer_bounds.width / 2,
+        y: layer_bounds.y + layer_bounds.height / 2,
+    };
+    return {
+        pos: pos,
+        fishType: fishType,
+    };
+}

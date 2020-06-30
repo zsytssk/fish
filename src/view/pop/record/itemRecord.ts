@@ -69,7 +69,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const ItemList = ['2001', '2002', '2003'].map(item => {
             return { item_name: getSkillName(item), item_id: item };
         });
-        ItemList.unshift({ item_name: 'All', item_id: undefined });
+        ItemList.unshift({ item_name: 'all', item_id: undefined });
         select_item_ctrl.setList(ItemList);
         select_item_ctrl.setCurIndex(0);
 
