@@ -11,7 +11,7 @@ type RewardData = {
 
 const tip_tpl1 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span>$1</span><span color="#ffdd76">$2</span></div>`;
 
-const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span color="#ffdd76">$2</span><span color="#ffdd76">$1</span></div>`;
+const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span color="#ffdd76">$2</span><span>$1</span></div>`;
 /** 恭喜获得提示框 */
 export default class RewardPop extends ui.pop.lottery.rewardUI
     implements HonorDialog {
@@ -64,7 +64,7 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
             txt_label.innerHTML = tip_tpl2
                 .replace('$0', luckyDrawTip2)
                 .replace('$1', name)
-                .replace('$2', `${num}`);
+                .replace('$2', ` ${num} `);
         }
 
         item_num.visible = item_type.visible = bullet_icon.visible = bullet_num.visible = false;

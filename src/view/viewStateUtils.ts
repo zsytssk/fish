@@ -37,7 +37,7 @@ export function recoverSkeletonPool(
     id: string,
     ani: Skeleton,
 ) {
-    if (ani.destroyed) {
+    if (!ani || ani.destroyed) {
         return;
     }
     const map_key = `${type}:${id}`;

@@ -26,6 +26,8 @@ export enum ServerErrCode {
     TrialNotBullet = 116,
     /** 大厅 room in */
     TrialTimeHall = 507,
+    /** 在房间中报错 可能退出房间 */
+    EnterGameError = 505,
     /** 网络异常 */
     NetError = 511,
 }

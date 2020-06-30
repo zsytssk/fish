@@ -40,7 +40,6 @@ export type LotteryPopData = {
     lottery_cost: number;
 };
 type LotteryItemUI = ui.pop.lottery.itemUI;
-type ExchangeItemUI = ui.pop.lottery.item2UI;
 
 /** 抽奖弹出层 */
 export default class LotteryPop extends ui.pop.lottery.lotteryUI
@@ -124,11 +123,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         lottery_list.array = lottery_arr;
         console.log(`test:>lottery`, val);
         btn_lottery.disabled = val < 1;
-        lottery_exchange_ctrl.renderData([
-            ...exchange,
-            ...exchange,
-            ...exchange,
-        ]);
+        lottery_exchange_ctrl.renderData([...exchange]);
 
         this.remain_info = {
             lottery_num,

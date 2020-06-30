@@ -33,6 +33,7 @@ export type FishSpriteInfo = SpriteInfo & {
     offset?: number[];
     turn_ani?: boolean;
     coin_flag?: true;
+    coin_pos?: Point;
     coin_color?: string;
 };
 export interface GameSprite {
@@ -247,6 +248,10 @@ export let SPRITE: GameSprite = {
             turn_ani: true,
             coin_flag: true,
             coin_color: '#7a3f04',
+            coin_pos: {
+                x: 50,
+                y: -30,
+            },
         },
         G1: {
             group: [
@@ -333,6 +338,10 @@ export let SPRITE: GameSprite = {
         coin: {
             type: 'DragonBone',
             path: 'ani/other/coin',
+        },
+        coin_light: {
+            type: 'DragonBone',
+            path: 'ani/other/coin_light',
         },
         skill_border_light: {
             type: 'DragonBone',

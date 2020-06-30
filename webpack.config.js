@@ -49,7 +49,7 @@ const common_config = {
 };
 
 const dev_config = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     stats: {
         warnings: false,
     },

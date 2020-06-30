@@ -133,7 +133,10 @@ export function errorHandler(code: number) {
         });
     } else if (code === ServerErrCode.TrialTimeHall) {
         return TipPop.tip(InternationalTip[lang][ServerErrCode.TrialTimeGame]);
-    } else if (code === ServerErrCode.NetError) {
+    } else if (
+        code === ServerErrCode.NetError ||
+        code === ServerErrCode.EnterGameError
+    ) {
         return AlertPop.alert(InternationalTip[lang][code], {
             hide_cancel: true,
         }).then(() => {

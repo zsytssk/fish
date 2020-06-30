@@ -257,7 +257,7 @@ export const International = {
         volumeSetting: '⾳量設定',
         music: '⾳楽',
         soundEffects: '⾳聲効果',
-        tips: '提示',
+        tips: '注意',
         cancel: 'キャンセル',
         confirm: '確認',
         luckyDraw: '抽選',

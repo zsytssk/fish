@@ -35,6 +35,8 @@ P F00747C6 bubble_overlay.png
 R C59297B2 bubble_overlay.sk
 P 17760186 coin.png
 R 4174ACD0 coin.sk
+R 9FE26B7A coin_light.png
+R 8137FE30 coin_light.sk
 P D59E664A energy_light.png
 R 17B07878 energy_light.sk
 R 08B66C40 exploding.png
@@ -334,7 +336,7 @@ P E9206F0D select-bg.png
 P 60157192 selectLine.png
 P F3942DD7 triangle.png
 D image/pop/reward
-R C30352A3 bg.png
+R 07E9690B bg.png
 P 729DB92C btn.png
 P D3AD8FFD item_bg.png
 P 60157192 selectLine.png

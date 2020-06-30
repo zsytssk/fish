@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":21,
-    "selecteID":8,
+    "selectedBox":18,
+    "selecteID":15,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -135,7 +135,7 @@
                             "x":45,
                             "type":"Image",
                             "searchKey":"Image,item_type",
-                            "props":{"y":52,"x":-33,"var":"item_type","skin":"image/pop/lottery/txt_btc.png","pivotY":14,"pivotX":30,"centerX":0},
+                            "props":{"y":52,"var":"item_type","skin":"image/pop/lottery/txt_btc.png","pivotY":14,"pivotX":30,"height":30,"centerX":0},
                             "nodeParent":18,
                             "label":"item_type",
                             "isDirectory":false,

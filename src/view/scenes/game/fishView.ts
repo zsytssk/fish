@@ -32,6 +32,7 @@ export type FishViewInfo = {
 };
 export class FishView extends Sprite {
     private fish_ani: Skeleton;
+    private coin_light: Skeleton;
     private shadow_node: Sprite;
     public info: FishViewInfo;
     public shadow_info: ShadowItemInfo;
@@ -90,11 +91,20 @@ export class FishView extends Sprite {
             coin_flag ? 1 : undefined,
         ) as Skeleton;
 
-        if (type + '' === '20') {
-            console.log(`test:>coin_flag`, type, currency);
-        }
         // 鱼身上添加icon的样式。。。
         if (coin_flag) {
+            const coin_light = createSkeletonPool(
+                'other',
+                'coin_light',
+            ) as Skeleton;
+            coin_light.zOrder = 10;
+            fish_ani.addChild(coin_light);
+            coin_light.scale(1.5, 1.5);
+            coin_light.alpha = 0.6;
+            playSkeleton(coin_light, 0, true);
+
+            this.coin_light = coin_light;
+
             const fish_icon = getCurrencyIcon(currency);
             if (fish_icon) {
                 createSprite(fish_icon).then(img => {
@@ -219,6 +229,7 @@ export class FishView extends Sprite {
         if (this.shadow_node) {
             this.shadow_node.rotation = 0;
         }
+        recoverSkeletonPool('other', 'coin_light', this.coin_light);
         recoverSkeletonPool('fish', type, this.fish_ani);
         recoverImgPool(`image/game/shadow`, this.shadow_node);
 

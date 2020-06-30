@@ -13,10 +13,11 @@ import { onStageClick, resizeContain } from 'utils/layaUtils';
 import { playSkeleton } from 'utils/utils';
 import { ui } from '../../ui/layaMaxUI';
 
-export type CoinData = Array<{
+export type CoinData = {
     type: string;
     num: number;
-}>;
+}[];
+
 export default class HallView extends ui.scenes.hall.hallUI
     implements HonorScene {
     public static preEnter() {
@@ -140,9 +141,11 @@ export default class HallView extends ui.scenes.hall.hallUI
         }
     }
     public setNickname(nickname_str: string) {
-        const { nickname, user_box } = this.header;
+        const { nickname, user_box, left_wrap } = this.header;
+        const space = 10;
         nickname.text = honor.utils.cutStr(nickname_str, 12);
         if (nickname_str !== 'GUEST') {
+            resizeContain(left_wrap, space);
             return (user_box.visible = false);
         }
         user_box.visible = true;
@@ -151,6 +154,7 @@ export default class HallView extends ui.scenes.hall.hallUI
             const { guest } = InternationalTip[lang];
             nickname.text = guest;
         });
+        resizeContain(left_wrap, space);
     }
     public coinMenuRender(box: Box, index: number) {
         const coin_num = box.getChildByName('coin_num') as Label;
@@ -243,7 +247,14 @@ export default class HallView extends ui.scenes.hall.hallUI
         flag.skin = `image/common/flag/flag_${type}.png`;
     }
     public destroy() {
-        offLangChange(this);
-        super.destroy();
+        /** 在游戏中 突然修改代码 无法避免会报错（大厅骨骼动画销毁报错， 应该是还没有初始化）
+         *  在这里放一个try catch防止卡死
+         */
+        try {
+            super.destroy();
+            offLangChange(this);
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
