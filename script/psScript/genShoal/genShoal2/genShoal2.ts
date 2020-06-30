@@ -1,7 +1,7 @@
 import * as path from 'path';
-import { write } from '../../zutil/ls/write';
+import { write } from '../../../zutil/ls/write';
 import shoal_data from '../data/shoal2.source.json';
-import { stringify } from '../../zutil/utils/stringify';
+import { stringify } from '../../../zutil/utils/stringify';
 import { genLineTypeFish, genLineFun } from '../utils';
 import { ShoalFishInfo, displaceType } from '../shoal';
 import { formatType3Arr, genType3 } from './genShoal2Utils';

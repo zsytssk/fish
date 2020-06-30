@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":54,
+    "selectedBox":54,
+    "selecteID":40,
     "searchKey":"Dialog",
     "props":{"width":1004,"sceneColor":"#000000","sceneBg":"laya/views/pop/help.png","height":710},
     "nodeParent":-1,
@@ -228,14 +228,13 @@
                                     "props":{"y":0,"x":2,"width":927,"var":"item0","height":495},
                                     "nodeParent":14,
                                     "label":"item0",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":16,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item0_wrap",
                                             "props":{"y":0,"x":0,"var":"item0_wrap"},
@@ -313,7 +312,8 @@
                                                                 }]
                                                         }]
                                                 }]
-                                        }]
+                                        }],
+                                    "$HIDDEN":true
                                 },
                                 {
                                     "x":60,
@@ -322,14 +322,13 @@
                                     "props":{"y":0,"x":0,"width":924,"var":"item1","height":488},
                                     "nodeParent":14,
                                     "label":"item1",
-                                    "isOpen":true,
+                                    "isOpen":false,
                                     "isDirectory":true,
                                     "isAniNode":true,
                                     "hasChild":true,
                                     "compId":15,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Box",
                                             "searchKey":"Box,item1_wrap",
                                             "props":{"y":0,"x":-1,"var":"item1_wrap"},
@@ -342,7 +341,6 @@
                                             "compId":56,
                                             "child":[
                                                 {
-                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro2",
                                                     "props":{"y":0,"x":4,"wordWrap":true,"width":910,"var":"intro2","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -356,7 +354,6 @@
                                                         ]
                                                 },
                                                 {
-                                                    "x":90,
                                                     "type":"List",
                                                     "searchKey":"List,skill_list",
                                                     "props":{"y":21,"width":927,"var":"skill_list","spaceY":15,"repeatY":4,"repeatX":1,"height":471},
@@ -369,7 +366,6 @@
                                                     "compId":35,
                                                     "child":[
                                                         {
-                                                            "x":105,
                                                             "type":"UIView",
                                                             "source":"pop/help/skillItem.scene",
                                                             "searchKey":"UIView,item",
@@ -384,7 +380,8 @@
                                                                 ]
                                                         }]
                                                 }]
-                                        }]
+                                        }],
+                                    "$HIDDEN":true
                                 },
                                 {
                                     "x":60,
@@ -406,13 +403,14 @@
                                             "props":{"y":0,"x":0,"var":"item2_wrap"},
                                             "nodeParent":39,
                                             "label":"item2_wrap",
-                                            "isOpen":false,
+                                            "isOpen":true,
                                             "isDirectory":true,
                                             "isAniNode":true,
                                             "hasChild":true,
                                             "compId":54,
                                             "child":[
                                                 {
+                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro3",
                                                     "props":{"y":0,"x":4,"wordWrap":true,"width":910,"var":"intro3","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -426,6 +424,7 @@
                                                         ]
                                                 },
                                                 {
+                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro31",
                                                     "props":{"y":45,"x":8,"wordWrap":true,"width":910,"var":"intro31","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -439,6 +438,7 @@
                                                         ]
                                                 },
                                                 {
+                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro4",
                                                     "props":{"y":176,"x":4,"wordWrap":true,"width":910,"var":"intro4","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},
@@ -452,6 +452,7 @@
                                                         ]
                                                 },
                                                 {
+                                                    "x":90,
                                                     "type":"Label",
                                                     "searchKey":"Label,intro41",
                                                     "props":{"y":221,"x":8,"wordWrap":true,"width":910,"var":"intro41","text":"具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档具体文案请见策划文档","leading":3,"fontSize":21,"color":"#f6eae4"},

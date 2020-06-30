@@ -233,7 +233,7 @@ export const International = {
         noMoneyConfirm: '충전하기',
         [ServerErrCode.ReExchange]: '총알 부족, 계속 교환 하시겠습니까?',
         [ServerErrCode.TrialTimeGame]:
-            '무료 플레이 종료. 정식 버전을 이용해주세요.',
+            '무료 플레이 종료. 정식 버전을 이용해주세요',
         [ServerErrCode.TrialNotBullet]:
             '총알 부족, 다시 입장하거나 정식 버전을 이용해 주세요.',
         [ServerErrCode.NetError]:
