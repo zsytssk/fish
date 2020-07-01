@@ -21,6 +21,8 @@ import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { getItem, setItem } from 'utils/localStorage';
 import honor from 'honor';
+import GameRecord from 'view/pop/record/gameRecord';
+import ItemRecord from 'view/pop/record/itemRecord';
 
 export class HallCtrl {
     public view: HallView;
@@ -59,12 +61,15 @@ export class HallCtrl {
     private async init() {
         hallViewEvent(this);
         this.initModelEvent();
-        await onHallSocket(this).then(enter_game => {
+        await onHallSocket(this).then(async enter_game => {
             if (enter_game) {
-                this.destroy();
+                return this.destroy();
             } else {
                 AudioCtrl.playBg(AudioRes.HallBg);
             }
+
+            await GameRecord.preLoad();
+            await ItemRecord.preLoad();
         });
     }
     private initModelEvent() {

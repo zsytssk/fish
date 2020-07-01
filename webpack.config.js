@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const findParam = require('./script/findEnv');
 
-const ENV = JSON.stringify(findParam('ENV'));
+const ENV = findParam('ENV');
 const common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
@@ -43,13 +43,13 @@ const common_config = {
         ],
     },
     plugins: [
-        new webpack.DefinePlugin({ ENV }),
+        new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) }),
         new WebpackBar({ color: 'green' }),
     ],
 };
 
 const dev_config = {
-    devtool: 'source-map',
+    devtool: ENV === 'DEV' ? 'eval-source-map' : 'source-map',
     stats: {
         warnings: false,
     },
@@ -70,11 +70,6 @@ const prod_config = {
 };
 
 module.exports = (env, argv) => {
-    if (ENV === 'TEST') {
-        const dist_folder = path.join(__dirname, 'build');
-        common_config.output.path = dist_folder;
-        dev_config.devServer.contentBase = dist_folder;
-    }
     let result;
     if (argv.mode === 'development') {
         result = { ...common_config, ...dev_config };

@@ -81,6 +81,15 @@ export class GameCtrl {
                 this.instance = ctrl;
                 ctrl.init(url);
                 setProps(ctrlState, { game: ctrl });
+
+                HelpPop.preLoad()
+                    .then(() => {
+                        return ShopPop.preLoad();
+                    })
+                    .then(() => {
+                        return LotteryPop.preLoad();
+                    });
+
                 return ctrl;
             });
         }, this);

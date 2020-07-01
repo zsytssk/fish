@@ -4,13 +4,18 @@ import { Scene } from 'laya/display/Scene';
 import { Dialog } from 'laya/ui/Dialog';
 import { Handler } from 'laya/utils/Handler';
 import { sleep } from 'utils/animate';
+import { LoaderManager } from 'laya/net/LoaderManager';
+import { Laya } from 'Laya';
 
 type LoadingMap = Map<ViewType, HonorLoadScene>;
-
 export class LoaderManagerCtor {
     private load_tasks: Set<Promise<any>> = new Set();
     private load_map = new Map() as LoadingMap;
-    public loadScene(type: ViewType, url: string) {
+    public loadScene(type: ViewType, url: string, preLoad = false) {
+        /** 加载场景时 清除正在加载的东西 防止影响场景加载 */
+        if (preLoad && type === 'Scene') {
+            Laya.loader.clearUnLoaded();
+        }
         const load_task = new Promise((resolve, reject) => {
             const ctor = type === 'Scene' ? Scene : Dialog;
             ctor.load(
@@ -21,8 +26,13 @@ export class LoaderManagerCtor {
                 Handler.create(this, this.setLoadProgress, [type], false),
             );
         });
-        this.addLoadTask(type, load_task);
+        if (!preLoad) {
+            this.addLoadTask(type, load_task);
+        }
         return load_task;
+    }
+    public preLoad(type: ViewType, url: string) {
+        this.loadScene(type, url, true);
     }
     public load(res: ResItem[] | string[], type?: ViewType) {
         const load_task = new Promise(async (resolve, reject) => {

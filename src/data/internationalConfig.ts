@@ -95,7 +95,7 @@ export const International = {
         tour4:
             'System will automatically convert your coins into<br/> bullets after entering Real Field; All your balance<br/> bullet will be converted back to coins after you <br/> leave the room.',
         tour5:
-            'Control your cannon, click and capture fishes<br/> to gain more bullets',
+            'Control your cannon, click and capture <br/>fishes to gain more bullets',
         tour6:
             'Use items to assist you to capture more <br/> and bigger fishes',
         noData: 'No data',
@@ -311,13 +311,14 @@ export const International = {
         tourSkip: 'Exit',
         tourStart: 'Start',
         tour1: 'ボタンで通貨タイプを選択',
-        tour2: '通貨タイプが異なることにより、ゲーム ルームが切替されます。',
+        tour2:
+            '通貨タイプが異なることにより、ゲーム <br/> ルームが切替されます。',
         tour3:
             '體験ルームプレーはゲームの體験のみ可能です。本番プレールームで仮想通貨が獲得 可能です。',
         tour4:
             '本番ゲームルームに⼊場の際、システムは⾃動的に仮想通貨を弾薬に交換されます。 また、お客様は退場の際、殘りの弾薬が⾃動的に仮想通貨に交換されます。ご安⼼くだ さい。',
         tour5:
-            '砲臺をコントロールし、クリックかつ⿂の捕獲、<br/>もっと弾薬が獲得可能',
+            '砲臺をコントロールし、クリックかつ⿂<br/>の捕獲、もっと弾薬が獲得可能',
         tour6: 'スキルの使⽤で、もっと⼤きくて多い⿂を<br/>捕獲可能です。',
         noData: 'データなし',
         NetError: '異常なネットワーク、再接続',
@@ -424,7 +425,7 @@ export const International = {
         tour3: '在试玩场您只能体验游戏，<br/>在正式场才能赢得数字货币',
         tour4:
             '进入正式场后，系统会自动将您的数字货币兑换成子弹；请放心，在您离开房间后，所有剩余子弹将会再兑换成您的数字货币',
-        tour5: '控制您的炮台，点击并捕捉鱼群，获得更多子弹',
+        tour5: '控制您的炮台，点击并捕捉鱼群，<br/>获得更多子弹',
         tour6: '可以使用道具，帮助您捕获<br/>更多更大的鱼',
         noData: '暂无数据',
         NetError: '网络异常, 正在重新连接',
@@ -527,7 +528,7 @@ export const International = {
         tour3: '在試玩場您隻能體驗遊戲，<br/>在正式場才能贏得數字貨幣',
         tour4:
             '進入正式場後，係統會自動將您的數字貨幣兌換成子彈；請放心，在您離開房間後，所有剩餘子彈將會再兌換成您的數字貨幣',
-        tour5: '控製您的炮臺，點擊並捕捉魚群，獲得更多子彈',
+        tour5: '控製您的炮臺，點擊並捕捉魚群，<br/>獲得更多子彈',
         tour6: '可以使用道具，幫助您捕獲<br/>更多更大的魚',
         noData: '暫無數據',
         NetError: '網絡異常, 正在重新連接',

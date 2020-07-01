@@ -1,4 +1,5 @@
 ﻿//@include "../../extendUtils/extendUtils.js"
+//@include "./data.js"
 var doc = app.activeDocument;
 
 var shoal = {
@@ -51,13 +52,23 @@ function genFishData(layer) {
     if (!fishType) {
         return;
     }
-    var layer_bounds = getLayerBound(layer);
-    var pos = {
-        x: layer_bounds.x + layer_bounds.width / 2,
-        y: layer_bounds.y + layer_bounds.height / 2,
-    };
+    var bound = getLayerBound(layer);
+    var pos = fishPos[fishType];
+    var x, y;
+    // if (pos) {
+    //     x = pos.x || bound.width / 2;
+    //     y = pos.y || bound.height / 2;
+    //     x += bound.x;
+    //     y += bound.y;
+    // } else {
+    //     x = bound.x + bound.width / 2;
+    //     y = bound.y + bound.height / 2;
+    // }
+    x = bound.x + bound.width / 2;
+    y = bound.y + bound.height / 2;
+
     return {
-        pos: pos,
+        pos: { x: x, y: y },
         fishType: fishType,
     };
 }

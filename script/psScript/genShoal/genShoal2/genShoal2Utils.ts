@@ -76,7 +76,7 @@ export function minusPathX1920(path_arr: number[][]) {
         const result_item_arr = [] as number[];
         for (const [index, path_item] of path_arr_item.entries()) {
             if (index % 2 === 0) {
-                result_item_arr[index] = path_item - 1920;
+                result_item_arr[index] = path_item - 1406;
             } else {
                 result_item_arr[index] = path_item;
             }

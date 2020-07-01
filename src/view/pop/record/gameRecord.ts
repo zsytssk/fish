@@ -13,6 +13,7 @@ import { getBulletList, getRecentBullet } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 import { onNode } from 'utils/layaUtils';
+import { loaderManager } from 'honor/state';
 
 type CoinData = {
     coin_icon: string;
@@ -41,6 +42,9 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         })) as GameRecord;
         return game_record;
     }
+    public static preLoad() {
+        return loaderManager.preLoad('Dialog', 'pop/record/gameRecord.scene');
+    }
     public onAwake() {
         const {
             select_item,
@@ -52,7 +56,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         } = this;
 
         record_list.array = [];
-        coin_menu.list.vScrollBarSkin = '';
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
         onAccountChange(this, (data: AccountMap) => {
@@ -60,7 +63,6 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         });
         select_coin_ctrl.init();
 
-        date_menu.list.vScrollBarSkin = '';
         const select_date_ctrl = new SelectCtrl(select_item, date_menu);
         select_date_ctrl.setRender(this.renderSelectItem);
         select_date_ctrl.init();
@@ -95,12 +97,18 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         getRecentBullet().then(data => {
             const coin_list = select_coin_ctrl.getList() as CoinData[];
             const date_list = select_date_ctrl.getList() as DateData[];
-            const coin_index = coin_list.findIndex(item => {
+            let coin_index = coin_list.findIndex(item => {
                 return item.coin_name === data.currency;
             });
-            const date_index = date_list.findIndex(item => {
+            let date_index = date_list.findIndex(item => {
                 return item.start < data.time && item.end > data.time;
             });
+            if (coin_index === -1) {
+                coin_index = 0;
+            }
+            if (date_index === -1) {
+                date_index = 0;
+            }
             select_coin_ctrl.setCurIndex(coin_index);
             select_date_ctrl.setCurIndex(date_index);
 

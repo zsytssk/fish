@@ -127,6 +127,10 @@ R 9FF3FE85 play_now_btn.sk
 P E63EFF17 split_vertical.png
 P F0A43F56 try_btn.png
 R 16F2BA51 try_btn.sk
+P 430EE50D vscroll$bar.png
+P B9F279BE vscroll$down.png
+P 138E4B8B vscroll$up.png
+P C8B2584F vscroll.png
 P 5A52F4CE wait_bg.png
 D image/international
 P 03C945F0 auto_cancel_en.png

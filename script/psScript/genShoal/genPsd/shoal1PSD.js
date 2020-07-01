@@ -1,4 +1,5 @@
 ﻿//@include "../../extendUtils/extendUtils.js"
+//@include "./data.js"
 var doc = app.activeDocument;
 
 var shoal = {};
@@ -12,9 +13,20 @@ for (var i = 0; i < layers.length; i++) {
     if (!fishType) {
         continue;
     }
+
     var bound = getLayerBound(layer);
-    var x = bound.x + bound.width / 2;
-    var y = bound.y + bound.height / 2;
+    var pos = fishPos[fishType];
+    var x, y;
+    if (pos) {
+        x = pos.x || bound.width / 2;
+        y = pos.y || bound.height / 2;
+        x += bound.x;
+        y += bound.y;
+    } else {
+        x = bound.x + bound.width / 2;
+        y = bound.y + bound.height / 2;
+    }
+
     fish.push({
         pos: {
             x: x,

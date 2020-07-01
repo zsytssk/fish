@@ -85,6 +85,7 @@ export class LotteryExchangeCtrl {
             cost_num,
             cur_num,
         } = item_data;
+
         let tag = ItemMap[exchange_id] as string;
         tag = tag ? tag.toLowerCase() : tag;
         const num_str = exchange_num + '';
@@ -117,7 +118,7 @@ export class LotteryExchangeCtrl {
         const { exchange_id, cost_num, cur_num, exchange_type } = item_data;
         const { num } = await runTicketExchange(exchange_id);
         RewardPop.preEnter({ type: exchange_type, num });
-        item_data.cost_num = cur_num - cost_num;
+        item_data.cur_num = cur_num - cost_num;
         this.refresh();
     }
     private clear() {

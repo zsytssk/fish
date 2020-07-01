@@ -48,10 +48,10 @@ for (const fish of fish_list) {
 }
 
 write(
-    path.resolve(__dirname, 'data/shoal1.json'),
+    path.resolve(__dirname, '../../../test/app/game/shoal/shoal1.json'),
     stringify({
         shoalId,
-        totalTime: 30,
+        totalTime: 100,
         usedTime: 0,
         fish: result_fish,
     }),

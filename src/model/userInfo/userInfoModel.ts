@@ -82,7 +82,7 @@ export class UserInfoModel extends ComponentManager {
             }
             const { balance: num, imageUrl: icon } = data[key];
             this.account_map.set(key, {
-                num,
+                num: Number(num),
                 icon,
             });
         }

@@ -60,7 +60,7 @@ export default class HallView extends ui.scenes.hall.hallUI
     public onOpened() {
         const { coin_menu, flag_menu } = this.header;
         coin_menu.list.array = [];
-        coin_menu.list.vScrollBarSkin = '';
+        // coin_menu.list.vScrollBarSkin = '';
         flag_menu.list.array = [];
         this.activeAni('normal');
         coin_menu.list.renderHandler = new Handler(
@@ -159,7 +159,7 @@ export default class HallView extends ui.scenes.hall.hallUI
     public coinMenuRender(box: Box, index: number) {
         const coin_num = box.getChildByName('coin_num') as Label;
         const { coin_num: num } = this.header.coin_menu.list.array[index];
-        const num_len = (num + '').length;
+        const num_len = (Number(num) + '').length;
         let scale = 13 / (num_len * 1.1);
         scale = scale > 1 ? 1 : scale;
         coin_num.scale(scale, scale);
@@ -217,7 +217,7 @@ export default class HallView extends ui.scenes.hall.hallUI
         const { normal_box, match_box } = this;
         coin_icon.skin = icon;
         coin_name.text = type.toUpperCase();
-        coin_num.text = num + '';
+        coin_num.text = Number(num) + '';
         let scale = 10 / (coin_num.text.length * 1.08);
         scale = scale > 1 ? 1 : scale;
         coin_num.scale(scale, scale);

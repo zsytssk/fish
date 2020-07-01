@@ -8,6 +8,7 @@ import {
     disconnectSocket,
     getSocket,
 } from '../net/webSocketWrapUtil';
+import { getParams } from 'utils/utils';
 
 /** 登陆用的脚本 */
 export async function initHallSocket() {
@@ -71,7 +72,7 @@ export function connectSocket(config: SocketConfig) {
 
         let token = Config.token;
         if (token) {
-            socket.setParams({ jwt: token });
+            socket.setParams({ jwt: token, userId: getParams('userId') });
             resolve(socket);
             return;
         }
@@ -83,7 +84,7 @@ export function connectSocket(config: SocketConfig) {
             setItem('local_token', token, 7);
         }
         /** 游客的token */
-        socket.setParams({ jwt: token });
+        socket.setParams({ jwt: token, userId: getParams('userId') });
         Config.token = token;
         log('我自己的token:', token);
         resolve(socket);

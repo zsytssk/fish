@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":41,
+    "selectedBox":41,
+    "selecteID":39,
     "searchKey":"Dialog",
     "props":{"width":994,"sceneColor":"#000000","height":604},
     "nodeParent":-1,
@@ -508,7 +508,7 @@
                     "compId":39,
                     "child":[
                         ],
-                    "$HIDDEN":true
+                    "$HIDDEN":false
                 },
                 {
                     "x":30,

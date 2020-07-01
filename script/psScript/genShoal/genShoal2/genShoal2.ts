@@ -197,13 +197,10 @@ function revertPath(path_arr: number[][]) {
 }
 
 write(
-    // path.resolve(__dirname, '../data/shoal2.json'),
-    path.resolve(
-        '/Users/zsy/Documents/zsytssk/github/fish/test/app/game/shoal/shoal2.json',
-    ),
+    path.resolve(__dirname, '../../../../test/app/game/shoal/shoal2.json'),
     stringify({
         shoalId,
-        totalTime: 30,
+        totalTime: 100,
         usedTime: 0,
         fish: [...type1_fish, ...type2_fish, ...type3_fish],
     }),

@@ -1,4 +1,4 @@
-import { getLang, onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
+import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from 'data/internationalConfig';
 import { SpriteInfo } from 'data/sprite';
 import honor, { HonorScene } from 'honor';
@@ -63,12 +63,8 @@ export default class GameView extends ui.scenes.game.gameUI
         const { bubble_overlay, bg, bubble_wall, bubble_ani } = this;
 
         if (!bg_num) {
-            bg_num = this.bg_num + 1;
-            if (bg_num > 3) {
-                bg_num = 1;
-            }
+            bg_num = this.bg_num;
         }
-        bg_num = 1;
         this.bg_num = bg_num;
         bg.skin = `image/game/normal_bg/bg${bg_num}.jpg`;
         bubble_ani.url = `image/game/bg_normal${bg_num}.sk`;

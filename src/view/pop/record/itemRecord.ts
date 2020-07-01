@@ -12,6 +12,7 @@ import { getSkillName } from '../buyBullet';
 import { getItemList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
+import { loaderManager } from 'honor/state';
 
 type CoinData = {
     coin_icon: string;
@@ -41,6 +42,9 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         })) as ItemRecord;
         return item_record;
     }
+    public static preLoad() {
+        return loaderManager.preLoad('Dialog', 'pop/record/itemRecord.scene');
+    }
     public onAwake() {
         const {
             select_item,
@@ -50,7 +54,6 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             btn_search,
         } = this;
 
-        coin_menu.list.vScrollBarSkin = '';
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
         onAccountChange(this, (data: AccountMap) => {
@@ -62,7 +65,6 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
             this.initLang(lang);
         });
 
-        item_menu.list.vScrollBarSkin = '';
         const select_item_ctrl = new SelectCtrl(select_item, item_menu);
         select_item_ctrl.setRender(this.renderSelectItem);
         select_item_ctrl.init();
@@ -130,7 +132,15 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;
         const { coin_icon: icon, coin_name: name } = data;
-        coin_icon.skin = icon;
+        if (icon) {
+            coin_name.x = 43;
+            coin_icon.visible = true;
+            coin_icon.skin = icon;
+        } else {
+            coin_name.x = 15;
+            coin_icon.visible = false;
+        }
+
         coin_name.text = name;
     }
     private renderSelectItem(box: SelectItem, data: ItemData) {
@@ -143,7 +153,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const arr: CoinData[] = [];
         arr.push({
             coin_icon: '',
-            coin_name: 'All',
+            coin_name: 'all',
             coin_id: undefined,
         });
         for (const [type, { icon }] of data) {

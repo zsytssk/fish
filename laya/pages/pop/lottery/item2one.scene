@@ -234,7 +234,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,remain_label",
-                            "props":{"y":10,"x":7,"width":266,"var":"remain_label","valign":"middle","text":"剩余10/20","height":22,"fontSize":24,"color":"#fdf3cf","bold":true,"align":"center"},
+                            "props":{"y":10,"x":7,"width":266,"var":"remain_label","valign":"middle","text":"剩余: 10/20","height":22,"fontSize":24,"color":"#fdf3cf","bold":true,"align":"center"},
                             "nodeParent":21,
                             "label":"remain_label",
                             "isDirectory":false,

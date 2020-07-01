@@ -168,7 +168,7 @@ export class DialogManagerCtor {
         /** 如果没有找到dialog(use_exist=true), 后者use_exist=false */
         if (!dialog) {
             /** 已经打开dialog, 从wait_dialog_task移除, 放到open_dialog_list中 */
-            const wait_open_dialog = this.toOpenDialog(url);
+            const wait_open_dialog = this.createDialog(url);
             wait_dialog_task.set(
                 url,
                 wait_open_dialog.then(_dialog => {
@@ -208,7 +208,7 @@ export class DialogManagerCtor {
         await afterEnable(dialog);
         return dialog;
     }
-    public toOpenDialog(url: DialogRefUrl): Promise<HonorDialog> {
+    private createDialog(url: DialogRefUrl): Promise<HonorDialog> {
         return new Promise(async (resolve, reject) => {
             /** 使用dialog_pool_list的弹出层 */
             const { dialog_pool_list } = this;

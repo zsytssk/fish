@@ -41,10 +41,6 @@ export async function localTest() {
 
 export async function localSocketTest() {
     commonTest();
-    const code = getParams('code');
-    if (code) {
-        localStorage.setItem('code', code);
-    }
 
     /** 直接进入房间 */
     // injectProto(HallCtrl, 'init' as any, async (hall: HallCtrl) => {

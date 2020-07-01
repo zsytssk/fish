@@ -8,6 +8,8 @@ import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
 import { resizeContain } from 'utils/layaUtils';
 import { Box } from 'laya/ui/Box';
+import { Laya } from 'Laya';
+import { loaderManager } from 'honor/state';
 
 type FishItemData = {
     id: string;
@@ -29,6 +31,9 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
             use_exist: true,
         })) as HelpPop;
         help_pop.goto(index);
+    }
+    public static async preLoad() {
+        return loaderManager.preLoad('Dialog', 'pop/help/help.scene');
     }
     public onAwake() {
         onLangChange(this, lang => {

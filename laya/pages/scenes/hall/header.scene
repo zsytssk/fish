@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":56,
-    "selecteID":25,
+    "selectedBox":25,
+    "selecteID":65,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":65,
+    "maxID":66,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -173,7 +173,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,coin_name",
-                                    "props":{"y":9,"x":53,"width":41,"var":"coin_name","valign":"middle","text":"BTC","height":35,"fontSize":20,"color":"#fff392"},
+                                    "props":{"y":2,"x":46,"width":41,"var":"coin_name","valign":"middle","text":"BTC","height":50,"fontSize":20,"color":"#fff392"},
                                     "nodeParent":25,
                                     "label":"coin_name",
                                     "isDirectory":false,
@@ -185,24 +185,9 @@
                                 },
                                 {
                                     "x":60,
-                                    "type":"Label",
-                                    "searchKey":"Label,coin_num",
-                                    "props":{"y":14,"width":112,"var":"coin_num","valign":"middle","text":"0","right":61,"overflow":"hidden","height":28,"fontSize":20,"color":"#fff","anchorY":0,"anchorX":1,"align":"right"},
-                                    "nodeParent":25,
-                                    "label":"coin_num",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":29,
-                                    "child":[
-                                        ],
-                                    "$HIDDEN":false
-                                },
-                                {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,coin_icon",
-                                    "props":{"y":14,"x":21,"width":25,"var":"coin_icon","skin":"image/common/coin/BTC.png","height":25},
+                                    "props":{"y":14,"x":17,"width":25,"var":"coin_icon","skin":"image/common/coin/BTC.png","height":25},
                                     "nodeParent":25,
                                     "label":"coin_icon",
                                     "isDirectory":false,
@@ -227,6 +212,20 @@
                                     "child":[
                                         ],
                                     "$HIDDEN":false
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Label",
+                                    "searchKey":"Label,coin_num",
+                                    "props":{"y":1061,"x":210,"width":119,"var":"coin_num","valign":"middle","right":61,"height":46,"fontSize":20,"color":"#fff","centerY":-2,"anchorY":23,"anchorX":1,"align":"right"},
+                                    "nodeParent":25,
+                                    "label":"coin_num",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":65,
+                                    "child":[
+                                        ]
                                 }]
                         },
                         {

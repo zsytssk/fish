@@ -10,6 +10,7 @@ import { buyItem, getShopInfo, useGunSkin } from './popSocket';
 import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Lang, InternationalTip } from 'data/internationalConfig';
 import BuyBulletPop, { buySkinAlert } from './buyBullet';
+import { loaderManager } from 'honor/state';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -64,13 +65,16 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             dialog.initData(data);
         });
     }
+    public static preLoad() {
+        return loaderManager.preLoad('Dialog', 'pop/shop/shop.scene');
+    }
     public init() {
         const { gun_list, item_list } = this;
 
-        gun_list.hScrollBarSkin = '';
+        // gun_list.hScrollBarSkin = '';
         gun_list.array = [];
 
-        item_list.hScrollBarSkin = '';
+        // item_list.hScrollBarSkin = '';
         item_list.array = [];
 
         gun_list.renderHandler = new Handler(

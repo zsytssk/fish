@@ -15,6 +15,7 @@ import { getLotteryData, runLottery } from './popSocket';
 import RewardPop from './reward';
 import { sleep } from 'utils/animate';
 import HelpPop from './help';
+import { loaderManager } from 'honor/state';
 
 type LotteryData = {
     lottery_id: string;
@@ -63,6 +64,9 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {
             dialog.initData(data);
         });
+    }
+    public static preLoad() {
+        return loaderManager.preLoad('Dialog', 'pop/lottery/lottery.scene');
     }
     public onEnable() {
         AudioCtrl.play(AudioRes.PopShow);
