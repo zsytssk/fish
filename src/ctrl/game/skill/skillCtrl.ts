@@ -11,30 +11,31 @@ import {
     skillPreActiveHandler,
 } from './skillCtrlUtils';
 import { LockFishModel } from 'model/game/skill/lockFishModel';
+import { PlayerCtrl } from '../playerCtrl';
 
 export class SkillCtrl {
-    private is_cur_player = false;
     private view: SkillItemView;
     private model: SkillModel;
+    private player: PlayerCtrl;
     private bindTrigger: Subscription;
     /**
      * @param view 对应的动画
      * @param model 对应的model
      */
-    constructor(model: SkillModel, view?: SkillItemView) {
+    constructor(model: SkillModel, player: PlayerCtrl, view?: SkillItemView) {
         this.view = view;
-        this.is_cur_player = Boolean(view);
         this.model = model;
+        this.player = player;
         this.initEvent();
         this.setInfo();
     }
     private initEvent() {
-        const { view, model, is_cur_player } = this;
+        const { view, model, player } = this;
         const { event } = model.skill_core;
         event.on(
             SkillEvent.ActiveSkill,
             (info: any) => {
-                skillActiveHandler(model, info, is_cur_player);
+                skillActiveHandler(model, info, player.model);
             },
             this,
         );

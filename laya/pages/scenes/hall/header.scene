@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":25,
-    "selecteID":65,
+    "selecteID":34,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -217,7 +217,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,coin_num",
-                                    "props":{"y":1061,"x":210,"width":119,"var":"coin_num","valign":"middle","right":61,"height":46,"fontSize":20,"color":"#fff","centerY":-2,"anchorY":23,"anchorX":1,"align":"right"},
+                                    "props":{"y":26,"x":210,"width":119,"var":"coin_num","valign":"middle","right":61,"height":46,"fontSize":20,"color":"#fff","anchorY":0.5,"anchorX":1,"align":"right"},
                                     "nodeParent":25,
                                     "label":"coin_num",
                                     "isDirectory":false,

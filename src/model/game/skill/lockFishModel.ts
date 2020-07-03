@@ -1,18 +1,18 @@
+import { ComponentManager } from 'comMan/component';
+import { TimeoutCom } from 'comMan/timeoutCom';
+import { FishEvent, FishModel } from 'model/game/fish/fishModel';
+import { getAimFish, getFishById, detectInScreen } from 'model/modelState';
 import SAT from 'sat';
-import { getFishById, getAimFish } from 'model/modelState';
+import { log } from 'utils/log';
+import { BulletGroup, BulletGroupEvent } from '../gun/bulletGroup';
+import { AddBulletInfo, GunEvent, GunModel, GunStatus } from '../gun/gunModel';
 import {
+    SkillActiveInfo,
     SkillCoreCom,
     SkillInfo,
-    SkillActiveInfo,
     SkillStatus,
 } from './skillCoreCom';
 import { SkillModel } from './skillModel';
-import { ComponentManager } from 'comMan/component';
-import { TimeoutCom } from 'comMan/timeoutCom';
-import { BulletGroup, BulletGroupEvent } from '../gun/bulletGroup';
-import { GunModel, GunStatus, GunEvent, AddBulletInfo } from '../gun/gunModel';
-import { FishEvent, FishModel } from 'model/game/fish/fishModel';
-import { log } from 'utils/log';
 
 export type LockFishActiveInfo = {
     user_id?: string;
@@ -90,7 +90,6 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         const { skill_core } = this;
         const { fish, needActive } = info;
 
-        console.warn(`test:>lockFish:>1:>`, info);
         if (needActive) {
             skill_core.active(info, status => {
                 if (status === SkillStatus.Disable) {
@@ -134,7 +133,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     }
     /** 监听锁定鱼事件 */
     private bindLockFish(fish: FishModel) {
-        const { gun } = this;
+        const { gun, skill_core } = this;
         const { event: gun_event } = gun;
         const { event: fish_event } = fish;
 
@@ -183,16 +182,24 @@ export class LockFishModel extends ComponentManager implements SkillModel {
             this,
         );
     }
+
     /** 监听 lock 目标位置改变 */
     private onLockMove = () => {
-        const { gun, fish } = this;
-        if (!fish.visible) {
+        const { gun, fish, skill_core } = this;
+        if (!fish?.visible) {
             return;
         }
         const { x, y } = fish.pos;
         const { x: gx, y: gy } = gun.pos;
         gun.setDirection(new SAT.Vector(x - gx, y - gy));
+        if (skill_core.player.need_emit) {
+            if (!detectInScreen(fish.pos)) {
+                this.unLock();
+                this.tipLock();
+            }
+        }
     }; // tslint:disable-line: semicolon
+    /** 检查鱼是否在视界中 */
     public unLock = () => {
         const { fish, gun, bullet_list } = this;
         const { player } = gun;

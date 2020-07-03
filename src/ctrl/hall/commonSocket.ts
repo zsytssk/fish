@@ -137,7 +137,7 @@ export function errorHandler(code: number) {
         code === ServerErrCode.NetError ||
         code === ServerErrCode.EnterGameError
     ) {
-        return AlertPop.alert(InternationalTip[lang][code], {
+        return AlertPop.alert(InternationalTip[lang][ServerErrCode.NetError], {
             hide_cancel: true,
         }).then(() => {
             location.reload();

@@ -157,12 +157,14 @@ export default class HallView extends ui.scenes.hall.hallUI
         resizeContain(left_wrap, space);
     }
     public coinMenuRender(box: Box, index: number) {
+        const origin_width = 148;
         const coin_num = box.getChildByName('coin_num') as Label;
         const { coin_num: num } = this.header.coin_menu.list.array[index];
         const num_len = (Number(num) + '').length;
-        let scale = 13 / (num_len * 1.1);
+        let scale = 14 / (num_len * 1.1);
         scale = scale > 1 ? 1 : scale;
         coin_num.scale(scale, scale);
+        coin_num.width = origin_width / scale;
     }
     public setCoinData(data: AccountMap) {
         const { coin_menu } = this.header;
@@ -215,12 +217,14 @@ export default class HallView extends ui.scenes.hall.hallUI
     public setCurBalance(type: string, icon: string, num: number) {
         const { coin_icon, coin_name, coin_num } = this.header;
         const { normal_box, match_box } = this;
+        const origin_width = 119;
         coin_icon.skin = icon;
         coin_name.text = type.toUpperCase();
         coin_num.text = Number(num) + '';
-        let scale = 10 / (coin_num.text.length * 1.08);
+        let scale = 11 / (coin_num.text.length * 1.08);
         scale = scale > 1 ? 1 : scale;
         coin_num.scale(scale, scale);
+        coin_num.width = origin_width / scale;
 
         const item_arr = [normal_box, match_box];
         for (const item of item_arr) {

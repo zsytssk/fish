@@ -21,7 +21,7 @@ export async function localTest() {
     await mock_web_socket_test.runTest('create');
     modelState.app.user_info.setUserId(test_data.userId);
     mock_web_socket_test.runTest(ServerEvent.Shoot);
-    // mock_web_socket_test.runTest(ServerEvent.Hit);
+    mock_web_socket_test.runTest(ServerEvent.Hit);
     // mock_web_socket_test.runTest(ServerEvent.FishBomb);
     // mock_web_socket_test.runTest(ServerEvent.UseBomb);
     // mock_web_socket_test.runTest(ServerEvent.UseLock);
@@ -35,7 +35,7 @@ export async function localTest() {
         // fish_test.runTest('fish_view');
         // fish_test.runTest('fish_shadow');
         // fish_test.runTest('add_fish_group');
-        // body_test.runTest('show_shape');
+        body_test.runTest('show_shape');
     });
 }
 

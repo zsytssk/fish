@@ -203,16 +203,6 @@ export class GameCtrl {
             this,
         );
         event.on(
-            ShoalEvent.PreAddShoal,
-            reverse => {
-                AudioCtrl.play(AudioRes.ShoalComing);
-                activeShoalWave(reverse).then(() => {
-                    view.showBubbleRefresh();
-                });
-            },
-            this,
-        );
-        event.on(
             GameEvent.Destroy,
             () => {
                 this.destroy();

@@ -63,9 +63,9 @@ export class BulletGroup extends ComponentManager {
         if (casted) {
             return;
         }
-        const { is_cur_player } = gun.player;
+        const { is_cur_player, need_emit } = gun.player;
         this.casted = true;
-        if (is_cur_player) {
+        if (need_emit) {
             gun.castFish(fish, bullet_price);
         }
         gun.removeBullet(this);

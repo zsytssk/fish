@@ -4,6 +4,7 @@ import { tween, sleep, fade_in } from 'utils/animate';
 import { setProps, createColorFilter } from 'utils/utils';
 import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 import { createSprite } from 'honor/utils/createSkeleton';
+import { SkillMap, SkillNameMap } from 'data/config';
 
 const pool = [] as SkillItemView[];
 export async function awardSkill(
@@ -16,8 +17,12 @@ export async function awardSkill(
         const { itemNum, itemId } = drop_item;
 
         const item_ui = createUI();
-        const icon = getCurrencyIcon(currency);
-        item_ui.setIcon(icon);
+        if (SkillNameMap[itemId]) {
+            item_ui.setId(itemId);
+        } else {
+            const icon = getCurrencyIcon(currency);
+            item_ui.setIcon(icon);
+        }
         item_ui.setNum(itemNum);
         item_ui.pos(start_pos.x, start_pos.y);
         await fade_in(item_ui)

@@ -1,6 +1,10 @@
 import * as SAT from 'sat';
 import { SHAPE, shapeOriInfoItem } from 'data/shape';
 import { ShapeInfo, BodyCom, Shape } from './bodyCom';
+import { Sprite } from 'laya/display/Sprite';
+import { SPRITE } from 'data/sprite';
+import { Laya } from 'Laya';
+import { Config } from 'data/config';
 
 export type ShapeOriType = 'fish' | 'bullet' | 'net';
 
@@ -183,4 +187,25 @@ export function detectCollision(ori_body: BodyCom, detect_body: BodyCom) {
         }
         return false;
     }
+}
+
+/** 获取 鱼的可视区域 */
+export function getFishViewShape(level: number) {
+    const offset = SPRITE.fish[level].offset;
+    const width = offset[1] + offset[3];
+    const height = offset[0] + offset[2];
+    const pivot = {
+        x: offset[3],
+        y: offset[0],
+    };
+
+    const ori_shape_box = new SAT.Box(new SAT.Vector(0, 0), width, height);
+    const new_shape_box = ori_shape_box.toPolygon();
+
+    /** 如果有shape_item.pivot, 那么形状的中心点就是此位置, 如果没有就是形状的中心点 */
+    if (pivot) {
+        new_shape_box.translate(-pivot.x, -pivot.y);
+    }
+
+    return [{ shape: new_shape_box, pos: new SAT.Vector(0, 0) }];
 }

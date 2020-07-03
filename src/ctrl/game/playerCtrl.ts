@@ -43,7 +43,7 @@ export class PlayerCtrl {
      */
     constructor(
         public view: GunBoxView,
-        private model: PlayerModel,
+        public model: PlayerModel,
         private game_ctrl: GameCtrl,
     ) {
         this.init();
@@ -177,9 +177,9 @@ export class PlayerCtrl {
             } else {
                 if (is_cur_player) {
                     const skill_view = getSkillItemByIndex(index);
-                    new SkillCtrl(skill_model, skill_view); // tslint:disable-line
+                    new SkillCtrl(skill_model, this, skill_view); // tslint:disable-line
                 } else {
-                    new SkillCtrl(skill_model); // tslint:disable-line
+                    new SkillCtrl(skill_model, this); // tslint:disable-line
                 }
             }
             index++;
@@ -212,6 +212,21 @@ export class PlayerCtrl {
             this,
         );
 
+        gun_event.on(
+            GunEvent.CastFish,
+            (data: { fish: FishModel; level: number }) => {
+                const {
+                    fish: { id: eid },
+                    level: multiple,
+                } = data;
+
+                sendToGameSocket(ServerEvent.Hit, {
+                    eid,
+                    multiple,
+                } as HitReq);
+            },
+            this,
+        );
         /** 当前用户的处理 */
         if (!is_cur_player) {
             return;
@@ -235,20 +250,6 @@ export class PlayerCtrl {
                 } else {
                     errorHandler(ServerErrCode.ReExchange);
                 }
-            },
-            this,
-        );
-        gun_event.on(
-            GunEvent.CastFish,
-            (data: { fish: FishModel; level: number }) => {
-                const {
-                    fish: { id: eid },
-                    level: multiple,
-                } = data;
-                sendToGameSocket(ServerEvent.Hit, {
-                    eid,
-                    multiple,
-                } as HitReq);
             },
             this,
         );

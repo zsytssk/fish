@@ -16,8 +16,11 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
     private init() {
         const { overlay } = this;
         const cool_mask = new Sprite();
-        overlay.mask = cool_mask;
+        overlay.cacheAs = 'bitmap';
+        cool_mask.blendMode = 'destination-out';
+        overlay.addChild(cool_mask);
         this.cool_mask = cool_mask;
+        overlay.visible = false;
     }
     public setId(skill_id: string) {
         const { skill_icon } = this;
@@ -61,13 +64,12 @@ export default class SkillItemView extends ui.scenes.game.skillItemUI {
         const { cool_mask, overlay } = this;
         const graphics = cool_mask.graphics;
         const radius = 60;
-        const end_angle = 360 - 90;
-        const angle = Math.round((1 - radio) * 360 - 90);
-        graphics.clear();
+        const angle = -90 + 360 * (1 - radio);
 
+        graphics.clear();
         if (radio !== 0) {
-            graphics.drawPie(40, 41, radius, angle, end_angle, '#fff');
             overlay.visible = true;
+            graphics.drawPie(40, 41, radius, 270, angle, '#fff');
         } else {
             overlay.visible = false;
         }

@@ -33,6 +33,7 @@ import { onKeyBoardEvent, onNodeEvent } from 'utils/rxUtils';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { merge } from 'rxjs';
+import { PlayerModel } from 'model/game/playerModel';
 
 /** 二次点击取消激活状态 */
 export function skillNormalActiveHandler(model: SkillModel) {
@@ -112,16 +113,22 @@ export function skillPreActiveHandler(model: SkillModel) {
 export function skillActiveHandler(
     model: SkillModel,
     info: any,
-    is_cur_player?: boolean,
+    player_model?: PlayerModel,
 ) {
     return new Promise((resolve, reject) => {
         const lang = getLang();
         const { aimFish } = InternationalTip[lang];
         if (model instanceof LockFishModel) {
-            if (!is_cur_player) {
+            const { fish, is_tip, gun_pos } = info as LockActiveData;
+            if (!player_model.is_cur_player) {
+                if (player_model.need_emit) {
+                    sendToGameSocket(ServerEvent.LockFish, {
+                        eid: fish.id,
+                    } as LockFishRep);
+                }
                 return;
             }
-            const { fish, is_tip, gun_pos } = info as LockActiveData;
+
             if (is_tip) {
                 // 激活锁定之后 提示选中鱼 选中之后发给服务器...
                 TopTipPop.tip(aimFish, 2);
