@@ -13,15 +13,15 @@ import { sleep } from '../../utils/testUtils';
 
 /** @type {PlayerModel} 的测试 */
 export const player_test = new Test('player', runner => {
-    runner.describe('add_cur_player', () => {
+    runner.describe('add_cur_player', (server_index = 1) => {
         const player = modelState.app.game.getPlayerById(test_data.userId);
         if (player) {
-            return;
+            player.destroy();
         }
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 0,
+            server_index: 2,
             bullet_cost: 1,
             bullet_num: 100000000,
             gun_skin: '1',

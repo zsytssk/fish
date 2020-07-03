@@ -15,6 +15,7 @@ import { BgMonitor } from 'utils/bgMonitor';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
 import { gotoGuide } from './guide/guideConfig';
 import { getItem } from 'utils/localStorage';
+import { AudioCtrl } from './ctrlUtils/audioCtrl';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -42,11 +43,11 @@ export class AppCtrl {
             platform.hideLoading();
         });
         await HallCtrl.preEnter();
+        AudioCtrl.init();
         await sleep(1);
         if (getItem('guide') !== 'end') {
             gotoGuide('1', '1');
         }
-        // Loading.instance.event_com.on(Loading.)
     }
     /** 初始化 honor */
     private async startHonor() {

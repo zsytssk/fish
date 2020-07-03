@@ -14,6 +14,11 @@ export class AudioCtrl {
     private static bg_url: string;
     public static event = new Event();
     private static sound_manager = Laya.SoundManager;
+    public static init() {
+        Laya.stage.on(Laya.Event.FOCUS, null, () => {
+            AudioCtrl.resumeBg();
+        });
+    }
     public static setVoice(radio: number) {
         const { sound_manager } = this;
         this.voice = radio;
@@ -29,7 +34,9 @@ export class AudioCtrl {
         const isMute = radio === 0;
         if (isMute !== sound_manager.musicMuted) {
             sound_manager.musicMuted = isMute;
-            this.playBg(this.bg_url);
+            if (!isMute) {
+                this.playBg(this.bg_url);
+            }
         }
         sound_manager.setMusicVolume(radio);
         this.music = radio;
@@ -40,7 +47,7 @@ export class AudioCtrl {
      * @param audio 音频地址
      * @param is_bg 是否是背景音乐
      */
-    public static play(audio: string, is_bg = false) {
+    public static play(audio: string) {
         const music = this.music || 1;
         const { playSound, soundMuted } = this.sound_manager;
 
@@ -68,6 +75,11 @@ export class AudioCtrl {
             return;
         }
         playMusic(audio);
+    }
+    public static resumeBg() {
+        if (!(this.sound_manager as any)._musicChannel) {
+            this.playBg(this.bg_url);
+        }
     }
     /**
      * 停止播放音频

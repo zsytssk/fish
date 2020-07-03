@@ -1,10 +1,8 @@
-import { viewState } from 'view/viewState';
-import SkillItemView from 'view/scenes/game/skillItemView';
-import { tween, sleep, fade_in } from 'utils/animate';
-import { setProps, createColorFilter } from 'utils/utils';
 import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
-import { createSprite } from 'honor/utils/createSkeleton';
-import { SkillMap, SkillNameMap } from 'data/config';
+import { fade_in, sleep, tween } from 'utils/animate';
+import { setProps } from 'utils/utils';
+import SkillItemView from 'view/scenes/game/skillItemView';
+import { viewState } from 'view/viewState';
 
 const pool = [] as SkillItemView[];
 export async function awardSkill(
@@ -17,11 +15,11 @@ export async function awardSkill(
         const { itemNum, itemId } = drop_item;
 
         const item_ui = createUI();
-        if (SkillNameMap[itemId]) {
-            item_ui.setId(itemId);
-        } else {
+        if (itemId === '3001') {
             const icon = getCurrencyIcon(currency);
             item_ui.setIcon(icon);
+        } else {
+            item_ui.setId(itemId);
         }
         item_ui.setNum(itemNum);
         item_ui.pos(start_pos.x, start_pos.y);
@@ -39,7 +37,7 @@ export async function awardSkill(
                         scaleX: 0.4,
                         scaleY: 0.4 * item_ui.scaleY,
                     },
-                    time: 1 * 1000,
+                    time: 2 * 1000,
                 }).then(() => {
                     recoverUI(item_ui);
                 });
@@ -50,6 +48,7 @@ export async function awardSkill(
 function recoverUI(item_ui: SkillItemView) {
     item_ui.removeSelf();
     item_ui.unHighlight();
+    item_ui.scaleY = 1;
     pool.push(item_ui);
 }
 function createUI() {
@@ -58,16 +57,12 @@ function createUI() {
     let item_ui = pool.pop();
     if (!item_ui || item_ui.destroyed) {
         item_ui = new SkillItemView();
-        // item_ui.num_label.fontSize = 30;
         item_ui.pivot(item_ui.width / 2, item_ui.height / 2);
-        if (upside_down) {
-            item_ui.scaleY = -1;
-        }
     }
     setProps(item_ui, {
         scaleX: 1,
         alpha: 1,
-        scaleY: item_ui.scaleY / Math.abs(item_ui.scaleY),
+        scaleY: upside_down ? -1 : 1,
     });
     ani_overlay.addChild(item_ui);
     item_ui.highlight();

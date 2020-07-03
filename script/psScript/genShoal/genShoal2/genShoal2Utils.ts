@@ -71,12 +71,15 @@ export function genType3Path(data: Type3Data) {
 }
 
 export function minusPathX1920(path_arr: number[][]) {
+    // 路径鱼的位置要向前移动
+    const space = (shoal_data.bounds.width - 1920) / 2;
+
     const result = [] as number[][];
     for (const [parent_index, path_arr_item] of path_arr.entries()) {
         const result_item_arr = [] as number[];
         for (const [index, path_item] of path_arr_item.entries()) {
             if (index % 2 === 0) {
-                result_item_arr[index] = path_item - 1406;
+                result_item_arr[index] = path_item - space;
             } else {
                 result_item_arr[index] = path_item;
             }

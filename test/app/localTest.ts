@@ -1,20 +1,17 @@
+import { Config } from 'data/config';
+import { Lang } from 'data/internationalConfig';
 import { ServerEvent } from 'data/serverEvent';
+import honor from 'honor';
+import { injectAfter } from 'honor/utils/tool';
+import { Laya } from 'Laya';
+import { modelState } from 'model/modelState';
+import { getParams } from 'utils/utils';
+import { test_data } from '../testData';
+import { body_test } from './game/body.spec';
 import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
-import { getParams } from 'utils/utils';
-import { modelState } from 'model/modelState';
-import { test_data } from '../testData';
-import * as main from 'main';
-import { injectAfter } from 'honor/utils/tool';
-import honor from 'honor';
-import { Laya } from 'Laya';
-import { Config } from 'data/config';
-import { ani_wrap } from './game/aniWrap.spec';
-import { body_test } from './game/body.spec';
-import { Lang } from 'data/internationalConfig';
-import { record_test } from './pop/record.spec';
 
 export async function localTest() {
     commonTest();
@@ -29,9 +26,9 @@ export async function localTest() {
     game_test.runTest('enter_game', [true]).then(() => {
         fish_test.runTest('add_fish');
         player_test.runTest('add_cur_player');
-        player_test.runTest('add_other_player', [1]);
-        player_test.runTest('add_other_player', [2]);
-        player_test.runTest('add_other_player', [3]);
+        // player_test.runTest('add_other_player', [1]);
+        // player_test.runTest('add_other_player', [2]);
+        // player_test.runTest('add_other_player', [3]);
         // fish_test.runTest('fish_view');
         // fish_test.runTest('fish_shadow');
         // fish_test.runTest('add_fish_group');

@@ -71,7 +71,7 @@ export default class GameView extends ui.scenes.game.gameUI
         bubble_wall.visible = false;
 
         (window as any).bubble_overlay = bubble_overlay;
-        playSkeletonOnce(bubble_overlay, 0).then(() => {
+        playSkeletonOnce(bubble_overlay, 'out').then(() => {
             fade_in(bubble_wall, 300, '', 0.3);
             playSkeleton(bubble_wall, 2, true);
         });

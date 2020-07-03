@@ -83,6 +83,13 @@ export class EventCom {
         if (this.events.has(event)) {
             const events = this.events.get(event);
             for (const item of [...events]) {
+                /** 防止在 遍历中 events被清理之后还继续执行
+                 * for of 只能保证在触发循环时的每一个item都能遍历到
+                 */
+                if (!events.has(item)) {
+                    continue;
+                }
+
                 const { callback, once, off } = item;
                 if (typeof callback === 'function') {
                     callback(...params);

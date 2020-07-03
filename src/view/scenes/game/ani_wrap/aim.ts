@@ -48,12 +48,12 @@ export function activeAimFish(
 
     if (ori_fish) {
         ori_fish.event.offAllCaller(aim_ani);
+        console.log(ori_fish.event.getBind('FishEvent.Move'), ori_fish.id);
     }
     state.fish = fish;
     state.ori_pos = ori_pos;
 
     clearPoints();
-
     if (fish.visible) {
         playSkeleton(aim_ani, 0, true);
         aim_ani.pos(pos.x, pos.y);
@@ -77,10 +77,10 @@ export function activeAimFish(
                 pos: { x, y },
             } = move_info;
             aim_ani.pos(x, y);
-
-            if (show_points) {
-                createPoints({ x, y }, ori_pos);
+            if (!show_points) {
+                return;
             }
+            createPoints({ x, y }, ori_pos);
         },
         aim_ani,
     );

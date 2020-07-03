@@ -14,6 +14,7 @@ import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
 import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
 import { FishEvent } from 'model/game/fish/fishModel';
 import SAT from 'sat';
+import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
 
 /** 冰冻 鱼群 爆炸 瞄准...测试 */
 export const ani_wrap = new Test('ani_wrap', runner => {
@@ -83,5 +84,13 @@ export const ani_wrap = new Test('ani_wrap', runner => {
 
     runner.describe('aim2', (end_pos = { x: 1000, y: 300 }) => {
         createPoints({ x: 100, y: 300 }, end_pos);
+    });
+    runner.describe('awardSkill', (end_pos = { x: 1000, y: 300 }) => {
+        awardSkill(
+            { x: 100, y: 300 },
+            end_pos,
+            [{ itemNum: 10, itemId: '3001' }],
+            'BUSDT',
+        );
     });
 });
