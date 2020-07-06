@@ -12,6 +12,7 @@ import { fade_in, fade_out } from 'utils/animate';
 import { onStageClick, resizeContain } from 'utils/layaUtils';
 import { playSkeleton } from 'utils/utils';
 import { ui } from '../../ui/layaMaxUI';
+import { error } from 'utils/log';
 
 export type CoinData = {
     type: string;
@@ -257,8 +258,8 @@ export default class HallView extends ui.scenes.hall.hallUI
         try {
             super.destroy();
             offLangChange(this);
-        } catch (error) {
-            console.error(error);
+        } catch (err) {
+            error(err);
         }
     }
 }

@@ -5,6 +5,7 @@ const WebpackBar = require('webpackbar');
 const findParam = require('./script/findEnv');
 
 const ENV = findParam('ENV');
+const CheckError = findParam('CheckError');
 const common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {
@@ -47,6 +48,12 @@ const common_config = {
         new WebpackBar({ color: 'green' }),
     ],
 };
+
+if (CheckError) {
+    common_config.module.rules[0].use = {
+        loader: 'ts-loader',
+    };
+}
 
 const dev_config = {
     devtool: ENV === 'DEV' ? 'eval-source-map' : 'source-map',

@@ -10,7 +10,7 @@ import { test_data } from '../../../testData';
 import { sleep } from 'utils/animate';
 import { player_test } from '../../game/player.spec';
 import { game_test } from '../../game/game.spec';
-import { modelState } from 'model/modelState';
+import { modelState, getAimFish } from 'model/modelState';
 import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
 import { SkillMap, ItemMap } from 'data/config';
 import { MockWebSocket } from 'ctrl/net/mockWebSocket';
@@ -60,6 +60,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
             sleep(0.1).then(() => {
+                if (data.robotId) {
+                    data.userId = data.robotId;
+                }
                 event.emit(ServerEvent.Shoot, {
                     userId: data.userId,
                     direction: data.direction,
@@ -199,6 +202,40 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                 }
             });
         });
+    });
+
+    runner.describe('otherLockFish', async () => {
+        await game_test.runTest('enter_game');
+        const other_id = test_data.otherUserId + '0';
+        const player = modelState.app.game.getPlayerById(other_id);
+        if (!player) {
+            player_test.runTest('add_other_player', [1]);
+            await sleep(1);
+        }
+
+        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const fish = getAimFish();
+        event.emit(
+            ServerEvent.LockFish,
+            {
+                userId: other_id,
+                eid: fish.id,
+                needActive: true,
+                duration: 3000,
+            } as LockFishRep,
+            200,
+        );
+        await sleep(1);
+
+        event.emit(
+            ServerEvent.LockFish,
+            {
+                userId: other_id,
+                eid: fish.id,
+                needActive: true,
+            } as LockFishRep,
+            200,
+        );
     });
 
     runner.describe(ServerEvent.FishShoal, async (data: ServerFishInfo[]) => {

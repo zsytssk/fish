@@ -11,6 +11,7 @@
     },
     "scripts": {
         "start": "webpack-dev-server --ENV=DEV --mode development",
+        "checkError": "webpack-dev-server --ENV=DEV --CheckError=true --mode development",
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
         "test": "node  ./script/test.js"
     },

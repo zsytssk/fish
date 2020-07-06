@@ -13,6 +13,7 @@ import {
 } from './fish/fishModelUtils';
 import { ModelEvent } from 'model/modelEvent';
 import { window } from 'rxjs/operators';
+import { error } from 'utils/log';
 
 export const GameEvent = {
     /** 添加鱼 */
@@ -91,7 +92,7 @@ export class GameModel extends ComponentManager {
         const fish = this.getFishById(eid);
 
         if (!player) {
-            console.error(`Game:>captureFish:> cant find player for ${userId}`);
+            error(`Game:>captureFish:> cant find player for ${userId}`);
             return;
         }
         if (backAmount) {
@@ -101,7 +102,7 @@ export class GameModel extends ComponentManager {
         }
 
         if (!fish) {
-            console.error(`Game:>captureFish:> cant find fish for ${eid}`);
+            error(`Game:>captureFish:> cant find fish for ${eid}`);
             return;
         }
         playerCaptureFish(player, fish, info);
@@ -149,9 +150,7 @@ export class GameModel extends ComponentManager {
     public activeSkill(skill: SkillMap, data: { user_id: string }) {
         const player = this.getPlayerById(data.user_id);
         if (!player) {
-            console.error(
-                `Game:>activeSkill:> cant find player:>${data.user_id}`,
-            );
+            error(`Game:>activeSkill:> cant find player:>${data.user_id}`);
             return;
         }
         player.activeSkill(skill, data);
@@ -159,7 +158,7 @@ export class GameModel extends ComponentManager {
     public disableSkill(skill: SkillMap, user_id: string) {
         const player = this.getPlayerById(user_id);
         if (!player) {
-            console.error(`Game:>resetSkill:> cant find player:>${user_id}`);
+            error(`Game:>resetSkill:> cant find player:>${user_id}`);
             return;
         }
         player.disableSkill(skill);
@@ -167,7 +166,7 @@ export class GameModel extends ComponentManager {
     public resetSkill(skill: SkillMap, user_id: string) {
         const player = this.getPlayerById(user_id);
         if (!player) {
-            console.error(`Game:>resetSkill:> cant find player:>${user_id}`);
+            error(`Game:>resetSkill:> cant find player:>${user_id}`);
             return;
         }
         player.resetSkill(skill);
@@ -175,9 +174,7 @@ export class GameModel extends ComponentManager {
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);
         if (!player) {
-            console.error(
-                `Game:>resetSkill:> cant find player:>${data.userId}`,
-            );
+            error(`Game:>resetSkill:> cant find player:>${data.userId}`);
             return;
         }
         player.gun.addBullet(data.direction, !player.is_cur_player);

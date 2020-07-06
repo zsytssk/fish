@@ -2,7 +2,7 @@ import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { WebSocketCtrl, Status } from 'honor/net/websocket';
 import { decrypt, encrypt, genUrl } from './webSocketWrapUtil';
-import { log } from 'utils/log';
+import { log, error } from 'utils/log';
 
 export type Config = {
     url: string;
@@ -122,7 +122,7 @@ export class WebSocketWrapCtrl extends ComponentManager
     public reconnect() {
         const { ws } = this;
         if (!ws) {
-            return console.error('WebSocketWrapCtrl:> is disconnected!');
+            return error('WebSocketWrapCtrl:> is disconnected!');
         }
         if (ws.status !== 'CLOSED') {
             return;

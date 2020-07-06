@@ -34,6 +34,7 @@ import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { merge } from 'rxjs';
 import { PlayerModel } from 'model/game/playerModel';
+import { debug } from 'utils/log';
 
 /** 二次点击取消激活状态 */
 export function skillNormalActiveHandler(model: SkillModel) {
@@ -94,7 +95,20 @@ export function skillPreActiveHandler(model: SkillModel) {
             } as UseBombReq);
         });
     } else if (model instanceof LockFishModel) {
+        const {
+            user_id,
+            is_cur_player: is_cur,
+            need_emit,
+        } = model.skill_core.player;
         const fish = getAimFish();
+        if (!is_cur && need_emit) {
+            // sendToGameSocket(ServerEvent.LockFish, {
+            //     robotId: user_id,
+            //     eid: fish.id,
+            // } as LockFishReq);
+            return;
+        }
+
         const player = modelState.app.game.getCurPlayer();
 
         TopTipPop.tip(aimFish, 2);
@@ -121,10 +135,12 @@ export function skillActiveHandler(
         if (model instanceof LockFishModel) {
             const { fish, is_tip, gun_pos } = info as LockActiveData;
             if (!player_model.is_cur_player) {
-                if (player_model.need_emit) {
+                debug(`lock:>skill:>skillActiveHandler`, is_tip);
+                if (player_model.need_emit && is_tip) {
                     sendToGameSocket(ServerEvent.LockFish, {
+                        robotId: player_model.user_id,
                         eid: fish.id,
-                    } as LockFishRep);
+                    } as LockFishReq);
                 }
                 return;
             }

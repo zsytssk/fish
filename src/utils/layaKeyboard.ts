@@ -52,15 +52,13 @@ const DEFAULT_CONFIG = {
     delTxt: '删除',
     confirmTxt: '确定',
     /** 输入时的回调函数，参数为当前输入的值 */
-    input: (value: string) => {
-        console.log('当前输入值：' + value);
-    },
+    input: (value: string) => {},
     /** 键盘关闭时的回调函数，参数为 type:(confirm|mask)从哪儿关闭， value:当前输入的值 */
     close: (type: string, value: string) => {
         if (type === 'confirm') {
-            console.log('点击了确定按钮，关闭输入键盘，当前值：' + value);
+            // console.log('点击了确定按钮，关闭输入键盘，当前值：' + value);
         } else {
-            console.log('点击了遮罩，关闭输入键盘。');
+            // console.log('点击了遮罩，关闭输入键盘。');
         }
     },
 };

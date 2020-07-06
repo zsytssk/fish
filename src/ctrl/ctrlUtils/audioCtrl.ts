@@ -47,7 +47,7 @@ export class AudioCtrl {
      * @param audio 音频地址
      * @param is_bg 是否是背景音乐
      */
-    public static play(audio: string) {
+    public static play(audio: string, volume: number = 1) {
         const music = this.music || 1;
         const { playSound, soundMuted } = this.sound_manager;
 
@@ -58,6 +58,7 @@ export class AudioCtrl {
         /** 是否重复播放 */
         // 如果是其他音乐 现将背景音乐音量变小 等到音乐放完 再设置回去
         this.sound_manager.setMusicVolume(music * 0.5);
+        this.sound_manager.setSoundVolume(volume);
         const play_callback = Handler.create(null, () => {
             this.sound_manager.setMusicVolume(music);
         });

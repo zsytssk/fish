@@ -6,6 +6,7 @@ import * as SAT from 'sat';
 import { createSprite } from 'utils/dataUtil';
 import { playSkeleton, stopSkeleton } from 'utils/utils';
 import { viewState } from 'view/viewState';
+import { log } from 'utils/log';
 
 /** 追踪子弹的动画 */
 type AimState = {
@@ -48,7 +49,7 @@ export function activeAimFish(
 
     if (ori_fish) {
         ori_fish.event.offAllCaller(aim_ani);
-        console.log(ori_fish.event.getBind('FishEvent.Move'), ori_fish.id);
+        log(ori_fish.event.getBind('FishEvent.Move'), ori_fish.id);
     }
     state.fish = fish;
     state.ori_pos = ori_pos;

@@ -244,7 +244,6 @@ export function getDateFromNow(a: number) {
     dateEnd.setDate(date1.getDate() + a + 1);
     const m = dateStart.getMonth() + 1;
     const d = dateStart.getDate();
-    console.log(`test:>getDateFromNow`, dateStart);
 
     return {
         date_str: formatDate(m) + '-' + formatDate(d),

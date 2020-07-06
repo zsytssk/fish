@@ -16,6 +16,7 @@ import RewardPop from './reward';
 import { sleep } from 'utils/animate';
 import HelpPop from './help';
 import { loaderManager } from 'honor/state';
+import { log } from 'utils/log';
 
 type LotteryData = {
     lottery_id: string;
@@ -126,7 +127,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
-        console.log(`test:>lottery`, val);
+        log(`test:>lottery`, val);
         btn_lottery.disabled = val < 1;
         lottery_exchange_ctrl.renderData([...exchange]);
 

@@ -161,6 +161,7 @@ type UseLockRep = {
 /** 锁定鱼 */
 type LockFishReq = {
     eid: string;
+    robotId: string;
 };
 type LockFishRep = {
     userId: string;

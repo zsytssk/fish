@@ -20,6 +20,7 @@ import TipPop from 'view/pop/tip';
 import { getLang } from './hallCtrlUtil';
 import { asyncOnly } from 'utils/asyncQue';
 import { removeItem } from 'utils/localStorage';
+import { debug } from 'utils/log';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -115,7 +116,7 @@ export function errorHandler(code: number) {
         return AlertPop.alert(tip, { confirm_text: noMoneyConfirm }).then(
             type => {
                 if (type === 'confirm') {
-                    return console.warn('调用充值接口');
+                    return debug('调用充值接口');
                 }
             },
         );
@@ -133,6 +134,8 @@ export function errorHandler(code: number) {
         });
     } else if (code === ServerErrCode.TrialTimeHall) {
         return TipPop.tip(InternationalTip[lang][ServerErrCode.TrialTimeGame]);
+    } else if (code === ServerErrCode.TrialClose) {
+        return TipPop.tip(InternationalTip[lang][ServerErrCode.TrialClose]);
     } else if (
         code === ServerErrCode.NetError ||
         code === ServerErrCode.EnterGameError

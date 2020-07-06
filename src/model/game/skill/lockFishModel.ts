@@ -3,7 +3,7 @@ import { TimeoutCom } from 'comMan/timeoutCom';
 import { FishEvent, FishModel } from 'model/game/fish/fishModel';
 import { getAimFish, getFishById, detectInScreen } from 'model/modelState';
 import SAT from 'sat';
-import { log } from 'utils/log';
+import { log, error } from 'utils/log';
 import { BulletGroup, BulletGroupEvent } from '../gun/bulletGroup';
 import { AddBulletInfo, GunEvent, GunModel, GunStatus } from '../gun/gunModel';
 import {
@@ -93,6 +93,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         if (needActive) {
             skill_core.active(info, status => {
                 if (status === SkillStatus.Disable) {
+                    log(`test:>lockFish:>disable`);
                     this.unLock();
                 }
             });
@@ -100,7 +101,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
 
         const fish_model = getFishById(fish);
         if (!fish_model) {
-            return console.error(`cant find fish for eid=${fish}`);
+            return error(`cant find fish for eid=${fish}`);
         }
         this.lock(fish_model);
     }
@@ -202,10 +203,11 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     /** 检查鱼是否在视界中 */
     public unLock = () => {
         const { fish, gun, bullet_list } = this;
-        const { player } = gun;
-        if (!fish) {
+        if (!fish || !gun) {
             return;
         }
+
+        const { player } = gun;
         let bullets_cost = 0;
         for (const bullet of bullet_list) {
             const { bullet_cost } = bullet;

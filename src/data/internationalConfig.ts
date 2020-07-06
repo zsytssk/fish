@@ -127,6 +127,7 @@ export const International = {
         [ServerErrCode.TrialNotBullet]:
             'Out of ammo, please reload the game or go the official game to continue.',
         [ServerErrCode.NetError]: 'Network error, please reload the game ',
+        [ServerErrCode.TrialClose]: 'Demo mode is off.',
     },
     [Lang.Kor]: {
         deposit: '충전',
@@ -238,6 +239,7 @@ export const International = {
             '총알 부족, 다시 입장하거나 정식 버전을 이용해 주세요.',
         [ServerErrCode.NetError]:
             '네트워크 오류. 새로고침 후 다시 시도해 주세요.',
+        [ServerErrCode.TrialClose]: '체험모드 종료',
     },
     [Lang.Jp]: {
         deposit: '⼊⾦',
@@ -350,6 +352,7 @@ export const International = {
             '弾丸が足りません。再入力するか、公式会場でプレイしてください。',
         [ServerErrCode.NetError]:
             'ネットワークが異常です。更新してもう一度お試しください。',
+        [ServerErrCode.TrialClose]: 'デモモードオフ',
     },
     [Lang.Zh]: {
         deposit: '充值',
@@ -453,6 +456,7 @@ export const International = {
         [ServerErrCode.TrialNotBullet]:
             '子弹不足，请重新进入或去正式场进行游戏',
         [ServerErrCode.NetError]: '网络异常, 请刷新重试',
+        [ServerErrCode.TrialClose]: '试玩模式关闭',
     },
     [Lang.Zh_HK]: {
         deposit: '充值',
@@ -556,6 +560,7 @@ export const International = {
         [ServerErrCode.TrialNotBullet]:
             '子彈不足，請重新進入或去正式場進行遊戲',
         [ServerErrCode.NetError]: '網絡異常, 請刷新重試',
+        [ServerErrCode.TrialClose]: '試玩模式關閉',
     },
 };
 

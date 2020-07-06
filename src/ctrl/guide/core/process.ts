@@ -1,3 +1,5 @@
+import { log } from 'utils/log';
+
 type SubProcessItem = Process | Func<Promise<any>>;
 
 /** process 用来组织一个接一个的 任务(process) */
@@ -47,7 +49,7 @@ export abstract class Process {
         const { process, index } = this.findProcess(cur_path);
 
         if (!process) {
-            console.log(`cant find process for ${this.name}:${cur_path}`);
+            log(`cant find process for ${this.name}:${cur_path}`);
             return;
         }
 
@@ -98,7 +100,6 @@ export abstract class Process {
 
     /** process 完成 */
     protected async complete(auto_next = true) {
-        console.log(`guide: ${this.name} process completed`);
         if (this.up_process && auto_next) {
             this.up_process.next();
         }

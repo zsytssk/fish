@@ -50,7 +50,7 @@ export class LockMoveCom implements MoveCom {
     }
     private update = (t: number) => {
         const { target, pos, is_stop, velocity_size } = this;
-        if (is_stop) {
+        if (is_stop || !target.pos) {
             return;
         }
         const { x, y } = pos;

@@ -20,14 +20,14 @@ export default class Loading extends ui.scenes.loadingUI {
     }
 
     public onShow() {
-        console.log('load:>onShow');
+        log('load:>onShow');
         this.open(false);
         honor.director.openDialog(this as HonorDialog);
         this.event_com.emit(LoadingEvent.Show);
     }
 
     public onHide() {
-        console.log('load:>onHide');
+        log('load:>onHide');
         this.close();
         this.event_com.emit(LoadingEvent.Show);
     }

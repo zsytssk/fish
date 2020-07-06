@@ -10,6 +10,7 @@ import { GameModel } from '../gameModel';
 import { PlayerModel, CaptureGain } from '../playerModel';
 import { FishBombCom } from './fishBombCom';
 import { FishModel, FishData, FishEvent } from './fishModel';
+import { error } from 'utils/log';
 
 /** 创建鱼 move_com在外面创建 */
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
@@ -200,7 +201,7 @@ export async function playerCaptureFish(
     const pos = await fish.beCapture();
     const { drop, win } = info;
     if (!pos) {
-        console.error(`cant find fish pos`);
+        error(`cant find fish pos`);
     }
     player.captureFish(pos, { win, drop } as CaptureGain);
 }

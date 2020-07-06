@@ -9,6 +9,7 @@ import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
 import { SkillCtorMap, SkillModel } from './skill/skillModel';
+import { error } from 'utils/log';
 
 type SkillInfoMap = {
     [key: string]: SkillInfo;
@@ -142,7 +143,7 @@ export class PlayerModel extends ComponentManager {
     public addSkillNum(id: string, num: number) {
         const skill_model = this.skill_map.get(id);
         if (!skill_model) {
-            console.error(`cant find skill for ${id}`);
+            error(`cant find skill for ${id}`);
             return;
         }
         num = skill_model.skill_core.num + num;

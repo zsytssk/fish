@@ -7,6 +7,7 @@ import { getSpriteInfo } from 'utils/dataUtil';
 import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
+import { error } from 'utils/log';
 
 export const stage_width = GameConfig.width;
 export const stage_height = GameConfig.height;
@@ -116,7 +117,7 @@ export function calcNormalLen(position: OffsetPos, fish_type: string) {
     const offset = (getSpriteInfo('fish', fish_type) as FishSpriteInfo).offset;
 
     if (!offset) {
-        console.error("can't find fish sprite offset"); // tslint:disable-line
+        error("can't find fish sprite offset"); // tslint:disable-line
     }
     if (position === 'before') {
         fish_len = offset[0];
@@ -368,7 +369,7 @@ export function createFishDisplace(data: ServerFishInfo) {
                 path_arr = pathList;
             }
             if (!path_arr) {
-                console.error(`cant find path for no:${pathNo}`);
+                error(`cant find path for no:${pathNo}`);
                 return;
             }
             curve_list = createCurvesByPath(path_arr, fishId);

@@ -53,10 +53,8 @@ export class NewUserGuide {
             honor.director.openDialog(guide_dialog);
             const { bullet_box } = game_ctrl.view;
             await sleep(1);
-            console.log(`guide1`, bullet_box);
             const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
             guide_dialog.setBtnNextDir(dir);
-            console.log(`guide2`, bullet_box);
             await showPromptByNode(bullet_box, [tour3], dir, true);
 
             const player_ctrl = [...game_ctrl.player_list][0];
@@ -84,7 +82,6 @@ export class NewUserGuide {
             await showPromptByNode(skill_box, [tour6], 'top', true, 'start');
             resetMockSocketCtor(game_ctrl);
         } catch (err) {
-            console.log(`NewUserGuide:skip:>`, err);
             resetMockSocketCtor(game_ctrl);
         }
     }

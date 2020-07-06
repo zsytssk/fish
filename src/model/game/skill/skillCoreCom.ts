@@ -3,6 +3,7 @@ import { clearCount, startCount } from 'utils/count';
 import { PlayerModel } from 'model/game/playerModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
+import { debug } from 'utils/log';
 
 /** 技能的状态 */
 export enum SkillStatus {
@@ -52,7 +53,7 @@ export class SkillCoreCom extends ComponentManager {
     /** 数目 */
     public num: number;
     /** 冷却时间 */
-    public cool_time: number = 0;
+    public cool_time: number = 10;
     /** 冷却已经使用的时间 */
     public used_time: number = 0;
     /** 冷却 count index */
@@ -149,7 +150,7 @@ export class SkillCoreCom extends ComponentManager {
         if (this.status === SkillStatus.Active) {
             return;
         }
-        console.warn(`SkillCoreCom:>reset:>`);
+        debug(`SkillCoreCom:>reset:>`);
         this.setStatus(SkillStatus.Normal);
         clearCount(this.count_index);
     }

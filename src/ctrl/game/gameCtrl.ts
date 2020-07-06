@@ -19,7 +19,7 @@ import { GameEvent, GameModel } from 'model/game/gameModel';
 import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
 import { getUserInfo, isCurUser } from 'model/modelState';
 import { BgMonitorEvent } from 'utils/bgMonitor';
-import { log } from 'utils/log';
+import { log, error } from 'utils/log';
 import { setProps } from 'utils/utils';
 import AlertPop from 'view/pop/alert';
 import HelpPop from 'view/pop/help';
@@ -343,7 +343,7 @@ export class GameCtrl {
         } else {
             const player = model.getPlayerById(userId);
             if (!player) {
-                return console.error(
+                return error(
                     `Game:>captureFish:> cant find player for userId=${userId}!`,
                 );
             }

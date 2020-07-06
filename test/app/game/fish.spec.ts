@@ -24,8 +24,8 @@ export const fish_test = new Test('fish', runner => {
         'add_fish',
         async (typeId = 15, pathId = 2, time: number) => {
             // pathId = pathId || 3;
-            // time = time || 12 * 1000000;
-            time = time || 10 * 1000;
+            time = time || 12 * 1000000;
+            // time = time || 10 * 1000;
             const usedTime = (time * 1) / 2;
             // const usedTime = 0;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);

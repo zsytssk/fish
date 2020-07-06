@@ -110,7 +110,6 @@ const bind_arr = [] as Array<{
 export function onMouseMove(view: Sprite, callback: (pos: Point) => void) {
     const { MOUSE_MOVE } = Event;
     const fn = e => {
-        console.log(e);
         const { x, y } = view.getMousePoint();
         callback({ x, y });
     };

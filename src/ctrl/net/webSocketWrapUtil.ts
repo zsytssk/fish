@@ -9,6 +9,7 @@ import {
 import { EventCom } from 'comMan/eventCom';
 import { Utils } from 'laya/utils/Utils';
 import { Observable, Subscriber } from 'rxjs';
+import { error } from 'utils/log';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();
@@ -134,7 +135,7 @@ export function decrypt(name: string, data: string) {
         const rep = JSON.parse(rep_str);
         return rep;
     } catch {
-        console.error('cant decrypt data');
+        error('cant decrypt data');
         return '';
     }
 }

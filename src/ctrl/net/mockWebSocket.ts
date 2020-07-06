@@ -1,6 +1,7 @@
 import { WebSocketTrait, Config, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { EventCom } from 'comMan/eventCom';
 import { Status } from 'honor/net/websocket';
+import { log } from 'utils/log';
 
 /** 本地测试数据的socket... */
 export class MockWebSocket implements WebSocketTrait {
@@ -16,15 +17,15 @@ export class MockWebSocket implements WebSocketTrait {
         });
     }
     public setParams(params: {}) {
-        console.log(params);
+        log(params);
     }
     public send(cmd: string, data: {}) {
         this.sendEvent.emit(cmd, data);
-        console.log(`mockWebSocket:>`, cmd, data);
+        log(`mockWebSocket:>`, cmd, data);
     }
     public disconnect() {
         this.event.destroy();
         this.sendEvent.destroy();
-        console.log('disconnect');
+        log('disconnect');
     }
 }
