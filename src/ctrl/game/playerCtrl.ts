@@ -219,11 +219,17 @@ export class PlayerCtrl {
                     fish: { id: eid },
                     level: multiple,
                 } = data;
+                const { user_id, is_cur_player: is_cur } = this.model;
 
-                sendToGameSocket(ServerEvent.Hit, {
+                const _data: HitReq = {
                     eid,
                     multiple,
-                } as HitReq);
+                };
+                if (!is_cur) {
+                    _data.robotId = user_id;
+                }
+
+                sendToGameSocket(ServerEvent.Hit, _data);
             },
             this,
         );

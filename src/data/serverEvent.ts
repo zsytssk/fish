@@ -50,6 +50,7 @@ export const ServerEvent = {
     EnterGame: 'enterGame',
     Shoot: 'shoot',
     Hit: 'hit',
+    RobotHit: 'robotHit',
     ChangeTurret: 'changeTurret',
     /** 添加鱼 */
     AddFish: 'addFish',

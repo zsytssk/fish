@@ -105,6 +105,7 @@ type ShootReq = {
 type ShootRep = ShootReq;
 type HitReq = {
     eid: string;
+    robotId?: string;
     multiple: number;
 };
 type HitDrop = {
