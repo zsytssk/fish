@@ -193,7 +193,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
                         count: 1000,
                         userId: test_data.userId,
                         eid,
-                    } as LockFishReq,
+                    } as LockFishRep,
                     200,
                 );
 
