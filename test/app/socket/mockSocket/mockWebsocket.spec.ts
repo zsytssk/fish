@@ -227,12 +227,29 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         );
         await sleep(1);
 
+        // event.emit(
+        //     ServerEvent.LockFish,
+        //     {
+        //         userId: other_id,
+        //         eid: fish.id,
+        //         needActive: true,
+        //     } as LockFishRep,
+        //     200,
+        // );
+    });
+
+    runner.describe('otherLockFish2', async () => {
+        await game_test.runTest('enter_game');
+        const other_id = test_data.otherUserId + '0';
+
+        const { event } = getSocket('game') as MockWebSocket;
+        const fish = getAimFish();
         event.emit(
             ServerEvent.LockFish,
             {
                 userId: other_id,
                 eid: fish.id,
-                needActive: true,
+                duration: 3000,
             } as LockFishRep,
             200,
         );

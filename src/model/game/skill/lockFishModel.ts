@@ -89,10 +89,15 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         // 激活
         const { skill_core } = this;
         const { fish, needActive } = info;
+        const { status } = skill_core;
+
+        if (status !== SkillStatus.Active && !needActive) {
+            return;
+        }
 
         if (needActive) {
-            skill_core.active(info, status => {
-                if (status === SkillStatus.Disable) {
+            skill_core.active(info, _status => {
+                if (_status === SkillStatus.Disable) {
                     log(`test:>lockFish:>disable`);
                     this.unLock();
                 }
