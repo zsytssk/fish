@@ -18,6 +18,7 @@ import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
+import { error } from 'utils/log';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 
@@ -303,7 +304,14 @@ export default class GameView extends ui.scenes.game.gameUI
         return pool.getMousePoint();
     }
     public destroy() {
-        offLangChange(this);
-        super.destroy();
+        /** 在游戏中 突然修改代码 无法避免会报错（大厅骨骼动画销毁报错， 应该是还没有初始化）
+         *  在这里放一个try catch防止卡死
+         */
+        try {
+            offLangChange(this);
+            super.destroy();
+        } catch (err) {
+            error(err);
+        }
     }
 }

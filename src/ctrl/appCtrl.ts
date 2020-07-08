@@ -44,10 +44,6 @@ export class AppCtrl {
         });
         await HallCtrl.preEnter();
         AudioCtrl.init();
-        await sleep(1);
-        if (getItem('guide') !== 'end') {
-            gotoGuide('1', '1');
-        }
     }
     /** 初始化 honor */
     private async startHonor() {

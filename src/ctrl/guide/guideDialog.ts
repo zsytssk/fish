@@ -27,7 +27,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     public blank_shape: Shape;
     public handler: {
         next: FuncVoid;
-        skip: FuncVoid;
+        skip: (type: string) => void;
     };
     public click_center: Point;
     /** 是否强制点击空白区域 */
@@ -157,7 +157,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
         if (!handler) {
             return;
         }
-        callFunc(handler.skip);
+        callFunc(handler.skip, 'skip');
         this.handler = undefined;
     }
     public showNextHandler(type: NextType, then: Promise<any>) {

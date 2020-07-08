@@ -14,11 +14,14 @@ import {
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import honor from 'honor';
+import { error } from 'utils/log';
 
 export class NewUserGuide {
     public async start(guide_group: string) {
-        await this.showStartPrompt();
-        await this.next();
+        const completed = await this.showStartPrompt();
+        if (completed) {
+            await this.next();
+        }
     }
 
     public async showStartPrompt() {
@@ -31,8 +34,8 @@ export class NewUserGuide {
         try {
             const { guide_dialog } = guide_state;
 
-            const hall_ctrl = await HallCtrl.preEnter();
-            if (!(hall_ctrl instanceof HallCtrl)) {
+            const hall_ctrl = HallCtrl.instance;
+            if (!hall_ctrl) {
                 return;
             }
 
@@ -81,8 +84,14 @@ export class NewUserGuide {
             guide_dialog.setBtnNextDir('right');
             await showPromptByNode(skill_box, [tour6], 'top', true, 'start');
             resetMockSocketCtor(game_ctrl);
+            return true;
         } catch (err) {
-            resetMockSocketCtor(game_ctrl);
+            if (err === 'skip') {
+                resetMockSocketCtor(game_ctrl);
+                return true;
+            } else {
+                error(err);
+            }
         }
     }
     private async next() {

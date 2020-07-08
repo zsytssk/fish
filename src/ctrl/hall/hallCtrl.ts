@@ -23,6 +23,7 @@ import { getItem, setItem } from 'utils/localStorage';
 import honor from 'honor';
 import GameRecord from 'view/pop/record/gameRecord';
 import ItemRecord from 'view/pop/record/itemRecord';
+import { gotoGuide } from 'ctrl/guide/guideConfig';
 
 export class HallCtrl {
     public view: HallView;
@@ -30,7 +31,7 @@ export class HallCtrl {
         this.view = view;
         this.init();
     }
-    private static instance: HallCtrl;
+    public static instance: HallCtrl;
     public static async preEnter() {
         if (this.instance) {
             return this.instance;
@@ -66,6 +67,10 @@ export class HallCtrl {
                 return this.destroy();
             } else {
                 AudioCtrl.playBg(AudioRes.HallBg);
+            }
+
+            if (getItem('guide') !== 'end') {
+                gotoGuide('1', '1');
             }
 
             await GameRecord.preLoad();

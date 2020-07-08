@@ -21,7 +21,9 @@ export class GameTestCtrl {
     public fish_view: FishView;
     public static async preEnter() {
         const wait_view = GameView.preEnter() as Promise<GameView>;
-        const wait_load_res = honor.director.load(res.game as ResItem[]);
+        const wait_load_res = honor.director.load(
+            res.gameTutorial as ResItem[],
+        );
         const wait_socket = mockSocket();
         const wait_enter = Promise.all([
             wait_view,
