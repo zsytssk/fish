@@ -1,0 +1,46 @@
+{
+    "lottery": [
+        {
+            "lottery_id": "1",
+            "lottery_type": "bullet",
+            "lottery_num": 10,
+            "lottery_cost": 10
+        },
+        {
+            "lottery_id": "2",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
+        },
+        {
+            "lottery_id": "3",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
+        },
+        {
+            "lottery_id": "4",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
+        },
+        {
+            "lottery_id": "5",
+            "lottery_type": "ETC",
+            "lottery_num": 10,
+            "lottery_cost": 10
+        }
+    ],
+    "exchange": [
+        {
+            "exchange_id": "1",
+            "cost_num": 1000,
+            "price_type": "bch",
+            "exchange_type": "bch",
+            "cur_num": 100,
+            "exchange_num": 123
+        }
+    ],
+    "lottery_num": 10,
+    "lottery_cost": 10
+}

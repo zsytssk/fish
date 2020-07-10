@@ -1,0 +1,87 @@
+import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { AudioRes } from 'data/audioRes';
+import { InternationalTip } from 'data/internationalConfig';
+import honor, { HonorDialog } from 'honor';
+import { Event } from 'laya/events/Event';
+import { ui } from 'ui/layaMaxUI';
+
+type CloseType = 'close' | 'confirm' | 'cancel';
+type Opt = {
+    hide_cancel?: boolean;
+    confirm_text?: string;
+};
+export default class AlertPop extends ui.pop.alert.alertUI
+    implements HonorDialog {
+    public isModal = true;
+    public close_resolve: (type: CloseType) => void;
+    public zOrder = 100;
+    public static async alert(msg: string, opt?: Opt) {
+        AudioCtrl.play(AudioRes.PopShow);
+        const alert = (await honor.director.openDialog(AlertPop)) as AlertPop;
+        return await alert.alert(msg, opt);
+    }
+    public onAwake() {
+        this.initEvent();
+    }
+    private initEvent() {
+        const { btn_confirm, btn_cancel } = this;
+        btn_confirm.on(Event.CLICK, btn_confirm, (e: Event) => {
+            e.stopPropagation();
+            this.close('confirm');
+        });
+        btn_cancel.on(Event.CLICK, btn_confirm, (e: Event) => {
+            e.stopPropagation();
+            this.close('cancel');
+        });
+    }
+    public alert(msg: string, opt = {} as Opt) {
+        this.initLang();
+
+        return new Promise((resolve, reject) => {
+            const { hide_cancel, confirm_text } = opt;
+            const { label, btn_cancel, btn_confirm, btn_confirm_label } = this;
+            label.text = msg;
+            this.close_resolve = resolve;
+
+            if (hide_cancel) {
+                btn_cancel.visible = false;
+                btn_confirm.x = 127;
+            } else {
+                btn_cancel.visible = true;
+                btn_confirm.x = 255;
+            }
+
+            if (confirm_text) {
+                btn_confirm_label.text = confirm_text;
+            }
+        }) as Promise<CloseType>;
+    }
+    public close(type: CloseType) {
+        AudioCtrl.play(AudioRes.Click);
+        const { close_resolve, btn_confirm_label } = this;
+        if (close_resolve) {
+            close_resolve(type);
+        }
+        this.close_resolve = undefined;
+        super.close(type);
+    }
+    private initLang() {
+        const lang = getLang();
+        const { title, btn_confirm_label, btn_cancel_label } = this;
+        const { tips, cancel, confirm } = InternationalTip[lang];
+        title.text = tips;
+        btn_confirm_label.text = confirm;
+        btn_cancel_label.text = cancel;
+    }
+}
+
+export const AlertRes = [
+    'pop/alert/alert.json',
+    'image/pop/alert/alert_bg_01.png',
+    'image/pop/alert/alert_bg_02.png',
+    'image/pop/alert/btn_close.png',
+    'image/pop/alert/alert_con_bg.png',
+    'image/pop/alert/btn_cancel.png',
+    'image/pop/alert/btn_confirm.png',
+];

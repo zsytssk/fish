@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "resolveJsonModule": true,
+        "target": "es6",
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "watch": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "baseUrl": "./",
+        "noEmit": true,
+        "paths": {
+            "*": ["node_modules/*", "libs/*", "library/*", "src/*"]
+        }
+    },
+    "include": ["./libs", "./library", "./src", "./test"]
+}
