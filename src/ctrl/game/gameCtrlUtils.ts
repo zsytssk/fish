@@ -9,7 +9,7 @@ export function changeBulletNum(num: number) {
         userId,
         change_arr: [
             {
-                num: num - bullet,
+                num,
                 type: 'bullet',
             },
         ],

@@ -116,7 +116,9 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();
-            changeBulletNum(data.balance - cost);
+            player.updateInfo({
+                bullet_num: data.balance - cost,
+            });
         },
         [SocketEvent.Reconnected]: () => {
             game.reset();
