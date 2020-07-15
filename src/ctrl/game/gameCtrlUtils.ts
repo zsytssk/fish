@@ -1,4 +1,4 @@
-import { modelState } from 'model/modelState';
+import { modelState, getCurPlayer } from 'model/modelState';
 import { ctrlState } from 'ctrl/ctrlState';
 import { SkillMap } from 'data/config';
 import { LockFishModel } from 'model/game/skill/lockFishModel';
@@ -9,7 +9,7 @@ export function changeBulletNum(num: number) {
         userId,
         change_arr: [
             {
-                num,
+                num: num - bullet,
                 type: 'bullet',
             },
         ],

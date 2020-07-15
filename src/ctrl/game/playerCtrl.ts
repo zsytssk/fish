@@ -34,7 +34,7 @@ import { getItem, setItem } from 'utils/localStorage';
 
 // prettier-ignore
 const bullet_cost_arr  =
-         [1, 2, 3, 4, 5, 10, 15, 20, 30, 50, 80, 100];
+         [1, 2, 3, 4, 5, 10, 15, 20];
 /** 玩家的控制器 */
 export class PlayerCtrl {
     /**

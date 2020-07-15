@@ -1,4 +1,4 @@
 export const GunInfo = {
-    LevelUp: [10, 100],
+    LevelUp: [3, 10],
     HoleNum: [1, 2, 2],
 };

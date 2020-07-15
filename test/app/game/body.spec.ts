@@ -37,9 +37,9 @@ export const body_test = new Test('body', runner => {
                 sprite.destroy();
             });
 
-            injectProto(FishView, 'initAni' as any, (obj: FishView) => {
-                obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
-            });
+            // injectProto(FishView, 'initAni' as any, (obj: FishView) => {
+            //     obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
+            // });
         }
     });
 
