@@ -113,13 +113,12 @@ export function errorHandler(code: number) {
             });
         });
     } else if (code === ServerErrCode.NoMoney) {
-        return AlertPop.alert(tip, { confirm_text: noMoneyConfirm }).then(
-            type => {
-                if (type === 'confirm') {
-                    return debug('调用充值接口');
-                }
-            },
-        );
+        return AlertPop.alert(tip).then(type => {
+            // if (type === 'confirm') {
+            //     return debug('调用充值接口');
+            // }
+            sendToGameSocket(ServerEvent.RoomOut);
+        });
     } else if (code === ServerErrCode.NeedLogin) {
         return platform.login();
     } else if (

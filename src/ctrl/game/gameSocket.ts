@@ -110,7 +110,10 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.UseSkin]: (data: UseSkinRep) => {
             game.changeSkin(data);
         },
-        [ServerEvent.ExchangeBullet]: (data: ExchangeBullet) => {
+        [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
+            if (code !== 200) {
+                return errorHandler(code);
+            }
             changeBulletNum(data.balance);
         },
         [SocketEvent.Reconnected]: () => {
