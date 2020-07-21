@@ -63,7 +63,8 @@ export class FishCtrl extends ComponentManager {
     }
     public onBomb = async (data: FishBombInfo) => {
         const { id: eid } = this.model;
-        const { pos: bombPoint, fish_list, need_emit } = data;
+        const { pos: bombPoint, fish_list, player } = data;
+        const { need_emit, is_cur_player } = player;
         if (!need_emit) {
             return;
         }
@@ -76,11 +77,15 @@ export class FishCtrl extends ComponentManager {
                 fishList.push(fish.id);
             }
         }
-        sendToGameSocket(ServerEvent.FishBomb, {
+        const res_data = {
             bombPoint,
             eid,
             fishList,
-        } as FishBombReq);
+        } as FishBombReq;
+        if (!is_cur_player) {
+            res_data.robotId = player.user_id;
+        }
+        sendToGameSocket(ServerEvent.FishBomb, res_data);
     }; //tslint:disable-line
     public setVisible = (visible: boolean) => {
         this.view.setVisible(visible);

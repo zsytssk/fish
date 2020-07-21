@@ -196,7 +196,7 @@ export async function playerCaptureFish(
 ) {
     if (isBombFish(fish)) {
         const fish_bomb_com = fish.getCom(FishBombCom);
-        fish_bomb_com.active(player.need_emit);
+        fish_bomb_com.active(player);
     }
     const pos = await fish.beCapture();
     const { drop, win } = info;

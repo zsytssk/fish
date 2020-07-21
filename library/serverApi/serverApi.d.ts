@@ -173,6 +173,7 @@ type LockFishRep = {
 type FishBombReq = {
     bombPoint: Point;
     eid: string;
+    robotId?: string;
     fishList: string[];
 };
 type FishBombRep = {
