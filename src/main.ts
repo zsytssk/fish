@@ -9,7 +9,6 @@ function main() {
     new AppCtrl(); // tslint:disable-line
 }
 main();
-
 export function init() {
     const platform_info = platform.getInfo();
     Config.SocketUrl = platform_info.socket_url;

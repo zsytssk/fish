@@ -71,7 +71,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const ItemList = ['2001', '2002', '2003'].map(item => {
             return { item_name: getSkillName(item), item_id: item };
         });
-        ItemList.unshift({ item_name: 'all', item_id: undefined });
+        ItemList.unshift({ item_name: 'ALL', item_id: undefined });
         select_item_ctrl.setList(ItemList);
         select_item_ctrl.setCurIndex(0);
 
@@ -153,7 +153,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const arr: CoinData[] = [];
         arr.push({
             coin_icon: '',
-            coin_name: 'all',
+            coin_name: 'ALL',
             coin_id: undefined,
         });
         for (const [type, { icon }] of data) {

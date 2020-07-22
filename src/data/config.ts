@@ -31,7 +31,7 @@ export const Config = {
     /** 自动攻击的间隔 ms */
     ShootTimeSpace: 200,
     /** 炸弹的区域 */
-    BombRadius: 300,
+    BombRadius: 150,
     /** 鱼潮 清理鱼的时间 */
     ClearFishTime: 2.5,
 };

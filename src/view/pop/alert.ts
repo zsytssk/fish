@@ -57,14 +57,13 @@ export default class AlertPop extends ui.pop.alert.alertUI
             }
         }) as Promise<CloseType>;
     }
-    public close(type: CloseType) {
+    public onClosed(type: CloseType) {
         AudioCtrl.play(AudioRes.Click);
-        const { close_resolve, btn_confirm_label } = this;
+        const { close_resolve } = this;
         if (close_resolve) {
             close_resolve(type);
         }
         this.close_resolve = undefined;
-        super.close(type);
     }
     private initLang() {
         const lang = getLang();

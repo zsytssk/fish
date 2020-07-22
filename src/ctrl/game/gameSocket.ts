@@ -12,7 +12,7 @@ import {
     LockFishInitInfo,
 } from 'model/game/skill/lockFishModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
-import { getCurUserId, isCurUser } from 'model/modelState';
+import { getCurUserId, isCurUser, getCurPlayer } from 'model/modelState';
 import { GameCtrl } from './gameCtrl';
 import { changeBulletNum } from './gameCtrlUtils';
 
@@ -114,7 +114,11 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             if (code !== 200) {
                 return errorHandler(code);
             }
-            changeBulletNum(data.balance);
+            const player = getCurPlayer();
+            const cost = player.gun.getAllBulletCost();
+            player.updateInfo({
+                bullet_num: data.balance - cost,
+            });
         },
         [SocketEvent.Reconnected]: () => {
             game.reset();

@@ -254,6 +254,14 @@ export class GunModel extends ComponentManager {
     public castFish(fish: FishModel, level: number) {
         this.event.emit(GunEvent.CastFish, { fish, level });
     }
+    public getAllBulletCost() {
+        const { bullet_list } = this;
+        let cost = 0;
+        for (const bullet of bullet_list) {
+            cost += bullet.bullet_cost;
+        }
+        return cost;
+    }
     public removeBullet(bullet: BulletGroup) {
         this.bullet_list.delete(bullet);
     }

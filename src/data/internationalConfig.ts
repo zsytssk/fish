@@ -78,7 +78,7 @@ export const International = {
         help2Bomb:
             'Bomb: Active skill, can be purchased. it will randomly kill a group of fish on the screen.',
         help3: '3. Available multiple of cannon:',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
+        help31: '1,2,3,4,5,10,15,20',
         help4: '4. Other instructions',
         help41:
             'Redemption: Player can get some Fish Vouchers after capturing certain type of fish. The Fish Vouchers can be used for redeem rewards. ',
@@ -190,7 +190,7 @@ export const International = {
         help2Bomb:
             '폭탄: 수동 기능, 구매하여야 합니다. 사용후 랜덤으로 한 무리의 물고기를 폭격할 수 있습니다.',
         help3: '3. 선택 가능한 포좌의 배수는 아래와 같습니다.',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
+        help31: '1,2,3,4,5,10,15,20',
         help4: '4. 기타 설명',
         help41:
             '환전: 플레이어가 지정된 물고기를 포획할 때, 물고기 쿠폰을 받게 되고, 쿠폰을 모으면 경품을 교환할 수 있게 됩니다.',
@@ -302,7 +302,7 @@ export const International = {
         help2Bomb:
             '爆弾：主動スキル、購⼊で獲得できます。使⽤後、畫⾯內のランダムで１つ群の⿂ に攻撃します。',
         help3: '選択可能の倍數は以下のようです。',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
+        help31: '1,2,3,4,5,10,15,20',
         help4: 'その他説明：',
         help41:
             '交換：プレーヤーは、特定な⿂を捕獲することにより、⿂券が獲得できます。その ⼀定の數量の⿂券を収集すると、景品と交換可能です',
@@ -413,7 +413,7 @@ export const International = {
             '锁定技能：主动技能，可以通过打死某些鱼获得，也可购买，使用后会 自动锁定当前屏幕内鱼分最高的那条鱼，玩家也可以自己点击选择某一条鱼。',
         help2Bomb: '炸弹：主动技能，购买获得，使用后会随机炸死屏幕内的一群鱼。',
         help3: '3. 可选的炮倍数如下：',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
+        help31: '1,2,3,4,5,10,15,20',
         help4: '4. 其他说明',
         help41:
             '兑换：玩家捕获某些鱼时，会得到一些鱼券，收集一定数量的鱼券可以兑换奖品。',
@@ -517,7 +517,7 @@ export const International = {
             '鎖定技能：主動技能，可以通過打死某些魚獲得，也可購買，使用後會 自動鎖定當前屏幕內魚分最高的那條魚，玩家也可以自己點擊選擇某一條魚。',
         help2Bomb: '炸彈：主動技能，購買獲得，使用後會隨機炸死屏幕內的一群魚。',
         help3: '3. 可選的炮倍數如下：',
-        help31: '1,2,3,4,5,10,15,20,30,50,80,100',
+        help31: '1,2,3,4,5,10,15,20',
         help4: '4.	其他說明',
         help41:
             '兌換：玩家捕獲某些魚時，會得到一些魚券，收集一定數量的魚券可以兌換獎品。',
