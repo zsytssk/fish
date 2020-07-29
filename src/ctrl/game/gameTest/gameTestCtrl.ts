@@ -32,6 +32,7 @@ export class GameTestCtrl {
         ]).then(([view, socket]) => {
             const game_model = new GameModel();
             const ctrl = new GameTestCtrl(view as GameView, game_model);
+            ctrl.view.showBubbleRefresh(1);
             onGameSocket(socket as WebSocketTrait, ctrl as any);
             return ctrl;
         });
