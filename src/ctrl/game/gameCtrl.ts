@@ -26,6 +26,7 @@ import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
 import ShopPop from 'view/pop/shop';
 import VoicePop from 'view/pop/voice';
+import { default as random } from 'lodash/random';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
 import GameView, {
     AddFishViewInfo,
@@ -45,6 +46,8 @@ import {
 import { PlayerCtrl } from './playerCtrl';
 import { ShoalEvent } from 'model/game/com/shoalCom';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
+import { Laya } from 'Laya';
+import { Loader } from 'laya/net/Loader';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -71,14 +74,14 @@ export class GameCtrl {
         }
         return runAsyncTask(() => {
             const wait_view = GameView.preEnter() as Promise<GameView>;
-            const wait_load_res = honor.director.load(
-                res.game as ResItem[],
-                'Scene',
-            );
+            const [bg_num, bg_res] = this.genBgNum();
+            const other_res: ResItem[] = [bg_res, ...res.game];
+            const wait_load_res = honor.director.load(other_res, 'Scene');
+
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
                 const ctrl = new GameCtrl(view as GameView, game_model);
                 this.instance = ctrl;
-                ctrl.init(url);
+                ctrl.init(url, bg_num);
                 setProps(ctrlState, { game: ctrl });
 
                 HelpPop.preLoad()
@@ -93,9 +96,17 @@ export class GameCtrl {
             });
         }, this);
     }
-    private init(url: string) {
+    public static genBgNum() {
+        const bg_num = random(1, 3);
+        return [
+            bg_num,
+            { url: `image/game/normal_bg/bg${bg_num}.jpg`, type: Loader.IMAGE },
+        ] as [number, ResItem];
+    }
+    private init(url: string, bg_num: number) {
         this.initEvent();
         AudioCtrl.playBg(AudioRes.GameBg);
+        this.view.showBubbleRefresh(bg_num);
         waitConnectGame(url).then(() => {
             onGameSocket(getSocket(ServerName.Game), this);
         });

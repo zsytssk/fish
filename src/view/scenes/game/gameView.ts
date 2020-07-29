@@ -6,7 +6,7 @@ import { createSkeleton } from 'honor/utils/createSkeleton';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
-import { default as random } from 'lodash/random';
+
 import { Observable, Subscriber } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { ui } from 'ui/layaMaxUI';
@@ -43,8 +43,6 @@ export default class GameView extends ui.scenes.game.gameUI
         return game;
     }
     public onEnable() {
-        const bg_num = random(1, 3);
-        this.showBubbleRefresh(bg_num);
         onLangChange(this, lang => {
             this.initLang(lang);
         });
@@ -71,8 +69,9 @@ export default class GameView extends ui.scenes.game.gameUI
         bubble_ani.url = `image/game/bg_normal${bg_num}.sk`;
         bubble_wall.visible = false;
 
-        (window as any).bubble_overlay = bubble_overlay;
+        bubble_overlay.visible = true;
         playSkeletonOnce(bubble_overlay, 'out').then(() => {
+            bubble_overlay.visible = false;
             fade_in(bubble_wall, 300, '', 0.3);
             playSkeleton(bubble_wall, 2, true);
         });

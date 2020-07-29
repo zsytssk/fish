@@ -16,6 +16,7 @@ import { KeyBoardNumber } from 'utils/layaKeyboard';
 import { gotoGuide } from './guide/guideConfig';
 import { getItem } from 'utils/localStorage';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
+import { Event } from 'laya/events/Event';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -52,13 +53,9 @@ export class AppCtrl {
             versionPath: `./version.json?v=${Config.CdnVersion}`,
             basePath: Config.cndUrl,
         });
-        // if (Laya.Browser.onIOS || Laya.Browser.onAndroid) {
-        //     Laya.stage.fullScreenEnabled = true;
-        // }
         const task1 = honor.director.setLoadPageForScene(
             'scenes/loading.scene',
         );
-        // const task2 = honor.director.setLoadPageForDialog('scenes/loading.scene');
         const task2 = honor.director
             .load([...res.common, ...res.font], 'Scene')
             .then(() => {

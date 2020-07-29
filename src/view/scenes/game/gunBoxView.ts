@@ -79,6 +79,8 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
         utilSkeletonLoadUrl(gun, `ani/gun/${gun_skin}.sk`).then(() => {
             playSkeleton(gun, 'standby', true);
         });
+
+        setGunDirection(this, gun.rotation);
     }
     public fixServerTopPos() {
         const { ani_box, ctrl_wrap } = this;
