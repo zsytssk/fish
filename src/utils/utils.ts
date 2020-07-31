@@ -232,13 +232,15 @@ export function getDateFromNow(a: number) {
     const date1 = new Date();
     const time1 =
         date1.getFullYear() +
-        '-' +
+        '/' +
         (date1.getMonth() + 1) +
-        '-' +
+        '/' +
         date1.getDate();
 
     const dateEnd = new Date(time1);
     const dateStart = new Date(time1);
+
+    console.log(`test:>`, dateEnd, dateStart);
 
     dateStart.setDate(date1.getDate() + a);
     dateEnd.setDate(date1.getDate() + a + 1);
