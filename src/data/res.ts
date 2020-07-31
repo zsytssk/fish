@@ -89,6 +89,7 @@ export const font_list = [
     'font/numYellow40',
     'font/lottery',
     'font/numWhite40',
+    'font/alphabet',
 ];
 for (const font of font_list) {
     res.font.push(

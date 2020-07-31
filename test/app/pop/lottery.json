@@ -33,10 +33,18 @@
     ],
     "exchange": [
         {
-            "exchange_id": "1",
+            "exchange_id": "2",
             "cost_num": 1000,
             "price_type": "bch",
             "exchange_type": "bch",
+            "cur_num": 100,
+            "exchange_num": 123
+        },
+        {
+            "exchange_id": "1",
+            "cost_num": 1000,
+            "price_type": "bch",
+            "exchange_type": "busdt",
             "cur_num": 100,
             "exchange_num": 123
         }

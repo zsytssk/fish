@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":5,
-    "selecteID":7,
+    "selectedBox":18,
+    "selecteID":22,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -22,7 +22,7 @@
         }],
     "props":{"width":211,"sceneColor":"#000000","height":253},
     "nodeParent":-1,
-    "maxID":22,
+    "maxID":23,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -185,15 +185,15 @@
                 },
                 {
                     "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,item_type",
-                    "props":{"y":57,"var":"item_type","skin":"image/pop/lottery/txt_busdt.png","pivotY":14,"pivotX":30,"centerX":0},
+                    "type":"Label",
+                    "searchKey":"Label,item_type",
+                    "props":{"y":69,"x":0,"width":155,"var":"item_type","valign":"middle","text":"BTC","strokeColor":"#692315","stroke":2,"pivotY":30,"pivotX":73,"height":30,"fontSize":36,"font":"alphabet","color":"#f4e090","centerX":0,"bold":true,"align":"center"},
                     "nodeParent":18,
                     "label":"item_type",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":15,
+                    "compId":22,
                     "child":[
                         ]
                 }]

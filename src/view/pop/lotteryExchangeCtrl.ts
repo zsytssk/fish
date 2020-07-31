@@ -96,12 +96,16 @@ export class LotteryExchangeCtrl {
         //     'http://static.btgame.club/public-test/img/coin/15905806992912UL8JD1I.png';
         coin_icon.filters = [createColorFilter('#64280e')];
         num_label.text = num_str;
-        item_type.skin = `image/pop/lottery/txt_${exchange_type.toLowerCase()}.png`;
+        item_type.text = exchange_type.toUpperCase();
+        console.log(`test:>`, item_type, exchange_type);
         remain_label.text = `${Num}: ${cur_num}/${cost_num}`;
 
         let scale = 1 / (num_str.length / 3);
+        let scale2 = 1 / (exchange_type.length / 4);
         scale = scale > 1 ? 1 : scale;
+        scale2 = scale2 > 1 ? 1 : scale2;
         num_label.scale(scale, scale);
+        item_type.scale(scale2, scale2);
 
         btn_buy.offAll();
         if (cur_num < cost_num) {
