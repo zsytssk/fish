@@ -4,6 +4,7 @@ import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Handler } from 'laya/utils/Handler';
 import { Event } from 'laya/events/Event';
+import { log } from './log';
 
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';
@@ -240,7 +241,7 @@ export function getDateFromNow(a: number) {
     const dateEnd = new Date(time1);
     const dateStart = new Date(time1);
 
-    console.log(`test:>`, dateEnd, dateStart);
+    log(`test:>`, dateEnd, dateStart);
 
     dateStart.setDate(date1.getDate() + a);
     dateEnd.setDate(date1.getDate() + a + 1);
