@@ -41,7 +41,7 @@ export const International = {
         luckyDraw: 'Lucky Draw',
         redemption: 'Redemption',
         buySuccess: 'Purchase successfully',
-        luckyDrawTip2: 'Congrats! You’ve got',
+        luckyDrawTip2: 'Congrats! You’ve got ',
         Num: 'Bullet',
         shop: 'Shop',
         skin: 'Skin',

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":35,
-    "selecteID":37,
+    "selectedBox":43,
+    "selecteID":39,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -315,16 +315,17 @@
             "props":{"width":1920,"var":"inner","mouseThrough":true,"mouseEnabled":true,"height":750,"centerY":3,"centerX":0},
             "nodeParent":2,
             "label":"inner",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":43,
             "child":[
                 {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,btn_play_now",
-                    "props":{"y":616,"x":1642,"width":258,"var":"btn_play_now","right":20,"height":111},
+                    "props":{"y":616,"width":269,"var":"btn_play_now","right":34,"height":111},
                     "nodeParent":43,
                     "label":"btn_play_now",
                     "isOpen":true,
@@ -334,6 +335,7 @@
                     "compId":39,
                     "child":[
                         {
+                            "x":45,
                             "type":"SkeletonPlayer",
                             "searchKey":"SkeletonPlayer,ani",
                             "props":{"y":55.5,"x":129,"url":"image/hall/play_now_btn.sk","name":"ani"},

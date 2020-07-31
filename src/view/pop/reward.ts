@@ -74,12 +74,15 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
         } else {
             item_num.visible = item_type.visible = true;
             item_num.text = num_str;
-            item_type.skin = `image/pop/lottery/txt_${type.toLowerCase()}.png`;
+            item_type.text = type.toUpperCase();
         }
 
+        let scale2 = 1 / (type.length / 4);
         let scale = 1 / (num_str.length / 4);
         scale = scale > 1 ? 1 : scale;
+        scale2 = scale2 > 1 ? 1 : scale2;
         item_num.scale(scale, scale);
+        item_type.scale(scale2, scale2);
     }
     public destroy() {
         offLangChange(this);

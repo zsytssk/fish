@@ -2,11 +2,11 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
-    "selecteID":6,
+    "selecteID":15,
     "searchKey":"Dialog",
     "props":{"width":825,"sceneColor":"#000000","height":278},
     "nodeParent":-1,
-    "maxID":15,
+    "maxID":16,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -49,13 +49,14 @@
             "props":{"y":19,"x":355,"width":114,"texture":"image/pop/lottery/lottery_item2_nbg.png"},
             "nodeParent":2,
             "label":"Sprite",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":4,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,bullet_icon",
                     "props":{"y":17.5,"x":13,"visible":false,"var":"bullet_icon","texture":"image/pop/lottery/bomb_skin1.png"},
@@ -71,6 +72,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,bullet_num",
                     "props":{"y":69,"x":20,"width":65,"var":"bullet_num","valign":"middle","text":"100","strokeColor":"#391b06","stroke":2,"height":30,"fontSize":24,"color":"#fff","bold":true,"align":"right"},
@@ -86,6 +88,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,item_num",
                     "props":{"y":39,"width":162,"var":"item_num","valign":"middle","text":"0.04","strokeColor":"#692315","stroke":2,"scaleY":1,"scaleX":1,"pivotY":15,"pivotX":81,"height":30,"fontSize":30,"font":"lottery","color":"#f4e090","centerX":0,"bold":true,"align":"center"},
@@ -101,15 +104,16 @@
                     "$HIDDEN":false
                 },
                 {
-                    "type":"Image",
-                    "searchKey":"Image,item_type",
-                    "props":{"y":77,"var":"item_type","skin":"image/pop/lottery/txt_btc.png","rotation":0,"pivotY":14,"pivotX":30,"height":30,"centerX":-1},
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,item_type",
+                    "props":{"y":92.5,"width":155,"var":"item_type","valign":"middle","text":"BTC","strokeColor":"#692315","stroke":2,"pivotY":30,"pivotX":73,"height":30,"fontSize":36,"font":"alphabet","color":"#f4e090","centerX":0,"bold":true,"align":"center"},
                     "nodeParent":4,
                     "label":"item_type",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":12,
+                    "compId":15,
                     "child":[
                         ]
                 }]
