@@ -227,6 +227,7 @@ export function getParams(key: string) {
         );
     }
     return param_map[key];
+    // return true;
 }
 
 export function getDateFromNow(a: number) {

@@ -80,7 +80,7 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
         let scale2 = 1 / (type.length / 4);
         let scale = 1 / (num_str.length / 4);
         scale = scale > 1 ? 1 : scale;
-        scale2 = scale2 > 1 ? 1 : scale2;
+        scale2 = scale2 > 0.95 ? 0.95 : scale2;
         item_num.scale(scale, scale);
         item_type.scale(scale2, scale2);
     }

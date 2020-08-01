@@ -46,7 +46,7 @@
             "x":15,
             "type":"List",
             "searchKey":"List,list",
-            "props":{"y":0,"x":0,"width":250,"var":"list","vScrollBarSkin":"image/hall/vscroll.png","selectEnable":true,"repeatY":7,"height":344},
+            "props":{"y":0,"x":0,"width":250,"var":"list","vScrollBarSkin":"image/hall/vscroll.png","selectEnable":true,"height":344},
             "nodeParent":2,
             "label":"list",
             "isOpen":true,

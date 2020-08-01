@@ -5,6 +5,9 @@ import { Point as LayaPoint } from 'laya/maths/Point';
 import { Rectangle } from 'laya/maths/Rectangle';
 import { guide_state, Shape } from '../guideState';
 import { PromptPos, TipData } from './prompt';
+import { getStringLength } from 'honor/utils/getStringLength';
+import { sleep } from 'utils/animate';
+import { log } from 'utils/log';
 
 export type NextType = 'point' | 'btn' | 'start';
 export function getBoundsOfNode(
@@ -106,6 +109,24 @@ export function getPromptByShape(shape: Shape, pos: PromptPos, space = 10) {
     return result;
 }
 
+async function setPromptSize(msg: string[]) {
+    const { prompt } = guide_state;
+    const size = prompt.getSize();
+    const line_num = msg.reduce((max, item) => {
+        let len = item.split('<br/>').length;
+        if (len === 1) {
+            len = Math.ceil(getStringLength(item) / 50);
+        }
+        if (len > max) {
+            max = len;
+        }
+        return max;
+    }, 0);
+    prompt.setSize(size.width, line_num * 35);
+    log(`test:>`, line_num);
+    await sleep(0.5);
+}
+
 export function triggerClick(node: Sprite) {
     node.event(Event.CLICK, { type: Event.CLICK });
 }
@@ -164,6 +185,7 @@ export async function showPromptByShape(
     const extra_space = 20;
     const { guide_dialog, prompt, btn_next } = guide_state;
     shape = extraShape(shape, extra_space);
+    await setPromptSize(msg as string[]);
     const pos = getPromptByShape(shape, dir);
 
     const wait_prompt = prompt.prompt({ pos, dir }, msg, false);

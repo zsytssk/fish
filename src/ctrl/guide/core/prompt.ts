@@ -383,6 +383,12 @@ export class PromptGuide {
         return { width, height };
     }
 
+    public setSize(width: number, height: number) {
+        const { view } = this;
+        view.width = width;
+        view.height = height;
+    }
+
     /** 重置 */
     private reset() {
         this.tip_msg = null;

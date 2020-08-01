@@ -47,7 +47,7 @@ export class NewUserGuide {
 
             await showPromptByNode(btn_coin_select, [tour1], 'bottom', true);
 
-            await showPromptByNode(guide2, [tour2], 'right', true);
+            await showPromptByNode(guide2, [tour2], 'top', true);
 
             // const game_ctrl = await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
             hall_ctrl.destroy();
@@ -56,14 +56,16 @@ export class NewUserGuide {
             honor.director.openDialog(guide_dialog);
             const { bullet_box } = game_ctrl.view;
             await sleep(1);
-            const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
-            guide_dialog.setBtnNextDir(dir);
-            await showPromptByNode(bullet_box, [tour3], dir, true);
-
             const player_ctrl = [...game_ctrl.player_list][0];
             const cur_gun = player_ctrl.view;
+            const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
+            guide_dialog.setBtnNextDir(dir);
+            cur_gun.stopPosTip();
+            await showPromptByNode(bullet_box, [tour3], dir, true);
+
+            cur_gun.setMySelfStyle();
             await sleep(1);
-            await showPromptByNode(cur_gun, [tour4], dir, true);
+            await showPromptByNode(cur_gun, [tour4], 'top', true);
             sleep(2);
             genFishInfo(game_ctrl);
 
@@ -71,7 +73,7 @@ export class NewUserGuide {
             await showPromptByNode(
                 { sprite: fish, shape: 'circle' },
                 [tour5],
-                'right',
+                'top',
                 true,
                 'point',
             );

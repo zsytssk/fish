@@ -103,7 +103,7 @@ export class LotteryExchangeCtrl {
         let scale = 1 / (num_str.length / 3);
         let scale2 = 1 / (exchange_type.length / 4);
         scale = scale > 1 ? 1 : scale;
-        scale2 = scale2 > 1 ? 1 : scale2;
+        scale2 = scale2 > 0.95 ? 0.95 : scale2;
         num_label.scale(scale, scale);
         item_type.scale(scale2, scale2);
 

@@ -196,6 +196,7 @@ export default class HallView extends ui.scenes.hall.hallUI
             });
         }
         list.array = arr;
+        // console.log(`test:>1`, arr);
         flag_menu.height = bg.height = list.height = arr.length * 61 + 20;
     }
     public toggleCoinMenu(status: boolean) {

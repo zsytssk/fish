@@ -75,19 +75,20 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_skip",
-                    "props":{"y":54,"var":"btn_skip","stateNum":"1","skin":"image/pop/guide/btn_skip.png","right":21,"height":68,"anchorY":0.5,"anchorX":0.5},
+                    "props":{"y":54,"width":142,"var":"btn_skip","stateNum":"1","skin":"image/pop/guide/btn_skip.png","right":21,"height":68,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":10,
                     "label":"btn_skip",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":9,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,skip_label",
-                            "props":{"y":16,"width":123,"var":"skip_label","text":"跳过","height":25,"fontSize":25,"font":"Arial","color":"#183272","centerX":-2,"bold":true,"align":"center"},
+                            "props":{"width":123,"var":"skip_label","text":"跳过","height":25,"fontSize":25,"font":"Arial","color":"#183272","centerY":-6,"centerX":-2,"bold":true,"align":"center"},
                             "nodeParent":9,
                             "label":"skip_label",
                             "isDirectory":false,
@@ -140,7 +141,8 @@
                     "compId":14,
                     "child":[
                         ]
-                }]
+                }],
+            "$LOCKED":true
         }],
     "animations":[
         {
