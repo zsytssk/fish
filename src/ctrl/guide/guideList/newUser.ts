@@ -52,8 +52,8 @@ export class NewUserGuide {
             // const game_ctrl = await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
             hall_ctrl.destroy();
             game_ctrl = await GameTestCtrl.preEnter();
-
             honor.director.openDialog(guide_dialog);
+
             const { bullet_box } = game_ctrl.view;
             await sleep(1);
             const player_ctrl = [...game_ctrl.player_list][0];
@@ -97,6 +97,11 @@ export class NewUserGuide {
         }
     }
     private async next() {
+        if (HallCtrl.instance) {
+            HallCtrl.instance.destroy();
+            HallCtrl.leave();
+            await sleep(0.1);
+        }
         await HallCtrl.preEnter();
     }
 }

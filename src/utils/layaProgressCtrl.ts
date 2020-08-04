@@ -22,9 +22,7 @@ export default class LayaProgressCtrl {
     }
     private initEvent() {
         const { view } = this;
-        const { progress_btn } = view;
         const {
-            CLICK,
             MOUSE_DOWN,
             MOUSE_MOVE,
             MOUSE_OVER,
@@ -32,8 +30,8 @@ export default class LayaProgressCtrl {
             MOUSE_UP,
         } = Event;
 
-        view.on(CLICK, this, this.onClick);
-        view.on(MOUSE_DOWN, this, () => {
+        view.on(MOUSE_DOWN, this, (e: Event) => {
+            this.onClick(e);
             Laya.stage.on(MOUSE_MOVE, this, this.onMouseMove);
             Laya.stage.on(MOUSE_OVER, this, this.onMouseOut);
             Laya.stage.on(MOUSE_OUT, this, this.onMouseOut);
@@ -43,12 +41,16 @@ export default class LayaProgressCtrl {
     private onClick(e: Event) {
         e.stopPropagation();
         const { view } = this;
-        const { progress_bar, progress_btn, box } = view;
+        const { box } = view;
         const { width } = box;
         const { x } = box.getMousePoint();
-        const radio = x / width;
-        progress_bar.value = radio;
-        progress_btn.x = x;
+        let radio = x / width;
+        if (radio > 1) {
+            radio = 1;
+        }
+        if (radio < 0) {
+            radio = 0;
+        }
         this.setProgress(radio);
     }
     private onMouseMove(e: Event) {

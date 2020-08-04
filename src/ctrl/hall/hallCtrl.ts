@@ -3,7 +3,7 @@ import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
 import { Lang } from 'data/internationalConfig';
 import { ServerName } from 'data/serverEvent';
-import { getUserInfo, modelState } from 'model/modelState';
+import { modelState } from 'model/modelState';
 import { AccountMap } from 'model/userInfo/userInfoModel';
 import HallView from 'view/scenes/hallView';
 import {
@@ -19,11 +19,12 @@ import { onHallSocket, roomIn, offHallSocket } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
 import { ctrlState } from 'ctrl/ctrlState';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
-import { getItem, setItem } from 'utils/localStorage';
+import { getItem } from 'utils/localStorage';
 import honor from 'honor';
 import GameRecord from 'view/pop/record/gameRecord';
 import ItemRecord from 'view/pop/record/itemRecord';
 import { gotoGuide } from 'ctrl/guide/guideConfig';
+import { sleep } from 'utils/animate';
 
 export class HallCtrl {
     public view: HallView;
@@ -60,8 +61,6 @@ export class HallCtrl {
         });
     }
     private async init() {
-        hallViewEvent(this);
-        this.initModelEvent();
         await onHallSocket(this).then(async enter_game => {
             if (enter_game) {
                 return this.destroy();
@@ -69,10 +68,12 @@ export class HallCtrl {
                 AudioCtrl.playBg(AudioRes.HallBg);
             }
 
+            this.initModelEvent();
             if (getItem('guide') !== 'end') {
-                gotoGuide('1', '1');
+                return gotoGuide('1', '1');
             }
 
+            hallViewEvent(this);
             await GameRecord.preLoad();
             await ItemRecord.preLoad();
         });

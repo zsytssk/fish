@@ -15,7 +15,7 @@ export async function gotoGuide(group_id: string, functionId: string) {
     guide_arr.push({ group_id, functionId });
     if (!running) {
         running = true;
-        triggerGuide();
+        await triggerGuide();
     }
 }
 
