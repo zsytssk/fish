@@ -33,7 +33,7 @@ export default class LayaProgressCtrl {
         } = Event;
 
         view.on(CLICK, this, this.onClick);
-        progress_btn.on(MOUSE_DOWN, this, () => {
+        view.on(MOUSE_DOWN, this, () => {
             Laya.stage.on(MOUSE_MOVE, this, this.onMouseMove);
             Laya.stage.on(MOUSE_OVER, this, this.onMouseOut);
             Laya.stage.on(MOUSE_OUT, this, this.onMouseOut);
@@ -43,18 +43,19 @@ export default class LayaProgressCtrl {
     private onClick(e: Event) {
         e.stopPropagation();
         const { view } = this;
-        const { progress_bar, progress_btn, width } = view;
-        const { x } = view.getMousePoint();
+        const { progress_bar, progress_btn, box } = view;
+        const { width } = box;
+        const { x } = box.getMousePoint();
         const radio = x / width;
         progress_bar.value = radio;
         progress_btn.x = x;
         this.setProgress(radio);
     }
     private onMouseMove(e: Event) {
-        const { view } = this;
+        const { box } = this.view;
         e.stopPropagation();
-        const { x } = view.getMousePoint();
-        const { width } = view;
+        const { x } = box.getMousePoint();
+        const { width } = box;
         let radio = x / width;
 
         if (radio > 1) {
@@ -70,9 +71,8 @@ export default class LayaProgressCtrl {
         Laya.stage.offAllCaller(this);
     }
     public setProgress(radio: number) {
-        const { view } = this;
-        const { width } = view;
-        const { progress_bar, progress_btn } = view;
+        const { box, progress_bar, progress_btn } = this.view;
+        const { width } = box;
         if (radio === this.radio) {
             return;
         }

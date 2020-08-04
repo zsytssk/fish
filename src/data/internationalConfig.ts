@@ -101,7 +101,7 @@ export const International = {
         noData: 'No data',
         NetError: 'Internet connection error, reconnecting',
         NetComeBack: 'Welcome back!',
-        OtherLogin: 'Log-in error ,please refresh and try again. ',
+        OtherLogin: 'Login error, please refresh and try again.',
         InputEmptyWarn: 'Blank MUST be filled in',
         Delete: 'Delete',
         buyItemTip: 'Confirm cost $1 $2,purchase $3 $4.',
