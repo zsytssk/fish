@@ -24,6 +24,12 @@ export async function preBuild() {
     index_str = replaceReg(index_str, /var CDN_VERSION = '(\d*)';/g, match => {
         return match[0].replace(match[1], genDate());
     });
+    index_str = replaceReg(index_str, /src="index.js\?v=(\w+)"/g, match => {
+        return match[0].replace(match[1], genDate());
+    });
+    index_str = replaceReg(index_str, /paladin.min.js\?v=(\w+)/g, match => {
+        return match[0].replace(match[1], genDate());
+    });
     await write(index, index_str);
 }
 

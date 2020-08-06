@@ -76,8 +76,7 @@
 
                 cursor: default;
                 color: #888;
-                /* background-color: #fff; */
-                background-color: rgb(31, 27, 54);
+                background-color: #fff;
 
                 text-align: center;
                 font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -87,11 +86,15 @@
 
                 /* fix bug: https://github.com/cocos-creator/2d-tasks/issues/791 */
                 /* overflow cannot be applied in Cocos2dGameContainer,
-              otherwise child elements will be hidden when Cocos2dGameContainer rotated 90 deg */
+  otherwise child elements will be hidden when Cocos2dGameContainer rotated 90 deg */
                 overflow: hidden;
             }
+
+            canvas {
+                background-color: #fff;
+            }
         </style>
-        <script src="./bitgame/paladin.min.js?v=20202604142305"></script>
+        <script src="./bitgame/paladin.min.js?v=20200608181952"></script>
     </head>
 
     <body>
@@ -103,9 +106,9 @@
                 document.body.appendChild(script);
             }
 
-            var CDN_VERSION = '20200408144755';
+            var CDN_VERSION = '20200608181952';
         </script>
-        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript" src="index.js?v=20200608181952"></script>
         <script type="text/javascript" src="webpack-dev-server.js"></script>
     </body>
 </html>
