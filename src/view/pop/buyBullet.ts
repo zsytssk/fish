@@ -106,11 +106,9 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
         const { purchase, buyBulletCost, bullet } = InternationalTip[lang];
         const { price, num } = buy_info;
         if (lang === 'en') {
-            intro.text = `${buyBulletCost} ${purchase} ${
-                price * num
-            } ${bullet}`;
+            intro.text = `${buyBulletCost} ${price * num} ${bullet}`;
         } else {
-            intro.text = `${buyBulletCost}${purchase}${price * num} ${bullet}`;
+            intro.text = `${buyBulletCost}${price * num}${bullet}`;
         }
     }
     private initLang(lang: Lang) {
