@@ -1,10 +1,9 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":13,
-    "selecteID":29,
+    "selectedBox":2,
     "searchKey":"Dialog",
-    "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/voice.png","height":427},
+    "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/voice.png","runtime":"view/pop/voice.ts","height":427},
     "nodeParent":-1,
     "maxID":34,
     "label":"Dialog",

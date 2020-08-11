@@ -74,8 +74,8 @@ export class HallCtrl {
             }
 
             hallViewEvent(this);
-            await GameRecord.preLoad();
-            await ItemRecord.preLoad();
+            // await GameRecord.preLoad();
+            // await ItemRecord.preLoad();
         });
     }
     private initModelEvent() {
