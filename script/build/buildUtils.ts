@@ -106,7 +106,7 @@ function genDate() {
     const minute = now.getMinutes();
     const second = now.getSeconds();
 
-    const date_arr = [year, day, month, hour, minute, second];
+    const date_arr = [year, month, day, hour, minute, second];
     return date_arr.reduce((prev, cur) => {
         let cur_str = cur + '';
         if (cur_str.length === 1) {
