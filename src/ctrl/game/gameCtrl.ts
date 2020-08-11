@@ -84,13 +84,13 @@ export class GameCtrl {
                 ctrl.init(url, bg_num);
                 setProps(ctrlState, { game: ctrl });
 
-                HelpPop.preLoad()
-                    .then(() => {
-                        return ShopPop.preLoad();
-                    })
-                    .then(() => {
-                        return LotteryPop.preLoad();
-                    });
+                // HelpPop.preLoad()
+                //     .then(() => {
+                //         return ShopPop.preLoad();
+                //     })
+                //     .then(() => {
+                //         return LotteryPop.preLoad();
+                //     });
 
                 return ctrl;
             });
