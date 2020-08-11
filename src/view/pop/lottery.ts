@@ -69,6 +69,10 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
     public static preLoad() {
         return loaderManager.preLoad('Dialog', 'pop/lottery/lottery.scene');
     }
+    public async reloadData() {
+        const exchange_data = await getLotteryData();
+        this.initData(exchange_data);
+    }
     public onEnable() {
         AudioCtrl.play(AudioRes.PopShow);
         if (!this.is_init) {
@@ -111,8 +115,11 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
                 get: false,
             });
         }
-        if (lottery_arr.length < 5) {
-            for (let i = 0; i < 5 - lottery_arr.length + 1; i++) {
+
+        const len = lottery_arr.length;
+        if (len < 5) {
+            log(`test:>lottery:>0`, lottery_arr);
+            for (let i = 0; i < 5 - len; i++) {
                 lottery_arr.push({
                     lottery_id: 'xx',
                     lottery_type: 'xx',
@@ -127,7 +134,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
-        log(`test:>lottery`, val);
+        log(`test:>lottery:>1`, val, lottery_arr);
         btn_lottery.disabled = val < 1;
         lottery_exchange_ctrl.renderData([...exchange]);
 
@@ -237,7 +244,11 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         if (is_bullet) {
             changeBulletNum(lottery_num);
         }
-        RewardPop.preEnter({ type: lottery_type, num: lottery_num });
+        RewardPop.preEnter({ type: lottery_type, num: lottery_num }).then(
+            () => {
+                this.reloadData();
+            },
+        );
     }
 
     public destroy() {

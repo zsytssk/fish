@@ -80,8 +80,9 @@ export default class GameView extends ui.scenes.game.gameUI
         const { width: tw, height: th, ctrl_box } = this;
         this.x = (width - tw) / 2;
         this.y = (height - th) / 2;
-        if (width > tw) {
-            width = tw;
+
+        if (width > 1334) {
+            width = 1334;
         }
         ctrl_box.width = width;
 

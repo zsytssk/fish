@@ -86,7 +86,7 @@ R 19E106F4 wave.png
 R 4DFE4675 wave.sk
 D image/hall
 P 89B592A5 avatar.png
-R D5C38E4F bg.jpg
+R 08459BC6 bg.jpg
 P 015356EB btn_app.png
 P 5F625195 btn_buy.png
 P 33B0DDEB btn_coin_type.png
@@ -320,7 +320,7 @@ P 6C47257F txt_ltc.png
 P CF23FA7F txt_usdt.png
 P 329856C5 txt_xrp.png
 D image/pop/record
-P 1A587164 bg-con.png
+P BEBAFAF3 bg-con.png
 P 4C7842B9 bg-left.png
 P 648F046B bg-right.png
 R 2ED97AE0 bg-top-1.png
