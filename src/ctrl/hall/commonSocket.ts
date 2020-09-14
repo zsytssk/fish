@@ -17,7 +17,7 @@ import {
 import { BgMonitorEvent } from 'utils/bgMonitor';
 import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
-import { getLang } from './hallCtrlUtil';
+import { getLang, recharge } from './hallCtrlUtil';
 import { asyncOnly } from 'utils/asyncQue';
 import { removeItem } from 'utils/localStorage';
 import { debug } from 'utils/log';
@@ -115,7 +115,7 @@ export function errorHandler(code: number) {
     } else if (code === ServerErrCode.NoMoney) {
         return AlertPop.alert(tip).then(type => {
             if (type === 'confirm') {
-                return debug('调用充值接口');
+                recharge();
             }
             sendToGameSocket(ServerEvent.RoomOut);
         });

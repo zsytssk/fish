@@ -11,11 +11,14 @@ type Opt = {
     hide_cancel?: boolean;
     confirm_text?: string;
 };
-export default class AlertPop extends ui.pop.alert.alertUI
+export default class AlertPop
+    extends ui.pop.alert.alertUI
     implements HonorDialog {
     public isModal = true;
     public close_resolve: (type: CloseType) => void;
-    public zOrder = 100;
+    public get zOrder() {
+        return 100;
+    }
     public static async alert(msg: string, opt?: Opt) {
         AudioCtrl.play(AudioRes.PopShow);
         const alert = (await honor.director.openDialog(AlertPop)) as AlertPop;
