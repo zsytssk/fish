@@ -43,6 +43,16 @@ var platform = {
             cdn: paladin.sys.config.cdn,
         };
     },
+    recharge: function (currency, gameNo) {
+        paladin &&
+            paladin.pay.recharge({
+                data: {
+                    currency: currency,
+                    gameNo: gameNo,
+                    isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
+                },
+            });
+    },
 };
 
 // loadLib('./js/bundle.js?v=' + CDN_VERSION);
@@ -56,5 +66,7 @@ var platform = {
 //             token: '',
 //             socket_url: 'ws://47.101.172.184:8101',
 //         };
+//     },
+//     recharge: function () {
 //     },
 // };
