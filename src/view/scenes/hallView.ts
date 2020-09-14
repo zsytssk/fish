@@ -19,7 +19,8 @@ export type CoinData = {
     num: number;
 }[];
 
-export default class HallView extends ui.scenes.hall.hallUI
+export default class HallView
+    extends ui.scenes.hall.hallUI
     implements HonorScene {
     public static preEnter() {
         return honor.director.runScene('scenes/hall/hall.scene');
@@ -126,6 +127,9 @@ export default class HallView extends ui.scenes.hall.hallUI
         ) as Image).skin = `image/international/withdraw_${lang}.png`;
         resizeContain(middle_btn_wrap, 10);
         this.activeAni('normal');
+    }
+    public setRechargeBtnVisible(visible: boolean) {
+        this.header.btn_recharge.visible = visible;
     }
     /** 显示模式的动画... */
     public activeAni(type: string) {

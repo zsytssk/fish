@@ -84,3 +84,13 @@ export function getAllLangList() {
     }
     return result;
 }
+export function recharge() {
+    const app = modelState.app;
+    (window as any)?.paladin.pay.recharge({
+        data: {
+            currency: app.user_info.cur_balance,
+            gameNo: (window as any)?.paladin.sys.config.gameId,
+            isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
+        },
+    });
+}

@@ -12,7 +12,10 @@ export const UserInfoEvent = {
     AccountChange: 'account_change',
     NicknameChange: 'nick_name_change',
 };
-export type AccountMap = Map<string, { num: number; icon: string }>;
+export type AccountMap = Map<
+    string,
+    { num: number; icon: string; hide: 0 | 1 }
+>;
 /** 当前用户信息.. */
 export class UserInfoModel extends ComponentManager {
     /** 语言 */
@@ -80,10 +83,11 @@ export class UserInfoModel extends ComponentManager {
             if (!first_balance) {
                 first_balance = key;
             }
-            const { balance: num, imageUrl: icon } = data[key];
+            const { balance: num, imageUrl: icon, hide } = data[key];
             this.account_map.set(key, {
                 num: Number(num),
                 icon,
+                hide,
             });
         }
         this.event.emit(UserInfoEvent.AccountChange, this.account_map);

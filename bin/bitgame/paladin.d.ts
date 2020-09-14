@@ -1,6 +1,6 @@
 
 /**
- * @version 1.0.5
+ * @version 1.1.0
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -57,6 +57,18 @@
         name,
         params 
     }]);
+ * 获取初始语言
+    paladin.getLang();
+ *
+ * 获取初始语言
+    paladin.getLang();
+ *
+ * 获取初始渠道
+    paladin.getChannel();
+ *
+ * 获取平台类型
+    paladin.getPlatform();
+ *
  */ 
 declare namespace paladin {	
     // 版本号
@@ -90,9 +102,9 @@ declare namespace paladin {
          * 发送请求
          * @param {object} data 发送请求数据
          */
-        public send(data: IRequestData): void;
+        send(data: IRequestData): void;
         // 中断请求
-        public abort(): void;
+        abort(): void;
     }
 
     /**
@@ -191,6 +203,30 @@ declare namespace paladin {
      */
     export function hasComponent(name: string): boolean;
 
+    /** 
+     * 获取初始语言
+     * @return {string} lang
+     */
+    export function getLang(): string;
+
+    /** 
+     * 获取初始语言
+     * @return {string} lang
+     */
+    export function getLang(): string;
+
+    /**
+     * 获取初始渠道
+     * @return {string} channel
+     */
+    export function getChannel(): string;
+
+    /**
+     * 获取平台类型
+     * @return {string} platform
+     */
+    export function getPlatform(): string;
+    
     /*
      * 组件
      * @param {object} launch 启动
@@ -227,7 +263,9 @@ declare namespace paladin {
  * 
  * 获取语言环境 paladin.sys.getLanguage();
  * 
- * 获取渠道信息 paladin.sys.getChannel(); 
+ * 获取渠道信息 paladin.sys.getChannel();
+ * 
+ * 获取时区信息 paladin.sys.getTimezone()  
  * 
  * 获取配置信息
  * 如果定义url，则使用url请求接口
@@ -242,7 +280,6 @@ declare namespace paladin {
     });
  * 
  * 更新语言环境 paladin.sys.updateLanguage('en');
- * 
  */
 declare namespace paladin {
     /**
@@ -352,37 +389,43 @@ declare namespace paladin {
          * 初始化
          * @param {object} data 初始化数据
          */
-        public init(data: ISystemInitData): void;
+        init(data: ISystemInitData): void;
 
         /**
          * 获取终端环境
          * @param {obejct} browser
          */
-        public getBrowser(): ISystemBrowserData;
+        getBrowser(): ISystemBrowserData;
 
         /**
          * 获取语言环境
          * @param {string} lang
          */
-        public getLanguage(): string;
+        getLanguage(): string;
 
         /**
          * 获取渠道信息
          * @param {string} channel
          */
-        public getChannel(): string;
+        getChannel(): { channel: string, storeId: string };
 
         /**
          * 获取配置信息
          * @param {object} data 初始化数据
          */
-        public getConfig(data: ISystemInitData): void;
+        getConfig(data: ISystemInitData): void;
+
+        /**
+         * 获取时区信息, 默认当前时区
+         * @return {string} utc 时区(UTC+8:00)
+         */
+        getTimezone(): string;
 
         /**
         * 更新语言环境
         * @param {string} lang 语言
         */
-        public updateLanguage(lang: string): void;
+        updateLanguage(lang: string): void;
     }
 }
 
@@ -437,38 +480,38 @@ declare namespace paladin {
          * 检查登录态
          * @return {object} data 登录状态
          */
-        public getState(): IAccountStateData;
+        getState(): IAccountStateData;
     
         /**
          * 登录
          * @param {object} data 数据
          */
-        public login(data: IAccountBasicData): void;
+        login(data?: IAccountBasicData): void;
 
         /**
          * 登出
          * @param {object} data 数据
          */
-        public logout(data: IAccountBasicData): void;
+        logout(data?: IAccountBasicData): void;
 
         // 首页
-        public home(): void;
+        home(): void;
 
         // 应用
-        public app(): void;
+        app(): void;
 
         /**
          * 跳转页面
          * @param {string} key 关键词
          */ 
-        public landingPageUrl(key: string): void;
+        landingPageUrl(key: string): void;
 
         /**
          * 获取账户类型
          * @param {string} channel 渠道
          * @return {number} result 渠道类型
          */
-        public getAccountType(channel: string): number;
+        getAccountType(channel: string): number;
     }
 }
 
@@ -530,19 +573,19 @@ declare namespace paladin {
         /** 支付请求
          * @param {object} data 支付数据
          */
-        public request(data: IPayRequestData): void;
+        request(data: IPayRequestData): void;
 
         /**
          * 充值 
          * @param {object} data 充值数据
          */
-        public recharge(data: IPayRequestBasicData): void;
+        recharge(data: IPayRequestBasicData): void;
 
         /**
          * 提币 
          * @param {object} data 提币数据
          */
-        public withdraw(data: IPayRequestBasicData): void;
+        withdraw(data: IPayRequestBasicData): void;
     }
 }
 
@@ -591,7 +634,70 @@ declare namespace paladin {
 
 // 模块 - 渠道管理
 declare namespace paladin {
-    class ChannelManager {}
+    /**
+     * 初始化数据
+     * @param {string} url 请求地址
+     * @param {string} origin 请求域名
+     * @param {object} data 请求数据
+     * @param {function} success 成功回调
+     * @param {function} error 失败回调
+     * 
+     * @default url: ''
+     * @default origin: ''
+     * @default data: {}
+     */
+    interface IChannelInitData {
+        url?: string;
+        origin?: string;
+        data: any;
+        success: Function;
+        error?: Function;
+    }
+
+    /**
+     * 初始化数据
+     * @param {string} clientId 客户端ID
+     * @param {string} lang 渠道语言
+     * @param {string} sdkUrl 渠道sdk
+     * @param {array} disable 渠道禁用模块 deposit:充值, withdraw:提现
+     * @param {string} 'portrait' // 'portrait'(竖 屏)、'landscape'(横屏)
+     * 
+     * @default clientId: ''
+     * @default lang: 'zh-Hans'
+     * @default sdkUrl: ''
+     * @default disable: []
+     * @default orientation: ''
+     */
+    interface IChannelConfigData {
+        clientId: string;
+        lang: string;
+        sdkUrl: string;
+        disable: string[];
+        orientation: string;
+    }
+
+    class ChannelManager {
+        /*
+         * 获取配置信息
+         * @return {object} result
+         */
+        get config(): IChannelConfigData;
+
+        /**
+         * 初始化
+         */
+        async init(): Promise<string>;
+
+        /**
+         * 获取配置信息
+         * @param {string} url 请求地址
+         * @param {string} origin 请求域名
+         * @param {object} data 请求数据
+         * @param {function} success 成功回调
+         * @param {function} error 失败回调
+         */
+        async getConfig(data : IChannelInitData): Promise<string>;
+    }
 }
 
 /**
@@ -752,9 +858,8 @@ declare namespace paladin {
         /**
          * 初始化
          * @param {object} data 初始化数据
-         * @param {string} engine 游戏引擎
          */
-        init(data: IAnalyticsInitData, debug: boolean): void;
+        init(data: IAnalyticsInitData): void;
     
         /**
          * 开启日志
