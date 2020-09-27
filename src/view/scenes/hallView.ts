@@ -130,6 +130,9 @@ export default class HallView
     }
     public setRechargeBtnVisible(visible: boolean) {
         this.header.btn_recharge.visible = visible;
+        if (visible) {
+            this.onResize();
+        }
     }
     /** 显示模式的动画... */
     public activeAni(type: string) {
