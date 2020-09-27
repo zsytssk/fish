@@ -14,8 +14,8 @@ function createLog(type?: string) {
 }
 
 export let log: typeof console.log = console.log;
-export let debug: typeof console.warn = console.log;
-export let error: typeof console.error = console.log;
+export let debug: typeof console.warn = console.warn;
+export let error: typeof console.error = console.error;
 setImmediate(() => {
     log = createLog();
     debug = createLog('debug');
