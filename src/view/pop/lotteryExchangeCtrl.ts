@@ -97,7 +97,6 @@ export class LotteryExchangeCtrl {
         coin_icon.filters = [createColorFilter('#64280e')];
         num_label.text = num_str;
         item_type.text = exchange_type.toUpperCase();
-        console.log(`test:>`, item_type, exchange_type);
         remain_label.text = `${Num}: ${cur_num}/${cost_num}`;
 
         let scale = 1 / (num_str.length / 3);
