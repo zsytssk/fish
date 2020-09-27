@@ -242,8 +242,6 @@ export function getDateFromNow(a: number) {
     const dateEnd = new Date(time1);
     const dateStart = new Date(time1);
 
-    log(`test:>`, dateEnd, dateStart);
-
     dateStart.setDate(date1.getDate() + a);
     dateEnd.setDate(date1.getDate() + a + 1);
     const m = dateStart.getMonth() + 1;
