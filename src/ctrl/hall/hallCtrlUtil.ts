@@ -86,9 +86,13 @@ export function getAllLangList() {
 }
 export function recharge() {
     const app = modelState.app;
+    const { account_map, cur_balance } = app.user_info;
+    if (account_map.get(cur_balance).hide) {
+        return;
+    }
     (window as any)?.paladin.pay.recharge({
         data: {
-            currency: app.user_info.cur_balance,
+            currency: cur_balance,
             gameNo: (window as any)?.paladin.sys.config.gameId,
             isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
         },
