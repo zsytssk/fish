@@ -73,7 +73,26 @@ const dev_config = {
 };
 
 const prod_config = {
-    entry: ['./src/main.ts'],
+    entry: {
+        bundle: './src/main.ts',
+        vendor: ['honor', 'laya'],
+    },
+    output: {
+        filename: '[name].[chunkhash].js',
+        path: path.join(__dirname, 'bin'),
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: 'initial',
+                    name: 'vendor',
+                    filename: '[name].[chunkhash].js',
+                    enforce: true,
+                },
+            },
+        },
+    },
 };
 
 module.exports = (env, argv) => {
