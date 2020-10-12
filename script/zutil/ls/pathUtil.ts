@@ -17,7 +17,7 @@ export function calcClosestDepth(
     if (parent === path_str) {
         return 0;
     }
-    if (path_str.indexOf(parent + split_sign) === -1) {
+    if (path_str.indexOf(parent) === -1) {
         return -1;
     }
 

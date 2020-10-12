@@ -212,6 +212,7 @@ type UserAccountRep = {
         [key: string]: {
             balance: number;
             imageUrl: string;
+            hide: 0 | 1;
         };
     };
 };

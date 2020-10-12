@@ -130,11 +130,12 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
 export function offGameSocket(game: GameCtrl) {
     offCommon(game_socket, game);
     game_socket.event.offAllCaller(game);
+    game_socket = undefined;
 }
 export function sendToGameSocket(
     ...params: Parameters<WebSocketTrait['send']>
 ) {
-    game_socket.send(...params);
+    game_socket?.send(...params);
 }
 
 export type EnterGameData = {

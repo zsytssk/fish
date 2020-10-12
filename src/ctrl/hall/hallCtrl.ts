@@ -74,8 +74,6 @@ export class HallCtrl {
             }
 
             hallViewEvent(this);
-            // await GameRecord.preLoad();
-            // await ItemRecord.preLoad();
         });
     }
     private initModelEvent() {
@@ -83,8 +81,9 @@ export class HallCtrl {
         const { user_info } = modelState.app;
         onCurBalanceChange(this, (type: string) => {
             const { account_map } = user_info;
-            const { num, icon } = account_map.get(type);
+            const { num, icon, hide } = account_map.get(type);
             view.setCurBalance(type, icon, num);
+            view.setRechargeBtnVisible(Boolean(!hide));
         });
         onLangChange(this, (lang: Lang) => {
             view.setFlag(lang);

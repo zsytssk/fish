@@ -13,9 +13,11 @@ function createLog(type?: string) {
     return log_fun.bind(window.console);
 }
 
-// export const log: typeof console.log = (console.log = createLog());
-// export const debug: typeof console.warn = createLog('debug');
-// export const error: typeof console.error = createLog('error');
-export const log: typeof console.log = console.log.bind(console);
-export const debug: typeof console.warn = console.warn.bind(console);
-export const error: typeof console.error = console.error.bind(console);
+export let log: typeof console.log = console.log;
+export let debug: typeof console.warn = console.warn;
+export let error: typeof console.error = console.error;
+setImmediate(() => {
+    log = createLog();
+    debug = createLog('debug');
+    error = createLog('error');
+});
