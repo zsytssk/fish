@@ -126,6 +126,13 @@
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
         <script type="text/javascript">
+            function loadLib(url) {
+                var script = document.createElement('script');
+                script.async = false;
+                script.src = url;
+                document.body.appendChild(script);
+            }
+
             paladin.checkComponents({
                 list: ['launch'],
                 success: function (res) {
@@ -149,7 +156,17 @@
             // 游戏初始化
             paladin.init({
                 loadType: 2,
-                success: function (res) {},
+                success: function (res) {
+                    const files = [
+                        res.cdn + 'js/bundle.js?v=<%= Date.now() %>',
+                        res.cdn + 'js/laya.js?v=<%= Date.now() %>',
+                        res.cdn + 'js/libs.js?v=<%= Date.now() %>',
+                    ];
+
+                    for (var i = 0; i < files.length; i++) {
+                        loadLib(files[i]);
+                    }
+                },
             });
 
             var platform = {
@@ -184,18 +201,6 @@
             };
         </script>
 
-        <script
-            type="text/javascript"
-            src="js/bundle.js?v=<%= Date.now() %>"
-        ></script>
-        <script
-            type="text/javascript"
-            src="js/laya.js?v=<%= Date.now() %>"
-        ></script>
-        <script
-            type="text/javascript"
-            src="js/libs.js?v=<%= Date.now() %>"
-        ></script>
         <% } %>
     </body>
 </html>

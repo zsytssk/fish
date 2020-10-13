@@ -53,7 +53,14 @@
 
             canvas {
                 background-color: #fff;
-            }</style></head><body><script src="bitgame/paladin.min.js?v=1602571146235"></script><script>paladin.checkComponents({
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1602581951688"></script><script>function loadLib(url) {
+                var script = document.createElement('script');
+                script.async = false;
+                script.src = url;
+                document.body.appendChild(script);
+            }
+
+            paladin.checkComponents({
                 list: ['launch'],
                 success: function (res) {
                     if (res.launch) {
@@ -76,7 +83,17 @@
             // 游戏初始化
             paladin.init({
                 loadType: 2,
-                success: function (res) {},
+                success: function (res) {
+                    const files = [
+                        res.cdn + 'js/bundle.js?v=1602581951688',
+                        res.cdn + 'js/laya.js?v=1602581951688',
+                        res.cdn + 'js/libs.js?v=1602581951688',
+                    ];
+
+                    for (var i = 0; i < files.length; i++) {
+                        loadLib(files[i]);
+                    }
+                },
             });
 
             var platform = {
@@ -108,4 +125,4 @@
                             },
                         });
                 },
-            };</script><script src="js/bundle.js?v=1602571146235"></script><script src="js/laya.js?v=1602571146235"></script><script src="js/libs.js?v=1602571146235"></script></body></html>
+            };</script></body></html>
