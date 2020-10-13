@@ -39,7 +39,7 @@ export async function afterBuild(push = false) {
 async function copyBinToDist() {
     const { project_path, dist_path } = await getConfig();
     const bin = path.resolve(project_path, 'bin');
-    const dist_bin = path.resolve(dist_path, 'bin');
+    const dist_bin = path.resolve(dist_path);
     await clear(dist_bin);
     await cp(bin, dist_bin);
 }

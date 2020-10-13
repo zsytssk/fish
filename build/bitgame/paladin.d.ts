@@ -1,6 +1,6 @@
 
 /**
- * @version 1.1.0
+ * @version 1.1.3
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -445,6 +445,10 @@ declare namespace paladin {
  * 下载应用 paladin.account.app();
  * 
  * 进入首页 paladin.account.home();
+ *
+ * 复制 paladin.account.copy(text);
+ *
+ * 粘贴 paladin.account.paste();
  */
 declare namespace paladin {
     /**
@@ -499,6 +503,19 @@ declare namespace paladin {
 
         // 应用
         app(): void;
+
+        /**
+         * 复制
+         * @param {string} text 文案
+         * @return {Promise<void>} promise
+         */
+        copy(text: string):Promise<void>;
+
+        /**
+         * 粘贴
+         * @return {Promise<string>} promise
+         */
+        paste(): Promise<string>;
 
         /**
          * 跳转页面
