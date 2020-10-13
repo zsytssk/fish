@@ -5,10 +5,6 @@
 # build file
 /build/
 /bin/*
-!/bin/bitgame/
-!/bin/favicon/
-!/bin/index.html
-!/bin/index.js
 
 # laya file
 /laya/views

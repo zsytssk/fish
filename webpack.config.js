@@ -3,13 +3,17 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const findParam = require('./script/findEnv');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ENV = findParam('ENV');
 const CheckError = findParam('CheckError');
-const common_config = {
-    entry: ['./test/test.ts', './src/main.ts'],
+const common_config = mode => ({
+    entry: {
+        bundle: ['./test/test.ts', './src/main.ts'],
+    },
     output: {
-        filename: 'js/bundle.js',
+        filename: 'js/[name].js',
         path: path.join(__dirname, 'bin'),
     },
     resolve: {
@@ -46,8 +50,25 @@ const common_config = {
     plugins: [
         new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) }),
         new WebpackBar({ color: 'green' }),
+        new HtmlWebpackPlugin({
+            hash: true,
+            inject: mode === 'development',
+            title: 'HonorMe',
+            template: 'public/index.html',
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: __dirname + '/public',
+                    to: __dirname + '/bin',
+                    globOptions: {
+                        ignore: ['/public/index.html'],
+                    },
+                },
+            ],
+        }),
     ],
-};
+});
 
 if (CheckError) {
     common_config.module.rules[0].use = {
@@ -73,18 +94,43 @@ const dev_config = {
 };
 
 const prod_config = {
-    entry: ['./src/main.ts'],
+    entry: {
+        bundle: './src/main.ts',
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                libs: {
+                    //node_modules里的代码
+                    test: /[\\/](node_modules)[\\/]/,
+                    chunks: 'initial',
+                    name: 'libs', //chunks name
+                    priority: 10, //优先级
+                    enforce: true,
+                },
+                laya: {
+                    //node_modules里的代码
+                    test: /[\\/](libs)[\\/]/,
+                    chunks: 'initial',
+                    name: 'laya', //chunks name
+                    priority: 10, //优先级
+                    enforce: true,
+                },
+            },
+        },
+    },
 };
 
 module.exports = (env, argv) => {
     let result;
+    let common = common_config(argv.mode);
     if (argv.mode === 'development') {
-        result = { ...common_config, ...dev_config };
+        result = { ...common, ...dev_config };
     } else {
-        common_config.module.rules[0].use.splice(1, 0, {
+        common.module.rules[0].use.splice(1, 0, {
             loader: 'babel-loader',
         });
-        result = { ...common_config, ...prod_config };
+        result = { ...common, ...prod_config };
     }
     return result;
 };
