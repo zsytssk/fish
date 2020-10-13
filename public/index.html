@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>BitFishing</title>
+        <meta charset="utf-8" />
+        <meta name="renderer" content="webkit" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="full-screen" content="true" />
+        <meta name="x5-fullscreen" content="true" />
+        <meta name="360-fullscreen" content="true" />
+        <meta name="laya" screenorientation="landscape" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="./favicon/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="./favicon/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="./favicon/favicon-16x16.png"
+        />
+        <link rel="manifest" href="./favicon/site.webmanifest" />
+        <style type="text/css">
+            html {
+                -ms-touch-action: none;
+            }
+
+            body,
+            canvas,
+            div {
+                display: block;
+                outline: none;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                -khtml-user-select: none;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+
+            /* Remove spin of input type number */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                /* display: none; <- Crashes Chrome on hover */
+                -webkit-appearance: none;
+                margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+            }
+
+            body {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                border: 0;
+                margin: 0;
+
+                cursor: default;
+                color: #888;
+                background-color: #fff;
+
+                text-align: center;
+                font-family: Helvetica, Verdana, Arial, sans-serif;
+
+                display: flex;
+                flex-direction: column;
+
+                /* fix bug: https://github.com/cocos-creator/2d-tasks/issues/791 */
+                /* overflow cannot be applied in Cocos2dGameContainer,
+  otherwise child elements will be hidden when Cocos2dGameContainer rotated 90 deg */
+                overflow: hidden;
+            }
+
+            canvas {
+                background-color: #fff;
+            }
+        </style>
+    </head>
+
+    <body>
+        <% if (webpackConfig.mode === "development") { %>
+        <script
+            type="text/javascript"
+            src="bitgame/paladin.min.js<%= Date.now() %>"
+        ></script>
+        <script>
+            var platform = {
+                hideLoading: function () {},
+                login: function () {},
+                logout: function () {},
+                getInfo: function () {
+                    return {
+                        isLogin: false,
+                        token: '',
+                        socket_url: 'ws://47.101.172.184:8101',
+                    };
+                },
+                recharge: function () {},
+            };
+        </script>
+        <% } %>
+
+        <!-- production -->
+        <% if (webpackConfig.mode === "production") { %>
+        <script
+            type="text/javascript"
+            src="bitgame/paladin.min.js?v=<%= Date.now() %>"
+        ></script>
+        <script type="text/javascript">
+            paladin.checkComponents({
+                list: ['launch'],
+                success: function (res) {
+                    if (res.launch) {
+                        paladin.comps.launch.show({
+                            design: {
+                                width: 1334,
+                                height: 750,
+                                mode: 'horizontal',
+                            },
+                            logo: { url: './bitgame/logo.png' },
+                            load: { color: '#6d8ac8' },
+                            tips: { color: '#6d8ac8' },
+                            notice: { color: '#6d8ac8' },
+                        });
+                    }
+                },
+            });
+
+            window.screenOrientation = 'sensor_landscape';
+            // 游戏初始化
+            paladin.init({
+                loadType: 2,
+                success: function (res) {},
+            });
+
+            var platform = {
+                hideLoading: function () {
+                    paladin.comps.launch.hide();
+                },
+                login: function () {
+                    paladin.account.login();
+                },
+                logout: function () {
+                    paladin.account.logout();
+                },
+                getInfo: function () {
+                    return {
+                        isLogin: paladin.sys.config.isLogin,
+                        token: paladin.sys.config.jwtToken,
+                        lang: paladin.sys.config.lang,
+                        socket_url: paladin.sys.config.ws,
+                        cdn: paladin.sys.config.cdn,
+                    };
+                },
+                recharge: function (currency, gameNo) {
+                    paladin &&
+                        paladin.pay.recharge({
+                            data: {
+                                currency: currency,
+                                gameNo: gameNo,
+                                isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
+                            },
+                        });
+                },
+            };
+        </script>
+
+        <script
+            type="text/javascript"
+            src="js/bundle.js?v=<%= Date.now() %>"
+        ></script>
+        <script
+            type="text/javascript"
+            src="js/laya.js?v=<%= Date.now() %>"
+        ></script>
+        <script
+            type="text/javascript"
+            src="js/libs.js?v=<%= Date.now() %>"
+        ></script>
+        <% } %>
+    </body>
+</html>

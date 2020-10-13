@@ -1,4 +1,4 @@
-import { test, preBuild, build, afterBuild } from './buildUtils';
+import { test, build, afterBuild } from './buildUtils';
 import { listenLocal } from '../zutil/utils/utils';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
@@ -12,22 +12,18 @@ export const build_tips = [
 
 const buildMap = {
     '1': async () => {
-        await preBuild();
         await build();
         await afterBuild();
     },
     '2': async () => {
-        await preBuild();
         await build('test');
         await afterBuild(false);
     },
     '3': async () => {
-        await preBuild();
         await build('test');
         await afterBuild(true);
     },
     '4': async () => {
-        await preBuild();
         await build('prod');
         await afterBuild(true);
     },
