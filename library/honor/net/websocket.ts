@@ -72,10 +72,6 @@ export class WebSocketCtrl {
         ws.onerror = this.onError;
         ws.onclose = this.onclose;
         this.ws = ws;
-
-        if (this.ping_pong_map) {
-            this.startHeartBeat();
-        }
     }
     public send(msg: string) {
         const { status, ws } = this;
@@ -88,6 +84,10 @@ export class WebSocketCtrl {
         log('WebSocket:> 连接上了');
         this.status = 'OPEN';
         const { onInit, onReconnected } = this.handlers;
+
+        if (this.ping_pong_map) {
+            this.startHeartBeat();
+        }
 
         this.reconnect_count = 0;
         /** 第一次是初始化, 后面都是重连 */
