@@ -1,6 +1,6 @@
 
 /**
- * @version 1.1.0
+ * @version 1.1.4
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -309,6 +309,7 @@ declare namespace paladin {
      * @param {string} cdn cdn地址
      * @param {string} host 平台地址
      * @param {string} ws websocket地址
+     * @param {string} api api地址
      * @param {string} login 登录地址
      * @param {string} logout 登出地址
      * @param {string} charge 充值地址
@@ -319,8 +320,11 @@ declare namespace paladin {
      * @param {string} clientId 客户端ID
      * @param {string} gameId 游戏ID
      * @param {string} uid 用户ID
+     * @param {string} storeId 渠道ID备用
      * @param {boolean} isLogin 是否登录
      * @param {number} timestamp 时间戳
+     * @param {string} utc 时区
+     * @param {string} showName 昵称
      */
     interface ISystemConfigData {
         lang: string;
@@ -328,6 +332,7 @@ declare namespace paladin {
         cdn: string;
         host: string;
         ws: string;
+        api: string;
         login: string;
         logout: string;
         charge: string;
@@ -338,8 +343,11 @@ declare namespace paladin {
         clientId: string;
         gameId: string;
         uid: string;
+        storeId: string;
         isLogin: boolean;
         timestamp: number;
+        utc: string;
+        showName: string;
     }
 
     /**
@@ -445,6 +453,10 @@ declare namespace paladin {
  * 下载应用 paladin.account.app();
  * 
  * 进入首页 paladin.account.home();
+ *
+ * 复制 paladin.account.copy(text);
+ *
+ * 粘贴 paladin.account.paste();
  */
 declare namespace paladin {
     /**
@@ -499,6 +511,19 @@ declare namespace paladin {
 
         // 应用
         app(): void;
+
+        /**
+         * 复制
+         * @param {string} text 文案
+         * @return {Promise<void>} promise
+         */
+        copy(text: string):Promise<void>;
+
+        /**
+         * 粘贴
+         * @return {Promise<string>} promise
+         */
+        paste(): Promise<string>;
 
         /**
          * 跳转页面
