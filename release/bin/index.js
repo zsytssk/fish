@@ -7,7 +7,7 @@ paladin.checkComponents({
         if (res.launch) {
             paladin.comps.launch.show({
                 design: { width: 1334, height: 750, mode: 'horizontal' },
-                logo: { url: './bitgame/logo.png' },
+                logo: { url: 'bitgame/logo.png' },
                 load: { color: '#6d8ac8' },
                 tips: { color: '#6d8ac8' },
                 notice: { color: '#6d8ac8' },
@@ -19,7 +19,6 @@ paladin.checkComponents({
 window.screenOrientation = 'sensor_landscape';
 // 游戏初始化
 paladin.init({
-    url: 'https://fish.btgame.club/platform/game/domains',
     files: ['js/bundle.js?v=' + CDN_VERSION],
     loadType: 2,
     success: function (res) {},
