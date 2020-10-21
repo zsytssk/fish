@@ -1,10 +1,11 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
-const findParam = require('./script/findEnv');
 
-const ENV = findParam('ENV');
+const ENV = process.env.NODE_ENV;
+
+console.log(`test:>`, ENV);
+
 const CheckError = findParam('CheckError');
 const common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
@@ -19,6 +20,11 @@ const common_config = {
             path.resolve('./libs'),
             path.resolve('./src'),
         ],
+        alias: { crypto: 'crypto-browserify' },
+        fallback: {
+            buffer: require.resolve('buffer/'),
+            stream: require.resolve('stream-browserify/'),
+        },
         extensions: ['.ts', '.js', '.json'],
     },
     module: {
@@ -43,10 +49,7 @@ const common_config = {
             },
         ],
     },
-    plugins: [
-        new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) }),
-        new WebpackBar({ color: 'green' }),
-    ],
+    plugins: [new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) })],
 };
 
 if (CheckError) {
