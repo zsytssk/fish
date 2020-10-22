@@ -17,10 +17,12 @@ export type BuildType = 'test' | 'prod';
 export async function build(type: BuildType = 'prod') {
     const { project_path } = await getConfig();
 
-    const mode = type === 'prod' ? 'production' : 'development';
-    const env = type === 'prod' ? 'PROD' : 'TEST';
+    let cmd = 'npm run test';
+    if (type === 'prod') {
+        cmd = 'npm run prod';
+    }
 
-    await excuse(`webpack --ENV=${env} --mode ${mode}`, {
+    await excuse(cmd, {
         path: project_path,
         output: true,
     });

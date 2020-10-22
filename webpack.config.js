@@ -1,17 +1,13 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
-const findParam = require('./script/findEnv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const ENV = findParam('ENV');
-const CheckError = findParam('CheckError');
+const { ENV, CheckError } = process.env;
+
 const common_config = mode => ({
-    entry: {
-        bundle: ['./test/test.ts', './src/main.ts'],
-    },
+    entry: ['./test/test.ts', './src/main.ts'],
     output: {
         filename: 'js/[name].js',
         path: path.join(__dirname, 'bin'),
@@ -23,6 +19,11 @@ const common_config = mode => ({
             path.resolve('./libs'),
             path.resolve('./src'),
         ],
+        alias: { crypto: 'crypto-browserify' },
+        fallback: {
+            buffer: require.resolve('buffer/'),
+            stream: require.resolve('stream-browserify/'),
+        },
         extensions: ['.ts', '.js', '.json'],
     },
     module: {
@@ -49,7 +50,6 @@ const common_config = mode => ({
     },
     plugins: [
         new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) }),
-        new WebpackBar({ color: 'green' }),
         new HtmlWebpackPlugin({
             hash: true,
             inject: mode === 'development',
