@@ -24,9 +24,10 @@ export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 
 const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
-export default class GameView extends ui.scenes.game.gameUI
+export default class GameView
+    extends ui.scenes.game.gameUI
     implements HonorScene {
-    /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
+    /** 玩家 index>2 就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
     private fish_click_observer: Subscriber<string>;
     private pool_click_observer: Subscriber<Point>;

@@ -10,5 +10,6 @@ module.exports = {
                 useESModules: false,
             },
         ],
+        ['@babel/plugin-transform-modules-commonjs'],
     ],
 };

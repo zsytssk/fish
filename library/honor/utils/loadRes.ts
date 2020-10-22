@@ -22,7 +22,7 @@ export function loadRes(res: ResItem[] | string[], on_progress?: FunProgress) {
             );
         }
         const loaded_fn = new Handler(this, () => {
-            setImmediate(resolve);
+            setTimeout(resolve, 0);
         });
 
         loader.load(res, loaded_fn, loading_fun);

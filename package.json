@@ -10,7 +10,7 @@
         "doc": "doc"
     },
     "scripts": {
-        "start": "cross-env ENV=DEV webpack serve --progress --mode development",
+        "start": "cross-env ENV=DEV webpack serve --progress --mode production",
         "checkError": "cross-env CheckError=true  webpack-dev-server --mode development",
         "test": "cross-env ENV=TEST webpack --progress --mode development",
         "prod": "cross-env ENV=PROD webpack --progress --mode production",
@@ -29,6 +29,7 @@
     },
     "dependencies": {
         "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/plugin-transform-modules-commonjs": "^7.12.1",
         "@babel/preset-react": "^7.12.1",
         "@babel/preset-typescript": "^7.12.1",
         "@types/bezier-js": "0.0.8",
