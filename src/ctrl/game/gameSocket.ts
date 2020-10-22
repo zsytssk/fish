@@ -129,7 +129,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
 
 export function offGameSocket(game: GameCtrl) {
     offCommon(game_socket, game);
-    game_socket.event.offAllCaller(game);
     game_socket = undefined;
 }
 export function sendToGameSocket(

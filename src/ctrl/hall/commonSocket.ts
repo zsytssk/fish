@@ -92,7 +92,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
 }
 
 export function offCommon(socket: WebSocketTrait, bindObj: any) {
-    socket.event.offAllCaller(bindObj);
+    socket?.event.offAllCaller(bindObj);
     const { bg_monitor } = ctrlState.app;
     bg_monitor.event.offAllCaller(bindObj);
 }
