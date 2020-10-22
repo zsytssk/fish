@@ -12,6 +12,7 @@
     "scripts": {
         "start": "cross-env ENV=DEV webpack serve --progress --mode development",
         "checkError": "cross-env CheckError=true  webpack-dev-server --mode development",
+        "prod": "cross-env ENV=DEV webpack --progress --mode production",
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
         "test": "node  ./script/test.js"
     },
