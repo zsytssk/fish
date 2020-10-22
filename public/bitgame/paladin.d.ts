@@ -1,11 +1,10 @@
-
 /**
  * @version 1.1.4
- * 
+ *
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
  * 游戏可以直接使用和管理获取配置，登录、登出、支付、数据统计等功能。
- * 
+ *
  * @example
  * 1.引入JS文件
    在需要使用SDK的项目引入paladin.min.js文件。<script src="paladin.min.js"></script>
@@ -23,7 +22,7 @@
     3.使用组件
     先检测组件是否存在，然后调用组件方法，推荐该方法
     list 需要检测的组件列表 ['launch', 'toolbar']
-    success 以键值对的形式返回，可用的组件可用为true，不可用为false { 'launch': true, 'toolbar': false } 
+    success 以键值对的形式返回，可用的组件可用为true，不可用为false { 'launch': true, 'toolbar': false }
     paladin.checkComponents({
         list: ['launch'],
         success: function(res) {
@@ -55,7 +54,7 @@
  * 批量初始化组件
     paladin.loadComponents([{
         name,
-        params 
+        params
     }]);
  * 获取初始语言
     paladin.getLang();
@@ -69,8 +68,8 @@
  * 获取平台类型
     paladin.getPlatform();
  *
- */ 
-declare namespace paladin {	
+ */
+declare namespace paladin {
     // 版本号
     export const version: string;
 
@@ -137,13 +136,17 @@ declare namespace paladin {
         formatData: (str: string, len: number, correction: number) => string;
         formatSensitiveData: (str: string, len: number) => string;
         getQueryParams: (key: string) => string;
-        convertTimezone: (value: string | number, source: string, target: string) => number;
+        convertTimezone: (
+            value: string | number,
+            source: string,
+            target: string,
+        ) => number;
         getTimezoneOffset: (utc: string) => number;
     }
 
     // 工具 - 常用工具
     export const tools: ITools;
-    
+
     // 模块 - 系统管理
     export const sys: SystemManager;
     // 模块 - 账户管理
@@ -162,12 +165,12 @@ declare namespace paladin {
      * @param {array} list 组件名称列表
      * @param {function} success 成功回调
      */
-    interface ICheckComponentsData { 
+    interface ICheckComponentsData {
         list: string[];
         success: (res: { [compName: string]: boolean }) => void;
     }
 
-    /** 
+    /**
      * 检测组件是否存在
      * @param {object} data 检测组件数据
      */
@@ -183,33 +186,33 @@ declare namespace paladin {
         params: any;
     }
 
-    /** 
+    /**
      * 批量加载组件
      * @param {array} data 组件列表配置
      */
     export function loadComponents(data: Array<ILoadComponentsData>): void;
 
-    /** 
+    /**
      * 获取组件
      * @param {string} name 组件名称
      * @return {object} comp 组件
      */
     export function getComponent(name: string): any;
 
-    /** 
+    /**
      * 检测组件是否存在
      * @param {string} name 组件名称
      * @return {boolean} result
      */
     export function hasComponent(name: string): boolean;
 
-    /** 
+    /**
      * 获取初始语言
      * @return {string} lang
      */
     export function getLang(): string;
 
-    /** 
+    /**
      * 获取初始语言
      * @return {string} lang
      */
@@ -226,16 +229,16 @@ declare namespace paladin {
      * @return {string} platform
      */
     export function getPlatform(): string;
-    
+
     /*
      * 组件
      * @param {object} launch 启动
      */
     interface IComps {
-        launch: Launch 
+        launch: Launch;
     }
 
-    export const comps:IComps;
+    export const comps: IComps;
 }
 
 /**
@@ -243,7 +246,7 @@ declare namespace paladin {
  * @description
  * 游戏引擎加载之前, 通过paladin.sys.init获取配置信息
  * 根据得到的配置信息, 加载游戏引擎, 初始化游戏配置
- * 
+ *
  * @example
  * 初始化获取语言，渠道，配置和终端信息
    paladin.sys.init({
@@ -254,19 +257,19 @@ declare namespace paladin {
             loadEngine();
         }
     });
- * 
+ *
  * 初始化后，可获取配置信息 paladin.sys.config;
- * 
+ *
  * 初始化后，可获取终端环境 paladin.sys.browser;
  *
  * 获取终端环境 paladin.sys.getBrowser();
- * 
+ *
  * 获取语言环境 paladin.sys.getLanguage();
- * 
+ *
  * 获取渠道信息 paladin.sys.getChannel();
- * 
- * 获取时区信息 paladin.sys.getTimezone()  
- * 
+ *
+ * 获取时区信息 paladin.sys.getTimezone()
+ *
  * 获取配置信息
  * 如果定义url，则使用url请求接口
  * 如果定义origin，则使用origin + '/platform/game/domains' 请求接口
@@ -278,7 +281,7 @@ declare namespace paladin {
         data
         success
     });
- * 
+ *
  * 更新语言环境 paladin.sys.updateLanguage('en');
  */
 declare namespace paladin {
@@ -289,7 +292,7 @@ declare namespace paladin {
      * @param {object} data 请求数据
      * @param {function} success 成功回调
      * @param {function} error 失败回调
-     * 
+     *
      * @default url: ''
      * @default origin: ''
      * @default data: {}
@@ -415,7 +418,7 @@ declare namespace paladin {
          * 获取渠道信息
          * @param {string} channel
          */
-        getChannel(): { channel: string, storeId: string };
+        getChannel(): { channel: string; storeId: string };
 
         /**
          * 获取配置信息
@@ -430,9 +433,9 @@ declare namespace paladin {
         getTimezone(): string;
 
         /**
-        * 更新语言环境
-        * @param {string} lang 语言
-        */
+         * 更新语言环境
+         * @param {string} lang 语言
+         */
         updateLanguage(lang: string): void;
     }
 }
@@ -442,16 +445,16 @@ declare namespace paladin {
  * @description
  * 根据传入type使用对应的登入或者登出方式，默认平台。
  * 目前暂时只支持平台登入 & 登出，预留其他方式类型，以及回调监听
- * 
- * @example 
+ *
+ * @example
  * 账户类型 ios: 苹果, android: 安卓, wechat: 微信, channel: 渠道
- * 登录(默认平台) paladin.account.login(); 
- * 登录（ios）paladin.account.login({ platform: 'ios' }); 
- * 
- * 登出 paladin.account.logout(); 
- * 
+ * 登录(默认平台) paladin.account.login();
+ * 登录（ios）paladin.account.login({ platform: 'ios' });
+ *
+ * 登出 paladin.account.logout();
+ *
  * 下载应用 paladin.account.app();
- * 
+ *
  * 进入首页 paladin.account.home();
  *
  * 复制 paladin.account.copy(text);
@@ -477,7 +480,7 @@ declare namespace paladin {
      * @param {function} success 成功回调
      * @param {function} error 失败回调
      * @param {function} complete 完成回调
-     * 
+     *
      * @default data: {}
      */
     interface IAccountBasicData {
@@ -493,7 +496,7 @@ declare namespace paladin {
          * @return {object} data 登录状态
          */
         getState(): IAccountStateData;
-    
+
         /**
          * 登录
          * @param {object} data 数据
@@ -517,7 +520,7 @@ declare namespace paladin {
          * @param {string} text 文案
          * @return {Promise<void>} promise
          */
-        copy(text: string):Promise<void>;
+        copy(text: string): Promise<void>;
 
         /**
          * 粘贴
@@ -528,7 +531,7 @@ declare namespace paladin {
         /**
          * 跳转页面
          * @param {string} key 关键词
-         */ 
+         */
         landingPageUrl(key: string): void;
 
         /**
@@ -544,9 +547,9 @@ declare namespace paladin {
  * 模块 - 支付管理
  * @description
  * 支付管理，支持各种平台充值 & 提现，暂时支持平台
- * 
+ *
  * @example
- * 支付请求，type 1:提现, 2:充值 
+ * 支付请求，type 1:提现, 2:充值
     paladin.account.request({
         type,
         data = {},
@@ -554,20 +557,20 @@ declare namespace paladin {
         error,
         complete
     });
- * 
+ *
  * 充值 paladin.account.recharge({ data, success, error, complete });
- * 
+ *
  * 提现 paladin.account.withdraw({ data, success, error, complete });
- */ 
+ */
 declare namespace paladin {
     /**
      * 请求数据
-     * @param {string} type 支付类型 0:提现, 1:充值 
+     * @param {string} type 支付类型 0:提现, 1:充值
      * @param {object} data 支付数据
      * @param {function} success 成功回调
      * @param {function} error 失败回调
      * @param {function} complete 完成回调
-     * 
+     *
      * @default data: {}
      */
     interface IPayRequestData {
@@ -577,14 +580,14 @@ declare namespace paladin {
         error?: Function;
         complete?: Function;
     }
-    
+
     /**
      * 请求基础数据
      * @param {object} data 支付数据
      * @param {function} success 成功回调
      * @param {function} error 失败回调
      * @param {function} complete 完成回调
-     * 
+     *
      * @default data: {}
      */
     interface IPayRequestBasicData {
@@ -601,13 +604,13 @@ declare namespace paladin {
         request(data: IPayRequestData): void;
 
         /**
-         * 充值 
+         * 充值
          * @param {object} data 充值数据
          */
         recharge(data: IPayRequestBasicData): void;
 
         /**
-         * 提币 
+         * 提币
          * @param {object} data 提币数据
          */
         withdraw(data: IPayRequestBasicData): void;
@@ -619,7 +622,7 @@ declare namespace paladin {
  * @description
  * 能够通过cdn动态加载脚本，加载方式有默认, defer和async。
  * 同时支持Promise监听加载情况
- * 
+ *
  * @example
  * 加载脚本
     paladin.loader.load({
@@ -636,7 +639,7 @@ declare namespace paladin {
      * @param {function} error 失败回调
      * @param {number} loadType 执行类型 0:默认, 1: defer, 2: async
      * @param {boolean} isPromise 是否开启Promise
-     * 
+     *
      * @default loadType: 0
      * @default isPromise: false
      */
@@ -649,7 +652,7 @@ declare namespace paladin {
     }
 
     class LoaderManager {
-        /** 
+        /**
          * 加载脚本
          * @param {object} data 加载数据
          */
@@ -666,7 +669,7 @@ declare namespace paladin {
      * @param {object} data 请求数据
      * @param {function} success 成功回调
      * @param {function} error 失败回调
-     * 
+     *
      * @default url: ''
      * @default origin: ''
      * @default data: {}
@@ -686,7 +689,7 @@ declare namespace paladin {
      * @param {string} sdkUrl 渠道sdk
      * @param {array} disable 渠道禁用模块 deposit:充值, withdraw:提现
      * @param {string} 'portrait' // 'portrait'(竖 屏)、'landscape'(横屏)
-     * 
+     *
      * @default clientId: ''
      * @default lang: 'zh-Hans'
      * @default sdkUrl: ''
@@ -721,7 +724,7 @@ declare namespace paladin {
          * @param {function} success 成功回调
          * @param {function} error 失败回调
          */
-        async getConfig(data : IChannelInitData): Promise<string>;
+        async getConfig(data: IChannelInitData): Promise<string>;
     }
 }
 
@@ -730,7 +733,7 @@ declare namespace paladin {
  * @description
  * 使用Cocos Analytics进行PV & UV统计，只需要进行简单的设置就能够开启，方便在游戏开发过程中快速接入。
  * 帮助管理者、产品、运营、开发等多角色，精准有效了解产品情况，更高效的获取目标客户，实现业务增长。
- * 
+ *
  * @example
  * 统计初始化
     paladin.analytics.init({
@@ -749,7 +752,7 @@ declare namespace paladin {
     paladin.analytics.login(paladin.analytics.EventID.LOGIN_SUCCESS, {
         userID: uid
     });
- * 
+ *
  * 统计登录退出
  * paladin.analytics.logout();
  */
@@ -767,7 +770,7 @@ declare namespace paladin {
      * @param EVENT_SUCCESS 自定义事件成功
      * @param EVENT_CANCELLED 自定义事件取消
      * @param EVENT_FAILED 自定义事件失败
-     * 
+     *
      * @default LOGIN_START: 1
      * @default LOGIN_SUCCESS: 2
      * @default LOGIN_FAILED: 3
@@ -780,8 +783,8 @@ declare namespace paladin {
      * @default EVENT_CANCELLED: 10
      * @default EVENT_FAILED: 11
      */
-    interface IAnalyticsEventID {		
-		LOGIN_START: number;
+    interface IAnalyticsEventID {
+        LOGIN_START: number;
         LOGIN_SUCCESS: number;
         LOGIN_FAILED: number;
         // 支付
@@ -795,14 +798,14 @@ declare namespace paladin {
         EVENT_CANCELLED: number;
         EVENT_FAILED: number;
     }
-    
+
     /**
      * 初始化数据
      * @param {string} appId 游戏ID
      * @param {string} version 游戏版本
      * @param {string} storeId 分发渠道
      * @param {string} engine 游戏引擎
-     * 
+     *
      * @default appId: ''
      * @default version: '1.0.0'
      * @default channel: ''
@@ -812,28 +815,28 @@ declare namespace paladin {
         appId: string;
         version: string;
         channel: string;
-        engine:  string;
+        engine: string;
     }
 
     /**
      * 登录数据
      * @param {string} channel 获客渠道，指获取该客户的广告渠道信息
-     * @param {string} userID 获客渠道，指获取该客户的广告渠道信息   
-     * @param {number} age 年龄  
-     * @param {number} sex 性别：1为男，2为女，其它表示未知 
+     * @param {string} userID 获客渠道，指获取该客户的广告渠道信息
+     * @param {number} age 年龄
+     * @param {number} sex 性别：1为男，2为女，其它表示未知
      * @param {string} reason 失败原因
-     * 
+     *
      * @default channel: ''
      * @default userID: ''
      * @default age: 0
-     * @default sex: 0       
+     * @default sex: 0
      * @default reason: ''
      */
     interface IAnalyticsLoginData {
         channel?: string;
         userID?: string;
         age?: number;
-        sex?: number;       
+        sex?: number;
         reason?: string;
     }
 
@@ -850,70 +853,70 @@ declare namespace paladin {
      * @param {string} gameServer 玩家充值的区服
      * @param {number} level 玩家充值时的等级
      * @param {string} mission 玩家充值时所在的关卡或任务。亦可传入一个玩家打到的最高关卡。
-     * 
-     * @default amount: 0  
+     *
+     * @default amount: 0
      * @default orderID: ''
-     * @default payType: '' 
-     * @default iapID: ''    
-     * @default currencyType: '' 
-     * @default virtualCurrencyAmount: 0  
-     * @default accountID: '' 
-     * @default partner: ''             
-     * @default gameServer: ''    
-     * @default level: 0              
-     * @default mission: 0   
+     * @default payType: ''
+     * @default iapID: ''
+     * @default currencyType: ''
+     * @default virtualCurrencyAmount: 0
+     * @default accountID: ''
+     * @default partner: ''
+     * @default gameServer: ''
+     * @default level: 0
+     * @default mission: 0
      */
     interface IAnalyticsPaymentData {
         amount: number;
         orderID: string;
         payType: string;
-        iapID: string;   
-        currencyType: string; 
+        iapID: string;
+        currencyType: string;
         virtualCurrencyAmount: number;
         accountID: string;
-        partner?: string;             
-        gameServer?: string;   
-        level?: number;          
-        mission?: string; 
+        partner?: string;
+        gameServer?: string;
+        level?: number;
+        mission?: string;
     }
 
     class AnalyticsManager {
         EventID: IAnalyticsEventID;
-    
+
         /**
          * 初始化
          * @param {object} data 初始化数据
          */
         init(data: IAnalyticsInitData): void;
-    
+
         /**
          * 开启日志
          * @param {boolean} enable 是否开启
          */
         enableDebug(enable: boolean): void;
-    
+
         /**
          * 登录
          * @param {number} id ID
          * @param {object} data 登录数据
          */
         login(id: number, data: IAnalyticsLoginData): void;
-    
+
         // 登出
         logout(): void;
-    
+
         /**
          * 支付
          * @param {number} id ID
          * @param {object} data 支付数据
          */
         payment(id: number, data: IAnalyticsPaymentData): void;
-    
+
         /**
          * 自定义
          * @param {number} id ID
          * @param {number} eventId 事件ID
-         * @param {object} data 事件数据 
+         * @param {object} data 事件数据
          */
         customEvent(id: number, eventId: string, data: any): void;
     }
@@ -924,7 +927,7 @@ declare namespace paladin {
  * @description
  * 加载过渡启动页，提高游戏体验，避免用户看到加载黑屏
  * 支持样式自定义，包括设计尺寸，横竖屏显示，背景色，字体大小颜色文案，logo图片和圆点样式
- * 
+ *
  * @example
  * 默认竖屏
     paladin.comps.launch.show({
@@ -934,14 +937,14 @@ declare namespace paladin {
         notice: { color: '#6d8ac8' }
     });
  * 横屏 paladin.comps.launch.show({ design: { width: 1334, height: 750, mode: 'horizontal' } });
- */ 
+ */
 declare namespace paladin {
     /**
      * 设计配置数据
-     * @param {number} width 屏幕宽 
-     * @param {number} height 屏幕高 
+     * @param {number} width 屏幕宽
+     * @param {number} height 屏幕高
      * @param {string} mode 显示模式 horizontal:横屏, vertical:竖屏
-     * 
+     *
      * @default width: 750
      * @default height: 1334
      * @default mode: 'vertical'
@@ -954,9 +957,9 @@ declare namespace paladin {
 
     /**
      * 标识配置数据
-     * @param {boolean} disable 是否禁用 
-     * @param {string} url 地址 
-     * 
+     * @param {boolean} disable 是否禁用
+     * @param {string} url 地址
+     *
      * @default disable: false
      */
     interface ILaunchLogoData {
@@ -967,7 +970,7 @@ declare namespace paladin {
     /**
      * 背景配置数据
      * @param {string} color 背景色
-     * 
+     *
      * @default color: '#fff'
      */
     interface ILaunchBackgroundData {
@@ -976,19 +979,19 @@ declare namespace paladin {
 
     /**
      * 加载配置数据
-     * @param {boolean} disable 是否禁用 
-     * @param {string} color 圆颜色 
+     * @param {boolean} disable 是否禁用
+     * @param {string} color 圆颜色
      * @param {number} radius 半径
      * @param {number} nums 数量
      * @param {number} space 间距
-     * 
+     *
      * @default disable: false
      * @default color: '#000'
      * @default radius: 10
      * @default nums: 3
      * @default space: 10
      */
-    interface ILaunchLoadData{
+    interface ILaunchLoadData {
         disable: boolean;
         color: string;
         radius: number;
@@ -998,10 +1001,10 @@ declare namespace paladin {
 
     /**
      * 提示配置数据
-     * @param {boolean} disable 是否禁用 
-     * @param {string} color 字体颜色 
+     * @param {boolean} disable 是否禁用
+     * @param {string} color 字体颜色
      * @param {number} fontSize 字体大小
-     * 
+     *
      * @default disable: false
      * @default color: '#000'
      * @default fontSize: 24
@@ -1014,13 +1017,13 @@ declare namespace paladin {
 
     /**
      * 公告配置数据
-     * @param {boolean} disable 是否禁用 
-     * @param {string} color 字体颜色 
-     * @param {string} title 标题 
-     * @param {number} titleFontSize 标题字体大小 
-     * @param {array} desc 描述 
-     * @param {number} descFontSize 描述字体大小 
-     * 
+     * @param {boolean} disable 是否禁用
+     * @param {string} color 字体颜色
+     * @param {string} title 标题
+     * @param {number} titleFontSize 标题字体大小
+     * @param {array} desc 描述
+     * @param {number} descFontSize 描述字体大小
+     *
      * @default disable: false
      * @default color: '#000'
      * @default titleFontSize: 28
@@ -1058,7 +1061,7 @@ declare namespace paladin {
          * 显示
          * @param data 显示数据
          */
-        show(data: ILaunchShowData) : void;
+        show(data: ILaunchShowData): void;
 
         // 隐藏
         hide(): void;
