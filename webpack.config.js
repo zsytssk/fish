@@ -2,11 +2,8 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const ENV = process.env.NODE_ENV;
+const { ENV, CheckError } = process.env;
 
-console.log(`test:>`, ENV);
-
-const CheckError = findParam('CheckError');
 const common_config = {
     entry: ['./test/test.ts', './src/main.ts'],
     output: {

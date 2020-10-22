@@ -1,5 +1,5 @@
 import { Laya } from 'Laya';
-import { Handler } from 'Laya/utils/Handler';
+import { Handler } from 'laya/utils/Handler';
 import Event from 'comMan/eventExtendCom';
 
 export const AudioEvent = {

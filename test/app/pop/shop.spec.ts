@@ -1,14 +1,14 @@
 import { Test } from 'testBuilder';
-import * as shopData from './shop.json';
+import { default as shopData } from './shop.json';
 import ShopPop from 'view/pop/shop';
 import honor from 'honor';
 
-export const shop_test = new Test('shop', (runner) => {
+export const shop_test = new Test('shop', runner => {
     runner.describe('open', async () => {
         ShopPop.preEnter();
     });
     runner.describe('render_data', async () => {
-        return new Promise(async (resolve) => {
+        return new Promise(async resolve => {
             const shop = (await honor.director.openDialog(ShopPop)) as ShopPop;
             setTimeout(() => {
                 shop.initData(shopData);
