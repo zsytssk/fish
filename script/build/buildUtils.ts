@@ -8,7 +8,6 @@ import { clear } from '../zutil/ls/rm';
 import { write } from '../zutil/ls/write';
 import { replaceReg } from '../zutil/utils/replaceReg';
 import * as config from './config.json';
-import { build_tips } from './build';
 
 async function getConfig(): Promise<typeof config> {
     const file = path.resolve(__dirname, './config.json');
@@ -41,7 +40,7 @@ export async function build(type: BuildType = 'prod') {
     const mode = type === 'prod' ? 'production' : 'development';
     const env = type === 'prod' ? 'PROD' : 'TEST';
 
-    await excuse(`cross-env ENV=${env}  webpack --progress --mode ${mode}`, {
+    await excuse(`cross-env ENV=${env} webpack --progress --mode ${mode}`, {
         path: project_path,
         output: true,
     });
