@@ -1,5 +1,5 @@
 /**
- * @version 1.1.3
+ * @version 1.1.4
  *
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。

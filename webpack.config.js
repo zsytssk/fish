@@ -23,6 +23,7 @@ const common_config = mode => ({
         fallback: {
             buffer: require.resolve('buffer/'),
             stream: require.resolve('stream-browserify/'),
+            util: false,
         },
         extensions: ['.ts', '.js', '.json'],
     },
@@ -97,6 +98,7 @@ const prod_config = {
     entry: {
         bundle: './src/main.ts',
     },
+    target: ['web', 'es5'],
     optimization: {
         splitChunks: {
             cacheGroups: {
@@ -127,7 +129,7 @@ module.exports = (env, argv) => {
     if (argv.mode === 'development') {
         result = { ...common, ...dev_config };
     } else {
-        common.module.rules[0].use.splice(1, 0, {
+        common.module.rules[0].use.splice(0, 0, {
             loader: 'babel-loader',
         });
         result = { ...common, ...prod_config };
