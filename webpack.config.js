@@ -19,18 +19,17 @@ const common_config = mode => ({
             path.resolve('./libs'),
             path.resolve('./src'),
         ],
-        alias: { crypto: 'crypto-browserify' },
-        fallback: {
-            buffer: require.resolve('buffer/'),
-            stream: require.resolve('stream-browserify/'),
-            util: false,
-        },
         extensions: ['.ts', '.js', '.json'],
     },
     module: {
         rules: [
             {
                 test: /(\.ts|\.js)$/,
+                exclude: [
+                    /\bcore-js\b/,
+                    /\bwebpack\/buildin\b/,
+                    /@babel\/runtime-corejs3/,
+                ],
                 use: [
                     {
                         loader: 'thread-loader',

@@ -100,7 +100,7 @@
         <% if (webpackConfig.mode === "development") { %>
         <script
             type="text/javascript"
-            src="bitgame/paladin.min.js<%= Date.now() %>"
+            src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
         <script>
             var platform = {
@@ -109,6 +109,7 @@
                 logout: function () {},
                 getInfo: function () {
                     return {
+                        cdn: '',
                         isLogin: false,
                         token: '',
                         socket_url: 'ws://47.101.172.184:8101',
@@ -117,6 +118,9 @@
                 recharge: function () {},
             };
         </script>
+        <script src="js/bundle.js?v=<%= Date.now() %>"></script>
+        <script src="js/laya.js?v=<%= Date.now() %>"></script>
+        <script src="js/libs.js?v=<%= Date.now() %>"></script>
         <% } %>
 
         <!-- production -->
