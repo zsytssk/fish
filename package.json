@@ -14,7 +14,7 @@
         "checkError": "cross-env CheckError=true  webpack-dev-server --mode development",
         "test": "cross-env ENV=TEST webpack --progress --mode development",
         "prod": "cross-env ENV=PROD webpack --progress --mode production",
-        "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts"
+        "build": "npm run prod && ts-node --project ./script/tsconfig.json --files ./script/build/build.ts"
     },
     "devDependencies": {
         "@babel/cli": "^7.8.4",
