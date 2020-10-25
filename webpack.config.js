@@ -25,11 +25,7 @@ const common_config = mode => ({
         rules: [
             {
                 test: /(\.ts|\.js)$/,
-                exclude: [
-                    /\bcore-js\b/,
-                    /\bwebpack\/buildin\b/,
-                    /@babel\/runtime-corejs3/,
-                ],
+                exclude: [/\bcore-js\b/],
                 use: [
                     {
                         loader: 'thread-loader',
