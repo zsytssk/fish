@@ -1,42 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>BitFishing</title>
-        <meta charset="utf-8" />
-        <meta name="renderer" content="webkit" />
-        <meta
-            name="viewport"
-            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
-        />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="full-screen" content="true" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="360-fullscreen" content="true" />
-        <meta name="laya" screenorientation="landscape" />
-        <meta http-equiv="expires" content="0" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="expires" content="0" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="./favicon/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="./favicon/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="./favicon/favicon-16x16.png"
-        />
-        <link rel="manifest" href="./favicon/site.webmanifest" />
-        <style>
-            html {
+<!doctype html><html><head><title>BitFishing</title><meta charset="utf-8"/><meta name="renderer" content="webkit"/><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="full-screen" content="true"/><meta name="x5-fullscreen" content="true"/><meta name="360-fullscreen" content="true"/><meta name="laya" screenorientation="landscape"/><meta http-equiv="expires" content="0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta http-equiv="expires" content="0"/><meta http-equiv="Cache-Control" content="no-siteapp"/><link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png"/><link rel="manifest" href="./favicon/site.webmanifest"/><style>html {
                 -ms-touch-action: none;
             }
 
@@ -91,13 +53,7 @@
 
             canvas {
                 background-color: #fff;
-            }
-        </style>
-    </head>
-    <body>
-        <script src="bitgame/paladin.min.js?v=1603504996383"></script>
-        <script>
-            function loadLib(url) {
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1603591288905"></script><script>function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
                 script.src = url;
@@ -129,9 +85,9 @@
                 loadType: 2,
                 success: function (res) {
                     const files = [
-                        res.cdn + 'js/bundle.js?v=1603504996383',
-                        res.cdn + 'js/laya.js?v=1603504996383',
-                        res.cdn + 'js/libs.js?v=1603504996383',
+                        res.cdn + 'js/bundle.js?v=1603591288905',
+                        res.cdn + 'js/laya.js?v=1603591288905',
+                        res.cdn + 'js/libs.js?v=1603591288905',
                     ];
 
                     for (var i = 0; i < files.length; i++) {
@@ -169,7 +125,4 @@
                             },
                         });
                 },
-            };
-        </script>
-    </body>
-</html>
+            };</script></body></html>
