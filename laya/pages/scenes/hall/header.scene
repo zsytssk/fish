@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":56,
-    "selecteID":66,
+    "selecteID":20,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -78,7 +78,7 @@
                             "x":45,
                             "type":"Box",
                             "searchKey":"Box,user_box",
-                            "props":{"y":14,"width":185,"visible":false,"var":"user_box","mouseThrough":false,"mouseEnabled":true,"left":0,"height":37},
+                            "props":{"y":18,"x":0,"width":185,"visible":false,"var":"user_box","mouseThrough":false,"mouseEnabled":true,"left":0,"height":37},
                             "nodeParent":56,
                             "label":"user_box",
                             "isOpen":false,
@@ -88,6 +88,7 @@
                             "compId":31,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite",
                                     "props":{"texture":"image/hall/avatar.png"},
@@ -101,9 +102,10 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,nickname",
-                                    "props":{"y":10,"x":42,"width":163,"var":"nickname","text":"nickname","overflow":"hidden","height":22,"fontSize":22,"color":"#fff","align":"left"},
+                                    "props":{"y":7,"x":49,"width":136,"var":"nickname","text":"nickname","overflow":"hidden","height":22,"fontSize":22,"color":"#fff","align":"left"},
                                     "nodeParent":31,
                                     "label":"nickname",
                                     "isDirectory":false,
@@ -118,7 +120,7 @@
                             "x":45,
                             "type":"Box",
                             "searchKey":"Box,btn_coin_select",
-                            "props":{"y":9,"x":225,"width":271,"var":"btn_coin_select","height":56},
+                            "props":{"y":9,"x":206,"width":271,"var":"btn_coin_select","height":56},
                             "nodeParent":56,
                             "label":"btn_coin_select",
                             "isOpen":false,
@@ -225,7 +227,7 @@
                             "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_recharge",
-                            "props":{"y":14,"x":508,"visible":false,"var":"btn_recharge","stateNum":"1","skin":"image/hall/btn_recharge.png"},
+                            "props":{"y":14,"x":498,"visible":false,"var":"btn_recharge","stateNum":"1","skin":"image/hall/btn_recharge.png"},
                             "nodeParent":56,
                             "label":"btn_recharge",
                             "isDirectory":false,
@@ -239,7 +241,7 @@
                             "x":45,
                             "type":"Box",
                             "searchKey":"Box,middle_btn_wrap",
-                            "props":{"y":0,"x":575,"width":183,"visible":false,"var":"middle_btn_wrap","height":71},
+                            "props":{"y":1,"x":575,"width":183,"visible":false,"var":"middle_btn_wrap","height":71},
                             "nodeParent":56,
                             "label":"middle_btn_wrap",
                             "isOpen":false,

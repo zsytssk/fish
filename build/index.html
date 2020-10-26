@@ -1,42 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>BitFishing</title>
-        <meta charset="utf-8" />
-        <meta name="renderer" content="webkit" />
-        <meta
-            name="viewport"
-            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
-        />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="full-screen" content="true" />
-        <meta name="x5-fullscreen" content="true" />
-        <meta name="360-fullscreen" content="true" />
-        <meta name="laya" screenorientation="landscape" />
-        <meta http-equiv="expires" content="0" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta http-equiv="expires" content="0" />
-        <meta http-equiv="Cache-Control" content="no-siteapp" />
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="./favicon/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="./favicon/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="./favicon/favicon-16x16.png"
-        />
-        <link rel="manifest" href="./favicon/site.webmanifest" />
-        <style>
-            html {
+<!doctype html><html><head><title>BitFishing</title><meta charset="utf-8"/><meta name="renderer" content="webkit"/><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="full-screen" content="true"/><meta name="x5-fullscreen" content="true"/><meta name="360-fullscreen" content="true"/><meta name="laya" screenorientation="landscape"/><meta http-equiv="expires" content="0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta http-equiv="expires" content="0"/><meta http-equiv="Cache-Control" content="no-siteapp"/><link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png"/><link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png"/><link rel="manifest" href="./favicon/site.webmanifest"/><style>html {
                 -ms-touch-action: none;
             }
 
@@ -91,93 +53,76 @@
 
             canvas {
                 background-color: #fff;
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1603683434243"></script><script>function loadLib(url) {
+                var script = document.createElement('script');
+                script.async = false;
+                script.src = url;
+                document.body.appendChild(script);
             }
-        </style>
-    </head>
-    <body>
-        <script src="bitgame/paladin.min.js?v=1603593754101"></script>
-        <script>
-            function loadLib(url) {
-                            var script = document.createElement('script');
-                            script.async = false;
-                            script.src = url;
-                            document.body.appendChild(script);
-                        }
 
-                        paladin.checkComponents({
-                            list: ['launch'],
-                            success: function (res) {
-                                if (res.launch) {
-                                    paladin.comps.launch.show({
-                                        design: {
-                                            width: 1334,
-                                            height: 750,
-                                            mode: 'horizontal',
-                                        },
-                                        logo: { url: 'bitgame/logo.png' },
-                                        load: { color: '#6d8ac8' },
-                                        tips: { color: '#6d8ac8' },
-                                        notice: { color: '#6d8ac8' },
-                                    });
-                                }
+            paladin.checkComponents({
+                list: ['launch'],
+                success: function (res) {
+                    if (res.launch) {
+                        paladin.comps.launch.show({
+                            design: {
+                                width: 1334,
+                                height: 750,
+                                mode: 'horizontal',
+                            },
+                            logo: { url: 'bitgame/logo.png' },
+                            load: { color: '#6d8ac8' },
+                            tips: { color: '#6d8ac8' },
+                            notice: { color: '#6d8ac8' },
+                        });
+                    }
+                },
+            });
+
+            window.screenOrientation = 'sensor_landscape';
+            // 游戏初始化
+            paladin.init({
+                loadType: 2,
+                success: function (res) {
+                    const files = [
+                        res.cdn + 'js/bundle.js?v=1603683434243',
+                        res.cdn + 'js/laya.js?v=1603683434243',
+                        res.cdn + 'js/libs.js?v=1603683434243',
+                    ];
+
+                    for (var i = 0; i < files.length; i++) {
+                        loadLib(files[i]);
+                    }
+                },
+            });
+
+            var platform = {
+                hideLoading: function () {
+                    paladin.comps.launch.hide();
+                },
+                login: function () {
+                    paladin.account.login();
+                },
+                logout: function () {
+                    paladin.account.logout();
+                },
+                getInfo: function () {
+                    return {
+                        isLogin: paladin.sys.config.isLogin,
+                        token: paladin.sys.config.jwtToken,
+                        lang: paladin.sys.config.lang,
+                        socket_url: paladin.sys.config.ws,
+                        cdn: paladin.sys.config.cdn,
+                    };
+                },
+                recharge: function (currency, gameNo) {
+                    paladin &&
+                        paladin.pay.recharge({
+                            data: {
+                                currency: currency,
+                                gameNo: gameNo,
+                                isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
                             },
                         });
-
-                        window.screenOrientation = 'sensor_landscape';
-                        // 游戏初始化
-                        paladin.init({
-                            loadType: 2,
-                            success: function (res) {
-                                const files = [
-                                    res.cdn + 'js/bundle.js?v=1603593754101',const files = [
-                                    res.cdn + 'js/bundle.js?v=1603593754101',
-                                    res.cdn + 'js/laya.js?v=1603593754101',
-                                    res.cdn + 'js/libs.js?v=1603593754101',
-                                ];
-
-                                for (var i = 0; i < files.length; i++) {
-                                    loadLib(files[i]);
-                                }
-                                    res.cdn + 'js/laya.js?v=1603593754101',
-                                    res.cdn + 'js/libs.js?v=1603593754101',
-                                ];
-
-                                for (var i = 0; i < files.length; i++) {
-                                    loadLib(files[i]);
-                                }
-                            },
-                        });
-
-                        var platform = {
-                            hideLoading: function () {
-                                paladin.comps.launch.hide();
-                            },
-                            login: function () {
-                                paladin.account.login();
-                            },
-                            logout: function () {
-                                paladin.account.logout();
-                            },
-                            getInfo: function () {
-                                return {
-                                    isLogin: paladin.sys.config.isLogin,
-                                    token: paladin.sys.config.jwtToken,
-                                    lang: paladin.sys.config.lang,
-                                    socket_url: paladin.sys.config.ws,
-                                    cdn: paladin.sys.config.cdn,
-                                };
-                            },
-                            recharge: function (currency, gameNo) {
-                                paladin &&
-                                    paladin.pay.recharge({
-                                        data: {
-                                            currency: currency,
-                                            gameNo: gameNo,
-                                            isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
-                                        },
-                                    });
-                            },
-                        };
-        </script>
-    </body>
-</html>
+                },
+            };</script></body></html>

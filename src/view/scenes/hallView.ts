@@ -153,8 +153,7 @@ export default class HallView
         const space = 10;
         nickname.text = honor.utils.cutStr(nickname_str, 12);
         if (nickname_str !== 'GUEST') {
-            resizeContain(left_wrap, space);
-            return (user_box.visible = false);
+            return resizeContain(left_wrap, space);
         }
         user_box.visible = true;
 
