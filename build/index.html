@@ -53,12 +53,25 @@
 
             canvas {
                 background-color: #fff;
-            }</style></head><body><script src="bitgame/paladin.min.js?v=1603373377563"></script><script>function loadLib(url) {
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1603769791739"></script><script>function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
                 script.src = url;
                 document.body.appendChild(script);
             }
+            var interval = setInterval(function () {
+                if (window.Laya) {
+                    clearInterval(interval);
+                    ['mousewheel', 'DOMMouseScroll'].forEach(function (event) {
+                        Laya.Browser.container.addEventListener(
+                            event,
+                            function (e) {
+                                e.preventDefault();
+                            },
+                        );
+                    });
+                }
+            }, 1000);
 
             paladin.checkComponents({
                 list: ['launch'],
@@ -85,9 +98,9 @@
                 loadType: 2,
                 success: function (res) {
                     const files = [
-                        res.cdn + 'js/bundle.js?v=1603373377563',
-                        res.cdn + 'js/laya.js?v=1603373377563',
-                        res.cdn + 'js/libs.js?v=1603373377563',
+                        res.cdn + 'js/bundle.js?v=1603769791739',
+                        res.cdn + 'js/laya.js?v=1603769791739',
+                        res.cdn + 'js/libs.js?v=1603769791739',
                     ];
 
                     for (var i = 0; i < files.length; i++) {

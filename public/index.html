@@ -116,6 +116,20 @@
                 },
                 recharge: function () {},
             };
+
+            var interval = setInterval(function () {
+                if (window.Laya) {
+                    clearInterval(interval);
+                    ['mousewheel', 'DOMMouseScroll'].forEach(function (event) {
+                        Laya.Browser.container.addEventListener(
+                            event,
+                            function (e) {
+                                e.preventDefault();
+                            },
+                        );
+                    });
+                }
+            }, 1000);
         </script>
         <% } %>
 
@@ -132,6 +146,19 @@
                 script.src = url;
                 document.body.appendChild(script);
             }
+            var interval = setInterval(function () {
+                if (window.Laya) {
+                    clearInterval(interval);
+                    ['mousewheel', 'DOMMouseScroll'].forEach(function (event) {
+                        Laya.Browser.container.addEventListener(
+                            event,
+                            function (e) {
+                                e.preventDefault();
+                            },
+                        );
+                    });
+                }
+            }, 1000);
 
             paladin.checkComponents({
                 list: ['launch'],
