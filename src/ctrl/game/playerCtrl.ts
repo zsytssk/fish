@@ -197,12 +197,14 @@ export class PlayerCtrl {
                     return;
                 }
                 const { x, y } = velocity;
-                AudioCtrl.play(AudioRes.Fire, is_cur ? 1 : 0.3);
                 const data = {
                     direction: { x, y },
                     userId: user_id,
                 } as ShootReq;
 
+                if (is_cur) {
+                    AudioCtrl.play(AudioRes.Fire);
+                }
                 if (!is_cur) {
                     data.robotId = user_id;
                     data.userId = getCurPlayer().user_id;
