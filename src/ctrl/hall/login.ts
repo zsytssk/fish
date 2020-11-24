@@ -21,7 +21,7 @@ export async function initHallSocket() {
 }
 
 export function login() {
-    if (getParams('c')) {
+    if (getParams('c') === 'YSTAR') {
         platform.register();
     } else {
         platform.login();

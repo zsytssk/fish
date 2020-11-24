@@ -1,6 +1,6 @@
 
 /**
- * @version 1.1.5
+ * @version 1.1.9
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -33,7 +33,12 @@
                 logo: { url: 'splash.ff3cc.png' },
                 load: { color: '#6d8ac8' },
                 tips: { color: '#6d8ac8' },
-                notice: { color: '#6d8ac8' }
+                notice: { color: '#6d8ac8' },
+                maintain: {
+                  color: '#6d8ac8',
+                  strokeColor: '#fff',
+                  url: 'maintain.jpg'
+                }
             });
             }
         }
@@ -69,8 +74,8 @@
  * 获取平台类型
     paladin.getPlatform();
  *
- */ 
-declare namespace paladin {	
+ */
+declare namespace paladin {
     // 版本号
     export const version: string;
 
@@ -139,11 +144,26 @@ declare namespace paladin {
         getQueryParams: (key: string) => string;
         convertTimezone: (value: string | number, source: string, target: string) => number;
         getTimezoneOffset: (utc: string) => number;
+
+        /**
+         * 格式化金额显示
+         * 最高支持显示12位（不含小数点符号）, 优先保证显示12位整数位
+         * 显示的精度为小数点后6位（截取显示）
+         * 整数位不足12位时, 依次显示小数点后的小数位
+         * 整数位大于12位, 从个位数向前显示能显示的12位最大值, 如123456789012345共15位, 显示为999999999999
+         * 当显示出来的小数位最后一位是0时, 该0不做显示
+         * 当显示出来的没有小数位时, 小数点不做显示
+         * @param {number} amount 金额
+         * @param {number} integer 整数 默认12位
+         * @param {number} decimal 小数 默认6位
+         * @return {number} result
+         */
+        formatAmount(amount: number, maxInteger: number = 12, maxDecimal: number = 6): number;
     }
 
     // 工具 - 常用工具
     export const tools: ITools;
-    
+
     // 模块 - 系统管理
     export const sys: SystemManager;
     // 模块 - 账户管理
@@ -162,7 +182,7 @@ declare namespace paladin {
      * @param {array} list 组件名称列表
      * @param {function} success 成功回调
      */
-    interface ICheckComponentsData { 
+    interface ICheckComponentsData {
         list: string[];
         success: (res: { [compName: string]: boolean }) => void;
     }
@@ -226,16 +246,16 @@ declare namespace paladin {
      * @return {string} platform
      */
     export function getPlatform(): string;
-    
+
     /*
      * 组件
      * @param {object} launch 启动
      */
     interface IComps {
-        launch: Launch 
+        launch: Launch
     }
 
-    export const comps:IComps;
+    export const comps: IComps;
 }
 
 /**
@@ -450,6 +470,8 @@ declare namespace paladin {
  * 
  * 登出 paladin.account.logout(); 
  * 
+ * 注册 paladin.account.register(); 
+ * 
  * 下载应用 paladin.account.app();
  * 
  * 进入首页 paladin.account.home();
@@ -493,7 +515,7 @@ declare namespace paladin {
          * @return {object} data 登录状态
          */
         getState(): IAccountStateData;
-    
+
         /**
          * 登录
          * @param {object} data 数据
@@ -506,6 +528,12 @@ declare namespace paladin {
          */
         logout(data?: IAccountBasicData): void;
 
+        /**
+         * 注册
+         * @param {object} data 数据
+         */
+        register(data?: IAccountBasicData): void;
+
         // 首页
         home(): void;
 
@@ -517,7 +545,7 @@ declare namespace paladin {
          * @param {string} text 文案
          * @return {Promise<void>} promise
          */
-        copy(text: string):Promise<void>;
+        copy(text: string): Promise<void>;
 
         /**
          * 粘贴
@@ -528,7 +556,7 @@ declare namespace paladin {
         /**
          * 跳转页面
          * @param {string} key 关键词
-         */ 
+         */
         landingPageUrl(key: string): void;
 
         /**
@@ -558,7 +586,7 @@ declare namespace paladin {
  * 充值 paladin.account.recharge({ data, success, error, complete });
  * 
  * 提现 paladin.account.withdraw({ data, success, error, complete });
- */ 
+ */
 declare namespace paladin {
     /**
      * 请求数据
@@ -577,7 +605,7 @@ declare namespace paladin {
         error?: Function;
         complete?: Function;
     }
-    
+
     /**
      * 请求基础数据
      * @param {object} data 支付数据
@@ -721,7 +749,7 @@ declare namespace paladin {
          * @param {function} success 成功回调
          * @param {function} error 失败回调
          */
-        async getConfig(data : IChannelInitData): Promise<string>;
+        async getConfig(data: IChannelInitData): Promise<string>;
     }
 }
 
@@ -780,8 +808,8 @@ declare namespace paladin {
      * @default EVENT_CANCELLED: 10
      * @default EVENT_FAILED: 11
      */
-    interface IAnalyticsEventID {		
-		LOGIN_START: number;
+    interface IAnalyticsEventID {
+        LOGIN_START: number;
         LOGIN_SUCCESS: number;
         LOGIN_FAILED: number;
         // 支付
@@ -795,7 +823,7 @@ declare namespace paladin {
         EVENT_CANCELLED: number;
         EVENT_FAILED: number;
     }
-    
+
     /**
      * 初始化数据
      * @param {string} appId 游戏ID
@@ -812,7 +840,7 @@ declare namespace paladin {
         appId: string;
         version: string;
         channel: string;
-        engine:  string;
+        engine: string;
     }
 
     /**
@@ -833,7 +861,7 @@ declare namespace paladin {
         channel?: string;
         userID?: string;
         age?: number;
-        sex?: number;       
+        sex?: number;
         reason?: string;
     }
 
@@ -867,48 +895,48 @@ declare namespace paladin {
         amount: number;
         orderID: string;
         payType: string;
-        iapID: string;   
-        currencyType: string; 
+        iapID: string;
+        currencyType: string;
         virtualCurrencyAmount: number;
         accountID: string;
-        partner?: string;             
-        gameServer?: string;   
-        level?: number;          
-        mission?: string; 
+        partner?: string;
+        gameServer?: string;
+        level?: number;
+        mission?: string;
     }
 
     class AnalyticsManager {
         EventID: IAnalyticsEventID;
-    
+
         /**
          * 初始化
          * @param {object} data 初始化数据
          */
         init(data: IAnalyticsInitData): void;
-    
+
         /**
          * 开启日志
          * @param {boolean} enable 是否开启
          */
         enableDebug(enable: boolean): void;
-    
+
         /**
          * 登录
          * @param {number} id ID
          * @param {object} data 登录数据
          */
         login(id: number, data: IAnalyticsLoginData): void;
-    
+
         // 登出
         logout(): void;
-    
+
         /**
          * 支付
          * @param {number} id ID
          * @param {object} data 支付数据
          */
         payment(id: number, data: IAnalyticsPaymentData): void;
-    
+
         /**
          * 自定义
          * @param {number} id ID
@@ -931,10 +959,15 @@ declare namespace paladin {
         logo: { url: 'splash.ff3cc.png' },
         load: { color: '#6d8ac8' },
         tips: { color: '#6d8ac8' },
-        notice: { color: '#6d8ac8' }
+        notice: { color: '#6d8ac8' },
+        maintain: {
+            color: '#6d8ac8',
+            strokeColor: '#fff',
+            url: 'maintain.jpg'
+        }
     });
  * 横屏 paladin.comps.launch.show({ design: { width: 1334, height: 750, mode: 'horizontal' } });
- */ 
+ */
 declare namespace paladin {
     /**
      * 设计配置数据
@@ -988,7 +1021,7 @@ declare namespace paladin {
      * @default nums: 3
      * @default space: 10
      */
-    interface ILaunchLoadData{
+    interface ILaunchLoadData {
         disable: boolean;
         color: string;
         radius: number;
@@ -1058,7 +1091,14 @@ declare namespace paladin {
          * 显示
          * @param data 显示数据
          */
-        show(data: ILaunchShowData) : void;
+        show(data: ILaunchShowData): void;
+
+        /**
+         * 维护
+         * @param {string} start 开始时间
+         * @param {string} end 结束时间
+         */
+        maintain(start, end): void;
 
         // 隐藏
         hide(): void;

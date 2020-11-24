@@ -53,7 +53,7 @@
 
             canvas {
                 background-color: #fff;
-            }</style></head><body><script src="bitgame/paladin.min.js?v=1603852210344"></script><script>function loadLib(url) {
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1606185119424"></script><script>function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
                 script.src = url;
@@ -67,7 +67,7 @@
                             event,
                             function (e) {
                                 e.preventDefault();
-                            }
+                            },
                         );
                     });
                 }
@@ -98,9 +98,9 @@
                 loadType: 2,
                 success: function (res) {
                     const files = [
-                        res.cdn + 'js/bundle.js?v=1603852210344',
-                        res.cdn + 'js/laya.js?v=1603852210344',
-                        res.cdn + 'js/libs.js?v=1603852210344',
+                        res.cdn + 'js/bundle.js?v=1606185119424',
+                        res.cdn + 'js/laya.js?v=1606185119424',
+                        res.cdn + 'js/libs.js?v=1606185119424',
                     ];
 
                     for (var i = 0; i < files.length; i++) {
@@ -115,6 +115,9 @@
                 },
                 login: function () {
                     paladin.account.login();
+                },
+                register: function () {
+                    paladin.account.register();
                 },
                 logout: function () {
                     paladin.account.logout();
