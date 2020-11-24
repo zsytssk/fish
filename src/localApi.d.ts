@@ -10,6 +10,7 @@ type PlatformInfo = {
 declare const platform: {
     hideLoading(): void;
     login(): void;
+    register(): void;
     logout(): void;
     getInfo(): PlatformInfo;
 };

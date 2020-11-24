@@ -106,6 +106,7 @@
             var platform = {
                 hideLoading: function () {},
                 login: function () {},
+                register: function () {},
                 logout: function () {},
                 getInfo: function () {
                     return {
@@ -154,7 +155,7 @@
                             event,
                             function (e) {
                                 e.preventDefault();
-                            }
+                            },
                         );
                     });
                 }
@@ -202,6 +203,9 @@
                 },
                 login: function () {
                     paladin.account.login();
+                },
+                register: function () {
+                    paladin.account.register();
                 },
                 logout: function () {
                     paladin.account.logout();

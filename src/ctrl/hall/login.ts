@@ -21,7 +21,11 @@ export async function initHallSocket() {
 }
 
 export function login() {
-    platform.login();
+    if (getParams('c')) {
+        platform.register();
+    } else {
+        platform.login();
+    }
     disconnectSocket(ServerName.Hall);
 }
 export function logout() {

@@ -21,6 +21,7 @@ import { getLang, recharge } from './hallCtrlUtil';
 import { asyncOnly } from 'utils/asyncQue';
 import { removeItem } from 'utils/localStorage';
 import { debug } from 'utils/log';
+import { login } from './login';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -120,7 +121,7 @@ export function errorHandler(code: number) {
             sendToGameSocket(ServerEvent.RoomOut);
         });
     } else if (code === ServerErrCode.NeedLogin) {
-        return platform.login();
+        return login();
     } else if (
         code === ServerErrCode.TrialTimeGame ||
         code === ServerErrCode.TrialNotBullet
