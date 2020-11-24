@@ -100,7 +100,7 @@
         <% if (webpackConfig.mode === "development") { %>
         <script
             type="text/javascript"
-            src="bitgame/paladin.min.js<%= Date.now() %>"
+            src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
         <script>
             window.version = '<%= Date.now() %>';
@@ -142,7 +142,7 @@
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
         <script type="text/javascript">
-            const version = '<%= Date.now() %>';
+            var version = '<%= Date.now() %>';
             function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
