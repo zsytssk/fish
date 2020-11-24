@@ -103,6 +103,7 @@
             src="bitgame/paladin.min.js<%= Date.now() %>"
         ></script>
         <script>
+            window.version = '<%= Date.now() %>';
             var platform = {
                 hideLoading: function () {},
                 login: function () {},
@@ -141,6 +142,7 @@
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
         <script type="text/javascript">
+            const version = '<%= Date.now() %>';
             function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;

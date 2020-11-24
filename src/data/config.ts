@@ -2,7 +2,7 @@ import { Lang } from './internationalConfig';
 
 declare global {
     interface Window {
-        CDN_VERSION: string;
+        version: string;
     }
 }
 
@@ -18,7 +18,7 @@ export const Config = {
     isLogin: false,
     Host: '',
     /** cdn版本号 */
-    CdnVersion: window.CDN_VERSION,
+    CdnVersion: window.version,
     cndUrl: '',
     /** 子弹速度 */
     BulletSpeed: 25,
