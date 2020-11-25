@@ -149,6 +149,8 @@
                 script.src = url;
                 document.body.appendChild(script);
             }
+
+            // prettier-ignore
             var interval = setInterval(function () {
                 if (window.Laya) {
                     clearInterval(interval);
@@ -157,12 +159,13 @@
                             event,
                             function (e) {
                                 e.preventDefault();
-                            },
+                            }
                         );
                     });
                 }
             }, 1000);
 
+            // prettier-ignore
             paladin.checkComponents({
                 list: ['launch'],
                 success: function (res) {
@@ -176,21 +179,23 @@
                             logo: { url: 'bitgame/logo.png' },
                             load: { color: '#6d8ac8' },
                             tips: { color: '#6d8ac8' },
-                            notice: { color: '#6d8ac8' },
+                            notice: { color: '#6d8ac8' }
                         });
                     }
                 },
             });
 
             window.screenOrientation = 'sensor_landscape';
+
+            // prettier-ignore
             // 游戏初始化
             paladin.init({
                 loadType: 2,
                 success: function (res) {
-                    const files = [
+                    var files = [
                         res.cdn + 'js/bundle.js?v=<%= Date.now() %>',
                         res.cdn + 'js/laya.js?v=<%= Date.now() %>',
-                        res.cdn + 'js/libs.js?v=<%= Date.now() %>',
+                        res.cdn + 'js/libs.js?v=<%= Date.now() %>'
                     ];
 
                     for (var i = 0; i < files.length; i++) {
@@ -199,6 +204,7 @@
                 },
             });
 
+            // prettier-ignore
             var platform = {
                 hideLoading: function () {
                     paladin.comps.launch.hide();
@@ -230,7 +236,7 @@
                                 isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
                             },
                         });
-                },
+                }
             };
         </script>
 

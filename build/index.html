@@ -53,13 +53,15 @@
 
             canvas {
                 background-color: #fff;
-            }</style></head><body><script src="bitgame/paladin.min.js?v=1606209927921"></script><script>var version = '1606209927921';
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1606272051644"></script><script>var version = '1606272051644';
             function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
                 script.src = url;
                 document.body.appendChild(script);
             }
+
+            // prettier-ignore
             var interval = setInterval(function () {
                 if (window.Laya) {
                     clearInterval(interval);
@@ -68,12 +70,13 @@
                             event,
                             function (e) {
                                 e.preventDefault();
-                            },
+                            }
                         );
                     });
                 }
             }, 1000);
 
+            // prettier-ignore
             paladin.checkComponents({
                 list: ['launch'],
                 success: function (res) {
@@ -87,21 +90,23 @@
                             logo: { url: 'bitgame/logo.png' },
                             load: { color: '#6d8ac8' },
                             tips: { color: '#6d8ac8' },
-                            notice: { color: '#6d8ac8' },
+                            notice: { color: '#6d8ac8' }
                         });
                     }
                 },
             });
 
             window.screenOrientation = 'sensor_landscape';
+
+            // prettier-ignore
             // 游戏初始化
             paladin.init({
                 loadType: 2,
                 success: function (res) {
-                    const files = [
-                        res.cdn + 'js/bundle.js?v=1606209927921',
-                        res.cdn + 'js/laya.js?v=1606209927921',
-                        res.cdn + 'js/libs.js?v=1606209927921',
+                    var files = [
+                        res.cdn + 'js/bundle.js?v=1606272051644',
+                        res.cdn + 'js/laya.js?v=1606272051644',
+                        res.cdn + 'js/libs.js?v=1606272051644'
                     ];
 
                     for (var i = 0; i < files.length; i++) {
@@ -110,6 +115,7 @@
                 },
             });
 
+            // prettier-ignore
             var platform = {
                 hideLoading: function () {
                     paladin.comps.launch.hide();
@@ -141,5 +147,5 @@
                                 isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
                             },
                         });
-                },
+                }
             };</script></body></html>
