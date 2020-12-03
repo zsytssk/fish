@@ -145,6 +145,10 @@ export function errorHandler(code: number) {
         }).then(() => {
             location.reload();
         });
+    } else if (code === ServerErrCode.OverLimit) {
+        return AlertPop.alert(InternationalTip[lang][code], {
+            hide_cancel: true,
+        });
     }
     if (tip) {
         TipPop.tip(tip);
