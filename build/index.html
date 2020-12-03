@@ -53,7 +53,7 @@
 
             canvas {
                 background-color: #fff;
-            }</style></head><body><script src="bitgame/paladin.min.js?v=1606272051644"></script><script>var version = '1606272051644';
+            }</style></head><body><script src="bitgame/paladin.min.js?v=1606989980808"></script><script>var version = '1606989980808';
             function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
@@ -90,7 +90,12 @@
                             logo: { url: 'bitgame/logo.png' },
                             load: { color: '#6d8ac8' },
                             tips: { color: '#6d8ac8' },
-                            notice: { color: '#6d8ac8' }
+                            notice: { color: '#6d8ac8' },
+                            maintain: {
+                                color: '#d7fffe',
+                                strokeColor: '#000000',
+                                url: 'bitgame/maintain.jpg'
+                            }
                         });
                     }
                 },
@@ -104,9 +109,9 @@
                 loadType: 2,
                 success: function (res) {
                     var files = [
-                        res.cdn + 'js/bundle.js?v=1606272051644',
-                        res.cdn + 'js/laya.js?v=1606272051644',
-                        res.cdn + 'js/libs.js?v=1606272051644'
+                        res.cdn + 'js/bundle.js?v=1606989980808',
+                        res.cdn + 'js/laya.js?v=1606989980808',
+                        res.cdn + 'js/libs.js?v=1606989980808'
                     ];
 
                     for (var i = 0; i < files.length; i++) {
