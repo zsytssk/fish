@@ -128,7 +128,7 @@ export const International = {
             'Out of ammo, please reload the game or go the official game to continue.',
         [ServerErrCode.NetError]: 'Network error, please reload the game ',
         [ServerErrCode.TrialClose]: 'Demo mode is off.',
-        [ServerErrCode.OverLimit]: '投幣失敗，投幣金額已達上線',
+        [ServerErrCode.OverLimit]: 'Your consumption have reach the limited.',
     },
     [Lang.Kor]: {
         deposit: '충전',
@@ -241,7 +241,7 @@ export const International = {
         [ServerErrCode.NetError]:
             '네트워크 오류. 새로고침 후 다시 시도해 주세요.',
         [ServerErrCode.TrialClose]: '체험모드 종료',
-        [ServerErrCode.OverLimit]: '投幣失敗，投幣金額已達上線',
+        [ServerErrCode.OverLimit]: '귀하의 소비가 제한에 도달했습니다.',
     },
     [Lang.Jp]: {
         deposit: '⼊⾦',
@@ -355,7 +355,7 @@ export const International = {
         [ServerErrCode.NetError]:
             'ネットワークが異常です。更新してもう一度お試しください。',
         [ServerErrCode.TrialClose]: 'デモモードオフ',
-        [ServerErrCode.OverLimit]: '投幣失敗，投幣金額已達上線',
+        [ServerErrCode.OverLimit]: '消費金額が上限に達しました',
     },
     [Lang.Zh]: {
         deposit: '充值',
@@ -460,7 +460,7 @@ export const International = {
             '子弹不足，请重新进入或去正式场进行游戏',
         [ServerErrCode.NetError]: '网络异常, 请刷新重试',
         [ServerErrCode.TrialClose]: '试玩模式关闭',
-        [ServerErrCode.OverLimit]: '投币失败，投币金额已达上线',
+        [ServerErrCode.OverLimit]: '消费金额已达上限',
     },
     [Lang.Zh_HK]: {
         deposit: '充值',
@@ -565,7 +565,7 @@ export const International = {
             '子彈不足，請重新進入或去正式場進行遊戲',
         [ServerErrCode.NetError]: '網絡異常, 請刷新重試',
         [ServerErrCode.TrialClose]: '試玩模式關閉',
-        [ServerErrCode.OverLimit]: '投幣失敗，投幣金額已達上線',
+        [ServerErrCode.OverLimit]: '消費金額已達上限',
     },
 };
 
