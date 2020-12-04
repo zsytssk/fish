@@ -23,7 +23,7 @@ export enum ServerErrCode {
     /** TrialTime - hit */
     TrialTimeGame = 117,
     /** 投币超过上限 */
-    OverLimit = 118,
+    OverLimit = 121,
     /** TrialNotBullet */
     TrialNotBullet = 116,
     /** 大厅 room in */
