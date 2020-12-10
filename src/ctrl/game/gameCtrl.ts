@@ -254,7 +254,10 @@ export class GameCtrl {
         view.setExchangeRate(exchange_rate, cur_balance);
 
         /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
-        if ((window as any).paladin?.sys?.config?.channel === 'YOUCHAIN') {
+        if (
+            (window as any).paladin?.sys?.config?.channel === 'YOUCHAIN' &&
+            !isTrial
+        ) {
             const lang = getLang();
             AlertPop.alert(InternationalTip[lang].delayUpdateAccount);
         }
