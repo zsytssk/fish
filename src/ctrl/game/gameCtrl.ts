@@ -252,6 +252,12 @@ export class GameCtrl {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
         view.setExchangeRate(exchange_rate, cur_balance);
+
+        /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
+        if ((window as any).paladin?.sys?.config?.channel === 'YOUCHAIN') {
+            const lang = getLang();
+            AlertPop.alert(InternationalTip[lang].delayUpdateAccount);
+        }
     }
     public calcClientIndex(server_index: number) {
         const cur_player = this.model.getCurPlayer();

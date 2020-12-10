@@ -13,9 +13,7 @@ export function onLangChange(item: any, callback: (lang: Lang) => void) {
     });
 }
 export function getLang() {
-    const { user_info } = modelState.app;
-    const { lang } = user_info;
-    return lang;
+    return modelState.app?.user_info?.lang;
 }
 
 export function offLangChange(item: any) {

@@ -117,6 +117,8 @@ export const International = {
         gameListTitle: 'Game data',
         cost: 'Use up',
         prize: 'Earnings',
+        delayUpdateAccount:
+            'Your fund change might delay due to block confirmation on the chain, please wait patiently',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -230,6 +232,8 @@ export const International = {
         gameListTitle: '게임 기록',
         cost: '소비',
         prize: '수익',
+        delayUpdateAccount:
+            '잔고에 변동이 생겼습니다. 블록체인에 문제가 생김으로  다소 지연이 될 수 있으니 양해 부탁드립니다.',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -343,6 +347,8 @@ export const International = {
         gameListTitle: 'ゲーム記録',
         cost: '消費する',
         prize: '収益',
+        delayUpdateAccount:
+            'チェーンのブロック確認により、資金の変更が遅れる場合があります。しばらくお待ちください',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -452,6 +458,8 @@ export const International = {
         gameListTitle: '游戏记录',
         cost: '消耗',
         prize: '收益',
+        delayUpdateAccount:
+            '您的余额变动因链上区块确认可能有所延迟，请耐心等待。',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -557,7 +565,10 @@ export const International = {
         gameListTitle: '遊戲記錄',
         cost: '消耗',
         prize: '收益',
-        [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
+        delayUpdateAccount:
+            '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
+        [ServerErrCode.NoMoney]:
+            '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',
         [ServerErrCode.TrialTimeGame]: '已超出試玩時長，請去正式場進行遊戲',
