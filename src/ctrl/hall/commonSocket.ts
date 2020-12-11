@@ -148,6 +148,9 @@ export function errorHandler(code: number) {
     } else if (code === ServerErrCode.OverLimit) {
         return AlertPop.alert(InternationalTip[lang][code], {
             hide_cancel: true,
+        }).then(() => {
+            const socket = getSocket(ServerName.Game);
+            socket?.send(ServerEvent.RoomOut);
         });
     }
     if (tip) {
