@@ -106,7 +106,7 @@ export function errorHandler(code: number) {
     if (code === ServerErrCode.ReExchange) {
         disableCurUserOperation();
         return asyncOnly(tip, () => {
-            return AlertPop.alert(tip).then(type => {
+            return AlertPop.alert(tip, { closeOnSide: false }).then(type => {
                 if (type === 'confirm') {
                     return sendToGameSocket(ServerEvent.ExchangeBullet);
                 }
