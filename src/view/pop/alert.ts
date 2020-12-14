@@ -2,7 +2,7 @@ import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { AudioRes } from 'data/audioRes';
 import { InternationalTip } from 'data/internationalConfig';
-import honor, { HonorDialog } from 'honor';
+import honor, { HonorDialog, HonorDialogConfig } from 'honor';
 import { Event } from 'laya/events/Event';
 import { ui } from 'ui/layaMaxUI';
 
@@ -10,7 +10,7 @@ type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
     hide_cancel?: boolean;
     confirm_text?: string;
-};
+} & HonorDialogConfig;
 export default class AlertPop
     extends ui.pop.alert.alertUI
     implements HonorDialog {
@@ -19,10 +19,13 @@ export default class AlertPop
     public get zOrder() {
         return 100;
     }
-    public static async alert(msg: string, opt?: Opt) {
+    public static async alert(msg: string, opt = {} as Opt) {
+        const { hide_cancel, confirm_text, ...dialogConfig } = opt;
         AudioCtrl.play(AudioRes.PopShow);
-        const alert = (await honor.director.openDialog(AlertPop)) as AlertPop;
-        return await alert.alert(msg, opt);
+        const alert = (await honor.director.openDialog(AlertPop, {
+            ...dialogConfig,
+        })) as AlertPop;
+        return await alert.alert(msg, { hide_cancel, confirm_text });
     }
     public onAwake() {
         this.initEvent();

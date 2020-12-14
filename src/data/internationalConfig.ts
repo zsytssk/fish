@@ -567,8 +567,7 @@ export const International = {
         prize: '收益',
         delayUpdateAccount:
             '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
-        [ServerErrCode.NoMoney]:
-            '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
+        [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',
         [ServerErrCode.TrialTimeGame]: '已超出試玩時長，請去正式場進行遊戲',

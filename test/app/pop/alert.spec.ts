@@ -16,7 +16,7 @@ export const alert_test = new Test('alert', runner => {
             click_through: false,
             auto_hide: false,
         });
-
+        console.log(`2`);
         // await sleep(5);
         // TipPop.hide();
     });
