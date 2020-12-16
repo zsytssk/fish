@@ -133,6 +133,7 @@ export const International = {
         [ServerErrCode.NetError]: 'Network error, please reload the game ',
         [ServerErrCode.TrialClose]: 'Demo mode is off.',
         [ServerErrCode.OverLimit]: 'Your consumption have reach the limited.',
+        [ServerErrCode.ToQuick]: 'Operation too frequently',
     },
     [Lang.Kor]: {
         deposit: '충전',
@@ -250,6 +251,7 @@ export const International = {
             '네트워크 오류. 새로고침 후 다시 시도해 주세요.',
         [ServerErrCode.TrialClose]: '체험모드 종료',
         [ServerErrCode.OverLimit]: '귀하의 소비가 제한에 도달했습니다.',
+        [ServerErrCode.ToQuick]: '너무 자주 작동',
     },
     [Lang.Jp]: {
         deposit: '⼊⾦',
@@ -368,6 +370,7 @@ export const International = {
             'ネットワークが異常です。更新してもう一度お試しください。',
         [ServerErrCode.TrialClose]: 'デモモードオフ',
         [ServerErrCode.OverLimit]: '消費金額が上限に達しました',
+        [ServerErrCode.ToQuick]: '操作が多すぎる',
     },
     [Lang.Zh]: {
         deposit: '充值',
@@ -477,6 +480,7 @@ export const International = {
         [ServerErrCode.NetError]: '网络异常, 请刷新重试',
         [ServerErrCode.TrialClose]: '试玩模式关闭',
         [ServerErrCode.OverLimit]: '消费金额已达上限',
+        [ServerErrCode.ToQuick]: '操作太频繁',
     },
     [Lang.Zh_HK]: {
         deposit: '充值',
@@ -586,6 +590,7 @@ export const International = {
         [ServerErrCode.NetError]: '網絡異常, 請刷新重試',
         [ServerErrCode.TrialClose]: '試玩模式關閉',
         [ServerErrCode.OverLimit]: '消費金額已達上限',
+        [ServerErrCode.ToQuick]: '操作太頻繁',
     },
 };
 
