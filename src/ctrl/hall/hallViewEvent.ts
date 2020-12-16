@@ -11,7 +11,7 @@ import { logout, login } from './login';
 import { getItem, setItem } from 'utils/localStorage';
 import { roomIn } from './hallSocket';
 import { playSkeleton, playSkeletonOnce } from 'utils/utils';
-import { getLang, recharge } from './hallCtrlUtil';
+import { getChannel, getLang, recharge, withdraw } from './hallCtrlUtil';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import GameRecord from 'view/pop/record/gameRecord';
 import ItemRecord from 'view/pop/record/itemRecord';
@@ -39,6 +39,7 @@ export function hallViewEvent(hall: HallCtrl) {
         btn_game_record,
         btn_item_record,
         btn_recharge,
+        btn_withdraw,
     } = header;
 
     coin_menu_list.selectHandler = new Handler(
@@ -95,6 +96,14 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         recharge();
     });
+
+    if (getChannel() === 'CCTIP') {
+        btn_withdraw.visible = true;
+        onNode(btn_withdraw, CLICK, async () => {
+            AudioCtrl.play(AudioRes.Click);
+            withdraw();
+        });
+    }
     onNode(btn_match_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
         hall.roomIn({ roomId: 2, isTrial: 1 }, hall);
