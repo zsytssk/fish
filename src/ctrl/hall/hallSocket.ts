@@ -90,7 +90,7 @@ export async function checkReplay(hall: HallCtrl) {
 export function roomIn(
     data: { isTrial: 0 | 1; roomId: number },
     hall: HallCtrl,
-) {
+): Promise<Partial<RoomInRep>> {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
@@ -99,13 +99,13 @@ export function roomIn(
                 if (code === ServerErrCode.AlreadyInRoom) {
                     const [isReplay, socketUrl] = await checkReplay(hall);
                     if (isReplay) {
-                        resolve(socketUrl);
+                        resolve({ socketUrl });
                     }
                     return;
                 } else if (code !== 200) {
                     return errorHandler(code);
                 }
-                resolve(_data.socketUrl);
+                resolve(_data);
             },
             hall,
         );
@@ -115,5 +115,5 @@ export function roomIn(
             currency,
             domain: '',
         } as RoomInReq);
-    });
+    }) as Promise<Partial<RoomInRep>>;
 }

@@ -48,6 +48,7 @@ import { ShoalEvent } from 'model/game/com/shoalCom';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import { Laya } from 'Laya';
 import { Loader } from 'laya/net/Loader';
+import TipPop from 'view/pop/tip';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -68,7 +69,10 @@ export class GameCtrl {
         this.model = model;
     }
     private static instance: GameCtrl;
-    public static async preEnter(url: string, game_model: GameModel) {
+    public static async preEnter(
+        data: Partial<RoomInRep>,
+        game_model: GameModel,
+    ) {
         if (this.instance) {
             return this.instance;
         }
@@ -77,20 +81,27 @@ export class GameCtrl {
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
             const wait_load_res = honor.director.load(other_res, 'Scene');
+            if (data.currency) {
+                const lang = getLang();
+                let tip = InternationalTip[lang].enterGameCostTip;
+                tip = tip
+                    .replace(
+                        new RegExp('{bringAmount}', 'g'),
+                        data.bringAmount + '',
+                    )
+                    .replace(
+                        new RegExp('{bulletNum}', 'g'),
+                        data.bulletNum + '',
+                    )
+                    .replace(new RegExp('{currency}', 'g'), data.currency);
+                TipPop.tip(tip);
+            }
 
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
                 const ctrl = new GameCtrl(view as GameView, game_model);
                 this.instance = ctrl;
-                ctrl.init(url, bg_num);
+                ctrl.init(data.socketUrl, bg_num);
                 setProps(ctrlState, { game: ctrl });
-
-                // HelpPop.preLoad()
-                //     .then(() => {
-                //         return ShopPop.preLoad();
-                //     })
-                //     .then(() => {
-                //         return LotteryPop.preLoad();
-                //     });
 
                 return ctrl;
             });

@@ -55,9 +55,9 @@ export class HallCtrl {
         return ctrlState.app.enterGame(socketUrl);
     }
     public roomIn(...data: Parameters<typeof roomIn>) {
-        return roomIn(data[0], this).then((url: string) => {
+        return roomIn(data[0], this).then((data: any) => {
             setRoomInData(data[0]);
-            return this.enterGame(url);
+            return this.enterGame(data);
         });
     }
     private async init() {

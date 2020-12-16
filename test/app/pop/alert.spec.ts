@@ -6,16 +6,17 @@ import { sleep } from '../../utils/testUtils';
 import { asyncOnly, clearAsyncOnly } from 'utils/asyncQue';
 
 export const alert_test = new Test('alert', runner => {
-    runner.describe('top_tip', () => {
-        TopTipPop.tip('点击屏幕内您想投放炸弹的位置');
+    runner.describe('top_tip', async msg => {
+        TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
     });
     runner.describe('show_tip', async msg => {
-        TipPop.tip(msg || 'this is a test', {
-            count: 10,
-            show_count: true,
-            click_through: false,
-            auto_hide: false,
-        });
+        // TipPop.tip(msg || 'this is a test', {
+        //     count: 10,
+        //     show_count: true,
+        //     click_through: false,
+        //     auto_hide: false,
+        // });
+        TipPop.tip(msg || 'this is a test');
         console.log(`2`);
         // await sleep(5);
         // TipPop.hide();
