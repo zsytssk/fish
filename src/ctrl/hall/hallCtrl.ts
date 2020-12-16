@@ -50,9 +50,9 @@ export class HallCtrl {
         this.instance = undefined;
     }
 
-    public enterGame(socketUrl: string) {
+    public enterGame(data: Partial<RoomInRep>) {
         this.destroy();
-        return ctrlState.app.enterGame(socketUrl);
+        return ctrlState.app.enterGame(data);
     }
     public roomIn(...data: Parameters<typeof roomIn>) {
         return roomIn(data[0], this).then((data: any) => {

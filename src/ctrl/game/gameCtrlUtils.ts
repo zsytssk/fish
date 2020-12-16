@@ -2,6 +2,8 @@ import { modelState, getCurPlayer } from 'model/modelState';
 import { ctrlState } from 'ctrl/ctrlState';
 import { SkillMap } from 'data/config';
 import { LockFishModel } from 'model/game/skill/lockFishModel';
+import { waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 
 export function changeBulletNum(num: number) {
     const userId = modelState.app.user_info.user_id;
@@ -38,4 +40,19 @@ export function disableAllUserOperation() {
         const lock_skill = player.getSkill(SkillMap.LockFish) as LockFishModel;
         lock_skill.unLock();
     }
+}
+
+export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
+    return new Promise(async (resolve, reject) => {
+        const game_socket = await waitCreateSocket(ServerName.Game);
+        game_socket.event.once(
+            ServerEvent.EnterGame,
+            (data: EnterGameRep, code: number) => {
+                if (code !== 200) {
+                    return resolve([false]);
+                }
+                resolve([true, data]);
+            },
+        );
+    });
 }

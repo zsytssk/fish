@@ -36,6 +36,7 @@ import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
+    waitEnterGame,
 } from './gameCtrlUtils';
 import {
     convertEnterGame,
@@ -58,6 +59,7 @@ export type ChangeUserNumInfo = {
         type: 'skill' | 'bullet';
     }>;
 };
+
 /** 游戏ctrl */
 export class GameCtrl {
     public isTrial: EnterGameRep['isTrial'];
@@ -94,7 +96,24 @@ export class GameCtrl {
                         data.bulletNum + '',
                     )
                     .replace(new RegExp('{currency}', 'g'), data.currency);
-                TipPop.tip(tip);
+
+                waitEnterGame().then(async ([status, data]) => {
+                    if (!status) {
+                        return;
+                    }
+                    /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
+                    if (
+                        (window as any).paladin?.sys?.config?.channel ===
+                            'YOUCHAIN' &&
+                        !data.isTrial
+                    ) {
+                        const lang = getLang();
+                        await AlertPop.alert(
+                            InternationalTip[lang].delayUpdateAccount,
+                        );
+                    }
+                    TipPop.tip(tip);
+                });
             }
 
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
@@ -263,15 +282,6 @@ export class GameCtrl {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
         view.setExchangeRate(exchange_rate, cur_balance);
-
-        /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
-        if (
-            (window as any).paladin?.sys?.config?.channel === 'YOUCHAIN' &&
-            !isTrial
-        ) {
-            const lang = getLang();
-            AlertPop.alert(InternationalTip[lang].delayUpdateAccount);
-        }
     }
     public calcClientIndex(server_index: number) {
         const cur_player = this.model.getCurPlayer();
