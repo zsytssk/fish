@@ -99,6 +99,7 @@ export function hallViewEvent(hall: HallCtrl) {
 
     if (getChannel() === 'CCTIP') {
         btn_withdraw.visible = true;
+        view.onResize();
         onNode(btn_withdraw, CLICK, async () => {
             AudioCtrl.play(AudioRes.Click);
             withdraw();
