@@ -82,6 +82,10 @@ export function getAllLangList() {
     }
     return result;
 }
+
+export function getChannel() {
+    return;
+}
 export function recharge() {
     const app = modelState.app;
     const { account_map, cur_balance } = app.user_info;
@@ -89,6 +93,21 @@ export function recharge() {
         return;
     }
     (window as any)?.paladin.pay.recharge({
+        data: {
+            currency: cur_balance,
+            gameNo: (window as any)?.paladin.sys.config.gameId,
+            isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
+        },
+    });
+}
+
+export function withdraw() {
+    const app = modelState.app;
+    const { account_map, cur_balance } = app.user_info;
+    if (account_map.get(cur_balance).hide) {
+        return;
+    }
+    (window as any)?.paladin.pay.withdraw({
         data: {
             currency: cur_balance,
             gameNo: (window as any)?.paladin.sys.config.gameId,
