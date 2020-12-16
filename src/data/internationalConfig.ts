@@ -119,6 +119,8 @@ export const International = {
         prize: 'Earnings',
         delayUpdateAccount:
             'Your fund change might delay due to block confirmation on the chain, please wait patiently',
+        enterGameCostTip:
+            'The system converts{bringAmount} USDT into {bulletNum} bullets. \n When you leave the room, the remaining bullets will be converted again into your {currency}.',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -131,6 +133,7 @@ export const International = {
         [ServerErrCode.NetError]: 'Network error, please reload the game ',
         [ServerErrCode.TrialClose]: 'Demo mode is off.',
         [ServerErrCode.OverLimit]: 'Your consumption have reach the limited.',
+        [ServerErrCode.ToQuick]: 'Operation too frequently',
     },
     [Lang.Kor]: {
         deposit: '충전',
@@ -234,6 +237,8 @@ export const International = {
         prize: '수익',
         delayUpdateAccount:
             '잔고에 변동이 생겼습니다. 블록체인에 문제가 생김으로  다소 지연이 될 수 있으니 양해 부탁드립니다.',
+        enterGameCostTip:
+            '시스템이 {bringAmount}{currency}를 {bulletNum}개의 총알로 바꿔드립니다.\n 게임을 나가실때 남은 총알은 {currency}로 바꿔드립니다.',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -246,6 +251,7 @@ export const International = {
             '네트워크 오류. 새로고침 후 다시 시도해 주세요.',
         [ServerErrCode.TrialClose]: '체험모드 종료',
         [ServerErrCode.OverLimit]: '귀하의 소비가 제한에 도달했습니다.',
+        [ServerErrCode.ToQuick]: '너무 자주 작동',
     },
     [Lang.Jp]: {
         deposit: '⼊⾦',
@@ -349,6 +355,8 @@ export const International = {
         prize: '収益',
         delayUpdateAccount:
             'チェーンのブロック確認により、資金の変更が遅れる場合があります。しばらくお待ちください',
+        enterGameCostTip:
+            'システムで{bringAmount}{currency}を{bulletNum}弾に変換します。\n部屋を出る時、残りの弾丸を{currency}に交換されます',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -362,6 +370,7 @@ export const International = {
             'ネットワークが異常です。更新してもう一度お試しください。',
         [ServerErrCode.TrialClose]: 'デモモードオフ',
         [ServerErrCode.OverLimit]: '消費金額が上限に達しました',
+        [ServerErrCode.ToQuick]: '操作が多すぎる',
     },
     [Lang.Zh]: {
         deposit: '充值',
@@ -460,6 +469,8 @@ export const International = {
         prize: '收益',
         delayUpdateAccount:
             '您的余额变动因链上区块确认可能有所延迟，请耐心等待。',
+        enterGameCostTip:
+            '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -469,6 +480,7 @@ export const International = {
         [ServerErrCode.NetError]: '网络异常, 请刷新重试',
         [ServerErrCode.TrialClose]: '试玩模式关闭',
         [ServerErrCode.OverLimit]: '消费金额已达上限',
+        [ServerErrCode.ToQuick]: '操作太频繁',
     },
     [Lang.Zh_HK]: {
         deposit: '充值',
@@ -567,6 +579,8 @@ export const International = {
         prize: '收益',
         delayUpdateAccount:
             '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
+        enterGameCostTip:
+            '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',
@@ -576,6 +590,7 @@ export const International = {
         [ServerErrCode.NetError]: '網絡異常, 請刷新重試',
         [ServerErrCode.TrialClose]: '試玩模式關閉',
         [ServerErrCode.OverLimit]: '消費金額已達上限',
+        [ServerErrCode.ToQuick]: '操作太頻繁',
     },
 };
 

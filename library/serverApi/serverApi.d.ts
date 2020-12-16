@@ -15,6 +15,8 @@ type RoomInRep = {
     roomId: number;
     bulletNum: number;
     socketUrl: string;
+    bringAmount: Number;
+    currency: string;
 };
 type CheckReplayRep = {
     isReplay: boolean;

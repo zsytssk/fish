@@ -84,7 +84,7 @@ export function getAllLangList() {
 }
 
 export function getChannel() {
-    return;
+    return (window as any).paladin?.sys?.config?.channel;
 }
 export function recharge() {
     const app = modelState.app;
