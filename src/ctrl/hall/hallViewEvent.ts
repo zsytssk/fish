@@ -11,7 +11,7 @@ import { logout, login } from './login';
 import { getItem, setItem } from 'utils/localStorage';
 import { roomIn } from './hallSocket';
 import { playSkeleton, playSkeletonOnce } from 'utils/utils';
-import { getLang, recharge, withdraw } from './hallCtrlUtil';
+import { getChannel, getLang, recharge, withdraw } from './hallCtrlUtil';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import GameRecord from 'view/pop/record/gameRecord';
 import ItemRecord from 'view/pop/record/itemRecord';
