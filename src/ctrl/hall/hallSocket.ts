@@ -25,7 +25,7 @@ export async function onHallSocket(hall: HallCtrl) {
     await initHallSocket();
 
     /** 连接socket */
-    await new Promise((resolve, reject) => {
+    (await new Promise((resolve, reject) => {
         hall_socket = getSocket(ServerName.Hall);
         bindHallSocket(hall_socket, hall);
 
@@ -38,12 +38,12 @@ export async function onHallSocket(hall: HallCtrl) {
             hall,
         );
         sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
-    });
+    })) as Promise<undefined>;
 
-    const [isReplay, socketUrl] = await checkReplay(hall);
-    if (isReplay) {
+    const data = await checkReplay(hall);
+    if (data.isReplay) {
         // debugger;
-        hall.enterGame(socketUrl);
+        hall.enterGame(data);
         return true;
     }
     return false;
@@ -74,38 +74,33 @@ export async function checkReplay(hall: HallCtrl) {
         socket.event.once(
             ServerEvent.CheckReplay,
             (data: CheckReplayRep) => {
-                const { isReplay, socketUrl } = data;
-                if (isReplay) {
-                    resolve([isReplay, socketUrl]);
-                    return;
-                }
-                resolve([isReplay, socketUrl]);
+                resolve(data);
             },
             hall,
         );
         socket.send(ServerEvent.CheckReplay);
-    }) as Promise<[boolean, string?]>;
+    }) as Promise<CheckReplayRep>;
 }
 
 export function roomIn(
     data: { isTrial: 0 | 1; roomId: number },
     hall: HallCtrl,
-) {
+): Promise<Partial<RoomInRep>> {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.RoomIn,
             async (_data: RoomInRep, code, msg) => {
                 if (code === ServerErrCode.AlreadyInRoom) {
-                    const [isReplay, socketUrl] = await checkReplay(hall);
-                    if (isReplay) {
-                        resolve(socketUrl);
+                    const data = await checkReplay(hall);
+                    if (data.isReplay) {
+                        resolve({ ..._data, ...data });
                     }
                     return;
                 } else if (code !== 200) {
                     return errorHandler(code);
                 }
-                resolve(_data.socketUrl);
+                resolve(_data);
             },
             hall,
         );
@@ -115,5 +110,5 @@ export function roomIn(
             currency,
             domain: '',
         } as RoomInReq);
-    });
+    }) as Promise<Partial<RoomInRep>>;
 }

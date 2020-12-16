@@ -36,6 +36,7 @@ import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
+    waitEnterGame,
 } from './gameCtrlUtils';
 import {
     convertEnterGame,
@@ -48,6 +49,7 @@ import { ShoalEvent } from 'model/game/com/shoalCom';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import { Laya } from 'Laya';
 import { Loader } from 'laya/net/Loader';
+import TipPop from 'view/pop/tip';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -57,6 +59,7 @@ export type ChangeUserNumInfo = {
         type: 'skill' | 'bullet';
     }>;
 };
+
 /** 游戏ctrl */
 export class GameCtrl {
     public isTrial: EnterGameRep['isTrial'];
@@ -68,7 +71,10 @@ export class GameCtrl {
         this.model = model;
     }
     private static instance: GameCtrl;
-    public static async preEnter(url: string, game_model: GameModel) {
+    public static async preEnter(
+        data: Partial<RoomInRep>,
+        game_model: GameModel,
+    ) {
         if (this.instance) {
             return this.instance;
         }
@@ -77,20 +83,44 @@ export class GameCtrl {
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
             const wait_load_res = honor.director.load(other_res, 'Scene');
+            if (data.currency) {
+                const lang = getLang();
+                let tip = InternationalTip[lang].enterGameCostTip;
+                tip = tip
+                    .replace(
+                        new RegExp('{bringAmount}', 'g'),
+                        data.bringAmount + '',
+                    )
+                    .replace(
+                        new RegExp('{bulletNum}', 'g'),
+                        data.bulletNum + '',
+                    )
+                    .replace(new RegExp('{currency}', 'g'), data.currency);
+
+                waitEnterGame().then(async ([status, data]) => {
+                    if (!status) {
+                        return;
+                    }
+                    /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
+                    if (
+                        (window as any).paladin?.sys?.config?.channel ===
+                            'YOUCHAIN' &&
+                        !data.isTrial
+                    ) {
+                        const lang = getLang();
+                        await AlertPop.alert(
+                            InternationalTip[lang].delayUpdateAccount,
+                        );
+                    }
+                    TipPop.tip(tip);
+                });
+            }
 
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
                 const ctrl = new GameCtrl(view as GameView, game_model);
                 this.instance = ctrl;
-                ctrl.init(url, bg_num);
+                ctrl.init(data.socketUrl, bg_num);
                 setProps(ctrlState, { game: ctrl });
-
-                // HelpPop.preLoad()
-                //     .then(() => {
-                //         return ShopPop.preLoad();
-                //     })
-                //     .then(() => {
-                //         return LotteryPop.preLoad();
-                //     });
 
                 return ctrl;
             });
@@ -252,15 +282,6 @@ export class GameCtrl {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
         view.setExchangeRate(exchange_rate, cur_balance);
-
-        /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
-        if (
-            (window as any).paladin?.sys?.config?.channel === 'YOUCHAIN' &&
-            !isTrial
-        ) {
-            const lang = getLang();
-            AlertPop.alert(InternationalTip[lang].delayUpdateAccount);
-        }
     }
     public calcClientIndex(server_index: number) {
         const cur_player = this.model.getCurPlayer();

@@ -64,8 +64,8 @@ export class AppCtrl {
 
         await Promise.all([task1, task2]);
     }
-    public enterGame(url: string) {
+    public enterGame(data: Partial<RoomInRep>) {
         const game_model = this.model.enterGame();
-        return GameCtrl.preEnter(url, game_model);
+        return GameCtrl.preEnter(data, game_model);
     }
 }
