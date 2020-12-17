@@ -260,6 +260,9 @@ type ExchangeBullet = {
     userId: string;
     msg: 'success';
     balance: number;
+    bulletNum: number;
+    bringAmount: Number;
+    currency: string;
 };
 type ItemPrice = {
     id: string;

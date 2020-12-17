@@ -36,6 +36,7 @@ import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
+    tipExchange,
     waitEnterGame,
 } from './gameCtrlUtils';
 import {
@@ -83,21 +84,10 @@ export class GameCtrl {
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
             const wait_load_res = honor.director.load(other_res, 'Scene');
-            if (data.currency) {
-                const lang = getLang();
-                let tip = InternationalTip[lang].enterGameCostTip;
-                tip = tip
-                    .replace(
-                        new RegExp('{bringAmount}', 'g'),
-                        data.bringAmount + '',
-                    )
-                    .replace(
-                        new RegExp('{bulletNum}', 'g'),
-                        data.bulletNum + '',
-                    )
-                    .replace(new RegExp('{currency}', 'g'), data.currency);
 
-                waitEnterGame().then(async ([status, data]) => {
+            /** 只有第一次进入时提示 */
+            if (data.currency) {
+                waitEnterGame().then(async ([status, _data]) => {
                     if (!status) {
                         return;
                     }
@@ -105,14 +95,14 @@ export class GameCtrl {
                     if (
                         (window as any).paladin?.sys?.config?.channel ===
                             'YOUCHAIN' &&
-                        !data.isTrial
+                        !_data.isTrial
                     ) {
                         const lang = getLang();
                         await AlertPop.alert(
                             InternationalTip[lang].delayUpdateAccount,
                         );
                     }
-                    TipPop.tip(tip);
+                    tipExchange(data);
                 });
             }
 

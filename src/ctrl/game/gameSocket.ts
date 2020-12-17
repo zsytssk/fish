@@ -14,7 +14,7 @@ import {
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
 import { getCurUserId, isCurUser, getCurPlayer } from 'model/modelState';
 import { GameCtrl } from './gameCtrl';
-import { changeBulletNum } from './gameCtrlUtils';
+import { changeBulletNum, tipExchange } from './gameCtrlUtils';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
@@ -119,6 +119,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             player.updateInfo({
                 bullet_num: data.balance - cost,
             });
+            tipExchange(data);
         },
         [SocketEvent.Reconnected]: () => {
             game.reset();

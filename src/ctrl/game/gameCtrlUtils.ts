@@ -4,6 +4,9 @@ import { SkillMap } from 'data/config';
 import { LockFishModel } from 'model/game/skill/lockFishModel';
 import { waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent, ServerName } from 'data/serverEvent';
+import { InternationalTip } from 'data/internationalConfig';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import TipPop from 'view/pop/tip';
 
 export function changeBulletNum(num: number) {
     const userId = modelState.app.user_info.user_id;
@@ -55,4 +58,23 @@ export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
             },
         );
     });
+}
+
+type Data = {
+    bulletNum?: number;
+    bringAmount?: Number;
+    currency?: string;
+};
+/** 提示带入 */
+export function tipExchange(data: Data) {
+    if (!data.currency) {
+        return;
+    }
+    const lang = getLang();
+    let tip = InternationalTip[lang].enterGameCostTip;
+    tip = tip
+        .replace(new RegExp('{bringAmount}', 'g'), data.bringAmount + '')
+        .replace(new RegExp('{bulletNum}', 'g'), data.bulletNum + '')
+        .replace(new RegExp('{currency}', 'g'), data.currency);
+    TipPop.tip(tip);
 }
