@@ -1,20 +1,15 @@
-import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
+import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
 import {
-    getSocket,
     bindSocketEvent,
+    getSocket,
     offSocketEvent,
 } from 'ctrl/net/webSocketWrapUtil';
 import { Config } from 'data/config';
-import { InternationalTip } from 'data/internationalConfig';
 import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
-import AlertPop from 'view/pop/alert';
-import { commonSocket, offCommon, errorHandler } from './commonSocket';
+import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
-import { getLang } from './hallCtrlUtil';
 import { initHallSocket } from './login';
-import TopTipPop from 'view/pop/topTip';
-import { sleep } from 'utils/animate';
 
 /**
  *
@@ -33,7 +28,7 @@ export async function onHallSocket(hall: HallCtrl) {
             ServerEvent.UserAccount,
             () => {
                 hall.onUserAccount();
-                resolve();
+                resolve(undefined);
             },
             hall,
         );
@@ -69,7 +64,7 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
 }
 
 export async function checkReplay(hall: HallCtrl) {
-    return new Promise((resolve, reject) => {
+    return new Promise<CheckReplayRep>((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.CheckReplay,
@@ -79,14 +74,14 @@ export async function checkReplay(hall: HallCtrl) {
             hall,
         );
         socket.send(ServerEvent.CheckReplay);
-    }) as Promise<CheckReplayRep>;
+    });
 }
 
 export function roomIn(
     data: { isTrial: 0 | 1; roomId: number },
     hall: HallCtrl,
-): Promise<Partial<RoomInRep>> {
-    return new Promise((resolve, reject) => {
+) {
+    return new Promise<Partial<RoomInRep>>((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.RoomIn,
@@ -110,5 +105,5 @@ export function roomIn(
             currency,
             domain: '',
         } as RoomInReq);
-    }) as Promise<Partial<RoomInRep>>;
+    });
 }
