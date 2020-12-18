@@ -55,9 +55,10 @@ export class HallCtrl {
         return ctrlState.app.enterGame(data);
     }
     public roomIn(...data: Parameters<typeof roomIn>) {
-        return roomIn(data[0], this).then((data: any) => {
-            setRoomInData(data[0]);
-            return this.enterGame(data);
+        const roomInData = data[0];
+        return roomIn(roomInData, this).then((enterData: any) => {
+            setRoomInData(roomInData);
+            return this.enterGame(enterData);
         });
     }
     private async init() {
