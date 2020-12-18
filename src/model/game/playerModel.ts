@@ -159,7 +159,7 @@ export class PlayerModel extends ComponentManager {
     ) {
         /** 掉落的金币+item动画 */
         await new Promise((resolve, reject) => {
-            this.event.emit(PlayerEvent.CaptureFish, {
+            this.event?.emit(PlayerEvent.CaptureFish, {
                 pos,
                 data,
                 resolve,
