@@ -4,6 +4,7 @@ import AlertPop from 'view/pop/alert';
 import TopTipPop from 'view/pop/topTip';
 import { sleep } from '../../utils/testUtils';
 import { asyncOnly, clearAsyncOnly } from 'utils/asyncQue';
+import { tipExchange } from 'ctrl/game/gameCtrlUtils';
 
 export const alert_test = new Test('alert', runner => {
     runner.describe('top_tip', async msg => {
@@ -16,8 +17,9 @@ export const alert_test = new Test('alert', runner => {
         //     click_through: false,
         //     auto_hide: false,
         // });
-        TipPop.tip(msg || 'this is a test');
-        console.log(`2`);
+        // TipPop.tip(msg || 'this is a test');
+        // console.log(`2`);
+        tipExchange({ bringAmount: 100, bulletNum: 100, currency: 'BTC' });
         // await sleep(5);
         // TipPop.hide();
     });

@@ -159,10 +159,12 @@ export function hallViewEvent(hall: HallCtrl) {
 
 type Data = Parameters<typeof roomIn>[0];
 export function getRoomInData(): Data {
-    const save_str = getItem('roomIn');
-    if (save_str) {
-        return JSON.parse(save_str);
-    }
+    try {
+        const save_str = getItem('roomIn');
+        if (save_str) {
+            return JSON.parse(save_str);
+        }
+    } catch {}
     return {
         roomId: 1,
         isTrial: 1,
