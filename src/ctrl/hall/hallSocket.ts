@@ -84,9 +84,6 @@ export function roomIn(
 ) {
     return new Promise<Partial<RoomInRep>>((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
-        if (!socket) {
-            alertNetErrRefresh();
-        }
         socket.event.once(
             ServerEvent.RoomIn,
             async (_data: RoomInRep, code, msg) => {

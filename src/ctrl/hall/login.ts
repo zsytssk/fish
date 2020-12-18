@@ -26,11 +26,9 @@ export function login() {
     } else {
         platform.login();
     }
-    disconnectSocket(ServerName.Hall);
 }
 export function logout() {
     platform.logout();
-    disconnectSocket(ServerName.Hall);
 }
 
 export async function waitConnectGame(url: string) {
