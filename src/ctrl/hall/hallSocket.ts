@@ -9,6 +9,7 @@ import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
+import { alertNetErrRefresh } from './hallCtrlUtil';
 import { initHallSocket } from './login';
 
 /**
@@ -83,6 +84,9 @@ export function roomIn(
 ) {
     return new Promise<Partial<RoomInRep>>((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
+        if (!socket) {
+            alertNetErrRefresh();
+        }
         socket.event.once(
             ServerEvent.RoomIn,
             async (_data: RoomInRep, code, msg) => {

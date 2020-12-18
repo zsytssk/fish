@@ -1,6 +1,8 @@
 import { Lang, InternationalTip } from 'data/internationalConfig';
+import { ServerErrCode } from 'data/serverEvent';
 import { modelState } from 'model/modelState';
 import { AccountMap, UserInfoEvent } from 'model/userInfo/userInfoModel';
+import AlertPop from 'view/pop/alert';
 
 export function onLangChange(item: any, callback: (lang: Lang) => void) {
     const { user_info } = modelState.app;
@@ -94,5 +96,15 @@ export function recharge() {
             gameNo: (window as any)?.paladin.sys.config.gameId,
             isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
         },
+    });
+}
+
+/** 提示刷新页面 */
+export function alertNetErrRefresh() {
+    const lang = getLang();
+    return AlertPop.alert(InternationalTip[lang][ServerErrCode.NetError], {
+        hide_cancel: true,
+    }).then(() => {
+        location.reload();
     });
 }
