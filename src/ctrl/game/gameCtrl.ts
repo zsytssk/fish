@@ -36,6 +36,7 @@ import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
+    tipExchange,
     waitEnterGame,
 } from './gameCtrlUtils';
 import {
@@ -83,32 +84,21 @@ export class GameCtrl {
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
             const wait_load_res = honor.director.load(other_res, 'Scene');
-            if (data.currency) {
-                const lang = getLang();
-                let tip = InternationalTip[lang].enterGameCostTip;
-                tip = tip
-                    .replace(
-                        new RegExp('{bringAmount}', 'g'),
-                        data.bringAmount + '',
-                    )
-                    .replace(
-                        new RegExp('{bulletNum}', 'g'),
-                        data.bulletNum + '',
-                    )
-                    .replace(new RegExp('{currency}', 'g'), data.currency);
 
-                waitEnterGame().then(async ([status, data]) => {
+            /** 只有第一次进入时提示 */
+            if (data.currency) {
+                waitEnterGame().then(async ([status, _data]) => {
                     if (!status) {
                         return;
                     }
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
-                    if (getChannel() === 'YOUCHAIN' && !data.isTrial) {
+                    if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
                         const lang = getLang();
                         await AlertPop.alert(
                             InternationalTip[lang].delayUpdateAccount,
                         );
                     }
-                    TipPop.tip(tip);
+                    tipExchange(data);
                 });
             }
 

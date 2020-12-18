@@ -98,6 +98,10 @@ export class PlayerModel extends ComponentManager {
     }
     public updateInfo(info: Partial<PlayerInfo>) {
         const { bullet_cost } = info;
+        if (info.bullet_num < 0 && this.is_cur_player) {
+            error('test:> some thing case bullet num < 0');
+            info.bullet_num = 0;
+        }
         setProps(this as PlayerModel, info);
         if (info.bullet_cost) {
             this.gun.setBulletCost(bullet_cost);
@@ -155,7 +159,7 @@ export class PlayerModel extends ComponentManager {
     ) {
         /** 掉落的金币+item动画 */
         await new Promise((resolve, reject) => {
-            this.event.emit(PlayerEvent.CaptureFish, {
+            this.event?.emit(PlayerEvent.CaptureFish, {
                 pos,
                 data,
                 resolve,

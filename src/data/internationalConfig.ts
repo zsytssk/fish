@@ -120,7 +120,7 @@ export const International = {
         delayUpdateAccount:
             'Your fund change might delay due to block confirmation on the chain, please wait patiently',
         enterGameCostTip:
-            'The system converts{bringAmount} USDT into {bulletNum} bullets. \n When you leave the room, the remaining bullets will be converted again into your {currency}.',
+            'The system converts{bringAmount} USDT into {bulletNum} bullets. \n When you leave the room, the remaining bullets \n will be converted again into your {currency}.',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
