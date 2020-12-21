@@ -8,7 +8,6 @@ import { startCount } from 'utils/count';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent, ServerName } from 'data/serverEvent';
 import { sleep } from '../../utils/testUtils';
-import { getBeBombFishIds } from 'model/game/fish/fishModelUtils';
 
 /** 技能的测试 */
 export const skill_test = new Test('skill', runner => {
@@ -26,13 +25,17 @@ export const skill_test = new Test('skill', runner => {
     runner.describe('auto_bomb', async () => {
         const socket = getSocket(ServerName.Game);
         const pos = { x: 939, y: 348 };
-        const fish_old_list = [...modelState.app.game.fish_list].map(item => {
-            return item.id;
-        });
+        const fish_old_list = [...modelState.app.game.fish_list.values()].map(
+            item => {
+                return item.id;
+            },
+        );
         await sleep(5);
-        const fish_new_list = [...modelState.app.game.fish_list].map(item => {
-            return item.id;
-        });
+        const fish_new_list = [...modelState.app.game.fish_list.values()].map(
+            item => {
+                return item.id;
+            },
+        );
         const fish_list = fish_old_list.filter(item => {
             return fish_new_list.indexOf(item) === -1;
         });
@@ -76,19 +79,19 @@ export const skill_test = new Test('skill', runner => {
         const player = modelState.app.game.getPlayerById(player_id);
         /** 提示锁定不攻击 */
         setTimeout(() => {
-            const fish = [...modelState.app.game.fish_list][0];
-            player.gun.trackFish.track(fish, false);
+            const [_, fish] = [...modelState.app.game.fish_list][0];
+            player.gun.getCom.trackFish.track(fish, false);
         }, 1000);
 
         /** 锁定+攻击 */
         setTimeout(() => {
-            const fish = [...modelState.app.game.fish_list][0];
+            const [_, fish] = [...modelState.app.game.fish_list][0];
             player.gun.trackFish.track(fish, true);
         }, 3000);
 
         /** 取消锁定 */
         setTimeout(() => {
-            const fish = [...modelState.app.game.fish_list][0];
+            const [_, fish] = [...modelState.app.game.fish_list][0];
             player.gun.trackFish.unTrack();
         }, 7000);
     });
@@ -109,7 +112,7 @@ export const skill_test = new Test('skill', runner => {
         fish_test.runTest('add_fish');
 
         setTimeout(() => {
-            const { id } = [...modelState.app.game.fish_list][0];
+            const [_, { id }] = [...modelState.app.game.fish_list][0];
             modelState.app.game.freezing_com.freezing(5, [id]);
         }, 5000);
     });

@@ -72,7 +72,7 @@ export const ani_wrap = new Test('ani_wrap', runner => {
     });
     runner.describe('aim', () => {
         const gun = [...modelState.app.game['player_list']][0].gun;
-        const fish = [...modelState.app.game.fish_list][0];
+        const [_, fish] = [...modelState.app.game.fish_list][0];
         fish.event.on(FishEvent.Move, () => {
             const { pos } = fish;
             const x = pos.x - gun.pos.x;

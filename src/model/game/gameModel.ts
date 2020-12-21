@@ -12,7 +12,6 @@ import {
     playerCaptureFish,
 } from './fish/fishModelUtils';
 import { ModelEvent } from 'model/modelEvent';
-import { window } from 'rxjs/operators';
 import { error } from 'utils/log';
 
 export const GameEvent = {
@@ -26,7 +25,7 @@ export const GameEvent = {
 };
 
 export class GameModel extends ComponentManager {
-    public fish_list: Set<FishModel> = new Set();
+    public fish_map: Map<string, FishModel> = new Map();
     private player_list: Set<PlayerModel> = new Set();
     constructor() {
         super();
@@ -49,42 +48,38 @@ export class GameModel extends ComponentManager {
     }
     public addFish(fish_info: ServerFishInfo) {
         const { group } = fish_info;
+        const { fish_map } = this;
         if (!group) {
             /** 创建单个鱼 */
             const fish = createFish(fish_info, this);
             if (!fish) {
                 return;
             }
-            this.fish_list.add(fish);
+            fish_map.set(fish.id, fish);
             this.event.emit(GameEvent.AddFish, fish);
             fish.init();
             return fish;
         } else {
             /** 创建鱼组 */
-            const fish_list = createFishGroup(fish_info, this);
-            for (const fish of fish_list) {
-                this.fish_list.add(fish);
+            const fish_arr = createFishGroup(fish_info, this);
+            for (const fish of fish_arr) {
+                fish_map.set(fish.id, fish);
                 this.event.emit(GameEvent.AddFish, fish);
                 fish.init();
             }
 
-            return fish_list;
+            return fish_arr;
         }
     }
     public removeFish(fish: FishModel) {
-        this.fish_list.delete(fish);
+        this.fish_map.delete(fish.id);
     }
     public getFishById(id: string) {
-        const { fish_list } = this;
-        for (const fish of fish_list) {
-            if (fish.id === id) {
-                return fish;
-            }
-        }
+        const { fish_map: fish_list } = this;
+        return fish_list.get(id);
     }
     public getAllFish() {
-        const { fish_list } = this;
-        return [...fish_list];
+        return this.fish_map;
     }
     public captureFish(info: HitRep) {
         const { userId, eid, backAmount } = info;
@@ -183,14 +178,14 @@ export class GameModel extends ComponentManager {
         this.shoal_com.preAddShoal(reverse);
     }
     public clear() {
-        const { fish_list, player_list } = this;
+        const { fish_map, player_list } = this;
         for (const player of player_list) {
             player.destroy();
         }
-        for (const fish of fish_list) {
+        for (const [_, fish] of fish_map) {
             fish.destroy();
         }
-        this.fish_list.clear();
+        this.fish_map.clear();
         this.player_list.clear();
     }
     public destroy() {

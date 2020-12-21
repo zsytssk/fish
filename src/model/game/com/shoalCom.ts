@@ -25,7 +25,7 @@ export class ShoalCom extends ComponentManager {
     public preAddShoal(reverse: boolean) {
         const { event, fish_list } = this.game;
         event.emit(ShoalEvent.PreAddShoal, reverse);
-        for (const fish of fish_list) {
+        for (const [_, fish] of fish_list) {
             quickLeaveFish(fish, reverse);
         }
     }

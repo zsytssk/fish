@@ -49,7 +49,7 @@ export class GameFreezeCom extends ComponentManager {
         if (freezing_timeout) {
             timeout.clear(freezing_timeout);
         }
-        for (const fish of fish_list) {
+        for (const [_, fish] of fish_list) {
             fish.setStatus(FishStatus.Normal);
         }
         event.emit(FreezingComEvent.UnFreezing);

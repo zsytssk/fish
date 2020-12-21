@@ -197,8 +197,8 @@ export const fish_test = new Test('fish', runner => {
     });
 
     runner.describe('list_player_id', () => {
-        const fish_list = modelState.app.game['fish_list'];
-        const id_list = [...fish_list].map(fish => {
+        const fish_list = modelState.app.game['fish_map'];
+        const id_list = [...fish_list.values()].map(fish => {
             return fish.id;
         });
 
