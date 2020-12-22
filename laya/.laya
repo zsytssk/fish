@@ -44,7 +44,7 @@ import { ClassUtils } from "laya/utils/ClassUtils";]]>   </codeImportsTS>
    <isRemoteProject>false   </isRemoteProject>
    <idePath/>
    <ver>2.0   </ver>
-   <stat>true   </stat>
+   <stat>false   </stat>
    <physicsDebug>true   </physicsDebug>
    <toJsonScene>true   </toJsonScene>
    <compressTexture>false   </compressTexture>
