@@ -5,7 +5,7 @@ type FunItem = {
     fn: Listener;
     index: number;
 };
-const tick_time = 1000 / 30;
+const tick_time = 1000 / 60;
 const tick = tick_time / (1000 / 60);
 
 const fun_list: Set<FunItem> = new Set();
