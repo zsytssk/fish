@@ -136,7 +136,7 @@ export function skillActiveHandler(
             const { fish, is_tip, gun_pos } = info as LockActiveData;
             if (!player_model.is_cur_player) {
                 debug(`lock:>skill:>skillActiveHandler`, is_tip);
-                if (player_model.need_emit && is_tip) {
+                if (player_model.need_emit && is_tip && fish) {
                     sendToGameSocket(ServerEvent.LockFish, {
                         robotId: player_model.user_id,
                         eid: fish.id,
