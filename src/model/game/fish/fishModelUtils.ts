@@ -61,12 +61,12 @@ export function createFishGroup(
      * onUpdate 在原来的update基础上需要加上相对的 pos
      * destroy 只有所有的鱼个都 destroy 就把原来的 move_com destroy
      */
-    const update_fn_list: Set<FishGroupItemUpdate> = new Set();
+    const update_fn_map: Map<number, FishGroupItemUpdate> = new Map();
     const createUpdateFn = (fn: MoveUpdateComposeFn, index: number) => {
         return [
             (sub_fn: MoveUpdateFn) => {
                 // onUpdate
-                update_fn_list.add({
+                update_fn_map.set(index, {
                     update_fn: (move_info: MoveInfo) => {
                         const _move_info = fn(move_info);
                         sub_fn(_move_info);
@@ -77,23 +77,15 @@ export function createFishGroup(
             },
             () => {
                 // destroy
-                for (const item of update_fn_list) {
-                    if (item.id === index) {
-                        update_fn_list.delete(item);
-                        if (update_fn_list.size === 0) {
-                            move_com.destroy();
-                        }
-                    }
+                update_fn_map.delete(index);
+                if (update_fn_map.size === 0) {
+                    move_com.destroy();
                 }
             },
             () => {
-                // destroy
-                for (const item of update_fn_list) {
-                    if (item.id === index) {
-                        item.isStop = false;
-                    }
-                }
-                const hasStopItem = [...update_fn_list].find(
+                // start
+                update_fn_map.get(index).isStop = false;
+                const hasStopItem = [...update_fn_map.values()].find(
                     item => item.isStop === true,
                 );
                 if (!hasStopItem) {
@@ -101,13 +93,9 @@ export function createFishGroup(
                 }
             },
             () => {
-                // destroy
-                for (const item of update_fn_list) {
-                    if (item.id === index) {
-                        item.isStop = true;
-                    }
-                }
-                const hasMoveItem = [...update_fn_list].find(
+                // stop
+                update_fn_map.get(index).isStop = true;
+                const hasMoveItem = [...update_fn_map.values()].find(
                     item => item.isStop === false,
                 );
                 if (!hasMoveItem) {
@@ -118,7 +106,7 @@ export function createFishGroup(
     };
 
     move_com.onUpdate(move_info => {
-        for (const fn_item of update_fn_list) {
+        for (const [, fn_item] of update_fn_map) {
             const { update_fn } = fn_item;
             update_fn(move_info);
         }

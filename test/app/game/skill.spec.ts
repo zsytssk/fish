@@ -8,6 +8,8 @@ import { startCount } from 'utils/count';
 import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { ServerEvent, ServerName } from 'data/serverEvent';
 import { sleep } from '../../utils/testUtils';
+import { SkillMap } from 'data/config';
+import { LockFishModel } from 'model/game/skill/lockFishModel';
 
 /** 技能的测试 */
 export const skill_test = new Test('skill', runner => {
@@ -25,13 +27,13 @@ export const skill_test = new Test('skill', runner => {
     runner.describe('auto_bomb', async () => {
         const socket = getSocket(ServerName.Game);
         const pos = { x: 939, y: 348 };
-        const fish_old_list = [...modelState.app.game.fish_list.values()].map(
+        const fish_old_list = [...modelState.app.game.fish_map.values()].map(
             item => {
                 return item.id;
             },
         );
         await sleep(5);
-        const fish_new_list = [...modelState.app.game.fish_list.values()].map(
+        const fish_new_list = [...modelState.app.game.fish_map.values()].map(
             item => {
                 return item.id;
             },
@@ -72,27 +74,41 @@ export const skill_test = new Test('skill', runner => {
         );
     });
 
-    runner.describe('track_fish', () => {
+    runner.describe('track_fish', async () => {
         const player_id = modelState.app.user_info.user_id;
-        fish_test.runTest('add_fish');
-        player_test.runTest('add_player');
+        fish_test.runTest('add_fish_group');
+        player_test.runTest('add_cur_player');
         const player = modelState.app.game.getPlayerById(player_id);
+
+        await sleep(1);
+        const lockFish = player.skill_map.get(
+            SkillMap.LockFish,
+        ) as LockFishModel;
         /** 提示锁定不攻击 */
         setTimeout(() => {
-            const [_, fish] = [...modelState.app.game.fish_list][0];
-            player.gun.getCom.trackFish.track(fish, false);
+            const [, fish] = [...modelState.app.game.fish_map][0];
+            lockFish.active({
+                num: 10,
+                fish: fish.id,
+                duration: 10,
+                needActive: true,
+            });
         }, 1000);
 
         /** 锁定+攻击 */
         setTimeout(() => {
-            const [_, fish] = [...modelState.app.game.fish_list][0];
-            player.gun.trackFish.track(fish, true);
+            const [, fish] = [...modelState.app.game.fish_map][0];
+            lockFish.active({
+                num: 10,
+                fish: fish.id,
+                duration: 10,
+                needActive: false,
+            });
         }, 3000);
 
         /** 取消锁定 */
         setTimeout(() => {
-            const [_, fish] = [...modelState.app.game.fish_list][0];
-            player.gun.trackFish.unTrack();
+            // lockFish.unLock();
         }, 7000);
     });
 
@@ -112,7 +128,7 @@ export const skill_test = new Test('skill', runner => {
         fish_test.runTest('add_fish');
 
         setTimeout(() => {
-            const [_, { id }] = [...modelState.app.game.fish_list][0];
+            const [_, { id }] = [...modelState.app.game.fish_map][0];
             modelState.app.game.freezing_com.freezing(5, [id]);
         }, 5000);
     });

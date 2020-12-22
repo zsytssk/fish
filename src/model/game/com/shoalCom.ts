@@ -23,9 +23,9 @@ export class ShoalCom extends ComponentManager {
     }
     /** 添加鱼群前 处理 */
     public preAddShoal(reverse: boolean) {
-        const { event, fish_list } = this.game;
+        const { event, fish_map } = this.game;
         event.emit(ShoalEvent.PreAddShoal, reverse);
-        for (const [_, fish] of fish_list) {
+        for (const [, fish] of fish_map) {
             quickLeaveFish(fish, reverse);
         }
     }

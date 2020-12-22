@@ -44,12 +44,12 @@ export class GameFreezeCom extends ComponentManager {
     /** 解除冰冻 */
     public unFreezing() {
         const { game, freezing_timeout } = this;
-        const { fish_list, event } = game;
+        const { fish_map, event } = game;
         const timeout = this.getCom(TimeoutCom);
         if (freezing_timeout) {
             timeout.clear(freezing_timeout);
         }
-        for (const [_, fish] of fish_list) {
+        for (const [, fish] of fish_map) {
             fish.setStatus(FishStatus.Normal);
         }
         event.emit(FreezingComEvent.UnFreezing);

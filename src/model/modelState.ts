@@ -66,7 +66,7 @@ export function detectInScreen(pos: Point) {
 /** 检测碰撞到鱼: 获取第一个 */
 export function getCollisionFish(ori_body: BodyCom) {
     const fish_list = modelState.app.game.getAllFish();
-    for (const [_, fish] of fish_list) {
+    for (const [, fish] of fish_list) {
         const { body } = fish;
         if (detectCollision(ori_body, body)) {
             return fish;
@@ -79,7 +79,7 @@ export function getCollisionAllFish(
     contain_list: FishModel[] = [],
 ) {
     const fish_list = modelState.app.game.getAllFish();
-    for (const [_, fish] of fish_list) {
+    for (const [, fish] of fish_list) {
         if (contain_list.indexOf(fish) !== -1) {
             continue;
         }

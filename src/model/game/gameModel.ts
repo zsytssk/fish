@@ -26,7 +26,7 @@ export const GameEvent = {
 
 export class GameModel extends ComponentManager {
     public fish_map: Map<string, FishModel> = new Map();
-    private player_list: Set<PlayerModel> = new Set();
+    private player_map: Map<string, PlayerModel> = new Map();
     constructor() {
         super();
         this.initCom();
@@ -75,8 +75,8 @@ export class GameModel extends ComponentManager {
         this.fish_map.delete(fish.id);
     }
     public getFishById(id: string) {
-        const { fish_map: fish_list } = this;
-        return fish_list.get(id);
+        const { fish_map } = this;
+        return fish_map.get(id);
     }
     public getAllFish() {
         return this.fish_map;
@@ -114,33 +114,28 @@ export class GameModel extends ComponentManager {
     /** 添加用户 */
     public addPlayer(data: PlayerInfo) {
         const player = new PlayerModel(data, this);
-        this.player_list.add(player);
+        this.player_map.set(data.user_id, player);
         this.event.emit(GameEvent.AddPlayer, player);
         player.init();
         return player;
     }
     public getCurPlayer() {
-        const { player_list } = this;
-        for (const player of player_list) {
+        const { player_map } = this;
+        for (const [, player] of player_map) {
             if (player.is_cur_player) {
                 return player;
             }
         }
     }
     public getPlayers() {
-        return this.player_list;
+        return this.player_map;
     }
     public getPlayerById(id: string) {
-        const { player_list } = this;
-        for (const player of player_list) {
-            if (player.user_id === id) {
-                return player;
-            }
-        }
+        return this.player_map.get(id);
     }
     /** 移除用户 */
     public removePlayer(player: PlayerModel) {
-        this.player_list.delete(player);
+        this.player_map.delete(player.user_id);
     }
     public activeSkill(skill: SkillMap, data: { user_id: string }) {
         const player = this.getPlayerById(data.user_id);
@@ -178,15 +173,15 @@ export class GameModel extends ComponentManager {
         this.shoal_com.preAddShoal(reverse);
     }
     public clear() {
-        const { fish_map, player_list } = this;
-        for (const player of player_list) {
+        const { fish_map, player_map } = this;
+        for (const [, player] of player_map) {
             player.destroy();
         }
-        for (const [_, fish] of fish_map) {
+        for (const [, fish] of fish_map) {
             fish.destroy();
         }
         this.fish_map.clear();
-        this.player_list.clear();
+        this.player_map.clear();
     }
     public destroy() {
         this.event.emit(GameEvent.Destroy);

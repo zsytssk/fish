@@ -18,7 +18,7 @@ export const BulletGroupEvent = {
 
 /** 子弹组合(一次发射多个子弹, 一颗子弹击中鱼, 所有同时生成网) */
 export class BulletGroup extends ComponentManager {
-    public bullet_list: Set<BulletModel> = new Set();
+    public bullet_map: Map<number, BulletModel> = new Map();
     private gun: GunModel;
     public bullet_cost: number;
     /** 是否已经捕捉到了, 只处理第一个bulletModel捕的鱼 */
@@ -34,8 +34,8 @@ export class BulletGroup extends ComponentManager {
         this.initBullet(info);
     }
     public init() {
-        const { bullet_list } = this;
-        for (const bullet of bullet_list) {
+        const { bullet_map } = this;
+        for (const [, bullet] of bullet_map) {
             bullet.init();
         }
     }
@@ -43,7 +43,7 @@ export class BulletGroup extends ComponentManager {
         const { bullets_pos, lock, velocity } = info;
         const { skin, bullet_cost, skin_level } = this.gun;
 
-        for (const pos of bullets_pos) {
+        for (const [index, pos] of bullets_pos.entries()) {
             const bullet_props = {
                 skin,
                 pos,
@@ -54,12 +54,17 @@ export class BulletGroup extends ComponentManager {
                 cast_fn: this.castFn,
             } as BulletInfo;
             const bullet = new BulletModel(bullet_props);
-            this.bullet_list.add(bullet);
+            this.bullet_map.set(index, bullet);
         }
     }
     /** 一颗子弹击中鱼之后的处理 */
     private castFn = (fish: FishModel) => {
-        const { gun, casted, bullet_list, bullet_cost: bullet_price } = this;
+        const {
+            gun,
+            casted,
+            bullet_map: bullet_list,
+            bullet_cost: bullet_price,
+        } = this;
         if (casted) {
             return;
         }
@@ -70,7 +75,7 @@ export class BulletGroup extends ComponentManager {
         }
         gun.removeBullet(this);
         this.gun = undefined;
-        for (const bullet of bullet_list) {
+        for (const [, bullet] of bullet_list) {
             bullet.addNet(is_cur_player);
         }
         bullet_list.clear();
@@ -78,11 +83,11 @@ export class BulletGroup extends ComponentManager {
     }; //tslint:disable-line
 
     public destroy() {
-        const { bullet_list } = this;
-        for (const bullet of bullet_list) {
+        const { bullet_map } = this;
+        for (const [, bullet] of bullet_map) {
             bullet.destroy();
         }
-        bullet_list.clear();
+        bullet_map.clear();
         this.event.emit(BulletGroupEvent.Destroy);
 
         this.event = undefined;

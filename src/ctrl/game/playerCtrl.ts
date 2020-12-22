@@ -133,7 +133,7 @@ export class PlayerCtrl {
                 if (is_cur_player) {
                     view.stopPosTip();
                 }
-                for (const bullet of bullet_group.bullet_list) {
+                for (const [, bullet] of bullet_group.bullet_map) {
                     const bullet_view = view.addBullet(
                         bullet.skin,
                         rage,

@@ -26,7 +26,7 @@ export const fish_test = new Test('fish', runner => {
             // pathId = pathId || 3;
             // time = time || 12 * 1000000;
             time = time || 10 * 1000;
-            const usedTime = (time * 1) / 2;
+            const usedTime = (time * 1) / 5;
             // const usedTime = 0;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
             modelState.app.game.addFish(fish_data);
@@ -119,7 +119,7 @@ export const fish_test = new Test('fish', runner => {
             displaceType: 'path',
             pathNo: `${pathId}`,
             totalTime: time,
-            usedTime: 0,
+            usedTime: time / 3,
             reverse: true,
             group: [
                 {
