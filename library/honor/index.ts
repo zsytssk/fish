@@ -46,7 +46,7 @@ async function run(
     Laya.Config.useRetinalCanvas = true;
     // 根据IDE设置初始化引擎
     Laya.init(game_config.width, game_config.height, WebGL);
-    Laya.stage.frameRate = Stage.FRAME_SLOW;
+    Laya.stage.frameRate = Stage.FRAME_FAST;
     if ((Laya as any).DebugPanel) {
         (Laya as any).DebugPanel.enable();
     }

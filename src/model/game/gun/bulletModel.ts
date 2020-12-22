@@ -93,10 +93,10 @@ export class BulletModel extends ComponentManager {
         // 每两次执行一次碰撞检查
         this.need_detect_collision = !need_detect_collision;
         if (need_detect_collision) {
-        }
-        const fish = getCollisionFish(body_com);
-        if (fish) {
-            this.onHit(fish);
+            const fish = getCollisionFish(body_com);
+            if (fish) {
+                this.onHit(fish);
+            }
         }
     }; // tslint:disable-line
     /** 追踪鱼不需要进行碰撞检测, 不需要body */

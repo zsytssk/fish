@@ -83,6 +83,9 @@ export class BulletGroup extends ComponentManager {
     }; //tslint:disable-line
 
     public destroy() {
+        if (this.destroyed) {
+            return;
+        }
         const { bullet_map } = this;
         for (const [, bullet] of bullet_map) {
             bullet.destroy();
