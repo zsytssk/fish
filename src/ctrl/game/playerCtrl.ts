@@ -188,6 +188,9 @@ export class PlayerCtrl {
         gun_event.on(
             GunEvent.WillAddBullet,
             (velocity: SAT.Vector) => {
+                if (!this.model) {
+                    return;
+                }
                 const {
                     need_emit,
                     user_id,
