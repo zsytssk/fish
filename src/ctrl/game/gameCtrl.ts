@@ -1,7 +1,7 @@
 import { ctrlState } from 'ctrl/ctrlState';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from 'ctrl/hall/hallCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { getChannel, getLang } from 'ctrl/hall/hallCtrlUtil';
 import { waitConnectGame } from 'ctrl/hall/login';
 import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
 import { AudioRes } from 'data/audioRes';
@@ -92,11 +92,7 @@ export class GameCtrl {
                         return;
                     }
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
-                    if (
-                        (window as any).paladin?.sys?.config?.channel ===
-                            'YOUCHAIN' &&
-                        !_data.isTrial
-                    ) {
+                    if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
                         const lang = getLang();
                         await AlertPop.alert(
                             InternationalTip[lang].delayUpdateAccount,
