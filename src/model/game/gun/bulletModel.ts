@@ -124,6 +124,9 @@ export class BulletModel extends ComponentManager {
          * 不然的话就会出现击中鱼时 子弹的位置存在很多的差别...
          */
         this.getCom(TimeoutCom).createTimeout(() => {
+            if (this.destroyed) {
+                return;
+            }
             cast_fn(fish);
         });
     }; // tslint:disable-line
@@ -138,7 +141,6 @@ export class BulletModel extends ComponentManager {
             this,
         );
         this.event.emit(BulletEvent.AddNet, net);
-        this.destroy();
     }; // tslint:disable-line
     public destroy() {
         this.event.emit(ModelEvent.Destroy);

@@ -5,6 +5,7 @@ import { GunModel } from './gunModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { ModelEvent } from 'model/modelEvent';
+import { genRandomStr } from 'utils/utils';
 
 export type BulletGroupInfo = {
     bullets_pos: Point[];
@@ -24,6 +25,7 @@ export class BulletGroup extends ComponentManager {
     /** 是否已经捕捉到了, 只处理第一个bulletModel捕的鱼 */
     private casted = false;
     public event: EventCom;
+    public id = genRandomStr();
     constructor(info: BulletGroupInfo, gun: GunModel) {
         super();
         this.bullet_cost = gun.bullet_cost;
@@ -78,7 +80,6 @@ export class BulletGroup extends ComponentManager {
         for (const [, bullet] of bullet_list) {
             bullet.addNet(is_cur_player);
         }
-        bullet_list.clear();
         this.destroy();
     }; //tslint:disable-line
 

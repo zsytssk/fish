@@ -133,19 +133,23 @@ export function calcPosRange(
 }
 
 /** 金币飞行动画... */
-function animateCoin(coin_views: Skeleton[], end_pos: Point) {
-    coin_views.reverse().forEach(async (coin_view, i) => {
-        const start_pos = {
-            x: coin_view.x,
-            y: coin_view.y,
-        };
-        /** 100显示显示展示200, */
-        await slide_up_in(coin_view, coin_show_time * 1000);
-        await sleep(coin_stop_time + i * 0.2);
-        await move(coin_view, start_pos, end_pos, coin_fly_time * 1000);
-        coin_view.removeSelf();
-        tempAni('coin', coin_view);
-    });
+async function animateCoin(coin_views: Skeleton[], end_pos: Point) {
+    try {
+        const list = coin_views.reverse();
+        for (let i = 0; i < list.length; i++) {
+            const coin_view = list[i];
+            const start_pos = {
+                x: coin_view.x,
+                y: coin_view.y,
+            };
+            /** 100显示显示展示200, */
+            await slide_up_in(coin_view, coin_show_time * 1000);
+            await sleep(coin_stop_time + i * 0.2);
+            await move(coin_view, start_pos, end_pos, coin_fly_time * 1000);
+            coin_view.removeSelf();
+            tempAni('coin', coin_view);
+        }
+    } catch {}
 }
 
 const pool_map = {} as { [key: string]: Skeleton[] };

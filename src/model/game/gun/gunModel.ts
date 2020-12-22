@@ -65,7 +65,7 @@ export class GunModel extends ComponentManager {
     /** 炮皮肤 */
     public hole_num: number;
     /** 子弹列表 */
-    private bullet_map: Map<number, BulletGroup> = new Map();
+    private bullet_map: Map<string, BulletGroup> = new Map();
     /** 所属的玩家 */
     public player: PlayerModel;
     /** 追踪的鱼 */
@@ -241,7 +241,7 @@ export class GunModel extends ComponentManager {
             lock,
         };
         const bullet_group = new BulletGroup(info, this);
-        bullet_map.set(bullet_map.size, bullet_group);
+        bullet_map.set(bullet_group.id, bullet_group);
         event.emit(GunEvent.AddBullet, {
             bullet_group,
             velocity,
@@ -262,18 +262,14 @@ export class GunModel extends ComponentManager {
         }
         return cost;
     }
-    public removeBullet(_bullet: BulletGroup) {
-        const { bullet_map: bullet_list } = this;
-        for (const [index, bullet] of bullet_list) {
-            if (bullet !== _bullet) {
-                bullet_list.delete(index);
-            }
-        }
+    public removeBullet(bullet: BulletGroup) {
+        const { bullet_map } = this;
+        bullet_map.delete(bullet.id);
     }
     public destroy() {
-        const { bullet_map: bullet_list } = this;
+        const { bullet_map } = this;
 
-        for (const [, bullet] of bullet_list) {
+        for (const [, bullet] of bullet_map) {
             bullet.destroy();
         }
         this.player = undefined;
