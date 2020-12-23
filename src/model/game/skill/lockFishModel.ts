@@ -50,7 +50,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     private timeout: TimeoutCom;
     private init_info: LockFishInitInfo;
     public fish: FishModel;
-    public bullet_list: Set<BulletGroup> = new Set();
+    public bullet_list: Map<string, BulletGroup> = new Map();
     private gun: GunModel;
     constructor(info: LockFishInitInfo) {
         super();
@@ -167,19 +167,23 @@ export class LockFishModel extends ComponentManager implements SkillModel {
             },
             this,
         );
+
         /** 收集 lock fish 的子弹 在鱼销毁的时候需要还原
          */
+        let i = 0;
         gun_event.on(
             GunEvent.AddBullet,
             (info: AddBulletInfo) => {
                 if (info.lock) {
                     const { bullet_group } = info;
-                    this.bullet_list.add(bullet_group);
+                    const localId = i + '';
+                    i++;
+                    this.bullet_list.set(localId, bullet_group);
                     /** 子弹销毁的时候需要冲列表中销毁... */
                     bullet_group.event.on(
                         BulletGroupEvent.Destroy,
                         () => {
-                            this.bullet_list.delete(bullet_group);
+                            this.bullet_list.delete(localId);
                         },
                         this,
                     );
@@ -214,7 +218,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
 
         const { player } = gun;
         let bullets_cost = 0;
-        for (const bullet of bullet_list) {
+        for (const [, bullet] of bullet_list) {
             const { bullet_cost } = bullet;
             bullets_cost += bullet_cost;
             gun.removeBullet(bullet);

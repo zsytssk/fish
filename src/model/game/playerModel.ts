@@ -106,7 +106,7 @@ export class PlayerModel extends ComponentManager {
         if (info.bullet_cost) {
             this.gun.setBulletCost(bullet_cost);
         }
-        this.event.emit(PlayerEvent.UpdateInfo);
+        this.event?.emit(PlayerEvent.UpdateInfo);
     }
     /** 初始化用户的技能 */
     private initSkill(skills: SkillInfoMap) {
@@ -165,6 +165,10 @@ export class PlayerModel extends ComponentManager {
                 resolve,
             } as CaptureInfo);
         });
+
+        if (this.destroyed) {
+            return;
+        }
 
         const { win, drop } = data;
         const { bullet_num } = this;

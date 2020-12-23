@@ -43,6 +43,7 @@ export class BulletModel extends ComponentManager {
     public event: EventCom;
     private body: BodyCom;
     private move_com: MoveCom;
+    private need_detect_collision = true;
     constructor(props: BulletInfo) {
         super();
 
@@ -80,6 +81,7 @@ export class BulletModel extends ComponentManager {
         move_com.start();
     }
     private onMoveChange = (move_info: MoveInfo) => {
+        const { need_detect_collision } = this;
         const { pos, velocity } = move_info;
         const body_com = this.body;
         body_com.update(pos, velocity);
@@ -88,9 +90,13 @@ export class BulletModel extends ComponentManager {
         this.velocity = velocity;
         this.event.emit(BulletEvent.Move, { pos, velocity } as MoveInfo);
 
-        const fish = getCollisionFish(body_com);
-        if (fish) {
-            this.onHit(fish);
+        // 每两次执行一次碰撞检查
+        this.need_detect_collision = !need_detect_collision;
+        if (need_detect_collision) {
+            const fish = getCollisionFish(body_com);
+            if (fish) {
+                this.onHit(fish);
+            }
         }
     }; // tslint:disable-line
     /** 追踪鱼不需要进行碰撞检测, 不需要body */
@@ -118,6 +124,9 @@ export class BulletModel extends ComponentManager {
          * 不然的话就会出现击中鱼时 子弹的位置存在很多的差别...
          */
         this.getCom(TimeoutCom).createTimeout(() => {
+            if (this.destroyed) {
+                return;
+            }
             cast_fn(fish);
         });
     }; // tslint:disable-line
@@ -132,7 +141,6 @@ export class BulletModel extends ComponentManager {
             this,
         );
         this.event.emit(BulletEvent.AddNet, net);
-        this.destroy();
     }; // tslint:disable-line
     public destroy() {
         this.event.emit(ModelEvent.Destroy);

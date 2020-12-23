@@ -8,7 +8,7 @@ type FunItem = {
 const tick_time = 1000 / 60;
 const tick = tick_time / (1000 / 60);
 
-const fun_list: Set<FunItem> = new Set();
+const fun_list: Map<number, FunItem> = new Map();
 let looping = false;
 let index = 0;
 let pre_time: number;
@@ -24,7 +24,7 @@ function update() {
         pre_time = now - more_dist_time;
     }
 
-    for (const item of fun_list) {
+    for (const [, item] of fun_list) {
         item.fn(now_tick);
     }
 }
@@ -36,7 +36,7 @@ export function createTick(fn: Listener) {
         Laya.timer.loop(tick_time, null, update);
     }
     index++;
-    fun_list.add({
+    fun_list.set(index, {
         fn,
         index,
     });
@@ -45,11 +45,7 @@ export function createTick(fn: Listener) {
 }
 
 export function clearTick(_index: number) {
-    for (const item of fun_list) {
-        if (item.index === _index) {
-            fun_list.delete(item);
-        }
-    }
+    fun_list.delete(_index);
 
     if (fun_list.size === 0) {
         Laya.timer.clear(null, update);

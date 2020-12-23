@@ -53,6 +53,9 @@ export class BulletCtrl {
     }
     private syncPos = () => {
         const { view } = this;
+        if (view.destroyed) {
+            return;
+        }
         const { pos, velocity } = this.model;
 
         const angle = vectorToDegree(velocity) + 90;

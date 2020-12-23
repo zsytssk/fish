@@ -60,6 +60,9 @@ export async function fade_out(
         sprite,
         time,
     }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
         sprite.visible = false;
         sprite.alpha = 1;
     });
@@ -95,6 +98,9 @@ export async function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
         scaleY: 0.2,
     };
     return tween({ sprite, end_props, time, ease_fn }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
         setStyle(sprite, { visible: false, scaleX: 1, scaleY: 1, alpha: 1 });
     });
 }
@@ -151,6 +157,9 @@ export async function slide_up_out(
         y: ori_y - space,
     };
     await tween({ sprite, end_props, time, ease_fn }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
         setStyle(sprite, { visible: false, alpha: 1, y: ori_y });
     });
 }
@@ -205,6 +214,9 @@ export function slide_down_out(
                 y: ori_y + space,
             };
             return tween({ sprite, end_props, time, ease_fn }).then(() => {
+                if (sprite.destroyed) {
+                    return;
+                }
                 setStyle(sprite, { visible: false, alpha: 1, y: ori_y });
                 resolve();
             });
@@ -257,6 +269,9 @@ export async function slide_left_out(
         x: ori_x + space,
     };
     return tween({ sprite, end_props, time, ease_fn }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
         sprite.visible = false;
         sprite.alpha = 1;
         sprite.x = ori_x;
@@ -308,6 +323,9 @@ export async function slide_right_out(
         x: ori_x - space,
     };
     return tween({ sprite, end_props, time, ease_fn }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
         sprite.visible = false;
         sprite.alpha = 1;
         sprite.x = ori_x;
