@@ -20,14 +20,14 @@ type CoinData = {
     coin_id: string;
 };
 type SelectCoin = InstanceType<typeof ItemRecord>['select_coin'];
-
 type ItemData = {
     item_name: string;
     item_id: string;
 };
 type SelectItem = InstanceType<typeof ItemRecord>['select_item'];
 
-export default class ItemRecord extends ui.pop.record.itemRecordUI
+export default class ItemRecord
+    extends ui.pop.record.itemRecordUI
     implements HonorDialog {
     public isModal = true;
     private select_coin_ctrl: SelectCtrl;
@@ -39,6 +39,7 @@ export default class ItemRecord extends ui.pop.record.itemRecordUI
         const item_record = (await honor.director.openDialog({
             dialog: ItemRecord,
             use_exist: true,
+            stay_scene: true,
         })) as ItemRecord;
         return item_record;
     }

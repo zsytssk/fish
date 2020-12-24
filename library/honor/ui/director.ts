@@ -36,6 +36,13 @@ export class DirectorCtor {
         });
     }
     /**
+     * 是否正在 loadingscene
+     * @param url 场景的url
+     */
+    get isLoadingScene(): Boolean {
+        return sceneManager.is_loading_scene;
+    }
+    /**
      * 获取当前正在运行场景
      * @param url 场景的url
      */

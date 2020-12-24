@@ -21,6 +21,7 @@ export class SceneManagerCtor {
     public sceneClassMap: SceneClassMap = {};
     public scene_pool = new Map() as SceneMap;
     private cur_scene: HonorScene;
+    public is_loading_scene = false;
     public onResize(width: number, height: number) {
         if (this.cur_scene) {
             if (this.cur_scene.onResize) {
@@ -78,6 +79,7 @@ export class SceneManagerCtor {
     public runScene(url: SceneRefUrl, ...params: any[]): Promise<Scene> {
         return new Promise(async (resolve, reject) => {
             /** 场景切换前执行, 如果被截取 就不进入场景 */
+            this.is_loading_scene = true;
             const before_handle = this.callChangeListener(
                 'before',
                 this.cur_scene && this.cur_scene.url,
@@ -112,6 +114,7 @@ export class SceneManagerCtor {
                 resolve(scene);
             });
             const change_data = this.switchScene(params, scene as HonorScene);
+            this.is_loading_scene = false;
             this.callChangeListener('after', change_data.cur, change_data.prev);
         });
     }
