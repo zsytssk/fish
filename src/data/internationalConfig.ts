@@ -478,7 +478,7 @@ export const International = {
         enterGameCostTip:
             '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
         NoMoneyAmount:
-            '当前货币余额不足，最小需携带 {minAmount}{currency} 才可进场，请去充值或者切换其他货币。',
+            '当前货币余额不足，最小需携带{minAmount}{currency}才可进场，请去充值或者切换其他货币。',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -590,7 +590,7 @@ export const International = {
         enterGameCostTip:
             '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
         NoMoneyAmount:
-            '當前貨幣餘額不足，最小需攜帶 {minAmount}{currency} 才可進場，請去充值或者切換其他貨幣。',
+            '當前貨幣餘額不足，最小需攜帶{minAmount}{currency}才可進場，請去充值或者切換其他貨幣。',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',

@@ -260,7 +260,6 @@ export function formatDate(a: number): string {
     }
     return '' + a;
 }
-window.tplStr = tplStr;
 export function tplStr<T extends {}>(str: string, data: T) {
     let msg = str;
     for (const key in data) {
