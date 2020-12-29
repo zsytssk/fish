@@ -17,7 +17,8 @@ type BuyInfo = {
     num: number;
     price: number;
 };
-export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
+export default class BuyBulletPop
+    extends ui.pop.alert.buyBulletUI
     implements HonorDialog {
     public isModal = true;
     private buy_info: BuyInfo;
@@ -25,6 +26,7 @@ export default class BuyBulletPop extends ui.pop.alert.buyBulletUI
         const dialog = (await honor.director.openDialog({
             dialog: BuyBulletPop,
             use_exist: true,
+            stay_scene: true,
         })) as BuyBulletPop;
         dialog.buy(info);
     }

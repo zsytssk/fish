@@ -29,7 +29,9 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
         const help_pop = (await honor.director.openDialog({
             dialog: HelpPop,
             use_exist: true,
+            stay_scene: true,
         })) as HelpPop;
+
         help_pop.goto(index);
     }
     public static async preLoad() {

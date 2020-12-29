@@ -13,7 +13,8 @@ const tip_tpl1 = `<div style="width: 392px;height: 32px;line-height:32px;font-si
 
 const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span color="#ffdd76" style="margin-right: 10px;">&nbsp;$2&nbsp;</span><span>$1</span></div>`;
 /** 恭喜获得提示框 */
-export default class RewardPop extends ui.pop.lottery.rewardUI
+export default class RewardPop
+    extends ui.pop.lottery.rewardUI
     implements HonorDialog {
     public isModal = true;
     private close_resolve: () => void;
@@ -21,7 +22,9 @@ export default class RewardPop extends ui.pop.lottery.rewardUI
         const pop = (await honor.director.openDialog({
             dialog: RewardPop,
             use_exist: true,
+            stay_scene: true,
         })) as RewardPop;
+
         await pop.showReward(data);
     }
     public onAwake() {

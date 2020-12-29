@@ -20,7 +20,6 @@ type CoinData = {
     coin_name: string;
 };
 type SelectCoin = InstanceType<typeof GameRecord>['select_coin'];
-
 type DateData = ReturnType<typeof getDateFromNow>;
 type SelectItem = InstanceType<typeof GameRecord>['select_item'];
 
@@ -29,7 +28,8 @@ for (let i = 0; i >= -7; i--) {
     DateList.push(getDateFromNow(i));
 }
 
-export default class GameRecord extends ui.pop.record.gameRecordUI
+export default class GameRecord
+    extends ui.pop.record.gameRecordUI
     implements HonorDialog {
     public isModal = true;
     private select_coin_ctrl: SelectCtrl;
@@ -39,6 +39,7 @@ export default class GameRecord extends ui.pop.record.gameRecordUI
         const game_record = (await honor.director.openDialog({
             dialog: GameRecord,
             use_exist: true,
+            stay_scene: true,
         })) as GameRecord;
         return game_record;
     }

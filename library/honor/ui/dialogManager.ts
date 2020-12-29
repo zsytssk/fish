@@ -14,6 +14,7 @@ import { DialogManager } from 'laya/ui/DialogManager';
 import { UIConfig } from 'UIConfig';
 import { Event } from 'laya/events/Event';
 import { Laya } from 'Laya';
+import { detectChangeScene } from 'honor/utils/sceneUtils';
 
 /**
  * 全局默认弹出对话框效果，可以设置一个效果代替默认的弹出效果，
@@ -80,6 +81,8 @@ type DialogOptObj = {
     dialog: DialogRefUrl;
     use_exist?: boolean;
     show_effect?: boolean;
+    /** 是否只能存在一个场景中 */
+    stay_scene?: boolean;
 };
 export type DialogOpenOpt = DialogRefUrl | DialogOptObj;
 
@@ -132,81 +135,95 @@ export class DialogManagerCtor {
         }
     }
     /** @todo 逻辑需要整理下 getViewByPool 不再使用... */
-    public async openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
-        let url = opt as DialogRefUrl;
-        let use_exist: boolean;
-        let show_effect: boolean;
+    public openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
+        return new Promise(async (resolve, reject) => {
+            let url = opt as DialogRefUrl;
+            let use_exist: boolean;
+            let show_effect: boolean;
+            let stay_scene = false;
 
-        if ((opt as DialogOptObj).dialog) {
-            const opt_obj = opt as DialogOptObj;
-            url = opt_obj.dialog;
-            use_exist = opt_obj.use_exist;
-            show_effect = opt_obj.use_exist;
-        }
-        const { wait_dialog_task, open_dialog_list } = this;
+            if ((opt as DialogOptObj).dialog) {
+                const opt_obj = opt as DialogOptObj;
+                url = opt_obj.dialog;
+                use_exist = opt_obj.use_exist;
+                show_effect = opt_obj.use_exist;
+                stay_scene = opt_obj.stay_scene || false;
+            }
+            const { wait_dialog_task, open_dialog_list } = this;
 
-        /** 使用正在打开或者已经打开的弹出层... */
-        let dialog: HonorDialog;
-        if (use_exist) {
-            /** 正在打开的dialog */
-            const wait_open_dialog = wait_dialog_task.get(url);
-            if (wait_open_dialog) {
-                dialog = await wait_open_dialog.then(_dialog => {
-                    return _dialog;
-                });
-            } else {
-                /** 已经打开的dialog */
-                const item = open_dialog_list.find(_item => {
-                    return _item.url === url;
-                });
-                if (item) {
-                    dialog = item.dialog;
+            let detectChange: () => boolean;
+            if (stay_scene) {
+                detectChange = detectChangeScene();
+            }
+
+            /** 使用正在打开或者已经打开的弹出层... */
+            let dialog: HonorDialog;
+            if (use_exist) {
+                /** 正在打开的dialog */
+                const wait_open_dialog = wait_dialog_task.get(url);
+                if (wait_open_dialog) {
+                    dialog = await wait_open_dialog.then(_dialog => {
+                        return _dialog;
+                    });
+                } else {
+                    /** 已经打开的dialog */
+                    const item = open_dialog_list.find(_item => {
+                        return _item.url === url;
+                    });
+                    if (item) {
+                        dialog = item.dialog;
+                    }
                 }
             }
-        }
 
-        /** 如果没有找到dialog(use_exist=true), 后者use_exist=false */
-        if (!dialog) {
-            /** 已经打开dialog, 从wait_dialog_task移除, 放到open_dialog_list中 */
-            const wait_open_dialog = this.createDialog(url);
-            wait_dialog_task.set(
-                url,
-                wait_open_dialog.then(_dialog => {
-                    wait_dialog_task.delete(url);
-                    return _dialog;
-                }),
-            );
+            /** 如果没有找到dialog(use_exist=true), 后者use_exist=false */
+            if (!dialog) {
+                /** 已经打开dialog, 从wait_dialog_task移除, 放到open_dialog_list中 */
+                const wait_open_dialog = this.createDialog(url);
+                wait_dialog_task.set(
+                    url,
+                    wait_open_dialog.then(_dialog => {
+                        wait_dialog_task.delete(url);
+                        return _dialog;
+                    }),
+                );
 
-            dialog = await wait_open_dialog;
-        }
-
-        /** 设置dialog的配置 */
-        const dialog_config = this.setDialogConfig(url, dialog, config);
-        // 异步打开弹出层, 用来在外面设置弹出层的大小使 弹出层可以居中...
-        afterActive(dialog).then(() => {
-            if (dialog.onResize) {
-                const { width, height } = Laya.stage;
-                dialog.onResize(width, height);
+                dialog = await wait_open_dialog;
             }
 
-            const ori_show_effect = dialog.popupEffect;
-            if (show_effect !== undefined && show_effect === false) {
-                dialog.popupEffect = null;
-            }
-            if (dialog_config.beforeOpen) {
-                dialog_config.beforeOpen(dialog);
-            }
-            dialog.open(dialog_config.closeOther);
-            if (ori_show_effect) {
-                dialog.popupEffect = ori_show_effect;
-            }
-            this.afterOpen(dialog);
+            /** 设置dialog的配置 */
+            const dialog_config = this.setDialogConfig(url, dialog, config);
+            // 异步打开弹出层, 用来在外面设置弹出层的大小使 弹出层可以居中...
+            afterActive(dialog).then(() => {
+                if (dialog.onResize) {
+                    const { width, height } = Laya.stage;
+                    dialog.onResize(width, height);
+                }
 
-            this.checkMask();
+                const ori_show_effect = dialog.popupEffect;
+                if (show_effect !== undefined && show_effect === false) {
+                    dialog.popupEffect = null;
+                }
+                if (dialog_config.beforeOpen) {
+                    dialog_config.beforeOpen(dialog);
+                }
+                if (detectChange?.()) {
+                    return reject(
+                        'change scene! dialog cant open in diff scene!',
+                    );
+                }
+                dialog.open(dialog_config.closeOther);
+                if (ori_show_effect) {
+                    dialog.popupEffect = ori_show_effect;
+                }
+                this.afterOpen(dialog);
+
+                this.checkMask();
+            });
+
+            await afterEnable(dialog);
+            return resolve(dialog);
         });
-
-        await afterEnable(dialog);
-        return dialog;
     }
     private createDialog(url: DialogRefUrl): Promise<HonorDialog> {
         return new Promise(async (resolve, reject) => {

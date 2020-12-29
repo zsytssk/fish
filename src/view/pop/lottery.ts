@@ -45,7 +45,8 @@ export type LotteryPopData = {
 type LotteryItemUI = ui.pop.lottery.itemUI;
 
 /** 抽奖弹出层 */
-export default class LotteryPop extends ui.pop.lottery.lotteryUI
+export default class LotteryPop
+    extends ui.pop.lottery.lotteryUI
     implements HonorDialog {
     private is_init = false;
     public isModal = true;
@@ -59,6 +60,7 @@ export default class LotteryPop extends ui.pop.lottery.lotteryUI
         const pop = honor.director.openDialog({
             dialog: LotteryPop,
             use_exist: true,
+            stay_scene: true,
         }) as Promise<LotteryPop>;
         const exchange_data = getLotteryData();
 

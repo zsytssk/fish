@@ -133,7 +133,7 @@ export class PlayerCtrl {
                 if (is_cur_player) {
                     view.stopPosTip();
                 }
-                for (const bullet of bullet_group.bullet_list) {
+                for (const [, bullet] of bullet_group.bullet_map) {
                     const bullet_view = view.addBullet(
                         bullet.skin,
                         rage,
@@ -188,6 +188,9 @@ export class PlayerCtrl {
         gun_event.on(
             GunEvent.WillAddBullet,
             (velocity: SAT.Vector) => {
+                if (!this.model) {
+                    return;
+                }
                 const {
                     need_emit,
                     user_id,

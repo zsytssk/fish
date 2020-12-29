@@ -134,7 +134,7 @@ export function calcPosRange(
 
 /** 金币飞行动画... */
 function animateCoin(coin_views: Skeleton[], end_pos: Point) {
-    coin_views.reverse().forEach(async (coin_view, i) => {
+    const task_list = coin_views.reverse().map(async (coin_view, i) => {
         const start_pos = {
             x: coin_view.x,
             y: coin_view.y,
@@ -146,6 +146,8 @@ function animateCoin(coin_views: Skeleton[], end_pos: Point) {
         coin_view.removeSelf();
         tempAni('coin', coin_view);
     });
+
+    return Promise.all(task_list);
 }
 
 const pool_map = {} as { [key: string]: Skeleton[] };

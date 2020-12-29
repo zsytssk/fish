@@ -13,6 +13,8 @@ import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 import { sleep } from '../utils/testUtils';
+import { shoal_test } from './game/shoal/shoal.spec';
+import { skill_test } from './game/skill.spec';
 
 export async function localTest() {
     commonTest();
@@ -25,16 +27,22 @@ export async function localTest() {
     // mock_web_socket_test.runTest(ServerEvent.UseLock);
     // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
     game_test.runTest('enter_game', [true]).then(() => {
-        fish_test.runTest('add_fish');
-        sleep(0.5).then(() => {
-            player_test.runTest('add_cur_player');
-        });
+        // fish_test.runTest('add_fish');
+        // sleep(0.5).then(() => {
+        //     player_test.runTest('add_cur_player');
+        // });
         // player_test.runTest('add_other_player', [2]);
         // player_test.runTest('add_other_player', [3]);
         // fish_test.runTest('fish_view');
         // fish_test.runTest('fish_shadow');
         // fish_test.runTest('add_fish_group');
-        body_test.runTest('show_shape');
+        // body_test.runTest('show_shape');
+
+        sleep(0.5).then(() => {
+            shoal_test.runTest('add_shoal1');
+            player_test.runTest('add_cur_player');
+        });
+        // skill_test.runTest('track_fish');
     });
 }
 

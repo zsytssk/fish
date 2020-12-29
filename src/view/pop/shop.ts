@@ -59,6 +59,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         const shop_dialog = honor.director.openDialog({
             dialog: ShopPop,
             use_exist: true,
+            stay_scene: true,
         }) as Promise<ShopPop>;
         const shop_data = getShopInfo();
         return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {

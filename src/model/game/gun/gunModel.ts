@@ -65,7 +65,7 @@ export class GunModel extends ComponentManager {
     /** 炮皮肤 */
     public hole_num: number;
     /** 子弹列表 */
-    private bullet_list: Set<BulletGroup> = new Set();
+    private bullet_map: Map<string, BulletGroup> = new Map();
     /** 所属的玩家 */
     public player: PlayerModel;
     /** 追踪的鱼 */
@@ -218,7 +218,7 @@ export class GunModel extends ComponentManager {
             lock_fish: lock,
             player,
             event,
-            bullet_list,
+            bullet_map,
         } = this;
         const { x, y } = direction;
         const velocity = new SAT.Vector(x, y).normalize();
@@ -241,7 +241,7 @@ export class GunModel extends ComponentManager {
             lock,
         };
         const bullet_group = new BulletGroup(info, this);
-        bullet_list.add(bullet_group);
+        bullet_map.set(bullet_group.id, bullet_group);
         event.emit(GunEvent.AddBullet, {
             bullet_group,
             velocity,
@@ -255,27 +255,28 @@ export class GunModel extends ComponentManager {
         this.event.emit(GunEvent.CastFish, { fish, level });
     }
     public getAllBulletCost() {
-        const { bullet_list } = this;
+        const { bullet_map } = this;
         let cost = 0;
-        for (const bullet of bullet_list) {
+        for (const [, bullet] of bullet_map) {
             cost += bullet.bullet_cost;
         }
         return cost;
     }
     public removeBullet(bullet: BulletGroup) {
-        this.bullet_list.delete(bullet);
+        const { bullet_map } = this;
+        bullet_map.delete(bullet.id);
     }
     public destroy() {
-        const { bullet_list } = this;
+        const { bullet_map } = this;
 
-        for (const bullet of bullet_list) {
+        for (const [, bullet] of bullet_map) {
             bullet.destroy();
         }
         this.player = undefined;
         this.lock_fish = undefined;
         this.setStatus(GunStatus.Normal);
         this.toggleSpeedUp(false);
-        this.bullet_list.clear();
+        this.bullet_map.clear();
 
         super.destroy();
     }

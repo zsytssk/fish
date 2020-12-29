@@ -41,7 +41,7 @@ export function getFishById(id: string) {
  */
 export function getAimFish() {
     const { game } = modelState.app;
-    let fish_list = game.getAllFish();
+    let fish_list = [...game.getAllFish().values()];
     fish_list = fish_list.filter(fish => {
         return fish.visible && detectInScreen(fish.pos);
     });
@@ -65,8 +65,8 @@ export function detectInScreen(pos: Point) {
 }
 /** 检测碰撞到鱼: 获取第一个 */
 export function getCollisionFish(ori_body: BodyCom) {
-    const { fish_list } = modelState.app.game;
-    for (const fish of fish_list) {
+    const fish_list = modelState.app.game.getAllFish();
+    for (const [, fish] of fish_list) {
         const { body } = fish;
         if (detectCollision(ori_body, body)) {
             return fish;
@@ -78,8 +78,8 @@ export function getCollisionAllFish(
     ori_body: BodyCom,
     contain_list: FishModel[] = [],
 ) {
-    const { fish_list } = modelState.app.game;
-    for (const fish of fish_list) {
+    const fish_list = modelState.app.game.getAllFish();
+    for (const [, fish] of fish_list) {
         if (contain_list.indexOf(fish) !== -1) {
             continue;
         }

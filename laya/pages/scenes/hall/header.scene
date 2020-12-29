@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"View",
-    "selectedBox":56,
-    "selecteID":66,
+    "selectedBox":22,
+    "selecteID":67,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":67,
+    "maxID":68,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -328,6 +328,20 @@
                             "hasChild":true,
                             "compId":22,
                             "child":[
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,btn_withdraw",
+                                    "props":{"y":5,"x":-197,"visible":false,"var":"btn_withdraw","stateNum":"1","skin":"image/hall/btn_withdraw.png"},
+                                    "nodeParent":22,
+                                    "label":"btn_withdraw",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":67,
+                                    "child":[
+                                        ]
+                                },
                                 {
                                     "x":60,
                                     "type":"Button",
