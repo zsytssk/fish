@@ -100,7 +100,7 @@ export function playSkeleton(ani: Skeleton, ...params: Params) {
 export function playSkeletonOnce(ani: Skeleton, ani_name: string | number) {
     return new Promise((resolve, reject) => {
         ani.once(Event.STOPPED, ani, () => {
-            resolve();
+            resolve(undefined);
         });
         if (ani.player) {
             ani.play(ani_name, false);
@@ -121,7 +121,7 @@ export function utilSkeletonLoadUrl(ani: Skeleton, url: string) {
         ani.load(
             url,
             new Handler(ani, () => {
-                resolve();
+                resolve(undefined);
             }),
         );
     });
@@ -259,4 +259,17 @@ export function formatDate(a: number): string {
         return '0' + a;
     }
     return '' + a;
+}
+window.tplStr = tplStr;
+export function tplStr<T extends {}>(str: string, data: T) {
+    let msg = str;
+    for (const key in data) {
+        if (!data.hasOwnProperty(key)) {
+            continue;
+        }
+        console.log(key, msg);
+        msg = msg.replace(new RegExp(`{${key}}`, 'g'), data[key] + '');
+    }
+
+    return msg;
 }

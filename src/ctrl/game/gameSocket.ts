@@ -23,7 +23,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code);
+                return errorHandler(code, data);
             }
             game.onEnterGame(convertEnterGame(data));
         },
@@ -40,7 +40,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code);
+                return errorHandler(code, data);
             }
             game.tableOut(data);
         },
@@ -49,7 +49,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code);
+                return errorHandler(code, data);
             }
             game.onHit(data);
         },
@@ -112,7 +112,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             if (code !== 200) {
-                return errorHandler(code);
+                return errorHandler(code, data);
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();

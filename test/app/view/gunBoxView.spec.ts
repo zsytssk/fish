@@ -18,7 +18,7 @@ export const gun_box_view_test = new Test('gun', runner => {
         item.gun.y = y;
     });
 
-    injectProto(BulletCtrl, 'initView', (item: BulletCtrl) => {
+    injectProto(BulletCtrl, 'initView' as any, (item: BulletCtrl) => {
         item['view'].scale(scale_1, scale_1);
     });
 });

@@ -11,7 +11,7 @@ export const shoal_test = new Test('shoal', runner => {
         addShoal(Shoal1Data);
     });
     runner.describe('add_shoal2', () => {
-        addShoal(Shoal2Data);
+        addShoal(Shoal2Data as any);
     });
 });
 
@@ -37,7 +37,7 @@ function addShoal(data: typeof Shoal1Data) {
             displaceType: displaceType as displaceType,
             fishId: fishId + '',
             ...other,
-        });
+        } as any);
     }
 
     mock_web_socket_test.runTest(ServerEvent.FishShoal, [result]);

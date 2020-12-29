@@ -35,7 +35,7 @@ export function disableCurUserOperation() {
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableAllUserOperation() {
     const players = modelState.app.game.getPlayers();
-    for (const player of players) {
+    for (const [_, player] of players) {
         if (!player.need_emit) {
             continue;
         }

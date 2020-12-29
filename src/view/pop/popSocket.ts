@@ -58,7 +58,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code);
+                return errorHandler(code, data);
             }
 
             const userId = modelState.app.user_info.user_id;

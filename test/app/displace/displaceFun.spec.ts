@@ -26,5 +26,5 @@ export function createLineDisplaceFun(
                 ],
             },
         ],
-    } as ServerFishInfo;
+    } as any;
 }

@@ -1,6 +1,9 @@
 // http://gitlab.intranet.huiyin.com/springfans/game/game-bitfish-server/blob/docker/API.md
 // import {} from 'data/serverEvent';
-
+type RoomInError = {
+    minAmount: number;
+    currency: string;
+};
 type RoomInReq = {
     roomId: number;
     /** 是否试玩 */

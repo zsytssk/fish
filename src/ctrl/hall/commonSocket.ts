@@ -22,6 +22,7 @@ import { asyncOnly } from 'utils/asyncQue';
 import { removeItem } from 'utils/localStorage';
 import { debug } from 'utils/log';
 import { login } from './login';
+import { tplStr } from 'utils/utils';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -98,10 +99,9 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
     bg_monitor.event.offAllCaller(bindObj);
 }
 
-export function errorHandler(code: number) {
+export function errorHandler(code: number, data?: any) {
     const lang = getLang();
     const tip = InternationalTip[lang][code];
-    const { noMoneyConfirm } = InternationalTip[lang];
 
     if (code === ServerErrCode.ReExchange) {
         disableCurUserOperation();
@@ -114,7 +114,13 @@ export function errorHandler(code: number) {
             });
         });
     } else if (code === ServerErrCode.NoMoney) {
-        return AlertPop.alert(tip).then(type => {
+        let errMsg = tip;
+        if (data && data.minAmount) {
+            const msg = InternationalTip[lang].NoMoneyAmount;
+            const { minAmount, currency } = data as RoomInError;
+            errMsg = tplStr(msg, { minAmount, currency });
+        }
+        return AlertPop.alert(errMsg).then(type => {
             if (type === 'confirm') {
                 recharge();
             }

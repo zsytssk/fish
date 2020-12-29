@@ -44,7 +44,7 @@ export const lottery_test = new Test('lottery', runner => {
             if (cur_index === num) {
                 end = true;
             }
-            pop.testAni(cur_round_index, cur_index === num);
+            // pop.testAni(cur_round_index, cur_index === num);
         });
         console.log(`tween:>end`);
     });

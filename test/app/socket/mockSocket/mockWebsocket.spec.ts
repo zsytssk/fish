@@ -159,7 +159,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         sendEvent.on(ServerEvent.UseFreeze, () => {
             sleep(0.1).then(() => {
                 const fish_model_arr = modelState.app.game.getAllFish();
-                const fish_arr = fish_model_arr.map(item => {
+                const fish_arr = [...fish_model_arr.values()].map(item => {
                     return item.id;
                 });
 
