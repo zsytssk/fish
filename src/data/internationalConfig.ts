@@ -121,6 +121,8 @@ export const International = {
             'Your fund change might delay due to block confirmation on the chain, please wait patiently',
         enterGameCostTip:
             'The system converts{bringAmount} USDT into {bulletNum} bullets. \n When you leave the room, the remaining bullets \n will be converted again into your {currency}.',
+        NoMoneyAmount:
+            'The current currency surplus is insufficient, the minimum requirement to enter the market is {minAmount}{currency}, please go to top up or switch to other currencies.',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -239,6 +241,8 @@ export const International = {
             '잔고에 변동이 생겼습니다. 블록체인에 문제가 생김으로  다소 지연이 될 수 있으니 양해 부탁드립니다.',
         enterGameCostTip:
             '시스템이 {bringAmount}{currency}를 {bulletNum}개의 총알로 바꿔드립니다.\n 게임을 나가실때 남은 총알은 {currency}로 바꿔드립니다.',
+        NoMoneyAmount:
+            '현재 화폐 잔액이 부족합니다. 최소{minAmount}{currency} 소유해야 입장이 가능합니다. 충전하시거나 다른 화폐로 교환해주세요.',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -357,6 +361,8 @@ export const International = {
             'チェーンのブロック確認により、資金の変更が遅れる場合があります。しばらくお待ちください',
         enterGameCostTip:
             'システムで{bringAmount}{currency}を{bulletNum}弾に変換します。\n部屋を出る時、残りの弾丸を{currency}に交換されます',
+        NoMoneyAmount:
+            '現在の残高が不足しており、参加には最低{minAmount}{currency}を保有する必要があります。入金または他のトークンに切り替えてください。',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -471,6 +477,8 @@ export const International = {
             '您的余额变动因链上区块确认可能有所延迟，请耐心等待。',
         enterGameCostTip:
             '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
+        NoMoneyAmount:
+            '当前货币余额不足，最小需携带{minAmount}{currency}才可进场，请去充值或者切换其他货币。',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -581,6 +589,8 @@ export const International = {
             '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
         enterGameCostTip:
             '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
+        NoMoneyAmount:
+            '當前貨幣餘額不足，最小需攜帶{minAmount}{currency}才可進場，請去充值或者切換其他貨幣。',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',

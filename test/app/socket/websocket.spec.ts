@@ -34,14 +34,14 @@ export const web_socket_test = new Test('web_socket', runner => {
         });
 
         /** 获取token */
-        socket.event.on(SocketEvent.GetToken, async (jwt: string) => {
-            /** 游客的token */
-            if (!jwt) {
-                jwt = await getGuestToken(socket);
-            }
-            socket.setParams({ jwt });
-            socket.send(ServerEvent.UserAccount);
-        });
+        // socket.event.on(SocketEvent.GetToken, async (jwt: string) => {
+        //     /** 游客的token */
+        //     if (!jwt) {
+        //         jwt = await getGuestToken(socket);
+        //     }
+        //     socket.setParams({ jwt });
+        //     socket.send(ServerEvent.UserAccount);
+        // });
     });
 
     runner.describe('receive', (name: string, data: any) => {
@@ -59,9 +59,7 @@ const date_str = new Date().toString();
 const comm_key =
     Date.parse(date_str).toString() +
     Date.parse(date_str).toString() +
-    Date.parse(date_str)
-        .toString()
-        .substring(0, 6);
+    Date.parse(date_str).toString().substring(0, 6);
 
 function getAuth(public_key: string) {
     const jsencrypt = new JSEncrypt();

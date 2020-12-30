@@ -200,7 +200,9 @@ export class PlayerCtrl {
                     return;
                 }
                 const { x, y } = velocity;
-                AudioCtrl.play(AudioRes.Fire, is_cur ? 1 : 0.3);
+                if (is_cur) {
+                    AudioCtrl.play(AudioRes.Fire);
+                }
                 const data = {
                     direction: { x, y },
                     userId: user_id,

@@ -2,6 +2,7 @@ import { Test } from 'testBuilder';
 import { createTick, clearTick } from 'utils/tick';
 import { tween } from 'utils/layaTween';
 import LotteryPop from 'view/pop/lottery';
+import { timer } from 'Laya';
 
 export const laya_test = new Test('laya', runner => {
     const duration = 300000;
@@ -14,10 +15,10 @@ export const laya_test = new Test('laya', runner => {
             const time = Date.now() - start;
             if (time >= duration) {
                 console.log(`test:>loop:>`, i, time);
-                Laya.timer.clear(Laya, update);
+                timer.clear(laya_test, update);
             }
         }
-        Laya.timer.loop(1000 / 30, Laya, update);
+        timer.loop(1000 / 30, laya_test, update);
     });
 
     // tick 不掉帧

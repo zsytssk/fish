@@ -70,12 +70,6 @@ const common_config = mode => ({
     ],
 });
 
-if (CheckError) {
-    common_config.module.rules[0].use = {
-        loader: 'ts-loader',
-    };
-}
-
 const dev_config = {
     devtool: ENV === 'DEV' ? 'eval-source-map' : 'source-map',
     stats: {
@@ -124,6 +118,12 @@ const prod_config = {
 module.exports = (env, argv) => {
     let result;
     let common = common_config(argv.mode);
+
+    if (CheckError) {
+        common.module.rules[0].use = {
+            loader: 'ts-loader',
+        };
+    }
     if (argv.mode === 'development') {
         result = { ...common, ...dev_config };
     } else {

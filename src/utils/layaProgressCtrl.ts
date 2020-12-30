@@ -7,6 +7,7 @@ export type OnProgressChange = (radio: number) => void;
 export type ProgressUI = Sprite & {
     progress_btn: Sprite;
     progress_bar: ProgressBar;
+    box: Sprite;
 };
 /** 控制进度的ctrl */
 export default class LayaProgressCtrl {

@@ -16,5 +16,5 @@ for (let i = 0; i < 1000; i++) {
         giveTotal: 100,
         curNum: 100,
         currency: 'Btc',
-    });
+    } as any);
 }

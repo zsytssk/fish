@@ -94,7 +94,7 @@ export function roomIn(
                     }
                     return;
                 } else if (code !== 200) {
-                    return errorHandler(code);
+                    return errorHandler(code, _data);
                 }
                 resolve(_data);
             },

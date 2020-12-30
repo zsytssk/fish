@@ -7,6 +7,7 @@ import { ServerEvent, ServerName } from 'data/serverEvent';
 import { InternationalTip } from 'data/internationalConfig';
 import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import TipPop from 'view/pop/tip';
+import { tplStr } from 'utils/utils';
 
 export function changeBulletNum(num: number) {
     const userId = modelState.app.user_info.user_id;
@@ -35,7 +36,7 @@ export function disableCurUserOperation() {
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableAllUserOperation() {
     const players = modelState.app.game.getPlayers();
-    for (const player of players) {
+    for (const [_, player] of players) {
         if (!player.need_emit) {
             continue;
         }
@@ -72,9 +73,10 @@ export function tipExchange(data: Data) {
     }
     const lang = getLang();
     let tip = InternationalTip[lang].enterGameCostTip;
-    tip = tip
-        .replace(new RegExp('{bringAmount}', 'g'), data.bringAmount + '')
-        .replace(new RegExp('{bulletNum}', 'g'), data.bulletNum + '')
-        .replace(new RegExp('{currency}', 'g'), data.currency);
+    tip = tplStr(tip, {
+        bringAmount: data.bringAmount,
+        bulletNum: data.bulletNum,
+        currency: data.currency,
+    });
     TipPop.tip(tip);
 }
