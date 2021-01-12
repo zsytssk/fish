@@ -30,7 +30,7 @@ export const International = {
         realField: 'Real game',
         stayTuned: 'Stay Tuned',
         quickStart: 'Quick Start',
-        NumBullet: 'Remaining Bullets',
+        NumBullet: 'Bullets',
         guest: 'Guest',
         volumeSetting: 'Volume Setting',
         music: 'Music',
@@ -88,7 +88,7 @@ export const International = {
             'Prize draw: Players can qualify for 1 prize draw after catching 10 fish that each have at least 100 Fish Points; prizes include bullets and currency.',
         help43:
             'Purchase: Players can purchase bullets in the lobby, and can also purchase cannon skins or bullet effects in-game by clicking on the cannon.',
-        tourSkip: 'Exit tutorial',
+        tourSkip: 'Skip',
         tourStart: 'Start game',
         tour1: 'Click the drop-down button to select the currency',
         tour2:
