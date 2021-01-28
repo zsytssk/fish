@@ -68,26 +68,26 @@ export const International = {
         help: 'Help',
         times: 'times',
         help1:
-            '1. Fish Points: Different fish have different values, with the number of bullets received after catching a fish equal to the multiple of the cannon currently used multiplied by the number of Fish Points. For example, if a fish with 50 fish points is caught by a 10x cannon, the number of bullets obtained would be 50x10=500. The Fish Points of different fish are as follows.',
+            '1. Fish Points: Different fishes have different values, with the number of bullets obtained after capturing a fish being equal to the multiple of the cannon currently being used multiplied by the number of Fish Points. For example, if a fish with 50 Fish Points is captured using a 10x cannon, the number of bullets obtained is 50x10=500. Each different type of fish and their corresponding numbers of Fish Points are as follows:',
         help2:
-            '2. How to use skills: Players can use the following skills during the game.',
+            '2. Skill description: Players can apply the following skills in the game.',
         help2Super:
             'Super Skill: This is a passive skill which is automatically triggered after a certain number of fish have been captured by the player. It increases bullet power and doubles the firing speed.',
         help2Freeze:
-            'Freeze Skill: This is an active skill which can be obtained by killing certain types of fish, or via direct purchase. This skill freezes most of the fish on the screen.',
+            'Freezing Skill: Active skill which can be obtained either by killing certain types of fish or by directly purchasing. It can freeze most of the fish on the screen.',
         help2Lock:
-            'Lock Skill: This is an active skill which can be obtained by killing certain types of fish, or via direct purchase. This skill automatically locks into place the fish on the screen which have the highest number of Fish Points; players can also click to select the fish which they want to lock into place.',
+            'Lock Skill: Active skill which can be obtained either by killing certain types of fish or by directly purchasing. It can automatically lock in place the fish on the screen which have the highest number of Fish Points; players can also select the fish which they want to lock in place.',
         help2Bomb:
-            'Bomb: This is an active skill which can be purchased. It will randomly kill a group of fish on the screen.',
-        help3: '3. Available cannon multiples are as follows:',
+            'Bomb Skill: Active skill which can be directly purchased. It will randomly kill groups of nearby fish on the screen.',
+        help3: '3. Available cannon multiples: ',
         help31: '1,2,3,4,5,10,15,20',
         help4: '4. Other instructions',
         help41:
-            'Redemption: Players can get Fish Vouchers after catching certain types of fish. Once players have collected enough Fish Vouchers, these vouchers can then be redeemed for prizes.',
+            'Redemption: Players can get some Fish Vouchers after capturing certain types of fish. Fish Vouchers can be redeemed in exchange for rewards.',
         help42:
-            'Prize draw: Players can qualify for 1 prize draw after catching 10 fish that each have at least 100 Fish Points; prizes include bullets and currency.',
+            'Lucky draw: Players can qualify for 1 lucky draw after capturing 10 fish that each have at least 100 Fish Points. Rewards include bullets and currency.',
         help43:
-            'Purchase: Players can purchase bullets in the lobby, and can also purchase cannon skins or bullet effects in-game by clicking on the cannon.',
+            'Purchases: Players can purchase bullets inside the main hall, and can also purchase cannon skins or bullet effects by clicking on the cannon icon in the game.',
         tourSkip: 'Skip',
         tourStart: 'Start game',
         tour1: 'Click the drop-down button to select the currency',
