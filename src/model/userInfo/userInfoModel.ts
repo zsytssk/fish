@@ -51,11 +51,11 @@ export class UserInfoModel extends ComponentManager {
     }
     /** 选择当前用户当前的coin类型 */
     public setCurBalance(balance: string, force_change = false) {
+        setCacheBalance(balance, this.account_map.get(balance)?.num);
         if (balance === this.cur_balance && !force_change) {
             return;
         }
         this.cur_balance = balance;
-        setCacheBalance(balance);
         this.event.emit(UserInfoEvent.CurBalanceChange, balance);
     }
     public setLang(lang: Lang) {
@@ -91,7 +91,7 @@ export class UserInfoModel extends ComponentManager {
             });
         }
         this.event.emit(UserInfoEvent.AccountChange, this.account_map);
-        const cur_balance = getCacheBalance();
+        const cur_balance = getCacheBalance(this.account_map);
 
         /** 强制更新当前货币, 防止 货币数目发生变化 */
         this.setCurBalance(cur_balance || first_balance, true);

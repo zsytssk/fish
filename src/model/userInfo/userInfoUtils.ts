@@ -1,16 +1,25 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { getCurUserId, getUserInfo } from 'model/modelState';
-import { Lang } from 'data/internationalConfig';
 import { getItem, setItem } from 'utils/localStorage';
+import { AccountMap } from './userInfoModel';
 
-export function getCacheBalance() {
+export function getCacheBalance(account_map: AccountMap) {
+    const platform_currency = paladin.getCurrency();
+    if (platform_currency && account_map.get(platform_currency)) {
+        return platform_currency;
+    }
     const user_id = getCurUserId();
     return getItem(`${user_id}:balance`);
 }
-export function setCacheBalance(balance: string) {
+
+export function setCacheBalance(balance: string, val: any) {
     if (balance === undefined) {
         return;
     }
+    paladin.account.currency({
+        name: balance,
+        balance: 0,
+    } as any);
     const user_id = getCurUserId();
     return setItem(`${user_id}:balance`, balance);
 }
