@@ -3,7 +3,7 @@ import { getCurUserId, getUserInfo } from 'model/modelState';
 import { getItem, setItem } from 'utils/localStorage';
 import { AccountMap } from './userInfoModel';
 
-export function getCacheBalance(account_map: AccountMap) {
+export function getCacheCurrency(account_map: AccountMap) {
     const platform_currency = paladin.getCurrency();
     if (platform_currency && account_map.get(platform_currency)) {
         return platform_currency;
@@ -12,16 +12,16 @@ export function getCacheBalance(account_map: AccountMap) {
     return getItem(`${user_id}:balance`);
 }
 
-export function setCacheBalance(balance: string, val: any) {
-    if (balance === undefined) {
+export function setCacheBalance(name: string, balance: any) {
+    if (name === undefined) {
         return;
     }
     paladin.account.currency({
-        name: balance,
-        balance: 0,
+        name,
+        balance,
     } as any);
     const user_id = getCurUserId();
-    return setItem(`${user_id}:balance`, balance);
+    return setItem(`${user_id}:balance`, name);
 }
 export function getAudio(user_id: string) {
     const voice_str = getItem(`${user_id}:voice`);

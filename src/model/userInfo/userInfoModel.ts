@@ -1,7 +1,7 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { Lang } from 'data/internationalConfig';
-import { getCacheBalance, setCacheBalance } from './userInfoUtils';
+import { getCacheCurrency, setCacheBalance } from './userInfoUtils';
 import { Config } from 'data/config';
 import { setItem } from 'utils/localStorage';
 
@@ -91,7 +91,7 @@ export class UserInfoModel extends ComponentManager {
             });
         }
         this.event.emit(UserInfoEvent.AccountChange, this.account_map);
-        const cur_balance = getCacheBalance(this.account_map);
+        const cur_balance = getCacheCurrency(this.account_map);
 
         /** 强制更新当前货币, 防止 货币数目发生变化 */
         this.setCurBalance(cur_balance || first_balance, true);
