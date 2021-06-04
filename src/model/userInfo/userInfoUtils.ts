@@ -4,6 +4,7 @@ import { InternationalTip } from 'data/internationalConfig';
 import { getCurUserId, getUserInfo } from 'model/modelState';
 import { getItem, setItem } from 'utils/localStorage';
 import AlertPop from 'view/pop/alert';
+import TipPop from 'view/pop/tip';
 import { AccountMap } from './userInfoModel';
 
 export function getCacheCurrency(account_map: AccountMap) {
@@ -27,12 +28,11 @@ export function setCacheBalance(name: string, balance: any) {
     return setItem(`${user_id}:balance`, name);
 }
 
-export function tipPlatformCurrency() {
+export function tipPlatformCurrency(currency: string) {
     const lang = getLang();
     const platform_currency = paladin.getCurrency();
-    const { cur_balance } = getUserInfo();
-    if (cur_balance !== platform_currency) {
-        AlertPop.alert(InternationalTip[lang].platformDiffCurrencyEnterGameErr);
+    if (currency !== platform_currency) {
+        TipPop.tip(InternationalTip[lang].platformDiffCurrencyEnterGameErr);
     }
 }
 

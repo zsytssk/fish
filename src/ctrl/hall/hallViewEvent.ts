@@ -131,11 +131,9 @@ export function hallViewEvent(hall: HallCtrl) {
         view.toggleFlagMenu(!flag_menu.visible);
     });
     onNode(btn_get, CLICK, () => {
-        const { cur_balance, lang } = getUserInfo();
         AudioCtrl.play(AudioRes.Click);
     });
     onNode(btn_charge, CLICK, () => {
-        const { cur_balance, lang } = getUserInfo();
         AudioCtrl.play(AudioRes.Click);
     });
     onNode(btn_home, CLICK, () => {

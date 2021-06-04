@@ -157,6 +157,7 @@ export function convertEnterGame(data: EnterGameRep) {
         fish,
         frozen,
         frozenLeft,
+        currency,
     } = data;
     const users = [] as PlayerInfo[];
     items_template = items;
@@ -223,6 +224,7 @@ export function convertEnterGame(data: EnterGameRep) {
         fish,
         users,
         frozen,
+        currency,
         frozen_left: frozenLeft / 1000,
         fish_list,
     };

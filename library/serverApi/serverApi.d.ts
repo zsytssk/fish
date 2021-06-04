@@ -92,6 +92,7 @@ type EnterGameRep = {
     roomId: number;
     rate: number;
     tableId: string;
+    currency: string;
     frozen: boolean;
     frozenLeft: number;
     users: ServerUserInfo[];
