@@ -3,7 +3,6 @@ import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { InternationalTip } from 'data/internationalConfig';
 import { getCurUserId, getUserInfo } from 'model/modelState';
 import { getItem, setItem } from 'utils/localStorage';
-import AlertPop from 'view/pop/alert';
 import TipPop from 'view/pop/tip';
 import { AccountMap } from './userInfoModel';
 

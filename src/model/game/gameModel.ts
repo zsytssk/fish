@@ -25,7 +25,7 @@ export const GameEvent = {
 };
 
 export class GameModel extends ComponentManager {
-    public currency: string;
+    public currency = '';
     public fish_map: Map<string, FishModel> = new Map();
     private player_map: Map<string, PlayerModel> = new Map();
     constructor() {
@@ -184,7 +184,7 @@ export class GameModel extends ComponentManager {
         for (const [, fish] of fish_map) {
             fish.destroy();
         }
-        this.currency = undefined;
+        this.currency = '';
         this.fish_map.clear();
         this.player_map.clear();
     }
