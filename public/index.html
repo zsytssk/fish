@@ -102,23 +102,16 @@
             type="text/javascript"
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
-        <script>
-            window.version = '<%= Date.now() %>';
-            var platform = {
-                hideLoading: function () {},
-                login: function () {},
-                register: function () {},
-                logout: function () {},
-                getInfo: function () {
-                    return {
-                        isLogin: false,
-                        token: '',
-                        socket_url: 'ws://47.101.172.184:8101',
-                    };
-                },
-                recharge: function () {},
-            };
+        <script type="text/javascript">
+            var version = '<%= Date.now() %>';
+            function loadLib(url) {
+                var script = document.createElement('script');
+                script.async = false;
+                script.src = url;
+                document.body.appendChild(script);
+            }
 
+            // prettier-ignore
             var interval = setInterval(function () {
                 if (window.Laya) {
                     clearInterval(interval);
@@ -127,11 +120,90 @@
                             event,
                             function (e) {
                                 e.preventDefault();
-                            },
+                            }
                         );
                     });
                 }
             }, 1000);
+
+            // prettier-ignore
+            paladin.checkComponents({
+                list: ['launch'],
+                success: function (res) {
+                    if (res.launch) {
+                        paladin.comps.launch.show({
+                            design: {
+                                width: 1334,
+                                height: 750,
+                                mode: 'horizontal',
+                            },
+                            logo: { url: 'bitgame/logo.png' },
+                            load: { color: '#6d8ac8' },
+                            tips: { color: '#6d8ac8' },
+                            notice: { color: '#6d8ac8' },
+                            maintain: {
+                                color: '#d7fffe',
+                                strokeColor: '#000000',
+                                url: 'bitgame/maintain.jpg'
+                            }
+                        });
+                    }
+                },
+            });
+
+            window.screenOrientation = 'sensor_landscape';
+
+            // prettier-ignore
+            // 游戏初始化
+            paladin.init({
+                loadType: 2,
+                success: function (res) {
+                    var files = [
+                        res.cdn + 'js/bundle.js?v=<%= Date.now() %>',
+                        res.cdn + 'js/laya.js?v=<%= Date.now() %>',
+                        res.cdn + 'js/libs.js?v=<%= Date.now() %>'
+                    ];
+
+                    for (var i = 0; i < files.length; i++) {
+                        loadLib(files[i]);
+                    }
+                },
+            });
+
+            // prettier-ignore
+            var platform = {
+                hideLoading: function () {
+                    paladin.comps.launch.hide();
+                },
+                login: function () {
+                    paladin.account.login();
+                },
+                register: function () {
+                    paladin.account.register();
+                },
+                logout: function () {
+                    paladin.account.logout();
+                },
+                getInfo: function () {
+                    return {
+                        isLogin: paladin.sys.config.isLogin,
+                        token: paladin.sys.config.jwtToken,
+                        lang: paladin.sys.config.lang,
+                        socket_url: paladin.sys.config.ws,
+                        cdn: paladin.sys.config.cdn,
+                    };
+                },
+                recharge: function (currency, gameNo) {
+                    paladin &&
+                        paladin.pay.recharge({
+                            data: {
+                                currency: currency,
+                                gameNo: gameNo,
+                                isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
+                            },
+                        });
+                }
+            };
         </script>
         <% } %>
 

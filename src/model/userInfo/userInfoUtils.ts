@@ -1,6 +1,9 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 import { getCurUserId, getUserInfo } from 'model/modelState';
 import { getItem, setItem } from 'utils/localStorage';
+import AlertPop from 'view/pop/alert';
 import { AccountMap } from './userInfoModel';
 
 export function getCacheCurrency(account_map: AccountMap) {
@@ -23,6 +26,16 @@ export function setCacheBalance(name: string, balance: any) {
     const user_id = getCurUserId();
     return setItem(`${user_id}:balance`, name);
 }
+
+export function tipPlatformCurrency() {
+    const lang = getLang();
+    const platform_currency = paladin.getCurrency();
+    const { cur_balance } = getUserInfo();
+    if (cur_balance !== platform_currency) {
+        AlertPop.alert(InternationalTip[lang].platformDiffCurrencyEnterGameErr);
+    }
+}
+
 export function getAudio(user_id: string) {
     const voice_str = getItem(`${user_id}:voice`);
     const music_str = getItem(`${user_id}:music`);

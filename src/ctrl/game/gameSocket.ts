@@ -12,7 +12,12 @@ import {
     LockFishInitInfo,
 } from 'model/game/skill/lockFishModel';
 import { SkillInfo } from 'model/game/skill/skillCoreCom';
-import { getCurUserId, isCurUser, getCurPlayer } from 'model/modelState';
+import {
+    getCurUserId,
+    isCurUser,
+    getCurPlayer,
+    getUserInfo,
+} from 'model/modelState';
 import { GameCtrl } from './gameCtrl';
 import { changeBulletNum, tipExchange } from './gameCtrlUtils';
 

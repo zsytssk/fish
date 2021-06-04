@@ -51,6 +51,7 @@ import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import { Laya } from 'Laya';
 import { Loader } from 'laya/net/Loader';
 import TipPop from 'view/pop/tip';
+import { tipPlatformCurrency } from 'model/userInfo/userInfoUtils';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -86,6 +87,7 @@ export class GameCtrl {
             const wait_load_res = honor.director.load(other_res, 'Scene');
 
             /** 只有第一次进入时提示 */
+
             if (data.currency) {
                 waitEnterGame().then(async ([status, _data]) => {
                     if (!status) {
@@ -100,6 +102,9 @@ export class GameCtrl {
                     }
                     tipExchange(data);
                 });
+            } else {
+                /** 复盘提示 */
+                tipPlatformCurrency();
             }
 
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
