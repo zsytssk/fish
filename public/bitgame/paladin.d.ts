@@ -493,6 +493,8 @@ declare namespace paladin {
  * 复制 paladin.account.copy(text);
  *
  * 粘贴 paladin.account.paste();
+ * 
+ * 币种 paladin.account.currency({ name: 'USDT', balance: 0 });
  */
 declare namespace paladin {
     /**
