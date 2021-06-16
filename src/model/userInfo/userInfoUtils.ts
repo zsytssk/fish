@@ -11,8 +11,11 @@ export function getCacheCurrency(account_map: AccountMap) {
     if (platform_currency && account_map.get(platform_currency)) {
         return platform_currency;
     }
-    const user_id = getCurUserId();
-    return getItem(`${user_id}:balance`);
+    if (account_map.size) {
+        return account_map.keys[0];
+    }
+    // const user_id = getCurUserId();
+    // return getItem(`${user_id}:balance`);
 }
 
 export function setCacheBalance(name: string, balance: any) {
