@@ -94,6 +94,9 @@ export function recharge() {
     if (account_map.get(cur_balance).hide) {
         return;
     }
+    if (!paladin.sys.config.isLogin) {
+        return paladin.account.login();
+    }
     (window as any)?.paladin.pay.recharge({
         data: {
             currency: cur_balance,
