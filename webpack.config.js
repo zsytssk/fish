@@ -81,9 +81,9 @@ const dev_config = {
         host: '0.0.0.0',
         contentBase: path.join(__dirname, 'bin'),
         disableHostCheck: true,
-        port: 3000,
+        port: 5001,
         open: true,
-        openPage: 'http://localhost:3000',
+        openPage: 'http://localhost:5001',
     },
 };
 

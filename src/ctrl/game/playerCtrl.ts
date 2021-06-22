@@ -10,7 +10,7 @@ import { FishModel } from 'model/game/fish/fishModel';
 import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
 import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
 import { AutoShootModel } from 'model/game/skill/autoShootModel';
-import { getUserInfo, getCurPlayer } from 'model/modelState';
+import { getUserInfo, getCurPlayer, getGameCurrency } from 'model/modelState';
 import SAT from 'sat';
 import { log } from 'utils/log';
 import { darkNode, unDarkNode } from 'utils/utils';
@@ -97,7 +97,7 @@ export class PlayerCtrl {
                 if (is_cur_player) {
                     /** 飞行技能 */
                     if (drop) {
-                        const { cur_balance } = getUserInfo();
+                        const cur_balance = getGameCurrency();
                         awardSkill(pos, end_pos, drop, cur_balance);
                     }
                     AudioCtrl.play(AudioRes.FlySkill);
@@ -311,7 +311,8 @@ export class PlayerCtrl {
     private resetGetBulletCost() {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { isTrial } = this.game_ctrl;
-        const { cur_balance, user_id } = getUserInfo();
+        const { user_id } = getUserInfo();
+        const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
         if (bullet_cost) {
             sendToGameSocket(ServerEvent.ChangeTurret, {
@@ -338,7 +339,8 @@ export class PlayerCtrl {
         } as ChangeTurretReq);
 
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
-        const { cur_balance, user_id } = getUserInfo();
+        const { user_id } = getUserInfo();
+        const cur_balance = getGameCurrency();
         setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }
     public destroy() {

@@ -25,11 +25,15 @@ export const GameEvent = {
 };
 
 export class GameModel extends ComponentManager {
+    public currency = '';
     public fish_map: Map<string, FishModel> = new Map();
     private player_map: Map<string, PlayerModel> = new Map();
     constructor() {
         super();
         this.initCom();
+    }
+    public setCurrency(currency: string) {
+        this.currency = currency;
     }
     private initCom() {
         this.addCom(new EventCom(), new TimeoutCom());
@@ -180,6 +184,7 @@ export class GameModel extends ComponentManager {
         for (const [, fish] of fish_map) {
             fish.destroy();
         }
+        this.currency = '';
         this.fish_map.clear();
         this.player_map.clear();
     }

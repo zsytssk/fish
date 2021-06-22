@@ -1,6 +1,6 @@
 
 /**
- * @version 1.1.11
+ * @version 1.1.12
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -247,6 +247,12 @@ declare namespace paladin {
      */
     export function getPlatform(): string;
 
+    /**
+     * 获取初始币种
+     * @return {string} currency
+     */
+    export function getCurrency(): string;
+
     /*
      * 组件
      * @param {object} launch 启动
@@ -286,6 +292,8 @@ declare namespace paladin {
  * 获取渠道信息 paladin.sys.getChannel();
  * 
  * 获取时区信息 paladin.sys.getTimezone()  
+ * 
+ * 获取币种信息 paladin.sys.getCurrency()
  * 
  * 获取配置信息
  * 如果定义url，则使用url请求接口
@@ -450,6 +458,12 @@ declare namespace paladin {
         getTimezone(): string;
 
         /**
+         * 获取币种信息
+         * @return {string} currency 币种信息
+         */
+        getCurrency(): string;
+
+        /**
         * 更新语言环境
         * @param {string} lang 语言
         */
@@ -479,6 +493,8 @@ declare namespace paladin {
  * 复制 paladin.account.copy(text);
  *
  * 粘贴 paladin.account.paste();
+ * 
+ * 币种 paladin.account.currency({ name: 'USDT', balance: 0 });
  */
 declare namespace paladin {
     /**
@@ -552,6 +568,12 @@ declare namespace paladin {
          * @return {Promise<string>} promise
          */
         paste(): Promise<string>;
+
+        /**
+         * 币种
+         * @param {object} data 数据
+         */
+        currency(data?: IAccountBasicData): void;
 
         /**
          * 跳转页面

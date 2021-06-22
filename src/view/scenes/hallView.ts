@@ -21,7 +21,8 @@ export type CoinData = {
 
 export default class HallView
     extends ui.scenes.hall.hallUI
-    implements HonorScene {
+    implements HonorScene
+{
     public static preEnter() {
         return honor.director.runScene('scenes/hall/hall.scene');
     }
@@ -119,12 +120,12 @@ export default class HallView
         const play_now_ani = btn_play_now.getChildByName('ani') as Skeleton;
         playSkeleton(play_now_ani, `standby_${lang}`, true);
 
-        (btn_charge.getChildByName(
-            'txt_label',
-        ) as Image).skin = `image/international/charge_${lang}.png`;
-        (btn_get.getChildByName(
-            'txt_label',
-        ) as Image).skin = `image/international/withdraw_${lang}.png`;
+        (
+            btn_charge.getChildByName('txt_label') as Image
+        ).skin = `image/international/charge_${lang}.png`;
+        (
+            btn_get.getChildByName('txt_label') as Image
+        ).skin = `image/international/withdraw_${lang}.png`;
         resizeContain(middle_btn_wrap, 10);
         this.activeAni('normal');
     }
@@ -186,6 +187,7 @@ export default class HallView
             });
         }
         list.array = arr;
+
         if (arr.length <= 7) {
             coin_menu.height = bg.height = list.height = arr.length * 48 + 10;
         } else {

@@ -13,6 +13,9 @@ export let modelState = {} as ModelState;
 export function getUserInfo() {
     return modelState.app.user_info;
 }
+export function getGameCurrency() {
+    return modelState.app.game.currency;
+}
 /** 获取当前用户id */
 export function getCurUserId() {
     return modelState.app.user_info.user_id;

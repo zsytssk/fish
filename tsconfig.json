@@ -17,5 +17,11 @@
             "*": ["node_modules/*", "libs/*", "library/*", "src/*"]
         }
     },
-    "include": ["./libs", "./library", "./src", "./test"]
+    "include": [
+        "./libs",
+        "./library",
+        "./src",
+        "./test",
+        "./public/bitgame/paladin.d.ts"
+    ]
 }

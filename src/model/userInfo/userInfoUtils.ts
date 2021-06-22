@@ -1,19 +1,43 @@
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
+import { getLang } from 'ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from 'data/internationalConfig';
 import { getCurUserId, getUserInfo } from 'model/modelState';
-import { Lang } from 'data/internationalConfig';
 import { getItem, setItem } from 'utils/localStorage';
+import TipPop from 'view/pop/tip';
+import { AccountMap } from './userInfoModel';
 
-export function getCacheBalance() {
-    const user_id = getCurUserId();
-    return getItem(`${user_id}:balance`);
+export function getCacheCurrency(account_map: AccountMap) {
+    const platform_currency = paladin.getCurrency();
+    if (platform_currency && account_map.get(platform_currency)) {
+        return platform_currency;
+    }
+    if (account_map.size) {
+        return account_map.keys[0];
+    }
+    // const user_id = getCurUserId();
+    // return getItem(`${user_id}:balance`);
 }
-export function setCacheBalance(balance: string) {
-    if (balance === undefined) {
+
+export function setCacheBalance(name: string, balance: any) {
+    if (name === undefined) {
         return;
     }
+    paladin.account.currency({
+        name,
+        balance,
+    } as any);
     const user_id = getCurUserId();
-    return setItem(`${user_id}:balance`, balance);
+    return setItem(`${user_id}:balance`, name);
 }
+
+export function tipPlatformCurrency(currency: string) {
+    const lang = getLang();
+    const platform_currency = paladin.getCurrency();
+    if (currency !== platform_currency) {
+        TipPop.tip(InternationalTip[lang].platformDiffCurrencyEnterGameErr);
+    }
+}
+
 export function getAudio(user_id: string) {
     const voice_str = getItem(`${user_id}:voice`);
     const music_str = getItem(`${user_id}:music`);

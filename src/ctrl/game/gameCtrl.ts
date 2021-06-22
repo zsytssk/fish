@@ -51,6 +51,7 @@ import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
 import { Laya } from 'Laya';
 import { Loader } from 'laya/net/Loader';
 import TipPop from 'view/pop/tip';
+import { tipPlatformCurrency } from 'model/userInfo/userInfoUtils';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -86,6 +87,7 @@ export class GameCtrl {
             const wait_load_res = honor.director.load(other_res, 'Scene');
 
             /** 只有第一次进入时提示 */
+            console.log(`test:>1`, data);
             if (data.currency) {
                 waitEnterGame().then(async ([status, _data]) => {
                     if (!status) {
@@ -99,6 +101,14 @@ export class GameCtrl {
                         );
                     }
                     tipExchange(data);
+                });
+            } else {
+                /** 复盘提示 */
+                waitEnterGame().then(async ([status, _data]) => {
+                    if (!status || _data.isTrial || !_data.currency) {
+                        return;
+                    }
+                    tipPlatformCurrency(_data.currency);
                 });
             }
 
@@ -254,8 +264,8 @@ export class GameCtrl {
             frozen_left,
             fish_list,
             exchange_rate,
+            currency,
         } = data;
-        const { cur_balance } = getUserInfo();
 
         this.isTrial = isTrial;
         if (isTrial) {
@@ -267,7 +277,7 @@ export class GameCtrl {
         if (frozen) {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
-        view.setExchangeRate(exchange_rate, cur_balance);
+        view.setExchangeRate(exchange_rate, currency);
     }
     public calcClientIndex(server_index: number) {
         const cur_player = this.model.getCurPlayer();
