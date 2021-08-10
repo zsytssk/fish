@@ -112,7 +112,7 @@ export const International = {
         delayUpdateAccount:
             'Updates to your balance might be delayed until blocks on the chain can be confirmed, please be patient.',
         enterGameCostTip:
-            'The system converts {bringAmount} USDT into {bulletNum} bullets. \n After you leave the room, any remaining bullets \n will then be converted back into your {currency}.',
+            'The system converts {bringAmount} {currency} into {bulletNum} bullets. \n After you leave the room, any remaining bullets \n will then be converted back into your {currency}.',
         NoMoneyAmount:
             'The current currency surplus is insufficient, the minimum requirement to enter the market is {minAmount}{currency}, please go to top up or switch to other currencies.',
         platformDiffCurrencyEnterGameErr:
