@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":28,
-    "selecteID":29,
+    "selectedBox":41,
+    "selecteID":31,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -307,9 +307,10 @@
                             "x":45,
                             "type":"HTMLDivElement",
                             "searchKey":"HTMLDivElement,exchange_rate",
-                            "props":{"y":13,"x":38,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">xxx</span> <span></span> </div>","height":29},
+                            "props":{"y":13,"x":-122,"width":176,"var":"exchange_rate","innerHTML":"<div style=\"width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;\"><span>1</span> = <span color=\"#ffdd76\">123123123131usdt</span> <span></span> </div>","height":29},
                             "nodeParent":41,
                             "label":"exchange_rate",
+                            "isOpen":false,
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
