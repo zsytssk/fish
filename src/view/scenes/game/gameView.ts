@@ -21,11 +21,12 @@ import SkillItemView from './skillItemView';
 import { error } from 'utils/log';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
-
-const exchange_rate_tpl = `<div style="width: 192px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
+const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
-export default class GameView extends ui.scenes.game.gameUI
-    implements HonorScene {
+export default class GameView
+    extends ui.scenes.game.gameUI
+    implements HonorScene
+{
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
     private fish_click_observer: Subscriber<string>;
@@ -129,7 +130,11 @@ export default class GameView extends ui.scenes.game.gameUI
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
         const { pool, gun_wrap, ani_wrap, ani_overlay } = this;
-        pool.scaleY = gun_wrap.scaleY = ani_overlay.scaleY = ani_wrap.scaleY = -1;
+        pool.scaleY =
+            gun_wrap.scaleY =
+            ani_overlay.scaleY =
+            ani_wrap.scaleY =
+                -1;
         this.upside_down = true;
     }
     public addFish(info: AddFishViewInfo) {
