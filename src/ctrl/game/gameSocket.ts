@@ -53,6 +53,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.onShoot(data);
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
+            // Todo
             if (code !== 200) {
                 return errorHandler(code, data);
             }
@@ -116,6 +117,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.changeSkin(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
+            // Todo
             if (code !== 200) {
                 return errorHandler(code, data);
             }

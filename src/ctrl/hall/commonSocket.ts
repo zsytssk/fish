@@ -1,5 +1,8 @@
 import { ctrlState } from 'ctrl/ctrlState';
-import { disableCurUserOperation } from 'ctrl/game/gameCtrlUtils';
+import {
+    disableCurUserOperation,
+    waitGameExchangeOrLeave,
+} from 'ctrl/game/gameCtrlUtils';
 import { sendToGameSocket } from 'ctrl/game/gameSocket';
 import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
 import {
@@ -23,6 +26,7 @@ import { removeItem } from 'utils/localStorage';
 import { debug } from 'utils/log';
 import { login } from './login';
 import { tplStr } from 'utils/utils';
+import { sleep } from 'utils/animate';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -104,15 +108,7 @@ export function errorHandler(code: number, data?: any) {
     const tip = InternationalTip[lang][code];
 
     if (code === ServerErrCode.ReExchange) {
-        disableCurUserOperation();
-        return asyncOnly(tip, () => {
-            return AlertPop.alert(tip, { closeOnSide: false }).then(type => {
-                if (type === 'confirm') {
-                    return sendToGameSocket(ServerEvent.ExchangeBullet);
-                }
-                sendToGameSocket(ServerEvent.RoomOut);
-            });
-        });
+        return exChangeBullet(tip);
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tip;
         if (data && data.minAmount) {
@@ -175,5 +171,26 @@ export function tipCount(msg: string, count: number) {
         show_count: true,
         auto_hide: false,
         click_through: false,
+    });
+}
+
+let onExchanging = false;
+export async function exChangeBullet(tip: string) {
+    disableCurUserOperation();
+    if (onExchanging) {
+        return;
+    }
+
+    onExchanging = true;
+    waitGameExchangeOrLeave().then(() => {
+        onExchanging = false;
+    });
+    return asyncOnly(tip, () => {
+        return AlertPop.alert(tip, { closeOnSide: false }).then(type => {
+            if (type === 'confirm') {
+                return sendToGameSocket(ServerEvent.ExchangeBullet);
+            }
+            sendToGameSocket(ServerEvent.RoomOut);
+        });
     });
 }
