@@ -1,4 +1,4 @@
-import { modelState, getCurPlayer } from 'model/modelState';
+import { modelState, getCurPlayer, isCurUser } from 'model/modelState';
 import { ctrlState } from 'ctrl/ctrlState';
 import { SkillMap } from 'data/config';
 import { LockFishModel } from 'model/game/skill/lockFishModel';
@@ -57,6 +57,34 @@ export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
                 }
                 resolve([true, data]);
             },
+        );
+    });
+}
+
+export async function waitGameExchangeOrLeave(): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+        const game_socket = await waitCreateSocket(ServerName.Game);
+        game_socket.event.once(
+            ServerEvent.ExchangeBullet,
+            (data: EnterGameRep, code: number) => {
+                game_socket.event.offAllCaller(waitGameExchangeOrLeave);
+                if (code !== 200) {
+                    return resolve(false);
+                }
+                resolve(true);
+            },
+            waitGameExchangeOrLeave,
+        );
+        game_socket.event.on(
+            ServerEvent.RoomOut,
+            (data: RoomOutRep) => {
+                const { userId } = data;
+                if (isCurUser(userId)) {
+                    game_socket.event.offAllCaller(waitGameExchangeOrLeave);
+                    resolve(true);
+                }
+            },
+            waitGameExchangeOrLeave,
         );
     });
 }
