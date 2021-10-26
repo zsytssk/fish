@@ -1,5 +1,8 @@
+import * as path from 'path';
+
 import { test, build, afterBuild } from './buildUtils';
 import { listenLocal } from '../zutil/utils/utils';
+import { intConfig } from './const';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
 
@@ -29,6 +32,8 @@ const buildMap = {
     },
 };
 
+const config_path = path.resolve(__dirname, './config.json');
+
 const actionMap = {
     async buildMap() {
         for (let i = 0; i < 50; i++) {
@@ -46,6 +51,7 @@ const actionMap = {
 };
 
 export async function main() {
+    await intConfig(config_path);
     console.log(type);
     console.time('AllCostTime');
     await actionMap[type]();

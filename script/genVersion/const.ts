@@ -13,7 +13,7 @@ export let version_pos;
 export async function intConfig(config_path: string) {
     const config_raw = await readFile(config_path);
     const config = JSON.parse(config_raw);
-    project_folder = config.project_folder;
+    project_folder = process.cwd();
     bin_js = config.bin_js;
     bin_res = config.bin_res;
     exclude_files = config.exclude;
