@@ -270,8 +270,8 @@ export class SceneUtils {
             return comp;
         }
         if (json.props && "renderType" in json.props && json.props["renderType"] == "instance") {
-            if (!(compClass as any)["instance"]) (compClass as any)["instance"] = new compClass();
-            return (compClass as any)["instance"];
+            if (!compClass["instance"]) compClass["instance"] = new compClass();
+            return compClass["instance"];
         }
 
         return new compClass();
@@ -319,7 +319,7 @@ class InitTool {
     private _initList: any[];
     private _loadList: any[];
     /**@internal */
-    _idMap: {[key:string]:string};
+    _idMap: any[];
     /**@internal */
     _scene: Scene;
 
@@ -340,16 +340,13 @@ class InitTool {
 
     static create(): InitTool {
         var tool: InitTool = Pool.getItemByClass("InitTool", InitTool);
-        tool._idMap ={};
+        tool._idMap = [];
         return tool;
     }
 
     //TODO:coverage
     addLoadRes(url: string, type: string = null): void {
         if (!this._loadList) this._loadList = [];
-        if (ILaya.loader.getRes(url)) {
-            return;
-        }
         if (!type) {
             this._loadList.push(url);
         } else {
@@ -394,7 +391,7 @@ class InitTool {
             return prefab;
         } else if (referStr.indexOf("@arr:") >= 0) {
             referStr = referStr.replace("@arr:", "");
-            var list: string[];
+            var list: any[];
             list = referStr.split(",");
             var i: number, len: number;
             var tStr: string;

@@ -1,6 +1,5 @@
 import { Shader3D } from "../../../../d3/shader/Shader3D";
 import { ShaderData } from "../../../../d3/shader/ShaderData";
-import { RenderContext3D } from "../RenderContext3D";
 import { CommandBuffer } from "./CommandBuffer";
 
 /**
@@ -26,9 +25,8 @@ export class Command {
 	static MAINTEXTURE_TEXELSIZE_ID: number = Shader3D.propertyNameToID(Command.MAINTEXTURE_TEXELSIZE_NAME);//todo：
 
 	/**@internal */
-	_commandBuffer: CommandBuffer = null;
-	/**@internal */
-	_context:RenderContext3D;
+	private _commandBuffer: CommandBuffer = null;
+
 	/**
 	* @internal
 	*/
@@ -45,25 +43,17 @@ export class Command {
 	}
 
 	/**
-	 * 运行渲染指令
+	 *
 	 */
 	run(): void {
 
 	}
 
 	/**
-	 * 回收渲染指令
+	 *
 	 */
 	recover(): void {
 		this._commandBuffer = null;
-	}
-
-	/**
-	 * 设置渲染上下文
-	 * @param context 渲染上下文 
-	 */
-	setContext(context:RenderContext3D){
-		this._context = context;
 	}
 
 }

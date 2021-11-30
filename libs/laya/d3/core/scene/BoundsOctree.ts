@@ -1,11 +1,12 @@
 import { BoundsOctreeNode } from "./BoundsOctreeNode";
 import { OctreeMotionList } from "./OctreeMotionList";
 import { IOctreeObject } from "./IOctreeObject";
-import { PixelLineSprite3D } from "../pixelLine/PixelLineSprite3D";
-import { RenderContext3D } from "../render/RenderContext3D";
-import { BoundBox } from "../../math/BoundBox";
-import { Ray } from "../../math/Ray";
-import { Vector3 } from "../../math/Vector3";
+import { PixelLineSprite3D } from "../pixelLine/PixelLineSprite3D"
+import { RenderContext3D } from "../render/RenderContext3D"
+import { BoundBox } from "../../math/BoundBox"
+import { Ray } from "../../math/Ray"
+import { Vector3 } from "../../math/Vector3"
+import { ISingletonElement } from "../../../resource/ISingletonElement"
 import { Shader3D } from "../../shader/Shader3D";
 import { CameraCullInfo } from "../../graphics/FrustumCulling";
 
@@ -18,7 +19,8 @@ export class BoundsOctree {
 
 	/**@internal */
 	private _initialSize: number;
-	
+	/**@internal */
+	private _rootNode: BoundsOctreeNode;
 	/**@internal */
 	private _motionObjects: OctreeMotionList = new OctreeMotionList();
 
@@ -29,8 +31,6 @@ export class BoundsOctree {
 
 	/**@internal [只读]*/
 	count: number = 0;
-	/**@internal */
-	_rootNode: BoundsOctreeNode;
 
 	/**
 	 * 创建一个 <code>BoundsOctree</code> 实例。

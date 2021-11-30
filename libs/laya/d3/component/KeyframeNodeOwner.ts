@@ -16,11 +16,11 @@ export class KeyframeNodeOwner {
 	/**@internal */
 	type: number = -1;
 	/**@internal */
-	fullPath: string|null = null;
+	fullPath: string = null;
 	/**@internal */
 	propertyOwner: any = null;
 	/**@internal */
-	property: string[]|null = null;
+	property: string[] = null;
 	/**@internal */
 	defaultValue: any = null;
 	/**@internal */

@@ -139,8 +139,7 @@ export class Label extends UIComponent {
      * @override
     */
     destroy(destroyChild: boolean = true): void {
-		super.destroy(destroyChild);
-		//@ts-ignore
+        super.destroy(destroyChild);
         this._tf = null;
     }
 

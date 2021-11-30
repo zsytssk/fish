@@ -7,10 +7,6 @@ export class FontInfo {
     private static _lastFont: string = '';
     private static _lastFontInfo: FontInfo;
 
-    /**
-     * 解析字体模型
-     * @param font 
-     */
     static Parse(font: string): FontInfo {
         if (font === FontInfo._lastFont) {
             return FontInfo._lastFontInfo;
@@ -37,15 +33,11 @@ export class FontInfo {
     /**@internal */
     _bold: boolean = false;
 
-    constructor(font: string|null) {
+    constructor(font: string) {
         this._id = FontInfo._gfontID++;
         this.setFont(font || this._font);
     }
 
-    /**
-     * 设置字体格式
-     * @param value 
-     */
     setFont(value: string): void {
         this._font = value;
         var _words: any[] = value.split(' ');

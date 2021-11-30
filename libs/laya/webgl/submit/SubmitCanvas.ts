@@ -17,10 +17,9 @@ export class SubmitCanvas extends SubmitBase {
     /**@internal */
     _matrix4: any[] = CONST3D2D.defaultMatrix4.concat();
 
-    static POOL: SubmitCanvas[] = [];
 
     static create(canvas: any, alpha: number, filters: any[]): SubmitCanvas {
-        var o = (!(SubmitCanvas.POOL as any)._length) ? (new SubmitCanvas()) : SubmitCanvas.POOL[--(SubmitCanvas.POOL as any)._length];
+        var o: SubmitCanvas = (!SubmitCanvas.POOL._length) ? (new SubmitCanvas()) : SubmitCanvas.POOL[--SubmitCanvas.POOL._length];
         o.canv = canvas;
         o._ref = 1;
         o._numEle = 0;
@@ -41,17 +40,17 @@ export class SubmitCanvas extends SubmitBase {
 	 */
     renderSubmit(): number {
         // 下面主要是为了给canvas设置矩阵。因为canvas保存的是没有偏移的。
-        var preAlpha = RenderState2D.worldAlpha;
-        var preMatrix4 = RenderState2D.worldMatrix4;
-        var preMatrix = RenderState2D.worldMatrix;
+        var preAlpha: number = RenderState2D.worldAlpha;
+        var preMatrix4: any[] = RenderState2D.worldMatrix4;
+        var preMatrix: Matrix = RenderState2D.worldMatrix;
 
         var preFilters: any[] = RenderState2D.worldFilters;
-        var preWorldShaderDefines = RenderState2D.worldShaderDefines;
+        var preWorldShaderDefines: ShaderDefines2D = RenderState2D.worldShaderDefines;
 
-        var v = this.shaderValue;
-        var m = this._matrix;
-        var m4 = this._matrix4;
-        var mout = Matrix.TEMP;
+        var v: Value2D = this.shaderValue;
+        var m: Matrix = this._matrix;
+        var m4: any[] = this._matrix4;
+        var mout: Matrix = Matrix.TEMP;
         Matrix.mul(m, preMatrix, mout);
         m4[0] = mout.a;
         m4[1] = mout.b;
@@ -67,7 +66,7 @@ export class SubmitCanvas extends SubmitBase {
             RenderState2D.worldFilters = v.filters;
             RenderState2D.worldShaderDefines = v.defines;
         }
-        (this.canv as any)['flushsubmit']();
+        this.canv['flushsubmit']();
         RenderState2D.worldAlpha = preAlpha;
         RenderState2D.worldMatrix4 = preMatrix4;
         RenderState2D.worldMatrix.destroy();
@@ -82,10 +81,10 @@ export class SubmitCanvas extends SubmitBase {
      */
     releaseRender(): void {
         if ((--this._ref) < 1) {
-            var cache = SubmitCanvas.POOL;
+            var cache: any = SubmitCanvas.POOL;
             //_vb = null;
             this._mesh = null;
-            cache[(cache as any)._length++] = this;
+            cache[cache._length++] = this;
         }
     }
     /**
@@ -95,5 +94,6 @@ export class SubmitCanvas extends SubmitBase {
         return SubmitBase.TYPE_CANVAS;
     }
 
+    static POOL: any = [];;
 }
-{ (SubmitCanvas.POOL as any)._length = 0 }
+{ SubmitCanvas.POOL._length = 0 }

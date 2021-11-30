@@ -1,7 +1,6 @@
 import { FilterSetterBase } from "./FilterSetterBase";
 import { ColorFilter } from "../filters/ColorFilter";
 import { ColorUtils } from "../utils/ColorUtils";
-import { ClassUtils } from "../utils/ClassUtils";
 
 /**
  * ...
@@ -160,5 +159,3 @@ export class ColorFilterSetter extends FilterSetterBase {
 }
 
 
-ClassUtils.regClass("laya.effect.ColorFilterSetter", ColorFilterSetter);
-ClassUtils.regClass("Laya.ColorFilterSetter", ColorFilterSetter);

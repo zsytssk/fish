@@ -1,8 +1,5 @@
 //import { PerfHUD } from "./PerfHUD";
 let DATANUM = 300;
-/**
- * @internal
- */
 export class PerfData {
     id: number;
     name: string;

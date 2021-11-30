@@ -33,14 +33,13 @@ export class Scene extends Sprite {
     /**@private */
     private _viewCreated: boolean = false;
     /**@internal */
-    _idMap: any = null;
+    _idMap: any;
     /**@internal */
     _$componentType: string = "Scene";
 
     constructor(createChildren = true) {
         super();
-        //not ready状态变更修改为加载资源之前后
-        // this._setBit(Const.NOT_READY, true);
+        this._setBit(Const.NOT_READY, true);
         Scene.unDestroyedScenes.push(this);
         this._scene = this;
         if (createChildren)
@@ -53,11 +52,10 @@ export class Scene extends Sprite {
     protected createChildren(): void {
     }
     /**
-     * 兼容加载模式
      * 加载模式设置uimap
      * @param url uimapJosn的url
      */
-    static setUIMap(url:string):void{
+    static setUIMap(url):void{
         let uimap = ILaya.loader.getRes(url);
         if(uimap){
             for (let key in uimap) {
@@ -78,7 +76,6 @@ export class Scene extends Sprite {
         if (view) {
             this.createView(view);
         } else {
-            this._setBit(Const.NOT_READY, true);
             ILaya.loader.resetProgress();
             var loader: SceneLoader = new SceneLoader();
             loader.on(Event.COMPLETE, this, this._onSceneLoaded, [url]);
@@ -138,18 +135,16 @@ export class Scene extends Sprite {
         else this.removeSelf();
     }
 
-    /**
-     * 关闭完成后，调用此方法（如果有关闭动画，则在动画完成后执行）
+    /**关闭完成后，调用此方法（如果有关闭动画，则在动画完成后执行）
      * @param type 如果是点击默认关闭按钮触发，则传入关闭按钮的名字(name)，否则为null。
      */
     onClosed(type: string = null): void {
         //trace("onClosed");
     }
 
-    /**
-     * @inheritDoc 
+    /**@inheritDoc 
      * @override
-     */
+    */
     destroy(destroyChild: boolean = true): void {
         this._idMap = null;
         super.destroy(destroyChild);
@@ -270,10 +265,9 @@ export class Scene extends Sprite {
         return Scene._root;
     }
 
-    /**
-     * 场景时钟
+    /**场景时钟
      * @override
-     */
+    */
     get timer(): Timer {
         return this._timer || ILaya.timer;
     }
@@ -314,7 +308,7 @@ export class Scene extends Sprite {
             }
             if (scene && scene instanceof Node) {
                 scene.url = url;
-                if (scene._viewCreated) {
+                if (!scene._getBit(Const.NOT_READY)) {
                     complete && complete.runWith(scene);
                 } else {
                     scene.on("onViewCreated", null, function (): void {

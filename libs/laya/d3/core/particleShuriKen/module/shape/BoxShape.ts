@@ -1,4 +1,4 @@
-import { BaseShape, ParticleSystemShapeType } from "./BaseShape";
+import { BaseShape } from "./BaseShape";
 import { ShapeUtils } from "./ShapeUtils";
 import { BoundBox } from "../../../../math/BoundBox"
 import { Rand } from "../../../../math/Rand"
@@ -20,7 +20,6 @@ export class BoxShape extends BaseShape {
 	 */
 	constructor() {
 		super();
-		this.shapeType = ParticleSystemShapeType.Box;
 		this.x = 1.0;
 		this.y = 1.0;
 		this.z = 1.0;

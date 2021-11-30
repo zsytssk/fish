@@ -240,10 +240,11 @@ export class Templet extends AnimationTemplet {
 	 * 纹理加载完成
 	 */
 	private _textureComplete(): void {
+		var tTexture: Texture;
 		var tTextureName: string;
 		for (var i: number = 0, n: number = this._loadList.length; i < n; i++) {
 			tTextureName = this._loadList[i];
-			this._textureDic[tTextureName] = ILaya.Loader.getRes(tTextureName);
+			tTexture = this._textureDic[tTextureName] = ILaya.Loader.getRes(tTextureName);
 		}
 		this._parsePublicExtData();
 	}

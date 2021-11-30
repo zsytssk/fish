@@ -44,7 +44,7 @@ export class InlcudeFile {
         }
     }
 
-    getWith(name: string|null = null): string {
+    getWith(name: string = null): string {
         var r: string = name ? this.codes[name] : this.script;
         if (!r) {
             throw "get with error:" + name;

@@ -296,7 +296,7 @@ export class HTMLStyle {
         var key: string;
         for (i = 0; i < len; i++) {
             key = props[i];
-            (this as any)[key] = (src as any)[key];
+            this[key] = src[key];
         }
     }
 
@@ -478,7 +478,7 @@ export class HTMLStyle {
         if (attrs) {
             for (var i: number = 0, n: number = attrs.length; i < n; i++) {
                 var attr: any[] = attrs[i];
-                (this as any)[attr[0]] = attr[1];
+                this[attr[0]] = attr[1];
             }
         }
     }

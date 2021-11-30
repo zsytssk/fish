@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Node } from "../display/Node"
 import { IDestroy } from "../resource/IDestroy"
 import { ISingletonElement } from "../resource/ISingletonElement"
@@ -159,14 +158,7 @@ export class Component implements ISingletonElement, IDestroy {
 	/**
 	 * @internal
 	 */
-	_parse(data: any,interactMap:any = null): void {
-		//override it.
-	}
-
-	/**
-	 * @internal
-	 */
-	_parseInteractive(data:any = null,spriteMap:any = null){
+	_parse(data: any): void {
 		//override it.
 	}
 

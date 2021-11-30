@@ -11,7 +11,6 @@ import extendTerrainVS from "./files/extendTerrain.vs";
 import GlobalIllumination from "./files/GlobalIllumination.glsl";
 import LightingGLSL from "./files/Lighting.glsl";
 import ShadowSampleTentGLSL from "./files/ShadowSampleTent.glsl";
-import LayaUtile from "./files/LayaUtile.glsl"
 import linePS from "./files/line.fs";
 import lineVS from "./files/line.vs";
 import MeshBlinnPhongPS from "./files/Mesh-BlinnPhong.fs";
@@ -50,13 +49,9 @@ import UnlitPS from "./files/Unlit.fs";
 import UnlitVS from "./files/Unlit.vs";
 import WaterPrimaryPS from "./files/WaterPrimary.fs";
 import WaterPrimaryVS from "./files/WaterPrimary.vs";
-import DepthNormalsTextureVS from "./files/DepthNormalsTextureVS.vs";
-import DepthNormalsTextureFS from "./files/DepthNormalsTextureFS.fs";
-import DepthNormalUtil from "./files/DepthNormalUtil.glsl";
 import { Shader3D } from "./Shader3D";
 import { ShaderPass } from "./ShaderPass";
 import { SubShader } from "./SubShader";
-
 
 
 
@@ -93,8 +88,6 @@ export class ShaderInit3D {
 		Shader3D.addInclude("LayaPBRBRDF.glsl", LayaPBRBRDF);
 		Shader3D.addInclude("PBRCore.glsl", PBRCore);
 		Shader3D.addInclude("PBRVertex.glsl", PBRVertex);
-		Shader3D.addInclude("LayaUtile.glsl",LayaUtile);
-		Shader3D.addInclude("DepthNormalUtil.glsl",DepthNormalUtil);
 
 		//BLINNPHONG
 		var attributeMap: any = {
@@ -106,8 +99,8 @@ export class ShaderInit3D {
 			'a_BoneWeights': VertexMesh.MESH_BLENDWEIGHT0,
 			'a_BoneIndices': VertexMesh.MESH_BLENDINDICES0,
 			'a_Tangent0': VertexMesh.MESH_TANGENT0,
-			'a_WorldMat': VertexMesh.MESH_WORLDMATRIX_ROW0,
-			'a_SimpleTextureParams':VertexMesh.MESH_SIMPLEANIMATOR
+			'a_MvpMatrix': VertexMesh.MESH_MVPMATRIX_ROW0,
+			'a_WorldMat': VertexMesh.MESH_WORLDMATRIX_ROW0
 		};
 		var uniformMap: any = {
 			'u_Bones': Shader3D.PERIOD_CUSTOM,
@@ -116,25 +109,15 @@ export class ShaderInit3D {
 			'u_NormalTexture': Shader3D.PERIOD_MATERIAL,
 			'u_AlphaTestValue': Shader3D.PERIOD_MATERIAL,
 			'u_DiffuseColor': Shader3D.PERIOD_MATERIAL,
-			'u_AlbedoIntensity': Shader3D.PERIOD_MATERIAL,
 			'u_MaterialSpecular': Shader3D.PERIOD_MATERIAL,
 			'u_Shininess': Shader3D.PERIOD_MATERIAL,
 			'u_TilingOffset': Shader3D.PERIOD_MATERIAL,
-			'u_TransmissionRate':Shader3D.PERIOD_MATERIAL,
-			'u_BackDiffuse':Shader3D.PERIOD_MATERIAL,
-			'u_BackScale':Shader3D.PERIOD_MATERIAL,
-			'u_ThinknessTexture':Shader3D.PERIOD_MATERIAL,
-			'u_TransmissionColor':Shader3D.PERIOD_MATERIAL,
 
 			'u_WorldMat': Shader3D.PERIOD_SPRITE,
 			'u_MvpMatrix': Shader3D.PERIOD_SPRITE,
 			'u_LightmapScaleOffset': Shader3D.PERIOD_SPRITE,
 			'u_LightMap': Shader3D.PERIOD_SPRITE,
 			'u_LightMapDirection': Shader3D.PERIOD_SPRITE,
-
-			'u_SimpleAnimatorTexture':Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorParams':Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorTextureSize':Shader3D.PERIOD_SPRITE,
 
 			'u_CameraPos': Shader3D.PERIOD_CAMERA,
 			'u_Viewport': Shader3D.PERIOD_CAMERA,
@@ -143,6 +126,7 @@ export class ShaderInit3D {
 			'u_ViewProjection': Shader3D.PERIOD_CAMERA,
 
 			'u_ReflectTexture': Shader3D.PERIOD_SCENE,
+			'u_ReflectIntensity': Shader3D.PERIOD_SCENE,
 			'u_FogStart': Shader3D.PERIOD_SCENE,
 			'u_FogRange': Shader3D.PERIOD_SCENE,
 			'u_FogColor': Shader3D.PERIOD_SCENE,
@@ -157,9 +141,6 @@ export class ShaderInit3D {
 			'u_ShadowSplitSpheres': Shader3D.PERIOD_SCENE,
 			'u_ShadowMatrices': Shader3D.PERIOD_SCENE,
 			'u_ShadowMapSize': Shader3D.PERIOD_SCENE,
-			'u_SpotShadowMap':Shader3D.PERIOD_SCENE,
-			'u_SpotViewProjectMatrix':Shader3D.PERIOD_SCENE,
-			'u_ShadowLightPosition':Shader3D.PERIOD_SCENE,
 
 			//GI
 			'u_AmbientSHAr': Shader3D.PERIOD_SCENE,
@@ -169,7 +150,6 @@ export class ShaderInit3D {
 			'u_AmbientSHBg': Shader3D.PERIOD_SCENE,
 			'u_AmbientSHBb': Shader3D.PERIOD_SCENE,
 			'u_AmbientSHC': Shader3D.PERIOD_SCENE,
-			
 
 			//legacy lighting
 			'u_DirectionLight.color': Shader3D.PERIOD_SCENE,
@@ -196,7 +176,7 @@ export class ShaderInit3D {
 		shader.addSubShader(subShader);
 		subShader.addShaderPass(MeshBlinnPhongVS, MeshBlinnPhongPS, stateMap, "Forward");
 		var shaderPass: ShaderPass = subShader.addShaderPass(MeshBlinnPhongShadowCasterVS, MeshBlinnPhongShadowCasterPS, stateMap, "ShadowCaster");
-		shaderPass = subShader.addShaderPass(DepthNormalsTextureVS,DepthNormalsTextureFS,stateMap,"DepthNormal");
+
 		//LineShader
 		attributeMap = {
 			'a_Position': VertexMesh.MESH_POSITION0,
@@ -226,8 +206,7 @@ export class ShaderInit3D {
 			'a_Texcoord0': VertexMesh.MESH_TEXTURECOORDINATE0,
 			'a_BoneWeights': VertexMesh.MESH_BLENDWEIGHT0,
 			'a_BoneIndices': VertexMesh.MESH_BLENDINDICES0,
-			'a_WorldMat': VertexMesh.MESH_WORLDMATRIX_ROW0,
-			'a_SimpleTextureParams':VertexMesh.MESH_SIMPLEANIMATOR
+			'a_MvpMatrix': VertexMesh.MESH_MVPMATRIX_ROW0
 		};
 		uniformMap = {
 			'u_Bones': Shader3D.PERIOD_CUSTOM,
@@ -236,13 +215,6 @@ export class ShaderInit3D {
 			'u_TilingOffset': Shader3D.PERIOD_MATERIAL,
 			'u_AlphaTestValue': Shader3D.PERIOD_MATERIAL,
 			'u_MvpMatrix': Shader3D.PERIOD_SPRITE,
-
-			'u_ViewProjection': Shader3D.PERIOD_CAMERA,
-
-			'u_SimpleAnimatorTexture':Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorParams':Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorTextureSize':Shader3D.PERIOD_SPRITE,
-			
 			'u_FogStart': Shader3D.PERIOD_SCENE,
 			'u_FogRange': Shader3D.PERIOD_SCENE,
 			'u_FogColor': Shader3D.PERIOD_SCENE
@@ -266,8 +238,7 @@ export class ShaderInit3D {
 			'a_Texcoord0': VertexMesh.MESH_TEXTURECOORDINATE0,
 			'a_BoneWeights': VertexMesh.MESH_BLENDWEIGHT0,
 			'a_BoneIndices': VertexMesh.MESH_BLENDINDICES0,
-			'a_WorldMat': VertexMesh.MESH_WORLDMATRIX_ROW0,
-			'a_SimpleTextureParams':VertexMesh.MESH_SIMPLEANIMATOR
+			'a_MvpMatrix': VertexMesh.MESH_MVPMATRIX_ROW0
 		};
 		uniformMap = {
 			'u_Bones': Shader3D.PERIOD_CUSTOM,
@@ -275,13 +246,7 @@ export class ShaderInit3D {
 			'u_AlbedoColor': Shader3D.PERIOD_MATERIAL,
 			'u_TilingOffset': Shader3D.PERIOD_MATERIAL,
 			'u_AlphaTestValue': Shader3D.PERIOD_MATERIAL,
-
-			'u_ViewProjection': Shader3D.PERIOD_CAMERA,
-			
 			'u_MvpMatrix': Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorTexture':Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorParams':Shader3D.PERIOD_SPRITE,
-			'u_SimpleAnimatorTextureSize':Shader3D.PERIOD_SPRITE,
 			'u_FogStart': Shader3D.PERIOD_SCENE,
 			'u_FogRange': Shader3D.PERIOD_SCENE,
 			'u_FogColor': Shader3D.PERIOD_SCENE

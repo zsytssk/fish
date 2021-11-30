@@ -2,7 +2,6 @@ import { RenderElement } from "../core/render/RenderElement";
 import { SubMeshRenderElement } from "../core/render/SubMeshRenderElement";
 import { RenderableSprite3D } from "../core/RenderableSprite3D";
 import { Sprite3D } from "../core/Sprite3D";
-import { SubMeshStaticBatch } from "./SubMeshStaticBatch";
 
 /**
  * <code>StaticBatchManager</code> 类用于静态批处理管理的父类。
@@ -68,7 +67,7 @@ export class StaticBatchManager {
 	/** @internal */
 	protected _initBatchSprites: RenderableSprite3D[] = [];
 	/** @internal */
-	protected _staticBatches: {[key:number]:SubMeshStaticBatch}= {};
+	protected _staticBatches: object = {};
 
 	/**
 	 * 创建一个 <code>StaticBatchManager</code> 实例。

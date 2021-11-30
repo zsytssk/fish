@@ -70,7 +70,7 @@ export class ColliderBase extends Component {
     protected _onDestroy(): void {
         if (this.rigidBody) {
             if (this.fixture) {
-                if (this.fixture.GetBody() == this.rigidBody._getOriBody()) {
+                if (this.fixture.GetBody() == this.rigidBody.body) {
                     this.rigidBody.body.DestroyFixture(this.fixture);
                 }
                 //fixture.Destroy();

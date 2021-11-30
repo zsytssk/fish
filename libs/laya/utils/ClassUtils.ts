@@ -60,7 +60,7 @@ export class ClassUtils {
         var classObject = ClassUtils._classMap[className] || ClassUtils._classMap['Laya.' + className] || className;
 
         var glaya: any = ILaya.Laya
-        if (typeof (classObject) == 'string') return ((ILaya.__classMap as any)[classObject as string] || glaya[className]);
+        if (typeof (classObject) == 'string') return (ILaya.__classMap[classObject as string] || glaya[className]);
         return classObject;
     }
 
@@ -151,7 +151,7 @@ export class ClassUtils {
             for (var prop in props) {
                 var value: any = props[prop];
                 if (prop === "var" && root) {
-                    (root as any)[value] = node;
+                    root[value] = node;
                 } else if (value instanceof Array && node[prop] instanceof Function) {
                     node[prop].apply(node, value);
                 } else {
@@ -268,7 +268,7 @@ export class ClassUtils {
             if (m) g.transform(m);
             if (ClassUtils._alpha != 1) g.alpha(ClassUtils._alpha);
         }
-        (g as any)[drawConfig[0]].apply(g, params);
+        g[drawConfig[0]].apply(g, params);
         if (m || ClassUtils._alpha != 1) {
             g.restore();
         }
@@ -330,8 +330,8 @@ export class ClassUtils {
         } else {
             ClassUtils._tM = null;
         }
-        if (adptFun && (ClassUtils as any)[adptFun]) {
-            rst = (ClassUtils as any)[adptFun](rst);
+        if (adptFun && ClassUtils[adptFun]) {
+            rst = ClassUtils[adptFun](rst);
         }
         return rst;
     }

@@ -1,18 +1,6 @@
-// #include "Lighting.glsl";
+#include "Lighting.glsl";
 
-//修改这里剔除没有用到的光照函数，增加粒子的编译速度
-vec2 TransformUV(vec2 texcoord,vec4 tilingOffset) {
-	vec2 transTexcoord=vec2(texcoord.x,texcoord.y-1.0)*tilingOffset.xy+vec2(tilingOffset.z,-tilingOffset.w);
-	transTexcoord.y+=1.0;
-	return transTexcoord;
-}
-
-vec4 remapGLPositionZ(vec4 position) {
-	position.z=position.z * 2.0 - position.w;
-	return position;
-}
-
-#if defined(GL_FRAGMENT_PRECISION_HIGH)
+#ifdef GL_FRAGMENT_PRECISION_HIGH
   precision highp float;
 #else
   precision mediump float;
@@ -163,7 +151,9 @@ uniform int u_SimulationSpace;
   uniform  vec2 u_TSAMaxGradientUVs[4];//x为key,y为frame
 #endif
 
-uniform vec4 u_TilingOffset;
+#ifdef TILINGOFFSET
+	uniform vec4 u_TilingOffset;
+#endif
 
 vec3 rotationByEuler(in vec3 vector,in vec3 rot)
 {
@@ -761,7 +751,9 @@ void main()
 				v_TextureCoordinate =computeParticleUV(a_MeshTextureCoordinate, normalizedAge);
 			#endif
 			
-			v_TextureCoordinate=TransformUV(v_TextureCoordinate,u_TilingOffset);
+			#ifdef TILINGOFFSET
+				v_TextureCoordinate=TransformUV(v_TextureCoordinate,u_TilingOffset);
+			#endif
 		#endif
    	}
    	else

@@ -23,10 +23,8 @@ export class ShaderCompile {
 	static shaderParamsMap: any;
 
 	private _nameMap: any;
-	/** @internal */
-	public _VS: ShaderNode;
-	/** @internal */
-	public _PS: ShaderNode;
+	protected _VS: ShaderNode;
+	protected _PS: ShaderNode;
 
 	/**
 	 * @internal
@@ -69,13 +67,13 @@ export class ShaderCompile {
 		var attributes: any[] = [];
 		var uniforms: any[] = [];
 		var definesInfo: any = {};
-		var definesName: {[key:string]:number} = {};
+		var definesName: any[] = [];
 
 		result.attributes = attributes;
 		result.uniforms = uniforms;
 		result.defines = definesInfo;
 
-		var i: number, n: number;
+		var i: number, n: number, one: any;
 		for (var s: number = 0; s < 2; s++) {
 			text[s] = text[s].replace(ShaderCompile._removeAnnotation, "");
 
@@ -108,7 +106,7 @@ export class ShaderCompile {
 								}
 								continue;
 							}
-							i = ShaderCompile._parseOne(attributes, uniforms, words, i, word, !!definesName[tempelse]);
+							i = ShaderCompile._parseOne(attributes, uniforms, words, i, word, definesName[tempelse]);
 						}
 					}
 					continue;

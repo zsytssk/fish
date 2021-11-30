@@ -1,10 +1,10 @@
 import { AnimationClip } from "../animation/AnimationClip";
+import { KeyframeNodeList } from "../animation/KeyframeNodeList";
 import { IClone } from "../core/IClone";
 import { IReferenceCounter } from "../resource/IReferenceCounter";
 import { Animator } from "./Animator";
 import { AnimatorPlayState } from "./AnimatorPlayState";
 import { AnimatorState } from "./AnimatorState";
-import { AvatarMask } from "./AvatarMask";
 import { KeyframeNodeOwner } from "./KeyframeNodeOwner";
 
 
@@ -18,7 +18,7 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	static BLENDINGMODE_ADDTIVE: number = 1;
 
 	/**@internal */
-	private _defaultState: AnimatorState|null;
+	private _defaultState: AnimatorState = null;
 	/**@internal */
 	private _referenceCount: number = 0;
 
@@ -48,16 +48,15 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	/**@internal */
 	_states: AnimatorState[] = [];
 	/**@internal */
-	_playStateInfo: AnimatorPlayState|null = new AnimatorPlayState();
+	_playStateInfo: AnimatorPlayState = new AnimatorPlayState();
 	/**@internal */
-	_crossPlayStateInfo: AnimatorPlayState|null = new AnimatorPlayState();
-	/**@internal */
-	_avatarMask:AvatarMask;
+	_crossPlayStateInfo: AnimatorPlayState = new AnimatorPlayState();
+
 	/** 层的名称。*/
 	name: string;
-	/** 混合模式。*/
+	/** 名称。*/
 	blendingMode: number = AnimatorControllerLayer.BLENDINGMODE_OVERRIDE;
-	/** 默认权重。*/
+	/** 权重。*/
 	defaultWeight: number = 1.0;
 	/**	激活时是否自动播放。*/
 	playOnWake: boolean = true;
@@ -66,7 +65,7 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	 * 默认动画状态机。
 	 */
 	get defaultState(): AnimatorState {
-		return this._defaultState!;
+		return this._defaultState;
 	}
 
 	set defaultState(value: AnimatorState) {
@@ -75,19 +74,7 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	}
 
 	/**
-	 * 骨骼遮罩
-	 */
-	get avatarMask():AvatarMask{
-		return this._avatarMask;
-	}
-
-	set avatarMask(value:AvatarMask){
-		this._avatarMask = value;
-	}
-
-	/**
 	 * 创建一个 <code>AnimatorControllerLayer</code> 实例。
-	 * @param 动画层名称
 	 */
 	constructor(name: string) {
 		this.name = name;
@@ -97,18 +84,18 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	 * @internal
 	 */
 	private _removeClip(clipStateInfos: AnimatorState[], statesMap: any, index: number, state: AnimatorState): void {
-		var clip: AnimationClip = state._clip!;
+		var clip: AnimationClip = state._clip;
 		var clipStateInfo: AnimatorState = clipStateInfos[index];
 
 		clipStateInfos.splice(index, 1);
 		delete statesMap[state.name];
 
 		if (this._animator) {
-			var frameNodes = clip._nodes;
+			var frameNodes: KeyframeNodeList = clip._nodes;
 			var nodeOwners: KeyframeNodeOwner[] = clipStateInfo._nodeOwners;
 			clip._removeReference();
-			for (var i: number = 0, n: number = frameNodes!.count; i < n; i++)
-				this._animator._removeKeyframeNodeOwner(nodeOwners, frameNodes!.getNodeByIndex(i));
+			for (var i: number = 0, n: number = frameNodes.count; i < n; i++)
+				this._animator._removeKeyframeNodeOwner(nodeOwners, frameNodes.getNodeByIndex(i));
 		}
 	}
 
@@ -149,14 +136,14 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	 * @return 动画播放状态。
 	 */
 	getCurrentPlayState(): AnimatorPlayState {
-		return this._playStateInfo!;
+		return this._playStateInfo;
 	}
 
 	/**
 	 * 获取动画状态。
 	 * @return 动画状态。
 	 */
-	getAnimatorState(name: string): AnimatorState|null {
+	getAnimatorState(name: string): AnimatorState {
 		var state: AnimatorState = this._statesMap[name];
 		return state ? state : null;
 	}
@@ -175,7 +162,7 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 			this._states.push(state);
 
 			if (this._animator) {
-				state._clip!._addReference();
+				state._clip._addReference();
 				this._animator._getOwnersByClip(state);
 			}
 		}
@@ -205,7 +192,7 @@ export class AnimatorControllerLayer implements IReferenceCounter, IClone {
 	destroy(): void {
 		this._clearReference();
 		this._statesMap = null;
-		this._states = [];
+		this._states = null;
 		this._playStateInfo = null;
 		this._crossPlayStateInfo = null;
 		this._defaultState = null;

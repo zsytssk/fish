@@ -27,14 +27,7 @@ export class RenderableSprite3D extends Sprite3D {
 	static LIGHTMAP_DIRECTION: number = Shader3D.propertyNameToID("u_LightMapDirection");
 	/**拾取颜色。*/
 	static PICKCOLOR: number = Shader3D.propertyNameToID("u_PickColor");
-	/** 反射贴图 */
-	static REFLECTIONTEXTURE:number = Shader3D.propertyNameToID("u_ReflectTexture");
-	/** 反射贴图参数 */
-	static REFLECTIONCUBE_HDR_PARAMS:number = Shader3D.propertyNameToID("u_ReflectCubeHDRParams");
-	/** 反射探针位置 最大最小值*/
-	static REFLECTIONCUBE_PROBEPOSITION:number = Shader3D.propertyNameToID("u_SpecCubeProbePosition");
-	static REFLECTIONCUBE_PROBEBOXMAX:number = Shader3D.propertyNameToID("u_SpecCubeBoxMax");
-	static REFLECTIONCUBE_PROBEBOXMIN:number = Shader3D.propertyNameToID("u_SpecCubeBoxMin");
+
 	pickColor: Vector4;
 
 
@@ -114,12 +107,8 @@ export class RenderableSprite3D extends Sprite3D {
 	 * @override
 	 */
 	_setUnBelongScene(): void {
-		if(!this.destroyed){
-			this._render._shaderValues.removeDefine(RenderableSprite3D.SAHDERDEFINE_LIGHTMAP);
-			this._render._setUnBelongScene();
-			super._setUnBelongScene();
-		}
-		
+		this._render._shaderValues.removeDefine(RenderableSprite3D.SAHDERDEFINE_LIGHTMAP);
+		super._setUnBelongScene();
 	}
 
 	/**

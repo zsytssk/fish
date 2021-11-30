@@ -4,9 +4,12 @@ import { AnimationEvent } from "./AnimationEvent";
 import { FloatKeyframe } from "../core/FloatKeyframe"
 import { QuaternionKeyframe } from "../core/QuaternionKeyframe"
 import { Vector3Keyframe } from "../core/Vector3Keyframe"
+import { ConchQuaternion } from "../math/Native/ConchQuaternion"
+import { ConchVector3 } from "../math/Native/ConchVector3"
 import { Quaternion } from "../math/Quaternion"
 import { Vector3 } from "../math/Vector3"
 import { Vector4 } from "../math/Vector4"
+import { Render } from "../../renders/Render"
 import { Byte } from "../../utils/Byte"
 import { AnimationClip } from "./AnimationClip";
 
@@ -52,14 +55,14 @@ export class AnimationClipParser03 {
 	static parse(clip: AnimationClip, reader: Byte): void {
 		AnimationClipParser03._animationClip = clip;
 		AnimationClipParser03._reader = reader;
-	
+		var arrayBuffer = reader.__getBuffer();
 		AnimationClipParser03.READ_DATA();
 		AnimationClipParser03.READ_BLOCK();
 		AnimationClipParser03.READ_STRINGS();
 		for (var i: number = 0, n: number = AnimationClipParser03._BLOCK.count; i < n; i++) {
 			var index: number = reader.getUint16();
 			var blockName: string = AnimationClipParser03._strings[index];
-			var fn:()=>void = (AnimationClipParser03 as any)["READ_" + blockName];
+			var fn: Function = AnimationClipParser03["READ_" + blockName];
 			if (fn == null)
 				throw new Error("model file err,no this function:" + index + " " + blockName);
 			else
@@ -74,6 +77,7 @@ export class AnimationClipParser03 {
 		var i: number, j: number;
 		var node: KeyframeNode;
 		var reader: Byte = AnimationClipParser03._reader;
+		var buffer: ArrayBuffer = reader.__getBuffer();
 
 		var startTimeTypes: number[] = [];
 		var startTimeTypeCount: number = reader.getUint16();
@@ -87,14 +91,14 @@ export class AnimationClipParser03 {
 		clip.islooping = !!reader.getByte();
 		clip._frameRate = reader.getInt16();
 		var nodeCount: number = reader.getInt16();
-		var nodes = clip._nodes;
-		(nodes as KeyframeNodeList).count = nodeCount;
+		var nodes: KeyframeNodeList = clip._nodes;
+		nodes.count = nodeCount;
 		var nodesMap: any = clip._nodesMap = {};
 		var nodesDic: any = clip._nodesDic = {};
 
 		for (i = 0; i < nodeCount; i++) {
 			node = new KeyframeNode();
-			(nodes as KeyframeNodeList).setNodeByIndex(i, node);
+			nodes.setNodeByIndex(i, node);
 			node._indexInList = i;
 			var type: number = node.type = reader.getUint8();
 
@@ -121,13 +125,13 @@ export class AnimationClipParser03 {
 
 			var keyframeCount: number = reader.getUint16();
 			node._setKeyframeCount(keyframeCount);
-
+			var startTime: number;
 			for (j = 0; j < keyframeCount; j++) {
 				switch (type) {
 					case 0:
 						var floatKeyframe: FloatKeyframe = new FloatKeyframe();
 						node._setKeyframeByIndex(j, floatKeyframe);
-						floatKeyframe.time = startTimeTypes[reader.getUint16()];
+						startTime = floatKeyframe.time = startTimeTypes[reader.getUint16()];
 						floatKeyframe.inTangent = reader.getFloat32();
 						floatKeyframe.outTangent = reader.getFloat32();
 						floatKeyframe.value = reader.getFloat32();
@@ -138,9 +142,19 @@ export class AnimationClipParser03 {
 						var floatArrayKeyframe: Vector3Keyframe = new Vector3Keyframe();
 						node._setKeyframeByIndex(j, floatArrayKeyframe);
 
-						floatArrayKeyframe.time = startTimeTypes[reader.getUint16()];
+						startTime = floatArrayKeyframe.time = startTimeTypes[reader.getUint16()];
 
+						if (Render.supportWebGLPlusAnimation) {
 
+							var data: Float32Array = ((<any>floatArrayKeyframe)).data = new Float32Array(3 * 3);
+							for (var k: number = 0; k < 3; k++)
+								data[k] = reader.getFloat32();
+							for (k = 0; k < 3; k++)
+								data[3 + k] = reader.getFloat32();
+							for (k = 0; k < 3; k++)
+								data[6 + k] = reader.getFloat32();
+						}
+						else {
 							var inTangent: Vector3 = floatArrayKeyframe.inTangent;
 							var outTangent: Vector3 = floatArrayKeyframe.outTangent;
 							var value: Vector3 = floatArrayKeyframe.value;
@@ -153,13 +167,22 @@ export class AnimationClipParser03 {
 							value.x = reader.getFloat32();
 							value.y = reader.getFloat32();
 							value.z = reader.getFloat32();
-
+						}
 						break;
 					case 2:
 						var quaArrayKeyframe: QuaternionKeyframe = new QuaternionKeyframe();
 						node._setKeyframeByIndex(j, quaArrayKeyframe);
-						quaArrayKeyframe.time = startTimeTypes[reader.getUint16()];
-
+						startTime = quaArrayKeyframe.time = startTimeTypes[reader.getUint16()];
+						if (Render.supportWebGLPlusAnimation) {
+							data = ((<any>quaArrayKeyframe)).data = new Float32Array(3 * 4);
+							for (k = 0; k < 4; k++)
+								data[k] = reader.getFloat32();
+							for (k = 0; k < 4; k++)
+								data[4 + k] = reader.getFloat32();
+							for (k = 0; k < 4; k++)
+								data[8 + k] = reader.getFloat32();
+						}
+						else {
 							var inTangentQua: Vector4 = quaArrayKeyframe.inTangent;
 							var outTangentQua: Vector4 = quaArrayKeyframe.outTangent;
 							var valueQua: Quaternion = quaArrayKeyframe.value;
@@ -175,6 +198,7 @@ export class AnimationClipParser03 {
 							valueQua.y = reader.getFloat32();
 							valueQua.z = reader.getFloat32();
 							valueQua.w = reader.getFloat32();
+						}
 						break;
 					default:
 						throw "AnimationClipParser03:unknown type.";
@@ -186,7 +210,7 @@ export class AnimationClipParser03 {
 			var event: AnimationEvent = new AnimationEvent();
 			event.time = Math.min(clipDur, reader.getFloat32());//TODO:事件时间可能大于动画总时长
 			event.eventName = AnimationClipParser03._strings[reader.getUint16()];
-			var params: Array<number|boolean|string> = [];
+			var params: any[];
 			var paramCount: number = reader.getUint16();
 			(paramCount > 0) && (event.params = params = []);
 

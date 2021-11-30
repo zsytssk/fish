@@ -5,22 +5,13 @@ import { BaseTexture } from "../../resource/BaseTexture"
 import { LayaGL } from "../../layagl/LayaGL";
 import { ILaya } from "../../../ILaya";
 import { TextureFormat } from "../../resource/TextureFormat";
-import { LoaderManager } from "../../net/LoaderManager";
-import { Utils } from "../../utils/Utils";
-
 
 export enum TextureCubeFace {
-	/**+x */
 	PositiveX,
-	/**-x */
 	NegativeX,
-	/**+y */
 	PositiveY,
-	/**-y */
 	NegativeY,
-	/**+z */
 	PositiveZ,
-	/**-z */
 	NegativeZ
 }
 
@@ -30,7 +21,6 @@ export enum TextureCubeFace {
 export class TextureCube extends BaseTexture {
 	/**TextureCube资源。*/
 	static TEXTURECUBE: string = "TEXTURECUBE";
-	static TEXTURECUBEBIN:string = "TEXTURECUBEBIN";
 
 	/**@private*/
 	private static _blackTexture: TextureCube;
@@ -92,9 +82,7 @@ export class TextureCube extends BaseTexture {
 	 * @param complete 完成回调。
 	 */
 	static load(url: string, complete: Handler): void {
-		var extension = (LoaderManager.createMap[Utils.getFilecompatibleExtension(url)]) ? Utils.getFilecompatibleExtension(url) : Utils.getFileExtension(url);
-		var type = LoaderManager.createMap[extension] ? LoaderManager.createMap[extension][0] : null
-		ILaya.loader.create(url, complete, null, type);
+		ILaya.loader.create(url, complete, null, TextureCube.TEXTURECUBE);
 	}
 
 	/**

@@ -8,17 +8,11 @@ import { RenderElement } from "../render/RenderElement"
 import { Color } from "../../math/Color"
 import { Vector3 } from "../../math/Vector3"
 import { Node } from "../../../display/Node"
-import { Scene3D } from "../scene/Scene3D";
-import { Stat } from "../../../utils/Stat";
 
 /**
  * <code>PixelLineSprite3D</code> 类用于像素线渲染精灵。
  */
 export class PixelLineSprite3D extends RenderableSprite3D {
-	/** @private 是否调用active */
-	private _isRenderActive:Boolean = false;
-	/** @private 是否加入渲染队列*/
-	private _isInRenders:Boolean = false;
 	/** @internal */
 	public _geometryFilter: PixelLineFilter;
 
@@ -64,41 +58,13 @@ export class PixelLineSprite3D extends RenderableSprite3D {
 		super(name);
 		this._geometryFilter = new PixelLineFilter(this, maxCount);
 		this._render = new PixelLineRenderer(this);
-		this._changeRenderObjects( 0, PixelLineMaterial.defaultMaterial);
+		this._changeRenderObjects((<PixelLineRenderer>this._render), 0, PixelLineMaterial.defaultMaterial);
 	}
 
-
-	/** 
-	 * @inheritDoc
-	 * @override
-	 */
-	protected _onInActive(): void {
-		Stat.spriteCount--;
-		if(this._geometryFilter._lineCount!=0&&this._isRenderActive){
-			(<Scene3D>this._scene)._removeRenderObject(this._render);
-			this._isInRenders = false;
-		}
-		this._isRenderActive = false;
-	}
-
-	/** 
-	 * @inheritDoc
-	 * @override
-	 */
-	protected _onActive(): void {
-		Stat.spriteCount++;
-		this._isRenderActive = true;
-		if(this._geometryFilter._lineCount!=0){
-			(<Scene3D>this._scene)._addRenderObject(this._render);
-			this._isInRenders = true;
-		}
-			
-	}
-	
 	/**
 	 * @inheritDoc
 	 */
-	_changeRenderObjects( index: number, material: Material): void {
+	_changeRenderObjects(sender: PixelLineRenderer, index: number, material: Material): void {
 		var renderObjects: RenderElement[] = this._render._renderElements;
 		(material) || (material = PixelLineMaterial.defaultMaterial);
 		var renderElement: RenderElement = renderObjects[index];
@@ -121,10 +87,6 @@ export class PixelLineSprite3D extends RenderableSprite3D {
 			this._geometryFilter._updateLineData(this._geometryFilter._lineCount++, startPosition, endPosition, startColor, endColor);
 		else
 			throw "PixelLineSprite3D: lineCount has equal with maxLineCount.";
-		if(this._isRenderActive&&!this._isInRenders&&this._geometryFilter._lineCount>0){
-			(<Scene3D>this._scene)._addRenderObject(this._render);
-			this._isInRenders = true;
-		}
 	}
 
 	/**
@@ -140,10 +102,6 @@ export class PixelLineSprite3D extends RenderableSprite3D {
 			this._geometryFilter._updateLineDatas(lineCount, lines);
 			this._geometryFilter._lineCount += addCount;
 		}
-		if(this._isRenderActive&&!this._isInRenders&&this._geometryFilter._lineCount>0){
-			(<Scene3D>this._scene)._addRenderObject(this._render);
-			this._isInRenders = true;
-		}
 	}
 
 	/**
@@ -155,10 +113,6 @@ export class PixelLineSprite3D extends RenderableSprite3D {
 			this._geometryFilter._removeLineData(index);
 		else
 			throw "PixelLineSprite3D: index must less than lineCount.";
-		if(this._isRenderActive&&this._isInRenders&&this._geometryFilter._lineCount==0){
-			(<Scene3D>this._scene)._removeRenderObject(this._render);
-			this._isInRenders = false;
-		}
 	}
 
 	/**
@@ -192,10 +146,6 @@ export class PixelLineSprite3D extends RenderableSprite3D {
 	 */
 	clear(): void {
 		this._geometryFilter._lineCount = 0;
-		if(this._isRenderActive&&this._isInRenders){
-			(<Scene3D>this._scene)._removeRenderObject(this._render);
-			this._isInRenders = false;
-		}
 	}
 
 	/**

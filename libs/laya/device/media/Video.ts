@@ -5,7 +5,6 @@ import { Texture } from "../../resource/Texture";
 import { ILaya } from "../../../ILaya";
 import { Rectangle } from "../../maths/Rectangle";
 import { Stage } from "../../display/Stage";
-import { Browser } from "../../utils/Browser";
 
 export const enum VIDEOTYPE {
 	MP4 = 1,
@@ -38,9 +37,9 @@ export class Video extends Sprite {
 	static SUPPORT_NO: string = "";
 
 	private htmlVideo: HtmlVideo;
-	public videoElement: any;
+	private videoElement: any;
 	private internalTexture: Texture;
-	private _clickhandle:Function;
+
 	constructor(width: number = 320, height: number = 240) {
 		super();
 
@@ -76,24 +75,8 @@ export class Video extends Sprite {
 
 		this.size(width, height);
 		if (ILaya.Browser.onMobile) {
-			this.videoElement["x5-playsInline"]=true;
-			this.videoElement["x5-playsinline"]=true;
-			this.videoElement.x5PlaysInline=true;
-			this.videoElement.playsInline=true;
-			this.videoElement["webkit-playsInline"]=true;
-			this.videoElement["webkit-playsinline"]=true;
-			this.videoElement.webkitPlaysInline=true;
-			this.videoElement.playsinline=true;
-			this.videoElement.style.playsInline=true;
-			this.videoElement.crossOrigin="anonymous";
-			this.videoElement.setAttribute('crossorigin', "anonymous");
-
-			this.videoElement.setAttribute('playsinline', 'true')
-			this.videoElement.setAttribute('x5-playsinline', 'true')
-			this.videoElement.setAttribute('webkit-playsinline', 'true')
-			this.videoElement.autoplay=true;
-			this._clickhandle = this.onDocumentClick.bind(this);
-			ILaya.Browser.document.addEventListener("touchend", this._clickhandle);
+			this.onDocumentClick = this.onDocumentClick.bind(this);
+			ILaya.Browser.document.addEventListener("touchend", this.onDocumentClick);
 		}
 	}
 
@@ -211,22 +194,16 @@ export class Video extends Sprite {
 		if (this.readyState === 0)
 			return;
 
-		(this.htmlVideo as any)['updateTexture']();
+		this.htmlVideo['updateTexture']();
 
 		this.graphics.clear();
 		this.graphics.drawTexture(this.internalTexture, 0, 0, this.width, this.height);
 	}
 
 	private onDocumentClick(): void {
-		if(!this.videoElement||this.videoElement!=0)
-			return;
-		if(Browser.onIOS){
-			this.videoElement.load();
-		}else{
-			this.videoElement.play();
-			this.videoElement.pause();
-		}
-		ILaya.Browser.document.removeEventListener("touchend", this._clickhandle);
+		this.videoElement.play();
+		this.videoElement.pause();
+		ILaya.Browser.document.removeEventListener("touchend", this.onDocumentClick);
 	}
 
 	/**
@@ -443,7 +420,6 @@ export class Video extends Sprite {
 		}
 		else {
 			this.videoElement.width = width / ILaya.Browser.pixelRatio;
-			this.videoElement.height=height / Browser.pixelRatio;
 		}
 
 		if (this.paused) this.renderCanvas();

@@ -6,7 +6,6 @@ import { Matrix } from "../maths/Matrix"
 import { Rectangle } from "../maths/Rectangle"
 import { Context } from "../resource/Context"
 import { Texture } from "../resource/Texture"
-import { _RenderFunction } from "./RenderSprite"
 
 /**
  * @internal
@@ -15,7 +14,7 @@ import { _RenderFunction } from "./RenderSprite"
  */
 export class LayaGLQuickRunner {
     /*[FILEINDEX:10000]*/
-    static map: _RenderFunction[] = [];
+    static map: any = {};
     private static curMat: Matrix = new Matrix();
     /**@internal */
     static __init__(): void {
@@ -66,18 +65,7 @@ export class LayaGLQuickRunner {
 
         context.saveTransform(LayaGLQuickRunner.curMat);
         context.transformByMatrix(sprite.transform, x, y);
-
-        var width:number = sprite._width || tex.sourceWidth;
-        var height:number = sprite._height || tex.sourceHeight;
-        var wRate:number = width / tex.sourceWidth;
-        var hRate:number = height / tex.sourceHeight;
-        width = tex.width * wRate;
-        height = tex.height * hRate;
-        if (width <= 0 || height <= 0) return null;
-        var px: number = -sprite.pivotX + tex.offsetX * wRate;
-        var py: number = -sprite.pivotY + tex.offsetY * hRate;
-        context.drawTexture(tex, px, py, width, height);
-
+        context.drawTexture(tex, -sprite.pivotX, -sprite.pivotY, sprite._width || tex.width, sprite._height || tex.height);
         context.restoreTransform(LayaGLQuickRunner.curMat);
 
         /*
@@ -123,16 +111,7 @@ export class LayaGLQuickRunner {
         if ((alpha = style.alpha) > 0.01 || sprite._needRepaint()) {
             var temp: number = context.globalAlpha;
             context.globalAlpha *= alpha;
-            var width: number = sprite._width || tex.width;
-            var height: number = sprite._height || tex.height;
-            var wRate: number = width / tex.sourceWidth;
-            var hRate: number = height / tex.sourceHeight;
-            width = tex.width * wRate;
-            height = tex.height * hRate;
-            if (width <= 0 || height <= 0) return null;
-            var px: number = x - style.pivotX + tex.offsetX * wRate;
-            var py: number = y - style.pivotY + tex.offsetY * hRate;
-            context.drawTexture(tex, px, py, width, height);
+            context.drawTexture(tex, x - style.pivotX + tex.offsetX, y - style.pivotY + tex.offsetY, sprite._width || tex.width, sprite._height || tex.height);
             context.globalAlpha = temp;
         }
     }
@@ -147,16 +126,7 @@ export class LayaGLQuickRunner {
 
             context.saveTransform(LayaGLQuickRunner.curMat);
             context.transformByMatrix(sprite.transform, x, y);
-            var width: number = sprite._width || tex.sourceWidth;
-            var height: number = sprite._height || tex.sourceHeight;
-            var wRate: number = width / tex.sourceWidth;
-            var hRate: number = height / tex.sourceHeight;
-            width = tex.width * wRate;
-            height = tex.height * hRate;
-            if (width <= 0 || height <= 0) return null;
-            var px: number = -style.pivotX + tex.offsetX * wRate;
-            var py: number = -style.pivotY + tex.offsetY * hRate;
-            context.drawTexture(tex, px, py, width, height);
+            context.drawTexture(tex, -style.pivotX + tex.offsetX, -style.pivotY + tex.offsetY, sprite._width || tex.width, sprite._height || tex.height);
             context.restoreTransform(LayaGLQuickRunner.curMat);
 
             context.globalAlpha = temp;

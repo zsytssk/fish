@@ -32,7 +32,7 @@ export class ShaderNode {
             this.conditionType = type;
             condition = condition.replace(/(\s*$)/g, "");
             this.condition = function (): boolean {
-                return (this as any)[condition];
+                return this[condition];
             }
             this.condition.__condition = condition;
         }
@@ -50,7 +50,7 @@ export class ShaderNode {
             this.conditionType === ILaya.ShaderCompile.IFDEF_ELSE && (ifdef = !ifdef);
             if (!ifdef) return out;
         }
-        if(this.noCompile)
+
         this.text && out.push(this.text);
         this.childs.length > 0 && this.childs.forEach(function (o: ShaderNode, index: number, arr: ShaderNode[]): void {
             o._toscript(def, out, id);

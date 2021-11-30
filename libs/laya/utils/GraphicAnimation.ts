@@ -116,11 +116,7 @@ export class GraphicAnimation extends FrameAnimation {
             this._updateNodeGraphic(childs[i], frame, tResultTransform, g, tGraphicAlpha);
         }
     }
-    /**
-     * @internal
-     * @param tNodeG 
-     * @param g 
-     */
+
     protected _updateNoChilds(tNodeG: GraphicNode, g: Graphics): void {
         if (!tNodeG.skin) return;
         var tTex: Texture = this._getTextureByUrl(tNodeG.skin);
@@ -221,12 +217,7 @@ export class GraphicAnimation extends FrameAnimation {
         }
         return noValue;
     }
-    /**
-     * @internal
-     * @param nodeID 
-     * @param frame 
-     * @param rst 
-     */
+
     protected _getNodeGraphicData(nodeID: number, frame: number, rst: GraphicNode): GraphicNode {
         if (!rst)
             rst = new GraphicNode();
@@ -432,7 +423,9 @@ export class GraphicAnimation extends FrameAnimation {
 }
 
 
-/**@internal */
+
+
+
 class GraphicNode {
     skin: string;
     transform: Matrix;

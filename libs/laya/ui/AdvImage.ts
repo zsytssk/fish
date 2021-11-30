@@ -94,16 +94,16 @@ export class AdvImage extends Image {
 					path: "",
 					extraData: "",
 					envVersion: "release",
-					success: ()=> {
+					success: function success(): void {
 						console.log("-------------跳转成功--------------");
 					},
-					fail: ()=> {
+					fail: function fail(): void {
 						console.log("-------------跳转失败--------------");
 					},
-					complete: ()=> {
+					complete: function complete(): void {
 						console.log("-------------跳转接口调用成功--------------");
 						this.updateAdvsInfo();
-					}
+					}.bind(this)
 				});
 			}
 		} else if (Browser.onBDMiniGame) {
@@ -157,7 +157,7 @@ export class AdvImage extends Image {
 	 * @param {*} minNum 最小值
 	 * @param {*} maxNum 最大值
 	 */
-	static randRange(minNum:number, maxNum:number): number {
+	static randRange(minNum, maxNum): number {
 		return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
 	}
 

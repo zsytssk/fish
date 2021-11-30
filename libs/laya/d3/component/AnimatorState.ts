@@ -6,6 +6,7 @@ import { KeyframeNodeOwner } from "./KeyframeNodeOwner";
 import { Quaternion } from "../math/Quaternion";
 import { Vector3 } from "../math/Vector3";
 import { KeyframeNodeList } from "../animation/KeyframeNodeList";
+import { Render } from "../../renders/Render";
 import { ConchVector3 } from "../math/Native/ConchVector3";
 import { ConchQuaternion } from "../math/Native/ConchQuaternion";
 
@@ -17,11 +18,11 @@ export class AnimatorState implements IReferenceCounter, IClone {
 	private _referenceCount: number = 0;
 
 	/** @internal */
-	_clip: AnimationClip|null = null;
+	_clip: AnimationClip = null;
 	/** @internal */
 	_nodeOwners: KeyframeNodeOwner[] = [];//TODO:提出去
 	/** @internal */
-	_currentFrameIndices: Int16Array|null = null;
+	_currentFrameIndices: Int16Array = null;
 	/**
 	 * @internal
 	 * to avoid data confused,must put realtime datas in animatorState,can't be in animationClip,
@@ -29,7 +30,7 @@ export class AnimatorState implements IReferenceCounter, IClone {
 	 */
 	_realtimeDatas: Array<number | Vector3 | Quaternion | ConchVector3 | ConchQuaternion> = [];
 	/** @internal */
-	_scripts: AnimatorStateScript[]|null = null;
+	_scripts: AnimatorStateScript[] = null;
 
 	/**名称。*/
 	name: string;
@@ -43,17 +44,17 @@ export class AnimatorState implements IReferenceCounter, IClone {
 	/**
 	 * 动作。
 	 */
-	get clip(): AnimationClip|null {
+	get clip(): AnimationClip {
 		return this._clip;
 	}
 
-	set clip(value: AnimationClip|null) {
+	set clip(value: AnimationClip) {
 		if (this._clip !== value) {
 			if (this._clip)
 				(this._referenceCount > 0) && (this._clip._removeReference(this._referenceCount));
 			if (value) {
 				var realtimeDatas: Array<number | Vector3 | Quaternion | ConchVector3 | ConchQuaternion> = this._realtimeDatas;
-				var clipNodes: KeyframeNodeList = value._nodes!;
+				var clipNodes: KeyframeNodeList = value._nodes;
 				var count: number = clipNodes.count;
 				this._currentFrameIndices = new Int16Array(count);
 				this._resetFrameIndices();
@@ -66,10 +67,10 @@ export class AnimatorState implements IReferenceCounter, IClone {
 						case 1:
 						case 3:
 						case 4:
-							realtimeDatas[i] = new Vector3();
+							realtimeDatas[i] = Render.supportWebGLPlusAnimation ? new ConchVector3 : new Vector3();
 							break;
 						case 2:
-							realtimeDatas[i] = new Quaternion();
+							realtimeDatas[i] = Render.supportWebGLPlusAnimation ? new ConchQuaternion : new Quaternion();
 							break;
 						default:
 							throw "AnimationClipParser04:unknown type.";
@@ -121,8 +122,8 @@ export class AnimatorState implements IReferenceCounter, IClone {
 	 * @internal
 	 */
 	_resetFrameIndices(): void {
-		for (var i: number = 0, n: number = this._currentFrameIndices!.length; i < n; i++)
-			this._currentFrameIndices![i] = -1;//-1表示没到第0帧,首帧时间可能大于
+		for (var i: number = 0, n: number = this._currentFrameIndices.length; i < n; i++)
+			this._currentFrameIndices[i] = -1;//-1表示没到第0帧,首帧时间可能大于
 	}
 
 	/**
@@ -144,7 +145,7 @@ export class AnimatorState implements IReferenceCounter, IClone {
 	 * @return 脚本。
 	 *
 	 */
-	getScript(type: typeof AnimatorStateScript): AnimatorStateScript|null {
+	getScript(type: typeof AnimatorStateScript): AnimatorStateScript {
 		if (this._scripts) {
 			for (var i: number = 0, n: number = this._scripts.length; i < n; i++) {
 				var script: AnimatorStateScript = this._scripts[i];
@@ -159,9 +160,10 @@ export class AnimatorState implements IReferenceCounter, IClone {
 	 * 获取脚本集合。
 	 * @param	type  组件类型。
 	 * @return 脚本集合。
+	 *
 	 */
-	getScripts(type: typeof AnimatorStateScript): AnimatorStateScript[]|null {
-		var coms: AnimatorStateScript[]|null = null;
+	getScripts(type: typeof AnimatorStateScript): AnimatorStateScript[] {
+		var coms: AnimatorStateScript[];
 		if (this._scripts) {
 			for (var i: number = 0, n: number = this._scripts.length; i < n; i++) {
 				var script: AnimatorStateScript = this._scripts[i];

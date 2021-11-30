@@ -1,4 +1,5 @@
 import { Context } from "../../resource/Context";
+import { Texture } from "../../resource/Texture";
 import { Stat } from "../../utils/Stat";
 import { BlendMode } from "../canvas/BlendMode";
 import { Value2D } from "../shader/d2/value/Value2D";
@@ -10,18 +11,18 @@ import { SubmitBase } from "./SubmitBase";
 export class Submit extends SubmitBase {
 
     protected static _poolSize: number = 0;
-    protected static POOL: Submit[] = [];
+    protected static POOL: any[] = [];
 
     constructor(renderType: number = SubmitBase.TYPE_2D) {
         super(renderType);
     }
-    /**
-     * @override
-     */
-    renderSubmit(): number {
+		/**
+		 * @override
+		 */
+		 /*override*/ renderSubmit(): number {
         if (this._numEle === 0 || !this._mesh || this._numEle == 0) return 1;//怎么会有_numEle是0的情况?
 
-        var _tex = this.shaderValue.textureHost;
+        var _tex: Texture = this.shaderValue.textureHost;
         if (_tex) {
             var source: any = _tex._getSource();
             if (!source)
@@ -29,7 +30,7 @@ export class Submit extends SubmitBase {
             this.shaderValue.texture = source;
         }
 
-        var gl = WebGLContext.mainContext;
+        var gl: WebGLRenderingContext = WebGLContext.mainContext;
         this._mesh.useMesh(gl);
         //_ib._bind_upload() || _ib._bind();
         //_vb._bind_upload() || _vb._bind();
@@ -48,10 +49,10 @@ export class Submit extends SubmitBase {
 
         return 1;
     }
-    /**
-     * @override
-     */
-    releaseRender(): void {
+		/**
+		 * @override
+		 */
+		 /*override*/ releaseRender(): void {
         if (SubmitBase.RENDERBASE == this)
             return;
 
@@ -66,17 +67,17 @@ export class Submit extends SubmitBase {
         }
     }
 
-	/**
-     * create方法只传对submit设置的值
-     */
+	/*
+	   create方法只传对submit设置的值
+	 */
     static create(context: Context, mesh: Mesh2D, sv: Value2D): Submit {
-        var o = Submit._poolSize ? Submit.POOL[--Submit._poolSize] : new Submit();
+        var o: Submit = Submit._poolSize ? Submit.POOL[--Submit._poolSize] : new Submit();
         o._ref = 1;
         o._mesh = mesh;
         o._key.clear();
         o._startIdx = mesh.indexNum * CONST3D2D.BYTES_PIDX;
         o._numEle = 0;
-        var blendType = context._nBlendType;
+        var blendType: number = context._nBlendType;
         o._blendFn = context._targets ? BlendMode.targetFns[blendType] : BlendMode.fns[blendType];
         o.shaderValue = sv;
         o.shaderValue.setValue(context._shader2D);
@@ -95,14 +96,14 @@ export class Submit extends SubmitBase {
 	 * @return
 	 */
     static createShape(ctx: Context, mesh: Mesh2D, numEle: number, sv: Value2D): Submit {
-        var o = Submit._poolSize ? Submit.POOL[--Submit._poolSize] : (new Submit());
+        var o: Submit = Submit._poolSize ? Submit.POOL[--Submit._poolSize] : (new Submit());
         o._mesh = mesh;
         o._numEle = numEle;
         o._startIdx = mesh.indexNum * 2;
         o._ref = 1;
         o.shaderValue = sv;
         o.shaderValue.setValue(ctx._shader2D);
-        var blendType = ctx._nBlendType;
+        var blendType: number = ctx._nBlendType;
         o._key.blendShader = blendType;
         o._blendFn = ctx._targets ? BlendMode.targetFns[blendType] : BlendMode.fns[blendType];
         return o;

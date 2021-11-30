@@ -7,7 +7,7 @@ import { ClassUtils } from "../../utils/ClassUtils";
  */
 export class HTMLDocument {
     static document: HTMLDocument = new HTMLDocument();
-    all: {[key:string]:HTMLElement}= {};
+    all: HTMLElement[] = [];
     styleSheets: any = HTMLStyle.styleSheets;
 
     //TODO:coverage

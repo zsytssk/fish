@@ -1,4 +1,5 @@
 import { ILaya } from "../../../../ILaya";
+import { Physics3D } from "../../../d3/physics/Physics3D";
 import { LayaGL } from "../../../layagl/LayaGL";
 import { Resource } from "../../../resource/Resource";
 import { Handler } from "../../../utils/Handler";
@@ -18,7 +19,6 @@ import { Matrix4x4 } from "../../math/Matrix4x4";
 import { Vector2 } from "../../math/Vector2";
 import { Vector3 } from "../../math/Vector3";
 import { Vector4 } from "../../math/Vector4";
-import { Physics3D } from "../../Physics3D";
 import { Utils3D } from "../../utils/Utils3D";
 import { SubMesh } from "./SubMesh";
 
@@ -43,10 +43,6 @@ export class skinnedMatrixCache {
 export class Mesh extends Resource implements IClone {
 	/**Mesh资源。*/
 	static MESH: string = "MESH";
-	
-	static MESH_INSTANCEBUFFER_TYPE_NORMAL:number = 0;
-
-	static MESH_INSTANCEBUFFER_TYPE_SIMPLEANIMATOR:number = 1;
 
 	/** @internal */
 	private _tempVector30: Vector3 = new Vector3()
@@ -100,8 +96,6 @@ export class Mesh extends Resource implements IClone {
 	_bufferState: BufferState = new BufferState();
 	/** @internal */
 	_instanceBufferState: BufferState = new BufferState();
-	/** @internal */
-	_instanceBufferStateType:number = 0;
 	/** @internal */
 	_subMeshes: SubMesh[];
 	/** @internal */
@@ -366,25 +360,16 @@ export class Mesh extends Resource implements IClone {
 		bufferState.applyVertexBuffer(vertexBuffer);
 		bufferState.applyIndexBuffer(indexBuffer);
 		bufferState.unBind();
-	}
 
-	/**
-	 * @internal
-	 */
-	_setInstanceBuffer(instanceBufferStateType:number){
 		var instanceBufferState: BufferState = this._instanceBufferState;
 		instanceBufferState.bind();
-		instanceBufferState.applyVertexBuffer(this._vertexBuffer);
+		instanceBufferState.applyVertexBuffer(vertexBuffer);
 		instanceBufferState.applyInstanceVertexBuffer(SubMeshInstanceBatch.instance.instanceWorldMatrixBuffer);
-		//instanceBufferState.applyInstanceVertexBuffer(SubMeshInstanceBatch.instance.instanceMVPMatrixBuffer);
-		switch(instanceBufferStateType){
-			case Mesh.MESH_INSTANCEBUFFER_TYPE_SIMPLEANIMATOR:
-				instanceBufferState.applyInstanceVertexBuffer(SubMeshInstanceBatch.instance.instanceSimpleAnimatorBuffer)
-			break;
-		}
-		instanceBufferState.applyIndexBuffer(this._indexBuffer);
+		instanceBufferState.applyInstanceVertexBuffer(SubMeshInstanceBatch.instance.instanceMVPMatrixBuffer);
+		instanceBufferState.applyIndexBuffer(indexBuffer);
 		instanceBufferState.unBind();
 	}
+
 
 	/**
 	 * @internal
@@ -760,7 +745,6 @@ export class Mesh extends Resource implements IClone {
 		destMesh._indexBuffer = destIB;
 
 		destMesh._setBuffer(destMesh._vertexBuffer, destIB);
-		destMesh._setInstanceBuffer(this._instanceBufferStateType);
 		destMesh._setCPUMemory(this.cpuMemory);
 		destMesh._setGPUMemory(this.gpuMemory);
 

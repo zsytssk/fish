@@ -10,11 +10,11 @@ export class AnimatorPlayState {
 	_startPlayTime: number;
 	/**@internal */
 	_lastElapsedTime: number;
-	/**@internal 动画播放时间*/
+	/**@internal */
 	_elapsedTime: number;
-	/**@internal 播放状态的归一化时间,整数为循环次数，小数为单次播放时间。*/
+	/**@internal */
 	_normalizedTime: number;
-	/**@internal 单词播放归一化时间 */
+	/**@internal */
 	_normalizedPlayTime: number;
 	/**@internal */
 	_duration: number;
@@ -23,7 +23,7 @@ export class AnimatorPlayState {
 	/**@internal */
 	_lastIsFront: boolean;
 	/**@internal */
-	_currentState: AnimatorState|null = null;
+	_currentState: AnimatorState = null;
 
 	/**
 	 * 播放状态的归一化时间,整数为循环次数，小数为单次播放时间。
@@ -43,7 +43,7 @@ export class AnimatorPlayState {
 	 * 动画状态机。
 	 */
 	get animatorState(): AnimatorState {
-		return this._currentState!;
+		return this._currentState;
 	}
 
 	/**
@@ -55,15 +55,12 @@ export class AnimatorPlayState {
 	/**
 	 * @internal
 	 */
-	_resetPlayState(startTime: number,clipDuration:number): void {
+	_resetPlayState(startTime: number): void {
 		this._finish = false;
 		this._startPlayTime = startTime;
 		this._elapsedTime = startTime;
 		this._playEventIndex = 0;
 		this._lastIsFront = true;
-		this._normalizedTime = this._elapsedTime/clipDuration;
-		var playTime = this._normalizedTime % 1.0;
-		this._normalizedPlayTime = playTime < 0 ? playTime + 1.0 : playTime;
 	}
 
 	/**

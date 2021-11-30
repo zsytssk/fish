@@ -1,6 +1,7 @@
 import { LayaGL } from "../../layagl/LayaGL";
 import { Buffer } from "../../webgl/utils/Buffer";
 import { VertexDeclaration } from "./VertexDeclaration";
+import { LayaGPU } from "../../webgl/LayaGPU";
 
 
 /**
@@ -16,18 +17,18 @@ export class VertexBuffer3D extends Buffer {
 	private _canRead: boolean;
 
 	/** @internal */
-	_vertexDeclaration: VertexDeclaration|null = null;
+	_vertexDeclaration: VertexDeclaration = null;
 	/** @internal */
-	_float32Reader: Float32Array|null = null;
+	_float32Reader: Float32Array = null;
 
 	/**
 	 * 获取顶点声明。
 	 */
-	get vertexDeclaration(): VertexDeclaration|null {
+	get vertexDeclaration(): VertexDeclaration {
 		return this._vertexDeclaration;
 	}
 
-	set vertexDeclaration(value: VertexDeclaration|null) {
+	set vertexDeclaration(value: VertexDeclaration) {
 		this._vertexDeclaration = value;
 	}
 
@@ -122,7 +123,7 @@ export class VertexBuffer3D extends Buffer {
 	/**
 	 * @ignore
 	 */
-	getFloat32Data(): Float32Array|null {
+	getFloat32Data(): Float32Array {
 		if (this._canRead)
 			return this._float32Reader;
 		else
@@ -147,7 +148,6 @@ export class VertexBuffer3D extends Buffer {
 		this._buffer = null;
 		this._float32Reader = null;
 		this._vertexDeclaration = null;
-		this._byteLength = 0;
 	}
 }
 

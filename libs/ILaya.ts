@@ -28,7 +28,6 @@ import { Submit } from "./laya/webgl/submit/Submit";
 import { Resource } from "./laya/resource/Resource";
 
 /**
- * @internal
  * 使用全局类的时候，避免引用其他模块
  */
  export class ILaya{
@@ -73,7 +72,7 @@ import { Resource } from "./laya/resource/Resource";
      /**@internal */
      static __classMap:Object = {};
      static regClass(c:any){
-        (ILaya.__classMap as any)[c.name]=c;
+        ILaya.__classMap[c.name]=c;
      }
  }
  
