@@ -1,10 +1,12 @@
 import * as path from 'path';
-
+import * as child_process from 'child_process';
 import { genVersion } from '../genVersion/genVersion';
 import { excuse } from '../zutil/ls/exec';
 import { cp } from '../zutil/ls/main';
 import { clear } from '../zutil/ls/rm';
 import { dist_path, project_path } from './const';
+
+const { execSync } = child_process;
 
 export type BuildType = 'test' | 'prod';
 
@@ -12,9 +14,9 @@ export async function build(type: BuildType = 'prod') {
     const mode = type === 'prod' ? 'production' : 'development';
     const env = type === 'prod' ? 'PROD' : 'TEST';
 
-    await excuse(`cross-env ENV=DEV webpack  --mode ${mode}`, {
-        path: project_path,
-        output: true,
+    execSync(`npm run prod`, {
+        cwd: project_path,
+        stdio: 'inherit',
     });
 }
 
@@ -35,7 +37,7 @@ async function copyBinToDist() {
 }
 
 export async function pushRemote() {
-    await excuse('git acpp', { path: dist_path, output: true });
+    execSync('git acpp', { cwd: project_path, stdio: 'inherit' });
 }
 
 export async function test() {}
