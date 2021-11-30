@@ -11,10 +11,11 @@
     },
     "scripts": {
         "start": "cross-env ENV=DEV webpack serve --progress --mode development",
-        "checkError": "cross-env CheckError=true  webpack serve --mode development",
         "test": "cross-env ENV=TEST webpack --progress --mode development",
         "prod": "cross-env ENV=PROD webpack --progress --mode production",
-        "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts"
+        "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
+        "lint": "eslint . --ext .ts",
+        "checkError": "cross-env CheckError=true  webpack serve --mode development"
     },
     "devDependencies": {
         "@babel/cli": "^7.16.0",
@@ -24,11 +25,14 @@
         "@babel/preset-env": "^7.16.4",
         "@babel/runtime-corejs3": "^7.16.3",
         "@trivago/prettier-plugin-sort-imports": "^3.1.1",
+        "@typescript-eslint/eslint-plugin": "^5.5.0",
+        "@typescript-eslint/parser": "^5.5.0",
         "@webpack-cli/serve": "^1.0.1",
         "babel-loader": "^8.2.3",
         "babel-runtime": "^6.26.0",
         "copy-webpack-plugin": "^6.2.1",
         "cross-env": "^7.0.3",
+        "eslint": "^8.3.0",
         "html-webpack-plugin": "^4.5.0",
         "thread-loader": "^3.0.4",
         "ts-loader": "^9.2.6",

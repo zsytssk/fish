@@ -1,5 +1,3 @@
-import { Config } from 'Config';
-
 import { Laya, loader } from 'Laya';
 import { Stage } from 'laya/display/Stage';
 import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
@@ -90,11 +88,11 @@ async function run(
 
     const start_task: Array<Promise<any>> = [];
     // 激活大小图映射，加载小图的时候，如果发现小图在大图合集里面，则优先加载大图合集，而不是小图
-    const fileconfig_task = new Promise((resolve, reject) => {
+    const fileconfig_task = new Promise<void>((resolve, reject) => {
         AtlasInfoManager.enable(
             'fileconfig.json',
             Handler.create(null, async () => {
-                resolve(undefined);
+                resolve();
             }),
         );
     });

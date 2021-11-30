@@ -10,10 +10,7 @@ const { execSync } = child_process;
 export type BuildType = 'test' | 'prod';
 
 export async function build(type: BuildType = 'prod') {
-    const mode = type === 'prod' ? 'production' : 'development';
-    const env = type === 'prod' ? 'PROD' : 'TEST';
-
-    execSync(`npm run prod`, {
+    execSync(type === 'prod' ? `npm run prod` : `npm run test`, {
         cwd: project_path,
         stdio: 'inherit',
     });
@@ -39,4 +36,6 @@ export async function pushRemote() {
     execSync('git acpp', { cwd: project_path, stdio: 'inherit' });
 }
 
-export async function test() {}
+export async function test() {
+    //
+}
