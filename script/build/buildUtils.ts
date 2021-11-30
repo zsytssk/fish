@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as child_process from 'child_process';
 import { genVersion } from '../genVersion/genVersion';
-import { excuse } from '../zutil/ls/exec';
 import { cp } from '../zutil/ls/main';
 import { clear } from '../zutil/ls/rm';
 import { dist_path, project_path } from './const';
