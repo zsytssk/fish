@@ -1,7 +1,10 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from '../../ui/layaMaxUI';
-import { log } from 'utils/log';
 import { EventCom } from 'comMan/eventCom';
+
+import honor, { HonorDialog } from 'honor';
+
+import { log } from '@app/utils/log';
+
+import { ui } from '../../ui/layaMaxUI';
 
 export const LoadingEvent = {
     Hide: 'hide',

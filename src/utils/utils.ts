@@ -1,9 +1,10 @@
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
 import { ColorFilter } from 'laya/filters/ColorFilter';
 import { GlowFilter } from 'laya/filters/GlowFilter';
-import { Sprite } from 'laya/display/Sprite';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Handler } from 'laya/utils/Handler';
-import { Event } from 'laya/events/Event';
+
 import { log } from './log';
 
 export function isFunc(func: Func<void>): boolean {

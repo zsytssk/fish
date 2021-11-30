@@ -1,24 +1,31 @@
-import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
-import { SpriteInfo } from 'data/sprite';
+import { first } from 'rxjs/operators';
+
+import { Observable, Subscriber } from 'rxjs';
+
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 
-import { Observable, Subscriber } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { ui } from 'ui/layaMaxUI';
-import { fade_in } from 'utils/animate';
-import { getSpriteInfo } from 'utils/dataUtil';
-import { playSkeleton, playSkeletonOnce, setProps } from 'utils/utils';
-import { createSkeletonPool } from 'view/viewStateUtils';
+import {
+    getLang,
+    offLangChange,
+    onLangChange,
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { SpriteInfo } from '@app/data/sprite';
+import { ui } from '@app/ui/layaMaxUI';
+import { fade_in } from '@app/utils/animate';
+import { getSpriteInfo } from '@app/utils/dataUtil';
+import { error } from '@app/utils/log';
+import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
+import { createSkeletonPool } from '@app/view/viewStateUtils';
+
 import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from './fishView';
 import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
-import { error } from 'utils/log';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
@@ -44,7 +51,7 @@ export default class GameView
         return game;
     }
     public onEnable() {
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
     }
@@ -170,7 +177,7 @@ export default class GameView
     /** 获取点击pool中的位置 */
     public onPoolClick(once = false): Observable<Point> {
         this.offPoolClick();
-        const observable = new Observable(subscriber => {
+        const observable = new Observable((subscriber) => {
             const { pool } = this;
             const fun = (e: Event) => {
                 const { x, y } = pool.getMousePoint();
@@ -202,7 +209,7 @@ export default class GameView
     /** 获取点击pool中的位置 */
     public onFishClick(once = false): Observable<string> {
         this.offFishClick();
-        const observable = new Observable(subscriber => {
+        const observable = new Observable((subscriber) => {
             const { pool } = this;
             const fun = (e: Event) => {
                 e.stopPropagation();

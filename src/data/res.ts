@@ -1,8 +1,10 @@
-import { SPRITE } from './sprite';
-import { getGunSkinMap } from 'utils/dataUtil';
-import { AudioRes } from './audioRes';
 import { Loader } from 'laya/net/Loader';
-import { AlertRes } from 'view/pop/alert';
+
+import { getGunSkinMap } from '@app/utils/dataUtil';
+import { AlertRes } from '@app/view/pop/alert';
+
+import { AudioRes } from './audioRes';
+import { SPRITE } from './sprite';
 
 export const res = {
     font: [],

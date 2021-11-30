@@ -1,8 +1,8 @@
-import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
-import { fade_in, sleep, tween } from 'utils/animate';
-import { setProps } from 'utils/utils';
-import SkillItemView from 'view/scenes/game/skillItemView';
-import { viewState } from 'view/viewState';
+import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
+import { fade_in, sleep, tween } from '@app/utils/animate';
+import { setProps } from '@app/utils/utils';
+import SkillItemView from '@app/view/scenes/game/skillItemView';
+import { viewState } from '@app/view/viewState';
 
 const pool = [] as SkillItemView[];
 export async function awardSkill(

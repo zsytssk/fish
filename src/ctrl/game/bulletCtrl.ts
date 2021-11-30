@@ -1,12 +1,14 @@
-import { BulletEvent, BulletModel } from 'model/game/gun/bulletModel';
-import { vectorToDegree } from 'utils/mathUtils';
-import { NetModel } from 'model/game/gun/netModel';
-import { NetCtrl } from './netCtrl';
-import { ModelEvent } from 'model/modelEvent';
-import { addNet } from 'view/viewState';
-import { playSkeleton } from 'utils/utils';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { recoverSkeletonPool } from 'view/viewStateUtils';
+
+import { BulletEvent, BulletModel } from '@app/model/game/gun/bulletModel';
+import { NetModel } from '@app/model/game/gun/netModel';
+import { ModelEvent } from '@app/model/modelEvent';
+import { vectorToDegree } from '@app/utils/mathUtils';
+import { playSkeleton } from '@app/utils/utils';
+import { addNet } from '@app/view/viewState';
+import { recoverSkeletonPool } from '@app/view/viewStateUtils';
+
+import { NetCtrl } from './netCtrl';
 
 /** 子弹的控制器 */
 export class BulletCtrl {

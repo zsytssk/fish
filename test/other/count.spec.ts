@@ -1,7 +1,8 @@
 import { Test } from 'testBuilder';
-import { startCount, clearCount } from 'utils/count';
 
-export const count_test = new Test('count', runner => {
+import { startCount, clearCount } from '@app/utils/count';
+
+export const count_test = new Test('count', (runner) => {
     let i = 0;
     runner.describe('count', (time: number, delta: number) => {
         i++;
@@ -9,7 +10,7 @@ export const count_test = new Test('count', runner => {
         delta = delta || 0.01;
 
         console.time('startCount' + i);
-        const count = startCount(time, delta, t => {
+        const count = startCount(time, delta, (t) => {
             if (t === 0) {
                 console.timeEnd('startCount' + i);
                 return;

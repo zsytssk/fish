@@ -1,5 +1,5 @@
-import { Displace, DisplaceInfo } from 'utils/displace/displace';
-import { clearTick, createTick } from 'utils/tick';
+import { Displace, DisplaceInfo } from '@app/utils/displace/displace';
+import { clearTick, createTick } from '@app/utils/tick';
 
 /** 移动更新函数 */
 type MoveUpdateFn = (move_info: DisplaceInfo) => void;

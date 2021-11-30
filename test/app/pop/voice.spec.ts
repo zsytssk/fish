@@ -1,10 +1,12 @@
 import { Test } from 'testBuilder';
-import honor from 'honor';
-import VoicePop from 'view/pop/voice';
 
-export const voice_test = new Test('voice', runner => {
+import honor from 'honor';
+
+import VoicePop from '@app/view/pop/voice';
+
+export const voice_test = new Test('voice', (runner) => {
     runner.describe('open_dialog', () => {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve) => {
             const pop = (await honor.director.openDialog(VoicePop)) as VoicePop;
             setTimeout(() => {
                 resolve();

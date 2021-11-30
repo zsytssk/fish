@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ENV = findParam('ENV');
 const CheckError = findParam('CheckError');
-const common_config = mode => ({
+const common_config = (mode) => ({
     entry: {
         bundle: ['./test/test.ts', './src/main.ts'],
     },
@@ -17,12 +17,10 @@ const common_config = mode => ({
         path: path.join(__dirname, 'bin'),
     },
     resolve: {
-        modules: [
-            path.resolve('./node_modules'),
-            path.resolve('./library'),
-            path.resolve('./libs'),
-            path.resolve('./src'),
-        ],
+        modules: [path.resolve('./node_modules'), path.resolve('./library'), path.resolve('./libs')],
+        alias: {
+            '@app': path.resolve(__dirname, './src'),
+        },
         extensions: ['.ts', '.js', '.json'],
     },
     module: {

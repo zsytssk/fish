@@ -1,20 +1,22 @@
-import { Config } from 'data/config';
-import { Lang } from 'data/internationalConfig';
-import { ServerEvent } from 'data/serverEvent';
+import { Laya } from 'Laya';
 import honor from 'honor';
 import { injectAfter } from 'honor/utils/tool';
-import { Laya } from 'Laya';
-import { modelState } from 'model/modelState';
-import { getParams } from 'utils/utils';
+
+import { Config } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
+import { ServerEvent } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+import { getParams } from '@app/utils/utils';
+
 import { test_data } from '../testData';
+import { sleep } from '../utils/testUtils';
 import { body_test } from './game/body.spec';
 import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
-import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
-import { sleep } from '../utils/testUtils';
 import { shoal_test } from './game/shoal/shoal.spec';
 import { skill_test } from './game/skill.spec';
+import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
     commonTest();

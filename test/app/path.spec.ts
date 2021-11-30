@@ -1,9 +1,10 @@
-import { PATH } from 'data/path';
 import { Test } from 'testBuilder';
-import { stage_width, stage_height } from 'utils/displace/displaceUtil';
-import { SPRITE } from 'data/sprite';
 
-export const path_test = new Test('path', runner => {
+import { PATH } from '@app/data/path';
+import { SPRITE } from '@app/data/sprite';
+import { stage_width, stage_height } from '@app/utils/displace/displaceUtil';
+
+export const path_test = new Test('path', (runner) => {
     /** 检测有问题的路径 */
     runner.describe('correct', () => {
         for (const key in PATH) {

@@ -1,6 +1,6 @@
-import { Tween } from 'laya/utils/Tween';
 import { Ease } from 'laya/utils/Ease';
 import { Handler } from 'laya/utils/Handler';
+import { Tween } from 'laya/utils/Tween';
 
 export function tween(duration: number, step: (radio: number) => any) {
     return new Promise((resolve, reject) => {

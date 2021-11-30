@@ -1,18 +1,20 @@
+import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+import { TimeoutCom } from 'comMan/timeoutCom';
+
+import { SkillMap } from '@app/data/config';
+import { ModelEvent } from '@app/model/modelEvent';
+import { error } from '@app/utils/log';
+
 import { GameFreezeCom } from './com/gameFreezeCom';
 import { ShoalCom } from './com/shoalCom';
 import { FishModel } from './fish/fishModel';
-import { PlayerInfo, PlayerModel } from './playerModel';
-import { ComponentManager } from 'comMan/component';
-import { TimeoutCom } from 'comMan/timeoutCom';
-import { EventCom } from 'comMan/eventCom';
-import { SkillMap } from 'data/config';
 import {
     createFish,
     createFishGroup,
     playerCaptureFish,
 } from './fish/fishModelUtils';
-import { ModelEvent } from 'model/modelEvent';
-import { error } from 'utils/log';
+import { PlayerInfo, PlayerModel } from './playerModel';
 
 export const GameEvent = {
     /** 添加鱼 */

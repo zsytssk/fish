@@ -1,12 +1,20 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Label } from 'laya/ui/Label';
 import { Ease } from 'laya/utils/Ease';
-import { completeAni, EaseFn, stopAni, tween, tweenLoop } from 'utils/animate';
-import { playSkeleton } from 'utils/utils';
-import { viewState } from 'view/viewState';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import {
+    completeAni,
+    EaseFn,
+    stopAni,
+    tween,
+    tweenLoop,
+} from '@app/utils/animate';
+import { playSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
+
 import { calcPosRange, createAni, tempAni } from './awardCoin';
 
 const circle_width = 270;

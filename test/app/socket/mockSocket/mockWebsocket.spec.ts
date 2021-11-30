@@ -1,21 +1,23 @@
+import { range } from 'lodash';
+import { Test } from 'testBuilder';
+
+import { MockWebSocket } from '@app/ctrl/net/mockWebSocket';
 import {
     createSocket,
     getSocket,
     mockSocketCtor,
-} from 'ctrl/net/webSocketWrapUtil';
-import { range } from 'lodash';
-import { ServerEvent } from 'data/serverEvent';
-import { Test } from 'testBuilder';
-import { test_data } from '../../../testData';
-import { sleep } from 'utils/animate';
-import { player_test } from '../../game/player.spec';
-import { game_test } from '../../game/game.spec';
-import { modelState, getAimFish } from 'model/modelState';
-import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
-import { SkillMap, ItemMap } from 'data/config';
-import { MockWebSocket } from 'ctrl/net/mockWebSocket';
+} from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap, ItemMap } from '@app/data/config';
+import { ServerEvent } from '@app/data/serverEvent';
+import { modelState, getAimFish } from '@app/model/modelState';
+import { sleep } from '@app/utils/animate';
 
-export const mock_web_socket_test = new Test('mock_web_socket', runner => {
+import { test_data } from '../../../testData';
+import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
+import { game_test } from '../../game/game.spec';
+import { player_test } from '../../game/player.spec';
+
+export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
     runner.describe('create', async () => {
         mockSocketCtor(MockWebSocket);
         await createSocket({
@@ -159,7 +161,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', runner => {
         sendEvent.on(ServerEvent.UseFreeze, () => {
             sleep(0.1).then(() => {
                 const fish_model_arr = modelState.app.game.getAllFish();
-                const fish_arr = [...fish_model_arr.values()].map(item => {
+                const fish_arr = [...fish_model_arr.values()].map((item) => {
                     return item.id;
                 });
 

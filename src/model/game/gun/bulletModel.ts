@@ -1,16 +1,18 @@
 import { Component, ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { Config } from 'data/config';
+import { TimeoutCom } from 'comMan/timeoutCom';
+
+import { Config } from '@app/data/config';
+import { setProps } from '@app/utils/utils';
+
+import { ModelEvent } from '../../modelEvent';
+import { getCollisionFish } from '../../modelState';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
 import { LockMoveCom, LockTarget } from '../com/moveCom/lockMoveCom';
 import { VelocityMoveCom } from '../com/moveCom/velocityMoveCom';
 import { FishModel } from '../fish/fishModel';
-import { ModelEvent } from '../../modelEvent';
-import { getCollisionFish } from '../../modelState';
 import { NetModel } from './netModel';
-import { setProps } from 'utils/utils';
-import { TimeoutCom } from 'comMan/timeoutCom';
 
 export const BulletEvent = {
     Move: 'move',

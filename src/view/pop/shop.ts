@@ -1,16 +1,22 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
 import honor, { HonorDialog } from 'honor';
+import { loaderManager } from 'honor/state';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
-import { ui } from 'ui/layaMaxUI';
-import { buyItem, getShopInfo, useGunSkin } from './popSocket';
-import { onLangChange, offLangChange, getLang } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import {
+    onLangChange,
+    offLangChange,
+    getLang,
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
+
 import BuyBulletPop, { buySkinAlert } from './buyBullet';
-import { loaderManager } from 'honor/state';
+import { buyItem, getShopInfo, useGunSkin } from './popSocket';
 
 enum GunSkinStatus {
     NoHave = 0,
@@ -160,7 +166,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         if (gun_status === GunSkinStatus.NoHave) {
             cur_label.text = gun_price + '';
             cur_btn.on(Event.CLICK, cur_btn, () => {
-                buySkinAlert(gun_price, gun_name).then(_status => {
+                buySkinAlert(gun_price, gun_name).then((_status) => {
                     if (!_status) {
                         return;
                     }
@@ -230,7 +236,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         });
     }; // tslint:disable-line
     public onAwake() {
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
     }

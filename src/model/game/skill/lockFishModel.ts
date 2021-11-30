@@ -1,9 +1,12 @@
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { FishEvent, FishModel } from 'model/game/fish/fishModel';
-import { getAimFish, getFishById, detectInScreen } from 'model/modelState';
+
 import SAT from 'sat';
-import { log, error } from 'utils/log';
+
+import { FishEvent, FishModel } from '@app/model/game/fish/fishModel';
+import { getAimFish, getFishById, detectInScreen } from '@app/model/modelState';
+import { log, error } from '@app/utils/log';
+
 import { BulletGroup, BulletGroupEvent } from '../gun/bulletGroup';
 import { AddBulletInfo, GunEvent, GunModel, GunStatus } from '../gun/gunModel';
 import {
@@ -96,7 +99,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         }
 
         if (needActive) {
-            skill_core.active(info, _status => {
+            skill_core.active(info, (_status) => {
                 if (_status === SkillStatus.Disable) {
                     log(`test:>lockFish:>disable`);
                     this.unLock();

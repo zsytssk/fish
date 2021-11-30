@@ -1,7 +1,9 @@
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { playSkeleton } from 'utils/utils';
-import { viewState } from 'view/viewState';
+
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { playSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
+
 import { createAni, tempAni } from './award/awardCoin';
 
 /** 当前用户的位置的动画 */

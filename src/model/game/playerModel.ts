@@ -1,15 +1,17 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { SkillMap } from 'data/config';
-import { ModelEvent } from 'model/modelEvent';
-import { getGunInfo } from 'utils/dataUtil';
-import { setProps } from 'utils/utils';
+
+import { SkillMap } from '@app/data/config';
+import { ModelEvent } from '@app/model/modelEvent';
+import { getGunInfo } from '@app/utils/dataUtil';
+import { error } from '@app/utils/log';
+import { setProps } from '@app/utils/utils';
+
 import { FishEvent, FishModel } from './fish/fishModel';
 import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
 import { SkillCtorMap, SkillModel } from './skill/skillModel';
-import { error } from 'utils/log';
 
 type SkillInfoMap = {
     [key: string]: SkillInfo;

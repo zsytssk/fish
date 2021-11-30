@@ -1,18 +1,21 @@
 import SAT from 'sat';
-import { Coordinates } from 'data/coordinate';
-import { SpriteType, SpriteInfo } from 'data/sprite';
-import { SPRITE } from 'data/sprite';
-import { SHAPE } from 'data/shape';
-import { vectorToAngle } from './mathUtils';
+
 import {
     createSkeleton,
     createAnimation,
     createImg,
 } from 'honor/utils/createSkeleton';
-import { GunInfo } from 'data/gun';
-import { FishModel } from 'model/game/fish/fishModel';
-import { Box } from 'laya/ui/Box';
 import { Sprite } from 'laya/display/Sprite';
+import { Box } from 'laya/ui/Box';
+
+import { Coordinates } from '@app/data/coordinate';
+import { GunInfo } from '@app/data/gun';
+import { SHAPE } from '@app/data/shape';
+import { SpriteType, SpriteInfo } from '@app/data/sprite';
+import { SPRITE } from '@app/data/sprite';
+import { FishModel } from '@app/model/game/fish/fishModel';
+
+import { vectorToAngle } from './mathUtils';
 
 /** 获取皮肤对应的id */
 export function getGunSkinMap(skin: string, level: string) {

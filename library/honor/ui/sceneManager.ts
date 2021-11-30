@@ -1,8 +1,10 @@
+import { Laya } from 'Laya';
 import { loaderManager } from 'honor/state';
+import { Scene } from 'laya/display/Scene';
+
 import { createScene, afterEnable } from '../utils/tool';
 import { HonorScene } from './view';
-import { Scene } from 'laya/display/Scene';
-import { Laya } from 'Laya';
+
 export type SceneChangeListener = (
     cur1: string,
     cur2: string,
@@ -101,7 +103,7 @@ export class SceneManagerCtor {
                 } else if (typeof url === 'function') {
                     scene = new url();
                     await new Promise((_resolve, _reject) => {
-                        createScene(url).then(dialog => {
+                        createScene(url).then((dialog) => {
                             return _resolve(dialog);
                         });
                     });

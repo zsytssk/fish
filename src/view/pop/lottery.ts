@@ -1,22 +1,24 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { changeBulletNum } from 'ctrl/game/gameCtrlUtils';
-import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { AudioRes } from 'data/audioRes';
-import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
+import { loaderManager } from 'honor/state';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
-import { ui } from 'ui/layaMaxUI';
-import { tween } from 'utils/layaTween';
-import { onNode, resizeParent } from 'utils/layaUtils';
-import { playSkeletonOnce } from 'utils/utils';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { changeBulletNum } from '@app/ctrl/game/gameCtrlUtils';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
+import { sleep } from '@app/utils/animate';
+import { tween } from '@app/utils/layaTween';
+import { onNode, resizeParent } from '@app/utils/layaUtils';
+import { log } from '@app/utils/log';
+import { playSkeletonOnce } from '@app/utils/utils';
+
+import HelpPop from './help';
 import { LotteryExchangeCtrl } from './lotteryExchangeCtrl';
 import { getLotteryData, runLottery } from './popSocket';
 import RewardPop from './reward';
-import { sleep } from 'utils/animate';
-import HelpPop from './help';
-import { loaderManager } from 'honor/state';
-import { log } from 'utils/log';
 
 type LotteryData = {
     lottery_id: string;
@@ -47,7 +49,8 @@ type LotteryItemUI = ui.pop.lottery.itemUI;
 /** 抽奖弹出层 */
 export default class LotteryPop
     extends ui.pop.lottery.lotteryUI
-    implements HonorDialog {
+    implements HonorDialog
+{
     private is_init = false;
     public isModal = true;
     private lottery_interval: number;
@@ -181,7 +184,7 @@ export default class LotteryPop
             return;
         }
 
-        runLottery().then(async id => {
+        runLottery().then(async (id) => {
             await this.runLotteryAni(id);
             lottery_num = lottery_num - lottery_cost;
             progress.value = lottery_num / lottery_cost;
@@ -197,13 +200,13 @@ export default class LotteryPop
             const arr = lottery_list.array as LotteryRenderData[];
 
             btn_lottery.disabled = true;
-            const dist_index = arr.findIndex(item => {
+            const dist_index = arr.findIndex((item) => {
                 return item.lottery_id === id;
             });
 
             const dist_num = dist_index + 20;
             let end = false;
-            tween(3000, radio => {
+            tween(3000, (radio) => {
                 const cur_index = Math.round(radio * dist_num);
                 const round_index = cur_index % 5;
                 if (end) {
@@ -263,7 +266,7 @@ export default class LotteryPop
     }
     public onAwake() {
         const { btn_help } = this;
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
         btn_help.on(Event.CLICK, this, () => {

@@ -1,4 +1,5 @@
 import * as SAT from 'sat';
+
 import { timeToFrame } from './displaceUtil';
 import { Line } from './line';
 
@@ -112,9 +113,10 @@ export class Displace {
             is_complete,
         };
     }
-    protected getPointAtRadio(
-        radio: number,
-    ): { position: Point; direction: SAT.Vector } {
+    protected getPointAtRadio(radio: number): {
+        position: Point;
+        direction: SAT.Vector;
+    } {
         const cur_curve_info = this.calcCurCurveInfo(radio);
         const {
             curve: cur_curve,

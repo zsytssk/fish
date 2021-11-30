@@ -1,7 +1,7 @@
-import io from 'socket.io-client';
-import { Base64 } from 'js-base64';
-import { EventCom } from 'comMan/eventCom';
 import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+import { Base64 } from 'js-base64';
+import io from 'socket.io-client';
 
 const DefaultConfig = {
     forceNew: true,

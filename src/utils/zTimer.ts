@@ -73,7 +73,7 @@ export function clearAll(caller: any) {
 /** 计算所有interval的最大公约数, 每gcd（最大公约数）次执行一次interval */
 function startInterval() {
     timer.clear(this, interval);
-    const delay_arr = hooks.map(item => {
+    const delay_arr = hooks.map((item) => {
         return item.delay;
     });
     if (!delay_arr.length) {

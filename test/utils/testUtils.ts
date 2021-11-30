@@ -1,9 +1,10 @@
-import { WebSocketWrapCtrl } from 'ctrl/net/webSocketWrap';
-import { injectProto } from 'honor/utils/tool';
 import { Laya } from 'Laya';
+import { injectProto } from 'honor/utils/tool';
 import { Sprite } from 'laya/display/Sprite';
-import { modelState } from 'model/modelState';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
+
+import { WebSocketWrapCtrl } from '@app/ctrl/net/webSocketWrap';
+import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { modelState } from '@app/model/modelState';
 
 export function getUserInfo() {
     return modelState.app.user_info;

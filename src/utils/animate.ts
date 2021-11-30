@@ -1,8 +1,9 @@
-import * as zTimer from './zTimer';
 import { Sprite as LayaSprite } from 'laya/display/Sprite';
-import { Tween } from 'laya/utils/Tween';
 import { Ease } from 'laya/utils/Ease';
 import { Handler } from 'laya/utils/Handler';
+import { Tween } from 'laya/utils/Tween';
+
+import * as zTimer from './zTimer';
 
 export type EaseFn = Func<void> | string;
 export type Sprite = LayaSprite & {

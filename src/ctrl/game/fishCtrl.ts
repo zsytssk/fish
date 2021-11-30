@@ -1,16 +1,22 @@
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { FishEvent, FishModel, FishStatus } from 'model/game/fish/fishModel';
-import { FishView } from 'view/scenes/game/fishView';
+
+import { ServerEvent } from '@app/data/serverEvent';
 import {
     FishBombCom,
     FishBombEvent,
     FishBombInfo,
-} from 'model/game/fish/fishBombCom';
-import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
+} from '@app/model/game/fish/fishBombCom';
+import {
+    FishEvent,
+    FishModel,
+    FishStatus,
+} from '@app/model/game/fish/fishModel';
+import { waitFishDestroy } from '@app/model/game/fish/fishModelUtils';
+import { activeExploding } from '@app/view/scenes/game/ani_wrap/exploding';
+import { FishView } from '@app/view/scenes/game/fishView';
+
 import { sendToGameSocket } from './gameSocket';
-import { ServerEvent } from 'data/serverEvent';
-import { waitFishDestroy } from 'model/game/fish/fishModelUtils';
 
 /** 鱼的控制器 */
 export class FishCtrl extends ComponentManager {

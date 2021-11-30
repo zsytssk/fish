@@ -1,18 +1,24 @@
-import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
-import honor, { HonorScene } from 'honor';
 import { Laya } from 'Laya';
+import honor, { HonorScene } from 'honor';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import { fade_in, fade_out } from 'utils/animate';
-import { onStageClick, resizeContain } from 'utils/layaUtils';
-import { playSkeleton } from 'utils/utils';
+
+import {
+    getLang,
+    offLangChange,
+    onLangChange,
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { fade_in, fade_out } from '@app/utils/animate';
+import { onStageClick, resizeContain } from '@app/utils/layaUtils';
+import { error } from '@app/utils/log';
+import { playSkeleton } from '@app/utils/utils';
+
 import { ui } from '../../ui/layaMaxUI';
-import { error } from 'utils/log';
 
 export type CoinData = {
     type: string;
@@ -77,7 +83,7 @@ export default class HallView
     }
     private initEvent() {
         const { flag_menu, btn_coin_select, flag_box } = this.header;
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
         onStageClick(
@@ -159,7 +165,7 @@ export default class HallView
         }
         user_box.visible = true;
 
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             const { guest } = InternationalTip[lang];
             nickname.text = guest;
         });

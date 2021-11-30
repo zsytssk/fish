@@ -1,9 +1,11 @@
+import { Laya } from 'Laya';
+
+import { Config } from '@app/data/config';
+
 import { AppModel } from './appModel';
 import { BodyCom } from './game/com/bodyCom';
 import { detectCollision } from './game/com/bodyComUtil';
 import { FishModel } from './game/fish/fishModel';
-import { Laya } from 'Laya';
-import { Config } from 'data/config';
 
 type ModelState = {
     app: AppModel;
@@ -45,7 +47,7 @@ export function getFishById(id: string) {
 export function getAimFish() {
     const { game } = modelState.app;
     let fish_list = [...game.getAllFish().values()];
-    fish_list = fish_list.filter(fish => {
+    fish_list = fish_list.filter((fish) => {
         return fish.visible && detectInScreen(fish.pos);
     });
 

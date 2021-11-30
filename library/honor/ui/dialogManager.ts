@@ -1,20 +1,22 @@
-import { HonorDialog, HonorDialogConfig, DEFAULT_CONFIG } from './view';
+import { UIConfig } from 'UIConfig';
+
+import { Laya } from 'Laya';
+import { loaderManager } from 'honor/state';
+import { detectChangeScene } from 'honor/utils/sceneUtils';
 import {
     injectAfter,
     createScene,
     afterEnable,
     afterActive,
 } from 'honor/utils/tool';
-import { loaderManager } from 'honor/state';
-import { Tween } from 'laya/utils/Tween';
-import { Ease } from 'laya/utils/Ease';
-import { Handler } from 'laya/utils/Handler';
+import { Event } from 'laya/events/Event';
 import { Dialog } from 'laya/ui/Dialog';
 import { DialogManager } from 'laya/ui/DialogManager';
-import { UIConfig } from 'UIConfig';
-import { Event } from 'laya/events/Event';
-import { Laya } from 'Laya';
-import { detectChangeScene } from 'honor/utils/sceneUtils';
+import { Ease } from 'laya/utils/Ease';
+import { Handler } from 'laya/utils/Handler';
+import { Tween } from 'laya/utils/Tween';
+
+import { HonorDialog, HonorDialogConfig, DEFAULT_CONFIG } from './view';
 
 /**
  * 全局默认弹出对话框效果，可以设置一个效果代替默认的弹出效果，
@@ -162,12 +164,12 @@ export class DialogManagerCtor {
                 /** 正在打开的dialog */
                 const wait_open_dialog = wait_dialog_task.get(url);
                 if (wait_open_dialog) {
-                    dialog = await wait_open_dialog.then(_dialog => {
+                    dialog = await wait_open_dialog.then((_dialog) => {
                         return _dialog;
                     });
                 } else {
                     /** 已经打开的dialog */
-                    const item = open_dialog_list.find(_item => {
+                    const item = open_dialog_list.find((_item) => {
                         return _item.url === url;
                     });
                     if (item) {
@@ -182,7 +184,7 @@ export class DialogManagerCtor {
                 const wait_open_dialog = this.createDialog(url);
                 wait_dialog_task.set(
                     url,
-                    wait_open_dialog.then(_dialog => {
+                    wait_open_dialog.then((_dialog) => {
                         wait_dialog_task.delete(url);
                         return _dialog;
                     }),
@@ -246,7 +248,7 @@ export class DialogManagerCtor {
                     url,
                 )) as HonorDialog;
             } else if (typeof url === 'function') {
-                new_dialog = (await createScene(url).then(dialog => {
+                new_dialog = (await createScene(url).then((dialog) => {
                     return resolve(dialog as Dialog);
                 })) as HonorDialog;
             } else if (url instanceof Dialog) {
@@ -267,7 +269,7 @@ export class DialogManagerCtor {
             ...dialog.config,
             ...config,
         };
-        const item = open_dialog_list.find(_item => {
+        const item = open_dialog_list.find((_item) => {
             return _item.dialog === dialog;
         });
 
@@ -284,7 +286,7 @@ export class DialogManagerCtor {
     }
     private getDialogConfig(dialog: HonorDialog): HonorDialogConfig {
         const { open_dialog_list } = this;
-        const item = open_dialog_list.find(_item => {
+        const item = open_dialog_list.find((_item) => {
             return _item.dialog === dialog;
         });
         return item && item.config;

@@ -1,7 +1,8 @@
 import { Sprite } from 'laya/display/Sprite';
 import { List } from 'laya/ui/List';
 import { Handler } from 'laya/utils/Handler';
-import { onStageClick } from 'utils/layaUtils';
+
+import { onStageClick } from '@app/utils/layaUtils';
 
 type SelectList = Sprite & {
     list: List;

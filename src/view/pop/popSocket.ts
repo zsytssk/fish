@@ -1,11 +1,12 @@
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerName, ServerEvent } from 'data/serverEvent';
-import { ShopData } from './shop';
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { ChangeUserNumInfo } from '@app/ctrl/game/gameCtrl';
+import { errorHandler } from '@app/ctrl/hall/commonSocket';
+import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { ServerName, ServerEvent } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+
 import { LotteryPopData } from './lottery';
-import { ctrlState } from 'ctrl/ctrlState';
-import { modelState } from 'model/modelState';
-import { ChangeUserNumInfo } from 'ctrl/game/gameCtrl';
-import { errorHandler } from 'ctrl/hall/commonSocket';
+import { ShopData } from './shop';
 
 export function getShopInfo() {
     return new Promise((resolve, reject) => {

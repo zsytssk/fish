@@ -1,7 +1,13 @@
-import { WebSocketTrait, Config, SocketEvent } from 'ctrl/net/webSocketWrap';
 import { EventCom } from 'comMan/eventCom';
+
 import { Status } from 'honor/net/websocket';
-import { log } from 'utils/log';
+
+import {
+    WebSocketTrait,
+    Config,
+    SocketEvent,
+} from '@app/ctrl/net/webSocketWrap';
+import { log } from '@app/utils/log';
 
 /** 本地测试数据的socket... */
 export class MockWebSocket implements WebSocketTrait {

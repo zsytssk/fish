@@ -1,7 +1,9 @@
-import { modelState } from 'model/modelState';
+import { ComponentManager } from 'comMan/component';
+
+import { modelState } from '@app/model/modelState';
+
 import { SkillCoreCom, SkillInfo, SkillActiveInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';
-import { ComponentManager } from 'comMan/component';
 
 export type FreezeInfo = {
     user_id: string;

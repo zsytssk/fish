@@ -1,12 +1,18 @@
-import { ctrlState } from 'ctrl/ctrlState';
-import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { SkillMap } from 'data/config';
-import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
-import { getCurPlayer } from 'model/modelState';
-import { ui } from 'ui/layaMaxUI';
-import { addZeroToNum } from 'utils/utils';
+
+import { ctrlState } from '@app/ctrl/ctrlState';
+import {
+    getLang,
+    offLangChange,
+    onLangChange,
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { SkillMap } from '@app/data/config';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { getCurPlayer } from '@app/model/modelState';
+import { ui } from '@app/ui/layaMaxUI';
+import { addZeroToNum } from '@app/utils/utils';
+
 import AlertPop from './alert';
 import { buyItem } from './popSocket';
 import TipPop from './tip';
@@ -19,7 +25,8 @@ type BuyInfo = {
 };
 export default class BuyBulletPop
     extends ui.pop.alert.buyBulletUI
-    implements HonorDialog {
+    implements HonorDialog
+{
     public isModal = true;
     private buy_info: BuyInfo;
     public static async preEnter(info: BuyInfo) {
@@ -31,7 +38,7 @@ export default class BuyBulletPop
         dialog.buy(info);
     }
     public onAwake() {
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
         this.initEvent();
@@ -50,7 +57,7 @@ export default class BuyBulletPop
             const lang = getLang();
             const { buySuccess } = InternationalTip[lang];
             const { id, num, price } = this.buy_info;
-            buyItemAlert(num, price, id).then(status => {
+            buyItemAlert(num, price, id).then((status) => {
                 if (status) {
                     buyItem(id, num, price).then(() => {
                         TipPop.tip(buySuccess);
@@ -163,7 +170,7 @@ export function buyItemAlert(num: number, price: number, id: string) {
             .replace(`$3`, num + '')
             .replace(`$4`, getSkillName(id));
 
-        AlertPop.alert(tip).then(type => {
+        AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {
                 resolve(true);
             } else {
@@ -182,7 +189,7 @@ export function buySkinAlert(price: number, name: string) {
             .replace(`$2`, bullet)
             .replace(`$3`, name);
 
-        AlertPop.alert(tip).then(type => {
+        AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {
                 resolve(true);
             } else {

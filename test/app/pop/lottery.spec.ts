@@ -1,17 +1,20 @@
 import { Test } from 'testBuilder';
-import honor from 'honor';
-import Data from './lottery.json';
-import LotteryPop from 'view/pop/lottery';
-import { sleep } from 'utils/animate';
-import { tween } from 'utils/layaTween';
 
-export const lottery_test = new Test('lottery', runner => {
+import honor from 'honor';
+
+import { sleep } from '@app/utils/animate';
+import { tween } from '@app/utils/layaTween';
+import LotteryPop from '@app/view/pop/lottery';
+
+import Data from './lottery.json';
+
+export const lottery_test = new Test('lottery', (runner) => {
     runner.describe('open', () => {
         LotteryPop.preEnter();
     });
 
     runner.describe('render_data', () => {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve) => {
             const pop = (await honor.director.openDialog(
                 LotteryPop,
             )) as LotteryPop;
@@ -35,7 +38,7 @@ export const lottery_test = new Test('lottery', runner => {
         // await sleep(2);
         const num = 21;
         let end = false;
-        await tween(5000, radio => {
+        await tween(5000, (radio) => {
             const cur_index = Math.round(radio * num);
             const cur_round_index = cur_index % 5;
             if (end) {

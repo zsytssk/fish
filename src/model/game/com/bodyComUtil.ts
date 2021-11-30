@@ -1,10 +1,13 @@
 import * as SAT from 'sat';
-import { SHAPE, shapeOriInfoItem } from 'data/shape';
-import { ShapeInfo, BodyCom, Shape } from './bodyCom';
-import { Sprite } from 'laya/display/Sprite';
-import { SPRITE } from 'data/sprite';
+
 import { Laya } from 'Laya';
-import { Config } from 'data/config';
+import { Sprite } from 'laya/display/Sprite';
+
+import { Config } from '@app/data/config';
+import { SHAPE, shapeOriInfoItem } from '@app/data/shape';
+import { SPRITE } from '@app/data/sprite';
+
+import { ShapeInfo, BodyCom, Shape } from './bodyCom';
 
 export type ShapeOriType = 'fish' | 'bullet' | 'net';
 

@@ -1,11 +1,13 @@
-import { ctrlState } from 'ctrl/ctrlState';
-import { GameCtrl } from 'ctrl/game/gameCtrl';
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
-import { injectAfter } from 'honor/utils/tool';
-import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
-import { GameTestCtrl } from 'ctrl/game/gameTest/gameTestCtrl';
-import { sleep } from 'utils/animate';
+
+import { injectAfter } from 'honor/utils/tool';
+
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { GameCtrl } from '@app/ctrl/game/gameCtrl';
+import { GameTestCtrl } from '@app/ctrl/game/gameTest/gameTestCtrl';
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
+import { modelState } from '@app/model/modelState';
+import { sleep } from '@app/utils/animate';
 
 const a = {
     b() {
@@ -18,7 +20,7 @@ const a = {
     },
 };
 
-export const game_test = new Test('game', runner => {
+export const game_test = new Test('game', (runner) => {
     runner.describe('enter_game', (add_player?: boolean) => {
         return new Promise((resolve, reject) => {
             if (modelState && modelState.app && modelState.app.game) {

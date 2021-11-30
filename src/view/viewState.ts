@@ -1,7 +1,8 @@
-import GameView from './scenes/game/gameView';
-import { Point } from 'laya/maths/Point';
 import { Sprite } from 'laya/display/Sprite';
+import { Point } from 'laya/maths/Point';
 import { Box } from 'laya/ui/Box';
+
+import GameView from './scenes/game/gameView';
 
 type ViewState = {
     game: GameView;

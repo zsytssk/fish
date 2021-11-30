@@ -1,7 +1,8 @@
-import { FishStatus } from 'model/game/fish/fishModel';
-import { GameModel } from 'model/game/gameModel';
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
+
+import { FishStatus } from '@app/model/game/fish/fishModel';
+import { GameModel } from '@app/model/game/gameModel';
 
 export const FreezingComEvent = {
     /** 冰冻 */

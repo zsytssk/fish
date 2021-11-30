@@ -1,7 +1,8 @@
-import { SkillNameMap, ItemMap } from 'data/config';
 import { Sprite } from 'laya/display/Sprite';
-import { ui } from 'ui/layaMaxUI';
-import { playSkeleton, stopSkeleton } from 'utils/utils';
+
+import { SkillNameMap, ItemMap } from '@app/data/config';
+import { ui } from '@app/ui/layaMaxUI';
+import { playSkeleton, stopSkeleton } from '@app/utils/utils';
 
 export default class SkillItemView extends ui.scenes.game.skillItemUI {
     private cool_mask: Sprite;

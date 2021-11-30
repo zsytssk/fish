@@ -1,9 +1,10 @@
-import { setProps, callFunc } from 'utils/utils';
-import { clearCount, startCount } from 'utils/count';
-import { PlayerModel } from 'model/game/playerModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { debug } from 'utils/log';
+
+import { PlayerModel } from '@app/model/game/playerModel';
+import { clearCount, startCount } from '@app/utils/count';
+import { debug } from '@app/utils/log';
+import { setProps, callFunc } from '@app/utils/utils';
 
 /** 技能的状态 */
 export enum SkillStatus {

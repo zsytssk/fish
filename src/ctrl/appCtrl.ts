@@ -1,13 +1,13 @@
-import GameConfig from 'GameConfig';
 import honor from 'honor';
 
-import { Config } from 'data/config';
-import { font_list, res } from 'data/res';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { AppModel } from 'model/appModel';
-import { sleep } from 'utils/animate';
-import { BgMonitor } from 'utils/bgMonitor';
-import { KeyBoardNumber } from 'utils/layaKeyboard';
+import GameConfig from '@app/GameConfig';
+import { Config } from '@app/data/config';
+import { font_list, res } from '@app/data/res';
+import { ServerEvent, ServerName } from '@app/data/serverEvent';
+import { AppModel } from '@app/model/appModel';
+import { sleep } from '@app/utils/animate';
+import { BgMonitor } from '@app/utils/bgMonitor';
+import { KeyBoardNumber } from '@app/utils/layaKeyboard';
 
 import { ctrlState } from './ctrlState';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
@@ -51,10 +51,14 @@ export class AppCtrl {
             versionPath: `./version.json?v=${Config.CdnVersion}`,
             basePath: Config.cndUrl,
         });
-        const task1 = honor.director.setLoadPageForScene('scenes/loading.scene');
-        const task2 = honor.director.load([...res.common, ...res.font], 'Scene').then(() => {
-            honor.utils.registerFontSize(font_list);
-        });
+        const task1 = honor.director.setLoadPageForScene(
+            'scenes/loading.scene',
+        );
+        const task2 = honor.director
+            .load([...res.common, ...res.font], 'Scene')
+            .then(() => {
+                honor.utils.registerFontSize(font_list);
+            });
 
         await Promise.all([task1, task2]);
     }

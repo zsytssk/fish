@@ -1,26 +1,30 @@
-import Honor, { HonorDialog, HonorDialogConfig } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { guide_state, Shape } from './guideState';
-import { Sprite } from 'laya/display/Sprite';
 import { Laya } from 'Laya';
-import { HitArea } from 'laya/utils/HitArea';
+import Honor, { HonorDialog, HonorDialogConfig } from 'honor';
+import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Rectangle } from 'laya/maths/Rectangle';
-import { callFunc } from 'utils/utils';
-import { NextType } from './core/guideUtils';
-import { fade_in, fade_out } from 'utils/animate';
-import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
 import { Image } from 'laya/ui/Image';
-import { getRectRadiusPath } from 'utils/layaUtils';
+import { HitArea } from 'laya/utils/HitArea';
+
+import { onLangChange, offLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
+import { fade_in, fade_out } from '@app/utils/animate';
+import { getRectRadiusPath } from '@app/utils/layaUtils';
+import { callFunc } from '@app/utils/utils';
+
+import { NextType } from './core/guideUtils';
+import { guide_state, Shape } from './guideState';
 
 /**
  * @author zhangshiyang
  * @description 新手引导弹出层
  */
 
-export default class GuideDialog extends ui.pop.guide.GuideDialogUI
-    implements HonorDialog {
+export default class GuideDialog
+    extends ui.pop.guide.GuideDialogUI
+    implements HonorDialog
+{
     public config: HonorDialogConfig = {};
     private mask_area: Sprite;
     private blank_area: Sprite;
@@ -42,7 +46,7 @@ export default class GuideDialog extends ui.pop.guide.GuideDialogUI
     }
     public onAwake() {
         this.init();
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
     }

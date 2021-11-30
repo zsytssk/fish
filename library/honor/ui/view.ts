@@ -1,6 +1,6 @@
+import { Scene } from 'laya/display/Scene';
 import { Dialog } from 'laya/ui/Dialog';
 import { Tween } from 'laya/utils/Tween';
-import { Scene } from 'laya/display/Scene';
 
 export type HonorDialogConfig = {
     /** 在弹窗模式为multiple时，是否在弹窗弹窗的时候关闭其他显示中的弹窗 */

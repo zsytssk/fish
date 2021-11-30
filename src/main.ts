@@ -1,5 +1,5 @@
-import { Config } from 'data/config';
-import { Lang } from 'data/internationalConfig';
+import { Config } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
 
 import { AppCtrl } from './ctrl/appCtrl';
 import './polyfill';

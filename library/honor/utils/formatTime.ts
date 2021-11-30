@@ -47,9 +47,9 @@ export function formatTime(
  *
  * @return 格式化后的字符串
  */
-export function formatTimeLight(seconds: number){
-    let time = ''
-    let [d, h, m, s] = [0, 0, 0, seconds%60];
+export function formatTimeLight(seconds: number) {
+    let time = '';
+    let [d, h, m, s] = [0, 0, 0, seconds % 60];
     if (seconds > 60) {
         m = (seconds / 60) | 0;
     }

@@ -1,8 +1,13 @@
 import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { getLang, onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
 import { Event } from 'laya/events/Event';
+
+import {
+    getLang,
+    onLangChange,
+    offLangChange,
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
 
 type RewardData = {
     type: string;
@@ -15,7 +20,8 @@ const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-si
 /** 恭喜获得提示框 */
 export default class RewardPop
     extends ui.pop.lottery.rewardUI
-    implements HonorDialog {
+    implements HonorDialog
+{
     public isModal = true;
     private close_resolve: () => void;
     public static async preEnter(data: RewardData) {
@@ -28,7 +34,7 @@ export default class RewardPop
         await pop.showReward(data);
     }
     public onAwake() {
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
 
@@ -47,13 +53,8 @@ export default class RewardPop
         return new Promise((resolve, reject) => {
             const lang = getLang();
             const { luckyDrawTip2, bullet } = InternationalTip[lang];
-            const {
-                item_num,
-                item_type,
-                bullet_icon,
-                bullet_num,
-                txt_label,
-            } = this;
+            const { item_num, item_type, bullet_icon, bullet_num, txt_label } =
+                this;
 
             this.close_resolve = resolve;
             const { type, num } = data;
@@ -73,7 +74,11 @@ export default class RewardPop
                     .replace('$2', `${num}`);
             }
 
-            item_num.visible = item_type.visible = bullet_icon.visible = bullet_num.visible = false;
+            item_num.visible =
+                item_type.visible =
+                bullet_icon.visible =
+                bullet_num.visible =
+                    false;
             if (is_bullet) {
                 bullet_icon.visible = bullet_num.visible = true;
                 bullet_num.text = num_str;

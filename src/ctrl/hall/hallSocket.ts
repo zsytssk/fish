@@ -1,12 +1,13 @@
-import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
+import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import {
     bindSocketEvent,
     getSocket,
     offSocketEvent,
-} from 'ctrl/net/webSocketWrapUtil';
-import { Config } from 'data/config';
-import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
-import { modelState } from 'model/modelState';
+} from '@app/ctrl/net/webSocketWrapUtil';
+import { Config } from '@app/data/config';
+import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 import { alertNetErrRefresh } from './hallCtrlUtil';

@@ -1,5 +1,6 @@
 import * as SAT from 'sat';
-import { clearTick, createTick } from 'utils/tick';
+
+import { clearTick, createTick } from '@app/utils/tick';
 
 export interface LockTarget {
     pos: Point;

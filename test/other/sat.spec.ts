@@ -1,8 +1,9 @@
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
-import { angleToVector, vectorToAngle } from 'utils/mathUtils';
 
-export const sat_test = new Test('sat', runner => {
+import { angleToVector, vectorToAngle } from '@app/utils/mathUtils';
+
+export const sat_test = new Test('sat', (runner) => {
     runner.describe('angleToVector1', () => {
         const v1 = new SAT.Vector(1, 1).normalize();
         const angle = vectorToAngle(v1);

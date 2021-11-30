@@ -100,12 +100,8 @@ export class Pagination {
         this.analyse();
     }
     private analyse() {
-        const {
-            item_total_num,
-            item_page_num,
-            cur_page,
-            pagination_num,
-        } = this;
+        const { item_total_num, item_page_num, cur_page, pagination_num } =
+            this;
         const page_num = Math.ceil(item_total_num / item_page_num);
         this.page_num = page_num;
 

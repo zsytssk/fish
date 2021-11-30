@@ -1,9 +1,10 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { getCurUserId, getUserInfo } from 'model/modelState';
-import { getItem, setItem } from 'utils/localStorage';
-import TipPop from 'view/pop/tip';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from '@app/data/internationalConfig';
+import { getCurUserId, getUserInfo } from '@app/model/modelState';
+import { getItem, setItem } from '@app/utils/localStorage';
+import TipPop from '@app/view/pop/tip';
+
 import { AccountMap } from './userInfoModel';
 
 export function getCacheCurrency(account_map: AccountMap) {

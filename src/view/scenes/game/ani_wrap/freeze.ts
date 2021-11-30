@@ -1,8 +1,9 @@
-import { createSprite } from 'utils/dataUtil';
-import { playSkeleton } from 'utils/utils';
-import { viewState } from 'view/viewState';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Event } from 'laya/events/Event';
+
+import { createSprite } from '@app/utils/dataUtil';
+import { playSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
 
 /** 冰冻的动画 */
 let freezing_ani: Skeleton;

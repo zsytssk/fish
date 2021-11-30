@@ -1,20 +1,22 @@
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
-import { showPromptByNode } from '../core/guideUtils';
-import { sleep } from 'utils/animate';
-import { guide_state } from '../guideState';
-import { PromptPos } from '../core/prompt';
-import { waitCreateSocket } from '../../net/webSocketWrapUtil';
-import { ServerName } from 'data/serverEvent';
-import { GameTestCtrl } from '../../game/gameTest/gameTestCtrl';
+import honor from 'honor';
+
 import {
     genFishInfo,
     mockShoot,
     resetMockSocketCtor,
-} from 'ctrl/game/gameTest/utils';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import honor from 'honor';
-import { error } from 'utils/log';
+} from '@app/ctrl/game/gameTest/utils';
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { InternationalTip } from '@app/data/internationalConfig';
+import { ServerName } from '@app/data/serverEvent';
+import { sleep } from '@app/utils/animate';
+import { error } from '@app/utils/log';
+
+import { GameTestCtrl } from '../../game/gameTest/gameTestCtrl';
+import { waitCreateSocket } from '../../net/webSocketWrapUtil';
+import { showPromptByNode } from '../core/guideUtils';
+import { PromptPos } from '../core/prompt';
+import { guide_state } from '../guideState';
 
 export class NewUserGuide {
     public async start(guide_group: string) {
@@ -26,9 +28,8 @@ export class NewUserGuide {
 
     public async showStartPrompt() {
         const lang = getLang();
-        const { tour1, tour2, tour3, tour4, tour5, tour6 } = InternationalTip[
-            lang
-        ];
+        const { tour1, tour2, tour3, tour4, tour5, tour6 } =
+            InternationalTip[lang];
 
         let game_ctrl: GameTestCtrl;
         try {

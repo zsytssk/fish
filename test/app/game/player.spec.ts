@@ -1,18 +1,20 @@
-import { SkillMap } from 'data/config';
-import { PlayerInfo } from 'model/game/playerModel';
-import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
+
+import { sendToGameSocket } from '@app/ctrl/game/gameSocket';
+import { MockWebSocket } from '@app/ctrl/net/mockWebSocket';
+import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { ServerEvent } from '@app/data/serverEvent';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import { GunEvent } from '@app/model/game/gun/gunModel';
+import { PlayerInfo } from '@app/model/game/playerModel';
+import { modelState } from '@app/model/modelState';
+
 import { test_data } from '../../testData';
-import { GunEvent } from 'model/game/gun/gunModel';
-import { FishModel } from 'model/game/fish/fishModel';
-import { sendToGameSocket } from 'ctrl/game/gameSocket';
-import { ServerEvent } from 'data/serverEvent';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { MockWebSocket } from 'ctrl/net/mockWebSocket';
 import { sleep } from '../../utils/testUtils';
 
 /** @type {PlayerModel} 的测试 */
-export const player_test = new Test('player', runner => {
+export const player_test = new Test('player', (runner) => {
     runner.describe('add_cur_player', (server_index = 1) => {
         const player = modelState.app.game.getPlayerById(test_data.userId);
         if (player) {

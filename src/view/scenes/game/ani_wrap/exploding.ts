@@ -1,8 +1,12 @@
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Event } from 'laya/events/Event';
-import { playSkeleton } from 'utils/utils';
-import { viewState } from 'view/viewState';
-import { createSkeletonPool, recoverSkeletonPool } from 'view/viewStateUtils';
+
+import { playSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
+import {
+    createSkeletonPool,
+    recoverSkeletonPool,
+} from '@app/view/viewStateUtils';
 
 /** 爆炸的动画 */
 function createExplodingAni() {

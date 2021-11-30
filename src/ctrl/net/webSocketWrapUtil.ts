@@ -1,15 +1,19 @@
+import { EventCom } from 'comMan/eventCom';
 import CryptoJS from 'crypto-js';
+
 import { JSEncrypt } from 'jsencrypt';
+import { Observable, Subscriber } from 'rxjs';
+
+import { Utils } from 'laya/utils/Utils';
+
+import { error } from '@app/utils/log';
+
 import {
     Config,
     WebSocketTrait,
     WebSocketWrapCtrl,
     SocketEvent,
 } from './webSocketWrap';
-import { EventCom } from 'comMan/eventCom';
-import { Utils } from 'laya/utils/Utils';
-import { Observable, Subscriber } from 'rxjs';
-import { error } from 'utils/log';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();

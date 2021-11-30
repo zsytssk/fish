@@ -1,6 +1,7 @@
+import { ComponentManager } from 'comMan/component';
+
 import { SkillCoreCom, SkillInfo, SkillStatus } from './skillCoreCom';
 import { SkillModel } from './skillModel';
-import { ComponentManager } from 'comMan/component';
 
 export type AutoShootInfo = {
     user_id: string;

@@ -1,9 +1,11 @@
 import Honor from 'honor';
-import { setStyle } from 'utils/animate';
-import GuideDialog from './guideDialog';
-import { guide_state } from './guideState';
+
+import { setStyle } from '@app/utils/animate';
+
 import { PointerGuide } from './core/pointer';
 import { PromptGuide } from './core/prompt';
+import GuideDialog from './guideDialog';
+import { guide_state } from './guideState';
 
 /** 新手引导主类
  * @author zhangshiyang

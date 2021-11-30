@@ -1,15 +1,17 @@
-import { Box } from 'laya/ui/Box';
-import { ExchangeData } from './lottery';
-import { ui } from 'ui/layaMaxUI';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { ItemMap } from 'data/config';
-import { createDarkFilter, createColorFilter } from 'utils/utils';
+import { afterActive } from 'honor/utils/tool';
 import { Event } from 'laya/events/Event';
+import { Box } from 'laya/ui/Box';
+
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { ItemMap } from '@app/data/config';
+import { InternationalTip } from '@app/data/internationalConfig';
+import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
+import { ui } from '@app/ui/layaMaxUI';
+import { createDarkFilter, createColorFilter } from '@app/utils/utils';
+
+import { ExchangeData } from './lottery';
 import { runTicketExchange } from './popSocket';
 import RewardPop from './reward';
-import { afterActive } from 'honor/utils/tool';
-import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 
 type Item =
     | ui.pop.lottery.item2oneUI
@@ -78,13 +80,8 @@ export class LotteryExchangeCtrl {
         const lang = getLang();
         const { Num } = InternationalTip[lang];
 
-        const {
-            exchange_type,
-            exchange_id,
-            exchange_num,
-            cost_num,
-            cur_num,
-        } = item_data;
+        const { exchange_type, exchange_id, exchange_num, cost_num, cur_num } =
+            item_data;
 
         let tag = ItemMap[exchange_id] as string;
         tag = tag ? tag.toLowerCase() : tag;

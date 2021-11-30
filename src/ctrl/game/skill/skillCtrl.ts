@@ -1,8 +1,12 @@
-import { BombModel } from 'model/game/skill/bombModel';
-import { SkillEvent, SkillStatus } from 'model/game/skill/skillCoreCom';
-import { SkillModel } from 'model/game/skill/skillModel';
 import { Subscription } from 'rxjs';
-import SkillItemView from 'view/scenes/game/skillItemView';
+
+import { BombModel } from '@app/model/game/skill/bombModel';
+import { LockFishModel } from '@app/model/game/skill/lockFishModel';
+import { SkillEvent, SkillStatus } from '@app/model/game/skill/skillCoreCom';
+import { SkillModel } from '@app/model/game/skill/skillModel';
+import SkillItemView from '@app/view/scenes/game/skillItemView';
+
+import { PlayerCtrl } from '../playerCtrl';
 import {
     onTrigger,
     skillActiveHandler,
@@ -10,8 +14,6 @@ import {
     skillNormalActiveHandler,
     skillPreActiveHandler,
 } from './skillCtrlUtils';
-import { LockFishModel } from 'model/game/skill/lockFishModel';
-import { PlayerCtrl } from '../playerCtrl';
 
 export class SkillCtrl {
     private view: SkillItemView;

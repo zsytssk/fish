@@ -1,8 +1,9 @@
+import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+
 import { GameModel } from './game/gameModel';
 import { modelState } from './modelState';
 import { SettingModel } from './userInfo/settingModel';
-import { ComponentManager } from 'comMan/component';
-import { EventCom } from 'comMan/eventCom';
 import { UserInfoModel } from './userInfo/userInfoModel';
 
 /** 全局数据 */

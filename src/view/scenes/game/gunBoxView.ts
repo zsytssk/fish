@@ -1,18 +1,20 @@
-import { LevelInfo } from 'model/game/gun/gunModel';
-import { asyncQue, clearAsyncQue } from 'utils/asyncQue';
-import { getGunSkinMap } from 'utils/dataUtil';
-import { vectorToDegree } from 'utils/mathUtils';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { GlowFilter } from 'laya/filters/GlowFilter';
+
+import { LevelInfo } from '@app/model/game/gun/gunModel';
+import { asyncQue, clearAsyncQue } from '@app/utils/asyncQue';
+import { getGunSkinMap } from '@app/utils/dataUtil';
+import { vectorToDegree } from '@app/utils/mathUtils';
 import {
     playSkeleton,
     playSkeletonOnce,
     stopSkeleton,
     utilSkeletonLoadUrl,
-} from 'utils/utils';
+} from '@app/utils/utils';
+
 import { ui } from '../../../ui/layaMaxUI';
 import { addBullet, viewState } from '../../viewState';
 import { activePosTip, stopPosTip } from './ani_wrap/posTip';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { GlowFilter } from 'laya/filters/GlowFilter';
 
 /** 炮台的view */
 export default class GunBoxView extends ui.scenes.game.gunBoxUI {
@@ -51,7 +53,7 @@ export default class GunBoxView extends ui.scenes.game.gunBoxUI {
 
         const ani_list = ['base', 'light', 'body'];
         const ani_map = getGunSkinMap(skin, level_skin);
-        const not_show_arr = ani_list.filter(item => {
+        const not_show_arr = ani_list.filter((item) => {
             return !ani_map.has(item);
         });
         let gun_skin: string;

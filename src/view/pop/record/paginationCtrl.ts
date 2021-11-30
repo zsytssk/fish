@@ -1,11 +1,13 @@
-import { Button } from 'laya/ui/Button';
+import { EventCom } from 'comMan/eventCom';
+
 import { Sprite } from 'laya/display/Sprite';
+import { Box } from 'laya/ui/Box';
+import { Button } from 'laya/ui/Button';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
-import { Box } from 'laya/ui/Box';
-import { Pagination, PaginationItem } from 'utils/pagination';
-import { resizeContain } from 'utils/layaUtils';
-import { EventCom } from 'comMan/eventCom';
+
+import { resizeContain } from '@app/utils/layaUtils';
+import { Pagination, PaginationItem } from '@app/utils/pagination';
 
 export const PaginationEvent = {
     Change: 'change',
@@ -55,13 +57,8 @@ export class PaginationCtrl extends EventCom {
     }
     private render(data: RenderData, trigger_change = true) {
         const { view } = this;
-        const {
-            pagination_arr,
-            cur_page,
-            item_range,
-            has_prev,
-            has_next,
-        } = data;
+        const { pagination_arr, cur_page, item_range, has_prev, has_next } =
+            data;
 
         view.removeChildren();
         if (pagination_arr.length <= 1) {

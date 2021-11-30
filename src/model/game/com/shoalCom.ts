@@ -1,11 +1,13 @@
 import { ComponentManager } from 'comMan/component';
-import { FishModel } from 'model/game/fish/fishModel';
-import { Config } from 'data/config';
-import { calcNormalLen } from 'utils/displace/displaceUtil';
-import { Line } from 'utils/displace/line';
-import { CurveInfo, Displace } from 'utils/displace/displace';
-import { DisplaceMoveCom } from './moveCom/displaceMoveCom';
+
+import { Config } from '@app/data/config';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import { CurveInfo, Displace } from '@app/utils/displace/displace';
+import { calcNormalLen } from '@app/utils/displace/displaceUtil';
+import { Line } from '@app/utils/displace/line';
+
 import { GameModel } from '../gameModel';
+import { DisplaceMoveCom } from './moveCom/displaceMoveCom';
 
 export const ShoalEvent = {
     /** 添加鱼群前的清理 */

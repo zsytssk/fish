@@ -1,5 +1,6 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
+
 import { getAudio, setMusic, setVoice } from './userInfoUtils';
 
 export const SettingEvent = {

@@ -1,32 +1,33 @@
-import { ctrlState } from 'ctrl/ctrlState';
+import { ctrlState } from '@app/ctrl/ctrlState';
 import {
     disableCurUserOperation,
     waitGameExchangeOrLeave,
-} from 'ctrl/game/gameCtrlUtils';
-import { sendToGameSocket } from 'ctrl/game/gameSocket';
-import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
+} from '@app/ctrl/game/gameCtrlUtils';
+import { sendToGameSocket } from '@app/ctrl/game/gameSocket';
+import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import {
     bindSocketEvent,
     disconnectSocket,
     getSocket,
-} from 'ctrl/net/webSocketWrapUtil';
-import { InternationalTip } from 'data/internationalConfig';
+} from '@app/ctrl/net/webSocketWrapUtil';
+import { InternationalTip } from '@app/data/internationalConfig';
 import {
     ErrorData,
     ServerErrCode,
     ServerEvent,
     ServerName,
-} from 'data/serverEvent';
-import { BgMonitorEvent } from 'utils/bgMonitor';
-import AlertPop from 'view/pop/alert';
-import TipPop from 'view/pop/tip';
+} from '@app/data/serverEvent';
+import { sleep } from '@app/utils/animate';
+import { asyncOnly } from '@app/utils/asyncQue';
+import { BgMonitorEvent } from '@app/utils/bgMonitor';
+import { removeItem } from '@app/utils/localStorage';
+import { debug } from '@app/utils/log';
+import { tplStr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
+import TipPop from '@app/view/pop/tip';
+
 import { getLang, recharge } from './hallCtrlUtil';
-import { asyncOnly } from 'utils/asyncQue';
-import { removeItem } from 'utils/localStorage';
-import { debug } from 'utils/log';
 import { login } from './login';
-import { tplStr } from 'utils/utils';
-import { sleep } from 'utils/animate';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
@@ -38,9 +39,11 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             if (res.code === ServerErrCode.TokenExpire) {
                 removeItem('local_token');
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
-                    location.reload();
-                });
+                AlertPop.alert(logoutTip, { hide_cancel: true }).then(
+                    (type) => {
+                        location.reload();
+                    },
+                );
             } else if (res.code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
                 AlertPop.alert(OtherLogin, {
@@ -75,7 +78,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
 
             AlertPop.alert(logoutTip, {
                 hide_cancel: true,
-            }).then(type => {
+            }).then((type) => {
                 location.reload();
             });
         },
@@ -84,7 +87,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { bg_monitor } = ctrlState.app;
     bg_monitor.event.on(
         BgMonitorEvent.VisibleChange,
-        status => {
+        (status) => {
             if (status) {
                 if (socket.status === 'OPEN') {
                     tipComeBack();
@@ -116,7 +119,7 @@ export function errorHandler(code: number, data?: any) {
             const { minAmount, currency } = data as RoomInError;
             errMsg = tplStr(msg, { minAmount, currency });
         }
-        return AlertPop.alert(errMsg).then(type => {
+        return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
                 recharge();
             }
@@ -186,7 +189,7 @@ export async function exChangeBullet(tip: string) {
         onExchanging = false;
     });
     return asyncOnly(tip, () => {
-        return AlertPop.alert(tip, { closeOnSide: false }).then(type => {
+        return AlertPop.alert(tip, { closeOnSide: false }).then((type) => {
             if (type === 'confirm') {
                 return sendToGameSocket(ServerEvent.ExchangeBullet);
             }

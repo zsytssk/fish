@@ -1,20 +1,22 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
-import { getUserInfo } from 'model/modelState';
-import { onNode, isClosest } from 'utils/layaUtils';
-import VoicePop from 'view/pop/voice';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { getUserInfo } from '@app/model/modelState';
+import { onNode, isClosest } from '@app/utils/layaUtils';
+import { getItem, setItem } from '@app/utils/localStorage';
+import { playSkeleton, playSkeletonOnce } from '@app/utils/utils';
+import GameRecord from '@app/view/pop/record/gameRecord';
+import ItemRecord from '@app/view/pop/record/itemRecord';
+import VoicePop from '@app/view/pop/voice';
+
 import { HallCtrl } from './hallCtrl';
-import { logout, login } from './login';
-import { getItem, setItem } from 'utils/localStorage';
-import { roomIn } from './hallSocket';
-import { playSkeleton, playSkeletonOnce } from 'utils/utils';
 import { getChannel, getLang, recharge, withdraw } from './hallCtrlUtil';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import GameRecord from 'view/pop/record/gameRecord';
-import ItemRecord from 'view/pop/record/itemRecord';
+import { roomIn } from './hallSocket';
+import { logout, login } from './login';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;

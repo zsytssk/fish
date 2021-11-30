@@ -3,15 +3,9 @@
     "semi": true,
     "trailingComma": "all",
     "singleQuote": true,
-    "printWidth": 120,
+    "printWidth": 80,
     "useTabs": false,
     "tabWidth": 4,
-    "importOrder": [
-        "^(?!Laya|honor)(\\w+)$",
-        "^(laya|Laya|honor)(.*)$",
-        "^(ctrl|data|view|model)/(.*)$",
-        "^(\\w+)/(.*)$",
-        "^([./])(.*)$"
-    ],
+    "importOrder": ["^(?!Laya|honor)(\\w+)$", "^(laya|Laya|honor)(.*)$", "^@app/(.*)$", "^([./])(.*)$"],
     "importOrderSeparation": true
 }

@@ -1,14 +1,15 @@
+import { Laya } from 'Laya';
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
+import { HTMLDivElement } from 'laya/html/dom/HTMLDivElement';
+
 import {
     slide_down_in,
     slide_left_in,
     slide_up_in,
     slide_right_in,
-} from 'utils/animate';
-import { callFunc } from 'utils/utils';
-import { Sprite } from 'laya/display/Sprite';
-import { HTMLDivElement } from 'laya/html/dom/HTMLDivElement';
-import { Event } from 'laya/events/Event';
-import { Laya } from 'Laya';
+} from '@app/utils/animate';
+import { callFunc } from '@app/utils/utils';
 
 export type TipJsonItem = {
     color: string;
@@ -181,12 +182,8 @@ export class PromptGuide {
         step = step || 0;
 
         this.step = step;
-        const {
-            level_index,
-            level_step_index,
-            is_last,
-            is_level_last,
-        } = this.getStepInfo(step);
+        const { level_index, level_step_index, is_last, is_level_last } =
+            this.getStepInfo(step);
 
         const { html_div } = this.view;
         /** 单个文字显示的时间间隔  */

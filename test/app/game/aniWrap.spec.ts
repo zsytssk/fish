@@ -1,23 +1,27 @@
 import { range } from 'lodash';
+import SAT from 'sat';
 import { Test } from 'testBuilder';
-import { loopFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
-import { activeFreeze } from 'view/scenes/game/ani_wrap/freeze';
+
+import { FishEvent } from '@app/model/game/fish/fishModel';
+import { modelState } from '@app/model/modelState';
+import {
+    activeAimFish,
+    createPoints,
+} from '@app/view/scenes/game/ani_wrap/aim';
+import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
+import { showAwardCoin } from '@app/view/scenes/game/ani_wrap/award/awardCoin';
+import { awardSkill } from '@app/view/scenes/game/ani_wrap/award/awardSkill';
+import { activeExploding } from '@app/view/scenes/game/ani_wrap/exploding';
+import { loopFreeze, stopFreeze } from '@app/view/scenes/game/ani_wrap/freeze';
+import { activeFreeze } from '@app/view/scenes/game/ani_wrap/freeze';
+import { activePosTip } from '@app/view/scenes/game/ani_wrap/posTip';
 import {
     activeShoalWave,
     stopShoalWave,
-} from 'view/scenes/game/ani_wrap/shoalWave';
-import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
-import { activePosTip } from 'view/scenes/game/ani_wrap/posTip';
-import { activeAimFish, createPoints } from 'view/scenes/game/ani_wrap/aim';
-import { modelState } from 'model/modelState';
-import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
-import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
-import { FishEvent } from 'model/game/fish/fishModel';
-import SAT from 'sat';
-import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
+} from '@app/view/scenes/game/ani_wrap/shoalWave';
 
 /** 冰冻 鱼群 爆炸 瞄准...测试 */
-export const ani_wrap = new Test('ani_wrap', runner => {
+export const ani_wrap = new Test('ani_wrap', (runner) => {
     runner.describe('active_freezing', () => {
         activeFreeze();
     });

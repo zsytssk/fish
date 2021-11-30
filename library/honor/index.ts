@@ -1,16 +1,19 @@
+import { Config } from 'Config';
+
+import { Laya, loader } from 'Laya';
+import { Stage } from 'laya/display/Stage';
+import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
+import { URL } from 'laya/net/URL';
+import { Handler } from 'laya/utils/Handler';
+// import { Laya3D } from 'Laya3D';
+import { Stat } from 'laya/utils/Stat';
+import { Utils } from 'laya/utils/Utils';
+import { WebGL } from 'laya/webgl/WebGL';
+
 import { initState, director } from './state';
 import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
-import { Laya, loader } from 'Laya';
-// import { Laya3D } from 'Laya3D';
-import { Stat } from 'laya/utils/Stat';
-import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
-import { Handler } from 'laya/utils/Handler';
-import { WebGL } from 'laya/webgl/WebGL';
-import { Stage } from 'laya/display/Stage';
-import { Utils } from 'laya/utils/Utils';
-import { URL } from 'laya/net/URL';
-import { Config } from 'Config';
+
 export type {
     HonorDialog,
     HonorDialogConfig,

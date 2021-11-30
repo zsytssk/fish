@@ -1,9 +1,11 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { Lang } from 'data/internationalConfig';
+
+import { Config } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
+import { setItem } from '@app/utils/localStorage';
+
 import { getCacheCurrency, setCacheBalance } from './userInfoUtils';
-import { Config } from 'data/config';
-import { setItem } from 'utils/localStorage';
 
 /** 账户信息修改 */
 export const UserInfoEvent = {

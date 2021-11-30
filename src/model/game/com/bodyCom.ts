@@ -1,4 +1,5 @@
 import * as SAT from 'sat';
+
 import { scaleXShapeInfos } from './bodyComUtil';
 
 export type Shape = SAT.Polygon | SAT.Circle;

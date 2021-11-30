@@ -1,23 +1,28 @@
-import { commonSocket, errorHandler, offCommon } from 'ctrl/hall/commonSocket';
-import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
-import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
-import { SkillMap } from 'data/config';
-import { ServerEvent } from 'data/serverEvent';
-import { PlayerInfo } from 'model/game/playerModel';
-import { AutoShootInfo } from 'model/game/skill/autoShootModel';
-import { BombInfo } from 'model/game/skill/bombModel';
-import { FreezeInfo } from 'model/game/skill/freezeModel';
+import {
+    commonSocket,
+    errorHandler,
+    offCommon,
+} from '@app/ctrl/hall/commonSocket';
+import { WebSocketTrait, SocketEvent } from '@app/ctrl/net/webSocketWrap';
+import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { ServerEvent } from '@app/data/serverEvent';
+import { PlayerInfo } from '@app/model/game/playerModel';
+import { AutoShootInfo } from '@app/model/game/skill/autoShootModel';
+import { BombInfo } from '@app/model/game/skill/bombModel';
+import { FreezeInfo } from '@app/model/game/skill/freezeModel';
 import {
     LockFishActiveInfo,
     LockFishInitInfo,
-} from 'model/game/skill/lockFishModel';
-import { SkillInfo } from 'model/game/skill/skillCoreCom';
+} from '@app/model/game/skill/lockFishModel';
+import { SkillInfo } from '@app/model/game/skill/skillCoreCom';
 import {
     getCurUserId,
     isCurUser,
     getCurPlayer,
     getUserInfo,
-} from 'model/modelState';
+} from '@app/model/modelState';
+
 import { GameCtrl } from './gameCtrl';
 import { changeBulletNum, tipExchange } from './gameCtrlUtils';
 

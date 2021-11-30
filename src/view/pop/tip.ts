@@ -1,9 +1,11 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { AudioRes } from 'data/audioRes';
 import honor, { HonorDialog } from 'honor';
 import { getStringLength } from 'honor/utils/getStringLength';
-import { ui } from 'ui/layaMaxUI';
-import { startCount, clearCount } from 'utils/count';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { ui } from '@app/ui/layaMaxUI';
+import { startCount, clearCount } from '@app/utils/count';
+
 import { showNodeZone } from '../../../test/utils/testUtils';
 
 type TipPopOpt = {

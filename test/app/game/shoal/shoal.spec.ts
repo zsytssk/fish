@@ -1,11 +1,13 @@
-import { ServerEvent } from 'data/serverEvent';
 import { Test } from 'testBuilder';
-import { genRandomStr } from 'utils/utils';
+
+import { ServerEvent } from '@app/data/serverEvent';
+import { genRandomStr } from '@app/utils/utils';
+
 import { mock_web_socket_test } from '../../socket/mockSocket/mockWebsocket.spec';
 import Shoal1Data from './shoal1.json';
 import Shoal2Data from './shoal2.json';
 
-export const shoal_test = new Test('shoal', runner => {
+export const shoal_test = new Test('shoal', (runner) => {
     runner.describe('add_shoal1', () => {
         console.log(Shoal1Data);
         addShoal(Shoal1Data);
@@ -20,13 +22,8 @@ function addShoal(data: typeof Shoal1Data) {
     const { fish } = data;
     const result = [] as ServerFishInfo[];
     for (const fish_item of fish) {
-        const {
-            startTimeRadio,
-            endTimeRadio,
-            fishId,
-            displaceType,
-            ...other
-        } = fish_item;
+        const { startTimeRadio, endTimeRadio, fishId, displaceType, ...other } =
+            fish_item;
         const totalTime = (endTimeRadio - startTimeRadio) * total_time;
         const usedTime = -startTimeRadio * total_time;
 

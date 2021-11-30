@@ -1,6 +1,6 @@
-import { Event } from 'laya/events/Event';
 import { Laya } from 'Laya';
 import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
 import { ProgressBar } from 'laya/ui/ProgressBar';
 
 export type OnProgressChange = (radio: number) => void;
@@ -23,13 +23,8 @@ export default class LayaProgressCtrl {
     }
     private initEvent() {
         const { view } = this;
-        const {
-            MOUSE_DOWN,
-            MOUSE_MOVE,
-            MOUSE_OVER,
-            MOUSE_OUT,
-            MOUSE_UP,
-        } = Event;
+        const { MOUSE_DOWN, MOUSE_MOVE, MOUSE_OVER, MOUSE_OUT, MOUSE_UP } =
+            Event;
 
         view.on(MOUSE_DOWN, this, (e: Event) => {
             this.onClick(e);

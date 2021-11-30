@@ -1,9 +1,10 @@
-import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { SpriteInfo } from 'data/sprite';
-import { getSpriteInfo, createSprite } from 'utils/dataUtil';
 import { createSkeleton, createImg } from 'honor/utils/createSkeleton';
-import { Image } from 'laya/ui/Image';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
+import { Image } from 'laya/ui/Image';
+
+import { SpriteInfo } from '@app/data/sprite';
+import { getSpriteInfo, createSprite } from '@app/utils/dataUtil';
 
 const PoolMap = {} as {
     [key: string]: (Skeleton | Sprite)[];

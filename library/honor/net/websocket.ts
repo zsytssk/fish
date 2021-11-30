@@ -1,4 +1,4 @@
-import { log } from 'utils/log';
+import { log } from '@app/utils/log';
 
 export type Config = {
     url: string;

@@ -1,20 +1,22 @@
-import { SkillMap } from 'data/config';
-import { res } from 'data/res';
 import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
-import { FishModel } from 'model/game/fish/fishModel';
-import { GameEvent, GameModel } from 'model/game/gameModel';
-import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
-import { modelState } from 'model/modelState';
-import GameView from 'view/scenes/game/gameView';
+
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
+import { SkillMap } from '@app/data/config';
+import { res } from '@app/data/res';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import { GameEvent, GameModel } from '@app/model/game/gameModel';
+import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
+import { modelState } from '@app/model/modelState';
+import { setProps } from '@app/utils/utils';
+import { FishView } from '@app/view/scenes/game/fishView';
+import GameView from '@app/view/scenes/game/gameView';
+
 import { FishCtrl } from '../fishCtrl';
+import { onGameSocket, offGameSocket } from '../gameSocket';
 import { PlayerCtrl } from '../playerCtrl';
 import { mockSocket, genUserInfo, resetMockSocketCtor } from './utils';
-import { onGameSocket, offGameSocket } from '../gameSocket';
-import { WebSocketTrait } from 'ctrl/net/webSocketWrap';
-import { FishView } from 'view/scenes/game/fishView';
-import { setProps } from 'utils/utils';
-import { ctrlState } from 'ctrl/ctrlState';
 
 export class GameTestCtrl {
     public player_list: Set<PlayerCtrl> = new Set();

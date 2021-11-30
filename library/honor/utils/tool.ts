@@ -1,5 +1,5 @@
-import { Scene } from 'laya/display/Scene';
 import { Node } from 'laya/display/Node';
+import { Scene } from 'laya/display/Scene';
 import { Sprite } from 'laya/display/Sprite';
 
 /** 在class的fun执行之后执行fun */
@@ -24,7 +24,7 @@ export function injectAfter<T extends {}, K extends ObjFilterKeys<T, Function>>(
 
 function afterPromise(result: any, fun: () => void) {
     if (result instanceof Promise) {
-        result.then(_result => {
+        result.then((_result) => {
             afterPromise(_result, fun);
         });
     } else {

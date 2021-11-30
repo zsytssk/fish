@@ -1,11 +1,21 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { AudioRes } from 'data/audioRes';
-import { Lang } from 'data/internationalConfig';
-import { ServerName } from 'data/serverEvent';
-import { modelState } from 'model/modelState';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import HallView from 'view/scenes/hallView';
+import honor from 'honor';
+import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
+
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { gotoGuide } from '@app/ctrl/guide/guideConfig';
+import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { Lang } from '@app/data/internationalConfig';
+import { ServerName } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { sleep } from '@app/utils/animate';
+import { getItem } from '@app/utils/localStorage';
+import GameRecord from '@app/view/pop/record/gameRecord';
+import ItemRecord from '@app/view/pop/record/itemRecord';
+import HallView from '@app/view/scenes/hallView';
+
 import {
     getAllLangList,
     offBindEvent,
@@ -17,14 +27,6 @@ import {
 } from './hallCtrlUtil';
 import { onHallSocket, roomIn, offHallSocket } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
-import { ctrlState } from 'ctrl/ctrlState';
-import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
-import { getItem } from 'utils/localStorage';
-import honor from 'honor';
-import GameRecord from 'view/pop/record/gameRecord';
-import ItemRecord from 'view/pop/record/itemRecord';
-import { gotoGuide } from 'ctrl/guide/guideConfig';
-import { sleep } from 'utils/animate';
 
 export class HallCtrl {
     public view: HallView;
@@ -62,7 +64,7 @@ export class HallCtrl {
         });
     }
     private async init() {
-        await onHallSocket(this).then(async enter_game => {
+        await onHallSocket(this).then(async (enter_game) => {
             if (enter_game) {
                 return this.destroy();
             } else {

@@ -1,11 +1,12 @@
 import { Test } from 'testBuilder';
-import { modelState } from 'model/modelState';
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { KeyBoardNumber } from 'utils/layaKeyboard';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 
-export const app_test = new Test('app', runner => {
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { modelState } from '@app/model/modelState';
+import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
+import { KeyBoardNumber } from '@app/utils/layaKeyboard';
+
+export const app_test = new Test('app', (runner) => {
     runner.describe('enter_game', () => {});
     runner.describe('set_lang', (lang: Lang) => {
         modelState.app.user_info.setLang(lang);

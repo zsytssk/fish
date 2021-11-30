@@ -1,7 +1,9 @@
+import { throttleTime } from 'rxjs/operators';
+
+import { Observable, Subscriber } from 'rxjs';
+
 import { Laya } from 'Laya';
 import { Node } from 'laya/display/Node';
-import { Observable, Subscriber } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 
@@ -109,7 +111,7 @@ const bind_arr = [] as Array<{
 }>;
 export function onMouseMove(view: Sprite, callback: (pos: Point) => void) {
     const { MOUSE_MOVE } = Event;
-    const fn = e => {
+    const fn = (e) => {
         const { x, y } = view.getMousePoint();
         callback({ x, y });
     };

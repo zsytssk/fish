@@ -79,7 +79,7 @@ export async function runTestEntity(entity: TestEntity, params?: any[]) {
             .then(() => {
                 console.log(`TestBuilder:>`, 'success:>', item.msg, 'success');
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(`TestBuilder:>`, 'fail:>', item.msg, 'fail');
             });
         await asyncRunTestFunArr(afterEach, 'concurrent');

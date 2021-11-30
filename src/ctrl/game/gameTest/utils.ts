@@ -1,16 +1,17 @@
-import { GameTestCtrl } from './gameTestCtrl';
-import { modelState } from 'model/modelState';
+import { MockWebSocket } from '@app/ctrl/net/mockWebSocket';
 import {
     mockSocketCtor,
     createSocket,
     getSocket,
     disconnectSocket,
-} from 'ctrl/net/webSocketWrapUtil';
-import { MockWebSocket } from 'ctrl/net/mockWebSocket';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { sleep } from 'utils/animate';
-import { SkillMap } from 'data/config';
-import { PlayerInfo } from 'model/game/playerModel';
+} from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { ServerEvent, ServerName } from '@app/data/serverEvent';
+import { PlayerInfo } from '@app/model/game/playerModel';
+import { modelState } from '@app/model/modelState';
+import { sleep } from '@app/utils/animate';
+
+import { GameTestCtrl } from './gameTestCtrl';
 
 export function genFishInfo(game_ctrl: GameTestCtrl) {
     const typeId = 1;

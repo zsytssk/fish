@@ -1,5 +1,5 @@
-import { SkillMap } from 'data/config';
-import { Lang, InternationalTip } from 'data/internationalConfig';
+import { SkillMap } from '@app/data/config';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
 
 export const test_fish_list = [
     { id: 1, num: 2, is_special: 300 },

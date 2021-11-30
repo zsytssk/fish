@@ -1,7 +1,10 @@
 import { Test } from 'testBuilder';
-import * as shopData from './shop.json';
-import ShopPop from 'view/pop/shop';
+
 import honor from 'honor';
+
+import ShopPop from '@app/view/pop/shop';
+
+import * as shopData from './shop.json';
 
 export const shop_test = new Test('shop', (runner) => {
     runner.describe('open', async () => {

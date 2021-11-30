@@ -1,14 +1,17 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { Config } from 'data/config';
+
 import * as SAT from 'sat';
-import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
+
+import { Config } from '@app/data/config';
+import { getBulletStartPos, getGunLevelSkinInfo } from '@app/utils/dataUtil';
+
 import { GunAutoShootCom } from '../com/gunAutoShootCom';
+import { LockTarget } from '../com/moveCom/lockMoveCom';
 import { FishModel } from '../fish/fishModel';
 import { PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
-import { LockTarget } from '../com/moveCom/lockMoveCom';
 
 export const GunEvent = {
     /** 通知ctrl添加子弹 -> 发送给服务端... */

@@ -1,23 +1,38 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { errorHandler } from 'ctrl/hall/commonSocket';
-import { AudioRes } from 'data/audioRes';
-import { ServerErrCode, ServerEvent } from 'data/serverEvent';
+import SAT from 'sat';
+
 import { Laya } from 'Laya';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
-import { FishModel } from 'model/game/fish/fishModel';
-import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
-import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
-import { AutoShootModel } from 'model/game/skill/autoShootModel';
-import { getUserInfo, getCurPlayer, getGameCurrency } from 'model/modelState';
-import SAT from 'sat';
-import { log } from 'utils/log';
-import { darkNode, unDarkNode } from 'utils/utils';
-import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
-import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
-import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
-import GunBoxView from 'view/scenes/game/gunBoxView';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { errorHandler } from '@app/ctrl/hall/commonSocket';
+import { AudioRes } from '@app/data/audioRes';
+import { ServerErrCode, ServerEvent } from '@app/data/serverEvent';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import {
+    AddBulletInfo,
+    GunEvent,
+    LevelInfo,
+} from '@app/model/game/gun/gunModel';
+import {
+    CaptureInfo,
+    PlayerEvent,
+    PlayerModel,
+} from '@app/model/game/playerModel';
+import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
+import {
+    getUserInfo,
+    getCurPlayer,
+    getGameCurrency,
+} from '@app/model/modelState';
+import { getItem, setItem } from '@app/utils/localStorage';
+import { log } from '@app/utils/log';
+import { darkNode, unDarkNode } from '@app/utils/utils';
+import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
+import { showAwardCoin } from '@app/view/scenes/game/ani_wrap/award/awardCoin';
+import { awardSkill } from '@app/view/scenes/game/ani_wrap/award/awardSkill';
+import GunBoxView from '@app/view/scenes/game/gunBoxView';
 import {
     getAutoShootSkillItem,
     getGameView,
@@ -25,12 +40,12 @@ import {
     getSkillItemByIndex,
     setAutoShootLight,
     setBulletNum,
-} from 'view/viewState';
+} from '@app/view/viewState';
+
 import { BulletCtrl } from './bulletCtrl';
 import { GameCtrl } from './gameCtrl';
 import { sendToGameSocket } from './gameSocket';
 import { SkillCtrl } from './skill/skillCtrl';
-import { getItem, setItem } from 'utils/localStorage';
 
 // prettier-ignore
 const bullet_cost_arr  =

@@ -1,13 +1,13 @@
-import { modelState, getCurPlayer, isCurUser } from 'model/modelState';
-import { ctrlState } from 'ctrl/ctrlState';
-import { SkillMap } from 'data/config';
-import { LockFishModel } from 'model/game/skill/lockFishModel';
-import { waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { InternationalTip } from 'data/internationalConfig';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import TipPop from 'view/pop/tip';
-import { tplStr } from 'utils/utils';
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { waitCreateSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { InternationalTip } from '@app/data/internationalConfig';
+import { ServerEvent, ServerName } from '@app/data/serverEvent';
+import { LockFishModel } from '@app/model/game/skill/lockFishModel';
+import { modelState, getCurPlayer, isCurUser } from '@app/model/modelState';
+import { tplStr } from '@app/utils/utils';
+import TipPop from '@app/view/pop/tip';
 
 export function changeBulletNum(num: number) {
     const userId = modelState.app.user_info.user_id;

@@ -1,8 +1,9 @@
 import { Test } from 'testBuilder';
-import { modelState } from 'model/modelState';
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
 
-export const hall_test = new Test('hall', runner => {
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
+import { modelState } from '@app/model/modelState';
+
+export const hall_test = new Test('hall', (runner) => {
     runner.describe('enter', () => {
         HallCtrl.preEnter().then(() => {
             console.log(`enter:>`, 1);

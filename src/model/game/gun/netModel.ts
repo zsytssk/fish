@@ -1,11 +1,13 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
+
+import { getCollisionAllFish } from '@app/model/modelState';
+
+import { ModelEvent } from '../../modelEvent';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
-import { ModelEvent } from '../../modelEvent';
 import { BulletModel } from './bulletModel';
-import { getCollisionAllFish } from 'model/modelState';
 
 export type NetInfo = {
     show_cast: boolean;

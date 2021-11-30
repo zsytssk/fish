@@ -1,3 +1,7 @@
+import { Laya } from 'Laya';
+import { Scene } from 'laya/display/Scene';
+import { Event } from 'laya/events/Event';
+
 import { default as honor } from '../index';
 import {
     dialogManager,
@@ -6,12 +10,9 @@ import {
     untilInit,
 } from '../state';
 import { ResItem } from '../utils/loadRes';
-import { DialogOpenOpt } from './dialogManager';
 import { SceneChangeListener, SceneRefUrl } from './SceneManager';
+import { DialogOpenOpt } from './dialogManager';
 import { HonorDialogConfig, HonorScene, ViewType } from './view';
-import { Event } from 'laya/events/Event';
-import { Scene } from 'laya/display/Scene';
-import { Laya } from 'Laya';
 
 export class DirectorCtor {
     public init() {
@@ -29,7 +30,7 @@ export class DirectorCtor {
      * @param url 场景的url
      */
     public runScene(url: SceneRefUrl): Promise<Scene | void> {
-        return sceneManager.runScene(url).catch(err => {
+        return sceneManager.runScene(url).catch((err) => {
             if (honor.DEBUG_MODE) {
                 console.error(err);
             }
@@ -107,16 +108,14 @@ export class DirectorCtor {
     }
     public async clearListener(fn: SceneChangeListener) {
         await untilInit();
-        sceneManager.sceneChangeBeforeListener = sceneManager.sceneChangeBeforeListener.filter(
-            item => {
+        sceneManager.sceneChangeBeforeListener =
+            sceneManager.sceneChangeBeforeListener.filter((item) => {
                 return item !== fn;
-            },
-        );
-        sceneManager.sceneChangeAfterListener = sceneManager.sceneChangeAfterListener.filter(
-            item => {
+            });
+        sceneManager.sceneChangeAfterListener =
+            sceneManager.sceneChangeAfterListener.filter((item) => {
                 return item !== fn;
-            },
-        );
+            });
     }
     /** 隐藏遮罩 */
     public hideDialog(visible: boolean) {

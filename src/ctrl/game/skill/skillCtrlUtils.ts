@@ -1,40 +1,46 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { AudioRes } from 'data/audioRes';
-import { Config } from 'data/config';
-import { InternationalTip } from 'data/internationalConfig';
-import { ServerEvent } from 'data/serverEvent';
-import { getBeBombFishIds } from 'model/game/fish/fishModelUtils';
-import { BombModel } from 'model/game/skill/bombModel';
-import { FreezeModel } from 'model/game/skill/freezeModel';
-import { LockActiveData, LockFishModel } from 'model/game/skill/lockFishModel';
-import { SkillStatus } from 'model/game/skill/skillCoreCom';
-import { SkillModel } from 'model/game/skill/skillModel';
-import { getAimFish, modelState } from 'model/modelState';
-import { offMouseMove, onMouseMove, onNode } from 'utils/layaUtils';
-import AlertPop from 'view/pop/alert';
-import ShopPop from 'view/pop/shop';
-import TopTipPop from 'view/pop/topTip';
+import { merge } from 'rxjs';
+
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { Config } from '@app/data/config';
+import { InternationalTip } from '@app/data/internationalConfig';
+import { ServerEvent } from '@app/data/serverEvent';
+import { getBeBombFishIds } from '@app/model/game/fish/fishModelUtils';
+import { PlayerModel } from '@app/model/game/playerModel';
+import { BombModel } from '@app/model/game/skill/bombModel';
+import { FreezeModel } from '@app/model/game/skill/freezeModel';
+import {
+    LockActiveData,
+    LockFishModel,
+} from '@app/model/game/skill/lockFishModel';
+import { SkillStatus } from '@app/model/game/skill/skillCoreCom';
+import { SkillModel } from '@app/model/game/skill/skillModel';
+import { getAimFish, modelState } from '@app/model/modelState';
+import { offMouseMove, onMouseMove, onNode } from '@app/utils/layaUtils';
+import { debug } from '@app/utils/log';
+import { onKeyBoardEvent, onNodeEvent } from '@app/utils/rxUtils';
+import AlertPop from '@app/view/pop/alert';
+import ShopPop from '@app/view/pop/shop';
+import TopTipPop from '@app/view/pop/topTip';
 import {
     activeAim,
     activeAimFish,
     stopAim,
-} from 'view/scenes/game/ani_wrap/aim';
-import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
+} from '@app/view/scenes/game/ani_wrap/aim';
+import { activeExploding } from '@app/view/scenes/game/ani_wrap/exploding';
 import {
     offFishClick,
     onFishClick,
     onPoolClick,
     offPoolClick,
     viewState,
-} from 'view/viewState';
+} from '@app/view/viewState';
+
 import { sendToGameSocket } from '../gameSocket';
-import { onKeyBoardEvent, onNodeEvent } from 'utils/rxUtils';
-import { Sprite } from 'laya/display/Sprite';
-import { Event } from 'laya/events/Event';
-import { merge } from 'rxjs';
-import { PlayerModel } from 'model/game/playerModel';
-import { debug } from 'utils/log';
 
 /** 二次点击取消激活状态 */
 export function skillNormalActiveHandler(model: SkillModel) {
@@ -61,7 +67,7 @@ export function skillPreActiveHandler(model: SkillModel) {
     const lang = getLang();
     const { buySkillTip, posBombTip, aimFish } = InternationalTip[lang];
     if (model.skill_core.num <= 0) {
-        AlertPop.alert(buySkillTip).then(type => {
+        AlertPop.alert(buySkillTip).then((type) => {
             if (type === 'confirm') {
                 ShopPop.preEnter();
             }
@@ -82,7 +88,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         const { pool } = viewState.game;
         const { PoolWidth, PoolHeight } = Config;
         activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
-        onMouseMove(pool, pos => activeAim(pos));
+        onMouseMove(pool, (pos) => activeAim(pos));
 
         // 炸弹
         onPoolClick(true).subscribe((pos: Point) => {

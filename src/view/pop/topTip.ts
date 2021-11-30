@@ -1,15 +1,18 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { startCount } from 'utils/count';
-import { getStringLength } from 'honor/utils/getStringLength';
-import { slide_down_in } from 'utils/animate';
-import { AudioRes } from 'data/audioRes';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { Laya } from 'Laya';
+import honor, { HonorDialog } from 'honor';
+import { getStringLength } from 'honor/utils/getStringLength';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { ui } from '@app/ui/layaMaxUI';
+import { slide_down_in } from '@app/utils/animate';
+import { startCount } from '@app/utils/count';
 
 const url = 'pop/alert/topTip.scene';
-export default class TopTipPop extends ui.pop.alert.topTipUI
-    implements HonorDialog {
+export default class TopTipPop
+    extends ui.pop.alert.topTipUI
+    implements HonorDialog
+{
     public isShowEffect = false;
     public isPopupCenter = false;
     public static instance: TopTipPop;

@@ -1,4 +1,4 @@
-import { ctrlState } from 'ctrl/ctrlState';
+import { ctrlState } from '@app/ctrl/ctrlState';
 
 const SkillMap = {
     '1': '',

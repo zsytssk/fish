@@ -1,13 +1,16 @@
 import Bezier from 'bezier-js';
-import { PATH } from 'data/path';
-import { FishSpriteInfo } from 'data/sprite';
-import GameConfig from 'GameConfig';
+
 import SAT from 'sat';
-import { getSpriteInfo } from 'utils/dataUtil';
+
+import GameConfig from '@app/GameConfig';
+import { PATH } from '@app/data/path';
+import { FishSpriteInfo } from '@app/data/sprite';
+import { getSpriteInfo } from '@app/utils/dataUtil';
+import { error } from '@app/utils/log';
+
 import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
-import { error } from 'utils/log';
 
 export const stage_width = GameConfig.width;
 export const stage_height = GameConfig.height;

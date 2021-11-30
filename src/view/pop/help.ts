@@ -1,15 +1,17 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { LayaSlider } from 'utils/layaSlider';
-import { Handler } from 'laya/utils/Handler';
-import { test_fish_list, getSkillIntroList } from './helpUtils';
-import { SkillNameMap, SkillMap } from 'data/config';
-import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { resizeContain } from 'utils/layaUtils';
-import { Box } from 'laya/ui/Box';
 import { Laya } from 'Laya';
+import honor, { HonorDialog } from 'honor';
 import { loaderManager } from 'honor/state';
+import { Box } from 'laya/ui/Box';
+import { Handler } from 'laya/utils/Handler';
+
+import { onLangChange, offLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { SkillNameMap, SkillMap } from '@app/data/config';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
+import { LayaSlider } from '@app/utils/layaSlider';
+import { resizeContain } from '@app/utils/layaUtils';
+
+import { test_fish_list, getSkillIntroList } from './helpUtils';
 
 type FishItemData = {
     id: string;
@@ -38,7 +40,7 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
         return loaderManager.preLoad('Dialog', 'pop/help/help.scene');
     }
     public onAwake() {
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
         this.slider_glr = new LayaSlider(this.glr);
@@ -104,15 +106,8 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
             help43,
             times,
         } = InternationalTip[lang];
-        const {
-            title,
-            intro1,
-            intro2,
-            intro3,
-            intro31,
-            intro4,
-            intro41,
-        } = this;
+        const { title, intro1, intro2, intro3, intro31, intro4, intro41 } =
+            this;
 
         this.times_tpl = times;
         this.fish_list.refresh();

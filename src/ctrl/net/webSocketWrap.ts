@@ -1,8 +1,11 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
+
 import { WebSocketCtrl, Status } from 'honor/net/websocket';
+
+import { log, error } from '@app/utils/log';
+
 import { decrypt, encrypt, genUrl } from './webSocketWrapUtil';
-import { log, error } from 'utils/log';
 
 export type Config = {
     url: string;
@@ -49,8 +52,10 @@ export interface WebSocketTrait {
     status: Status;
 }
 /** websocket 的 */
-export class WebSocketWrapCtrl extends ComponentManager
-    implements WebSocketTrait {
+export class WebSocketWrapCtrl
+    extends ComponentManager
+    implements WebSocketTrait
+{
     private ws: WebSocketCtrl;
     private params: {} = {};
     public event: EventCom;

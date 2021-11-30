@@ -1,15 +1,18 @@
 import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import LayaProgressCtrl from 'utils/layaProgressCtrl';
-import { modelState } from 'model/modelState';
-import { AudioRes } from 'data/audioRes';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { modelState } from '@app/model/modelState';
+import { ui } from '@app/ui/layaMaxUI';
+import LayaProgressCtrl from '@app/utils/layaProgressCtrl';
 
 /** 声音的弹出层 */
-export default class VoicePop extends ui.pop.alert.voiceUI
-    implements HonorDialog {
+export default class VoicePop
+    extends ui.pop.alert.voiceUI
+    implements HonorDialog
+{
     public isModal = true;
     private music_ctrl: LayaProgressCtrl;
     private voice_ctrl: LayaProgressCtrl;
@@ -18,7 +21,7 @@ export default class VoicePop extends ui.pop.alert.voiceUI
         honor.director.openDialog({ dialog: VoicePop, use_exist: true });
     }
     public onAwake() {
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
 

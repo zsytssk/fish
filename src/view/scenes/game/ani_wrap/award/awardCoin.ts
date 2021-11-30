@@ -1,11 +1,12 @@
-import { viewState } from 'view/viewState';
-import { createSprite } from 'utils/dataUtil';
-import { move, slide_up_in, sleep } from 'utils/animate';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Laya } from 'Laya';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Event } from 'laya/events/Event';
 import { Label } from 'laya/ui/Label';
-import { playSkeleton } from 'utils/utils';
+
+import { move, slide_up_in, sleep } from '@app/utils/animate';
+import { createSprite } from '@app/utils/dataUtil';
+import { playSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
 
 const award_coin_num = 8;
 const space_row = 10;

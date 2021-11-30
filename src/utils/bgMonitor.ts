@@ -1,5 +1,6 @@
-import { Laya } from 'Laya';
 import { EventCom } from 'comMan/eventCom';
+
+import { Laya } from 'Laya';
 
 export const BgMonitorEvent = {
     VisibleChange: 'VisibleChange',

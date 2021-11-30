@@ -1,6 +1,7 @@
-import { GuideMain } from './guideMain';
+import { setItem } from '@app/utils/localStorage';
+
 import { NewUserGuide } from './guideList/newUser';
-import { setItem } from 'utils/localStorage';
+import { GuideMain } from './guideMain';
 
 /**
  * @author zhangshiyang

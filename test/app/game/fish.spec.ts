@@ -1,25 +1,28 @@
-import { FishCtrl } from 'ctrl/game/fishCtrl';
-import { injectProto } from 'honor/utils/tool';
-import { Label } from 'laya/ui/Label';
 import { range } from 'lodash';
-import { FishEvent, FishModel } from 'model/game/fish/fishModel';
-import { GameEvent } from 'model/game/gameModel';
-import { modelState } from 'model/modelState';
 import { Test } from 'testBuilder';
-import { sleep } from 'utils/animate';
-import { body_test } from './body.spec';
-import { FishView } from 'view/scenes/game/fishView';
-import { TextTexture } from 'laya/webgl/text/TextTexture';
-import { Image } from 'laya/ui/Image';
-import { Texture } from 'laya/resource/Texture';
-import { Loader } from 'laya/net/Loader';
-import { createColorFilter } from 'utils/utils';
-import { Sprite } from 'laya/display/Sprite';
-import { Handler } from 'laya/utils/Handler';
+
 import { createSprite } from 'honor/utils/createSkeleton';
+import { injectProto } from 'honor/utils/tool';
+import { Sprite } from 'laya/display/Sprite';
+import { Loader } from 'laya/net/Loader';
+import { Texture } from 'laya/resource/Texture';
+import { Image } from 'laya/ui/Image';
+import { Label } from 'laya/ui/Label';
+import { Handler } from 'laya/utils/Handler';
+import { TextTexture } from 'laya/webgl/text/TextTexture';
+
+import { FishCtrl } from '@app/ctrl/game/fishCtrl';
+import { FishEvent, FishModel } from '@app/model/game/fish/fishModel';
+import { GameEvent } from '@app/model/game/gameModel';
+import { modelState } from '@app/model/modelState';
+import { sleep } from '@app/utils/animate';
+import { createColorFilter } from '@app/utils/utils';
+import { FishView } from '@app/view/scenes/game/fishView';
+
+import { body_test } from './body.spec';
 
 /** @type {FishModel} 的测试 */
-export const fish_test = new Test('fish', runner => {
+export const fish_test = new Test('fish', (runner) => {
     runner.describe(
         'add_fish',
         async (typeId = 15, pathId = 2, time: number) => {
@@ -198,7 +201,7 @@ export const fish_test = new Test('fish', runner => {
 
     runner.describe('list_player_id', () => {
         const fish_list = modelState.app.game['fish_map'];
-        const id_list = [...fish_list.values()].map(fish => {
+        const id_list = [...fish_list.values()].map((fish) => {
             return fish.id;
         });
 

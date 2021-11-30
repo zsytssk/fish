@@ -1,10 +1,11 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { AudioRes } from 'data/audioRes';
-import { InternationalTip } from 'data/internationalConfig';
 import honor, { HonorDialog, HonorDialogConfig } from 'honor';
 import { Event } from 'laya/events/Event';
-import { ui } from 'ui/layaMaxUI';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { InternationalTip } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
@@ -13,7 +14,8 @@ type Opt = {
 } & HonorDialogConfig;
 export default class AlertPop
     extends ui.pop.alert.alertUI
-    implements HonorDialog {
+    implements HonorDialog
+{
     public isModal = true;
     public close_resolve: (type: CloseType) => void;
     public get zOrder() {

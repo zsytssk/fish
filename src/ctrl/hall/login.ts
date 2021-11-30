@@ -1,14 +1,15 @@
-import { Config } from 'data/config';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { getItem, setItem } from 'utils/localStorage';
-import { log } from 'utils/log';
+import { Config } from '@app/data/config';
+import { ServerEvent, ServerName } from '@app/data/serverEvent';
+import { getItem, setItem } from '@app/utils/localStorage';
+import { log } from '@app/utils/log';
+import { getParams } from '@app/utils/utils';
+
 import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
 import {
     createSocket,
     disconnectSocket,
     getSocket,
 } from '../net/webSocketWrapUtil';
-import { getParams } from 'utils/utils';
 
 /** 登陆用的脚本 */
 export async function initHallSocket() {

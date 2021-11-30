@@ -1,11 +1,12 @@
-import { ViewType, HonorLoadScene, HonorView } from './view';
-import { ResItem, loadRes } from 'honor/utils/loadRes';
+import { Laya } from 'Laya';
+import { loadRes, ResItem } from 'honor/utils/loadRes';
 import { Scene } from 'laya/display/Scene';
 import { Dialog } from 'laya/ui/Dialog';
 import { Handler } from 'laya/utils/Handler';
-import { sleep } from 'utils/animate';
-import { LoaderManager } from 'laya/net/LoaderManager';
-import { Laya } from 'Laya';
+
+import { sleep } from '@app/utils/animate';
+
+import { HonorLoadScene, HonorView, ViewType } from './view';
 
 type LoadingMap = Map<ViewType, HonorLoadScene>;
 export class LoaderManagerCtor {

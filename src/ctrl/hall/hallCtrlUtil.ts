@@ -1,8 +1,8 @@
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { ServerErrCode } from 'data/serverEvent';
-import { modelState } from 'model/modelState';
-import { AccountMap, UserInfoEvent } from 'model/userInfo/userInfoModel';
-import AlertPop from 'view/pop/alert';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { ServerErrCode } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+import { AccountMap, UserInfoEvent } from '@app/model/userInfo/userInfoModel';
+import AlertPop from '@app/view/pop/alert';
 
 export function onLangChange(item: any, callback: (lang: Lang) => void) {
     const { user_info } = modelState.app;

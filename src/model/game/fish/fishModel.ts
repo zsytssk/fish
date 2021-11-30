@@ -1,14 +1,17 @@
-import { FishSpriteInfo } from 'data/sprite';
+import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+
 import * as SAT from 'sat';
-import { DisplaceInfo } from 'utils/displace/displace';
+
+import { FishSpriteInfo } from '@app/data/sprite';
+import { getSpriteInfo } from '@app/utils/dataUtil';
+import { DisplaceInfo } from '@app/utils/displace/displace';
+import { setProps } from '@app/utils/utils';
+
+import { ModelEvent } from '../../modelEvent';
 import { BodyCom } from '../com/bodyCom';
 import { getShapes } from '../com/bodyComUtil';
 import { GameModel } from '../gameModel';
-import { ModelEvent } from '../../modelEvent';
-import { setProps } from 'utils/utils';
-import { ComponentManager } from 'comMan/component';
-import { EventCom } from 'comMan/eventCom';
-import { getSpriteInfo } from 'utils/dataUtil';
 
 export const FishEvent = {
     Destroy: ModelEvent.Destroy,

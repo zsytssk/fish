@@ -1,9 +1,10 @@
-import { NetModel } from 'model/game/gun/netModel';
-import { ModelEvent } from 'model/modelEvent';
-import { playSkeleton } from 'utils/utils';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { viewState } from 'view/viewState';
-import { recoverSkeletonPool } from 'view/viewStateUtils';
+
+import { NetModel } from '@app/model/game/gun/netModel';
+import { ModelEvent } from '@app/model/modelEvent';
+import { playSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
+import { recoverSkeletonPool } from '@app/view/viewStateUtils';
 
 /** 网的控制器 */
 export class NetCtrl {

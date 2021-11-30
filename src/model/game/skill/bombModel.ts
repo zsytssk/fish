@@ -1,6 +1,8 @@
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { getFishById } from 'model/modelState';
+
+import { getFishById } from '@app/model/modelState';
+
 import { playerCaptureFish } from '../fish/fishModelUtils';
 import { SkillActiveInfo, SkillCoreCom, SkillInfo } from './skillCoreCom';
 import { SkillModel } from './skillModel';

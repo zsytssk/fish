@@ -1,15 +1,17 @@
-import { injectProto } from 'honor/utils/tool';
 import { Test } from 'testBuilder';
-import GunBoxView from 'view/scenes/game/gunBoxView';
-import { BulletCtrl } from 'ctrl/game/bulletCtrl';
+
+import { injectProto } from 'honor/utils/tool';
+
+import { BulletCtrl } from '@app/ctrl/game/bulletCtrl';
+import GunBoxView from '@app/view/scenes/game/gunBoxView';
 
 const gun_view_list = [];
 const scale = 1;
 const y = 0;
 const scale_1 = 1;
 (window as any).gun_view_list = gun_view_list;
-export const gun_box_view_test = new Test('gun', runner => {
-    injectProto(GunBoxView, 'onAwake', item => {
+export const gun_box_view_test = new Test('gun', (runner) => {
+    injectProto(GunBoxView, 'onAwake', (item) => {
         gun_view_list.push(item);
 
         item.body.scale(scale, scale);
