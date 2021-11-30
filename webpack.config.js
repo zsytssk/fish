@@ -1,7 +1,6 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
 const findParam = require('./script/findEnv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -17,7 +16,11 @@ const common_config = (mode) => ({
         path: path.join(__dirname, 'bin'),
     },
     resolve: {
-        modules: [path.resolve('./node_modules'), path.resolve('./library'), path.resolve('./libs')],
+        modules: [
+            path.resolve('./node_modules'),
+            path.resolve('./library'),
+            path.resolve('./libs'),
+        ],
         alias: {
             '@app': path.resolve(__dirname, './src'),
         },
@@ -47,7 +50,6 @@ const common_config = (mode) => ({
     },
     plugins: [
         new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) }),
-        new WebpackBar({ color: 'green' }),
         new HtmlWebpackPlugin({
             hash: true,
             inject: mode === 'development',

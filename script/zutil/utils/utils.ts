@@ -3,16 +3,14 @@ import * as readline from 'readline';
 export function sleep(time: number) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve();
+            resolve(undefined);
         }, time);
     });
 }
 
 /** 创建随机id */
 export function createRandomString() {
-    return Math.random()
-        .toString()
-        .replace('0.', '');
+    return Math.random().toString().replace('0.', '');
 }
 
 // 监听本地
@@ -33,7 +31,7 @@ export async function listenLocal(list: string[]) {
         console.log('--------------------');
         console.log();
 
-        rl.question(build_tips, answer => {
+        rl.question(build_tips, (answer) => {
             console.log(`选中${answer}`);
             rl.close();
             resolve(answer);

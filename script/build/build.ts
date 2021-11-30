@@ -1,7 +1,7 @@
 import * as path from 'path';
 
-import { test, build, afterBuild } from './buildUtils';
 import { listenLocal } from '../zutil/utils/utils';
+import { test, build, afterBuild } from './buildUtils';
 import { intConfig } from './const';
 
 const type = process.argv.slice(2)[0] || 'buildMap';

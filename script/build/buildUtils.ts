@@ -1,4 +1,5 @@
 import * as path from 'path';
+
 import { genVersion } from '../genVersion/genVersion';
 import { excuse } from '../zutil/ls/exec';
 import { cp } from '../zutil/ls/main';
@@ -11,7 +12,7 @@ export async function build(type: BuildType = 'prod') {
     const mode = type === 'prod' ? 'production' : 'development';
     const env = type === 'prod' ? 'PROD' : 'TEST';
 
-    await excuse(`webpack --ENV=${env} --mode ${mode}`, {
+    await excuse(`cross-env ENV=DEV webpack --progress --mode ${mode}`, {
         path: project_path,
         output: true,
     });
