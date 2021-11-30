@@ -12,7 +12,7 @@ export async function build(type: BuildType = 'prod') {
     const mode = type === 'prod' ? 'production' : 'development';
     const env = type === 'prod' ? 'PROD' : 'TEST';
 
-    await excuse(`cross-env ENV=DEV webpack --progress --mode ${mode}`, {
+    await excuse(`cross-env ENV=DEV webpack  --mode ${mode}`, {
         path: project_path,
         output: true,
     });

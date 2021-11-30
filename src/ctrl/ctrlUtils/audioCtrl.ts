@@ -1,8 +1,7 @@
 import Event from 'comMan/eventExtendCom';
 
 import { Laya } from 'Laya';
-import { Handler } from 'Laya/utils/Handler';
-import honor from 'honor';
+import { Handler } from 'laya/utils/Handler';
 
 export const AudioEvent = {
     VoiceChange: 'voice_change',
