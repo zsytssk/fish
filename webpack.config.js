@@ -91,28 +91,28 @@ const prod_config = {
     entry: {
         bundle: './src/main.ts',
     },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                libs: {
-                    //node_modules里的代码
-                    test: /[\\/](node_modules)[\\/]/,
-                    chunks: 'initial',
-                    name: 'libs', //chunks name
-                    priority: 10, //优先级
-                    enforce: true,
-                },
-                laya: {
-                    //node_modules里的代码
-                    test: /[\\/](libs)[\\/]/,
-                    chunks: 'initial',
-                    name: 'laya', //chunks name
-                    priority: 10, //优先级
-                    enforce: true,
-                },
-            },
-        },
-    },
+    // optimization: {
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             libs: {
+    //                 //node_modules里的代码
+    //                 test: /[\\/](node_modules)[\\/]/,
+    //                 chunks: 'initial',
+    //                 name: 'libs', //chunks name
+    //                 priority: 10, //优先级
+    //                 enforce: true,
+    //             },
+    //             laya: {
+    //                 //node_modules里的代码
+    //                 test: /[\\/](libs)[\\/]/,
+    //                 chunks: 'initial',
+    //                 name: 'laya', //chunks name
+    //                 priority: 10, //优先级
+    //                 enforce: true,
+    //             },
+    //         },
+    //     },
+    // },
 };
 
 module.exports = (env, argv) => {
