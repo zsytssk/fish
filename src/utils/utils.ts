@@ -249,13 +249,13 @@ export function getDateFromNow(a: number) {
     const d = dateStart.getDate();
 
     return {
-        date_str: formatDate(m) + '-' + formatDate(d),
+        date_str: formatDateStr(m) + '-' + formatDateStr(d),
         start: dateStart.valueOf(),
         end: dateEnd.valueOf(),
     };
 }
 
-export function formatDate(a: number): string {
+export function formatDateStr(a: number): string {
     if (a < 10) {
         return '0' + a;
     }

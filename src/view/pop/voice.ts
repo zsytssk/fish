@@ -26,7 +26,7 @@ export default class VoicePop
         });
 
         const { voice, music } = modelState.app.setting;
-        const { music_progress, voice_progress } = this;
+        const { music_progress, voice_progress, version } = this;
         const music_ctrl = new LayaProgressCtrl(
             music_progress,
             this.onMusicChange,
@@ -40,6 +40,10 @@ export default class VoicePop
         music_ctrl.setProgress(music);
         this.music_ctrl = music_ctrl;
         this.voice_ctrl = voice_ctrl;
+
+        version.text = honor.utils.formatTimestamp(
+            Number((window as any).version),
+        );
     }
     private onMusicChange = (radio: number) => {
         const { setting } = modelState.app;

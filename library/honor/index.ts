@@ -94,7 +94,7 @@ async function run(
         AtlasInfoManager.enable(
             'fileconfig.json',
             Handler.create(null, async () => {
-                resolve();
+                resolve(undefined);
             }),
         );
     });
