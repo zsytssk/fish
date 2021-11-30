@@ -1,5 +1,8 @@
+import honor from 'honor';
+
 import { Laya } from 'Laya';
 import { Handler } from 'Laya/utils/Handler';
+
 import Event from 'comMan/eventExtendCom';
 
 export const AudioEvent = {

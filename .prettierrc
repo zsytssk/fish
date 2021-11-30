@@ -1,10 +1,17 @@
 {
-  "extends": ["tslint:latest", "tslint-config-prettier"],
-  "tabWidth": 4,
-  "singleQuote": true,
-  "semi": true,
-  "no-prose-wrap": true,
-  "trailingComma": "all",
-  "arrowParens": "avoid",
-  "printWidth": 80
+    "extends": ["tslint:latest", "tslint-config-prettier"],
+    "semi": true,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 120,
+    "useTabs": false,
+    "tabWidth": 4,
+    "importOrder": [
+        "^(?!Laya|honor)(\\w+)$",
+        "^(laya|Laya|honor)(.*)$",
+        "^(ctrl|data|view|model)/(.*)$",
+        "^(\\w+)/(.*)$",
+        "^([./])(.*)$"
+    ],
+    "importOrderSeparation": true
 }

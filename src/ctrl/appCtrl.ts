@@ -1,22 +1,20 @@
-import { Config } from 'data/config';
-import { font_list, res } from 'data/res';
 import GameConfig from 'GameConfig';
 import honor from 'honor';
+
+import { Config } from 'data/config';
+import { font_list, res } from 'data/res';
+import { ServerEvent, ServerName } from 'data/serverEvent';
 import { AppModel } from 'model/appModel';
-import { ctrlState } from './ctrlState';
-import { GameCtrl } from './game/gameCtrl';
-// import honor from 'honor';
-import { HallCtrl } from './hall/hallCtrl';
-import { ServerName, ServerEvent } from 'data/serverEvent';
-import { waitCreateSocket, onCreateSocket } from './net/webSocketWrapUtil';
-import { Laya } from 'Laya';
 import { sleep } from 'utils/animate';
 import { BgMonitor } from 'utils/bgMonitor';
 import { KeyBoardNumber } from 'utils/layaKeyboard';
-import { gotoGuide } from './guide/guideConfig';
-import { getItem } from 'utils/localStorage';
+
+import { ctrlState } from './ctrlState';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
-import { Event } from 'laya/events/Event';
+import { GameCtrl } from './game/gameCtrl';
+// import honor from 'honor';
+import { HallCtrl } from './hall/hallCtrl';
+import { onCreateSocket } from './net/webSocketWrapUtil';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -32,7 +30,7 @@ export class AppCtrl {
         this.model = model;
 
         model.init();
-        onCreateSocket(ServerName.Hall).subscribe(socket => {
+        onCreateSocket(ServerName.Hall).subscribe((socket) => {
             socket.event.on(ServerEvent.UserAccount, (data: UserAccountRep) => {
                 model.initUserInfo(data);
             });
@@ -53,14 +51,10 @@ export class AppCtrl {
             versionPath: `./version.json?v=${Config.CdnVersion}`,
             basePath: Config.cndUrl,
         });
-        const task1 = honor.director.setLoadPageForScene(
-            'scenes/loading.scene',
-        );
-        const task2 = honor.director
-            .load([...res.common, ...res.font], 'Scene')
-            .then(() => {
-                honor.utils.registerFontSize(font_list);
-            });
+        const task1 = honor.director.setLoadPageForScene('scenes/loading.scene');
+        const task2 = honor.director.load([...res.common, ...res.font], 'Scene').then(() => {
+            honor.utils.registerFontSize(font_list);
+        });
 
         await Promise.all([task1, task2]);
     }

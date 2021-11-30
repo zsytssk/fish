@@ -21,6 +21,7 @@
         "@babel/plugin-transform-runtime": "^7.9.6",
         "@babel/preset-env": "^7.9.6",
         "@babel/runtime-corejs3": "^7.9.6",
+        "@trivago/prettier-plugin-sort-imports": "^3.1.1",
         "babel-loader": "^8.1.0",
         "ts-loader": "^7.0.2",
         "tslint": "^6.1.2",

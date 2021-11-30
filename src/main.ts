@@ -1,7 +1,7 @@
 import { Config } from 'data/config';
 import { Lang } from 'data/internationalConfig';
-import { AppCtrl } from './ctrl/appCtrl';
 
+import { AppCtrl } from './ctrl/appCtrl';
 import './polyfill';
 
 function main() {

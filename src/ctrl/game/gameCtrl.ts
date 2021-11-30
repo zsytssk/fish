@@ -1,3 +1,9 @@
+import honor from 'honor';
+import { ResItem } from 'honor/utils/loadRes';
+import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
+import { Event } from 'laya/events/Event';
+import { Loader } from 'laya/net/Loader';
+
 import { ctrlState } from 'ctrl/ctrlState';
 import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from 'ctrl/hall/hallCtrl';
@@ -9,49 +15,31 @@ import { SkillMap } from 'data/config';
 import { InternationalTip } from 'data/internationalConfig';
 import { res } from 'data/res';
 import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
-import honor from 'honor';
-import { ResItem } from 'honor/utils/loadRes';
-import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
-import { Event } from 'laya/events/Event';
 import { FreezingComEvent } from 'model/game/com/gameFreezeCom';
+import { ShoalEvent } from 'model/game/com/shoalCom';
 import { FishModel } from 'model/game/fish/fishModel';
 import { GameEvent, GameModel } from 'model/game/gameModel';
 import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
-import { getUserInfo, isCurUser } from 'model/modelState';
-import { BgMonitorEvent } from 'utils/bgMonitor';
-import { log, error } from 'utils/log';
-import { setProps } from 'utils/utils';
+import { isCurUser } from 'model/modelState';
+import { tipPlatformCurrency } from 'model/userInfo/userInfoUtils';
 import AlertPop from 'view/pop/alert';
 import HelpPop from 'view/pop/help';
 import LotteryPop from 'view/pop/lottery';
 import ShopPop from 'view/pop/shop';
 import VoicePop from 'view/pop/voice';
-import { default as random } from 'lodash/random';
 import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
-import GameView, {
-    AddFishViewInfo,
-    BulletBoxDir,
-} from 'view/scenes/game/gameView';
-import { FishCtrl } from './fishCtrl';
-import {
-    disableAllUserOperation,
-    disableCurUserOperation,
-    tipExchange,
-    waitEnterGame,
-} from './gameCtrlUtils';
-import {
-    convertEnterGame,
-    offGameSocket,
-    onGameSocket,
-    sendToGameSocket,
-} from './gameSocket';
-import { PlayerCtrl } from './playerCtrl';
-import { ShoalEvent } from 'model/game/com/shoalCom';
 import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
-import { Laya } from 'Laya';
-import { Loader } from 'laya/net/Loader';
-import TipPop from 'view/pop/tip';
-import { tipPlatformCurrency } from 'model/userInfo/userInfoUtils';
+import GameView, { AddFishViewInfo, BulletBoxDir } from 'view/scenes/game/gameView';
+
+import { default as random } from 'lodash/random';
+import { BgMonitorEvent } from 'utils/bgMonitor';
+import { error, log } from 'utils/log';
+import { setProps } from 'utils/utils';
+
+import { FishCtrl } from './fishCtrl';
+import { disableAllUserOperation, disableCurUserOperation, tipExchange, waitEnterGame } from './gameCtrlUtils';
+import { convertEnterGame, offGameSocket, onGameSocket, sendToGameSocket } from './gameSocket';
+import { PlayerCtrl } from './playerCtrl';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -73,10 +61,7 @@ export class GameCtrl {
         this.model = model;
     }
     private static instance: GameCtrl;
-    public static async preEnter(
-        data: Partial<RoomInRep>,
-        game_model: GameModel,
-    ) {
+    public static async preEnter(data: Partial<RoomInRep>, game_model: GameModel) {
         if (this.instance) {
             return this.instance;
         }
@@ -96,9 +81,7 @@ export class GameCtrl {
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
                     if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
                         const lang = getLang();
-                        await AlertPop.alert(
-                            InternationalTip[lang].delayUpdateAccount,
-                        );
+                        await AlertPop.alert(InternationalTip[lang].delayUpdateAccount);
                     }
                     tipExchange(data);
                 });
@@ -124,10 +107,7 @@ export class GameCtrl {
     }
     public static genBgNum() {
         const bg_num = random(1, 3);
-        return [
-            bg_num,
-            { url: `image/game/normal_bg/bg${bg_num}.jpg`, type: Loader.IMAGE },
-        ] as [number, ResItem];
+        return [bg_num, { url: `image/game/normal_bg/bg${bg_num}.jpg`, type: Loader.IMAGE }] as [number, ResItem];
     }
     private init(url: string, bg_num: number) {
         this.initEvent();
@@ -177,7 +157,7 @@ export class GameCtrl {
             const { leaveTip } = InternationalTip[lang];
 
             e.stopPropagation();
-            AlertPop.alert(leaveTip).then(type => {
+            AlertPop.alert(leaveTip).then((type) => {
                 if (type === 'confirm') {
                     sendToGameSocket(ServerEvent.RoomOut);
                 }
@@ -240,7 +220,7 @@ export class GameCtrl {
         );
         event.on(
             ShoalEvent.PreAddShoal,
-            reverse => {
+            (reverse) => {
                 AudioCtrl.play(AudioRes.ShoalComing);
                 activeShoalWave(reverse);
             },
@@ -256,16 +236,7 @@ export class GameCtrl {
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
         const { model, view } = this;
-        const {
-            isTrial,
-            fish,
-            users,
-            frozen,
-            frozen_left,
-            fish_list,
-            exchange_rate,
-            currency,
-        } = data;
+        const { isTrial, fish, users, frozen, frozen_left, fish_list, exchange_rate, currency } = data;
 
         this.isTrial = isTrial;
         if (isTrial) {
@@ -366,8 +337,7 @@ export class GameCtrl {
         if (isCurUser(userId)) {
             const lang = getLang();
             const { kickedTip } = InternationalTip[lang];
-            const timeout_tip =
-                InternationalTip[lang][ServerErrCode.TrialTimeGame];
+            const timeout_tip = InternationalTip[lang][ServerErrCode.TrialTimeGame];
             const tip = isTimeOut ? timeout_tip : kickedTip;
             disableAllUserOperation();
             offGameSocket(this);
@@ -380,9 +350,7 @@ export class GameCtrl {
         } else {
             const player = model.getPlayerById(userId);
             if (!player) {
-                return error(
-                    `Game:>captureFish:> cant find player for userId=${userId}!`,
-                );
+                return error(`Game:>captureFish:> cant find player for userId=${userId}!`);
             }
             player.destroy();
         }
