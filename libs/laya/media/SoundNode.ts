@@ -3,6 +3,7 @@ import { SoundManager } from "./SoundManager";
 import { Sprite } from "../display/Sprite"
 import { Event } from "../events/Event"
 import { Handler } from "../utils/Handler"
+import { ClassUtils } from "../utils/ClassUtils";
 
 /**
  * @private
@@ -55,12 +56,12 @@ export class SoundNode extends Sprite {
 
     /**@private */
     private _setPlayAction(tar: Sprite, event: string, action: string, add: boolean = true): void {
-        if (!this[action]) return;
+        if (!(this as any)[action]) return;
         if (!tar) return;
         if (add) {
-            tar.on(event, this, this[action]);
+            tar.on(event, this, (this as any)[action]);
         } else {
-            tar.off(event, this, this[action]);
+            tar.off(event, this, (this as any)[action]);
         }
 
     }
@@ -121,4 +122,5 @@ export class SoundNode extends Sprite {
     }
 }
 
-
+ClassUtils.regClass("laya.media.SoundNode", SoundNode);
+ClassUtils.regClass("Laya.SoundNode", SoundNode);

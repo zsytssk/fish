@@ -8,7 +8,7 @@ struct FragmentCommonData{
 	//vec3 reflUVW;
 };
 
-#ifndef SETUP_BRDF_INPUT
+#if !defined(SETUP_BRDF_INPUT)//shader内部的宏需要将改成#ifdef改成#if类型 不然会被Laya的shader分析器优化掉
     #define SETUP_BRDF_INPUT metallicSetup//default is metallicSetup,also can be other. 
 #endif
 
@@ -79,12 +79,13 @@ FragmentCommonData specularSetup(vec2 uv)
     return o;
 }
 
-LayaGI fragmentGI(float smoothness,vec3 eyeVec,mediump float occlusion,mediump vec2 lightmapUV,vec3 worldnormal)
+LayaGI fragmentGI(float smoothness,vec3 eyeVec,mediump float occlusion,mediump vec2 lightmapUV,vec3 worldnormal,vec3 worldPos)
 {
 	LayaGIInput giInput;
 	#ifdef LIGHTMAP
 		giInput.lightmapUV=lightmapUV;
 	#endif
+	giInput.worldPos = worldPos;
 
 	vec3 worldViewDir = -eyeVec;
 	mediump vec4 uvwRoughness;
@@ -149,13 +150,13 @@ void fragmentForward()
 	float perceptualRoughness = smoothnessToPerceptualRoughness(o.smoothness);
 	float roughness = perceptualRoughnessToRoughness(perceptualRoughness);
 	float nv = abs(dot(normalWorld, eyeVec));
-	LayaGI gi =fragmentGI(o.smoothness,eyeVec,occlusion,lightMapUV,normalWorld);
+	LayaGI gi =fragmentGI(o.smoothness,eyeVec,occlusion,lightMapUV,normalWorld,posworld);
 	vec4 color = LAYA_BRDF_GI(o.diffColor,o.specColor,o.oneMinusReflectivity,o.smoothness,perceptualRoughness,roughness,nv,normalWorld,eyeVec,gi);
 	
 	float shadowAttenuation = 1.0;
 	#ifdef LEGACYSINGLELIGHTING
 		#ifdef DIRECTIONLIGHT
-			#ifdef CALCULATE_SHADOWS
+			#if defined(CALCULATE_SHADOWS)//shader中自定义的宏不可用ifdef 必须改成if defined
 				#ifdef SHADOW_CASCADE
 					vec4 shadowCoord = getShadowCoord(vec4(v_PositionWorld,1.0));
 				#else
@@ -168,11 +169,17 @@ void fragmentForward()
 		#endif
 	
 		#ifdef POINTLIGHT
+			shadowAttenuation = 1.0;
 			LayaLight poiLight = layaPointLightToLight(posworld,normalWorld,u_PointLight,shadowAttenuation);
 			color+= LAYA_BRDF_LIGHT(o.diffColor,o.specColor,o.oneMinusReflectivity,perceptualRoughness,roughness,nv,normalWorld,eyeVec,poiLight);
 		#endif
 		
 		#ifdef SPOTLIGHT
+			shadowAttenuation = 1.0;
+			#if defined(CALCULATE_SPOTSHADOWS)//shader中自定义的宏不可用ifdef 必须改成if defined
+				vec4 spotShadowcoord = v_SpotShadowCoord;
+				shadowAttenuation = sampleSpotShadowmap(spotShadowcoord);
+			#endif
 		    LayaLight spoLight = layaSpotLightToLight(posworld,normalWorld,u_SpotLight,shadowAttenuation);
 			color+= LAYA_BRDF_LIGHT(o.diffColor,o.specColor,o.oneMinusReflectivity,perceptualRoughness,roughness,nv,normalWorld,eyeVec,spoLight);
 		#endif
@@ -180,9 +187,10 @@ void fragmentForward()
 	 	#ifdef DIRECTIONLIGHT
 			for (int i = 0; i < MAX_LIGHT_COUNT; i++) 
 			{
+				shadowAttenuation = 1.0;
 				if(i >= u_DirationLightCount)
 					break;
-				#ifdef CALCULATE_SHADOWS
+				#if defined(CALCULATE_SHADOWS)//shader中自定义的宏不可用ifdef 必须改成if defined
 					if(i == 0)
 					{
 						#ifdef SHADOW_CASCADE
@@ -203,6 +211,7 @@ void fragmentForward()
 			#ifdef POINTLIGHT
 				for (int i = 0; i < MAX_LIGHT_COUNT; i++) 
 				{
+					shadowAttenuation = 1.0;
 					if(i >= clusterInfo.x)//PointLightCount
 						break;
 					PointLight pointLight = getPointLight(u_LightBuffer,u_LightClusterBuffer,clusterInfo,i);
@@ -213,8 +222,16 @@ void fragmentForward()
 			#ifdef SPOTLIGHT
 				for (int i = 0; i < MAX_LIGHT_COUNT; i++) 
 				{
+					shadowAttenuation = 1.0;
 					if(i >= clusterInfo.y)//SpotLightCount
 						break;
+					#if defined(CALCULATE_SPOTSHADOWS)//shader中自定义的宏不可用ifdef 必须改成if defined
+						if(i == 0)
+						{
+							vec4 spotShadowcoord = v_SpotShadowCoord;
+							shadowAttenuation= sampleSpotShadowmap(spotShadowcoord);
+						}
+					#endif
 					SpotLight spotLight = getSpotLight(u_LightBuffer,u_LightClusterBuffer,clusterInfo,i);
 					LayaLight spoLight = layaSpotLightToLight(posworld,normalWorld,spotLight,shadowAttenuation);
 					color+= LAYA_BRDF_LIGHT(o.diffColor,o.specColor,o.oneMinusReflectivity,perceptualRoughness,roughness,nv,normalWorld,eyeVec,spoLight);
@@ -234,5 +251,6 @@ void fragmentForward()
 	
 	gl_FragColor=vec4(color.rgb,alpha);
 }
+
 
 

@@ -1,4 +1,3 @@
-import { DirectionLight } from "./DirectionLight";
 import { LightSprite } from "./LightSprite";
 
 
@@ -26,32 +25,34 @@ export class LightQueue<T extends LightSprite> {
         }
     }
 
-    shift(): T {
+    shift(): T|undefined {
         this._length--;
         return this._elements.shift();
     }
-}
 
-
-/**
- * @internal
- */
-export class DirectionLightQueue extends LightQueue<DirectionLight>{
-
-    getSunLight(): number {
+    getBrightestLight():number|undefined{
         var maxIntIndex;
-        var maxIntensity: number = -1;
-        var elements: DirectionLight[] = this._elements;
-        for (var i: number = 0; i < this._length; i++) {
-            var intensity: number = elements[i]._intensity;
-            if (maxIntensity < intensity) {
+        var maxIntensity:number = -1;
+        var elements:T[] = this._elements;
+        for(var i:number = 0;i<this._length;i++){
+            var intensity:number = elements[i]._intensity;
+            if(maxIntensity<intensity)
+            {
                 maxIntensity = intensity;
                 maxIntIndex = i;
             }
         }
         return maxIntIndex;
     }
+    normalLightOrdering(brightestIndex:number){
+        var firstLight:T = this._elements[0];
+        this._elements[0] = this._elements[brightestIndex];
+        this._elements[brightestIndex] = firstLight;
+    }
 }
+
+
+
 
 /**
  * @internal

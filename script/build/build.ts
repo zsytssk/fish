@@ -6,12 +6,7 @@ import { intConfig } from './const';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
 
-export const build_tips = [
-    `1.编译代码(prod)`,
-    `2.本地编译代码(test)`,
-    `3.本地编译代码(test) 提交`,
-    `4.本地编译代码(prod) 提交`,
-];
+export const build_tips = [`1.编译代码(prod)`, `2.本地编译代码(test)`];
 
 const buildMap = {
     '1': async () => {
@@ -21,14 +16,6 @@ const buildMap = {
     '2': async () => {
         await build('test');
         await afterBuild(false);
-    },
-    '3': async () => {
-        await build('test');
-        await afterBuild(true);
-    },
-    '4': async () => {
-        await build('prod');
-        await afterBuild(true);
     },
 };
 
