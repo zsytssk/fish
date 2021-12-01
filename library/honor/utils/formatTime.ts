@@ -5,8 +5,10 @@
  */
 export function formatTimestamp(timestamp: number): string {
     const date = new Date(timestamp);
-    const arr1 = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
-    const arr2 = [date.getHours(), date.getMinutes()];
+    const arr1 = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(
+        formatTimeZone,
+    );
+    const arr2 = [date.getHours(), date.getMinutes()].map(formatTimeZone);
 
     return `${arr1.join('/')} ${arr2.join(':')}`;
 }
