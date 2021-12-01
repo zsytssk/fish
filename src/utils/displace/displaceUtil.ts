@@ -1,4 +1,5 @@
 import { Bezier } from 'bezier-js';
+
 import SAT from 'sat';
 
 import GameConfig from '@app/GameConfig';
