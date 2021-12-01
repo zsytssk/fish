@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
@@ -63,7 +64,7 @@ const common_config = (mode) => ({
                     from: __dirname + '/public',
                     to: __dirname + '/bin',
                     globOptions: {
-                        ignore: ['/public/index.html'],
+                        ignore: ['**/index.html'],
                     },
                 },
             ],
@@ -78,13 +79,12 @@ const dev_config = {
     },
     watch: ENV === 'DEV' ? true : false,
     devServer: {
-        clientLogLevel: 'silent',
         host: '0.0.0.0',
-        contentBase: path.join(__dirname, 'bin'),
-        disableHostCheck: true,
+        static: {
+            directory: path.join(__dirname, 'bin'),
+        },
         port: 5001,
-        open: true,
-        openPage: 'http://localhost:5001',
+        open: 'http://localhost:5001',
     },
 };
 
@@ -92,28 +92,28 @@ const prod_config = {
     entry: {
         bundle: './src/main.ts',
     },
-    // optimization: {
-    //     splitChunks: {
-    //         cacheGroups: {
-    //             libs: {
-    //                 //node_modules里的代码
-    //                 test: /[\\/](node_modules)[\\/]/,
-    //                 chunks: 'initial',
-    //                 name: 'libs', //chunks name
-    //                 priority: 10, //优先级
-    //                 enforce: true,
-    //             },
-    //             laya: {
-    //                 //node_modules里的代码
-    //                 test: /[\\/](libs)[\\/]/,
-    //                 chunks: 'initial',
-    //                 name: 'laya', //chunks name
-    //                 priority: 10, //优先级
-    //                 enforce: true,
-    //             },
-    //         },
-    //     },
-    // },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                libs: {
+                    //node_modules里的代码
+                    test: /[\\/](node_modules)[\\/]/,
+                    chunks: 'initial',
+                    name: 'libs', //chunks name
+                    priority: 10, //优先级
+                    enforce: true,
+                },
+                laya: {
+                    //node_modules里的代码
+                    test: /[\\/](libs)[\\/]/,
+                    chunks: 'initial',
+                    name: 'laya', //chunks name
+                    priority: 10, //优先级
+                    enforce: true,
+                },
+            },
+        },
+    },
 };
 
 module.exports = (env, argv) => {

@@ -33,7 +33,7 @@ export const International = {
         guest: 'Guest',
         volumeSetting: 'Volume Setting',
         music: 'Music',
-        soundEffects: 'Sound Effect',
+        soundEffects: 'Sound',
         tips: 'Reminder',
         cancel: 'Cancel',
         confirm: 'Confirm',
