@@ -44,7 +44,8 @@ async function run(
     extern_config: HonorExternConfig = {},
 ) {
     Laya.Config.isAntialias = true;
-    Laya.Config.useRetinalCanvas = true;
+    // Laya.Config.useRetinalCanvas = true;
+    Laya.Config.useWebGL2 = false;
     // 根据IDE设置初始化引擎
     Laya.init(game_config.width, game_config.height, WebGL);
     Laya.stage.frameRate = Stage.FRAME_FAST;
