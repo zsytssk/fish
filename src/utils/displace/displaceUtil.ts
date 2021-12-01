@@ -21,30 +21,27 @@ export function getLineOutPoint(point: Point, derivative: SAT.Vector) {
 
     /** x = 0 | 1334 和直线的交点 */
     let x1 = 0;
-    let y1: number;
     let dx1: number;
-    let dy1: number;
     dx1 = x1 - point.x;
     /** 如果两个 */
     if (dx1 * derivative.x < 0) {
         x1 = GameConfig.width;
         dx1 = x1 - point.x;
     }
-    dy1 = (dx1 * derivative.y) / derivative.x;
-    y1 = dy1 + point.y;
+    const dy1 = (dx1 * derivative.y) / derivative.x;
+    const y1 = dy1 + point.y;
 
     const d1 = x1 * x1 + y1 * y1;
     /** y = 0 | 750 和直线的交点 */
     let x2 = 0;
     let y2: number;
-    let dx2: number;
     let dy2: number;
     dy2 = y2 - point.y;
     if (dy2 * derivative.y < 0) {
         y2 = GameConfig.height;
         dy2 = y2 - point.y;
     }
-    dx2 = (dy2 * derivative.x) / derivative.y;
+    const dx2 = (dy2 * derivative.x) / derivative.y;
     x2 = dx2 + point.x;
     const d2 = x2 * x2 + y2 * y2;
 
