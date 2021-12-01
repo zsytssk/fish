@@ -6,6 +6,11 @@
     "printWidth": 80,
     "useTabs": false,
     "tabWidth": 4,
-    "importOrder": ["^(?!Laya|honor)(\\w+)$", "^(laya|Laya|honor)(.*)$", "^@app/(.*)$", "^([./])(.*)$"],
+    "importOrder": [
+        "^(?!Laya|honor)([^/]+)$",
+        "^(laya|Laya|honor)(.*)$",
+        "^@app/(.*)$",
+        "^([./])(.*)$"
+    ],
     "importOrderSeparation": true
 }
