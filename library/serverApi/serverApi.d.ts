@@ -18,7 +18,7 @@ type RoomInRep = {
     roomId: number;
     bulletNum: number;
     socketUrl: string;
-    bringAmount: Number;
+    bringAmount: number;
     currency: string;
 };
 type CheckReplayRep = {
@@ -265,7 +265,7 @@ type ExchangeBullet = {
     msg: 'success';
     balance: number;
     bulletNum: number;
-    bringAmount: Number;
+    bringAmount: number;
     currency: string;
 };
 type ItemPrice = {
