@@ -39,7 +39,6 @@ testScope.addChild(
     body_test,
     count_test,
     fish_test,
-    game_test,
     hall_test,
     path_test,
     player_test,

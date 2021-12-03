@@ -26,13 +26,20 @@ export const GameEvent = {
     Destroy: ModelEvent.Destroy,
 };
 
+/** 游戏模式 普通场 ｜ 大奖赛 ｜ 竞技场 */
+export type GameMode = 1 | 2 | 3;
+
 export class GameModel extends ComponentManager {
+    public game_mode = 1;
     public currency = '';
     public fish_map: Map<string, FishModel> = new Map();
     private player_map: Map<string, PlayerModel> = new Map();
     constructor() {
         super();
         this.initCom();
+    }
+    public setGameMode(mode: GameMode) {
+        this.game_mode = mode;
     }
     public setCurrency(currency: string) {
         this.currency = currency;

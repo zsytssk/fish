@@ -40,22 +40,22 @@ import { activeShoalWave } from '@app/view/scenes/game/ani_wrap/shoalWave';
 import GameView, {
     AddFishViewInfo,
     BulletBoxDir,
-} from '@app/view/scenes/game/gameView';
+} from '@app/view/scenes/grandPrix/grandPrixView';
 
-import { FishCtrl } from './fishCtrl';
+import { FishCtrl } from '../game/fishCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
     tipExchange,
     waitEnterGame,
-} from './gameCtrlUtils';
+} from '../game/gameCtrlUtils';
 import {
     convertEnterGame,
     offGameSocket,
     onGameSocket,
     sendToGameSocket,
-} from './gameSocket';
-import { PlayerCtrl } from './playerCtrl';
+} from '../game/gameSocket';
+import { PlayerCtrl } from '../game/playerCtrl';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -66,7 +66,7 @@ export type ChangeUserNumInfo = {
     }>;
 };
 
-/** 游戏ctrl */
+/** 大奖赛ctrl */
 export class GameCtrl {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
@@ -142,7 +142,7 @@ export class GameCtrl {
     }
     private initEvent() {
         const { view } = this;
-        const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
+        const { btn_leave } = view;
         const { CLICK } = Event;
 
         this.onModel();
@@ -159,22 +159,6 @@ export class GameCtrl {
             this,
         );
 
-        btn_help.on(CLICK, this, (e: Event) => {
-            e.stopPropagation();
-            HelpPop.preEnter();
-        });
-        btn_gift.on(CLICK, this, (e: Event) => {
-            e.stopPropagation();
-            LotteryPop.preEnter();
-        });
-        btn_voice.on(CLICK, this, (e: Event) => {
-            e.stopPropagation();
-            VoicePop.preEnter();
-        });
-        btn_shop.on(CLICK, this, (e: Event) => {
-            e.stopPropagation();
-            ShopPop.preEnter();
-        });
         btn_leave.on(CLICK, this, (e: Event) => {
             const lang = getLang();
             const { leaveTip } = InternationalTip[lang];
@@ -217,7 +201,8 @@ export class GameCtrl {
                     if (server_index === 1 || server_index === 2) {
                         pos = 'right';
                     }
-                    view.setBulletBoxPos(pos);
+                    // TODO-delete
+                    // view.setBulletBoxPos(pos);
                 }
 
                 const player_view = view.addGun();
@@ -271,16 +256,12 @@ export class GameCtrl {
         } = data;
 
         this.isTrial = isTrial;
-        if (isTrial) {
-            view.setTrialStyle();
-        }
         this.addPlayers(users);
         this.addFish(fish);
         /** 复盘冰冻 */
         if (frozen) {
             model.freezing_com.freezing(frozen_left, fish_list);
         }
-        view.setExchangeRate(exchange_rate, currency);
     }
     public calcClientIndex(server_index: number) {
         const cur_player = this.model.getCurPlayer();

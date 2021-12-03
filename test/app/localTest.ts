@@ -10,12 +10,9 @@ import { getParams } from '@app/utils/utils';
 
 import { test_data } from '../testData';
 import { sleep } from '../utils/testUtils';
-import { body_test } from './game/body.spec';
-import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { shoal_test } from './game/shoal/shoal.spec';
-import { skill_test } from './game/skill.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
@@ -28,7 +25,7 @@ export async function localTest() {
     // mock_web_socket_test.runTest(ServerEvent.UseBomb);
     // mock_web_socket_test.runTest(ServerEvent.UseLock);
     // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
-    game_test.runTest('enter_game', [true]).then(() => {
+    game_test.enter_grand_prix(true).then(() => {
         // fish_test.runTest('add_fish');
         // sleep(0.5).then(() => {
         //     player_test.runTest('add_cur_player');

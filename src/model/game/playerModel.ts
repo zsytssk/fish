@@ -7,11 +7,11 @@ import { getGunInfo } from '@app/utils/dataUtil';
 import { error } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 
-import { FishEvent, FishModel } from './fish/fishModel';
+import { FishEvent } from './fish/fishModel';
 import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
-import { SkillCtorMap, SkillModel } from './skill/skillModel';
+import { SkillActiveData, SkillCtorMap, SkillModel } from './skill/skillModel';
 
 type SkillInfoMap = {
     [key: string]: SkillInfo;
@@ -114,10 +114,10 @@ export class PlayerModel extends ComponentManager {
     private initSkill(skills: SkillInfoMap) {
         const { skill_map } = this;
         for (const key in SkillCtorMap) {
-            if (!SkillCtorMap.hasOwnProperty(key)) {
+            const ctor = SkillCtorMap[key];
+            if (!ctor) {
                 continue;
             }
-            const ctor = SkillCtorMap[key];
             const data = skills[key] || {};
             const info = {
                 player: this,
@@ -127,7 +127,7 @@ export class PlayerModel extends ComponentManager {
         }
     }
     /** 激活技能 */
-    public activeSkill(skill: SkillMap, data = {} as any) {
+    public activeSkill(skill: SkillMap, data = {} as SkillActiveData) {
         const skill_model = this.skill_map.get(skill);
         skill_model.active(data);
     }

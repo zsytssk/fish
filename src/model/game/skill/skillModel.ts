@@ -6,11 +6,12 @@ import { FreezeModel } from './freezeModel';
 import { LockFishModel } from './lockFishModel';
 import { SkillCoreCom } from './skillCoreCom';
 
+export type SkillActiveData = unknown;
 /** 技能的接口 */
 export interface SkillModel {
     skill_core: SkillCoreCom;
     init(): void;
-    active(info: any): void;
+    active(info: SkillActiveData): void;
     reset(): void;
     disable(): void;
     destroy(): void;

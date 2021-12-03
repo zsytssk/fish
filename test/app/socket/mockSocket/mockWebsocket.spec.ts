@@ -180,7 +180,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
     });
 
     runner.describe(ServerEvent.UseLock, async () => {
-        await game_test.runTest('enter_game');
+        await game_test.enter_game();
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
         let needActive = true;
@@ -207,7 +207,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
     });
 
     runner.describe('otherLockFish', async () => {
-        await game_test.runTest('enter_game');
+        await game_test.enter_game();
         const other_id = test_data.otherUserId + '0';
         const player = modelState.app.game.getPlayerById(other_id);
         if (!player) {
@@ -241,7 +241,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
     });
 
     runner.describe('otherLockFish2', async () => {
-        await game_test.runTest('enter_game');
+        await await game_test.enter_game();
         const other_id = test_data.otherUserId + '0';
 
         const { event } = getSocket('game') as MockWebSocket;

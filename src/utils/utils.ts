@@ -5,13 +5,11 @@ import { ColorFilter } from 'laya/filters/ColorFilter';
 import { GlowFilter } from 'laya/filters/GlowFilter';
 import { Handler } from 'laya/utils/Handler';
 
-import { log } from './log';
-
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';
 }
 
-export function callFunc<T extends (...params: any[]) => void>(
+export function callFunc<T extends (...params: unknown[]) => void>(
     func: T,
     ...params: Parameters<T>
 ) {
@@ -23,10 +21,11 @@ export function callFunc<T extends (...params: any[]) => void>(
 
 /** set object properties */
 export function setProps<T>(data: T, props: Partial<T>) {
+    if (props.game) {
+        console.warn('test:>');
+    }
+
     for (const key in props) {
-        if (!props.hasOwnProperty(key)) {
-            continue;
-        }
         data[key] = props[key];
     }
 }
@@ -99,7 +98,7 @@ export function playSkeleton(ani: Skeleton, ...params: Params) {
 }
 
 export function playSkeletonOnce(ani: Skeleton, ani_name: string | number) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         ani.once(Event.STOPPED, ani, () => {
             resolve(undefined);
         });
@@ -118,7 +117,7 @@ export function playSkeletonOnce(ani: Skeleton, ani_name: string | number) {
 
 /** 改变骨骼动画的url */
 export function utilSkeletonLoadUrl(ani: Skeleton, url: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         ani.load(
             url,
             new Handler(ani, () => {
@@ -141,7 +140,7 @@ export function createRedFilter() {
     return new ColorFilter(redMat);
 }
 
-export function createDarkFilter(radio: number = 0.7) {
+export function createDarkFilter(radio = 0.7) {
     const mat_val = 1 - radio;
     // prettier-ignore
     const mat = [
@@ -161,7 +160,7 @@ export function createColorFilter(
     r: number | string,
     g?: number,
     b?: number,
-    a: number = 255,
+    a = 255,
 ) {
     if (typeof r === 'string') {
         const rgb = hexToRgb(r);
@@ -261,12 +260,12 @@ export function formatDateStr(a: number): string {
     }
     return '' + a;
 }
-export function tplStr<T extends {}>(str: string, data: T) {
+export function tplStr<T extends Record<string, unknown>>(
+    str: string,
+    data: T,
+) {
     let msg = str;
     for (const key in data) {
-        if (!data.hasOwnProperty(key)) {
-            continue;
-        }
         console.log(key, msg);
         msg = msg.replace(new RegExp(`{${key}}`, 'g'), data[key] + '');
     }

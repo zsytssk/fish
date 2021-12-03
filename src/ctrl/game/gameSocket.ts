@@ -16,15 +16,10 @@ import {
     LockFishInitInfo,
 } from '@app/model/game/skill/lockFishModel';
 import { SkillInfo } from '@app/model/game/skill/skillCoreCom';
-import {
-    getCurUserId,
-    isCurUser,
-    getCurPlayer,
-    getUserInfo,
-} from '@app/model/modelState';
+import { getCurUserId, isCurUser, getCurPlayer } from '@app/model/modelState';
 
 import { GameCtrl } from './gameCtrl';
-import { changeBulletNum, tipExchange } from './gameCtrlUtils';
+import { tipExchange } from './gameCtrlUtils';
 
 let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
@@ -111,7 +106,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.shoalComingTip(data.reverse);
             game.addFish(data.fish);
         },
-        [ServerEvent.FishShoalWarn]: (data: FishShoalWarnRep) => {},
         [ServerEvent.RoomOut]: (data: RoomOutRep) => {
             game.roomOut(data);
         },

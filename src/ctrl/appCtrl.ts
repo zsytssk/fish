@@ -12,7 +12,7 @@ import { KeyBoardNumber } from '@app/utils/layaKeyboard';
 import { ctrlState } from './ctrlState';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
 import { GameCtrl } from './game/gameCtrl';
-// import honor from 'honor';
+import { GameCtrl as GrandPrixCtrl } from './grandPrix/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
 import { onCreateSocket } from './net/webSocketWrapUtil';
 
@@ -65,5 +65,9 @@ export class AppCtrl {
     public enterGame(data: Partial<RoomInRep>) {
         const game_model = this.model.enterGame();
         return GameCtrl.preEnter(data, game_model);
+    }
+    public enterGrandPrix(data: Partial<RoomInRep>) {
+        const game_model = this.model.enterGame();
+        return GrandPrixCtrl.preEnter(data, game_model);
     }
 }

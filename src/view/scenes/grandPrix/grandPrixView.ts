@@ -23,15 +23,15 @@ import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
 
 import { viewState } from '../../viewState';
-import { FishView, FishViewInfo } from './fishView';
-import GunBoxView from './gunBoxView';
-import SkillItemView from './skillItemView';
+import { FishView, FishViewInfo } from '../game/fishView';
+import GunBoxView from '../game/gunBoxView';
+import SkillItemView from '../game/skillItemView';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
-export default class GameView
-    extends ui.scenes.game.gameUI
+export default class GrandPrixView
+    extends ui.scenes.grandPrix.gameUI
     implements HonorScene
 {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
@@ -44,8 +44,8 @@ export default class GameView
     private bullet_box_dir: BulletBoxDir;
     public static async preEnter() {
         const game = (await honor.director.runScene(
-            'scenes/game/game.scene',
-        )) as GameView;
+            'scenes/grandPrix/game.scene',
+        )) as GrandPrixView;
         const { ani_wrap, ani_overlay } = game;
         setProps(viewState, { game, ani_wrap, ani_overlay });
         return game;
@@ -55,17 +55,9 @@ export default class GameView
             this.initLang(lang);
         });
     }
-    private initLang(lang: Lang) {
-        const { auto_shoot_txt } = this.skill_box;
-        const status = this.skill_box.auto_shoot_light.visible;
-        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
-        auto_shoot_txt.skin = `image/international/${skin_name}.png`;
-    }
+    private initLang(lang: Lang) {}
     /** 设置游客样式 */
-    public setTrialStyle() {
-        const { btn_gift } = this;
-        btn_gift.visible = false;
-    }
+    public setTrialStyle() {}
     public showBubbleRefresh(bg_num?: number) {
         const { bubble_overlay, bg, bubble_wall, bubble_ani } = this;
 
@@ -108,31 +100,6 @@ export default class GameView
         }
         this.bullet_box_pos = scale > 0.8 ? 20 : -30;
         this.setBulletBoxPos(this.bullet_box_dir);
-
-        this.resize_scale = scale;
-        const {
-            btn_gift,
-            btn_voice,
-            bullet_box,
-            btn_leave,
-            btn_help,
-            btn_shop,
-            skill_box,
-        } = this;
-        btn_leave.x = 20 * scale;
-        btn_gift.x = 120 * scale;
-        btn_leave.x = 20 * scale;
-        btn_voice.right = 120 * scale;
-        btn_help.right = 20 * scale;
-        btn_voice.y = 10 * scale;
-
-        bullet_box.scale(scale, scale);
-        btn_voice.scale(scale, scale);
-        btn_gift.scale(scale, scale);
-        btn_leave.scale(scale, scale);
-        btn_help.scale(scale, scale);
-        btn_shop.scale(scale, scale);
-        skill_box.scale(scale, scale);
     }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
@@ -245,11 +212,11 @@ export default class GameView
         gun_wrap.addChild(gun);
         return gun;
     }
+
+    /** @deprecated */
     public setBulletNum(num: number) {
         const lang = getLang();
         const { NumBullet } = InternationalTip[lang];
-        const { bullet_num } = this;
-        bullet_num.text = `${NumBullet}: ` + num;
     }
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
@@ -259,42 +226,7 @@ export default class GameView
     }
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
-        this.skill_box.auto_shoot_light.visible = status;
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
-        this.skill_box.auto_shoot_txt.skin = `image/international/${skin_name}.png`;
-    }
-    public setExchangeRate(rate: number, currency: string) {
-        const lang = getLang();
-        const { bullet } = InternationalTip[lang];
-
-        const { exchange_rate } = this;
-        exchange_rate.innerHTML = exchange_rate_tpl
-            .replace('$0', bullet)
-            .replace('$1', rate + '')
-            .replace('$2', currency);
-        exchange_rate.style.font = '20px Arial';
-    }
-    public setEnergyRadio(radio: number) {
-        const { energy_bar } = this.skill_box;
-        let { mask } = energy_bar;
-        const { width, height } = energy_bar;
-        if (!mask) {
-            mask = new Sprite();
-            energy_bar.mask = mask;
-        }
-        energy_bar.mask.graphics.clear();
-        energy_bar.mask.graphics.drawRect(0, 0, width * radio, height, '#fff');
-    }
-    public energyLight() {
-        const { energy_light } = this.skill_box;
-        return new Promise((resolve, reject) => {
-            energy_light.visible = true;
-            energy_light.on(Event.STOPPED, energy_light, () => {
-                energy_light.visible = false;
-                resolve();
-            });
-            playSkeleton(energy_light, 0, false);
-        });
     }
     /**  设置子弹box的位置 */
     public setBulletBoxPos(pos: BulletBoxDir) {

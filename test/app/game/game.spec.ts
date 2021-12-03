@@ -1,60 +1,73 @@
-import { Test } from 'testBuilder';
+import { testBuild } from 'testBuilder';
 
 import { injectAfter } from 'honor/utils/tool';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { GameCtrl } from '@app/ctrl/game/gameCtrl';
 import { GameTestCtrl } from '@app/ctrl/game/gameTest/gameTestCtrl';
+import { GameCtrl as GrandPrixCtrl } from '@app/ctrl/grandPrix/gameCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 
-const a = {
-    b() {
-        return sleep(3).then(() => {
-            console.log(`injectAfter:>`, 1);
-            return sleep(3).then(() => {
-                console.log(`injectAfter:>`, 2);
+export const game_test = testBuild({
+    enter_game: async (add_player?: boolean) => {
+        if (modelState && modelState.app && modelState.app.game) {
+            return;
+        }
+
+        await injectAfter(HallCtrl, 'preEnter', () => {
+            setTimeout(() => {
+                ctrlState.app.enterGame({});
             });
         });
+
+        if (!add_player) {
+            return;
+        }
+
+        let running = false;
+        await injectAfter(GameCtrl, 'preEnter', async () => {
+            await sleep(1);
+            if (running) {
+                return;
+            }
+            running = true;
+        });
+
+        console.log(`test:>`, modelState.app.game);
     },
-};
+    enter_grand_prix: async (add_player?: boolean) => {
+        if (modelState && modelState.app && modelState.app.game) {
+            return;
+        }
 
-export const game_test = new Test('game', (runner) => {
-    runner.describe('enter_game', (add_player?: boolean) => {
-        return new Promise((resolve, reject) => {
-            if (modelState && modelState.app && modelState.app.game) {
-                return resolve();
-            }
-            injectAfter(HallCtrl, 'preEnter', () => {
-                setTimeout(() => {
-                    ctrlState.app.enterGame({});
-                });
-            });
-            // injectAfter(a, 'b', () => {
-            //     setTimeout(() => {
-            //         ctrlState.app.enterGame('test');
-            //     });
-            // });
-            // a.b();
-
-            if (!add_player) {
-                return resolve();
-            }
-
-            let running = false;
-            injectAfter(GameCtrl, 'preEnter', async () => {
-                await sleep(1);
-                if (running) {
-                    resolve();
-                    return;
-                }
-                running = true;
-                resolve();
+        await injectAfter(HallCtrl, 'preEnter', () => {
+            setTimeout(() => {
+                ctrlState.app.enterGrandPrix({});
             });
         });
-    });
-    runner.describe('enter_game_test', (add_player?: boolean) => {
+
+        if (!add_player) {
+            return;
+        }
+
+        let running = false;
+        await injectAfter(GrandPrixCtrl, 'preEnter', async () => {
+            await sleep(1);
+            if (running) {
+                return;
+            }
+            running = true;
+        });
+
+        if (modelState.app.game) {
+            modelState.app.game.setGameMode(2);
+        }
+        console.log(`test:>`, modelState.app.game);
+    },
+
+    enter_game_test: () => {
         GameTestCtrl.preEnter();
-    });
+    },
 });

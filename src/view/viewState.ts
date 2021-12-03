@@ -3,9 +3,10 @@ import { Point } from 'laya/maths/Point';
 import { Box } from 'laya/ui/Box';
 
 import GameView from './scenes/game/gameView';
+import GrandPrixView from './scenes/grandPrix/grandPrixView';
 
 type ViewState = {
-    game: GameView;
+    game: GameView | GrandPrixView;
     /** 所有的动画的芙父容器(底层) */
     ani_wrap: Box;
     /** 所有的动画的芙父容器(上层) */
@@ -23,7 +24,7 @@ export function addBullet(skin: string, rage: boolean) {
 export function addNet(skin: string) {
     return viewState.game.addNet(skin);
 }
-export function onPoolClick(once: boolean = false) {
+export function onPoolClick(once = false) {
     return viewState.game.onPoolClick(once);
 }
 export function offPoolClick() {
@@ -32,7 +33,7 @@ export function offPoolClick() {
 export function setBulletNum(num: number) {
     return viewState.game.setBulletNum(num);
 }
-export function onFishClick(once: boolean = false) {
+export function onFishClick(once = false) {
     return viewState.game.onFishClick(once);
 }
 export function offFishClick() {
