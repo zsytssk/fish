@@ -6,7 +6,10 @@ import { FreezeModel } from './freezeModel';
 import { LockFishModel } from './lockFishModel';
 import { SkillCoreCom } from './skillCoreCom';
 
-export type SkillActiveData = unknown;
+export type SkillActiveData = {
+    user_id: string;
+    [key: string]: unknown;
+};
 /** 技能的接口 */
 export interface SkillModel {
     skill_core: SkillCoreCom;

@@ -132,7 +132,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
 
     runner.describe('other' + ServerEvent.UseBomb, async () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
-        player_test.runTest('add_other_player');
+        player_test.add_cur_player();
 
         sendEvent.on(ServerEvent.UseBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
@@ -211,7 +211,7 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
         const other_id = test_data.otherUserId + '0';
         const player = modelState.app.game.getPlayerById(other_id);
         if (!player) {
-            player_test.runTest('add_other_player', [1]);
+            player_test.add_cur_player(1);
             await sleep(1);
         }
 

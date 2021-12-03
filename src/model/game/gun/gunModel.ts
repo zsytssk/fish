@@ -5,12 +5,16 @@ import { TimeoutCom } from 'comMan/timeoutCom';
 import * as SAT from 'sat';
 
 import { Config } from '@app/data/config';
-import { getBulletStartPos, getGunLevelSkinInfo } from '@app/utils/dataUtil';
+import {
+    getBulletStartPos,
+    getGunLevelSkinInfo,
+    getGunPos,
+} from '@app/utils/dataUtil';
 
 import { GunAutoShootCom } from '../com/gunAutoShootCom';
 import { LockTarget } from '../com/moveCom/lockMoveCom';
 import { FishModel } from '../fish/fishModel';
-import { PlayerModel } from '../playerModel';
+import { DetectUpsideDownFn, PlayerModel } from '../playerModel';
 import { BulletGroup, BulletGroupInfo } from './bulletGroup';
 
 export const GunEvent = {
@@ -58,7 +62,7 @@ export class GunModel extends ComponentManager {
     /** 炮口的方向 */
     public direction = new SAT.Vector(0, -1);
     /** 位置 */
-    public readonly pos: Point;
+    public pos: Point;
     /** 炮等级 */
     public bullet_cost: number;
     /** 炮皮肤 */
@@ -85,10 +89,9 @@ export class GunModel extends ComponentManager {
     public rage = false;
     public event: EventCom;
     public timeout: TimeoutCom;
-    constructor(pos: Point, skin: string, player: PlayerModel) {
+    constructor(skin: string, player: PlayerModel) {
         super();
 
-        this.pos = pos;
         this.skin = skin;
         this.player = player;
         this.initCom();
@@ -105,14 +108,39 @@ export class GunModel extends ComponentManager {
         this.setBulletCost(this.player.bullet_cost);
     }
 
-    private initDirection() {
-        const { server_index } = this.player;
-        if (server_index < 2) {
-            this.setDirection(new SAT.Vector(0, -1));
-            /** 炮台在下面, 方向为向上 */
-        } else {
-            this.setDirection(new SAT.Vector(0, 1));
+    public setClientInfo(detectUpsideDownFn: DetectUpsideDownFn) {
+        const { server_index, game } = this.player;
+        const pos = getGunPos(server_index, game.game_mode);
+        const needUpsideDownFn = detectUpsideDownFn(server_index);
+        this.pos = pos;
+
+        if (needUpsideDownFn) {
             /** 炮台在下面, 方向为向下 */
+            this.setDirection(new SAT.Vector(0, 1));
+        } else {
+            /** 炮台在下面, 方向为向上 */
+            this.setDirection(new SAT.Vector(0, -1));
+        }
+    }
+
+    private initDirection() {
+        const { server_index, game } = this.player;
+        if (game.game_mode === 2) {
+            if (server_index < 1) {
+                this.setDirection(new SAT.Vector(0, -1));
+                /** 炮台在下面, 方向为向上 */
+            } else {
+                this.setDirection(new SAT.Vector(0, 1));
+                /** 炮台在下面, 方向为向下 */
+            }
+        } else {
+            if (server_index < 2) {
+                this.setDirection(new SAT.Vector(0, -1));
+                /** 炮台在下面, 方向为向上 */
+            } else {
+                this.setDirection(new SAT.Vector(0, 1));
+                /** 炮台在下面, 方向为向下 */
+            }
         }
     }
     public setDirection(direction: SAT.Vector) {
@@ -130,7 +158,7 @@ export class GunModel extends ComponentManager {
         this.setBulletCost(this.bullet_cost, true);
         // this.event.emit(GunEvent.ChangeSkin, skinId);
     }
-    public setBulletCost(bullet_cost: number, force: boolean = false) {
+    public setBulletCost(bullet_cost: number, force = false) {
         if (bullet_cost === this.bullet_cost && !force) {
             return;
         }
@@ -213,7 +241,7 @@ export class GunModel extends ComponentManager {
         }, shoot_space);
     }
     /** 为了防止网络延迟导致炮台抖动, 本人的炮台角度 不跟随服务端 */
-    public addBullet(direction: Point, syncDirec = true) {
+    public addBullet(direction: Point, syncDirection = true) {
         const {
             bullet_cost,
             skin,
@@ -230,11 +258,12 @@ export class GunModel extends ComponentManager {
         if (player.bullet_num < bullet_cost && player.is_cur_player) {
             return;
         }
-        if (syncDirec) {
+        if (syncDirection) {
             this.setDirection(velocity);
         }
         const bullets_pos = getBulletStartPos(
             player.server_index,
+            player.game.game_mode,
             velocity.clone(),
             `${skin}${level_skin}`,
         );

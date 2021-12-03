@@ -14,6 +14,7 @@ import { SHAPE } from '@app/data/shape';
 import { SpriteType, SpriteInfo } from '@app/data/sprite';
 import { SPRITE } from '@app/data/sprite';
 import { FishModel } from '@app/model/game/fish/fishModel';
+import { GameMode } from '@app/model/game/gameModel';
 
 import { vectorToAngle } from './mathUtils';
 
@@ -30,11 +31,11 @@ export function getGunSkinMap(skin: string, level: string) {
     }
     return result;
 }
-export function getGunInfo(server_index: number) {
-    const pos = Coordinates.gun_global_pos[server_index];
-    return {
-        pos,
-    };
+export function getGunPos(server_index: number, game_mode: GameMode = 1) {
+    if (game_mode === 2) {
+        return Coordinates.grand_prix_gun_global_pos[server_index];
+    }
+    return Coordinates.gun_global_pos[server_index];
 }
 export function getGunLevelSkinInfo(level: number) {
     const { LevelUp: level_up, HoleNum: hole_num } = GunInfo;
@@ -81,6 +82,7 @@ export function getShadowInfo(type: string) {
  */
 export function getBulletStartPos(
     server_index: number,
+    game_mode: GameMode,
     direction: SAT.Vector,
     skin: string,
 ): Point[] {
@@ -94,8 +96,7 @@ export function getBulletStartPos(
     for (const offset of offsets) {
         const nv = offset_v.clone().scale(offset, offset);
         const server_client_index = server_index;
-        const gun_global_pos: Point =
-            Coordinates.gun_global_pos[server_client_index];
+        const gun_global_pos: Point = getGunPos(server_client_index, game_mode);
         const gun_origin_pos: Point = Coordinates.guns_inside_pos.origin_point;
         const gun_start_point: Point = Coordinates.guns_inside_pos.start_point;
         let x: number;

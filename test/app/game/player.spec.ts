@@ -1,5 +1,6 @@
-import { Test } from 'testBuilder';
+import { Test, testBuild } from 'testBuilder';
 
+import { ctrlState } from '@app/ctrl/ctrlState';
 import { sendToGameSocket } from '@app/ctrl/game/gameSocket';
 import { MockWebSocket } from '@app/ctrl/net/mockWebSocket';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
@@ -11,11 +12,10 @@ import { PlayerInfo } from '@app/model/game/playerModel';
 import { modelState } from '@app/model/modelState';
 
 import { test_data } from '../../testData';
-import { sleep } from '../../utils/testUtils';
 
 /** @type {PlayerModel} 的测试 */
-export const player_test = new Test('player', (runner) => {
-    runner.describe('add_cur_player', (server_index = 1) => {
+export const player_test = testBuild({
+    add_cur_player: (server_index = 1) => {
         const player = modelState.app.game.getPlayerById(test_data.userId);
         if (player) {
             player.destroy();
@@ -23,7 +23,7 @@ export const player_test = new Test('player', (runner) => {
         // body_test.runTest('show_shape');
         const player_data = {
             user_id: test_data.userId,
-            server_index: 2,
+            server_index: 1,
             bullet_cost: 20,
             bullet_num: 100000000,
             gun_skin: '1',
@@ -52,15 +52,16 @@ export const player_test = new Test('player', (runner) => {
                 },
             },
         } as PlayerInfo;
-        modelState.app.game.addPlayer(player_data);
-    });
+        console.log(`test:>2`, modelState.app.game);
+        ctrlState.game.addPlayers([player_data]);
+    },
 
-    let i = 0;
-    runner.describe('add_other_player', async (seat_index: number) => {
+    add_other_player: async (seat_index: number) => {
+        let i = 0;
         const other_id = test_data.otherUserId + i;
         i++;
 
-        let other_player = modelState.app.game.getPlayerById(other_id);
+        const other_player = modelState.app.game.getPlayerById(other_id);
         if (!other_player) {
             seat_index = isNaN(Number(seat_index)) ? 3 : seat_index;
 
@@ -95,7 +96,7 @@ export const player_test = new Test('player', (runner) => {
                     },
                 },
             } as PlayerInfo;
-            other_player = modelState.app.game.addPlayer(player_data);
+            ctrlState.game.addPlayers([player_data]);
 
             // await sleep(2);
             // const { event } = getSocket('game') as MockWebSocket;
@@ -118,9 +119,9 @@ export const player_test = new Test('player', (runner) => {
             //     200,
             // );
         }
-    });
+    },
 
-    runner.describe('list_player_id', () => {
+    list_player_id: () => {
         const player_list = modelState.app.game['player_list'];
         for (const player of player_list) {
             console.log(
@@ -129,9 +130,9 @@ export const player_test = new Test('player', (runner) => {
                 }`,
             );
         }
-    });
+    },
 
-    runner.describe('repeat_hit', () => {
+    repeat_hit: () => {
         const cur_player = modelState.app.game.getCurPlayer();
         cur_player.gun.event.on(
             GunEvent.CastFish,
@@ -151,5 +152,5 @@ export const player_test = new Test('player', (runner) => {
                 } as HitReq);
             },
         );
-    });
+    },
 });

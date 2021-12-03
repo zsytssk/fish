@@ -42,6 +42,7 @@ import {
     setBulletNum,
 } from '@app/view/viewState';
 
+import { GameCtrl as GrandPrixCtrl } from '../grandPrix/gameCtrl';
 import { BulletCtrl } from './bulletCtrl';
 import { GameCtrl } from './gameCtrl';
 import { sendToGameSocket } from './gameSocket';
@@ -59,7 +60,7 @@ export class PlayerCtrl {
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
-        private game_ctrl: GameCtrl,
+        private game_ctrl: GameCtrl | GrandPrixCtrl,
     ) {
         this.init();
     }
@@ -71,11 +72,11 @@ export class PlayerCtrl {
         const { view, model, game_ctrl } = this;
         const { server_index, gun, bullet_num, is_cur_player } = model;
         const { pos } = gun;
-        if (server_index >= 2) {
+        if (game_ctrl.needUpSideDown(server_index)) {
             view.fixServerTopPos();
         }
         const client_index = game_ctrl.calcClientIndex(server_index);
-        if (client_index >= 2) {
+        if (game_ctrl.needUpSideDown(client_index)) {
             view.fixClientTopPos();
         }
         view.setPos(pos.x, pos.y);

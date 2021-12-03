@@ -64,7 +64,7 @@ export const game_test = testBuild({
         if (modelState.app.game) {
             modelState.app.game.setGameMode(2);
         }
-        console.log(`test:>`, modelState.app.game);
+        console.log(`test:>1`, modelState.app.game);
     },
 
     enter_game_test: () => {

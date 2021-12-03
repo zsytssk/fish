@@ -14,7 +14,8 @@ import {
     createFishGroup,
     playerCaptureFish,
 } from './fish/fishModelUtils';
-import { PlayerInfo, PlayerModel } from './playerModel';
+import { DetectUpsideDownFn, PlayerInfo, PlayerModel } from './playerModel';
+import { SkillActiveData } from './skill/skillModel';
 
 export const GameEvent = {
     /** 添加鱼 */
@@ -30,7 +31,7 @@ export const GameEvent = {
 export type GameMode = 1 | 2 | 3;
 
 export class GameModel extends ComponentManager {
-    public game_mode = 1;
+    public game_mode: GameMode = 1;
     public currency = '';
     public fish_map: Map<string, FishModel> = new Map();
     private player_map: Map<string, PlayerModel> = new Map();
@@ -125,8 +126,9 @@ export class GameModel extends ComponentManager {
         return shoal_com;
     }
     /** 添加用户 */
-    public addPlayer(data: PlayerInfo) {
+    public addPlayer(data: PlayerInfo, detectUpsideDownFn: DetectUpsideDownFn) {
         const player = new PlayerModel(data, this);
+        player.setClientInfo(detectUpsideDownFn);
         this.player_map.set(data.user_id, player);
         this.event.emit(GameEvent.AddPlayer, player);
         player.init();
@@ -150,7 +152,7 @@ export class GameModel extends ComponentManager {
     public removePlayer(player: PlayerModel) {
         this.player_map.delete(player.user_id);
     }
-    public activeSkill(skill: SkillMap, data: { user_id: string }) {
+    public activeSkill(skill: SkillMap, data: SkillActiveData) {
         const player = this.getPlayerById(data.user_id);
         if (!player) {
             error(`Game:>activeSkill:> cant find player:>${data.user_id}`);

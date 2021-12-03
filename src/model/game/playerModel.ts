@@ -3,7 +3,7 @@ import { EventCom } from 'comMan/eventCom';
 
 import { SkillMap } from '@app/data/config';
 import { ModelEvent } from '@app/model/modelEvent';
-import { getGunInfo } from '@app/utils/dataUtil';
+import { getGunPos } from '@app/utils/dataUtil';
 import { error } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 
@@ -43,6 +43,7 @@ export const PlayerEvent = {
     UpdateInfo: 'update_info',
     Destroy: ModelEvent.Destroy,
 };
+export type DetectUpsideDownFn = (server_index: number) => boolean;
 
 /** 玩家的数据类 */
 export class PlayerModel extends ComponentManager {
@@ -80,8 +81,7 @@ export class PlayerModel extends ComponentManager {
     private createGun(player_info: PlayerInfo) {
         const { gun_skin, skills, server_index, ...other } = player_info;
 
-        const { pos } = getGunInfo(server_index);
-        const gun = new GunModel(pos, gun_skin, this);
+        const gun = new GunModel(gun_skin, this);
         this.gun = gun;
 
         this.updateInfo({
@@ -90,6 +90,9 @@ export class PlayerModel extends ComponentManager {
         });
 
         this.initSkill(skills);
+    }
+    public setClientInfo(detectUpsideDownFn: DetectUpsideDownFn) {
+        this.gun.setClientInfo(detectUpsideDownFn);
     }
     public init() {
         const { skill_map, gun } = this;

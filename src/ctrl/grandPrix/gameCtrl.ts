@@ -22,6 +22,7 @@ import { ShoalEvent } from '@app/model/game/com/shoalCom';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
+import { SkillActiveData } from '@app/model/game/skill/skillModel';
 import { isCurUser } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
@@ -171,6 +172,9 @@ export class GameCtrl {
             });
         });
     }
+    public needUpSideDown(server_index: number) {
+        return server_index > 0;
+    }
     private onModel() {
         const { event } = this.model;
         const { view } = this;
@@ -194,7 +198,7 @@ export class GameCtrl {
             (player: PlayerModel) => {
                 const { server_index, is_cur_player } = player;
                 if (is_cur_player) {
-                    if (server_index > 1) {
+                    if (this.needUpSideDown(server_index)) {
                         view.upSideDown();
                     }
                     let pos = 'left' as BulletBoxDir;
@@ -265,10 +269,10 @@ export class GameCtrl {
     }
     public calcClientIndex(server_index: number) {
         const cur_player = this.model.getCurPlayer();
-        if (cur_player.server_index <= 1) {
+        if (cur_player.server_index < 1) {
             return server_index;
         }
-        return 3 - server_index;
+        return 1 - server_index;
     }
     public onShoot(data: ShootRep) {
         const { direction } = data;
@@ -287,7 +291,7 @@ export class GameCtrl {
     public shoalComingTip(reverse: boolean) {
         this.model.shoalComingTip(reverse);
     }
-    public activeSkill(skill: SkillMap, data: any) {
+    public activeSkill(skill: SkillMap, data: SkillActiveData) {
         this.model.activeSkill(skill, data);
     }
     public disableSkill(skill: SkillMap, user_id: any) {
@@ -303,7 +307,7 @@ export class GameCtrl {
     }
     public addPlayers(player_list: PlayerInfo[]) {
         for (const player of player_list) {
-            this.model.addPlayer(player);
+            this.model.addPlayer(player, this.needUpSideDown);
         }
     }
     public setPlayersEmit(ids: string[]) {

@@ -17,7 +17,7 @@ import { player_test } from './player.spec';
 export const skill_test = new Test('skill', (runner) => {
     runner.describe('auto_shoot', () => {
         const player_id = modelState.app.user_info.user_id;
-        player_test.runTest('add_player');
+        player_test.add_cur_player();
         const player = modelState.app.game.getPlayerById(player_id);
         player.gun.autoShoot.active();
 
@@ -79,7 +79,7 @@ export const skill_test = new Test('skill', (runner) => {
     runner.describe('track_fish', async () => {
         const player_id = modelState.app.user_info.user_id;
         fish_test.runTest('add_fish_group');
-        player_test.runTest('add_cur_player');
+        player_test.add_cur_player();
         const player = modelState.app.game.getPlayerById(player_id);
 
         await sleep(1);
@@ -117,7 +117,7 @@ export const skill_test = new Test('skill', (runner) => {
     runner.describe('speed_up', () => {
         const player_id = modelState.app.user_info.user_id;
         fish_test.runTest('add_fish');
-        player_test.runTest('add_player');
+        player_test.add_cur_player();
         const player = modelState.app.game.getPlayerById(player_id);
         player.gun.toggleSpeedUp(true);
 

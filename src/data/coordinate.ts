@@ -27,6 +27,16 @@ export const Coordinates = {
             y: 54,
         },
     } as GunGlobalPos,
+    grand_prix_gun_global_pos: {
+        '0': {
+            x: 960,
+            y: 696,
+        },
+        '1': {
+            x: 960,
+            y: 54,
+        },
+    } as GunGlobalPos,
     /** 炮的种类对应每一个炮的开始发射点, 用来计算子弹的运动的开始位置 */
     guns_inside_pos: {
         /** 枪发射的位置 */

@@ -6,8 +6,6 @@ import { app_test } from './app/app.spec';
 import { ani_wrap } from './app/game/aniWrap.spec';
 import { body_test } from './app/game/body.spec';
 import { fish_test } from './app/game/fish.spec';
-import { game_test } from './app/game/game.spec';
-import { player_test } from './app/game/player.spec';
 import { shoal_test } from './app/game/shoal/shoal.spec';
 import { skill_test } from './app/game/skill.spec';
 import { guide_test } from './app/guide/guide.spec';
@@ -41,7 +39,6 @@ testScope.addChild(
     fish_test,
     hall_test,
     path_test,
-    player_test,
     sat_test,
     skill_test,
     socket_test,

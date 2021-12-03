@@ -39,7 +39,7 @@ export async function localTest() {
 
         sleep(0.5).then(() => {
             shoal_test.runTest('add_shoal1');
-            player_test.runTest('add_cur_player');
+            player_test.add_cur_player();
         });
         // skill_test.runTest('track_fish');
     });
