@@ -287,11 +287,11 @@ export default class GameView
     }
     public energyLight() {
         const { energy_light } = this.skill_box;
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             energy_light.visible = true;
             energy_light.on(Event.STOPPED, energy_light, () => {
                 energy_light.visible = false;
-                resolve();
+                resolve(undefined);
             });
             playSkeleton(energy_light, 0, false);
         });
