@@ -49,16 +49,14 @@ export const grand_prix_test = testBuild({
         await sleep(3);
         grandPrixView.hideTaskPanel();
     },
-    setPlayerNum: async (
-        type: 'score' | 'bullet',
-        player_type: any,
-        num: number,
-    ) => {
+    setPlayerNum: async () => {
         const game = viewState.game as GrandPrixView;
-        if (type == 'bullet') {
-            game.setPlayerBulletNum(player_type, num);
-        } else {
-            game.setPlayerScore(player_type, num);
-        }
+        game.setPlayerBulletNum('current', 1000);
+        await sleep(1);
+        game.setPlayerBulletNum('other', 1000);
+        await sleep(1);
+        game.setPlayerScore('current', 1000);
+        await sleep(1);
+        game.setPlayerScore('other', 1000);
     },
 });

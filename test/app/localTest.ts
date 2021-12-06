@@ -18,9 +18,9 @@ import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
     commonTest();
-    await mock_web_socket_test.runTest('create');
+    await mock_web_socket_test.create();
     modelState.app.user_info.setUserId(test_data.userId);
-    mock_web_socket_test.runTest(ServerEvent.Shoot);
+    (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
     // mock_web_socket_test.runTest(ServerEvent.Hit);
     // mock_web_socket_test.runTest(ServerEvent.FishBomb);
     // mock_web_socket_test.runTest(ServerEvent.UseBomb);
@@ -29,7 +29,7 @@ export async function localTest() {
     await grand_prix_test.enter(true);
 
     await sleep(0.5);
-    shoal_test.runTest('add_shoal1');
+    shoal_test.addShoal1();
     player_test.add_cur_player();
     await sleep(0.5);
     grand_prix_test.showTask();

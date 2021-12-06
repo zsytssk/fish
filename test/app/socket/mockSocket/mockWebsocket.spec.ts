@@ -1,5 +1,4 @@
 import { range } from 'lodash';
-import { Test } from 'testBuilder';
 
 import { MockWebSocket } from '@app/ctrl/net/mockWebSocket';
 import {
@@ -7,9 +6,9 @@ import {
     getSocket,
     mockSocketCtor,
 } from '@app/ctrl/net/webSocketWrapUtil';
-import { SkillMap, ItemMap } from '@app/data/config';
+import { SkillMap } from '@app/data/config';
 import { ServerEvent } from '@app/data/serverEvent';
-import { modelState, getAimFish } from '@app/model/modelState';
+import { getAimFish, modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 
 import { test_data } from '../../../testData';
@@ -17,8 +16,8 @@ import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
 import { game_test } from '../../game/game.spec';
 import { player_test } from '../../game/player.spec';
 
-export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
-    runner.describe('create', async () => {
+export const mock_web_socket_test = {
+    create: async () => {
         mockSocketCtor(MockWebSocket);
         await createSocket({
             url: '',
@@ -34,9 +33,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
             name: 'hall',
             host: '',
         });
-    });
+    },
 
-    runner.describe(ServerEvent.Hit, () => {
+    [ServerEvent.Hit]: () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.Hit, (data: HitReq) => {
             sleep(1).then(() => {
@@ -56,9 +55,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 );
             });
         });
-    });
+    },
 
-    runner.describe(ServerEvent.Shoot, async () => {
+    [ServerEvent.Shoot]: () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
             sleep(0.1).then(() => {
@@ -71,9 +70,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 } as ShootRep);
             });
         });
-    });
+    },
 
-    runner.describe(ServerEvent.UseBomb, () => {
+    [ServerEvent.UseBomb]: () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.UseBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
@@ -101,9 +100,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 });
             });
         });
-    });
+    },
 
-    runner.describe(ServerEvent.FishBomb, () => {
+    [ServerEvent.FishBomb]: () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         sendEvent.on(ServerEvent.FishBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
@@ -128,9 +127,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 );
             });
         });
-    });
+    },
 
-    runner.describe('other' + ServerEvent.UseBomb, async () => {
+    ['other' + ServerEvent.UseBomb]: async () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
         player_test.add_cur_player();
 
@@ -153,9 +152,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 } as UseBombRep);
             });
         });
-    });
+    },
 
-    runner.describe(ServerEvent.UseFreeze, async () => {
+    [ServerEvent.UseFreeze]: async () => {
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
         sendEvent.on(ServerEvent.UseFreeze, () => {
@@ -177,10 +176,10 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 );
             });
         });
-    });
+    },
 
-    runner.describe(ServerEvent.UseLock, async () => {
-        await game_test.enter_game();
+    [ServerEvent.UseLock]: async () => {
+        await game_test.enterGame();
         const { sendEvent, event } = getSocket('game') as MockWebSocket;
 
         let needActive = true;
@@ -204,10 +203,10 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
                 }
             });
         });
-    });
+    },
 
-    runner.describe('otherLockFish', async () => {
-        await game_test.enter_game();
+    otherLockFish: async () => {
+        await game_test.enterGame();
         const other_id = test_data.otherUserId + '0';
         const player = modelState.app.game.getPlayerById(other_id);
         if (!player) {
@@ -238,10 +237,10 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
         //     } as LockFishRep,
         //     200,
         // );
-    });
+    },
 
-    runner.describe('otherLockFish2', async () => {
-        await await game_test.enter_game();
+    otherLockFish2: async () => {
+        await await game_test.enterGame();
         const other_id = test_data.otherUserId + '0';
 
         const { event } = getSocket('game') as MockWebSocket;
@@ -255,9 +254,9 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
             } as LockFishRep,
             200,
         );
-    });
+    },
 
-    runner.describe(ServerEvent.FishShoal, async (data: ServerFishInfo[]) => {
+    [ServerEvent.FishShoal]: async (data: ServerFishInfo[]) => {
         const { event } = getSocket('game') as MockWebSocket;
 
         event.emit(ServerEvent.FishShoalWarn, {
@@ -271,11 +270,11 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
             shoalId: '1',
             fish: data,
         } as FishShoal);
-    });
+    },
 
-    runner.describe('add_fish', async () => {
-        mock_web_socket_test.runTest('create');
-        await game_test.runTest('enter_game');
+    add_fish: async () => {
+        mock_web_socket_test.create();
+        await game_test.enterGame();
         await sleep(3);
         const { event } = getSocket('game') as MockWebSocket;
 
@@ -288,5 +287,5 @@ export const mock_web_socket_test = new Test('mock_web_socket', (runner) => {
         event.emit(ServerEvent.AddFish, {
             fish: fish_arr,
         } as ServerAddFishRep);
-    });
-});
+    },
+};

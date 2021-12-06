@@ -8,12 +8,13 @@ import LotteryPop from '@app/view/pop/lottery';
 
 import Data from './lottery.json';
 
-export const lottery_test = new Test('lottery', (runner) => {
-    runner.describe('open', () => {
+export const lottery_test = {
+    open: () => {
         LotteryPop.preEnter();
-    });
+    },
 
-    runner.describe('render_data', () => {
+    renderData: () => {
+        // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve) => {
             const pop = (await honor.director.openDialog(
                 LotteryPop,
@@ -27,9 +28,9 @@ export const lottery_test = new Test('lottery', (runner) => {
                 pop.runLotteryAni(Data.lottery[2].lottery_id);
             }, 3000);
         }) as Promise<void>;
-    });
+    },
 
-    runner.describe('tween', async () => {
+    tween: async () => {
         const pop = (await honor.director.openDialog(LotteryPop)) as LotteryPop;
 
         await sleep(1);
@@ -50,5 +51,5 @@ export const lottery_test = new Test('lottery', (runner) => {
             // pop.testAni(cur_round_index, cur_index === num);
         });
         console.log(`tween:>end`);
-    });
-});
+    },
+};

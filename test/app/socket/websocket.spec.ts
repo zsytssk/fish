@@ -1,15 +1,14 @@
 import { JSEncrypt } from 'jsencrypt';
-import { Test } from 'testBuilder';
 
 import { WebSocketCtrl } from 'honor/net/websocket';
 
-import { SocketEvent, WebSocketWrapCtrl } from '@app/ctrl/net/webSocketWrap';
+import { WebSocketWrapCtrl } from '@app/ctrl/net/webSocketWrap';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { Config } from '@app/data/config';
 import { ServerEvent } from '@app/data/serverEvent';
 
-export const web_socket_test = new Test('web_socket', (runner) => {
-    runner.describe('create_web_socket', () => {
+export const web_socket_test = {
+    create_web_socket: () => {
         const public_key =
             'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB';
         const socket = new WebSocketCtrl({
@@ -19,9 +18,9 @@ export const web_socket_test = new Test('web_socket', (runner) => {
                 '&code=dd57e4b9cf1746f69618403705a5e2a3',
             handlers: {},
         });
-    });
+    },
 
-    runner.describe('create_socket', () => {
+    create_socket: () => {
         const url = Config.SocketUrl;
         const publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB`;
         const code = `3142a89b24424257aaf4bf66f85ff419`;
@@ -44,18 +43,18 @@ export const web_socket_test = new Test('web_socket', (runner) => {
         //     socket.setParams({ jwt });
         //     socket.send(ServerEvent.UserAccount);
         // });
-    });
+    },
 
-    runner.describe('receive', (name: string, data: any) => {
+    receive: (name: string, data: any) => {
         const socket = getSocket(name);
         const { cmd, code, res } = data;
         socket.event.emit(cmd, res, code);
-    });
-    runner.describe('send', (name: string, cmd: string, data: any) => {
+    },
+    send: (name: string, cmd: string, data: any) => {
         const socket = getSocket(name);
         socket.send(cmd, data);
-    });
-});
+    },
+};
 
 const date_str = new Date().toString();
 const comm_key =

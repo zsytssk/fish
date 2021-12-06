@@ -1,16 +1,15 @@
-import { Test } from 'testBuilder';
-
 import honor from 'honor';
 
 import ShopPop from '@app/view/pop/shop';
 
 import shopData from './shop.json';
 
-export const shop_test = new Test('shop', (runner) => {
-    runner.describe('open', async () => {
+export const shop_test = {
+    open: async () => {
         ShopPop.preEnter();
-    });
-    runner.describe('render_data', async () => {
+    },
+    renderData: async () => {
+        // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve) => {
             const shop = (await honor.director.openDialog(ShopPop)) as ShopPop;
             setTimeout(() => {
@@ -18,15 +17,17 @@ export const shop_test = new Test('shop', (runner) => {
                 resolve();
             }, 1000);
         }) as Promise<void>;
-    });
-    runner.describe('use_gun_skin', async () => {
-        await shop_test.runTest('render_data');
+    },
+    use_gun_skin: async () => {
+        await shop_test.renderData();
         const pop = (await honor.director.openDialog(ShopPop)) as ShopPop;
         pop.useGunSkin(shopData.gun[1].id);
 
         setTimeout(() => {
             pop.useGunSkin(shopData.gun[3].id);
         }, 3000);
-    });
-    runner.describe('buy_gun_skin', () => {});
-});
+    },
+    buy_gun_skin: () => {
+        /*  */
+    },
+};

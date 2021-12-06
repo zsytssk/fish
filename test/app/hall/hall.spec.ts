@@ -3,8 +3,8 @@ import { Test } from 'testBuilder';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 
-export const hall_test = new Test('hall', (runner) => {
-    runner.describe('enter', () => {
+export const hall_test = {
+    enter: () => {
         HallCtrl.preEnter().then(() => {
             console.log(`enter:>`, 1);
         });
@@ -14,9 +14,9 @@ export const hall_test = new Test('hall', (runner) => {
                 console.log(`enter:>`, 2);
             });
         }, 100);
-    });
-    runner.describe('user_info', () => {
+    },
+    userInfo: () => {
         const { setting, user_info } = modelState.app;
         user_info.setNickname('zsytssk@gmail.com');
-    });
-});
+    },
+};

@@ -1,16 +1,11 @@
-import { Test } from 'testBuilder';
-
 import { PATH } from '@app/data/path';
 import { SPRITE } from '@app/data/sprite';
 import { stage_width, stage_height } from '@app/utils/displace/displaceUtil';
 
-export const path_test = new Test('path', (runner) => {
+export const path_test = {
     /** 检测有问题的路径 */
-    runner.describe('correct', () => {
+    correct: () => {
         for (const key in PATH) {
-            if (!PATH.hasOwnProperty(key)) {
-                continue;
-            }
             const item = PATH[key];
             const first = {
                 x: item[0][0],
@@ -29,14 +24,11 @@ export const path_test = new Test('path', (runner) => {
                 console.log(`${key}: first:${fr}, end:${er}`, end);
             }
         }
-    });
+    },
 
-    runner.describe('sprite_offset', () => {
+    sprite_offset: () => {
         const fish = SPRITE.fish;
         for (const key in fish) {
-            if (!fish.hasOwnProperty(key)) {
-                continue;
-            }
             const item = fish[key];
             const { offset } = item;
             const [top, right, bottom, left] = offset;
@@ -46,14 +38,11 @@ export const path_test = new Test('path', (runner) => {
                 `height:${top + bottom}`,
             );
         }
-    });
+    },
 
     /** 检测有问题的路径 */
-    runner.describe('draw', () => {
+    draw: () => {
         for (const key in PATH) {
-            if (!PATH.hasOwnProperty(key)) {
-                continue;
-            }
             const item = PATH[key];
             const first = {
                 x: item[0][0],
@@ -72,8 +61,8 @@ export const path_test = new Test('path', (runner) => {
                 console.log(`${key}: first:${fr}, end:${er}`, end);
             }
         }
-    });
-});
+    },
+};
 
 function isRight(p: Point) {
     const { x, y } = p;

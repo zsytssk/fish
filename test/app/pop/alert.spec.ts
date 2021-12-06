@@ -1,18 +1,15 @@
-import { Test } from 'testBuilder';
-
 import { tipExchange } from '@app/ctrl/game/gameCtrlUtils';
 import { asyncOnly, clearAsyncOnly } from '@app/utils/asyncQue';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
-import TopTipPop from '@app/view/pop/topTip';
 
 import { sleep } from '../../utils/testUtils';
 
-export const alert_test = new Test('alert', (runner) => {
-    runner.describe('top_tip', async (msg) => {
+export const alert_test = {
+    topTip: async (msg) => {
         TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
-    });
-    runner.describe('show_tip', async (msg) => {
+    },
+    showTip: async (msg) => {
         // TipPop.tip(msg || 'this is a test', {
         //     count: 10,
         //     show_count: true,
@@ -24,8 +21,8 @@ export const alert_test = new Test('alert', (runner) => {
         tipExchange({ bringAmount: 100, bulletNum: 100, currency: 'BTC' });
         // await sleep(5);
         // TipPop.hide();
-    });
-    runner.describe('show_alert', () => {
+    },
+    showAlert: () => {
         AlertPop.alert('this is a test', {
             hide_cancel: true,
             confirm_text: 'reeresrs',
@@ -34,9 +31,9 @@ export const alert_test = new Test('alert', (runner) => {
         sleep(3).then(() => {
             AlertPop.alert('this is a test');
         });
-    });
+    },
 
-    runner.describe('show_alert_only', async (name?: string, msg?: string) => {
+    showAlertOnly: async (name?: string, msg?: string) => {
         name = name || 'test';
         const data = await asyncOnly(
             name,
@@ -49,5 +46,5 @@ export const alert_test = new Test('alert', (runner) => {
             true,
         );
         console.log(data);
-    });
-});
+    },
+};

@@ -6,6 +6,7 @@ import { ServerEvent, ServerName } from '@app/data/serverEvent';
 import { LockFishModel } from '@app/model/game/skill/lockFishModel';
 import { modelState, getAimFish } from '@app/model/modelState';
 import { startCount } from '@app/utils/count';
+import GameView from '@app/view/scenes/game/gameView';
 import SkillItem from '@app/view/scenes/game/skillItemView';
 import { viewState } from '@app/view/viewState';
 
@@ -14,8 +15,8 @@ import { fish_test } from './fish.spec';
 import { player_test } from './player.spec';
 
 /** 技能的测试 */
-export const skill_test = new Test('skill', (runner) => {
-    runner.describe('auto_shoot', () => {
+export const skill_test = {
+    autoShoot: () => {
         const player_id = modelState.app.user_info.user_id;
         player_test.add_cur_player();
         const player = modelState.app.game.getPlayerById(player_id);
@@ -24,9 +25,9 @@ export const skill_test = new Test('skill', (runner) => {
         setTimeout(() => {
             player.gun.autoShoot.clear();
         }, 5000);
-    });
+    },
 
-    runner.describe('auto_bomb', async () => {
+    autoBomb: async () => {
         const socket = getSocket(ServerName.Game);
         const pos = { x: 939, y: 348 };
         const fish_old_list = [...modelState.app.game.fish_map.values()].map(
@@ -49,9 +50,9 @@ export const skill_test = new Test('skill', (runner) => {
             fishList: [...fish_list],
             // fishList: [...fish_list],
         } as UseBombReq);
-    });
+    },
 
-    runner.describe('track_fish_socket', async () => {
+    trackFishSocket: async () => {
         const socket = getSocket('game');
         let fish = getAimFish();
         socket.event.emit(
@@ -74,11 +75,11 @@ export const skill_test = new Test('skill', (runner) => {
             },
             200,
         );
-    });
+    },
 
-    runner.describe('track_fish', async () => {
+    trackFish: async () => {
         const player_id = modelState.app.user_info.user_id;
-        fish_test.runTest('add_fish_group');
+        fish_test.addFishGroup();
         player_test.add_cur_player();
         const player = modelState.app.game.getPlayerById(player_id);
 
@@ -112,11 +113,11 @@ export const skill_test = new Test('skill', (runner) => {
         setTimeout(() => {
             // lockFish.unLock();
         }, 7000);
-    });
+    },
 
-    runner.describe('speed_up', () => {
+    speedUp: () => {
         const player_id = modelState.app.user_info.user_id;
-        fish_test.runTest('add_fish');
+        fish_test.addFish();
         player_test.add_cur_player();
         const player = modelState.app.game.getPlayerById(player_id);
         player.gun.toggleSpeedUp(true);
@@ -124,18 +125,18 @@ export const skill_test = new Test('skill', (runner) => {
         setTimeout(() => {
             player.gun.toggleSpeedUp(false);
         }, 5000);
-    });
+    },
 
-    runner.describe('freezing', () => {
-        fish_test.runTest('add_fish');
+    freezing: () => {
+        fish_test.addFish();
 
         setTimeout(() => {
             const [_, { id }] = [...modelState.app.game.fish_map][0];
             modelState.app.game.freezing_com.freezing(5, [id]);
         }, 5000);
-    });
+    },
 
-    runner.describe('ui_set_num', () => {
+    uiSetNum: () => {
         const skill_item = viewState.game.skill_box.skill_list.getChildAt(
             0,
         ) as SkillItem;
@@ -144,8 +145,8 @@ export const skill_test = new Test('skill', (runner) => {
         startCount(10, 0.1, (t: number) => {
             skill_item.showCoolTime(1 - t);
         });
-    });
-    runner.describe('ui_set_num2', () => {
+    },
+    uiSetNum2: () => {
         const skill_item = viewState.game.skill_box.skill_list.getChildAt(
             0,
         ) as SkillItem;
@@ -153,18 +154,20 @@ export const skill_test = new Test('skill', (runner) => {
         setTimeout(() => {
             skill_item.showCoolTime(1);
         }, 1000);
-    });
-    runner.describe('energy', () => {
-        const game_view = viewState.game;
+    },
+    energy: () => {
+        const game_view = viewState.game as GameView;
         startCount(10, 0.1, (t: number) => {
             game_view.setEnergyRadio(1 - t);
             if (1 - t === 1) {
                 game_view.energyLight().then(() => {
-                    skill_test.runTest('energy');
+                    skill_test.energy();
                 });
             }
         });
-    });
+    },
 
-    runner.describe('skillItemView', () => {});
-});
+    skillItemView: () => {
+        //
+    },
+};
