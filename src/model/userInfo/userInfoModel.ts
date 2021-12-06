@@ -79,9 +79,6 @@ export class UserInfoModel extends ComponentManager {
     public setAccount(data: UserAccountRep['balances']) {
         let first_balance: string;
         for (const key in data) {
-            if (!data.hasOwnProperty(key)) {
-                continue;
-            }
             if (!first_balance) {
                 first_balance = key;
             }
