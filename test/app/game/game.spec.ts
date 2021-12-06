@@ -37,35 +37,6 @@ export const game_test = testBuild({
 
         console.log(`test:>`, modelState.app.game);
     },
-    enter_grand_prix: async (add_player?: boolean) => {
-        if (modelState && modelState.app && modelState.app.game) {
-            return;
-        }
-
-        await injectAfter(HallCtrl, 'preEnter', () => {
-            setTimeout(() => {
-                ctrlState.app.enterGrandPrix({});
-            });
-        });
-
-        if (!add_player) {
-            return;
-        }
-
-        let running = false;
-        await injectAfter(GrandPrixCtrl, 'preEnter', async () => {
-            await sleep(1);
-            if (running) {
-                return;
-            }
-            running = true;
-        });
-
-        if (modelState.app.game) {
-            modelState.app.game.setGameMode(2);
-        }
-        console.log(`test:>1`, modelState.app.game);
-    },
 
     enter_game_test: () => {
         GameTestCtrl.preEnter();

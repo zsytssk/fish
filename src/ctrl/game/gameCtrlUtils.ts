@@ -91,7 +91,7 @@ export async function waitGameExchangeOrLeave(): Promise<boolean> {
 
 type Data = {
     bulletNum?: number;
-    bringAmount?: Number;
+    bringAmount?: number;
     currency?: string;
 };
 /** 提示带入 */

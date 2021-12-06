@@ -13,6 +13,7 @@ import { sleep } from '../utils/testUtils';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { shoal_test } from './game/shoal/shoal.spec';
+import { grand_prix_test } from './grandPrix/grandPrix.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
@@ -25,24 +26,13 @@ export async function localTest() {
     // mock_web_socket_test.runTest(ServerEvent.UseBomb);
     // mock_web_socket_test.runTest(ServerEvent.UseLock);
     // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
-    game_test.enter_grand_prix(true).then(() => {
-        // fish_test.runTest('add_fish');
-        // sleep(0.5).then(() => {
-        //     player_test.runTest('add_cur_player');
-        // });
-        // player_test.runTest('add_other_player', [2]);
-        // player_test.runTest('add_other_player', [3]);
-        // fish_test.runTest('fish_view');
-        // fish_test.runTest('fish_shadow');
-        // fish_test.runTest('add_fish_group');
-        // body_test.runTest('show_shape');
+    await grand_prix_test.enter(true);
 
-        sleep(0.5).then(() => {
-            shoal_test.runTest('add_shoal1');
-            player_test.add_cur_player();
-        });
-        // skill_test.runTest('track_fish');
-    });
+    await sleep(0.5);
+    shoal_test.runTest('add_shoal1');
+    player_test.add_cur_player();
+    await sleep(0.5);
+    grand_prix_test.showTask();
 }
 
 export async function localSocketTest() {

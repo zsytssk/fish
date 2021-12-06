@@ -7,6 +7,7 @@ import { createSkeleton } from 'honor/utils/createSkeleton';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Label } from 'laya/ui/Label';
 
 import {
     getLang,
@@ -16,16 +17,20 @@ import {
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in } from '@app/utils/animate';
+import { fade_in, fade_out } from '@app/utils/animate';
 import { getSpriteInfo } from '@app/utils/dataUtil';
+import { getChildrenByName } from '@app/utils/layaQueryElements';
 import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
+import TipPop from '@app/view/pop/tip';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
 
 import { viewState } from '../../viewState';
 import { FishView, FishViewInfo } from '../game/fishView';
 import GunBoxView from '../game/gunBoxView';
 import SkillItemView from '../game/skillItemView';
+
+type PlayerType = 'current' | 'other';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
@@ -103,12 +108,15 @@ export default class GrandPrixView
     }
 
     public showTaskPanel(taskInfo: TriggerTaskRes) {
+        // TODO-lang
+        TipPop.tip('完成悬赏任务，有积分奖励！');
         const { task_panel, task_award_num, task_time_num } = this;
+        fade_in(task_panel);
         task_panel.visible = true;
         task_award_num.text = taskInfo.award + '';
         task_time_num.text = taskInfo.duration + '';
 
-        const node_list = task_panel.getChildByName('task_item');
+        const node_list = getChildrenByName(task_panel, 'task_item');
         for (const [index, item] of taskInfo.list.entries()) {
             const item_node = node_list[index];
             const node_task_name = item_node.getChildByName('task_name');
@@ -119,7 +127,22 @@ export default class GrandPrixView
     }
     public hideTaskPanel() {
         const { task_panel } = this;
-        task_panel.visible = false;
+        fade_out(task_panel);
+    }
+    public setPlayerScore(player_type: PlayerType, score: number) {
+        const { my_score_panel, other_score_panel } = this;
+        const panel =
+            player_type === 'current' ? my_score_panel : other_score_panel;
+
+        const score_num_node = panel.getChildByName('score_num') as Label;
+        score_num_node.text = `${score}`;
+    }
+    public setPlayerBulletNum(player_type: PlayerType, bullet_num: number) {
+        const { my_score_panel, other_score_panel } = this;
+        const panel =
+            player_type === 'current' ? my_score_panel : other_score_panel;
+        const bullet_num_node = panel.getChildByName('bullet_num') as Label;
+        bullet_num_node.text = `${bullet_num}`;
     }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
