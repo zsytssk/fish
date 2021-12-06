@@ -16,7 +16,6 @@ export function init() {
     Config.isLogin = platform_info.isLogin;
     Config.cndUrl = platform_info.cdn;
     Config.lang = covertLang(platform_info.lang);
-    Config.lang = covertLang(platform_info.lang);
 }
 
 export function covertLang(ori_lang: string) {

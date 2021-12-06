@@ -143,7 +143,14 @@ export class GameCtrl {
     }
     private initEvent() {
         const { view } = this;
-        const { btn_leave } = view;
+        const {
+            btn_leave,
+            btn_shop,
+            btn_gift,
+            btn_match,
+            btn_help,
+            btn_music,
+        } = view;
         const { CLICK } = Event;
 
         this.onModel();
@@ -170,6 +177,27 @@ export class GameCtrl {
                     sendToGameSocket(ServerEvent.RoomOut);
                 }
             });
+        });
+
+        btn_shop.on(CLICK, this, (e: Event) => {
+            e.stopPropagation();
+            alert(1);
+        });
+        btn_gift.on(CLICK, this, (e: Event) => {
+            e.stopPropagation();
+            alert(1);
+        });
+        btn_match.on(CLICK, this, (e: Event) => {
+            e.stopPropagation();
+            alert(1);
+        });
+        btn_help.on(CLICK, this, (e: Event) => {
+            e.stopPropagation();
+            alert(1);
+        });
+        btn_music.on(CLICK, this, (e: Event) => {
+            e.stopPropagation();
+            VoicePop.preEnter();
         });
     }
     public needUpSideDown(server_index: number) {

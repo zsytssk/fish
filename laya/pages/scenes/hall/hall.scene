@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":43,
-    "selecteID":39,
+    "selectedBox":35,
+    "selecteID":37,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -126,7 +126,8 @@
                             "hasChild":false,
                             "compId":37,
                             "child":[
-                                ]
+                                ],
+                            "$HIDDEN":false
                         }]
                 },
                 {

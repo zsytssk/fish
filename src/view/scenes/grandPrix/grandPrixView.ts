@@ -101,6 +101,26 @@ export default class GrandPrixView
         this.bullet_box_pos = scale > 0.8 ? 20 : -30;
         this.setBulletBoxPos(this.bullet_box_dir);
     }
+
+    public showTaskPanel(taskInfo: TriggerTaskRes) {
+        const { task_panel, task_award_num, task_time_num } = this;
+        task_panel.visible = true;
+        task_award_num.text = taskInfo.award + '';
+        task_time_num.text = taskInfo.duration + '';
+
+        const node_list = task_panel.getChildByName('task_item');
+        for (const [index, item] of taskInfo.list.entries()) {
+            const item_node = node_list[index];
+            const node_task_name = item_node.getChildByName('task_name');
+            const node_task_num = item_node.getChildByName('task_name');
+            node_task_name.text = item.type;
+            node_task_num.text = item.killNumber;
+        }
+    }
+    public hideTaskPanel() {
+        const { task_panel } = this;
+        task_panel.visible = false;
+    }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
         const { pool, gun_wrap, ani_wrap, ani_overlay } = this;

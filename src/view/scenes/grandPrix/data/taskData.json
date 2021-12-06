@@ -1,0 +1,20 @@
+{
+    "taskId": 1001,
+    "name": "击杀大鱼",
+    "award": 11,
+    "duration": 120,
+    "list": [
+        {
+            "type": 1,
+            "killNumber": 10
+        },
+        {
+            "type": 1,
+            "killNumber": 10
+        },
+        {
+            "type": 1,
+            "killNumber": 10
+        }
+    ]
+}

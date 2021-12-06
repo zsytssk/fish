@@ -7,7 +7,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ENV = findParam('ENV');
-const CheckError = findParam('CheckError');
 const common_config = (mode) => ({
     entry: {
         bundle: ['./test/test.ts', './src/main.ts'],
@@ -120,17 +119,9 @@ module.exports = (env, argv) => {
     let result;
     let common = common_config(argv.mode);
 
-    if (CheckError) {
-        common.module.rules[0].use = {
-            loader: 'ts-loader',
-        };
-    }
     if (argv.mode === 'development') {
         result = { ...common, ...dev_config };
     } else {
-        common.module.rules[0].use.splice(1, 0, {
-            loader: 'babel-loader',
-        });
         result = { ...common, ...prod_config };
     }
     return result;

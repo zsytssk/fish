@@ -337,3 +337,11 @@ type GetRecentBulletRep = {
     time: number;
     currency: string;
 };
+
+type TriggerTaskRes = {
+    taskId: number;
+    name: string;
+    award: number;
+    duration: number;
+    list: { type: number; killNumber: number }[];
+};
