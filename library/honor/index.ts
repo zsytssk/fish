@@ -11,6 +11,7 @@ import { Stage } from 'laya/display/Stage';
 import { Utils } from 'laya/utils/Utils';
 import { URL } from 'laya/net/URL';
 import { Config } from 'Config';
+import { isSafari } from './utils/isSafari';
 export type {
     HonorDialog,
     HonorDialogConfig,
@@ -44,6 +45,11 @@ async function run(
 ) {
     Laya.Config.isAntialias = true;
     Laya.Config.useRetinalCanvas = true;
+
+    if (/apple/i.test(navigator.vendor)) {
+        Laya.Config.useRetinalCanvas = false;
+        Laya.Config.useWebGL2 = false;
+    }
     // 根据IDE设置初始化引擎
     Laya.init(game_config.width, game_config.height, WebGL);
     Laya.stage.frameRate = Stage.FRAME_FAST;

@@ -246,7 +246,7 @@ P 98550D86 guidePanel.png
 P A979B835 person.png
 P A972B9D4 pointer.png
 R 43D2CCA7 pointer.sk
-R D5ED38D8 pointer_image.png
+P D5ED38D8 pointer_image.png
 D image/pop/help
 P 1747AAB1 alert_con_bg.png
 P FE46F023 bg_item1.png
