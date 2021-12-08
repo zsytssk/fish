@@ -3,7 +3,6 @@ import { Stage } from 'laya/display/Stage';
 import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
 import { URL } from 'laya/net/URL';
 import { Handler } from 'laya/utils/Handler';
-// import { Laya3D } from 'Laya3D';
 import { Stat } from 'laya/utils/Stat';
 import { Utils } from 'laya/utils/Utils';
 import { WebGL } from 'laya/webgl/WebGL';
@@ -44,8 +43,12 @@ async function run(
     extern_config: HonorExternConfig = {},
 ) {
     Laya.Config.isAntialias = true;
-    // Laya.Config.useRetinalCanvas = true;
-    Laya.Config.useWebGL2 = false;
+
+    Laya.Config.useRetinalCanvas = true;
+    if (/apple/i.test(navigator.vendor)) {
+        Laya.Config.useRetinalCanvas = false;
+        Laya.Config.useWebGL2 = false;
+    }
     // 根据IDE设置初始化引擎
     Laya.init(game_config.width, game_config.height, WebGL);
     Laya.stage.frameRate = Stage.FRAME_FAST;
@@ -66,6 +69,7 @@ async function run(
     } else {
         DEBUG_MODE = false;
     }
+
     if (game_config.stat) {
         Stat.show(0, 0);
     }
