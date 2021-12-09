@@ -3,7 +3,6 @@ import { EventCom } from 'comMan/eventCom';
 
 import { SkillMap } from '@app/data/config';
 import { ModelEvent } from '@app/model/modelEvent';
-import { getGunPos } from '@app/utils/dataUtil';
 import { error } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 

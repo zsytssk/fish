@@ -143,7 +143,7 @@ export function detectCollision(ori_body: BodyCom, detect_body: BodyCom) {
         for (const other_shape_info of other_shapes) {
             const { shape: other_shape } = other_shape_info;
             const response = new SAT.Response();
-            let is_collision: boolean = false;
+            let is_collision = false;
             if (
                 my_shape instanceof SAT.Polygon &&
                 other_shape instanceof SAT.Polygon
