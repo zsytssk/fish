@@ -97,3 +97,8 @@ export const ServerEvent = {
     /** 获取用户信息 */
     GetUserInfo: 'getUserInfo',
 };
+
+export const ArenaEvent = {
+    /** 大厅游客 */
+    Guess: 'guess',
+};

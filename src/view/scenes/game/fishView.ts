@@ -221,7 +221,7 @@ export class FishView extends Sprite {
                     return;
                 }
                 fish_ani.filters = [];
-                resolve();
+                resolve(undefined);
             }, 500) as any;
         });
     }

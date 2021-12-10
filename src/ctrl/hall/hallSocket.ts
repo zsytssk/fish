@@ -10,7 +10,6 @@ import { modelState } from '@app/model/modelState';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
-import { alertNetErrRefresh } from './hallCtrlUtil';
 import { initHallSocket } from './login';
 
 /**
@@ -22,7 +21,7 @@ export async function onHallSocket(hall: HallCtrl) {
     await initHallSocket();
 
     /** 连接socket */
-    (await new Promise((resolve, reject) => {
+    (await new Promise((resolve, _reject) => {
         hall_socket = getSocket(ServerName.Hall);
         bindHallSocket(hall_socket, hall);
 
@@ -66,7 +65,7 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
 }
 
 export async function checkReplay(hall: HallCtrl) {
-    return new Promise<CheckReplayRep>((resolve, reject) => {
+    return new Promise<CheckReplayRep>((resolve, _reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.CheckReplay,
@@ -83,11 +82,11 @@ export function roomIn(
     data: { isTrial: 0 | 1; roomId: number },
     hall: HallCtrl,
 ) {
-    return new Promise<Partial<RoomInRep>>((resolve, reject) => {
+    return new Promise<Partial<RoomInRep>>((resolve, _reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.RoomIn,
-            async (_data: RoomInRep, code, msg) => {
+            async (_data: RoomInRep, code, _msg) => {
                 if (code === ServerErrCode.AlreadyInRoom) {
                     const data = await checkReplay(hall);
                     if (data.isReplay) {
