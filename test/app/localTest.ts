@@ -29,7 +29,7 @@ export async function localTest() {
     await grand_prix_test.enter(true);
 
     await sleep(0.5);
-    // shoal_test.addShoal1();
+    shoal_test.addShoal1();
     player_test.add_cur_player();
     // await sleep(0.5);
     // grand_prix_test.showTask();
