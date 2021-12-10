@@ -148,7 +148,9 @@ export class PlayerCtrl {
                 view.fire(velocity, user_id);
                 if (is_cur_player) {
                     view.stopPosTip();
+                    AudioCtrl.play(AudioRes.Fire);
                 }
+
                 for (const [, bullet] of bullet_group.bullet_map) {
                     const bullet_view = view.addBullet(
                         bullet.skin,
@@ -207,24 +209,17 @@ export class PlayerCtrl {
                 if (!this.model) {
                     return;
                 }
-                const {
-                    need_emit,
-                    user_id,
-                    is_cur_player: is_cur,
-                } = this.model;
+                const { need_emit, user_id, is_cur_player } = this.model;
                 if (!need_emit) {
                     return;
                 }
                 const { x, y } = velocity;
-                if (is_cur) {
-                    AudioCtrl.play(AudioRes.Fire);
-                }
                 const data = {
                     direction: { x, y },
                     userId: user_id,
                 } as ShootReq;
 
-                if (!is_cur) {
+                if (!is_cur_player) {
                     data.robotId = user_id;
                     data.userId = getCurPlayer().user_id;
                 }

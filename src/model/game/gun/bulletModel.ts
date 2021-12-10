@@ -3,12 +3,12 @@ import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
 
 import { Config } from '@app/data/config';
+import { getShapes } from '@app/utils/shapeUtil';
 import { setProps } from '@app/utils/utils';
 
 import { ModelEvent } from '../../modelEvent';
 import { getCollisionFish } from '../../modelState';
 import { BodyCom } from '../com/bodyCom';
-import { getShapes } from '../com/bodyComUtil';
 import { LockMoveCom, LockTarget } from '../com/moveCom/lockMoveCom';
 import { VelocityMoveCom } from '../com/moveCom/velocityMoveCom';
 import { FishModel } from '../fish/fishModel';

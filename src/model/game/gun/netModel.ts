@@ -3,10 +3,10 @@ import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
 
 import { getCollisionAllFish } from '@app/model/modelState';
+import { getShapes } from '@app/utils/shapeUtil';
 
 import { ModelEvent } from '../../modelEvent';
 import { BodyCom } from '../com/bodyCom';
-import { getShapes } from '../com/bodyComUtil';
 import { BulletModel } from './bulletModel';
 
 export type NetInfo = {

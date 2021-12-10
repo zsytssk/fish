@@ -1,16 +1,16 @@
+import * as SAT from 'sat';
+
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-
-import * as SAT from 'sat';
 
 import { FishSpriteInfo } from '@app/data/sprite';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { DisplaceInfo } from '@app/utils/displace/displace';
+import { getShapes } from '@app/utils/shapeUtil';
 import { setProps } from '@app/utils/utils';
 
 import { ModelEvent } from '../../modelEvent';
 import { BodyCom } from '../com/bodyCom';
-import { getShapes } from '../com/bodyComUtil';
 import { GameModel } from '../gameModel';
 
 export const FishEvent = {

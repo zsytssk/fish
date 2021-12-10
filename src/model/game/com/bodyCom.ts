@@ -1,18 +1,10 @@
 import * as SAT from 'sat';
 
-import { scaleXShapeInfos } from './bodyComUtil';
-
-export type Shape = SAT.Polygon | SAT.Circle;
-export type ShapeInfo = {
-    /** 形状 */
-    shape: Shape;
-    /** 每一个形状相对 原点的位置 */
-    pos: SAT.Vector;
-};
+import { scaleXShapeInfos, ShapeInfo } from '@app/utils/shapeUtil';
 
 export class BodyCom {
     /** 角度 */
-    private angle: number = 0;
+    private angle = 0;
     /** 角度 */
     private pos: Point = { x: 0, y: 0 };
     /** 是否水平翻转 */
