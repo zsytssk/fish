@@ -33,15 +33,15 @@ import HelpPop from '@app/view/pop/help';
 import LotteryPop from '@app/view/pop/lottery';
 import ShopPop from '@app/view/pop/shop';
 import VoicePop from '@app/view/pop/voice';
+import GameView, {
+    AddFishViewInfo,
+    BulletBoxDir,
+} from '@app/view/scenes/arena/arenaView';
 import {
     activeFreeze,
     stopFreeze,
 } from '@app/view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from '@app/view/scenes/game/ani_wrap/shoalWave';
-import GameView, {
-    AddFishViewInfo,
-    BulletBoxDir,
-} from '@app/view/scenes/grandPrix/grandPrixView';
 
 import { FishCtrl } from '../game/fishCtrl';
 import {

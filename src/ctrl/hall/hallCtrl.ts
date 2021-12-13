@@ -7,13 +7,13 @@ import { gotoGuide } from '@app/ctrl/guide/guideConfig';
 import { disconnectSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
-import { ServerName } from '@app/data/serverEvent';
+import { ArenaEvent, ServerName } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { getItem } from '@app/utils/localStorage';
 import HallView from '@app/view/scenes/hallView';
 
-import { connectArenaHallSocket } from './arenaSocket';
+import { connectArenaHallSocket, sendToArenaHallSocket } from './arenaSocket';
 import {
     getAllLangList,
     offBindEvent,
@@ -67,6 +67,13 @@ export class HallCtrl {
         try {
             console.log(`test:>connectArenaHallSocket`);
             await connectArenaHallSocket(this);
+            sendToArenaHallSocket(ArenaEvent.RoomStatus, { modeId: 1 });
+            // sendToArenaHallSocket(ArenaEvent.CompetitionInfo, {
+            //     currency: modelState.app.user_info.cur_balance,
+            // });
+            // sendToArenaHallSocket(ArenaEvent.GetDayRanking, { date: 1 });
+            // sendToArenaHallSocket(ArenaEvent.GetHallOfFame);
+            // sendToArenaHallSocket(ArenaEvent.MatchChampionList);
         } catch {}
 
         if (enter_game) {

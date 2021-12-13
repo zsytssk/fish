@@ -42,7 +42,7 @@ import {
     setBulletNum,
 } from '@app/view/viewState';
 
-import { GameCtrl as GrandPrixCtrl } from '../grandPrix/gameCtrl';
+import { GameCtrl as ArenaCtrl } from '../arena/gameCtrl';
 import { BulletCtrl } from './bulletCtrl';
 import { GameCtrl } from './gameCtrl';
 import { sendToGameSocket } from './gameSocket';
@@ -60,7 +60,7 @@ export class PlayerCtrl {
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
-        private game_ctrl: GameCtrl | GrandPrixCtrl,
+        private game_ctrl: GameCtrl | ArenaCtrl,
     ) {
         this.init();
     }

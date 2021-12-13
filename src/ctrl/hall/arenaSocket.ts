@@ -12,7 +12,6 @@ import {
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
 import { HallCtrl } from './hallCtrl';
-import { connectSocket } from './login';
 
 let arena_hall_socket: WebSocketTrait;
 export async function connectArenaHallSocket(hall: HallCtrl) {
@@ -31,6 +30,7 @@ export async function connectArenaHallSocket(hall: HallCtrl) {
     });
     arena_hall_socket = socket;
     bindArenaHallSocket(socket, hall);
+
     return true;
 }
 
@@ -42,7 +42,13 @@ export function sendToArenaHallSocket(
 
 /** 绑定ArenaSocket */
 function bindArenaHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
-    bindSocketEvent(socket, hall, {});
+    bindSocketEvent(socket, hall, {
+        [ArenaEvent.RoomStatus]: () => {},
+        [ArenaEvent.CompetitionInfo]: () => {},
+        [ArenaEvent.GetDayRanking]: () => {},
+        [ArenaEvent.GetHallOfFame]: () => {},
+        [ArenaEvent.MatchChampionList]: () => {},
+    });
 }
 /** 解除绑定ArenaSocket */
 export function offArenaHallSocket(hall: HallCtrl) {

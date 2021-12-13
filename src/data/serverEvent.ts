@@ -45,20 +45,20 @@ export type ErrorData = {
     error: string;
 };
 
-/** 服务器端的接口 */
-export const ServerEvent = {
-    /** 游戏部分 */
-    RoomIn: 'roomIn',
-    RoomOut: 'roomOut',
-    CheckReplay: 'checkReplay',
+const CommonGameEvent = {
     /** 进入桌子 */
     TableIn: 'tableIn',
     /** 离开桌子 */
     TableOut: 'tableOut',
+    /** 进入游戏 */
     EnterGame: 'enterGame',
+    /** 发射子弹 */
     Shoot: 'shoot',
+    /** 击中鱼 */
     Hit: 'hit',
+    /** 机器人HIT */
     RobotHit: 'robotHit',
+    /** 修改炮台倍数 */
     ChangeTurret: 'changeTurret',
     /** 添加鱼 */
     AddFish: 'addFish',
@@ -70,17 +70,38 @@ export const ServerEvent = {
     UseLock: 'useLock',
     /** 锁定<鱼> */
     LockFish: 'lockFish',
+    /** 使用炸弹 */
     UseBomb: 'useBomb',
+    /** 鱼炸弹 */
     FishBomb: 'fishBomb',
-    PowerUp: 'powerUp',
-    autoShoot: 'autoShoot',
-    SetRobotReport: 'setRobotReport',
+    /** 使用冰冻 */
     UseFreeze: 'useFreeze',
+    /** 冰冻结束 */
     FreezeOver: 'freezeOver',
+    /** ？？？ */
+    PowerUp: 'powerUp',
+    /** 自动开炮 */
+    autoShoot: 'autoShoot',
+    /** 设置机器人发射命令状态 */
+    SetRobotReport: 'setRobotReport',
+};
+
+/** 服务器端的接口 */
+export const ServerEvent = {
+    /** 游戏部分 */
+    RoomIn: 'roomIn',
+    RoomOut: 'roomOut',
+    CheckReplay: 'checkReplay',
+
+    /** 兑换子弹 */
     ExchangeBullet: 'exchangeBullet',
+    /** 获取 */
     GetItemList: 'getItemList',
+    /** 获取子弹列表 */
     GetBulletList: 'getBulletList',
     GetRecentBullet: 'getRecentBullet',
+
+    ...CommonGameEvent,
 
     /** 其他部分 */
     ErrCode: 'conn::error',
@@ -103,4 +124,35 @@ export const ServerEvent = {
 export const ArenaEvent = {
     /** 大厅游客 */
     Guess: 'guest',
+    /** 房间状态 */
+    RoomStatus: 'roomStatus',
+    /** 赛事信息 */
+    CompetitionInfo: 'competitionInfo',
+    /**  排名 */
+    GetDayRanking: 'getDayRanking',
+    /**  名人堂 */
+    GetHallOfFame: 'getHallOfFame',
+    /**  总冠军 */
+    MatchChampionList: 'matchChampionList',
+    /**  帮助信息 */
+    GetRuleData: 'getRuleData',
+    /**  报名 */
+    SignUp: 'signUp',
+    /**  结算 */
+    GameSettle: 'gameSettle',
+    /**  触发任务 */
+    TriggerTask: 'triggerTask',
+    /**  人物刷新 */
+    TaskRefresh: 'taskRefresh',
+    /**  人物完成 */
+    TaskFinish: 'taskFinish',
+    /**  商品列表 */
+    ShopList: 'shopList',
+    /**  购买商品 */
+    BuyGoods: 'buyGoods',
+    /**  礼品列表 */
+    GiftList: 'giftList',
+    /**  购买礼品 */
+    BuyGift: 'buyGift',
+    ...CommonGameEvent,
 };

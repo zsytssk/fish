@@ -9,10 +9,10 @@ import { sleep } from '@app/utils/animate';
 import { BgMonitor } from '@app/utils/bgMonitor';
 import { KeyBoardNumber } from '@app/utils/layaKeyboard';
 
+import { GameCtrl as ArenaCtrl } from './arena/gameCtrl';
 import { ctrlState } from './ctrlState';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
 import { GameCtrl } from './game/gameCtrl';
-import { GameCtrl as GrandPrixCtrl } from './grandPrix/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
 import { onCreateSocket } from './net/webSocketWrapUtil';
 
@@ -68,6 +68,6 @@ export class AppCtrl {
     }
     public enterGrandPrix(data: Partial<RoomInRep>) {
         const game_model = this.model.enterGame();
-        return GrandPrixCtrl.preEnter(data, game_model);
+        return ArenaCtrl.preEnter(data, game_model);
     }
 }

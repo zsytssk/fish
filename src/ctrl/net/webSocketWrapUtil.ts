@@ -1,9 +1,8 @@
-import { EventCom } from 'comMan/eventCom';
 import CryptoJS from 'crypto-js';
-
 import { JSEncrypt } from 'jsencrypt';
 import { Observable, Subscriber } from 'rxjs';
 
+import { EventCom } from 'comMan/eventCom';
 import { Utils } from 'laya/utils/Utils';
 
 import { error } from '@app/utils/log';
@@ -164,9 +163,6 @@ export function bindSocketEvent(
 ) {
     const { event } = socket;
     for (const key in bind_info) {
-        if (!bind_info.hasOwnProperty(key)) {
-            continue;
-        }
         event.on(key, bind_info[key], bind_obj);
     }
 }

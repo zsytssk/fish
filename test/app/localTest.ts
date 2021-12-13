@@ -10,10 +10,10 @@ import { getParams } from '@app/utils/utils';
 
 import { test_data } from '../testData';
 import { sleep } from '../utils/testUtils';
+import { arena_test } from './arena/arena';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { shoal_test } from './game/shoal/shoal.spec';
-import { grand_prix_test } from './grandPrix/grandPrix.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
@@ -26,7 +26,7 @@ export async function localTest() {
     // mock_web_socket_test.runTest(ServerEvent.UseBomb);
     // mock_web_socket_test.runTest(ServerEvent.UseLock);
     // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
-    await grand_prix_test.enter(true);
+    await arena_test.enter(true);
 
     await sleep(0.5);
     shoal_test.addShoal1();

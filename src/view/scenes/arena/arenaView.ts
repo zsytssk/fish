@@ -1,6 +1,5 @@
-import { first } from 'rxjs/operators';
-
 import { Observable, Subscriber } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
@@ -35,8 +34,8 @@ type PlayerType = 'current' | 'other';
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
-export default class GrandPrixView
-    extends ui.scenes.grandPrix.gameUI
+export default class ArenaView
+    extends ui.scenes.arena.gameUI
     implements HonorScene
 {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
@@ -49,8 +48,8 @@ export default class GrandPrixView
     private bullet_box_dir: BulletBoxDir;
     public static async preEnter() {
         const game = (await honor.director.runScene(
-            'scenes/grandPrix/game.scene',
-        )) as GrandPrixView;
+            'scenes/arena/game.scene',
+        )) as ArenaView;
         const { ani_wrap, ani_overlay } = game;
         setProps(viewState, { game, ani_wrap, ani_overlay });
         return game;

@@ -1,11 +1,11 @@
 import { app_test } from './app/app.spec';
+import { arena_test } from './app/arena/arena';
 import { ani_wrap } from './app/game/aniWrap.spec';
 import { body_test } from './app/game/body.spec';
 import { fish_test } from './app/game/fish.spec';
 import { game_test } from './app/game/game.spec';
 import { shoal_test } from './app/game/shoal/shoal.spec';
 import { skill_test } from './app/game/skill.spec';
-import { grand_prix_test } from './app/grandPrix/grandPrix.spec';
 import { guide_test } from './app/guide/guide.spec';
 import { hall_test } from './app/hall/hall.spec';
 import { path_test } from './app/path.spec';
@@ -22,7 +22,7 @@ import { skill_item_view_test } from './app/view/SkillItemView.spec';
 import { gun_box_view_test } from './app/view/gunBoxView.spec';
 
 export const test = {
-    grand_prix_test,
+    grand_prix_test: arena_test,
     game_test,
     fish_test,
     body_test,

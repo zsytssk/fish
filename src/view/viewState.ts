@@ -2,11 +2,11 @@ import { Sprite } from 'laya/display/Sprite';
 import { Point } from 'laya/maths/Point';
 import { Box } from 'laya/ui/Box';
 
+import ArenaView from './scenes/arena/arenaView';
 import GameView from './scenes/game/gameView';
-import GrandPrixView from './scenes/grandPrix/grandPrixView';
 
 type ViewState = {
-    game: GameView | GrandPrixView;
+    game: GameView | ArenaView;
     /** 所有的动画的芙父容器(底层) */
     ani_wrap: Box;
     /** 所有的动画的芙父容器(上层) */

@@ -2,17 +2,17 @@ import { testBuild } from 'testBuilder';
 
 import { injectAfter } from 'honor/utils/tool';
 
+import { GameCtrl as ArenaCtrl } from '@app/ctrl/arena/gameCtrl';
 import { ctrlState } from '@app/ctrl/ctrlState';
-import { GameCtrl as GrandPrixCtrl } from '@app/ctrl/grandPrix/gameCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
-import GrandPrixView from '@app/view/scenes/grandPrix/grandPrixView';
+import ArenaView from '@app/view/scenes/arena/arenaView';
 import { viewState } from '@app/view/viewState';
 
 import * as taskData from './data/taskData.json';
 
-export const grand_prix_test = testBuild({
+export const arena_test = testBuild({
     enter: async (add_player?: boolean) => {
         if (modelState?.app?.game) {
             return;
@@ -29,7 +29,7 @@ export const grand_prix_test = testBuild({
         }
 
         let running = false;
-        await injectAfter(GrandPrixCtrl, 'preEnter', async () => {
+        await injectAfter(ArenaCtrl, 'preEnter', async () => {
             if (running) {
                 return;
             }
@@ -43,14 +43,14 @@ export const grand_prix_test = testBuild({
         }
     },
     showTask: async () => {
-        const grandPrixView = viewState.game as GrandPrixView;
+        const grandPrixView = viewState.game as ArenaView;
 
         grandPrixView.showTaskPanel(taskData);
         await sleep(3);
         grandPrixView.hideTaskPanel();
     },
     setPlayerNum: async () => {
-        const game = viewState.game as GrandPrixView;
+        const game = viewState.game as ArenaView;
         game.setPlayerBulletNum('current', 1000);
         await sleep(1);
         game.setPlayerBulletNum('other', 1000);
