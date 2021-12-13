@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const findParam = require('./script/findEnv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const ENV = findParam('ENV');
 const common_config = (mode) => ({
@@ -14,6 +15,15 @@ const common_config = (mode) => ({
     output: {
         filename: 'js/[name].js',
         path: path.join(__dirname, 'bin'),
+        environment: {
+            arrowFunction: false,
+            bigIntLiteral: false,
+            const: false,
+            destructuring: false,
+            dynamicImport: false,
+            forOf: false,
+            module: false,
+        },
     },
     resolve: {
         modules: [
@@ -94,7 +104,14 @@ const prod_config = {
     entry: {
         bundle: './src/main.ts',
     },
+
     optimization: {
+        minimizer: [
+            // 去除 LICENSE.txt files
+            new TerserPlugin({
+                extractComments: false,
+            }),
+        ],
         splitChunks: {
             cacheGroups: {
                 libs: {
@@ -125,6 +142,9 @@ module.exports = (env, argv) => {
     if (argv.mode === 'development') {
         result = { ...common, ...dev_config };
     } else {
+        common.module.rules[0].use.splice(1, 0, {
+            loader: 'babel-loader',
+        });
         result = { ...common, ...prod_config };
     }
     return result;
