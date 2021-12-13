@@ -63,7 +63,7 @@ export function genUserInfo(game_ctrl: GameTestCtrl) {
             },
         },
     } as PlayerInfo;
-    model.addPlayer(player_data);
+    model.addPlayer(player_data, game_ctrl.needUpSideDown);
 }
 
 export async function mockSocket() {

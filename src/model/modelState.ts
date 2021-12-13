@@ -10,7 +10,7 @@ import { FishModel } from './game/fish/fishModel';
 type ModelState = {
     app: AppModel;
 };
-export let modelState = {} as ModelState;
+export const modelState = {} as ModelState;
 /** 获取当前用户信息 */
 export function getUserInfo() {
     return modelState.app.user_info;

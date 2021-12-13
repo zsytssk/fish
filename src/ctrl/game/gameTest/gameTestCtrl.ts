@@ -16,7 +16,7 @@ import GameView from '@app/view/scenes/game/gameView';
 import { FishCtrl } from '../fishCtrl';
 import { onGameSocket, offGameSocket } from '../gameSocket';
 import { PlayerCtrl } from '../playerCtrl';
-import { mockSocket, genUserInfo, resetMockSocketCtor } from './utils';
+import { mockSocket, genUserInfo } from './utils';
 
 export class GameTestCtrl {
     public player_list: Set<PlayerCtrl> = new Set();
@@ -42,10 +42,12 @@ export class GameTestCtrl {
         return wait_enter;
     }
     constructor(public view: GameView, public model: GameModel) {
+        modelState.app.game = model;
         this.onModel();
         genUserInfo(this);
-
-        modelState.app.game = model;
+    }
+    public needUpSideDown() {
+        return false;
     }
     private onModel() {
         const { event } = this.model;

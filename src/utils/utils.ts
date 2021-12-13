@@ -21,10 +21,6 @@ export function callFunc<T extends (...params: unknown[]) => void>(
 
 /** set object properties */
 export function setProps<T>(data: T, props: Partial<T>) {
-    if (props.game) {
-        console.warn('test:>');
-    }
-
     for (const key in props) {
         data[key] = props[key];
     }
