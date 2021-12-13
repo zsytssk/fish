@@ -12,15 +12,6 @@ import {
 } from '../net/webSocketWrapUtil';
 
 /** 登陆用的脚本 */
-export async function initHallSocket() {
-    let socket = getSocket(ServerName.Hall);
-    if (socket) {
-        return true;
-    }
-    socket = await connectSocket(getHallSocketInfo());
-    return true;
-}
-
 export function login() {
     if (getParams('c') === 'YSTAR') {
         platform.register();
@@ -55,48 +46,31 @@ export function leaveGame() {
     disconnectSocket(ServerName.Game);
 }
 
-export function getHallSocketInfo(): SocketConfig {
-    const code = Config.code;
-    const name = ServerName.Hall;
-    const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
+export async function connectSocket(
+    config: SocketConfig,
+): Promise<WebSocketTrait> {
+    const socket = await createSocket(config);
 
-    return {
-        url,
-        name,
-        publicKey,
-        code,
-        host,
-    };
-}
-
-export function connectSocket(config: SocketConfig) {
-    return new Promise(async (resolve, reject) => {
-        const socket = await createSocket(config);
-
-        let token = Config.token;
-        if (token) {
-            socket.setParams({ jwt: token, userId: getParams('userId') });
-            resolve(socket);
-            return;
-        }
-
-        /** 获取 本地保存的 token */
-        token = getItem('local_token');
-        if (!token) {
-            token = await getGuestToken(socket);
-            setItem('local_token', token, 7);
-        }
-        /** 游客的token */
+    const token = Config.token;
+    if (token) {
         socket.setParams({ jwt: token, userId: getParams('userId') });
-        Config.token = token;
-        log('我自己的token:', token);
-        resolve(socket);
-    }) as Promise<WebSocketTrait>;
+        return socket;
+    }
+
+    /** 获取 本地保存的 token */
+    let local_token = getItem('local_token');
+    if (!local_token) {
+        local_token = await getGuestToken(socket);
+        setItem('local_token', local_token, 7);
+    }
+    /** 游客的token */
+    socket.setParams({ jwt: local_token, userId: getParams('userId') });
+    log('本地guess token:', local_token);
+    return socket;
 }
-export function onSocketCreate(name: string) {}
 
 export function getGuestToken(socket: WebSocketTrait) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         socket.event.once(ServerEvent.GetGuestToken, (res: { jwt: string }) => {
             resolve(res.jwt);
         });

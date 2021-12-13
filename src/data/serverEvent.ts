@@ -4,6 +4,8 @@ export const ServerName = {
     Game: 'game',
     /** 大厅的 socket */
     Hall: 'hall',
+    /**  Arena 大厅的 socket */
+    ArenaHall: 'arena_hall',
 };
 
 /** socket 错误码 */
@@ -100,5 +102,5 @@ export const ServerEvent = {
 
 export const ArenaEvent = {
     /** 大厅游客 */
-    Guess: 'guess',
+    Guess: 'guest',
 };

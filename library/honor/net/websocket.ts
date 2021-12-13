@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { log } from '@app/utils/log';
 
 export type Config = {
@@ -36,9 +37,9 @@ export class WebSocketCtrl {
     public handlers: Handlers;
     private ws: WebSocket;
     /** 重连次数 */
-    private reconnect_count: number = 0;
+    private reconnect_count = 0;
     /** 重连最大次数 */
-    private reconnect_max: number = 3;
+    private reconnect_max = 3;
     /** 重连倒计时 */
     private reconnect_timeout: number;
     /** 心跳倒计时 - timeout  */
@@ -46,9 +47,9 @@ export class WebSocketCtrl {
     /** 心跳倒计时 - 没收到返回 timeout */
     private heartbeat_gap_timeout: number;
     /** 心跳倒计时 - 运行时间 */
-    private heartbeat_time: number = 10;
+    private heartbeat_time = 10;
     /** 心跳倒计时 - 断开连接运行时间 */
-    private heartbeat_gap_time: number = 3;
+    private heartbeat_gap_time = 3;
     /** ping pong 对应的字符 */
     private ping_pong_map?: PingPongMap;
     public status: Status;
@@ -59,11 +60,11 @@ export class WebSocketCtrl {
         this.connect();
     }
     public connect() {
-        log('WebSocket:> 连接...');
         if (this.ws) {
             return;
         }
         const { url } = this;
+        log('WebSocket:> 连接:>', url);
 
         this.status = 'CONNECTING';
         const ws = new WebSocket(url);

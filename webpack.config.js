@@ -53,7 +53,8 @@ const common_config = (mode) => ({
         new webpack.DefinePlugin({ ENV: JSON.stringify(ENV) }),
         new HtmlWebpackPlugin({
             hash: true,
-            inject: mode === 'development',
+            // inject: mode === 'development',
+            inject: false,
             title: 'HonorMe',
             template: 'public/index.html',
         }),
@@ -78,11 +79,13 @@ const dev_config = {
     },
     watch: ENV === 'DEV' ? true : false,
     devServer: {
+        allowedHosts: 'all',
         host: '0.0.0.0',
         static: {
             directory: path.join(__dirname, 'bin'),
         },
         port: 5001,
+        https: false,
         open: 'http://localhost:5001',
     },
 };

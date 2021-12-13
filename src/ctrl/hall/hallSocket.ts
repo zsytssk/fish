@@ -7,42 +7,47 @@ import {
 import { Config } from '@app/data/config';
 import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { error } from '@app/utils/log';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
-import { initHallSocket } from './login';
+import { connectSocket } from './login';
 
 /**
  *
  * @return 是否进入游戏
  */
 let hall_socket: WebSocketTrait;
-export async function onHallSocket(hall: HallCtrl) {
-    await initHallSocket();
+export async function connectHallSocket(hall: HallCtrl) {
+    try {
+        let socket = getSocket(ServerName.Hall);
+        if (socket) {
+            return true;
+        }
 
-    /** 连接socket */
-    (await new Promise((resolve, _reject) => {
-        hall_socket = getSocket(ServerName.Hall);
-        bindHallSocket(hall_socket, hall);
-
-        hall_socket.event.once(
-            ServerEvent.UserAccount,
-            () => {
-                hall.onUserAccount();
-                resolve(undefined);
-            },
-            hall,
-        );
+        const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
+        socket = await connectSocket({
+            url,
+            publicKey,
+            host,
+            code: Config.code,
+            name: ServerName.Hall,
+        });
+        hall_socket = socket;
+        bindHallSocket(socket, hall);
         sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
-    })) as Promise<undefined>;
 
-    const data = await checkReplay(hall);
-    if (data.isReplay) {
-        // debugger;
-        hall.enterGame(data);
-        return true;
+        const data = await checkReplay(hall);
+        if (data.isReplay) {
+            // debugger;
+            hall.enterGame(data);
+            return true;
+        }
+        return false;
+    } catch (err) {
+        error(`connectHallSocket:>error`, err);
+        return false;
     }
-    return false;
 }
 export function sendToHallSocket(
     ...params: Parameters<WebSocketTrait['send']>
@@ -60,6 +65,12 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
+        },
+        [ServerEvent.UserAccount]: () => {
+            hall.onUserAccount();
+        },
+        [ServerEvent.UserAccount]: () => {
+            hall.onUserAccount();
         },
     });
 }

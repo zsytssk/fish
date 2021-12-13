@@ -4,28 +4,26 @@ import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { gotoGuide } from '@app/ctrl/guide/guideConfig';
-import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { disconnectSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
 import { ServerName } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
-import { sleep } from '@app/utils/animate';
 import { getItem } from '@app/utils/localStorage';
-import GameRecord from '@app/view/pop/record/gameRecord';
-import ItemRecord from '@app/view/pop/record/itemRecord';
 import HallView from '@app/view/scenes/hallView';
 
+import { connectArenaHallSocket } from './arenaSocket';
 import {
     getAllLangList,
     offBindEvent,
+    offLangChange,
     onAccountChange,
     onCurBalanceChange,
     onLangChange,
     onNicknameChange,
-    offLangChange,
 } from './hallCtrlUtil';
-import { onHallSocket, roomIn, offHallSocket } from './hallSocket';
+import { offHallSocket, connectHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
 
 export class HallCtrl {
@@ -64,20 +62,25 @@ export class HallCtrl {
         });
     }
     private async init() {
-        await onHallSocket(this).then(async (enter_game) => {
-            if (enter_game) {
-                return this.destroy();
-            } else {
-                AudioCtrl.playBg(AudioRes.HallBg);
-            }
+        const enter_game = await connectHallSocket(this);
 
-            this.initModelEvent();
-            if (getItem('guide') !== 'end') {
-                return gotoGuide('1', '1');
-            }
+        try {
+            console.log(`test:>connectArenaHallSocket`);
+            await connectArenaHallSocket(this);
+        } catch {}
 
-            hallViewEvent(this);
-        });
+        if (enter_game) {
+            return this.destroy();
+        } else {
+            AudioCtrl.playBg(AudioRes.HallBg);
+        }
+
+        this.initModelEvent();
+        if (getItem('guide') !== 'end') {
+            return gotoGuide('1', '1');
+        }
+
+        hallViewEvent(this);
     }
     private initModelEvent() {
         const { view } = this;

@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-
 import { WebSocketCtrl, Status } from 'honor/net/websocket';
 
 import { log, error } from '@app/utils/log';
@@ -141,16 +141,24 @@ export class WebSocketWrapCtrl
         const { name } = this.config;
         const data_str = raw_msg.substring(1);
         const type = raw_msg.charAt(0);
-        let data: { cmd: string; code: number; msg: string; res: {} };
+        let data: {
+            cmd: string;
+            code: number;
+            msg: string;
+            res: any;
+            data: any;
+        };
         switch (type) {
             case ServerMsgType.OnData:
-                data = decrypt(name, data_str);
-                if (!data) {
-                    return;
+                {
+                    data = decrypt(name, data_str);
+                    if (!data) {
+                        return;
+                    }
+                    log(`${name}:>接收:>`, data);
+                    const { cmd, res, data: _data, code, msg } = data;
+                    this.event.emit(cmd, res || _data, code, msg);
                 }
-                log(`${name}:>接收:>`, data);
-                const { cmd, res, code, msg } = data;
-                this.event.emit(cmd, res, code, msg);
                 break;
                 // case ServerMsgType.PingTimeOut:
                 //     const { jwt } = JSON.parse(data_str);
@@ -162,10 +170,6 @@ export class WebSocketWrapCtrl
                 break;
         }
     }; //tslint:disable-line
-    private emitEvent(cmd: string, res: any, code: number, msg: string) {
-        if (code !== 200) {
-        }
-    }
     private onClose = () => {
         this.event.emit(SocketEvent.Close);
     }; //tslint:disable-line

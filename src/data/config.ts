@@ -13,6 +13,7 @@ export const Config = {
         'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB',
     SocketUrl: '',
     code: '',
+    arenaSocketUrl: 'ws://172.16.6.184:7019',
     token: '',
     lang: 'en' as Lang,
     isLogin: false,
@@ -42,7 +43,6 @@ export enum SkillMap {
     Auto = 'A2004',
     Super = 'A2004',
 }
-export function isSkill(id: string) {}
 
 export const SkillNameMap = {
     [SkillMap.Freezing]: 'freeze',

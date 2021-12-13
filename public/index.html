@@ -111,6 +111,18 @@
                 document.body.appendChild(script);
             }
 
+            if (location.href.indexOf('localhost') !== -1) {
+                var localFiles = [
+                    'js/bundle.js?v=<%= Date.now() %>',
+                    'js/laya.js?v=<%= Date.now() %>',
+                    'js/libs.js?v=<%= Date.now() %>',
+                ];
+
+                for (const file of localFiles) {
+                    loadLib(file);
+                }
+            }
+
             // prettier-ignore
             var interval = setInterval(function () {
                 if (window.Laya) {
