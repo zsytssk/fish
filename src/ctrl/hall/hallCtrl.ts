@@ -67,7 +67,7 @@ export class HallCtrl {
         try {
             console.log(`test:>connectArenaHallSocket`);
             await connectArenaHallSocket(this);
-            sendToArenaHallSocket(ArenaEvent.RoomStatus, { modeId: 1 });
+            sendToArenaHallSocket(ArenaEvent.ArenaStatus, { modeId: 1 });
             // sendToArenaHallSocket(ArenaEvent.CompetitionInfo, {
             //     currency: modelState.app.user_info.cur_balance,
             // });

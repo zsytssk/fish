@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":12,
-    "selecteID":54,
+    "selectedBox":54,
+    "selecteID":56,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -22,7 +22,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/hallView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":55,
+    "maxID":57,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -276,15 +276,43 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_competition",
-                    "props":{"y":404,"x":9,"width":201,"var":"btn_competition","stateNum":"1","skin":"image/hall/btn_get.png","sizeGrid":"0,37,0,39","labelSize":30,"labelPadding":"0,0,5,0","label":"状态","height":71},
+                    "props":{"y":404,"x":9,"width":201,"var":"btn_competition","stateNum":"1","skin":"image/hall/btn_get.png","sizeGrid":"0,37,0,39","labelSize":30,"labelPadding":"0,0,5,0","height":71},
                     "nodeParent":12,
                     "label":"btn_competition",
-                    "isDirectory":false,
+                    "isOpen":true,
+                    "isDirectory":true,
                     "isAniNode":true,
-                    "hasChild":false,
+                    "hasChild":true,
                     "compId":54,
                     "child":[
-                        ]
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,arena_status",
+                            "props":{"y":2,"x":18,"width":165,"var":"arena_status","text":"label","height":25,"fontSize":25,"align":"center"},
+                            "nodeParent":54,
+                            "label":"arena_status",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":55,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,arena_timezone",
+                            "props":{"y":35.5,"x":4,"width":193,"var":"arena_timezone","text":"label","height":25,"fontSize":20,"align":"center"},
+                            "nodeParent":54,
+                            "label":"arena_timezone",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":56,
+                            "child":[
+                                ]
+                        }]
                 },
                 {
                     "x":30,

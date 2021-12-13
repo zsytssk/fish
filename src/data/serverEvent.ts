@@ -125,7 +125,7 @@ export const ArenaEvent = {
     /** 大厅游客 */
     Guess: 'guest',
     /** 房间状态 */
-    RoomStatus: 'roomStatus',
+    ArenaStatus: 'arenaStatus',
     /** 赛事信息 */
     CompetitionInfo: 'competitionInfo',
     /**  排名 */

@@ -43,7 +43,7 @@ export function sendToArenaHallSocket(
 /** 绑定ArenaSocket */
 function bindArenaHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
     bindSocketEvent(socket, hall, {
-        [ArenaEvent.RoomStatus]: () => {},
+        [ArenaEvent.ArenaStatus]: () => {},
         [ArenaEvent.CompetitionInfo]: () => {},
         [ArenaEvent.GetDayRanking]: () => {},
         [ArenaEvent.GetHallOfFame]: () => {},

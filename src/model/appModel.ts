@@ -13,6 +13,8 @@ export class AppModel extends ComponentManager {
     public setting: SettingModel;
     /** 用户信息 */
     public user_info: UserInfoModel;
+    /** 用户信息 */
+    public arena_info: UserInfoModel;
     constructor() {
         super();
         modelState.app = this;
