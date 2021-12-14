@@ -19,6 +19,8 @@ import { error } from '@app/utils/log';
 import { playSkeleton } from '@app/utils/utils';
 
 import { ui } from '../../ui/layaMaxUI';
+import { type ArenaModel } from '@app/model/arena/arenaModel';
+import { formatDateRange } from '@app/utils/dayjsUtil';
 
 export type CoinData = {
     type: string;
@@ -170,6 +172,13 @@ export default class HallView
             nickname.text = guest;
         });
         resizeContain(left_wrap, space);
+    }
+    public updateArenaInfo(info: ArenaModel) {
+        const {status, open_timezone} = info;
+        const {arena_status, arena_timezone} = this;
+
+        arena_timezone.text = formatDateRange(open_timezone)
+        arena_status.text = status+'';
     }
     public coinMenuRender(box: Box, index: number) {
         const origin_width = 148;

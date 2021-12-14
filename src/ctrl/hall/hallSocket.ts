@@ -66,11 +66,8 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
         },
-        [ServerEvent.UserAccount]: () => {
-            hall.onUserAccount();
-        },
-        [ServerEvent.UserAccount]: () => {
-            hall.onUserAccount();
+        [ServerEvent.UserAccount]: (data, _code) => {
+            modelState.app.initUserInfo(data);
         },
     });
 }

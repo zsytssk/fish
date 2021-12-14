@@ -52,6 +52,18 @@ R A60F29B9 skill_border_light.sk
 D ani/test
 P A5543C11 test.png
 R AE3C9C5D test.sk
+D image/arena
+P 08321065 btn_gift.png
+P 3DC9A92D btn_help.png
+P 0EF74B07 btn_match.png
+P D67CA55C btn_music.png
+P EE50320A btn_shop.png
+P 52F615E3 bullet_box_bg.png
+P D32FCF83 bullet_num_bg.png
+P DDFA578D other_bullet_box_bg.png
+P FB9B9E6A other_bullet_num_bg.png
+P 2F136CD6 task_num_bg.png
+P DA96D738 task_panel_bg.png
 D image/common
 P 1A923A60 lite_tip_bg.png
 D image/game
@@ -98,6 +110,7 @@ P ACCA81CF btn_item_record.png
 P 8C4DC800 btn_leave.png
 P 6B519EF9 btn_login.png
 P 3384A924 btn_recharge.png
+P 4F56BC4B btn_record.png
 P 12DC7D1E btn_voice.png
 P 26207CA9 btn_withdraw.png
 P 8D9DAFAB coin_menu_bg.png
@@ -238,6 +251,9 @@ P 2C0DAFF5 icon_voice.png
 P B98DC719 progress_voice$bar.png
 P 459ACF62 progress_voice.png
 P DFFFA89D split_line.png
+D image/pop/competitionInfo
+P 175F9CC7 alert_bg_02.png
+P E029DBB4 btn_confirm.png
 D image/pop/guide
 P 1778398D btn_next.png
 P AE3378D7 btn_skip.png

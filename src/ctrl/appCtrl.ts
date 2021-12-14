@@ -28,13 +28,7 @@ export class AppCtrl {
         ctrlState.app = this;
         const model = new AppModel();
         this.model = model;
-
         model.init();
-        onCreateSocket(ServerName.Hall).subscribe((socket) => {
-            socket.event.on(ServerEvent.UserAccount, (data: UserAccountRep) => {
-                model.initUserInfo(data);
-            });
-        });
 
         await this.startHonor();
         this.keyboard_number = new KeyBoardNumber();

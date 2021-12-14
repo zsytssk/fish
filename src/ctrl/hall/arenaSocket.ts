@@ -1,5 +1,6 @@
 import { Config } from '@app/data/config';
 import { ArenaEvent, ServerName } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
 import { getParams } from '@app/utils/utils';
@@ -43,7 +44,9 @@ export function sendToArenaHallSocket(
 /** 绑定ArenaSocket */
 function bindArenaHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
     bindSocketEvent(socket, hall, {
-        [ArenaEvent.ArenaStatus]: () => {},
+        [ArenaEvent.ArenaStatus]: (data, _code) => {
+            modelState.app.arena_info.updateInfo(data);
+        },
         [ArenaEvent.CompetitionInfo]: () => {},
         [ArenaEvent.GetDayRanking]: () => {},
         [ArenaEvent.GetHallOfFame]: () => {},

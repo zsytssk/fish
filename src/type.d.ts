@@ -32,6 +32,8 @@ type B<T> = Readonly<T>;
 
 declare let ENV: string;
 
+type LocalRange = [number, number];
+
 type Without<T, K> = {
     [L in Exclude<keyof T, K>]: T[L];
 };

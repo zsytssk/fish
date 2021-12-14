@@ -8,6 +8,7 @@ import { disconnectSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
 import { ArenaEvent, ServerName } from '@app/data/serverEvent';
+import { ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { getItem } from '@app/utils/localStorage';
@@ -67,7 +68,7 @@ export class HallCtrl {
         try {
             console.log(`test:>connectArenaHallSocket`);
             await connectArenaHallSocket(this);
-            sendToArenaHallSocket(ArenaEvent.ArenaStatus, { modeId: 1 });
+            sendToArenaHallSocket(ArenaEvent.ArenaStatus);
             // sendToArenaHallSocket(ArenaEvent.CompetitionInfo, {
             //     currency: modelState.app.user_info.cur_balance,
             // });
@@ -91,7 +92,7 @@ export class HallCtrl {
     }
     private initModelEvent() {
         const { view } = this;
-        const { user_info } = modelState.app;
+        const { user_info, arena_info } = modelState.app;
         onCurBalanceChange(this, (type: string) => {
             const { account_map } = user_info;
             const { num, icon, hide } = account_map.get(type);
@@ -107,6 +108,9 @@ export class HallCtrl {
         onNicknameChange(this, (nickname: string) => {
             view.setNickname(nickname);
         });
+        arena_info.event.on(ArenaModelEvent.UpdateInfo, (info) =>
+            view.updateArenaInfo(info),
+        );
         view.setFlagData(getAllLangList());
     }
     public selectCoin = (index: number) => {
@@ -137,9 +141,6 @@ export class HallCtrl {
         view.toggleFlagMenu(false);
     }; // tslint:disable-line
 
-    public onUserAccount() {
-        this.view.onResize();
-    }
     public destroy() {
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
