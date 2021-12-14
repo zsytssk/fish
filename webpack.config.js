@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const findParam = require('./script/findEnv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const TerserPlugin = require('terser-webpack-plugin');
 
 const ENV = findParam('ENV');
@@ -34,24 +35,41 @@ const common_config = (mode) => ({
         alias: {
             '@app': path.resolve(__dirname, './src'),
         },
-        extensions: ['.ts', '.js', '.json'],
+        extensions: ['.ts', '.js', '.cjs', '.json'],
     },
     module: {
         rules: [
             {
-                test: /(\.ts|\.js)$/,
+                test: /(\.ts|\.js|\.cjs)$/,
                 exclude: [/\bcore-js\b/],
-                use: [
-                    {
-                        loader: 'thread-loader',
-                    },
-                    {
-                        loader: 'ts-loader',
-                        options: {
-                            happyPackMode: true,
-                        },
-                    },
-                ],
+                use:
+                    mode === 'development'
+                        ? [
+                              {
+                                  loader: 'thread-loader',
+                              },
+                              {
+                                  loader: 'ts-loader',
+                                  options: {
+                                      happyPackMode: true,
+                                  },
+                              },
+                          ]
+                        : [
+                              {
+                                  loader: 'thread-loader',
+                              },
+
+                              {
+                                  loader: 'babel-loader',
+                              },
+                              {
+                                  loader: 'ts-loader',
+                                  options: {
+                                      happyPackMode: true,
+                                  },
+                              },
+                          ],
             },
             {
                 test: /(\.glsl|.fs|.vs)$/,
@@ -123,7 +141,7 @@ const prod_config = {
                     enforce: true,
                 },
                 laya: {
-                    //node_modules里的代码
+                    //laya里的代码
                     test: /[\\/](libs)[\\/]/,
                     chunks: 'initial',
                     name: 'laya', //chunks name
@@ -142,9 +160,6 @@ module.exports = (env, argv) => {
     if (argv.mode === 'development') {
         result = { ...common, ...dev_config };
     } else {
-        common.module.rules[0].use.splice(1, 0, {
-            loader: 'babel-loader',
-        });
         result = { ...common, ...prod_config };
     }
     return result;
