@@ -34,8 +34,20 @@ export async function connectHallSocket(hall: HallCtrl) {
             name: ServerName.Hall,
         });
         hall_socket = socket;
-        bindHallSocket(socket, hall);
-        sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
+
+        /** 确保在复盘时已经有用户数据，不然进入游戏之后无法判断当前用户从而导致一堆问题 */
+        await new Promise((resolve) => {
+            bindHallSocket(hall_socket, hall);
+
+            hall_socket.event.once(
+                ServerEvent.UserAccount,
+                () => {
+                    resolve(undefined);
+                },
+                hall,
+            );
+            sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
+        });
 
         const data = await checkReplay(hall);
         if (data.isReplay) {

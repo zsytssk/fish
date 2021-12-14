@@ -1,5 +1,4 @@
 import { EventCom } from 'comMan/eventCom';
-
 import honor, { HonorDialog } from 'honor';
 
 import { log } from '@app/utils/log';
@@ -23,7 +22,7 @@ export default class Loading extends ui.scenes.loadingUI {
     }
 
     public onShow() {
-        log('load:>onShow');
+        log('load:>onShow', this);
         this.open(false);
         honor.director.openDialog(this as HonorDialog);
         this.event_com.emit(LoadingEvent.Show);

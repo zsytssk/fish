@@ -1,6 +1,5 @@
-import { first } from 'rxjs/operators';
-
 import { Observable, Subscriber } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
@@ -122,9 +121,9 @@ export default class GameView
         btn_leave.x = 20 * scale;
         btn_gift.x = 120 * scale;
         btn_leave.x = 20 * scale;
-        btn_voice.right = 120 * scale;
         btn_help.right = 20 * scale;
-        btn_voice.y = 10 * scale;
+        btn_voice.right = 120 * scale + btn_voice.width / 2;
+        btn_voice.y = 10 * scale + btn_voice.height / 2;
 
         bullet_box.scale(scale, scale);
         btn_voice.scale(scale, scale);

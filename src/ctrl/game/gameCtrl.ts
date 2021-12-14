@@ -26,6 +26,7 @@ import { SkillActiveData } from '@app/model/game/skill/skillModel';
 import { isCurUser } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
+import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
@@ -160,23 +161,23 @@ export class GameCtrl {
             this,
         );
 
-        btn_help.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();
             HelpPop.preEnter();
         });
-        btn_gift.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_gift, CLICK, (e: Event) => {
             e.stopPropagation();
             LotteryPop.preEnter();
         });
-        btn_voice.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_voice, CLICK, (e: Event) => {
             e.stopPropagation();
             VoicePop.preEnter();
         });
-        btn_shop.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_shop, CLICK, (e: Event) => {
             e.stopPropagation();
             ShopPop.preEnter();
         });
-        btn_leave.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_leave, CLICK, (e: Event) => {
             const lang = getLang();
             const { leaveTip } = InternationalTip[lang];
 
@@ -189,7 +190,7 @@ export class GameCtrl {
         });
     }
     public needUpSideDown(server_index: number) {
-        return server_index > 0;
+        return server_index > 1;
     }
     private onModel() {
         const { event } = this.model;

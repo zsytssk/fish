@@ -5,7 +5,6 @@ import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
-import { getUserInfo } from '@app/model/modelState';
 import { onNode, isClosest, onNodeWithAni } from '@app/utils/layaUtils';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
@@ -106,14 +105,14 @@ export function hallViewEvent(hall: HallCtrl) {
             clickLight.visible = false;
         });
     });
-    onNode(btn_recharge, CLICK, async () => {
+    onNodeWithAni(btn_recharge, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
         recharge();
     });
     if (getChannel() === 'CCTIP') {
         btn_withdraw.visible = true;
         view.onResize();
-        onNode(btn_withdraw, CLICK, async () => {
+        onNodeWithAni(btn_withdraw, CLICK, async () => {
             AudioCtrl.play(AudioRes.Click);
             withdraw();
         });
@@ -144,35 +143,35 @@ export function hallViewEvent(hall: HallCtrl) {
         AudioCtrl.play(AudioRes.Click);
         view.toggleFlagMenu(!flag_menu.visible);
     });
-    onNode(btn_get, CLICK, () => {
+    onNodeWithAni(btn_get, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
     });
-    onNode(btn_charge, CLICK, () => {
+    onNodeWithAni(btn_charge, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
     });
-    onNode(btn_home, CLICK, () => {
+    onNodeWithAni(btn_home, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
     });
-    onNode(btn_app, CLICK, () => {
+    onNodeWithAni(btn_app, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
     });
-    onNode(btn_login, CLICK, () => {
+    onNodeWithAni(btn_login, CLICK, () => {
         login();
         AudioCtrl.play(AudioRes.Click);
     });
-    onNode(btn_leave, CLICK, () => {
+    onNodeWithAni(btn_leave, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         logout();
     });
-    onNode(btn_voice, CLICK, () => {
+    onNodeWithAni(btn_voice, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         VoicePop.preEnter();
     });
-    onNode(btn_game_record, CLICK, () => {
+    onNodeWithAni(btn_game_record, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         GameRecord.preEnter();
     });
-    onNode(btn_item_record, CLICK, () => {
+    onNodeWithAni(btn_item_record, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         ItemRecord.preEnter();
     });
