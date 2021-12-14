@@ -5,6 +5,7 @@ import { Laya } from 'Laya';
 import { Node } from 'laya/display/Node';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Image } from 'laya/ui/Image';
 
 import { blink, buttonClick, scale_in } from './animate';
 
@@ -167,10 +168,10 @@ export function resizeContain(
 ) {
     const { numChildren } = parent;
 
-    const children = [];
+    const children: Image[] = [];
     let dist = 0;
     for (let i = 0; i < numChildren; i++) {
-        const item = parent.getChildAt(i) as Sprite;
+        const item = parent.getChildAt(i) as Image;
         if (!item.visible) {
             continue;
         }
@@ -180,8 +181,14 @@ export function resizeContain(
         const item = children[i];
         if (dir === 'horizontal') {
             item.x = dist;
+            if (item.anchorX) {
+                item.x += item.width / 2;
+            }
         } else {
             item.y = dist;
+            if (item.anchorY) {
+                item.y += item.height / 2;
+            }
         }
 
         if (dir === 'horizontal') {
