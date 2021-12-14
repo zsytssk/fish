@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":54,
-    "selecteID":56,
+    "selectedBox":12,
+    "selecteID":54,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -22,7 +22,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/hallView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":57,
+    "maxID":67,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -275,8 +275,79 @@
                 {
                     "x":30,
                     "type":"Button",
+                    "searchKey":"Button,btn_match",
+                    "props":{"y":395,"x":190,"stateNum":"1","skin":"image/hall/btn_yellowpng.png","name":"btn_match"},
+                    "nodeParent":12,
+                    "label":"btn_match",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":58,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,match_status",
+                            "props":{"y":11,"x":0,"width":156,"var":"match_status","text":"竞技场","strokeColor":"#fffd8e","stroke":2,"height":25,"fontSize":24,"color":"#9f471f","bold":true,"align":"center"},
+                            "nodeParent":58,
+                            "label":"match_status",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":63,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,match_timezone",
+                            "props":{"y":42,"x":6,"width":141,"var":"match_timezone","text":"敬请期待","strokeColor":"#fffd8e","stroke":2,"height":25,"fontSize":16,"color":"#9f471f","align":"center"},
+                            "nodeParent":58,
+                            "label":"match_timezone",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":64,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,gray",
+                            "props":{"y":3,"x":0,"skin":"image/hall/btn_yellow_gray.png","name":"gray"},
+                            "nodeParent":58,
+                            "label":"gray",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":62,
+                            "child":[
+                                ],
+                            "$LOCKED":true
+                        },
+                        {
+                            "x":45,
+                            "type":"SkeletonPlayer",
+                            "searchKey":"SkeletonPlayer,clickLight",
+                            "props":{"y":23.5,"x":98,"visible":false,"url":"image/hall/clickLight.sk","name":"clickLight"},
+                            "nodeParent":58,
+                            "label":"clickLight",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":65,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"Button",
                     "searchKey":"Button,btn_competition",
-                    "props":{"y":404,"x":9,"width":201,"var":"btn_competition","stateNum":"1","skin":"image/hall/btn_get.png","sizeGrid":"0,37,0,39","labelSize":30,"labelPadding":"0,0,5,0","height":71},
+                    "props":{"y":430,"x":108,"var":"btn_competition","stateNum":"1","skin":"image/hall/btn_blue.png","sizeGrid":"0,37,0,39","labelSize":30,"labelPadding":"0,0,5,0","anchorY":0.5,"anchorX":0.5},
                     "nodeParent":12,
                     "label":"btn_competition",
                     "isOpen":true,
@@ -289,7 +360,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,arena_status",
-                            "props":{"y":2,"x":18,"width":165,"var":"arena_status","text":"label","height":25,"fontSize":25,"align":"center"},
+                            "props":{"y":11.5,"x":-7.5,"width":165,"var":"arena_status","text":"大奖赛","strokeColor":"#f2f2f2","stroke":2,"height":25,"fontSize":24,"color":"#396aad","bold":true,"align":"center"},
                             "nodeParent":54,
                             "label":"arena_status",
                             "isDirectory":false,
@@ -303,7 +374,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,arena_timezone",
-                            "props":{"y":35.5,"x":4,"width":193,"var":"arena_timezone","text":"label","height":25,"fontSize":20,"align":"center"},
+                            "props":{"y":42.5,"x":-20.5,"width":193,"var":"arena_timezone","text":"11.10～11.17","strokeColor":"#f2f2f2","stroke":2,"height":25,"fontSize":16,"color":"#396aad","align":"center"},
                             "nodeParent":54,
                             "label":"arena_timezone",
                             "isDirectory":false,
@@ -312,48 +383,35 @@
                             "compId":56,
                             "child":[
                                 ]
-                        }]
-                },
-                {
-                    "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":404,"x":232,"width":196,"texture":"image/hall/wait_bg.png","height":61},
-                    "nodeParent":12,
-                    "label":"Sprite",
-                    "isOpen":false,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":41,
-                    "child":[
+                        },
                         {
-                            "type":"Label",
-                            "searchKey":"Label,match_status",
-                            "props":{"y":16.5,"x":42,"width":112,"var":"match_status","text":"敬请期待","stroke":0,"height":28,"fontSize":28,"color":"#fff","align":"center"},
-                            "nodeParent":41,
-                            "label":"match_status",
-                            "isOpen":false,
-                            "isDirectory":true,
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image,gray",
+                            "props":{"y":3,"x":0,"skin":"image/hall/btn_blue_gray.png","name":"gray"},
+                            "nodeParent":54,
+                            "label":"gray",
+                            "isDirectory":false,
                             "isAniNode":true,
-                            "hasChild":true,
-                            "compId":48,
+                            "hasChild":false,
+                            "compId":61,
                             "child":[
-                                {
-                                    "type":"GlowFilterSetter",
-                                    "switchAble":true,
-                                    "searchKey":"GlowFilterSetter",
-                                    "removeAble":true,
-                                    "props":{"offY":0,"offX":0,"color":"#fffe7c","blur":2},
-                                    "nodeParent":48,
-                                    "label":"GlowFilterSetter",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":49,
-                                    "child":[
-                                        ]
-                                }]
+                                ],
+                            "$LOCKED":true
+                        },
+                        {
+                            "x":45,
+                            "type":"SkeletonPlayer",
+                            "searchKey":"SkeletonPlayer,clickLight",
+                            "props":{"y":36.5,"x":76,"visible":false,"url":"image/hall/clickLight.sk","name":"clickLight"},
+                            "nodeParent":54,
+                            "label":"clickLight",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":66,
+                            "child":[
+                                ]
                         }]
                 }]
         },

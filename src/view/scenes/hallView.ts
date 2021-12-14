@@ -21,6 +21,7 @@ import { playSkeleton } from '@app/utils/utils';
 import { ui } from '../../ui/layaMaxUI';
 import { type ArenaModel } from '@app/model/arena/arenaModel';
 import { formatDateRange } from '@app/utils/dayjsUtil';
+import { ArenaStatus } from '@app/api/arenaApi';
 
 export type CoinData = {
     type: string;
@@ -105,7 +106,7 @@ export default class HallView
         );
     }
     private initLang(lang: Lang) {
-        const { match_status, match_box, normal_box, btn_play_now } = this;
+        const { arena_status, match_status,match_timezone,match_box, normal_box, btn_play_now } = this;
         const { btn_get, btn_charge, middle_btn_wrap } = this.header;
         const { stayTuned } = InternationalTip[lang];
         const map = [
@@ -113,7 +114,10 @@ export default class HallView
             ['match', match_box],
         ] as Array<[string, Box]>;
 
-        match_status.text = stayTuned;
+        // TODO-lang
+        match_timezone.text = stayTuned;
+        arena_status.text = '大奖赛';
+        match_status.text = '竞技场';
 
         const btn_arr = ['btn_play', 'btn_try'];
         for (const [key, item] of map) {
@@ -175,10 +179,13 @@ export default class HallView
     }
     public updateArenaInfo(info: ArenaModel) {
         const {status, open_timezone} = info;
-        const {arena_status, arena_timezone} = this;
+        const {arena_status, arena_timezone,  btn_competition, } = this;
+
 
         arena_timezone.text = formatDateRange(open_timezone)
-        arena_status.text = status+'';
+        const gray = btn_competition.getChildByName('gray') as Image;
+        gray.visible = status === ArenaStatus.Maintenance
+
     }
     public coinMenuRender(box: Box, index: number) {
         const origin_width = 148;

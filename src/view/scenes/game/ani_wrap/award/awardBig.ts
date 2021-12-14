@@ -72,7 +72,7 @@ export async function showAwardCircle(
                     tempAni('award_circle', circle);
                     num_label.destroy();
                     stopAni(num_label);
-                    resolve();
+                    resolve(undefined);
                 }
             },
         });

@@ -1,11 +1,12 @@
-import { throttleTime } from 'rxjs/operators';
-
 import { Observable, Subscriber } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
 
 import { Laya } from 'Laya';
 import { Node } from 'laya/display/Node';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+
+import { blink, buttonClick, scale_in } from './animate';
 
 export function onStageClick(
     node: Node,
@@ -65,6 +66,7 @@ export function onNode(
     callback: (event?: Event) => void,
     once?: boolean,
     throttle = 1000,
+    ani = false,
 ) {
     let once_observer: Subscriber<Event>;
     const observer = new Observable((subscriber: Subscriber<Event>) => {
@@ -74,6 +76,10 @@ export function onNode(
                 return;
             }
             (node as ClickNode).is_disable = true;
+
+            if (ani) {
+                buttonClick(node);
+            }
             setTimeout(() => {
                 if (node && node.destroyed) {
                     return;
@@ -105,6 +111,15 @@ export function onNode(
     });
 }
 
+export const onNodeWithAni = (
+    node: Sprite,
+    event: string,
+    callback: (event?: Event) => void,
+    once?: boolean,
+    throttle = 1000,
+) => {
+    onNode(node, event, callback, once, throttle, true);
+};
 const bind_arr = [] as Array<{
     item: Sprite;
     off: () => void;

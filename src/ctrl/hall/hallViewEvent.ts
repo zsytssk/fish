@@ -6,8 +6,9 @@ import { Handler } from 'laya/utils/Handler';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { getUserInfo } from '@app/model/modelState';
-import { onNode, isClosest } from '@app/utils/layaUtils';
+import { onNode, isClosest, onNodeWithAni } from '@app/utils/layaUtils';
 import { getItem, setItem } from '@app/utils/localStorage';
+import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce } from '@app/utils/utils';
 import GameRecord from '@app/view/pop/record/gameRecord';
 import ItemRecord from '@app/view/pop/record/itemRecord';
@@ -20,7 +21,8 @@ import { logout, login } from './login';
 
 export function hallViewEvent(hall: HallCtrl) {
     const { view } = hall;
-    const { normal_box, match_box, header, btn_play_now } = view;
+    const { normal_box, match_box, header, btn_play_now, btn_competition } =
+        view;
     const {
         coin_menu: { list: coin_menu_list },
         flag_menu: { list: flag_menu_list },
@@ -93,6 +95,16 @@ export function hallViewEvent(hall: HallCtrl) {
     onNode(btn_match_play, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
         hall.roomIn({ roomId: 2, isTrial: 0 }, hall);
+    });
+    onNodeWithAni(btn_competition, CLICK, async () => {
+        AudioCtrl.play(AudioRes.Click);
+        const clickLight = btn_competition.getChildByName(
+            'clickLight',
+        ) as Skeleton;
+        clickLight.visible = true;
+        playSkeletonOnce(clickLight, 0).then(() => {
+            clickLight.visible = false;
+        });
     });
     onNode(btn_recharge, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
@@ -173,7 +185,9 @@ export function getRoomInData(): Data {
         if (save_str) {
             return JSON.parse(save_str);
         }
-    } catch {}
+    } catch (err) {
+        error('getRoomInData:error:>', err);
+    }
     return {
         roomId: 1,
         isTrial: 1,
