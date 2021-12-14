@@ -1,6 +1,6 @@
 
 /**
- * @version 1.1.12
+ * @version 1.1.13
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -73,6 +73,9 @@
  *
  * 获取平台类型
     paladin.getPlatform();
+ *
+ * 获取游戏ID
+    paladin.getGameId();
  *
  */
 declare namespace paladin {
@@ -253,6 +256,12 @@ declare namespace paladin {
      */
     export function getCurrency(): string;
 
+    /**
+     * 获取游戏ID
+     * @return {string} currency
+     */
+     export function getGameId(): string;
+
     /*
      * 组件
      * @param {object} launch 启动
@@ -294,6 +303,8 @@ declare namespace paladin {
  * 获取时区信息 paladin.sys.getTimezone()  
  * 
  * 获取币种信息 paladin.sys.getCurrency()
+ * 
+ * 获取游戏ID paladin.sys.getGameId()
  * 
  * 获取配置信息
  * 如果定义url，则使用url请求接口
@@ -462,6 +473,12 @@ declare namespace paladin {
          * @return {string} currency 币种信息
          */
         getCurrency(): string;
+
+        /**
+         * 获取游戏ID
+         * @return {string} gameId 游戏ID
+         */
+        getGameId(): string;
 
         /**
         * 更新语言环境
