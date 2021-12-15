@@ -1,15 +1,16 @@
+import { CompetitionInfo, SignUpReq, SignUpRes } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { ChangeUserNumInfo } from '@app/ctrl/game/gameCtrl';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
-import { ServerName, ServerEvent } from '@app/data/serverEvent';
+import { ServerName, ServerEvent, ArenaEvent } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 
 import { LotteryPopData } from './lottery';
 import { ShopData } from './shop';
 
 export function getShopInfo() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.ShopList, (data: ShopListRep) => {
             resolve(genShopInfo(data));
@@ -43,7 +44,7 @@ export function genShopInfo(data: ShopListRep): ShopData {
 }
 
 export function useGunSkin(skin: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.UseSkin, (data: UseSkinReq) => {
             resolve(true);
@@ -55,7 +56,7 @@ export function useGunSkin(skin: string) {
     }) as Promise<boolean>;
 }
 export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
             if (code !== 200) {
@@ -89,7 +90,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
 }
 
 export function getLotteryData(): Promise<LotteryPopData> {
-    const get_lottery_list = new Promise((resolve, reject) => {
+    const get_lottery_list = new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.LotteryList, (data: LotteryListRep) => {
             resolve(data);
@@ -97,7 +98,7 @@ export function getLotteryData(): Promise<LotteryPopData> {
         socket.send(ServerEvent.LotteryList);
     }) as Promise<LotteryListRep>;
 
-    const get_exchange_list = new Promise((resolve, reject) => {
+    const get_exchange_list = new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.ExchangeList, (data: ExchangeListRep) => {
             resolve(data);
@@ -109,7 +110,6 @@ export function getLotteryData(): Promise<LotteryPopData> {
         ([lottery_arr, exchange_arr]) => {
             const { costNum, curNum, list: lottery_list } = lottery_arr;
             const { list: exchange_list } = exchange_arr;
-            const {} = exchange_arr;
 
             const lottery = [] as LotteryPopData['lottery'];
             const exchange = [] as LotteryPopData['exchange'];
@@ -145,7 +145,7 @@ export function getLotteryData(): Promise<LotteryPopData> {
 }
 
 export function runLottery() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Lottery, (data: LotteryRep, code) => {
             if (code !== 200) {
@@ -158,7 +158,7 @@ export function runLottery() {
 }
 
 export function runTicketExchange(itemId: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
         socket.event.once(
             ServerEvent.TicketExchange,
@@ -171,7 +171,7 @@ export function runTicketExchange(itemId: string) {
 }
 
 export function getItemList(data: GetItemListReq) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(ServerEvent.GetItemList, (_data: GetItemListRep) => {
             resolve(_data);
@@ -180,7 +180,7 @@ export function getItemList(data: GetItemListReq) {
     }) as Promise<GetItemListRep>;
 }
 export function getBulletList(data: GetBulletReq) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.GetBulletList,
@@ -194,7 +194,7 @@ export function getBulletList(data: GetBulletReq) {
     }) as Promise<GetBulletListRep>;
 }
 export function getRecentBullet() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
             ServerEvent.GetRecentBullet,
@@ -204,4 +204,31 @@ export function getRecentBullet() {
         );
         socket.send(ServerEvent.GetRecentBullet);
     }) as Promise<GetRecentBulletRep>;
+}
+
+export function getCompetitionInfo() {
+    return new Promise((resolve, _reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(
+            ArenaEvent.CompetitionInfo,
+            (_data: CompetitionInfo) => {
+                resolve(_data);
+            },
+        );
+        socket.send(ArenaEvent.CompetitionInfo, {
+            currency: modelState.app.user_info.cur_balance,
+        });
+    }) as Promise<CompetitionInfo>;
+}
+
+export function competitionSignUp() {
+    return new Promise((resolve, _reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(ArenaEvent.SignUp, (_data: SignUpRes) => {
+            resolve(_data);
+        });
+        socket.send(ArenaEvent.SignUp, {
+            currency: modelState.app.user_info.cur_balance,
+        } as SignUpReq);
+    }) as Promise<SignUpRes>;
 }

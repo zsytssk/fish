@@ -9,6 +9,7 @@ import { onNode, isClosest, onNodeWithAni } from '@app/utils/layaUtils';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce } from '@app/utils/utils';
+import CompetitionPop from '@app/view/pop/competotion';
 import GameRecord from '@app/view/pop/record/gameRecord';
 import ItemRecord from '@app/view/pop/record/itemRecord';
 import VoicePop from '@app/view/pop/voice';
@@ -103,6 +104,7 @@ export function hallViewEvent(hall: HallCtrl) {
         clickLight.visible = true;
         playSkeletonOnce(clickLight, 0).then(() => {
             clickLight.visible = false;
+            CompetitionPop.preEnter();
         });
     });
     onNodeWithAni(btn_recharge, CLICK, async () => {

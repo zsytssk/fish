@@ -82,13 +82,3 @@ export default class AlertPop
         btn_cancel_label.text = cancel;
     }
 }
-
-export const AlertRes = [
-    'pop/alert/alert.json',
-    'image/pop/alert/alert_bg_01.png',
-    'image/pop/alert/alert_bg_02.png',
-    'image/pop/alert/btn_close.png',
-    'image/pop/alert/alert_con_bg.png',
-    'image/pop/alert/btn_cancel.png',
-    'image/pop/alert/btn_confirm.png',
-];

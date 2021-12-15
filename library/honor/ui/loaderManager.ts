@@ -46,7 +46,7 @@ export class LoaderManagerCtor {
             await loadRes(res, load_progress_fn);
 
             /** 如果显示loading, 最少显示500ms */
-            return resolve();
+            return resolve(undefined);
         });
         this.addLoadTask(type, load_task);
         return load_task;

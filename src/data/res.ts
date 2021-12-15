@@ -1,7 +1,6 @@
 import { Loader } from 'laya/net/Loader';
 
 import { getGunSkinMap } from '@app/utils/dataUtil';
-import { AlertRes } from '@app/view/pop/alert';
 
 import { AudioRes } from './audioRes';
 import { SPRITE } from './sprite';
@@ -27,16 +26,10 @@ export const res = {
 const tutorialKeys = ['1', 'pos_tip', 'coin', 'award_light'];
 
 for (const top_type in SPRITE) {
-    if (!SPRITE.hasOwnProperty(top_type)) {
-        continue;
-    }
     const item_map = SPRITE[top_type];
 
     if (top_type === 'gun') {
         for (const sub_type in item_map) {
-            if (!item_map.hasOwnProperty(sub_type)) {
-                continue;
-            }
             for (let j = 1; j <= 3; j++) {
                 const ani_map = getGunSkinMap(`${sub_type}`, `${j}`);
                 for (const [ani_name, ani_id] of ani_map) {
@@ -62,9 +55,6 @@ for (const top_type in SPRITE) {
         continue;
     }
     for (const sub_type in item_map) {
-        if (!item_map.hasOwnProperty(sub_type)) {
-            continue;
-        }
         const item = item_map[sub_type];
         if (item.type === 'DragonBone') {
             const path = item.path;
@@ -106,19 +96,24 @@ for (const font of font_list) {
     );
 }
 for (const key in AudioRes) {
-    if (!AudioRes.hasOwnProperty(key)) {
-        continue;
-    }
     const url = AudioRes[key];
     res.audio.push({
         url,
         type: Loader.SOUND,
     });
 }
+
+const AlertRes = [
+    'pop/alert/alert.json',
+    'image/pop/alert/alert_bg_01.png',
+    'image/pop/alert/alert_bg_02.png',
+    'image/pop/alert/btn_close.png',
+    'image/pop/alert/alert_con_bg.png',
+    'image/pop/alert/btn_cancel.png',
+    'image/pop/alert/btn_confirm.png',
+];
+
 for (const key in AlertRes) {
-    if (!AlertRes.hasOwnProperty(key)) {
-        continue;
-    }
     const url = AlertRes[key];
     res.common.push(url);
 }

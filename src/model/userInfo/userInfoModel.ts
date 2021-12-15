@@ -23,7 +23,7 @@ export class UserInfoModel extends ComponentManager {
     /** 语言 */
     public lang: Lang;
     /** 当前钱币类型 */
-    public cur_balance: string;
+    public cur_balance = 'BTC';
     /** 用户id */
     public user_id: string;
     /** 用户名 */

@@ -40,7 +40,7 @@ export class DirectorCtor {
      * 是否正在 loadingscene
      * @param url 场景的url
      */
-    get isLoadingScene(): Boolean {
+    get isLoadingScene(): boolean {
         return sceneManager.is_loading_scene;
     }
     /**
