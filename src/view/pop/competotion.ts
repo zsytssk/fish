@@ -1,6 +1,7 @@
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
+import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { ui } from '@app/ui/layaMaxUI';
@@ -23,7 +24,6 @@ export default class CompetitionPop
             stay_scene: true,
         })) as CompetitionPop;
 
-        console.log(`test:>CompetitionPop`, pop);
         const data = await getCompetitionInfo();
         pop.initData(data);
     }
@@ -37,12 +37,26 @@ export default class CompetitionPop
         });
     }
     private initData(data: CompetitionInfo) {
-        const { statusText, timeText, btn_sign } = this;
+        const { openTime, btn_sign, rankList, rankMask } = this;
 
         const status = data.myself.status;
-        statusText.text = status + '';
-        timeText.text = `${data.match.startPeriod}-${data.match.endPeriod}`;
+        openTime.text = `${data.match.startPeriod}-${data.match.endPeriod}`;
 
+        rankMask.graphics.drawRect(
+            0,
+            0,
+            rankMask.width,
+            rankMask.height,
+            '#fff',
+        );
+        rankList.renderHandler = new Handler(
+            this,
+            this.rankListRender,
+            null,
+            false,
+        );
+        rankList.array = [1, 2, 3, 4, 5, 6];
+        rankList.hScrollBarSkin = '';
         if (
             status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
             status === ArenaGameStatus.GAME_STATUS_PLAYING
@@ -56,6 +70,11 @@ export default class CompetitionPop
         ) {
             (btn_sign as Button).label = '报名';
         }
+    }
+    rankListRender(box: ui.pop.arena.rankItemUI, index: number) {
+        const data = this.rankList.array[index];
+        const { rankLabel } = box;
+        rankLabel.text = data;
     }
 
     public onClosed(type: CloseType) {}

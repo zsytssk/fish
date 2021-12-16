@@ -175,7 +175,7 @@
             "x":15,
             "type":"Button",
             "searchKey":"Button,btn_sign",
-            "props":{"y":485,"x":690,"var":"btn_sign","stateNum":"1","skin":"image/pop/competitionInfo/btn_yellow.png","labelStrokeColor":"#ffca3d","labelStroke":2,"labelSize":22,"labelPadding":"0,0,15,0","labelColors":"#9f471f","label":"比赛报名"},
+            "props":{"y":522,"x":809,"var":"btn_sign","stateNum":"1","skin":"image/pop/competitionInfo/btn_yellow.png","labelStrokeColor":"#ffca3d","labelStroke":2,"labelSize":22,"labelPadding":"0,0,15,0","labelColors":"#9f471f","label":"比赛报名","anchorY":0.5,"anchorX":0.5},
             "nodeParent":2,
             "label":"btn_sign",
             "isOpen":false,
@@ -206,13 +206,14 @@
             "props":{"y":163,"x":633},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":36,
             "child":[
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":4,"x":134,"width":209,"skin":"image/pop/competitionInfo/bgInner3.png","sizeGrid":"14,17,11,18","height":35},
@@ -225,6 +226,7 @@
                     "compId":22,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,openTime",
                             "props":{"y":-3,"x":7,"width":194,"var":"openTime","valign":"middle","text":"10:00～14:00","height":41,"fontSize":20,"color":"#fff6cd","align":"center"},
@@ -240,6 +242,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":53,"x":134,"width":209,"skin":"image/pop/competitionInfo/bgInner3.png","sizeGrid":"14,17,11,18","height":35},
@@ -252,6 +255,7 @@
                     "compId":23,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,myScore",
                             "props":{"y":-3,"x":7,"width":194,"var":"myScore","valign":"middle","text":"0","height":41,"fontSize":20,"color":"#fff6cd","align":"center"},
@@ -267,6 +271,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":101,"x":134,"width":209,"skin":"image/pop/competitionInfo/bgInner3.png","sizeGrid":"14,17,11,18","height":35},
@@ -279,6 +284,7 @@
                     "compId":24,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,myRank",
                             "props":{"y":-3,"x":7,"width":194,"var":"myRank","valign":"middle","text":"暂未上榜","height":41,"fontSize":20,"color":"#fff6cd","align":"center"},
@@ -294,6 +300,7 @@
                         }]
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,openTimeLabel",
                     "props":{"y":4,"x":0,"width":131,"var":"openTimeLabel","valign":"middle","text":"开放时间","height":41,"fontSize":20,"color":"#fff6cd","align":"center"},
@@ -308,6 +315,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,myScoreLabel",
                     "props":{"y":52,"x":0,"width":131,"var":"myScoreLabel","valign":"middle","text":"我的积分","height":41,"fontSize":20,"color":"#fff6cd","align":"center"},
@@ -322,6 +330,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,myRankLabel",
                     "props":{"y":99,"x":0,"width":131,"var":"myRankLabel","valign":"middle","text":"我的排名","height":41,"fontSize":20,"color":"#fff6cd","align":"center"},
@@ -336,6 +345,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":181,"x":1,"texture":"image/pop/competitionInfo/bg_line.png"},
@@ -353,7 +363,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label",
-            "props":{"y":367,"x":655.5,"wordWrap":true,"width":334,"valign":"middle","text":"排名5分钟刷新一次 日排名奖励在23:30后发放","height":70,"fontSize":20,"color":"#fff6cd","align":"center"},
+            "props":{"y":367,"x":656,"wordWrap":true,"width":316,"valign":"middle","text":"排名5分钟刷新一次 日排名奖励在23:30后发放","height":70,"fontSize":20,"color":"#fff6cd","align":"center"},
             "nodeParent":2,
             "label":"Label",
             "isOpen":true,
@@ -368,7 +378,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box",
-            "props":{"y":132,"x":62,"width":571,"height":334},
+            "props":{"y":132,"x":56,"width":577,"height":334},
             "nodeParent":2,
             "label":"Box",
             "isOpen":true,
@@ -380,10 +390,10 @@
                 {
                     "x":30,
                     "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":0,"width":570,"renderType":"mask","height":330},
+                    "searchKey":"Sprite,rankMask",
+                    "props":{"y":0,"x":0,"width":577,"visible":false,"var":"rankMask","renderType":"mask","height":330},
                     "nodeParent":48,
-                    "label":"Sprite",
+                    "label":"rankMask",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
@@ -395,7 +405,7 @@
                     "x":30,
                     "type":"List",
                     "searchKey":"List,rankList",
-                    "props":{"width":564,"var":"rankList","spaceX":10,"repeatY":1,"repeatX":4,"height":334},
+                    "props":{"y":0,"x":4,"width":572,"var":"rankList","spaceX":8,"repeatY":1,"repeatX":4,"height":334},
                     "nodeParent":48,
                     "label":"rankList",
                     "isOpen":false,

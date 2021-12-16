@@ -12,6 +12,7 @@ import { ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { getItem } from '@app/utils/localStorage';
+import CompetitionPop from '@app/view/pop/competotion';
 import HallView from '@app/view/scenes/hallView';
 
 import { connectArenaHallSocket, sendToArenaHallSocket } from './arenaSocket';
@@ -35,6 +36,8 @@ export class HallCtrl {
     }
     public static instance: HallCtrl;
     public static async preEnter() {
+        CompetitionPop.preEnter();
+
         if (this.instance) {
             return this.instance;
         }
