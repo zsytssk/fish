@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type FuncVoid = () => void;
 type Func<T> = (...params: any[]) => T;
-type NotFunc<T> = T extends Function ? never : T;
+type FuncAny = (...params: any[]) => any;
+type NotFunc<T> = T extends (...args: any[]) => any ? never : T;
 
 type Ctor<T> = new (...param: any[]) => T;
 
@@ -17,3 +19,10 @@ type ObjFilterKeys<Base, Condition> = ObjFilterFlags<
 >[keyof Base];
 
 type ObjFilter<Base, Condition> = Pick<Base, ObjFilterKeys<Base, Condition>>;
+
+type SplitLast<T extends any[]> = T extends [...infer I, infer L]
+    ? [I, L]
+    : never;
+
+type NotLastParameters<T extends FuncAny> = SplitLast<Parameters<T>>[0];
+type LastParameters<T extends FuncAny> = SplitLast<Parameters<T>>[1];

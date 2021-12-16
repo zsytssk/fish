@@ -1,7 +1,12 @@
 import { default as random } from 'lodash/random';
 
 import honor from 'honor';
-import { ResItem } from 'honor/utils/loadRes';
+import {
+    convertToObserver,
+    loadRes,
+    mergeLoadingTask,
+    ResItem,
+} from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
 import { Loader } from 'laya/net/Loader';
@@ -43,7 +48,9 @@ import GameView, {
     AddFishViewInfo,
     BulletBoxDir,
 } from '@app/view/scenes/game/gameView';
+import Loading from '@app/view/scenes/loadingView';
 
+import { AppCtrl } from '../appCtrl';
 import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
@@ -86,12 +93,7 @@ export class GameCtrl {
         if (this.instance) {
             return this.instance;
         }
-        return runAsyncTask(() => {
-            const wait_view = GameView.preEnter() as Promise<GameView>;
-            const [bg_num, bg_res] = this.genBgNum();
-            const other_res: ResItem[] = [bg_res, ...res.game];
-            const wait_load_res = honor.director.load(other_res, 'Scene');
-
+        return runAsyncTask(async () => {
             /** 只有第一次进入时提示 */
             if (data.currency) {
                 waitEnterGame().then(async ([status, _data]) => {
@@ -117,14 +119,23 @@ export class GameCtrl {
                 });
             }
 
-            return Promise.all([wait_view, wait_load_res]).then(([view]) => {
-                const ctrl = new GameCtrl(view as GameView, game_model);
-                this.instance = ctrl;
-                ctrl.init(data.socketUrl, bg_num);
-                setProps(ctrlState, { game: ctrl });
+            const [bg_num, bg_res] = this.genBgNum();
+            const other_res: ResItem[] = [bg_res, ...res.game];
+            const [, , view] = await mergeLoadingTask(
+                [
+                    convertToObserver(AppCtrl.commonLoad)(),
+                    convertToObserver(loadRes)(other_res),
+                    convertToObserver(GameView.preEnter)(),
+                ],
+                Loading,
+            );
 
-                return ctrl;
-            });
+            const ctrl = new GameCtrl(view as GameView, game_model);
+            this.instance = ctrl;
+            ctrl.init(data.socketUrl, bg_num);
+            setProps(ctrlState, { game: ctrl });
+
+            return ctrl;
         }, this);
     }
     public static genBgNum() {

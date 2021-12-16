@@ -67,6 +67,9 @@ export function sendToHallSocket(
     hall_socket.send(...params);
 }
 export function offHallSocket(hall: HallCtrl) {
+    if (!hall_socket) {
+        return;
+    }
     offSocketEvent(hall_socket, hall);
     offCommon(hall_socket, hall);
 }

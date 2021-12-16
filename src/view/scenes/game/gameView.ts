@@ -3,6 +3,7 @@ import { first } from 'rxjs/operators';
 
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
+import { loadScene, ProgressFn, runScene } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
@@ -41,10 +42,11 @@ export default class GameView
     private bg_num = 1;
     private bullet_box_pos: number;
     private bullet_box_dir: BulletBoxDir;
-    public static async preEnter() {
-        const game = (await honor.director.runScene(
+    public static async preEnter(progress: ProgressFn) {
+        const game: GameView = await runScene(
             'scenes/game/game.scene',
-        )) as GameView;
+            progress,
+        );
         const { ani_wrap, ani_overlay } = game;
         setProps(viewState, { game, ani_wrap, ani_overlay });
         return game;

@@ -1,4 +1,5 @@
 import honor from 'honor';
+import { convertToObserver, mergeLoadingTask } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
@@ -12,9 +13,10 @@ import { ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { getItem } from '@app/utils/localStorage';
-import CompetitionPop from '@app/view/pop/competotion';
 import HallView from '@app/view/scenes/hallView';
+import Loading from '@app/view/scenes/loadingView';
 
+import { AppCtrl } from '../appCtrl';
 import { connectArenaHallSocket, sendToArenaHallSocket } from './arenaSocket';
 import {
     getAllLangList,
@@ -36,17 +38,21 @@ export class HallCtrl {
     }
     public static instance: HallCtrl;
     public static async preEnter() {
-        CompetitionPop.preEnter();
-
         if (this.instance) {
             return this.instance;
         }
-        return runAsyncTask(() => {
-            return HallView.preEnter().then((view: HallView) => {
-                const ctrl = new HallCtrl(view);
-                this.instance = ctrl;
-                return ctrl;
-            });
+        return runAsyncTask(async () => {
+            const [view] = await mergeLoadingTask(
+                [
+                    convertToObserver(HallView.preEnter)(),
+                    convertToObserver(AppCtrl.commonLoad)(),
+                ],
+                Loading,
+            );
+
+            const ctrl = new HallCtrl(view);
+            this.instance = ctrl;
+            return ctrl;
         }, this);
     }
 
@@ -150,7 +156,6 @@ export class HallCtrl {
         offLangChange(this);
         offHallSocket(this);
         disconnectSocket(ServerName.Hall);
-        honor.director.closeAllDialogs();
         HallCtrl.leave();
     }
 }

@@ -1,27 +1,28 @@
-import { Laya } from 'Laya';
+import { ArenaStatus } from '@app/api/arenaApi';
+import {
+    getLang,
+    offLangChange,
+    onLangChange
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { type ArenaModel } from '@app/model/arena/arenaModel';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { fade_in, fade_out } from '@app/utils/animate';
+import { formatDateRange } from '@app/utils/dayjsUtil';
+import { onStageClick, resizeContain } from '@app/utils/layaUtils';
+import { error } from '@app/utils/log';
+import { playSkeleton } from '@app/utils/utils';
 import honor, { HonorScene } from 'honor';
+import { ProgressFn, runScene } from 'honor/utils/loadRes';
+import { Laya } from 'Laya';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
-
-import {
-    getLang,
-    offLangChange,
-    onLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
-import { AccountMap } from '@app/model/userInfo/userInfoModel';
-import { fade_in, fade_out } from '@app/utils/animate';
-import { onStageClick, resizeContain } from '@app/utils/layaUtils';
-import { error } from '@app/utils/log';
-import { playSkeleton } from '@app/utils/utils';
-
 import { ui } from '../../ui/layaMaxUI';
-import { type ArenaModel } from '@app/model/arena/arenaModel';
-import { formatDateRange } from '@app/utils/dayjsUtil';
-import { ArenaStatus } from '@app/api/arenaApi';
+
+
 
 export type CoinData = {
     type: string;
@@ -32,44 +33,12 @@ export default class HallView
     extends ui.scenes.hall.hallUI
     implements HonorScene
 {
-    public static preEnter() {
-        return honor.director.runScene('scenes/hall/hall.scene');
-    }
-    public onResize(width?: number, height?: number) {
-        if (!width) {
-            width = Laya.stage.width;
-            height = Laya.stage.height;
-        }
-        const {
-            width: tw,
-            height: th,
-            inner,
-            header: {
-                inner: header_inner,
-                middle_btn_wrap,
-                btn_right_wrap,
-                left_wrap,
-                right_wrap,
-            },
-        } = this;
-        this.x = (width - tw) / 2;
-        this.y = (height - th) / 2;
-        if (width > 1334) {
-            width = 1334;
-        }
-        header_inner.width = inner.width = width;
-        const radio = width / height;
-        let space = 10 * radio * radio;
-        if (width / height < 1.651) {
-            space = 7 * radio * radio;
-        }
-        resizeContain(left_wrap, space);
-        resizeContain(btn_right_wrap, space);
-        resizeContain(middle_btn_wrap, space);
-        resizeContain(right_wrap, space);
+    public static async  preEnter(progress: ProgressFn) {
+        return runScene('scenes/hall/hall.scene',progress);
     }
 
     public onOpened() {
+
         const { coin_menu, flag_menu } = this.header;
         coin_menu.list.array = [];
         // coin_menu.list.vScrollBarSkin = '';
@@ -104,6 +73,42 @@ export default class HallView
             },
             [flag_menu, flag_box],
         );
+
+
+    }
+
+    public onResize(width?: number, height?: number) {
+        if (!width) {
+            width = Laya.stage.width;
+            height = Laya.stage.height;
+        }
+        const {
+            width: tw,
+            height: th,
+            inner,
+            header: {
+                inner: header_inner,
+                middle_btn_wrap,
+                btn_right_wrap,
+                left_wrap,
+                right_wrap,
+            },
+        } = this;
+        this.x = (width - tw) / 2;
+        this.y = (height - th) / 2;
+        if (width > 1334) {
+            width = 1334;
+        }
+        header_inner.width = inner.width = width;
+        const radio = width / height;
+        let space = 10 * radio * radio;
+        if (width / height < 1.651) {
+            space = 7 * radio * radio;
+        }
+        resizeContain(left_wrap, space);
+        resizeContain(btn_right_wrap, space);
+        resizeContain(middle_btn_wrap, space);
+        resizeContain(right_wrap, space);
     }
     private initLang(lang: Lang) {
         const { arena_status, match_status,match_timezone,match_box, normal_box, btn_play_now } = this;
