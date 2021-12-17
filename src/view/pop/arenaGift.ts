@@ -9,8 +9,8 @@ import { onNodeWithAni } from '@app/utils/layaUtils';
 
 import { competitionSignUp, getCompetitionInfo } from './popSocket';
 
-export default class CompetitionPop
-    extends ui.pop.arena.CompetitionInfoUI
+export default class ArenaCompetitionPop
+    extends ui.pop.arenaCompetitionInfo.arenaCompetitionInfoUI
     implements HonorDialog
 {
     public isModal = true;
@@ -19,10 +19,10 @@ export default class CompetitionPop
     }
     public static async preEnter() {
         const pop = (await honor.director.openDialog({
-            dialog: CompetitionPop,
+            dialog: ArenaCompetitionPop,
             use_exist: true,
             stay_scene: true,
-        })) as CompetitionPop;
+        })) as ArenaCompetitionPop;
 
         const data = await getCompetitionInfo();
         pop.initData(data);

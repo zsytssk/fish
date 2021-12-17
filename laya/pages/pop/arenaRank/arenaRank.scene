@@ -1,0 +1,6 @@
+{
+    "type":"Dialog",
+    "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaRank/arenaRank.png","height":634},
+    "child":[
+        ]
+}

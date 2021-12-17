@@ -416,7 +416,7 @@
                     "child":[
                         {
                             "type":"UIView",
-                            "source":"pop/arena/rankItem.scene",
+                            "source":"pop/arenaCompetitionInfo/rankItem.scene",
                             "searchKey":"UIView",
                             "props":{"renderType":"render"},
                             "nodeParent":46,

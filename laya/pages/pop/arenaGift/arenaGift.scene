@@ -1,0 +1,6 @@
+{
+    "type":"Dialog",
+    "props":{"width":825,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaGift/arenaGift.png","height":465},
+    "child":[
+        ]
+}

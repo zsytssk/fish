@@ -1,0 +1,6 @@
+{
+    "type":"Dialog",
+    "props":{"width":1668,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaSettle/arenaSettle.png","height":586},
+    "child":[
+        ]
+}
