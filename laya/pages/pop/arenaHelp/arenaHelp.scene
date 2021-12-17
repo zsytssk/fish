@@ -2,11 +2,11 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
-    "selecteID":5,
+    "selecteID":21,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaHelp/arenaHelp.png","height":634},
     "nodeParent":-1,
-    "maxID":21,
+    "maxID":46,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -110,19 +110,18 @@
         },
         {
             "x":15,
-            "type":"ViewStack",
-            "searchKey":"ViewStack",
-            "props":{"y":109,"x":86,"selectedIndex":3},
+            "type":"Tab",
+            "searchKey":"Tab",
+            "props":{"y":109,"x":86,"selectedIndex":0},
             "nodeParent":2,
-            "label":"ViewStack",
-            "isOpen":true,
+            "label":"Tab",
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":5,
             "child":[
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,item0",
                     "props":{"stateNum":"2","skin":"image/pop/arenaRank/btnClip.png","name":"item0","labelSize":20,"labelPadding":"0,2,3,0","labelColors":"#183272,#fff","label":"今日排行"},
@@ -137,7 +136,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,item1",
                     "props":{"x":145,"stateNum":"2","skin":"image/pop/arenaRank/btnClip.png","name":"item1","labelSize":20,"labelPadding":"0,2,3,0","labelColors":"#183272,#fff","label":"今日排行"},
@@ -153,10 +151,9 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,item2",
-                    "props":{"y":0,"x":294,"stateNum":"2","skin":"image/pop/arenaRank/btnClip.png","name":"item2","labelSize":20,"labelPadding":"0,2,3,0","labelColors":"#183272,#fff","label":"今日排行"},
+                    "props":{"y":0,"x":291,"stateNum":"2","skin":"image/pop/arenaRank/btnClip.png","name":"item2","labelSize":20,"labelPadding":"0,2,3,0","labelColors":"#183272,#fff","label":"今日排行"},
                     "nodeParent":5,
                     "label":"item2",
                     "isOpen":true,
@@ -169,10 +166,9 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,item3",
-                    "props":{"y":0,"x":443,"stateNum":"2","skin":"image/pop/arenaRank/btnClip.png","name":"item3","labelSize":20,"labelPadding":"0,2,3,0","labelColors":"#183272,#fff","label":"今日排行"},
+                    "props":{"y":0,"x":436,"stateNum":"2","skin":"image/pop/arenaRank/btnClip.png","name":"item3","labelSize":20,"labelPadding":"0,2,3,0","labelColors":"#183272,#fff","label":"今日排行"},
                     "nodeParent":5,
                     "label":"item3",
                     "isOpen":true,
@@ -185,6 +181,236 @@
                     "$HIDDEN":false
                 }],
             "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"ViewStack",
+            "searchKey":"ViewStack",
+            "props":{"y":176,"x":66,"width":914,"selectedIndex":0,"height":406},
+            "nodeParent":2,
+            "label":"ViewStack",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":21,
+            "child":[
+                {
+                    "x":30,
+                    "type":"VBox",
+                    "searchKey":"VBox,item0",
+                    "props":{"y":0,"x":0,"width":914,"name":"item0","height":404},
+                    "nodeParent":21,
+                    "label":"item0",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":22,
+                    "child":[
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":20,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":22,
+                            "label":"Label",
+                            "isOpen":true,
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":23,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":119,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":22,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":24,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":216,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":22,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":25,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"VBox",
+                    "searchKey":"VBox,item1",
+                    "props":{"y":0,"x":0,"width":914,"name":"item1","height":404},
+                    "nodeParent":21,
+                    "label":"item1",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":30,
+                    "child":[
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":20,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":30,
+                            "label":"Label",
+                            "isOpen":true,
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":31,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":119,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":30,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":32,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":216,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":30,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":33,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"VBox",
+                    "searchKey":"VBox,item2",
+                    "props":{"y":0,"x":0,"width":914,"name":"item2","height":404},
+                    "nodeParent":21,
+                    "label":"item2",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":38,
+                    "child":[
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":20,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":38,
+                            "label":"Label",
+                            "isOpen":true,
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":39,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":119,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":38,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":40,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":216,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":38,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":41,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"VBox",
+                    "searchKey":"VBox,item3",
+                    "props":{"y":0,"x":0,"width":914,"name":"item3","height":404},
+                    "nodeParent":21,
+                    "label":"item3",
+                    "isOpen":false,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":42,
+                    "child":[
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":20,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":42,
+                            "label":"Label",
+                            "isOpen":true,
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":43,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":119,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":42,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":44,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":216,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
+                            "nodeParent":42,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":45,
+                            "child":[
+                                ]
+                        }]
+                }]
         }],
     "animations":[
         {
