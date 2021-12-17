@@ -80,3 +80,4 @@ export default class ArenaCompetitionPop
     public onClosed(type: CloseType) {}
     private initLang() {}
 }
+

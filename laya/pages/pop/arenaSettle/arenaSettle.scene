@@ -1,6 +1,25 @@
 {
+    "x":0,
     "type":"Dialog",
-    "props":{"width":1668,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaSettle/arenaSettle.png","height":586},
+    "selectedBox":2,
+    "searchKey":"Dialog",
+    "props":{"width":1083,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaSettle/arenaSettle.png","height":442},
+    "nodeParent":-1,
+    "maxID":3,
+    "label":"Dialog",
+    "isDirectory":false,
+    "isAniNode":true,
+    "hasChild":false,
+    "compId":2,
     "child":[
-        ]
+        ],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
 }
