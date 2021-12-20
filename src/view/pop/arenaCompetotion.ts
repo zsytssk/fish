@@ -24,11 +24,13 @@ export default class ArenaCompetitionPop
             stay_scene: true,
         })) as ArenaCompetitionPop;
 
-        const data = await getCompetitionInfo();
-        pop.initData(data);
+        return pop;
     }
-    public onAwake() {
+    public async onAwake() {
         this.initEvent();
+
+        const data = await getCompetitionInfo();
+        this.initData(data);
     }
     private initEvent() {
         const { btn_sign } = this;
