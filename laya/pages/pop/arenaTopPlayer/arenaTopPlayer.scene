@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":7,
+    "selectedBox":7,
+    "selecteID":4,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaTopPlayer/arenaTopPlayer.png","height":489},
     "nodeParent":-1,
@@ -21,13 +21,14 @@
             "props":{"y":0,"x":0},
             "nodeParent":2,
             "label":"Box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":7,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":0,"x":0,"texture":"image/pop/arenaTopPlayer/bgTop.png"},
@@ -41,19 +42,7 @@
                         ]
                 },
                 {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":31,"x":952,"texture":"image/pop/arenaTopPlayer/icon-close.png"},
-                    "nodeParent":7,
-                    "label":"Sprite",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":4,
-                    "child":[
-                        ]
-                },
-                {
+                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":183,"x":7,"width":1054,"skin":"image/pop/arenaTopPlayer/bgBottom.png","sizeGrid":"0,81,0,55","height":305},
@@ -67,6 +56,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Label",
                     "searchKey":"Label,title",
                     "props":{"y":33,"x":309,"width":442,"var":"title","valign":"middle","text":"捕鱼达人","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":43,"color":"#ffffff","align":"center"},
@@ -76,6 +66,20 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":11,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Button",
+                    "searchKey":"Button,close",
+                    "props":{"y":31,"x":952,"stateNum":"1","skin":"image/pop/arenaTopPlayer/icon-close.png","name":"close"},
+                    "nodeParent":7,
+                    "label":"close",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":4,
                     "child":[
                         ]
                 }],

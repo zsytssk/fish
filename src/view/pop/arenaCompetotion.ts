@@ -1,9 +1,14 @@
+import { config } from 'rxjs';
+
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { Config } from '@app/data/config';
+import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -41,7 +46,17 @@ export default class ArenaCompetitionPop
     private initEvent() {
         const { btn_sign, btn_famous, btn_help, btn_best } = this;
         onNodeWithAni(btn_sign, Event.CLICK, () => {
-            competitionSignUp().then((data) => {});
+            competitionSignUp().then((data) => {
+                if (
+                    data.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
+                    data.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT
+                ) {
+                    ctrlState.app.enterGrandPrix(data);
+                    this.close();
+                } else {
+                    this.renderSignButton(data.status);
+                }
+            });
         });
         onNodeWithAni(btn_famous, Event.CLICK, () => {
             ArenaTopPlayerPop.preEnter();
@@ -54,15 +69,7 @@ export default class ArenaCompetitionPop
         });
     }
     public initData(data: CompetitionInfo) {
-        const {
-            timezone_label,
-            openTime,
-            myScore,
-            myRank,
-            btn_sign,
-            rankList,
-            cost_label,
-        } = this;
+        const { timezone_label, openTime, myScore, myRank, rankList } = this;
 
         const status = data.myself.status;
         const fee = data.match.fee;
@@ -91,7 +98,10 @@ export default class ArenaCompetitionPop
         }
         rankList.array = array;
         rankList.hScrollBarSkin = '';
-
+        this.renderSignButton(status, fee);
+    }
+    private renderSignButton(status: ArenaGameStatus, fee?: number) {
+        const { btn_sign, cost_label } = this;
         if (
             status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
             status === ArenaGameStatus.GAME_STATUS_PLAYING
@@ -114,7 +124,10 @@ export default class ArenaCompetitionPop
             btn_sign.labelPadding = '0,0,15,0';
         }
     }
-    rankListRender(box: ui.pop.arenaCompetitionInfo.rankItemUI, index: number) {
+    private rankListRender(
+        box: ui.pop.arenaCompetitionInfo.rankItemUI,
+        index: number,
+    ) {
         const { isAllTop, score, amount, endRanking, startRanking, userId } =
             this.rankList.array[index];
         const { rankLabel, sign, signBg, num_label, nickname, scoreLabel } =

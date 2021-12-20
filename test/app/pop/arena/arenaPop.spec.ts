@@ -1,5 +1,3 @@
-import { Test } from 'testBuilder';
-
 import { sleep } from '@app/utils/animate';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';

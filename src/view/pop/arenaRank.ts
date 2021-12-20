@@ -6,6 +6,7 @@ export default class ArenaRankPop
     extends ui.pop.arenaRank.arenaRankUI
     implements HonorDialog
 {
+    public isModal = true;
     public static async preEnter() {
         const pop = (await honor.director.openDialog({
             dialog: ArenaRankPop,

@@ -15,6 +15,7 @@ export class ArenaModel extends ComponentManager {
     status: ArenaStatus;
     open_timezone: LocalRange;
     game_status: ArenaRoomStatus;
+    user_id:string;
     constructor() {
     super();
         this.addCom(new EventCom());
@@ -23,8 +24,9 @@ export class ArenaModel extends ComponentManager {
         return this.getCom(EventCom);
     }
     public updateInfo(info: ArenaStatusData) {
-        const { status, startDate, endDate } = info;
+        const { status, startDate,userId, endDate } = info;
         this.status = status;
+        this.user_id = userId;
         this.open_timezone = [startDate, endDate];
         this.event.emit(ArenaModelEvent.UpdateInfo, this);
     }

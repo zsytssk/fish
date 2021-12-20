@@ -8,6 +8,7 @@ export default class ArenaHelpPop
     extends ui.pop.arenaHelp.arenaHelpUI
     implements HonorDialog
 {
+    public isModal = true;
     public static async preEnter() {
         const pop = (await honor.director.openDialog({
             dialog: ArenaHelpPop,
@@ -21,9 +22,9 @@ export default class ArenaHelpPop
         this.initEvent();
     }
     private initEvent() {
-        const { btn_close } = this;
-        onNodeWithAni(btn_close, Event.CLICK, () => {
-            this.close();
-        });
+        // const { btn_close } = this;
+        // onNodeWithAni(btn_close, Event.CLICK, () => {
+        //     this.close();
+        // });
     }
 }

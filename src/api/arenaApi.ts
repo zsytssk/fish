@@ -23,6 +23,7 @@ export enum ArenaRoomStatus {
 export type ArenaStatusData = {
     endDate: number;
     startDate: number;
+    userId: string;
     status: ArenaStatus;
 };
 
@@ -61,4 +62,34 @@ export type CompetitionInfo = {
 };
 
 export type SignUpReq = { currency: string };
-export type SignUpRes = { mode: number; currency: string };
+export type SignUpRes = {
+    mode: number;
+    currency: string;
+    status: ArenaGameStatus;
+};
+
+/** 用户的数据 */
+export type ServerUserInfo = {
+    seatId: number;
+    userId: string;
+    bulletNum: number;
+    multiple: number;
+    turretSkin: string;
+    lockFish: string;
+    lockLeft: number;
+    needEmit: boolean;
+};
+
+/** 复盘 */
+export type EnterGameRep = {
+    isTrial: 0 | 1;
+    roomId: number;
+    rate: number;
+    tableId: string;
+    currency: string;
+    frozen: boolean;
+    frozenLeft: number;
+    users: ServerUserInfo[];
+    fish: ServerFishInfo[];
+    items: ServerItemInfo[];
+};

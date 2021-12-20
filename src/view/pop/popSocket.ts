@@ -223,12 +223,15 @@ export function getCompetitionInfo() {
         });
     }) as Promise<CompetitionInfo>;
 }
-
+/** Arena 报名 */
 export function competitionSignUp() {
     return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.ArenaHall);
-        socket.event.once(ArenaEvent.SignUp, (_data: SignUpRes) => {
-            resolve(_data);
+        socket.event.once(ArenaEvent.SignUp, (data: SignUpRes, code) => {
+            resolve({
+                currency: modelState.app.user_info.cur_balance,
+                ...data,
+            });
         });
         socket.send(ArenaEvent.SignUp, {
             currency: modelState.app.user_info.cur_balance,

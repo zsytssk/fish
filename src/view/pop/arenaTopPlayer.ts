@@ -6,6 +6,7 @@ export default class ArenaTopPlayerPop
     extends ui.pop.arenaTopPlayer.arenaTopPlayerUI
     implements HonorDialog
 {
+    public isModal = true;
     public static async preEnter() {
         const pop = (await honor.director.openDialog({
             dialog: ArenaTopPlayerPop,
@@ -15,4 +16,5 @@ export default class ArenaTopPlayerPop
 
         return pop;
     }
+    public onClosed(type: CloseType) {}
 }

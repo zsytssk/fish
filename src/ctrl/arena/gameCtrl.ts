@@ -16,7 +16,12 @@ import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip } from '@app/data/internationalConfig';
 import { res } from '@app/data/res';
-import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
+import {
+    ArenaEvent,
+    ServerErrCode,
+    ServerEvent,
+    ServerName,
+} from '@app/data/serverEvent';
 import { FreezingComEvent } from '@app/model/game/com/gameFreezeCom';
 import { ShoalEvent } from '@app/model/game/com/shoalCom';
 import { FishModel } from '@app/model/game/fish/fishModel';
@@ -50,13 +55,14 @@ import {
     tipExchange,
     waitEnterGame,
 } from '../game/gameCtrlUtils';
+import { PlayerCtrl } from '../game/playerCtrl';
+import { waitConnectGameArena } from '../hall/arenaSocket';
 import {
     convertEnterGame,
     offGameSocket,
     onGameSocket,
     sendToGameSocket,
-} from '../game/gameSocket';
-import { PlayerCtrl } from '../game/playerCtrl';
+} from './gameSocket';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -76,6 +82,7 @@ export class GameCtrl {
     constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
+        this.model.setGameMode(2);
     }
     private static instance: GameCtrl;
     public static async preEnter(
@@ -119,7 +126,7 @@ export class GameCtrl {
             return Promise.all([wait_view, wait_load_res]).then(([view]) => {
                 const ctrl = new GameCtrl(view as GameView, game_model);
                 this.instance = ctrl;
-                ctrl.init(data.socketUrl, bg_num);
+                ctrl.init(data.currency, bg_num);
                 setProps(ctrlState, { game: ctrl });
 
                 return ctrl;
@@ -133,12 +140,13 @@ export class GameCtrl {
             { url: `image/game/normal_bg/bg${bg_num}.jpg`, type: Loader.IMAGE },
         ] as [number, ResItem];
     }
-    private init(url: string, bg_num: number) {
+    private init(currency: string, bg_num: number) {
         this.initEvent();
         AudioCtrl.playBg(AudioRes.GameBg);
         this.view.showBubbleRefresh(bg_num);
-        waitConnectGame(url).then(() => {
-            onGameSocket(getSocket(ServerName.Game), this);
+        waitConnectGameArena().then((socket) => {
+            onGameSocket(socket, this);
+            socket.send(ArenaEvent.EnterGame, { currency });
         });
     }
     private initEvent() {
@@ -379,7 +387,7 @@ export class GameCtrl {
     public tableOut(data: TableOutRep) {
         const { model } = this;
         const { userId, isTimeOut } = data;
-        if (isCurUser(userId)) {
+        if (isCurUser(userId, true)) {
             const lang = getLang();
             const { kickedTip } = InternationalTip[lang];
             const timeout_tip =
@@ -406,7 +414,7 @@ export class GameCtrl {
     public roomOut(data: RoomOutRep) {
         const { model } = this;
         const { userId } = data;
-        if (isCurUser(userId)) {
+        if (isCurUser(userId, true)) {
             offGameSocket(this);
             disconnectSocket(ServerName.Game);
             model.destroy();
