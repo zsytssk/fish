@@ -1,4 +1,4 @@
-import { EnterGameRep } from '@app/api/arenaApi';
+import { EnterGameRep, TableInRep } from '@app/api/arenaApi';
 import {
     commonSocket,
     errorHandler,
@@ -213,7 +213,7 @@ export function convertEnterGame(data: EnterGameRep) {
 
     /** 提取冰冻的鱼 */
     const fish_list: string[] = [];
-    if (frozen) {
+    if (frozen && fish) {
         for (const fish_item of fish) {
             if (fish_item.frozen) {
                 fish_list.push(fish_item.eid);
@@ -235,7 +235,7 @@ export function convertEnterGame(data: EnterGameRep) {
 function convertTableInData(data: TableInRep): PlayerInfo {
     const {
         userId: user_id,
-        index: index,
+        seatId: index,
         multiple: bullet_cost,
         turretSkin: gun_skin,
     } = data;

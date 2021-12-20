@@ -93,3 +93,20 @@ export type EnterGameRep = {
     fish: ServerFishInfo[];
     items: ServerItemInfo[];
 };
+
+export type TableInRep = {
+    seatId: number;
+    userId: string;
+    multiple: number;
+    turretSkin: string;
+};
+
+export type GetDayRankingItem = {
+    userId: number;
+    score: number;
+    award: number;
+};
+export type GetDayRanking = {
+    today: GetDayRankingItem[];
+    yesterday: GetDayRankingItem[];
+};

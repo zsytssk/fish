@@ -1,0 +1,51 @@
+{
+    "today": [
+        {
+            "userId": 1,
+            "score": 1,
+            "award": 1
+        },
+        {
+            "userId": 1,
+            "score": 1,
+            "award": 1
+        },
+        {
+            "userId": 1,
+            "score": 1,
+            "award": 1
+        }
+    ],
+    "yesterday": [
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2
+        }
+    ]
+}

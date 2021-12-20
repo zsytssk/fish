@@ -30,9 +30,13 @@ import { SkillActiveData } from '@app/model/game/skill/skillModel';
 import { isCurUser } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
+import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
+import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaGiftPop from '@app/view/pop/arenaGift';
+import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import VoicePop from '@app/view/pop/voice';
 import GameView, {
     AddFishViewInfo,
@@ -183,23 +187,23 @@ export class GameCtrl {
             });
         });
 
-        btn_shop.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_shop, CLICK, (e: Event) => {
             e.stopPropagation();
             alert(1);
         });
-        btn_gift.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_gift, CLICK, (e: Event) => {
             e.stopPropagation();
-            alert(1);
+            ArenaGiftPop.preEnter();
         });
-        btn_match.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_match, CLICK, (e: Event) => {
             e.stopPropagation();
-            alert(1);
+            ArenaCompetitionPop.preEnter();
         });
-        btn_help.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();
-            alert(1);
+            ArenaHelpPop.preEnter();
         });
-        btn_music.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_music, CLICK, (e: Event) => {
             e.stopPropagation();
             VoicePop.preEnter();
         });
@@ -333,6 +337,9 @@ export class GameCtrl {
         this.model.resetSkill(skill, user_id);
     }
     public addFish(fish_list: ServerFishInfo[]) {
+        if (!fish_list) {
+            return;
+        }
         for (const fish of fish_list) {
             this.model.addFish(fish);
         }

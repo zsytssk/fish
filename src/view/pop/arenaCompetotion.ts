@@ -1,5 +1,3 @@
-import { config } from 'rxjs';
-
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
@@ -7,8 +5,6 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
-import { Config } from '@app/data/config';
-import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';

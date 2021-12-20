@@ -32,7 +32,6 @@ import SkillItemView from '../game/skillItemView';
 type PlayerType = 'current' | 'other';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
-const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
 export default class ArenaView
     extends ui.scenes.arena.gameUI

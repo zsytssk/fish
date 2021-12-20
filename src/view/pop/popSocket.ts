@@ -1,4 +1,9 @@
-import { CompetitionInfo, SignUpReq, SignUpRes } from '@app/api/arenaApi';
+import {
+    CompetitionInfo,
+    GetDayRanking,
+    SignUpReq,
+    SignUpRes,
+} from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { ChangeUserNumInfo } from '@app/ctrl/game/gameCtrl';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
@@ -223,6 +228,7 @@ export function getCompetitionInfo() {
         });
     }) as Promise<CompetitionInfo>;
 }
+
 /** Arena 报名 */
 export function competitionSignUp() {
     return new Promise((resolve, _reject) => {
@@ -237,4 +243,20 @@ export function competitionSignUp() {
             currency: modelState.app.user_info.cur_balance,
         } as SignUpReq);
     }) as Promise<SignUpRes>;
+}
+/** Arena 排名 getDayRanking */
+export function arenaGetDayRanking() {
+    return new Promise((resolve, _reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return resolve(undefined);
+        }
+        socket.event.once(
+            ArenaEvent.GetDayRanking,
+            (data: GetDayRanking, code) => {
+                resolve(data);
+            },
+        );
+        socket.send(ArenaEvent.GetDayRanking);
+    }) as Promise<GetDayRanking>;
 }

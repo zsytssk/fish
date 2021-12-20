@@ -1,8 +1,7 @@
 import honor, { HonorDialog } from 'honor';
-import { Event } from 'laya/events/Event';
+import { Handler } from 'laya/utils/Handler';
 
 import { ui } from '@app/ui/layaMaxUI';
-import { onNodeWithAni } from '@app/utils/layaUtils';
 
 export default class ArenaHelpPop
     extends ui.pop.arenaHelp.arenaHelpUI
@@ -22,9 +21,15 @@ export default class ArenaHelpPop
         this.initEvent();
     }
     private initEvent() {
-        // const { btn_close } = this;
-        // onNodeWithAni(btn_close, Event.CLICK, () => {
-        //     this.close();
-        // });
+        const { tab, tabBody } = this;
+
+        tab.selectHandler = new Handler(
+            this,
+            (index: number) => {
+                tabBody.selectedIndex = index;
+            },
+            null,
+            false,
+        );
     }
 }
