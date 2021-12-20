@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":12,
+    "selectedBox":11,
+    "selecteID":50,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -235,10 +235,10 @@
                         {
                             "x":45,
                             "type":"Button",
-                            "searchKey":"Button,btn_match",
-                            "props":{"y":42,"x":393,"var":"btn_match","stateNum":"1","skin":"image/arena/btn_match.png","anchorY":0.5,"anchorX":0.5},
+                            "searchKey":"Button,btn_rank",
+                            "props":{"y":42,"x":393,"var":"btn_rank","stateNum":"1","skin":"image/arena/btn_match.png","anchorY":0.5,"anchorX":0.5},
                             "nodeParent":52,
-                            "label":"btn_match",
+                            "label":"btn_rank",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
@@ -251,7 +251,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,right_box",
-                    "props":{"y":8,"var":"right_box","right":0},
+                    "props":{"y":8,"width":89,"var":"right_box","right":0,"height":238},
                     "nodeParent":11,
                     "label":"right_box",
                     "isOpen":true,

@@ -37,6 +37,7 @@ import AlertPop from '@app/view/pop/alert';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
+import ArenaRankPop from '@app/view/pop/arenaRank';
 import VoicePop from '@app/view/pop/voice';
 import GameView, {
     AddFishViewInfo,
@@ -151,14 +152,8 @@ export class GameCtrl {
     }
     private initEvent() {
         const { view } = this;
-        const {
-            btn_leave,
-            btn_shop,
-            btn_gift,
-            btn_match,
-            btn_help,
-            btn_music,
-        } = view;
+        const { btn_leave, btn_shop, btn_gift, btn_rank, btn_help, btn_music } =
+            view;
         const { CLICK } = Event;
 
         this.onModel();
@@ -195,9 +190,9 @@ export class GameCtrl {
             e.stopPropagation();
             ArenaGiftPop.preEnter();
         });
-        onNodeWithAni(btn_match, CLICK, (e: Event) => {
+        onNodeWithAni(btn_rank, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaCompetitionPop.preEnter();
+            ArenaRankPop.preEnter();
         });
         onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();

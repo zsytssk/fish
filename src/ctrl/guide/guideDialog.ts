@@ -159,6 +159,7 @@ export default class GuideDialog
     public forceSkip() {
         const { handler } = this;
         if (!handler) {
+            this.destroy();
             return;
         }
         callFunc(handler.skip, 'skip');
