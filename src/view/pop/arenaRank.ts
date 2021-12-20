@@ -70,7 +70,6 @@ export default class ArenaRankPop
             data = this.yes_list.array[index];
         }
 
-        console.log(`test:>`, type, box, data);
         const clip = box.getChildByName('clip') as Clip;
         const label1 = box.getChildByName('label1') as Label;
         const label2 = box.getChildByName('label2') as Label;

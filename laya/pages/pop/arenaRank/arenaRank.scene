@@ -2,7 +2,7 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":26,
-    "selecteID":27,
+    "selecteID":18,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaRank/arenaRank.png","height":634},
     "nodeParent":-1,
@@ -176,16 +176,17 @@
                     "x":30,
                     "type":"List",
                     "searchKey":"List,item0,today_list",
-                    "props":{"width":912,"var":"today_list","repeatY":7,"repeatX":1,"name":"item0","height":406},
+                    "props":{"width":912,"var":"today_list","vScrollBarSkin":"\"\"","repeatY":7,"repeatX":1,"name":"item0","height":406},
                     "nodeParent":26,
                     "label":"item0",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":18,
                     "child":[
                         {
+                            "x":45,
                             "type":"Box",
                             "searchKey":"Box",
                             "props":{"y":10,"x":0,"width":911,"renderType":"render","height":55},
@@ -198,6 +199,7 @@
                             "compId":19,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Clip",
                                     "searchKey":"Clip,clip",
                                     "props":{"y":11,"x":44,"skin":"image/pop/arenaRank/iconRank.png","name":"clip","clipY":1,"clipX":3},
@@ -211,6 +213,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,label1",
                                     "props":{"y":24,"x":110,"width":204,"text":"343******4 ","name":"label1","height":20,"fontSize":20,"color":"#f9fffe","align":"center"},
@@ -224,6 +227,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,label2",
                                     "props":{"y":24,"x":337,"width":227,"text":"343******4 ","name":"label2","height":20,"fontSize":20,"color":"#f9fffe","align":"center"},
@@ -237,6 +241,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,label3",
                                     "props":{"y":24,"x":590,"width":263,"text":"343******4 ","name":"label3","height":20,"fontSize":20,"color":"#f9fffe","align":"center"},
@@ -255,7 +260,7 @@
                     "x":30,
                     "type":"List",
                     "searchKey":"List,item1,yes_list",
-                    "props":{"y":0,"x":0,"width":912,"var":"yes_list","repeatY":7,"repeatX":1,"name":"item1","height":406},
+                    "props":{"y":0,"x":0,"width":912,"var":"yes_list","vScrollBarSkin":"\"\"","repeatY":7,"repeatX":1,"name":"item1","height":406},
                     "nodeParent":26,
                     "label":"item1",
                     "isOpen":true,

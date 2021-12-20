@@ -22,4 +22,11 @@ export const arena_pop_test = {
 
         return pop;
     },
+    openGift: async () => {
+        const pop = await ArenaRankPop.preEnter();
+        await sleep(1);
+        pop.initData(RankData);
+
+        return pop;
+    },
 };
