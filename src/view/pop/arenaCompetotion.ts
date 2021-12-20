@@ -37,7 +37,8 @@ export default class ArenaCompetitionPop
     }
     public async onAwake() {
         this.initEvent();
-
+    }
+    public async onEnable() {
         const data = await getCompetitionInfo();
         if (data) {
             this.initData(data);

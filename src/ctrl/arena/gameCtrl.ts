@@ -10,8 +10,7 @@ import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { getChannel, getLang } from '@app/ctrl/hall/hallCtrlUtil';
-import { waitConnectGame } from '@app/ctrl/hall/login';
-import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { disconnectSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip } from '@app/data/internationalConfig';
@@ -34,9 +33,6 @@ import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { error, log } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
-import HelpPop from '@app/view/pop/help';
-import LotteryPop from '@app/view/pop/lottery';
-import ShopPop from '@app/view/pop/shop';
 import VoicePop from '@app/view/pop/voice';
 import GameView, {
     AddFishViewInfo,
