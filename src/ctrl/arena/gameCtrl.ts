@@ -10,7 +10,7 @@ import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { getChannel, getLang } from '@app/ctrl/hall/hallCtrlUtil';
-import { disconnectSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip } from '@app/data/internationalConfig';
@@ -34,7 +34,6 @@ import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
-import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
@@ -50,6 +49,7 @@ import {
 import { activeShoalWave } from '@app/view/scenes/game/ani_wrap/shoalWave';
 
 import { FishCtrl } from '../game/fishCtrl';
+import { GameCtrlUtils } from '../game/gameCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
@@ -58,12 +58,9 @@ import {
 } from '../game/gameCtrlUtils';
 import { PlayerCtrl } from '../game/playerCtrl';
 import { waitConnectGameArena } from '../hall/arenaSocket';
-import {
-    convertEnterGame,
-    offGameSocket,
-    onGameSocket,
-    sendToGameSocket,
-} from './gameSocket';
+import { offCommon } from '../hall/commonSocket';
+import { WebSocketTrait } from '../net/webSocketWrap';
+import { convertEnterGame, onGameSocket } from './gameSocket';
 
 export type ChangeUserNumInfo = {
     userId: string;
@@ -75,7 +72,7 @@ export type ChangeUserNumInfo = {
 };
 
 /** 大奖赛ctrl */
-export class GameCtrl {
+export class GameCtrl implements GameCtrlUtils {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
@@ -177,7 +174,7 @@ export class GameCtrl {
             e.stopPropagation();
             AlertPop.alert(leaveTip).then((type) => {
                 if (type === 'confirm') {
-                    sendToGameSocket(ServerEvent.RoomOut);
+                    this.sendToGameSocket(ServerEvent.RoomOut);
                 }
             });
         });
@@ -220,7 +217,7 @@ export class GameCtrl {
                     horizon_turn,
                 };
                 const fish_view = view.addFish(fish_view_info);
-                const ctrl = new FishCtrl(fish_view, fish);
+                new FishCtrl(fish_view, fish, this);
             },
             this,
         );
@@ -276,6 +273,17 @@ export class GameCtrl {
             },
             this,
         );
+    }
+    public sendToGameSocket(...params: Parameters<WebSocketTrait['send']>) {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket?.send(...params);
+    }
+    public offGameSocket() {
+        const socket = getSocket(ServerName.Game);
+        offCommon(socket, this);
+    }
+    public getSocket() {
+        return getSocket(ServerName.ArenaHall);
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
         const { model, view } = this;
@@ -392,7 +400,7 @@ export class GameCtrl {
                 InternationalTip[lang][ServerErrCode.TrialTimeGame];
             const tip = isTimeOut ? timeout_tip : kickedTip;
             disableAllUserOperation();
-            offGameSocket(this);
+            this.offGameSocket();
             disconnectSocket(ServerName.Game);
             AlertPop.alert(tip, {
                 hide_cancel: true,
@@ -413,7 +421,7 @@ export class GameCtrl {
         const { model } = this;
         const { userId } = data;
         if (isCurUser(userId, true)) {
-            offGameSocket(this);
+            this.offGameSocket();
             disconnectSocket(ServerName.Game);
             model.destroy();
             HallCtrl.preEnter();

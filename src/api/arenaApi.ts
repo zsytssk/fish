@@ -110,3 +110,19 @@ export type GetDayRanking = {
     today: GetDayRankingItem[];
     yesterday: GetDayRankingItem[];
 };
+
+export type GiftList = {
+    id: number;
+    modeId: number;
+    typeId: number;
+    giftId: number;
+    giftName: number;
+    currency: 'BTC';
+    price: number;
+    list: [
+        {
+            goodsId: number;
+            goodsNum: number;
+        },
+    ];
+};

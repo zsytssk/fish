@@ -1,8 +1,4 @@
-import {
-    commonSocket,
-    errorHandler,
-    offCommon,
-} from '@app/ctrl/hall/commonSocket';
+import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
 import { WebSocketTrait, SocketEvent } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
@@ -21,14 +17,12 @@ import { getCurUserId, isCurUser, getCurPlayer } from '@app/model/modelState';
 import { GameCtrl } from './gameCtrl';
 import { tipExchange } from './gameCtrlUtils';
 
-let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
-    game_socket = socket;
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             game.onEnterGame(convertEnterGame(data));
         },
@@ -45,7 +39,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             game.tableOut(data);
         },
@@ -55,7 +49,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             // Todo
             if (code !== 200) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             game.onHit(data);
         },
@@ -118,7 +112,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
             if (code !== 200) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();
@@ -132,16 +126,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             socket.send(ServerEvent.EnterGame, { replay: true });
         },
     });
-}
-
-export function offGameSocket(game: GameCtrl) {
-    offCommon(game_socket, game);
-    game_socket = undefined;
-}
-export function sendToGameSocket(
-    ...params: Parameters<WebSocketTrait['send']>
-) {
-    game_socket?.send(...params);
 }
 
 export type EnterGameData = {

@@ -16,4 +16,16 @@ export default class ArenaGiftPop
 
         return pop;
     }
+    public async onAwake() {
+        this.initEvent();
+    }
+    private initEvent() {}
+    public onEnable() {
+        arenaGetDayRanking().then((data) => {
+            if (data) {
+                this.initData(data);
+            }
+        });
+    }
+    public initData(data: ) {}
 }

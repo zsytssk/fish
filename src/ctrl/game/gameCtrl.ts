@@ -44,6 +44,8 @@ import GameView, {
     BulletBoxDir,
 } from '@app/view/scenes/game/gameView';
 
+import { offCommon } from '../hall/commonSocket';
+import { WebSocketTrait } from '../net/webSocketWrap';
 import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
@@ -51,12 +53,7 @@ import {
     tipExchange,
     waitEnterGame,
 } from './gameCtrlUtils';
-import {
-    convertEnterGame,
-    offGameSocket,
-    onGameSocket,
-    sendToGameSocket,
-} from './gameSocket';
+import { convertEnterGame, onGameSocket } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
 
 export type ChangeUserNumInfo = {
@@ -68,8 +65,17 @@ export type ChangeUserNumInfo = {
     }>;
 };
 
+export type GameCtrlUtils = {
+    sendToGameSocket(...params: Parameters<WebSocketTrait['send']>): void;
+    offGameSocket(): void;
+    needUpSideDown(index: number): boolean;
+    calcClientIndex(index: number): number;
+    getSocket: () => WebSocketTrait;
+    isTrial: EnterGameRep['isTrial'];
+};
+
 /** 游戏ctrl */
-export class GameCtrl {
+export class GameCtrl implements GameCtrlUtils {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
@@ -142,6 +148,7 @@ export class GameCtrl {
             onGameSocket(getSocket(ServerName.Game), this);
         });
     }
+
     private initEvent() {
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
@@ -184,7 +191,7 @@ export class GameCtrl {
             e.stopPropagation();
             AlertPop.alert(leaveTip).then((type) => {
                 if (type === 'confirm') {
-                    sendToGameSocket(ServerEvent.RoomOut);
+                    this.sendToGameSocket(ServerEvent.RoomOut);
                 }
             });
         });
@@ -206,7 +213,7 @@ export class GameCtrl {
                     horizon_turn,
                 };
                 const fish_view = view.addFish(fish_view_info);
-                new FishCtrl(fish_view, fish);
+                new FishCtrl(fish_view, fish, this);
             },
             this,
         );
@@ -261,6 +268,17 @@ export class GameCtrl {
             },
             this,
         );
+    }
+    public sendToGameSocket(...params: Parameters<WebSocketTrait['send']>) {
+        const socket = getSocket(ServerName.Game);
+        socket?.send(...params);
+    }
+    public offGameSocket() {
+        const socket = getSocket(ServerName.Game);
+        offCommon(socket, this);
+    }
+    public getSocket() {
+        return getSocket(ServerName.Game);
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
         const { model, view } = this;
@@ -378,7 +396,7 @@ export class GameCtrl {
                 InternationalTip[lang][ServerErrCode.TrialTimeGame];
             const tip = isTimeOut ? timeout_tip : kickedTip;
             disableAllUserOperation();
-            offGameSocket(this);
+            this.offGameSocket();
             disconnectSocket(ServerName.Game);
             AlertPop.alert(tip, {
                 hide_cancel: true,
@@ -399,7 +417,7 @@ export class GameCtrl {
         const { model } = this;
         const { userId } = data;
         if (isCurUser(userId)) {
-            offGameSocket(this);
+            this.offGameSocket();
             disconnectSocket(ServerName.Game);
             model.destroy();
             HallCtrl.preEnter();

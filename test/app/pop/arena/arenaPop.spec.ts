@@ -1,5 +1,6 @@
 import { sleep } from '@app/utils/animate';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 
@@ -23,9 +24,8 @@ export const arena_pop_test = {
         return pop;
     },
     openGift: async () => {
-        const pop = await ArenaRankPop.preEnter();
+        const pop = await ArenaGiftPop.preEnter();
         await sleep(1);
-        pop.initData(RankData);
 
         return pop;
     },

@@ -8,7 +8,7 @@ import { Event } from 'laya/events/Event';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { AudioRes } from '@app/data/audioRes';
-import { ServerErrCode, ServerEvent } from '@app/data/serverEvent';
+import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import {
     AddBulletInfo,
@@ -22,9 +22,9 @@ import {
 } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
 import {
-    getUserInfo,
     getCurPlayer,
     getGameCurrency,
+    getUserInfo,
 } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
@@ -42,10 +42,9 @@ import {
     setBulletNum,
 } from '@app/view/viewState';
 
-import { GameCtrl as ArenaCtrl } from '../arena/gameCtrl';
+import { getSocket } from '../net/webSocketWrapUtil';
 import { BulletCtrl } from './bulletCtrl';
-import { GameCtrl } from './gameCtrl';
-import { sendToGameSocket } from './gameSocket';
+import { GameCtrlUtils } from './gameCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
 
 // prettier-ignore
@@ -60,7 +59,7 @@ export class PlayerCtrl {
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
-        private game_ctrl: GameCtrl | ArenaCtrl,
+        public game_ctrl: GameCtrlUtils,
     ) {
         this.init();
     }
@@ -223,7 +222,7 @@ export class PlayerCtrl {
                     data.robotId = user_id;
                     data.userId = getCurPlayer().user_id;
                 }
-                sendToGameSocket(ServerEvent.Shoot, data);
+                this.game_ctrl.sendToGameSocket(ServerEvent.Shoot, data);
             },
             this,
         );
@@ -245,7 +244,7 @@ export class PlayerCtrl {
                     _data.robotId = user_id;
                 }
 
-                sendToGameSocket(ServerEvent.Hit, _data);
+                this.game_ctrl.sendToGameSocket(ServerEvent.Hit, _data);
             },
             this,
         );
@@ -267,10 +266,11 @@ export class PlayerCtrl {
         gun_event.on(
             GunEvent.NotEnoughBulletNum,
             () => {
+                const socket = this.game_ctrl.getSocket();
                 if (this.game_ctrl.isTrial) {
-                    errorHandler(ServerErrCode.TrialNotBullet);
+                    errorHandler(ServerErrCode.TrialNotBullet, null, socket);
                 } else {
-                    errorHandler(ServerErrCode.ReExchange);
+                    errorHandler(ServerErrCode.ReExchange, null, socket);
                 }
             },
             this,
@@ -326,7 +326,7 @@ export class PlayerCtrl {
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
         if (bullet_cost) {
-            sendToGameSocket(ServerEvent.ChangeTurret, {
+            this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
                 multiple: Number(bullet_cost),
             } as ChangeTurretReq);
         }
@@ -345,7 +345,7 @@ export class PlayerCtrl {
         AudioCtrl.play(AudioRes.Click);
         const next = bullet_cost_arr[next_index];
         this.detectDisableChangeBulletCost(next);
-        sendToGameSocket(ServerEvent.ChangeTurret, {
+        this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
             multiple: next,
         } as ChangeTurretReq);
 

@@ -23,14 +23,12 @@ import { GameCtrl } from '../arena/gameCtrl';
 import { tipExchange } from '../game/gameCtrlUtils';
 
 const OK_CODE = 0;
-let game_socket: WebSocketTrait;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
-    game_socket = socket;
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             game.onEnterGame(convertEnterGame(data));
         },
@@ -47,7 +45,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             game.tableOut(data);
         },
@@ -57,7 +55,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             // Todo
             if (code !== OK_CODE) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             game.onHit(data);
         },
@@ -120,7 +118,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
             if (code !== OK_CODE) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();
@@ -134,16 +132,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             socket.send(ServerEvent.EnterGame, { replay: true });
         },
     });
-}
-
-export function offGameSocket(game: GameCtrl) {
-    offCommon(game_socket, game);
-    game_socket = undefined;
-}
-export function sendToGameSocket(
-    ...params: Parameters<WebSocketTrait['send']>
-) {
-    game_socket?.send(...params);
 }
 
 export type EnterGameData = {

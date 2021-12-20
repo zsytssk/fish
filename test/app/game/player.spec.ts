@@ -1,7 +1,6 @@
 import { testBuild } from 'testBuilder';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
-import { sendToGameSocket } from '@app/ctrl/game/gameSocket';
 import { SkillMap } from '@app/data/config';
 import { ServerEvent } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
@@ -132,6 +131,7 @@ export const player_test = testBuild({
 
     repeat_hit: () => {
         const cur_player = modelState.app.game.getCurPlayer();
+        const game_ctrl = ctrlState.game;
         cur_player.gun.event.on(
             GunEvent.CastFish,
             (data: { fish: FishModel; level: number }) => {
@@ -139,12 +139,12 @@ export const player_test = testBuild({
                     fish: { id: eid },
                     level: multiple,
                 } = data;
-                sendToGameSocket(ServerEvent.Hit, {
+                game_ctrl.sendToGameSocket(ServerEvent.Hit, {
                     eid,
                     multiple,
                 } as HitReq);
 
-                sendToGameSocket(ServerEvent.Hit, {
+                game_ctrl.sendToGameSocket(ServerEvent.Hit, {
                     eid,
                     multiple,
                 } as HitReq);

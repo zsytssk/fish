@@ -65,7 +65,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code, data);
+                return errorHandler(code, data, socket);
             }
 
             const userId = modelState.app.user_info.user_id;
@@ -258,5 +258,18 @@ export function arenaGetDayRanking() {
             },
         );
         socket.send(ArenaEvent.GetDayRanking);
+    }) as Promise<GetDayRanking>;
+}
+/** Arena 礼包 giftList */
+export function arenaGiftList() {
+    return new Promise((resolve, _reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return resolve(undefined);
+        }
+        socket.event.once(ArenaEvent.GiftList, (data: GetDayRanking, code) => {
+            resolve(data);
+        });
+        socket.send(ArenaEvent.GiftList);
     }) as Promise<GetDayRanking>;
 }
