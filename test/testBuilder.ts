@@ -10,7 +10,7 @@ import { guide_test } from './app/guide/guide.spec';
 import { hall_test } from './app/hall/hall.spec';
 import { path_test } from './app/path.spec';
 import { alert_test } from './app/pop/alert.spec';
-import { arena_pop_test } from './app/pop/arenaPop.spec';
+import { arena_pop_test } from './app/pop/arena/arenaPop.spec';
 import { help_test } from './app/pop/help.spec';
 import { lottery_test } from './app/pop/lottery.spec';
 import { pop_test } from './app/pop/pop.spec';

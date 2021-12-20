@@ -2,7 +2,7 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
-    "selecteID":21,
+    "selecteID":7,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaHelp/arenaHelp.png","height":634},
     "nodeParent":-1,
@@ -37,19 +37,6 @@
                     "isAniNode":true,
                     "hasChild":false,
                     "compId":6,
-                    "child":[
-                        ]
-                },
-                {
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":11,"x":951,"texture":"image/pop/arenaRank/icon-close.png"},
-                    "nodeParent":3,
-                    "label":"Sprite",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":7,
                     "child":[
                         ]
                 },
@@ -107,6 +94,20 @@
                         ]
                 }],
             "$HIDDEN":true
+        },
+        {
+            "x":15,
+            "type":"Sprite",
+            "searchKey":"Sprite,close,btn_close",
+            "props":{"y":11,"x":951,"var":"btn_close","texture":"image/pop/arenaRank/icon-close.png","name":"close"},
+            "nodeParent":2,
+            "label":"close",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":7,
+            "child":[
+                ]
         },
         {
             "x":15,
@@ -364,13 +365,14 @@
                     "props":{"y":0,"x":0,"width":914,"name":"item3","height":404},
                     "nodeParent":21,
                     "label":"item3",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":42,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":20,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
@@ -385,6 +387,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":119,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},
@@ -398,6 +401,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":216,"x":9,"wordWrap":true,"width":900,"text":"1. 捕鱼大奖赛每日分3个时段开发，分别为00:00～03:00，10:00～14:00，16:00～23:00，每个 时段结束前30分钟停止报名。","leading":10,"height":60,"fontSize":20,"color":"#fff"},

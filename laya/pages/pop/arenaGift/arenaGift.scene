@@ -31,10 +31,10 @@
         {
             "x":15,
             "type":"Sprite",
-            "searchKey":"Sprite,iconClose",
-            "props":{"y":120,"x":750,"var":"iconClose","texture":"image/pop/arenaGift/icon-close.png"},
+            "searchKey":"Sprite,btn_close",
+            "props":{"y":120,"x":750,"texture":"image/pop/arenaGift/icon-close.png","name":"btn_close"},
             "nodeParent":2,
-            "label":"iconClose",
+            "label":"btn_close",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,

@@ -209,6 +209,9 @@ export function getRecentBullet() {
 export function getCompetitionInfo() {
     return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return resolve(undefined);
+        }
         socket.event.once(
             ArenaEvent.CompetitionInfo,
             (_data: CompetitionInfo) => {

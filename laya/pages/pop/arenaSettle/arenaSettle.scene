@@ -44,10 +44,10 @@
                 {
                     "x":30,
                     "type":"Sprite",
-                    "searchKey":"Sprite,iconClose",
-                    "props":{"y":39,"x":1024,"var":"iconClose","texture":"image/pop/arenaSettle/icon-close.png"},
+                    "searchKey":"Sprite,btn_close",
+                    "props":{"y":39,"x":1024,"texture":"image/pop/arenaSettle/icon-close.png","name":"btn_close"},
                     "nodeParent":7,
-                    "label":"iconClose",
+                    "label":"btn_close",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,

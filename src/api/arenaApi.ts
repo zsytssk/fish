@@ -48,7 +48,7 @@ export type CompetitionInfo = {
         endTime: number;
         startPeriod: string;
         endPeriod: string;
-        fee: -1;
+        fee: number;
     };
     arenaStatus: ArenaStatus;
     champion: {
