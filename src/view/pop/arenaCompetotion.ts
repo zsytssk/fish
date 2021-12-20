@@ -37,18 +37,11 @@ export default class ArenaCompetitionPop
         });
     }
     private initData(data: CompetitionInfo) {
-        const { openTime, btn_sign, rankList, rankMask } = this;
+        const { openTime, btn_sign, rankList } = this;
 
         const status = data.myself.status;
         openTime.text = `${data.match.startPeriod}-${data.match.endPeriod}`;
 
-        rankMask.graphics.drawRect(
-            0,
-            0,
-            rankMask.width,
-            rankMask.height,
-            '#fff',
-        );
         rankList.renderHandler = new Handler(
             this,
             this.rankListRender,
@@ -80,4 +73,3 @@ export default class ArenaCompetitionPop
     public onClosed(type: CloseType) {}
     private initLang() {}
 }
-
