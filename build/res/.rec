@@ -96,6 +96,10 @@ P D4B50E18 skill_overlay.png
 P 72CDDB82 time_bg.png
 R 19E106F4 wave.png
 R 4DFE4675 wave.sk
+D image/gameArena
+P 40CD1C45 arenaTaskTipBg.png
+P 00696B7D end.png
+P B9FB92B6 start.png
 D image/hall
 P 89B592A5 avatar.png
 R D5C38E4F bg.jpg
