@@ -1,5 +1,6 @@
 import { sleep } from '@app/utils/animate';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
@@ -64,5 +65,10 @@ export const arena_pop_test = {
         await sleep(1);
 
         return pop;
+    },
+    openGameStatusEnd: async () => {
+        await ArenaGameStatus.start();
+        await sleep(1);
+        await ArenaGameStatus.end();
     },
 };
