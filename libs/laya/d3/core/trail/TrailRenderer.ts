@@ -12,6 +12,7 @@ import { Matrix4x4 } from "../../math/Matrix4x4"
 export class TrailRenderer extends BaseRender {
 	constructor(owner: TrailSprite3D) {
 		super(owner);
+		this._supportOctree = false;
 	}
 
 	/**

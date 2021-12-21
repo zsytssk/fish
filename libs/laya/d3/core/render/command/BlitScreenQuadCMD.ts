@@ -98,6 +98,7 @@ export class BlitScreenQuadCMD extends Command {
 
 		if (dest) {
 			LayaGL.instance.viewport(0, 0, dest.width, dest.height);
+			LayaGL.instance.scissor(0, 0, dest.width, dest.height);
 		}
 		else {
 			let camera: Camera = this._commandBuffer._camera;
@@ -105,6 +106,7 @@ export class BlitScreenQuadCMD extends Command {
 			let vpH = viewport.height;
 			let vpY = RenderContext3D.clientHeight - viewport.y - vpH;
 			LayaGL.instance.viewport(viewport.x, vpY, viewport.width, vpH);
+			LayaGL.instance.scissor(viewport.x, vpY, viewport.width, vpH);
 		}
 
 		//TODO:优化
@@ -115,9 +117,15 @@ export class BlitScreenQuadCMD extends Command {
 		//如果已经有绑定的帧buffer  要解绑
 		(RenderTexture.currentActive)&&(RenderTexture.currentActive._end());
 		(dest) && (dest._start());
+		this._commandBuffer&&(this.setContext(this._commandBuffer._context));
+		var context = this._context;
+		var currentPipelineMode:string = context.pipelineMode;
 		var subShader: SubShader = shader.getSubShaderAt(this._subShader);
 		var passes: ShaderPass[] = subShader._passes;
 		for (var i: number = 0, n: number = passes.length; i < n; i++) {
+			var pass:ShaderPass = passes[i];
+			if (pass._pipelineMode !== currentPipelineMode)
+				continue;
 			var comDef: DefineDatas = BlitScreenQuadCMD._compileDefine;
 			shaderData._defineDatas.cloneTo(comDef);
 			var shaderPass: ShaderInstance = passes[i].withCompile(comDef);//TODO:define处理

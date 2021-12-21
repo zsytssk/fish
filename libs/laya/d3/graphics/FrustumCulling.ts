@@ -9,7 +9,6 @@ import { BaseRender } from "../core/render/BaseRender";
 import { RenderContext3D } from "../core/render/RenderContext3D";
 import { RenderElement } from "../core/render/RenderElement";
 import { RenderQueue } from "../core/render/RenderQueue";
-import { BoundsOctree } from "../core/scene/BoundsOctree";
 import { Scene3D } from "../core/scene/Scene3D";
 import { BoundFrustum } from "../math/BoundFrustum";
 import { Color } from "../math/Color";
@@ -19,6 +18,7 @@ import { Shader3D } from "../shader/Shader3D";
 import { Utils3D } from "../utils/Utils3D";
 import { Bounds } from "../core/Bounds";
 import { BoundSphere } from "../math/BoundSphere";
+import { ISceneRenderManager } from "../core/scene/SceneRenderManager/ISceneRenderManager";
 
 
 /**
@@ -120,10 +120,9 @@ export class FrustumCulling {
 		var transparentQueue: RenderQueue = scene._transparentQueue;
 		var renderList: SingletonList<ISingletonElement> = scene._renders;
 		scene._clearRenderQueue();
-		var octree: BoundsOctree = scene._octree;
+		var octree: ISceneRenderManager = scene._octree;
 		if (octree) {
-			octree.updateMotionObjects();
-			octree.shrinkRootIfPossible();
+			octree.preFruUpdate();
 			octree.getCollidingWithFrustum(cameraCullInfo, context, customShader, replacementTag, isShadowCasterCull);
 		}
 		//else {//包围盒不完善的节点走遍历裁剪
@@ -156,36 +155,33 @@ export class FrustumCulling {
 		scene._clearRenderQueue();
 		var opaqueQueue = scene._opaqueQueue;
 
-		if(!scene._octree){
-			var renderList: SingletonList<ISingletonElement> = scene._renders;
-			var position: Vector3 = cullInfo.position;
-			// var cullPlaneCount: number = cullInfo.cullPlaneCount;
-			// var cullPlanes: Plane[] = cullInfo.cullPlanes;
-			var renders: ISingletonElement[] = renderList.elements;
-			var loopCount: number = Stat.loopCount;
-			for (var i: number = 0, n: number = renderList.length; i < n; i++) {
-				var render: BaseRender = <BaseRender>renders[i];
-				var canPass: boolean = render._castShadow && render._enable;
-				if (canPass) {
-					Stat.frustumCulling++;
-					let pass = FrustumCulling.cullingRenderBounds(render.bounds,cullInfo);
-					if (pass) {
-						render._renderMark = loopCount;
-						render._distanceForSort = Vector3.distance(render.bounds.getCenter(), position);//TODO:合并计算浪费,或者合并后取平均值
-						var elements: RenderElement[] = render._renderElements;
-						for (var j: number = 0, m: number = elements.length; j < m; j++)
-							elements[j]._update(scene, context, null, null);
-					}
-				}
-			}
-		}
-		else{
+		if(scene._octree){
 			//八叉树裁剪
 			let octree = scene._octree;
-			octree.updateMotionObjects();
-			octree.shrinkRootIfPossible();
-			octree._rootNode.getCollidingWithCastShadowFrustum(cullInfo,context);
-
+			octree.preFruUpdate();
+			//octree._rootNode.getCollidingWithCastShadowFrustum(cullInfo,context);
+			octree.cullingShadow(cullInfo,context);
+		}
+		var renderList: SingletonList<ISingletonElement> = scene._renders;
+		var position: Vector3 = cullInfo.position;
+		// var cullPlaneCount: number = cullInfo.cullPlaneCount;
+		// var cullPlanes: Plane[] = cullInfo.cullPlanes;
+		var renders: ISingletonElement[] = renderList.elements;
+		var loopCount: number = Stat.loopCount;
+		for (var i: number = 0, n: number = renderList.length; i < n; i++) {
+			var render: BaseRender = <BaseRender>renders[i];
+			var canPass: boolean = render._castShadow && render._enable;
+			if (canPass) {
+				Stat.frustumCulling++;
+				let pass = FrustumCulling.cullingRenderBounds(render.bounds,cullInfo);
+				if (pass) {
+					render._renderMark = loopCount;
+					render._distanceForSort = Vector3.distance(render.bounds.getCenter(), position);//TODO:合并计算浪费,或者合并后取平均值
+					var elements: RenderElement[] = render._renderElements;
+					for (var j: number = 0, m: number = elements.length; j < m; j++)
+						elements[j]._update(scene, context, null, null);
+				}
+			}
 		}
 			
 		return opaqueQueue.elements.length > 0 ? true : false;
@@ -248,8 +244,7 @@ export class FrustumCulling {
 		}else{
 			//八叉数裁剪
 			let octree = scene._octree;
-			octree.updateMotionObjects();
-			octree.shrinkRootIfPossible();
+			octree.preFruUpdate();
 			octree.getCollidingWithFrustum(cameraCullInfo, context, null, null,true);
 		}
 

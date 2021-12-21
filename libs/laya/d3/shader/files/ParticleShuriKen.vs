@@ -45,6 +45,7 @@ attribute vec4 a_SimulationWorldRotation;
 
 varying vec4 v_Color;
 #ifdef DIFFUSEMAP
+	attribute vec4 a_SimulationUV;
 	varying vec2 v_TextureCoordinate;
 #endif
 
@@ -512,7 +513,7 @@ float computeParticleRotationFloat(in float rotation,in float age,in float norma
 	        rotation+=ageRot;
 	    #endif
 		#ifdef ROTATIONOVERLIFETIMERANDOMCURVES
-			rotation+=mix(getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientZ,normalizedAge),getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientMaxZ,normalizedAge),a_Random0.w));
+			rotation+=mix(getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientZ,normalizedAge),getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientMaxZ,normalizedAge),a_Random0.w);
 		#endif
 	#endif
 	return rotation;
@@ -753,14 +754,17 @@ void main()
 	
 		gl_Position=u_Projection*u_View*vec4(center,1.0);
 		v_Color = computeParticleColor(a_StartColor, normalizedAge);
+		
 		#ifdef DIFFUSEMAP
+			vec2 simulateUV;
 			#if defined(SPHERHBILLBOARD)||defined(STRETCHEDBILLBOARD)||defined(HORIZONTALBILLBOARD)||defined(VERTICALBILLBOARD)
-				v_TextureCoordinate =computeParticleUV(a_CornerTextureCoordinate.zw, normalizedAge);
+				simulateUV =a_SimulationUV.xy + a_CornerTextureCoordinate.zw*a_SimulationUV.zw;
+				v_TextureCoordinate =computeParticleUV(simulateUV, normalizedAge);
 			#endif
 			#ifdef RENDERMODE_MESH
-				v_TextureCoordinate =computeParticleUV(a_MeshTextureCoordinate, normalizedAge);
+				simulateUV =a_SimulationUV.xy + a_MeshTextureCoordinate*a_SimulationUV.zw;
+				v_TextureCoordinate =computeParticleUV(simulateUV, normalizedAge);
 			#endif
-			
 			v_TextureCoordinate=TransformUV(v_TextureCoordinate,u_TilingOffset);
 		#endif
    	}
