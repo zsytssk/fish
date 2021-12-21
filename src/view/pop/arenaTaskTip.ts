@@ -8,7 +8,6 @@ import { ui } from '@app/ui/layaMaxUI';
 import { slide_down_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
-const url = 'pop/alert/arenaTaskTip.scene';
 export default class ArenaTaskTipPop
     extends ui.pop.alert.arenaTaskTipUI
     implements HonorDialog
