@@ -95,41 +95,6 @@ export class PlayerCtrl extends ComponentManager {
         const { btn_minus, btn_add } = view;
 
         player_event.on(
-            PlayerEvent.CaptureFish,
-            (capture_info: CaptureInfo) => {
-                const {
-                    pos,
-                    data: { win, drop },
-                    resolve,
-                } = capture_info;
-                const { pos: end_pos } = gun;
-                if (!pos) {
-                    resolve();
-                }
-                if (is_cur_player) {
-                    /** 飞行技能 */
-                    if (drop) {
-                        const cur_balance = getGameCurrency();
-                        awardSkill(pos, end_pos, drop, cur_balance);
-                    }
-                    AudioCtrl.play(AudioRes.FlySkill);
-                }
-
-                if (!win) {
-                    resolve();
-                } else if (is_cur_player && win > 1000) {
-                    /** 奖励圆环 */
-                    showAwardCircle(pos, win, is_cur_player).then(resolve);
-                } else {
-                    /** 奖励金币动画 */
-                    showAwardCoin(pos, end_pos, win, is_cur_player).then(
-                        resolve,
-                    );
-                }
-            },
-            this,
-        );
-        player_event.on(
             PlayerEvent.Destroy,
             () => {
                 this.destroy();

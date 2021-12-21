@@ -18,6 +18,7 @@ type SkillInfoMap = {
 
 export type CaptureGain = {
     win: number;
+    winScore: number;
     drop: HitDrop[];
 };
 export type CaptureInfo = {
@@ -31,6 +32,7 @@ export type PlayerInfo = {
     server_index: number;
     bullet_cost: number;
     bullet_num: number;
+    score?: number;
     gun_skin: string;
     nickname: string;
     avatar: string;
@@ -58,6 +60,8 @@ export class PlayerModel extends ComponentManager {
     public bullet_cost: number;
     /** 金币数量 */
     public bullet_num: number;
+    /** 积分数量 */
+    public score = 0;
     /** 用户名 */
     public nickname: string;
     /** 图像地址 */
@@ -157,12 +161,9 @@ export class PlayerModel extends ComponentManager {
         num = skill_model.skill_core.num + num;
         skill_model.skill_core.setNum(num);
     }
-    public async captureFish(
-        pos: Point,
-        data: { win: number; drop: HitDrop[] },
-    ) {
+    public async captureFish(pos: Point, data: CaptureGain) {
         /** 掉落的金币+item动画 */
-        await new Promise((resolve, reject) => {
+        await new Promise((resolve, _reject) => {
             this.event?.emit(PlayerEvent.CaptureFish, {
                 pos,
                 data,
@@ -174,10 +175,11 @@ export class PlayerModel extends ComponentManager {
             return;
         }
 
-        const { win, drop } = data;
-        const { bullet_num } = this;
+        const { win, winScore, drop } = data;
+        const { bullet_num, score } = this;
         this.updateInfo({
-            bullet_num: bullet_num + win,
+            bullet_num: bullet_num + (win || 0),
+            score: score + (winScore || 0),
         });
 
         if (drop) {
