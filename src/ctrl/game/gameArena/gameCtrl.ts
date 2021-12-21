@@ -34,6 +34,7 @@ import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
 import { setProps } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
+import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
@@ -292,10 +293,13 @@ export class GameCtrl implements GameCtrlUtils {
             frozen,
             frozen_left,
             fish_list,
-            exchange_rate,
+            isFirstStart,
             currency,
         } = data;
 
+        if (isFirstStart) {
+            ArenaGameStatus.start();
+        }
         this.isTrial = isTrial;
         this.currency = currency;
         this.addPlayers(users);

@@ -84,6 +84,7 @@ export type ServerUserInfo = {
 export type EnterGameRep = {
     isTrial: 0 | 1;
     roomId: number;
+    isFirstStart: boolean;
     rate: number;
     tableId: string;
     currency: string;
