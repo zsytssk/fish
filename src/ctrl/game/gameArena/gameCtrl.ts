@@ -6,6 +6,7 @@ import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
 import { Loader } from 'laya/net/Loader';
 
+import { SettleData } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
@@ -38,6 +39,7 @@ import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
+import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import VoicePop from '@app/view/pop/voice';
 import GameView, {
     AddFishViewInfo,
@@ -392,6 +394,10 @@ export class GameCtrl implements GameCtrlUtils {
         const player = this.model.getPlayerById(userId);
         log('接收到use skin', skinId);
         player.changeSkin(skinId);
+    }
+    public async GameSettle(data: SettleData) {
+        await ArenaGameStatus.end();
+        await ArenaSettlePop.preEnter(data);
     }
     public tableOut(data: TableOutRep) {
         const { model } = this;

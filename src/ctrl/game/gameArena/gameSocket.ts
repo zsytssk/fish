@@ -1,9 +1,9 @@
-import { EnterGameRep, TableInRep } from '@app/api/arenaApi';
+import { EnterGameRep, SettleData, TableInRep } from '@app/api/arenaApi';
 import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
-import { ServerEvent } from '@app/data/serverEvent';
+import { ArenaEvent, ServerEvent } from '@app/data/serverEvent';
 import { PlayerInfo } from '@app/model/game/playerModel';
 import { AutoShootInfo } from '@app/model/game/skill/autoShootModel';
 import { BombInfo } from '@app/model/game/skill/bombModel';
@@ -112,6 +112,9 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.UseSkin]: (data: UseSkinRep) => {
             game.changeSkin(data);
+        },
+        [ArenaEvent.GameSettle]: (data: SettleData) => {
+            game.GameSettle(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
