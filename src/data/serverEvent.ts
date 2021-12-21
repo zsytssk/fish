@@ -8,6 +8,8 @@ export const ServerName = {
     ArenaHall: 'arena_hall',
 };
 
+export const OK_CODE = 200;
+export const ARENA_OK_CODE = 0;
 /** socket 错误码 */
 export enum ServerErrCode {
     /** token过期 */

@@ -60,10 +60,10 @@
         {
             "x":15,
             "type":"Label",
-            "searchKey":"Label",
-            "props":{"y":117,"x":0,"width":94,"valign":"middle","text":"锁定x10","strokeColor":"#242747","stroke":2,"height":21,"fontSize":20,"color":"#d3d6ff","bold":true,"align":"center"},
+            "searchKey":"Label,name_label",
+            "props":{"y":117,"x":0,"width":94,"var":"name_label","valign":"middle","text":"锁定x10","strokeColor":"#242747","stroke":2,"height":21,"fontSize":20,"color":"#d3d6ff","bold":true,"align":"center"},
             "nodeParent":2,
-            "label":"Label",
+            "label":"name_label",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,

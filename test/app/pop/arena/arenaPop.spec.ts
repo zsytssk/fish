@@ -5,6 +5,7 @@ import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 
 import CompetitionInfoData from './competitionInfo.json';
+import GiftData from './gift.json';
 import RankData from './rank.json';
 
 export const arena_pop_test = {
@@ -26,6 +27,7 @@ export const arena_pop_test = {
     openGift: async () => {
         const pop = await ArenaGiftPop.preEnter();
         await sleep(1);
+        pop.initData(GiftData as any);
 
         return pop;
     },
