@@ -183,7 +183,7 @@ export class GameCtrl implements GameCtrlUtils {
 
         onNodeWithAni(btn_shop, CLICK, (e: Event) => {
             e.stopPropagation();
-            alert(1);
+            this.sendToGameSocket(ServerEvent.TableOut);
         });
         onNodeWithAni(btn_gift, CLICK, (e: Event) => {
             e.stopPropagation();

@@ -268,7 +268,9 @@ export default class ArenaView
     }
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
+        this.skill_box.auto_shoot_light.visible = status;
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        this.skill_box.auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     public getPoolMousePos() {
         const { pool } = this;
