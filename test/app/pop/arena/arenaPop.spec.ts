@@ -5,6 +5,7 @@ import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import ArenaTopPlayerPop from '@app/view/pop/arenaTopPlayer';
+import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 
 import CompetitionInfoData from './competitionInfo.json';
 import GiftData from './gift.json';
@@ -44,6 +45,12 @@ export const arena_pop_test = {
         await sleep(1);
 
         pop.initData(TopPlayerData);
+        return pop;
+    },
+    openRewardRecord: async () => {
+        const pop = await ArenaRewardRecordPop.preEnter();
+        await sleep(1);
+
         return pop;
     },
 };

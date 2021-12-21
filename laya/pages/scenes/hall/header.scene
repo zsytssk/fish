@@ -327,6 +327,20 @@
                                 {
                                     "x":60,
                                     "type":"Button",
+                                    "searchKey":"Button,btn_arena_record",
+                                    "props":{"y":24,"x":-249,"var":"btn_arena_record","stateNum":"1","skin":"image/hall/btn_record.png","anchorY":0.5,"anchorX":0.5},
+                                    "nodeParent":22,
+                                    "label":"btn_arena_record",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":68,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
                                     "searchKey":"Button,btn_withdraw",
                                     "props":{"y":25,"x":-174,"visible":false,"var":"btn_withdraw","stateNum":"1","skin":"image/hall/btn_withdraw.png","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
@@ -434,20 +448,6 @@
                                     "isAniNode":true,
                                     "hasChild":false,
                                     "compId":11,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "x":60,
-                                    "type":"Button",
-                                    "searchKey":"Button,btn_arena_record",
-                                    "props":{"y":1,"x":-272,"var":"btn_arena_record","stateNum":"1","skin":"image/hall/btn_record.png"},
-                                    "nodeParent":22,
-                                    "label":"btn_arena_record",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":68,
                                     "child":[
                                         ]
                                 }]

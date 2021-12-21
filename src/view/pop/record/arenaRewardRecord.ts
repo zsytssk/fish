@@ -2,77 +2,71 @@ import honor, { HonorDialog } from 'honor';
 import { loaderManager } from 'honor/state';
 import { Label } from 'laya/ui/Label';
 
-import {
-    offBindEvent,
-    onAccountChange,
-    onLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
+import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
-import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { ui } from '@app/ui/layaMaxUI';
+import { getMonthDateList } from '@app/utils/dayjsUtil';
 
 import { getSkillName } from '../buyBullet';
 import { getItemList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 
-type CoinData = {
-    coin_icon: string;
-    coin_name: string;
-    coin_id: string;
+type SelectItem = {
+    label: string;
+    value: string;
 };
-type SelectCoin = InstanceType<typeof ItemRecord>['select_coin'];
-type ItemData = {
-    item_name: string;
-    item_id: string;
-};
-type SelectItem = InstanceType<typeof ItemRecord>['select_item'];
 
-export default class ItemRecord
+type SelectMenuUI = ui.pop.record.itemMenuUI;
+type SelectItemUI = ui.pop.record.selectItemBoxUI;
+
+export default class ArenaRewardRecordPop
     extends ui.pop.record.arenaRewardRecordUI
     implements HonorDialog
 {
     public isModal = true;
-    private select_coin_ctrl: SelectCtrl;
-    private select_item_ctrl: SelectCtrl;
+    private select_ctrl1: SelectCtrl;
+    private select_ctrl2: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
     private all_list: GetItemListItemRep[];
     private isInit = false;
     public static async preEnter() {
         const item_record = (await honor.director.openDialog({
-            dialog: ItemRecord,
+            dialog: ArenaRewardRecordPop,
             use_exist: true,
             stay_scene: true,
-        })) as ItemRecord;
+        })) as ArenaRewardRecordPop;
         return item_record;
     }
     public static preLoad() {
         return loaderManager.preLoad('Dialog', 'pop/record/itemRecord.scene');
     }
     public onAwake() {
-        const { select_item, select_coin, item_menu, coin_menu, btn_search } =
-            this;
-
-        const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
-        select_coin_ctrl.setRender(this.renderSelectCoin);
-        onAccountChange(this, (data: AccountMap) => {
-            this.renderCoinMenu(data);
-        });
-        select_coin_ctrl.init();
+        const {
+            select_item2,
+            select_item1,
+            item_menu2,
+            item_menu1,
+            btn_search,
+        } = this;
 
         onLangChange(this, (lang) => {
             this.initLang(lang);
         });
 
-        const select_item_ctrl = new SelectCtrl(select_item, item_menu);
-        select_item_ctrl.setRender(this.renderSelectItem);
-        select_item_ctrl.init();
-        const ItemList = ['2001', '2002', '2003'].map((item) => {
-            return { item_name: getSkillName(item), item_id: item };
-        });
-        ItemList.unshift({ item_name: 'ALL', item_id: undefined });
-        select_item_ctrl.setList(ItemList);
-        select_item_ctrl.setCurIndex(0);
+        const select_ctrl1 = new SelectCtrl(select_item1, item_menu1);
+        select_ctrl1.setRender(this.renderSelectedItem1, this.renderMenuItem1);
+        select_ctrl1.init();
+        const itemList1 = [
+            { label: '日排行奖励', value: 'date' },
+            { label: '每期总排行奖励', value: 'grade' },
+        ];
+        select_ctrl1.setList(itemList1);
+        select_ctrl1.setCurIndex(0);
+
+        const select_ctrl2 = new SelectCtrl(select_item2, item_menu2);
+        select_ctrl2.setRender(this.renderSelectedItem2, this.renderMenuItem2);
+        select_ctrl2.init();
 
         const pagination_ctrl = new PaginationCtrl(this.pagination);
         pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
@@ -92,15 +86,18 @@ export default class ItemRecord
             this.search();
         });
 
-        this.select_coin_ctrl = select_coin_ctrl;
-        this.select_item_ctrl = select_item_ctrl;
+        this.select_ctrl1 = select_ctrl1;
+        this.select_ctrl2 = select_ctrl2;
     }
     public onEnable() {
         if (!this.isInit) {
             this.isInit = true;
             return;
         }
-        const { select_coin_ctrl, select_item_ctrl } = this;
+        const {
+            select_ctrl1: select_coin_ctrl,
+            select_ctrl2: select_item_ctrl,
+        } = this;
         select_coin_ctrl.setCurIndex(0);
         select_item_ctrl.setCurIndex(0);
         setTimeout(() => {
@@ -128,48 +125,58 @@ export default class ItemRecord
         }
         btn_search_label.text = search;
     }
-    private renderSelectCoin(box: SelectCoin, data: CoinData) {
-        const { coin_icon, coin_name } = box;
-        const { coin_icon: icon, coin_name: name } = data;
-        if (icon) {
-            coin_name.x = 43;
-            coin_icon.visible = true;
-            coin_icon.skin = icon;
-        } else {
-            coin_name.x = 15;
-            coin_icon.visible = false;
-        }
-
-        coin_name.text = name;
-    }
-    private renderSelectItem(box: SelectItem, data: ItemData) {
+    private renderSelectedItem1 = (box: SelectItemUI, data: SelectItem) => {
         const { item_name: item_name_label } = box;
-        const { item_name } = data;
-        item_name_label.text = item_name;
-    }
-    private renderCoinMenu(data: AccountMap) {
-        const { select_coin_ctrl } = this;
-        const arr: CoinData[] = [];
-        arr.push({
-            coin_icon: '',
-            coin_name: 'ALL',
-            coin_id: undefined,
+        const { label, value } = data;
+        item_name_label.text = label;
+
+        const dayArr = getMonthDateList();
+        const arr = dayArr.map((item, index) => {
+            if (value === 'date') {
+                return {
+                    label: item.format('MM/DD'),
+                    value: item.valueOf(),
+                };
+            } else {
+                return {
+                    label: `第${index + 1}期`,
+                    value: item.valueOf(),
+                };
+            }
         });
-        for (const [type, { icon }] of data) {
-            arr.push({
-                coin_icon: icon,
-                coin_name: type,
-                coin_id: type,
-            });
-        }
-        select_coin_ctrl.setList(arr);
-        select_coin_ctrl.setCurIndex(0);
+        console.log(`test:>`, arr);
+        this.select_ctrl2.setList(arr);
+        this.select_ctrl2.setCurIndex(0);
+        // @TODO-需要切换select_ctrl2的数据
+    };
+    private renderSelectedItem2(box: SelectItemUI, data: SelectItem) {
+        const { item_name: item_name_label } = box;
+        const { label } = data;
+        item_name_label.text = label;
     }
+    private renderMenuItem1 = (box: SelectItemUI, index: number) => {
+        if (!this.select_ctrl1?.array) {
+            return;
+        }
+        const item_name_label = box.getChildByName('item_name') as Label;
+        const data = this.select_ctrl1.array[index];
+        const { label } = data;
+        item_name_label.text = label;
+    };
+    private renderMenuItem2 = (box: SelectItemUI, index: number) => {
+        if (!this.select_ctrl2?.array) {
+            return;
+        }
+        const item_name_label = box.getChildByName('item_name') as Label;
+        const { label } = this.select_ctrl2.array[index];
+        item_name_label.text = label;
+    };
+
     private search() {
         const {
             empty_tip,
-            select_coin_ctrl,
-            select_item_ctrl,
+            select_ctrl1: select_coin_ctrl,
+            select_ctrl2: select_item_ctrl,
             pagination_ctrl,
         } = this;
 
@@ -205,11 +212,10 @@ export default class ItemRecord
         });
     }
     public destroy() {
-        offBindEvent(this);
-        this.select_coin_ctrl.destroy();
-        this.select_item_ctrl.destroy();
-        this.select_coin_ctrl = undefined;
-        this.select_item_ctrl = undefined;
+        this.select_ctrl1.destroy();
+        this.select_ctrl2.destroy();
+        this.select_ctrl1 = undefined;
+        this.select_ctrl2 = undefined;
         super.destroy();
     }
 }

@@ -10,6 +10,7 @@ import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce } from '@app/utils/utils';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 import GameRecord from '@app/view/pop/record/gameRecord';
 import ItemRecord from '@app/view/pop/record/itemRecord';
 import VoicePop from '@app/view/pop/voice';
@@ -180,7 +181,7 @@ export function hallViewEvent(hall: HallCtrl) {
     });
     onNodeWithAni(btn_arena_record, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
-        preEnter();
+        ArenaRewardRecordPop.preEnter();
     });
 }
 
