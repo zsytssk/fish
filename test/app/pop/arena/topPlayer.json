@@ -1,0 +1,44 @@
+[
+    {
+        "userId": "zsy1",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    },
+    {
+        "userId": "zsy2",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    },
+    {
+        "userId": "zsy3",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    },
+    {
+        "userId": "zsy4",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    },
+    {
+        "userId": "zsy5",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    },
+    {
+        "userId": "zsy6",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    },
+    {
+        "userId": "zsy7",
+        "startDate": "2021-12-12",
+        "endDate": "2021-12-14",
+        "score": 123456
+    }
+]

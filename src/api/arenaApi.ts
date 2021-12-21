@@ -129,3 +129,19 @@ export type GiftList = {
 export type BuyGiftRep = {
     id: number;
 };
+
+export type SettleData = {
+    userId: number | string;
+    ranking: number;
+    maxDayScore: number;
+    score: number;
+    rankingAward: number;
+};
+
+export type GetHallOfFameDataItem = {
+    userId: number | string;
+    startDate: string;
+    endDate: string;
+    score: number;
+};
+export type GetHallOfFameData = GetHallOfFameDataItem[];

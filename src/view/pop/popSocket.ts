@@ -2,6 +2,7 @@ import {
     BuyGiftRep,
     CompetitionInfo,
     GetDayRanking,
+    GetHallOfFameData,
     GiftList,
     SignUpReq,
     SignUpRes,
@@ -304,4 +305,24 @@ export function arenaBuyGift(id: number) {
         });
         socket.send(ArenaEvent.BuyGift, { id });
     }) as Promise<BuyGiftRep>;
+}
+/** Arena 礼包 giftList */
+export function arenaGetHallOfFame() {
+    return new Promise((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return reject(undefined);
+        }
+        socket.event.once(
+            ArenaEvent.GetHallOfFame,
+            (data: GetHallOfFameData, code) => {
+                if (code !== ARENA_OK_CODE) {
+                    reject();
+                } else {
+                    resolve(data);
+                }
+            },
+        );
+        socket.send(ArenaEvent.GetHallOfFame);
+    }) as Promise<GetHallOfFameData>;
 }
