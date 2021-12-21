@@ -44,6 +44,7 @@ export function hallViewEvent(hall: HallCtrl) {
         btn_item_record,
         btn_recharge,
         btn_withdraw,
+        btn_arena_record,
     } = header;
 
     coin_menu_list.selectHandler = new Handler(
@@ -176,6 +177,10 @@ export function hallViewEvent(hall: HallCtrl) {
     onNodeWithAni(btn_item_record, CLICK, () => {
         AudioCtrl.play(AudioRes.Click);
         ItemRecord.preEnter();
+    });
+    onNodeWithAni(btn_arena_record, CLICK, () => {
+        AudioCtrl.play(AudioRes.Click);
+        preEnter();
     });
 }
 

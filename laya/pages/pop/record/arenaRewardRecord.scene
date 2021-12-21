@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":47,
+    "selectedBox":41,
+    "selecteID":12,
     "searchKey":"Dialog",
     "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/itemRecord.ts","height":604},
     "nodeParent":-1,
@@ -125,14 +125,13 @@
             "props":{"y":134,"x":30,"width":935,"var":"content","height":400},
             "nodeParent":2,
             "label":"content",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":15,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,con_bg",
                     "props":{"width":935,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","name":"con_bg","height":400},
@@ -148,7 +147,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,title_box",
                     "props":{"y":0,"x":0,"width":935,"var":"title_box","height":40},
@@ -161,7 +159,6 @@
                     "compId":44,
                     "child":[
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,time",
                             "props":{"y":4,"x":92,"width":369,"valign":"middle","text":"时间","name":"time","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -177,7 +174,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,num",
                             "props":{"y":2,"x":486,"width":333,"valign":"middle","text":"奖励","name":"num","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -194,7 +190,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"List",
                     "searchKey":"List,record_list",
                     "props":{"y":40,"x":5,"width":924,"var":"record_list","repeatY":10,"height":365},
@@ -207,7 +202,6 @@
                     "compId":21,
                     "child":[
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,item",
                             "props":{"y":0,"x":-6,"width":935,"renderType":"render","name":"item","height":35},
@@ -220,7 +214,6 @@
                             "compId":22,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,time",
                                     "props":{"y":4,"x":92,"width":369,"valign":"middle","text":"2022/01/01","name":"time","height":36,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -236,7 +229,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,num",
                                     "props":{"y":2,"x":486,"width":333,"valign":"middle","text":"20USDT","name":"num","height":36,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -379,13 +371,14 @@
             "props":{"y":83,"x":32,"var":"search_box"},
             "nodeParent":2,
             "label":"search_box",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":41,
             "child":[
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/itemMenu.scene",
                     "searchKey":"UIView,item_menu",
@@ -401,6 +394,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/coinMenu.scene",
                     "searchKey":"UIView,coin_menu",
@@ -416,6 +410,7 @@
                     "$HIDDEN":true
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/selectItemBox.scene",
                     "searchKey":"UIView,select_item",
@@ -431,6 +426,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"UIView",
                     "source":"pop/record/selectCoinBox.scene",
                     "searchKey":"UIView,select_coin",
@@ -446,6 +442,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,btn_search",
                     "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
@@ -458,6 +455,7 @@
                     "compId":45,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,btn_search_label",
                             "props":{"y":6,"x":5,"width":114,"var":"btn_search_label","valign":"middle","text":"查询","height":34,"fontSize":22,"color":"#255a85","bold":true,"align":"center"},
@@ -473,7 +471,7 @@
                         }],
                     "$HIDDEN":false
                 }],
-            "$HIDDEN":true
+            "$HIDDEN":false
         }],
     "animations":[
         {
