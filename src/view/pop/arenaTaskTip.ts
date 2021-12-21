@@ -8,21 +8,23 @@ import { ui } from '@app/ui/layaMaxUI';
 import { slide_down_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
-const url = 'pop/alert/topTip.scene';
-export default class TopTipPop
-    extends ui.pop.alert.topTipUI
+const url = 'pop/alert/arenaTaskTip.scene';
+export default class ArenaTaskTipPop
+    extends ui.pop.alert.arenaTaskTipUI
     implements HonorDialog
 {
     public isShowEffect = false;
-    public isPopupCenter = false;
-    public static instance: TopTipPop;
+    public isPopupCenter = true;
+    public static instance: ArenaTaskTipPop;
     public zOrder = 100;
     constructor() {
         super();
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(url)) as TopTipPop;
+        const tip_dialog = (await honor.director.openDialog(
+            ArenaTaskTipPop,
+        )) as ArenaTaskTipPop;
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
     }
@@ -60,9 +62,9 @@ export default class TopTipPop
         const max_lin_char = maxLineCharNum(line_char_list);
 
         let width = 100 + max_lin_char * 18; // 每增加一个字增加的宽度
-        let height = 30 + line_num * 30; // 每增加一行增加的高度
+        let height = 18 + line_num * 30; // 每增加一行增加的高度
         width = width > 750 ? width : 750;
-        height = height > 70 ? height : 70;
+        height = height > 48 ? height : 48;
 
         // 画一个圆角背景
         this.width = label.width = bg.width = width;
