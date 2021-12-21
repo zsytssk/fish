@@ -2,8 +2,8 @@ import { testBuild } from 'testBuilder';
 
 import { injectAfter } from 'honor/utils/tool';
 
-import { GameCtrl as ArenaCtrl } from '@app/ctrl/arena/gameCtrl';
 import { ctrlState } from '@app/ctrl/ctrlState';
+import { GameCtrl as ArenaCtrl } from '@app/ctrl/game/gameArena/gameCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';

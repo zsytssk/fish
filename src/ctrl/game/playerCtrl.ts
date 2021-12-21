@@ -1,6 +1,7 @@
 import SAT from 'sat';
 
 import { Laya } from 'Laya';
+import { ComponentManager } from 'comMan/component';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
@@ -8,7 +9,7 @@ import { Event } from 'laya/events/Event';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { AudioRes } from '@app/data/audioRes';
-import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
+import { ServerErrCode, ServerEvent } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import {
     AddBulletInfo,
@@ -39,10 +40,8 @@ import {
     getPoolMousePos,
     getSkillItemByIndex,
     setAutoShootLight,
-    setBulletNum,
 } from '@app/view/viewState';
 
-import { getSocket } from '../net/webSocketWrapUtil';
 import { BulletCtrl } from './bulletCtrl';
 import { GameCtrlUtils } from './gameCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
@@ -51,7 +50,7 @@ import { SkillCtrl } from './skill/skillCtrl';
 const bullet_cost_arr  =
          [1, 2, 3, 4, 5, 10, 15, 20];
 /** 玩家的控制器 */
-export class PlayerCtrl {
+export class PlayerCtrl extends ComponentManager {
     /**
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
@@ -61,6 +60,7 @@ export class PlayerCtrl {
         public model: PlayerModel,
         public game_ctrl: GameCtrlUtils,
     ) {
+        super();
         this.init();
     }
     private init() {
@@ -69,7 +69,7 @@ export class PlayerCtrl {
     }
     private initGun() {
         const { view, model, game_ctrl } = this;
-        const { server_index, gun, bullet_num, is_cur_player } = model;
+        const { server_index, gun } = model;
         const { pos } = gun;
         if (game_ctrl.needUpSideDown(server_index)) {
             view.fixServerTopPos();
@@ -79,9 +79,6 @@ export class PlayerCtrl {
             view.fixClientTopPos();
         }
         view.setPos(pos.x, pos.y);
-        if (is_cur_player) {
-            setBulletNum(bullet_num);
-        }
     }
     private initEvent() {
         const {
@@ -255,14 +252,6 @@ export class PlayerCtrl {
         view.setMySelfStyle();
         this.resetGetBulletCost();
 
-        player_event.on(
-            PlayerEvent.UpdateInfo,
-            () => {
-                const { bullet_num } = this.model;
-                setBulletNum(bullet_num);
-            },
-            this,
-        );
         gun_event.on(
             GunEvent.NotEnoughBulletNum,
             () => {
@@ -372,5 +361,7 @@ export class PlayerCtrl {
         this.view = undefined;
         this.game_ctrl = undefined;
         this.model = undefined;
+
+        super.destroy();
     }
 }

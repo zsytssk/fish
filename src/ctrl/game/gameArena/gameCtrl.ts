@@ -48,18 +48,19 @@ import {
 } from '@app/view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from '@app/view/scenes/game/ani_wrap/shoalWave';
 
-import { FishCtrl } from '../game/fishCtrl';
-import { GameCtrlUtils } from '../game/gameCtrl';
+import { waitConnectGameArena } from '../../hall/arenaSocket';
+import { offCommon } from '../../hall/commonSocket';
+import { WebSocketTrait } from '../../net/webSocketWrap';
+import { FishCtrl } from '../fishCtrl';
+import { GameCtrlUtils } from '../gameCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
     tipExchange,
     waitEnterGame,
-} from '../game/gameCtrlUtils';
-import { PlayerCtrl } from '../game/playerCtrl';
-import { waitConnectGameArena } from '../hall/arenaSocket';
-import { offCommon } from '../hall/commonSocket';
-import { WebSocketTrait } from '../net/webSocketWrap';
+} from '../gameCtrlUtils';
+import { PlayerCtrl } from '../playerCtrl';
+import { ArenaPlayerCom } from './ArenaPlayerCom';
 import { convertEnterGame, onGameSocket } from './gameSocket';
 
 export type ChangeUserNumInfo = {
@@ -76,6 +77,7 @@ export class GameCtrl implements GameCtrlUtils {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
+    public currency: string;
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
@@ -229,16 +231,12 @@ export class GameCtrl implements GameCtrlUtils {
                     if (this.needUpSideDown(server_index)) {
                         view.upSideDown();
                     }
-                    let pos = 'left' as BulletBoxDir;
-                    if (server_index === 1 || server_index === 2) {
-                        pos = 'right';
-                    }
-                    // TODO-delete
-                    // view.setBulletBoxPos(pos);
                 }
 
                 const player_view = view.addGun();
                 const ctrl = new PlayerCtrl(player_view, player, this);
+                const arena_player_com = new ArenaPlayerCom(player, this);
+                ctrl.addCom(arena_player_com);
                 this.player_list.add(ctrl);
             },
             this,
@@ -299,6 +297,7 @@ export class GameCtrl implements GameCtrlUtils {
         } = data;
 
         this.isTrial = isTrial;
+        this.currency = currency;
         this.addPlayers(users);
         this.addFish(fish);
         /** 复盘冰冻 */

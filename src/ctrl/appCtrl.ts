@@ -9,9 +9,9 @@ import { sleep } from '@app/utils/animate';
 import { BgMonitor } from '@app/utils/bgMonitor';
 import { KeyBoardNumber } from '@app/utils/layaKeyboard';
 
-import { GameCtrl as ArenaCtrl } from './arena/gameCtrl';
 import { ctrlState } from './ctrlState';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
+import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
 import { onCreateSocket } from './net/webSocketWrapUtil';

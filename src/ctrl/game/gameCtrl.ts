@@ -53,6 +53,7 @@ import {
     tipExchange,
     waitEnterGame,
 } from './gameCtrlUtils';
+import { NormalPlayerCom } from './gameNormal/NormalPlayerCom';
 import { convertEnterGame, onGameSocket } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
 
@@ -234,6 +235,8 @@ export class GameCtrl implements GameCtrlUtils {
 
                 const player_view = view.addGun();
                 const ctrl = new PlayerCtrl(player_view, player, this);
+                const normal_player_com = new NormalPlayerCom(player, this);
+                ctrl.addCom(normal_player_com);
                 this.player_list.add(ctrl);
             },
             this,

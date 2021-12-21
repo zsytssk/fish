@@ -93,16 +93,6 @@ export default class ArenaView
         if (width < 1290) {
             scale = 0.8;
         }
-
-        this.triggerResize(scale);
-    }
-    /** 页面resize之后触发的重定位 */
-    public triggerResize(scale: number) {
-        if (scale === this.resize_scale) {
-            return;
-        }
-        this.bullet_box_pos = scale > 0.8 ? 20 : -30;
-        this.setBulletBoxPos(this.bullet_box_dir);
     }
 
     public showTaskPanel(taskInfo: TriggerTaskRes) {
@@ -254,10 +244,21 @@ export default class ArenaView
         return gun;
     }
 
-    /** @deprecated */
-    public setBulletNum(num: number) {
+    public setBulletScoreNum(
+        is_cur_player: boolean,
+        bullet_num: number,
+        score_num: number,
+    ) {
         const lang = getLang();
         const { NumBullet } = InternationalTip[lang];
+        const panel = is_cur_player
+            ? this.my_score_panel
+            : this.other_score_panel;
+
+        const bullet_num_label = panel.getChildByName('bullet_num') as Label;
+        const score_num_label = panel.getChildByName('score_num') as Label;
+        bullet_num_label.text = `${NumBullet}: ${bullet_num}`;
+        score_num_label.text = score_num + '';
     }
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
@@ -268,21 +269,6 @@ export default class ArenaView
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
         const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
-    }
-    /**  设置子弹box的位置 */
-    public setBulletBoxPos(pos: BulletBoxDir) {
-        const { bullet_box, bullet_box_bg, bullet_box_pos } = this;
-        if (pos === 'left') {
-            bullet_box.right = undefined;
-            bullet_box.left = bullet_box_pos;
-            bullet_box_bg.scaleX = 1;
-        } else if (pos === 'right') {
-            bullet_box.right = bullet_box_pos;
-            bullet_box.left = undefined;
-            bullet_box_bg.scaleX = -1;
-        }
-
-        this.bullet_box_dir = pos;
     }
     public getPoolMousePos() {
         const { pool } = this;

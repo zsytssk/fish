@@ -1,10 +1,6 @@
 import { EnterGameRep, TableInRep } from '@app/api/arenaApi';
-import {
-    commonSocket,
-    errorHandler,
-    offCommon,
-} from '@app/ctrl/hall/commonSocket';
-import { WebSocketTrait, SocketEvent } from '@app/ctrl/net/webSocketWrap';
+import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
+import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
 import { ServerEvent } from '@app/data/serverEvent';
@@ -17,19 +13,21 @@ import {
     LockFishInitInfo,
 } from '@app/model/game/skill/lockFishModel';
 import { SkillInfo } from '@app/model/game/skill/skillCoreCom';
-import { getCurUserId, isCurUser, getCurPlayer } from '@app/model/modelState';
+import { getCurPlayer, getCurUserId, isCurUser } from '@app/model/modelState';
 
-import { GameCtrl } from '../arena/gameCtrl';
-import { tipExchange } from '../game/gameCtrlUtils';
+import { tipExchange } from '../gameCtrlUtils';
+import { GameCtrl } from './gameCtrl';
 
 const OK_CODE = 0;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
+    let currency: string;
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== OK_CODE) {
                 return errorHandler(code, data, socket);
             }
+            currency = data.currency;
             game.onEnterGame(convertEnterGame(data));
         },
         [ServerEvent.TableIn]: (data: TableInRep) => {
@@ -129,7 +127,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [SocketEvent.Reconnected]: () => {
             game.reset();
-            socket.send(ServerEvent.EnterGame, { replay: true });
+            socket.send(ServerEvent.EnterGame, { replay: true, currency });
         },
     });
 }
