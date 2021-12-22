@@ -1,5 +1,5 @@
 import { Laya } from 'Laya';
-import { fakeLoad, loadScene, ProgressFn } from 'honor/utils/loadRes';
+import { loadScene, ProgressFn } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 
 import { HonorScene } from './view';
@@ -9,20 +9,11 @@ export type SceneChangeData = {
     prev: string | undefined;
 };
 
-export type SceneRefUrl = string | Ctor<HonorScene> | HonorScene;
-type SceneMap = Map<SceneRefUrl, HonorScene>;
-const scene_pool = new Map() as SceneMap;
 export let cur_scene: HonorScene;
 export let isLoadingScene = false;
 export async function runScene(url: string, fn?: ProgressFn) {
-    let view = scene_pool.get(url);
-
     isLoadingScene = true;
-    if (!view) {
-        view = await loadScene(url, fn);
-    } else {
-        await fakeLoad(0.5, fn);
-    }
+    const view = (await loadScene(url, fn)) as HonorScene;
 
     cur_scene = view;
     isLoadingScene = false;
