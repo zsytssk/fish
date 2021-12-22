@@ -5,6 +5,7 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
@@ -52,7 +53,7 @@ export default class ArenaCompetitionPop
                     data.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
                     data.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT
                 ) {
-                    ctrlState.app.enterArenaGame(data);
+                    HallCtrl.instance?.enterArena(data);
                     this.close();
                 } else {
                     this.renderSignButton(data.status);

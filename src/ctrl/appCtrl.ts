@@ -3,7 +3,6 @@ import honor from 'honor';
 import GameConfig from '@app/GameConfig';
 import { Config } from '@app/data/config';
 import { font_list, res } from '@app/data/res';
-import { ServerEvent, ServerName } from '@app/data/serverEvent';
 import { AppModel } from '@app/model/appModel';
 import { sleep } from '@app/utils/animate';
 import { BgMonitor } from '@app/utils/bgMonitor';
@@ -14,7 +13,6 @@ import { AudioCtrl } from './ctrlUtils/audioCtrl';
 import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
-import { onCreateSocket } from './net/webSocketWrapUtil';
 
 /** 顶级 ctrl */
 export class AppCtrl {

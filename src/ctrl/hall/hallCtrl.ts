@@ -62,6 +62,10 @@ export class HallCtrl {
             return this.enterGame(enterData);
         });
     }
+    public enterArena(data) {
+        this.destroy();
+        return ctrlState.app.enterArenaGame(data);
+    }
     private async init() {
         const enter_game = await connectHallSocket(this);
 
@@ -108,8 +112,10 @@ export class HallCtrl {
         onNicknameChange(this, (nickname: string) => {
             view.setNickname(nickname);
         });
-        arena_info.event.on(ArenaModelEvent.UpdateInfo, (info) =>
-            view.updateArenaInfo(info),
+        arena_info.event.on(
+            ArenaModelEvent.UpdateInfo,
+            (info) => view.updateArenaInfo(info),
+            this,
         );
         view.setFlagData(getAllLangList());
     }
@@ -142,11 +148,13 @@ export class HallCtrl {
     }; // tslint:disable-line
 
     public destroy() {
+        const { arena_info } = modelState.app;
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
         offLangChange(this);
         offHallSocket(this);
         disconnectSocket(ServerName.Hall);
+        arena_info.event.offAllCaller(this);
         honor.director.closeAllDialogs();
         HallCtrl.leave();
     }
