@@ -28,9 +28,9 @@ export const alert_test = {
             confirm_text: 'reeresrs',
         });
 
-        sleep(3).then(() => {
-            AlertPop.alert('this is a test');
-        });
+        // sleep(3).then(() => {
+        //     AlertPop.alert('this is a test');
+        // });
     },
 
     showAlertOnly: async (name?: string, msg?: string) => {

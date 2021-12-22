@@ -1,4 +1,5 @@
 import honor, { HonorDialog, HonorDialogConfig } from 'honor';
+import { openDialog } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
@@ -17,16 +18,16 @@ export default class AlertPop
     implements HonorDialog
 {
     public isModal = true;
+    shadowAlpha: 0.1;
     public close_resolve: (type: CloseType) => void;
     public get zOrder() {
         return 100;
     }
     public static async alert(msg: string, opt = {} as Opt) {
-        const { hide_cancel, confirm_text, ...dialogConfig } = opt;
+        const { hide_cancel, confirm_text } = opt;
         AudioCtrl.play(AudioRes.PopShow);
-        const alert = (await honor.director.openDialog(AlertPop, {
-            ...dialogConfig,
-        })) as AlertPop;
+        const alert = (await openDialog('pop/alert/alert.scene')) as AlertPop;
+        console.log(`test:>`, alert);
         return await alert.alert(msg, { hide_cancel, confirm_text });
     }
     public onAwake() {

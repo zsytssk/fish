@@ -1,10 +1,13 @@
+import { UIConfig } from 'UIConfig';
 import { Observable, Subscriber, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Laya, loader } from 'Laya';
+import { HonorDialog } from 'honor';
 import { Scene } from 'laya/display/Scene';
 import { Event } from 'laya/events/Event';
 import { Dialog } from 'laya/ui/Dialog';
+import { DialogManager } from 'laya/ui/DialogManager';
 import { Handler } from 'laya/utils/Handler';
 
 type Ctor<T> = new (...args) => T;
@@ -38,6 +41,28 @@ export function runScene(url: string, fn?: ProgressFn) {
         return view;
     });
 }
+
+export function openDialog(url: string, fn?: ProgressFn) {
+    return loadDialog(url, fn).then((view: HonorDialog) => {
+        if (view.shadowAlpha) {
+            UIConfig.popupBgAlpha = view.shadowAlpha;
+        }
+        if (view.closeOn) {
+            UIConfig.popupBgAlpha = view.shadowAlpha;
+        }
+
+        view.open();
+        Laya.stage.on(Event.RESIZE, view, () => {
+            view.onResize?.(Laya.stage.width, Laya.stage.height);
+        });
+        view.onResize?.(Laya.stage.width, Laya.stage.height);
+        view.once(Event.UNDISPLAY, view, () => {
+            Laya.stage.offAllCaller(view);
+        });
+        return view;
+    });
+}
+
 export function loadScene(url: string, fn?: ProgressFn) {
     return new Promise<Scene>((resolve) => {
         Scene.load(
