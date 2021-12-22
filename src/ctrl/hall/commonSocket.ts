@@ -114,9 +114,8 @@ export function errorHandler(code: number, data: any, socket?: WebSocketTrait) {
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tip;
         if (data?.minAmount) {
-            const msg = InternationalTip[lang].NoMoneyAmount;
             const { minAmount, currency } = data as RoomInError;
-            errMsg = tplStr(msg, { minAmount, currency });
+            errMsg = tplStr('NoMoneyAmount', { minAmount, currency });
         }
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {

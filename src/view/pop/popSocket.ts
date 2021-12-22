@@ -1,9 +1,12 @@
 import {
     BuyGiftRep,
+    BuyGoodsData,
     CompetitionInfo,
     GetDayRanking,
     GetHallOfFameData,
+    GetRuleData,
     GiftList,
+    ShopListData,
     SignUpReq,
     SignUpRes,
 } from '@app/api/arenaApi';
@@ -18,6 +21,7 @@ import {
     ARENA_OK_CODE,
 } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { getItem, setItem } from '@app/utils/localStorage';
 
 import { LotteryPopData } from './lottery';
 import { ShopData } from './shop';
@@ -68,6 +72,7 @@ export function useGunSkin(skin: string) {
         });
     }) as Promise<boolean>;
 }
+
 export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
     return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.Game);
@@ -325,4 +330,118 @@ export function arenaGetHallOfFame() {
         );
         socket.send(ArenaEvent.GetHallOfFame);
     }) as Promise<GetHallOfFameData>;
+}
+
+/** Arena 帮助 */
+export function arenaGetRuleData(mode: number) {
+    const tmp = getItem(`arenaGetRuleData:mode${mode}`);
+    if (tmp) {
+        return JSON.parse(tmp);
+    }
+
+    return new Promise<GetRuleData>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return reject(undefined);
+        }
+        socket.event.once(ArenaEvent.GetRuleData, (data: GetRuleData, code) => {
+            if (code !== ARENA_OK_CODE) {
+                reject();
+            } else {
+                setItem(
+                    `arenaGetRuleData:mode${mode}`,
+                    JSON.stringify(data),
+                    1,
+                );
+                resolve(data);
+            }
+        });
+        socket.send(ArenaEvent.GetRuleData, { mode });
+    });
+}
+/** Arena 商城 */
+export function arenaShopList() {
+    return new Promise<ShopData>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return reject(undefined);
+        }
+        socket.event.once(ArenaEvent.ShopList, (data: ShopListData, code) => {
+            if (code !== ARENA_OK_CODE) {
+                reject();
+            } else {
+                resolve(arenaGenShopInfo(data));
+            }
+        });
+        socket.send(ArenaEvent.ShopList);
+    });
+}
+
+export function arenaGenShopInfo(data: ShopListData): ShopData {
+    const result = { gun: [], item: [] } as ShopData;
+
+    for (const item of data) {
+        const { currency, itemType, itemId, status, price, num, itemName } =
+            item;
+        if (itemType === 1) {
+            result.gun.push({
+                currency,
+                id: itemId,
+                price,
+                status,
+                name: itemName,
+            });
+        } else {
+            result.item.push({
+                currency,
+                id: itemId,
+                price,
+                num,
+                name: itemName,
+            });
+        }
+    }
+    return result;
+}
+
+export function arenaUseGunSkin(skin: string) {
+    return new Promise((resolve, _reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(ServerEvent.UseSkin, (data: UseSkinReq) => {
+            resolve(true);
+        });
+        socket.send(ServerEvent.UseSkin, {
+            skinId: skin,
+            userId: modelState.app.user_info.user_id,
+        });
+    }) as Promise<boolean>;
+}
+
+export function arenaBuyItem(goodsId: string, goodsNum?: number) {
+    return new Promise((resolve, _reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
+            if (code !== 200) {
+                return errorHandler(code, data, socket);
+            }
+
+            const userId = modelState.app.user_info.user_id;
+            const change_arr = [] as ChangeUserNumInfo['change_arr'];
+
+            if (goodsNum) {
+                change_arr.push({
+                    id: goodsId,
+                    num: goodsNum,
+                    type: 'skill',
+                });
+            }
+
+            ctrlState.game.changeUserNumInfo({
+                userId,
+                change_arr,
+            });
+            resolve(true);
+        });
+        socket.send(ArenaEvent.BuyGoods, { goodsId, goodsNum } as BuyGoodsData);
+    }) as Promise<boolean>;
 }

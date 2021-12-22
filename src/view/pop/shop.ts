@@ -14,27 +14,37 @@ import {
 import { AudioRes } from '@app/data/audioRes';
 import { Lang, InternationalTip } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
+import { tplStr } from '@app/utils/utils';
 
 import BuyBulletPop, { buySkinAlert } from './buyBullet';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
+import TipPop from './tip';
 
-enum GunSkinStatus {
+export enum GunSkinStatus {
     NoHave = 0,
     Have = 1,
     Used = 2,
 }
 /** gun的初始数据 */
 type GunData = {
+    currency?: string;
     name: string;
     id: string;
     status: GunSkinStatus;
     price: number;
 };
 /** item的初始数据 */
-type ItemData = { name: string; id: string; price: number; num: number };
+type ItemData = {
+    currency?: string;
+    name: string;
+    id: string;
+    price: number;
+    num: number;
+};
 
 /** gun_list array 对应的数据 */
-type GunRenderData = {
+export type GunRenderData = {
+    currency?: string;
     gun_name: string;
     gun_id: string;
     gun_status: number;
@@ -42,7 +52,8 @@ type GunRenderData = {
 };
 
 /** item 渲染数据 */
-type ItemRenderData = {
+export type ItemRenderData = {
+    currency?: string;
     item_name: string;
     item_id: string;
     item_price: number;
@@ -227,12 +238,12 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 id: item_id,
                 num: item_num,
                 price: item_price,
+            }).then((data) => {
+                buyItem(data.id, data.num, data.price).then(() => {
+                    TipPop.tip(tplStr('buySuccess'));
+                    this.close();
+                });
             });
-            // buyItem(item_id, item_num, item_price).then(() => {
-            //     const lang = getLang();
-            //     const { buySuccess } = InternationalTip[lang];
-            //     TipPop.tip(buySuccess);
-            // });
         });
     }; // tslint:disable-line
     public onAwake() {
@@ -254,7 +265,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
 }
 
-function getItemName(id: string, name: string) {
+export function getItemName(id: string, name: string) {
     const lang = getLang();
     const { skin, bomb, freeze, lock } = InternationalTip[lang];
     let suffer_prefix = '';

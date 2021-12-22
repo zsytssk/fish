@@ -117,6 +117,32 @@ export const International = {
             'The current currency surplus is insufficient, the minimum requirement to enter the market is {minAmount}{currency}, please go to top up or switch to other currencies.',
         platformDiffCurrencyEnterGameErr:
             'You have unfinished games, the system will automatically repeat.',
+        arenaHelpRule11:
+            'a) 捕魚大獎賽，以活動形式指定時間段開放，每個時段結束前{deadlineTime}分鍾停止報名',
+        arenaHelpRule12:
+            'b)大獎賽每次開放均可獲贈{freeNum}次免費挑戰的次數（遊客玩家和正式賬號獲得一次），免費挑戰次數不纍積',
+        arenaHelpRule13:
+            'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量每次都一樣',
+        arenaHelpRule21:
+            'a) 報名成功後，每個玩家可以射擊{initBulletNum}發子彈，擊殺魚後可以獲得魚倍率對應的積分，1倍=1積分。',
+        arenaHelpRule22: 'b) 大獎賽中炮臺倍率越高，擊殺魚的概率也相應增加',
+        arenaHelpRule23:
+            'c) 玩家開炮後，若剩餘子彈為500倍數，觸發懸賞任務，完成可獲得額外積分獎勵',
+        arenaHelpRule24:
+            'd) 所有子彈打完後，本次挑戰結束。最終積分可以參與排名(註意:子彈未打完的成績不參與排名)',
+        arenaHelpRule31:
+            'a)每日取單次最高積分進入排名(至少需要{rankingScoreDown}分才可參與排名)',
+        arenaHelpRule32: 'b)積分相同的情況下，先達到的玩家排名在前',
+        arenaHelpRule33:
+            'c)日排行獎勵發放時間為每日23:35，最終排名以23:30之後為準。( 註意: 23:00之前的排名獎勵僅作預覽，不是實際發放獎勵)',
+        arenaHelpRule34:
+            'd) 總冠軍獎勵發放時間為每次活動結束後第二天0:05，單次積分最高的玩家為總冠軍，獲得額外的大獎',
+        arenaHelpRule35:
+            'e) 比賽的獎勵直接發放到賬號上，玩家可以在大廳界麵查看大獎賽獎勵發放記錄',
+        arenaHelpRule41:
+            'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
+        arenaHelpRule42:
+            '炮臺皮膚      命中加成 \n 皮膚1           {1001}%\n 皮膚2           {1002}%\n 皮膚3           {1003}%\n 皮膚4           {1004}%\n 皮膚5           {1005}%\n',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -230,6 +256,32 @@ export const International = {
             '현재 화폐 잔액이 부족합니다. 최소{minAmount}{currency} 소유해야 입장이 가능합니다. 충전하시거나 다른 화폐로 교환해주세요.',
         platformDiffCurrencyEnterGameErr:
             '완료되지 않은 게임이 있으면 시스템이 자동으로 반복됩니다.',
+        arenaHelpRule11:
+            'a) 捕魚大獎賽，以活動形式指定時間段開放，每個時段結束前{deadlineTime}分鍾停止報名',
+        arenaHelpRule12:
+            'b)大獎賽每次開放均可獲贈{freeNum}次免費挑戰的次數（遊客玩家和正式賬號獲得一次），免費挑戰次數不纍積',
+        arenaHelpRule13:
+            'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量每次都一樣',
+        arenaHelpRule21:
+            'a) 報名成功後，每個玩家可以射擊{initBulletNum}發子彈，擊殺魚後可以獲得魚倍率對應的積分，1倍=1積分。',
+        arenaHelpRule22: 'b) 大獎賽中炮臺倍率越高，擊殺魚的概率也相應增加',
+        arenaHelpRule23:
+            'c) 玩家開炮後，若剩餘子彈為500倍數，觸發懸賞任務，完成可獲得額外積分獎勵',
+        arenaHelpRule24:
+            'd) 所有子彈打完後，本次挑戰結束。最終積分可以參與排名(註意:子彈未打完的成績不參與排名)',
+        arenaHelpRule31:
+            'a)每日取單次最高積分進入排名(至少需要{rankingScoreDown}分才可參與排名)',
+        arenaHelpRule32: 'b)積分相同的情況下，先達到的玩家排名在前',
+        arenaHelpRule33:
+            'c)日排行獎勵發放時間為每日23:35，最終排名以23:30之後為準。( 註意: 23:00之前的排名獎勵僅作預覽，不是實際發放獎勵)',
+        arenaHelpRule34:
+            'd) 總冠軍獎勵發放時間為每次活動結束後第二天0:05，單次積分最高的玩家為總冠軍，獲得額外的大獎',
+        arenaHelpRule35:
+            'e) 比賽的獎勵直接發放到賬號上，玩家可以在大廳界麵查看大獎賽獎勵發放記錄',
+        arenaHelpRule41:
+            'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
+        arenaHelpRule42:
+            '炮臺皮膚      命中加成 \n 皮膚1           {1001}%\n 皮膚2           {1002}%\n 皮膚3           {1003}%\n 皮膚4           {1004}%\n 皮膚5           {1005}%\n',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -343,6 +395,32 @@ export const International = {
             '現在の残高が不足しており、参加には最低{minAmount}{currency}を保有する必要があります。入金または他のトークンに切り替えてください。',
         platformDiffCurrencyEnterGameErr:
             'まだ終わっていないゲームがありますので、システムは自動的にリセットして差し上げます。',
+        arenaHelpRule11:
+            'a) 捕魚大獎賽，以活動形式指定時間段開放，每個時段結束前{deadlineTime}分鍾停止報名',
+        arenaHelpRule12:
+            'b)大獎賽每次開放均可獲贈{freeNum}次免費挑戰的次數（遊客玩家和正式賬號獲得一次），免費挑戰次數不纍積',
+        arenaHelpRule13:
+            'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量每次都一樣',
+        arenaHelpRule21:
+            'a) 報名成功後，每個玩家可以射擊{initBulletNum}發子彈，擊殺魚後可以獲得魚倍率對應的積分，1倍=1積分。',
+        arenaHelpRule22: 'b) 大獎賽中炮臺倍率越高，擊殺魚的概率也相應增加',
+        arenaHelpRule23:
+            'c) 玩家開炮後，若剩餘子彈為500倍數，觸發懸賞任務，完成可獲得額外積分獎勵',
+        arenaHelpRule24:
+            'd) 所有子彈打完後，本次挑戰結束。最終積分可以參與排名(註意:子彈未打完的成績不參與排名)',
+        arenaHelpRule31:
+            'a)每日取單次最高積分進入排名(至少需要{rankingScoreDown}分才可參與排名)',
+        arenaHelpRule32: 'b)積分相同的情況下，先達到的玩家排名在前',
+        arenaHelpRule33:
+            'c)日排行獎勵發放時間為每日23:35，最終排名以23:30之後為準。( 註意: 23:00之前的排名獎勵僅作預覽，不是實際發放獎勵)',
+        arenaHelpRule34:
+            'd) 總冠軍獎勵發放時間為每次活動結束後第二天0:05，單次積分最高的玩家為總冠軍，獲得額外的大獎',
+        arenaHelpRule35:
+            'e) 比賽的獎勵直接發放到賬號上，玩家可以在大廳界麵查看大獎賽獎勵發放記錄',
+        arenaHelpRule41:
+            'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
+        arenaHelpRule42:
+            '炮臺皮膚      命中加成 \n 皮膚1           {1001}%\n 皮膚2           {1002}%\n 皮膚3           {1003}%\n 皮膚4           {1004}%\n 皮膚5           {1005}%\n',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -456,6 +534,32 @@ export const International = {
             '当前货币余额不足，最小需携带{minAmount}{currency}才可进场，请去充值或者切换其他货币。',
         platformDiffCurrencyEnterGameErr:
             '您还有未完成的游戏，系统自动帮您复盘。',
+        arenaHelpRule11:
+            'a) 捕鱼大奖赛，以活动形式指定时间段开放，每个时段结束前{deadlineTime}分钟停止报名',
+        arenaHelpRule12:
+            'b)大奖赛每次开放均可获赠{freeNum}次免费挑战的次数（游客玩家和正式账号获得一次），免费挑战次数不累积',
+        arenaHelpRule13:
+            'c) 重复挑战需要报名消耗货币，消耗的货币数量每次都一样',
+        arenaHelpRule21:
+            'a) 报名成功后，每个玩家可以射击{initBulletNum}发子弹，击杀鱼后可以获得鱼倍率对应的积分，1倍=1积分。',
+        arenaHelpRule22: 'b) 大奖赛中炮台倍率越高，击杀鱼的概率也相应增加',
+        arenaHelpRule23:
+            'c) 玩家开炮后，若剩余子弹为500倍数，触发悬赏任务，完成可获得额外积分奖励',
+        arenaHelpRule24:
+            'd) 所有子弹打完后，本次挑战结束。最终积分可以参与排名(注意:子弹未打完的成绩不参与排名)',
+        arenaHelpRule31:
+            'a)每日取单次最高积分进入排名(至少需要{rankingScoreDown}分才可参与排名)',
+        arenaHelpRule32: 'b)积分相同的情况下，先达到的玩家排名在前',
+        arenaHelpRule33:
+            'c)日排行奖励发放时间为每日23:35，最终排名以23:30之后为准。( 注意: 23:00之前的排名奖励仅作预览，不是实际发放奖励)',
+        arenaHelpRule34:
+            'd) 总冠军奖励发放时间为每次活动结束后第二天0:05，单次积分最高的玩家为总冠军，获得额外的大奖',
+        arenaHelpRule35:
+            'e) 比赛的奖励直接发放到账号上，玩家可以在大厅界面查看大奖赛奖励发放记录',
+        arenaHelpRule41:
+            'a) 炮台加成 使用不同炮台皮肤，比赛中命中率加成不一样，不累加命中',
+        arenaHelpRule42:
+            '炮台皮肤      命中加成 \n 皮肤1           {gun1001}%\n 皮肤2           {gun1002}%\n 皮肤3           {gun1003}%\n 皮肤4           {gun1004}%\n 皮肤5           {gun1005}%\n',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -565,6 +669,32 @@ export const International = {
             '當前貨幣餘額不足，最小需攜帶{minAmount}{currency}才可進場，請去充值或者切換其他貨幣。',
         platformDiffCurrencyEnterGameErr:
             '您還有未完成的遊戲，係統自動幫您複盤。',
+        arenaHelpRule11:
+            'a) 捕魚大獎賽，以活動形式指定時間段開放，每個時段結束前{deadlineTime}分鍾停止報名',
+        arenaHelpRule12:
+            'b)大獎賽每次開放均可獲贈{freeNum}次免費挑戰的次數（遊客玩家和正式賬號獲得一次），免費挑戰次數不纍積',
+        arenaHelpRule13:
+            'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量每次都一樣',
+        arenaHelpRule21:
+            'a) 報名成功後，每個玩家可以射擊{initBulletNum}發子彈，擊殺魚後可以獲得魚倍率對應的積分，1倍=1積分。',
+        arenaHelpRule22: 'b) 大獎賽中炮臺倍率越高，擊殺魚的概率也相應增加',
+        arenaHelpRule23:
+            'c) 玩家開炮後，若剩餘子彈為500倍數，觸發懸賞任務，完成可獲得額外積分獎勵',
+        arenaHelpRule24:
+            'd) 所有子彈打完後，本次挑戰結束。最終積分可以參與排名(註意:子彈未打完的成績不參與排名)',
+        arenaHelpRule31:
+            'a)每日取單次最高積分進入排名(至少需要{rankingScoreDown}分才可參與排名)',
+        arenaHelpRule32: 'b)積分相同的情況下，先達到的玩家排名在前',
+        arenaHelpRule33:
+            'c)日排行獎勵發放時間為每日23:35，最終排名以23:30之後為準。( 註意: 23:00之前的排名獎勵僅作預覽，不是實際發放獎勵)',
+        arenaHelpRule34:
+            'd) 總冠軍獎勵發放時間為每次活動結束後第二天0:05，單次積分最高的玩家為總冠軍，獲得額外的大獎',
+        arenaHelpRule35:
+            'e) 比賽的獎勵直接發放到賬號上，玩家可以在大廳界麵查看大獎賽獎勵發放記錄',
+        arenaHelpRule41:
+            'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
+        arenaHelpRule42:
+            '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',
@@ -578,9 +708,11 @@ export const International = {
     },
 };
 
-export const InternationalTip = International as {
-    [key: string]: typeof International[Lang.Zh];
+export type TypeInternationalTipLang = typeof International[Lang.Zh];
+export type TypeInternationalTip = {
+    [key: string]: TypeInternationalTipLang;
 };
+export const InternationalTip = International as TypeInternationalTip;
 
 /** - @ques 翻译给徐磊 */
 const InternationalTip2 = {

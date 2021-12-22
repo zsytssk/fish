@@ -99,9 +99,7 @@ export function tipExchange(data: Data) {
     if (!data.currency) {
         return;
     }
-    const lang = getLang();
-    let tip = InternationalTip[lang].enterGameCostTip;
-    tip = tplStr(tip, {
+    const tip = tplStr('enterGameCostTip', {
         bringAmount: data.bringAmount,
         bulletNum: data.bulletNum,
         currency: data.currency,

@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
-    "selecteID":28,
+    "selectedBox":15,
+    "selecteID":12,
     "searchKey":"Dialog",
     "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
     "nodeParent":-1,

@@ -104,9 +104,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.shoalComingTip(data.reverse);
             game.addFish(data.fish);
         },
-        [ServerEvent.RoomOut]: (data: RoomOutRep) => {
-            game.roomOut(data);
-        },
         [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
             game.changeBulletCost(data);
         },

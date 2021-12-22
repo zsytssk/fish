@@ -1,18 +1,23 @@
 import { sleep } from '@app/utils/animate';
+import { setItem } from '@app/utils/localStorage';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
+import ArenaShopPop from '@app/view/pop/arenaShop';
 import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
 import ArenaTopPlayerPop from '@app/view/pop/arenaTopPlayer';
+import { arenaGenShopInfo, arenaShopList } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 
 import CompetitionInfoData from './competitionInfo.json';
 import GiftData from './gift.json';
+import HelpData from './help.json';
 import RankData from './rank.json';
 import SettleData from './settle.json';
+import ShopData from './shop.json';
 import TopPlayerData from './topPlayer.json';
 
 export const arena_pop_test = {
@@ -22,6 +27,7 @@ export const arena_pop_test = {
         pop.initData(CompetitionInfoData);
     },
     openHelp: async () => {
+        setItem(`arenaGetRuleData:mode${1}`, JSON.stringify(HelpData));
         const pop = await ArenaHelpPop.preEnter();
     },
     openRank: async () => {
@@ -70,5 +76,11 @@ export const arena_pop_test = {
         await ArenaGameStatus.start();
         await sleep(1);
         await ArenaGameStatus.end();
+    },
+    openShop: async () => {
+        const pop = await ArenaShopPop.preEnter();
+        console.log(`test:>`);
+        await sleep(1);
+        pop.initData(arenaGenShopInfo(ShopData as any));
     },
 };

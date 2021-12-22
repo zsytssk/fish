@@ -146,3 +146,38 @@ export type GetHallOfFameDataItem = {
     score: number;
 };
 export type GetHallOfFameData = GetHallOfFameDataItem[];
+
+export type GetRuleData = {
+    roomConfig: {
+        freeNum: number;
+    };
+    globalConfig: {
+        initBulletNum: number;
+        rankingScoreDown: number;
+        skinBulletAddition: {
+            '1001': number;
+            '1002': number;
+            '1003': number;
+            '1004': number;
+            '1005': number;
+        };
+    };
+    matchTimeConfig: {
+        deadlineTime: number;
+    };
+};
+
+export type ShopListData = {
+    currency: string;
+    itemId: string;
+    itemName: string;
+    itemType: number;
+    price: number;
+    num: number;
+    status: number;
+}[];
+
+export type BuyGoodsData = {
+    goodsId: number | string;
+    goodsNum: number;
+};
