@@ -1,9 +1,7 @@
-import { LoaderManagerCtor } from './ui/LoaderManager';
 import { DialogManagerCtor } from './ui/dialogManager';
 import { DirectorCtor } from './ui/director';
 
 export let dialogManager: DialogManagerCtor;
-export let loaderManager: LoaderManagerCtor;
 export const director = new DirectorCtor();
 
 let init_resolve = [] as Array<() => void>;
@@ -19,7 +17,6 @@ export function untilInit() {
 }
 /** 一切初始化+全局变量都在这里 */
 export function initState() {
-    loaderManager = new LoaderManagerCtor();
     dialogManager = new DialogManagerCtor();
     director.init();
 

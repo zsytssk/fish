@@ -1,5 +1,5 @@
 import honor, { HonorDialog } from 'honor';
-import { loaderManager } from 'honor/state';
+import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
@@ -7,12 +7,12 @@ import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import {
-    onLangChange,
-    offLangChange,
     getLang,
+    offLangChange,
+    onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
 import { tplStr } from '@app/utils/utils';
 
@@ -84,7 +84,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         });
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/shop/shop.scene');
+        return loadRes('pop/shop/shop.scene');
     }
     public init() {
         const { gun_list, item_list } = this;

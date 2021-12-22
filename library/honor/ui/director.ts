@@ -2,7 +2,7 @@ import { Laya } from 'Laya';
 import { Scene } from 'laya/display/Scene';
 import { Event } from 'laya/events/Event';
 
-import { dialogManager, loaderManager } from '../state';
+import { dialogManager } from '../state';
 import { ProgressFn } from '../utils/loadRes';
 import { cur_scene, isLoadingScene, runScene } from './SceneManager';
 import { DialogOpenOpt } from './dialogManager';
@@ -68,16 +68,5 @@ export class DirectorCtor {
 
     public closeAllDialogs() {
         dialogManager.closeAllDialogs();
-    }
-
-    /** 设置scene loading页面
-     */
-    public setLoadPageForScene(url: string) {
-        return loaderManager.setLoadView('Scene', url);
-    }
-    /** 设置dialog loading 页面
-     */
-    public setLoadPageForDialog(url: string) {
-        return loaderManager.setLoadView('Dialog', url);
     }
 }

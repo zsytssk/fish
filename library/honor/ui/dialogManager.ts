@@ -1,7 +1,7 @@
 import { UIConfig } from 'UIConfig';
 
 import { Laya } from 'Laya';
-import { loaderManager } from 'honor/state';
+import { loadDialog } from 'honor/utils/loadRes';
 import { detectChangeScene } from 'honor/utils/sceneUtils';
 import {
     injectAfter,
@@ -243,10 +243,7 @@ export class DialogManagerCtor {
             let new_dialog: HonorDialog;
             /** 创建弹出层 */
             if (typeof url === 'string') {
-                new_dialog = (await loaderManager.loadScene(
-                    'Dialog',
-                    url,
-                )) as HonorDialog;
+                new_dialog = (await loadDialog(url)) as HonorDialog;
             } else if (typeof url === 'function') {
                 new_dialog = (await createScene(url).then((dialog) => {
                     return resolve(dialog as Dialog);

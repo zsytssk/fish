@@ -1,5 +1,5 @@
 import honor, { HonorDialog } from 'honor';
-import { loaderManager } from 'honor/state';
+import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
@@ -38,7 +38,7 @@ export default class ArenaShopPop
         return shop_dialog;
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/shop/shop.scene');
+        return loadRes('pop/shop/shop.scene');
     }
     // tslint:disable-line
     public onAwake() {

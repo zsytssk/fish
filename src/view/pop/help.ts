@@ -1,17 +1,16 @@
-import { Laya } from 'Laya';
 import honor, { HonorDialog } from 'honor';
-import { loaderManager } from 'honor/state';
+import { loadRes } from 'honor/utils/loadRes';
 import { Box } from 'laya/ui/Box';
 import { Handler } from 'laya/utils/Handler';
 
-import { onLangChange, offLangChange } from '@app/ctrl/hall/hallCtrlUtil';
-import { SkillNameMap, SkillMap } from '@app/data/config';
-import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { SkillMap, SkillNameMap } from '@app/data/config';
+import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
 import { LayaSlider } from '@app/utils/layaSlider';
 import { resizeContain } from '@app/utils/layaUtils';
 
-import { test_fish_list, getSkillIntroList } from './helpUtils';
+import { getSkillIntroList, test_fish_list } from './helpUtils';
 
 type FishItemData = {
     id: string;
@@ -37,7 +36,7 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
         help_pop.goto(index);
     }
     public static async preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/help/help.scene');
+        return loadRes('pop/help/help.scene');
     }
     public onAwake() {
         onLangChange(this, (lang) => {

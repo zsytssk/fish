@@ -1,5 +1,5 @@
 import honor, { HonorDialog } from 'honor';
-import { loaderManager } from 'honor/state';
+import { loadRes } from 'honor/utils/loadRes';
 import { Label } from 'laya/ui/Label';
 
 import {
@@ -47,7 +47,7 @@ export default class GameRecord
         return game_record;
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/record/gameRecord.scene');
+        return loadRes('pop/record/gameRecord.scene');
     }
     public onAwake() {
         const {

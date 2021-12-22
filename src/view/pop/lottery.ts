@@ -1,5 +1,5 @@
 import honor, { HonorDialog } from 'honor';
-import { loaderManager } from 'honor/state';
+import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
@@ -72,7 +72,7 @@ export default class LotteryPop
         });
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/lottery/lottery.scene');
+        return loadRes('pop/lottery/lottery.scene');
     }
     public async reloadData() {
         const exchange_data = await getLotteryData();
