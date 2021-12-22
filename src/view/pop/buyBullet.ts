@@ -22,6 +22,13 @@ type BuyInfo = {
     id: string;
     num: number;
     price: number;
+    currency?: string;
+};
+
+export type BuyResultData = {
+    id: string;
+    num: number;
+    price: number;
 };
 export default class BuyBulletPop
     extends ui.pop.alert.buyBulletUI
@@ -29,13 +36,14 @@ export default class BuyBulletPop
 {
     public isModal = true;
     private buy_info: BuyInfo;
-    public static async preEnter(info: BuyInfo) {
+    private resolve: (info: BuyResultData) => void;
+    public static async preEnter(info: BuyInfo): Promise<BuyResultData> {
         const dialog = (await honor.director.openDialog({
             dialog: BuyBulletPop,
             use_exist: true,
             stay_scene: true,
         })) as BuyBulletPop;
-        dialog.buy(info);
+        return dialog.buy(info);
     }
     public onAwake() {
         onLangChange(this, (lang) => {
@@ -54,15 +62,10 @@ export default class BuyBulletPop
             this.changeNum('add');
         });
         btn_buy.on(CLICK, this, () => {
-            const lang = getLang();
-            const { buySuccess } = InternationalTip[lang];
             const { id, num, price } = this.buy_info;
             buyItemAlert(num, price, id).then((status) => {
                 if (status) {
-                    buyItem(id, num, price).then(() => {
-                        TipPop.tip(buySuccess);
-                        this.close();
-                    });
+                    this.resolve({ id, num, price });
                 }
             });
         });
@@ -112,12 +115,15 @@ export default class BuyBulletPop
     private setIntro() {
         const lang = getLang();
         const { intro, buy_info } = this;
-        const { purchase, buyBulletCost, bullet } = InternationalTip[lang];
-        const { price, num } = buy_info;
+        const { buyBulletCost, bullet } = InternationalTip[lang];
+        const { price, num, currency } = buy_info;
+
+        const typename = currency || bullet;
+        const cost = price * num;
         if (lang === 'en') {
-            intro.text = `${buyBulletCost} ${price * num} ${bullet}`;
+            intro.text = `${buyBulletCost} ${cost} ${typename}`;
         } else {
-            intro.text = `${buyBulletCost}${price * num}${bullet}`;
+            intro.text = `${buyBulletCost}${cost}${typename}`;
         }
     }
     private initLang(lang: Lang) {
@@ -129,15 +135,18 @@ export default class BuyBulletPop
         this.setIntro();
     }
     public buy(info: BuyInfo) {
-        const { num_label, icon } = this;
-        const { num, id } = info;
+        return new Promise<BuyResultData>((resolve, _reject) => {
+            const { num_label, icon } = this;
+            const { num, id } = info;
 
-        const num_str = num + '';
-        num_label.text = num_str;
+            const num_str = num + '';
+            num_label.text = num_str;
 
-        icon.skin = `image/pop/shop/icon/${id}.png`;
-        this.buy_info = info;
-        this.setIntro();
+            icon.skin = `image/pop/shop/icon/${id}.png`;
+            this.buy_info = info;
+            this.setIntro();
+            this.resolve = resolve;
+        });
     }
     public destroy() {
         offLangChange(this);

@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":28,
-    "selecteID":48,
+    "selectedBox":49,
+    "selecteID":51,
     "searchKey":"Dialog",
     "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
     "nodeParent":-1,
-    "maxID":49,
+    "maxID":58,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -133,7 +133,92 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box",
-            "props":{"y":169,"x":45,"width":945,"height":495},
+            "props":{"y":161,"x":48},
+            "nodeParent":2,
+            "label":"Box",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":49,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image",
+                    "props":{"width":945,"skin":"image/pop/shop/item_panel_bg.png","sizeGrid":"20,20,20,20","height":246},
+                    "nodeParent":49,
+                    "label":"Image",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":50,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"List",
+                    "searchKey":"List,gun_list",
+                    "props":{"y":0,"x":0,"width":943,"var":"gun_list","spaceX":7,"repeatY":1,"repeatX":5,"height":243},
+                    "nodeParent":49,
+                    "label":"gun_list",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":51,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"UIView",
+                            "source":"pop/shop/arenaShopGunItem.scene",
+                            "searchKey":"UIView",
+                            "props":{"y":10,"x":15,"renderType":"render"},
+                            "nodeParent":51,
+                            "label":"UIView",
+                            "isDirectory":false,
+                            "isAniNode":false,
+                            "hasChild":false,
+                            "compId":57,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"texture":"image/pop/shop/tag_skin.png"},
+                    "nodeParent":49,
+                    "label":"Sprite",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":53,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,skin_tag",
+                            "props":{"y":41,"x":-2,"width":57,"var":"skin_tag","text":"皮肤","strokeColor":"#751b19","stroke":1,"rotation":-48,"height":12,"fontSize":16,"font":"Arial","color":"#fffeaa","bold":true,"align":"center"},
+                            "nodeParent":53,
+                            "label":"skin_tag",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":54,
+                            "child":[
+                                ]
+                        }]
+                }]
+        },
+        {
+            "x":15,
+            "type":"Box",
+            "searchKey":"Box",
+            "props":{"y":411,"x":48,"width":945,"height":253},
             "nodeParent":2,
             "label":"Box",
             "isOpen":true,
@@ -146,7 +231,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"top":0,"skin":"image/pop/shop/item_panel_bg.png","sizeGrid":"20,20,20,20","right":0,"left":0,"bottom":0},
+                    "props":{"width":945,"top":0,"skin":"image/pop/shop/item_panel_bg.png","sizeGrid":"20,20,20,20","right":0,"left":0,"height":274,"bottom":0},
                     "nodeParent":16,
                     "label":"Image",
                     "isDirectory":false,
@@ -154,23 +239,23 @@
                     "hasChild":false,
                     "compId":17,
                     "child":[
-                        ]
+                        ],
+                    "$LOCKED":true
                 },
                 {
                     "x":30,
                     "type":"List",
                     "searchKey":"List,item_list",
-                    "props":{"y":16,"x":15,"width":914,"var":"item_list","spaceY":10,"spaceX":7,"repeatY":2,"repeatX":5,"height":463},
+                    "props":{"y":10,"x":15,"width":914,"var":"item_list","spaceY":10,"spaceX":7,"repeatY":1,"repeatX":5,"height":232},
                     "nodeParent":16,
                     "label":"item_list",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":28,
                     "child":[
                         {
-                            "x":45,
                             "type":"UIView",
                             "source":"pop/shop/shopItemItem1.scene",
                             "searchKey":"UIView",
@@ -181,6 +266,34 @@
                             "isAniNode":false,
                             "hasChild":false,
                             "compId":48,
+                            "child":[
+                                ]
+                        }]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":0,"x":0,"texture":"image/pop/shop/tag_item.png"},
+                    "nodeParent":16,
+                    "label":"Sprite",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":55,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label,item_tag",
+                            "props":{"y":43,"x":-1,"width":60,"var":"item_tag","text":"道具","strokeColor":"#3a1686","stroke":1,"rotation":-48,"height":12,"fontSize":16,"font":"Arial","color":"#fffeaa","bold":true,"align":"center"},
+                            "nodeParent":55,
+                            "label":"item_tag",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":56,
                             "child":[
                                 ]
                         }]

@@ -9,6 +9,7 @@ import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import ArenaShopPop from '@app/view/pop/arenaShop';
 import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
 import ArenaTopPlayerPop from '@app/view/pop/arenaTopPlayer';
+import { arenaGenShopInfo, arenaShopList } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 
 import CompetitionInfoData from './competitionInfo.json';
@@ -80,6 +81,6 @@ export const arena_pop_test = {
         const pop = await ArenaShopPop.preEnter();
         console.log(`test:>`);
         await sleep(1);
-        pop.initData(ShopData as any);
+        pop.initData(arenaGenShopInfo(ShopData as any));
     },
 };

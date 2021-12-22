@@ -169,10 +169,15 @@ export type GetRuleData = {
 
 export type ShopListData = {
     currency: string;
-    goodsId: string;
-    goodsName: string;
-    goodsType: 10;
+    itemId: string;
+    itemName: string;
+    itemType: number;
     price: number;
     num: number;
     status: number;
 }[];
+
+export type BuyGoodsData = {
+    goodsId: number | string;
+    goodsNum: number;
+};
