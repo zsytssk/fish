@@ -40,6 +40,7 @@ import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
+import ArenaShopPop from '@app/view/pop/arenaShop';
 import VoicePop from '@app/view/pop/voice';
 import GameView, {
     AddFishViewInfo,
@@ -179,14 +180,14 @@ export class GameCtrl implements GameCtrlUtils {
             e.stopPropagation();
             AlertPop.alert(leaveTip).then((type) => {
                 if (type === 'confirm') {
-                    this.sendToGameSocket(ServerEvent.RoomOut);
+                    this.sendToGameSocket(ServerEvent.TableOut);
                 }
             });
         });
 
         onNodeWithAni(btn_shop, CLICK, (e: Event) => {
             e.stopPropagation();
-            this.sendToGameSocket(ServerEvent.TableOut);
+            ArenaShopPop.preEnter();
         });
         onNodeWithAni(btn_gift, CLICK, (e: Event) => {
             e.stopPropagation();
@@ -280,7 +281,7 @@ export class GameCtrl implements GameCtrlUtils {
         socket?.send(...params);
     }
     public offGameSocket() {
-        const socket = getSocket(ServerName.Game);
+        const socket = getSocket(ServerName.ArenaHall);
         offCommon(socket, this);
     }
     public getSocket() {
@@ -401,21 +402,13 @@ export class GameCtrl implements GameCtrlUtils {
     }
     public tableOut(data: TableOutRep) {
         const { model } = this;
-        const { userId, isTimeOut } = data;
+        const { userId } = data;
         if (isCurUser(userId, true)) {
-            const lang = getLang();
-            const { kickedTip } = InternationalTip[lang];
-            const timeout_tip =
-                InternationalTip[lang][ServerErrCode.TrialTimeGame];
-            const tip = isTimeOut ? timeout_tip : kickedTip;
             disableAllUserOperation();
             this.offGameSocket();
-            disconnectSocket(ServerName.Game);
-            AlertPop.alert(tip, {
-                hide_cancel: true,
-            }).then(() => {
-                this.roomOut({ userId });
-            });
+            disconnectSocket(ServerName.ArenaHall);
+            model.destroy();
+            HallCtrl.preEnter();
         } else {
             const player = model.getPlayerById(userId);
             if (!player) {
@@ -426,16 +419,7 @@ export class GameCtrl implements GameCtrlUtils {
             player.destroy();
         }
     }
-    public roomOut(data: RoomOutRep) {
-        const { model } = this;
-        const { userId } = data;
-        if (isCurUser(userId, true)) {
-            this.offGameSocket();
-            disconnectSocket(ServerName.Game);
-            model.destroy();
-            HallCtrl.preEnter();
-        }
-    }
+
     public reset() {
         this.model.clear();
     }

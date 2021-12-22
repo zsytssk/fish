@@ -5,6 +5,7 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
+import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -33,6 +34,9 @@ export default class ArenaCompetitionPop
     }
     public async onAwake() {
         this.initEvent();
+        onLangChange(this, () => {
+            this.initLang();
+        });
     }
     public async onEnable() {
         const data = await getCompetitionInfo();
@@ -164,6 +168,7 @@ export default class ArenaCompetitionPop
         signBg.skin = `image/pop/arenaCompetitionInfo/${signBgSkin}`;
     }
 
-    public onClosed(type: CloseType) {}
-    private initLang() {}
+    private initLang() {
+        //
+    }
 }
