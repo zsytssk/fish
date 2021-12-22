@@ -14,23 +14,11 @@ import {
 import { AudioRes } from '@app/data/audioRes';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
-import { tplStr } from '@app/utils/utils';
 
-import BuyBulletPop, { buySkinAlert } from './buyBullet';
-import { arenaBuyItem, arenaUseGunSkin, buyItem } from './popSocket';
+import { buySkinAlert } from './buyBullet';
+import { arenaBuyItem, arenaShopList, arenaUseGunSkin } from './popSocket';
 import { getItemName, GunRenderData, GunSkinStatus, ShopData } from './shop';
-import TipPop from './tip';
 
-/** item 渲染数据 */
-type ItemRenderData = {
-    item_name: string;
-    item_id: string;
-    item_price: number;
-    item_num: number;
-    currency: string;
-};
-
-type ShopItemItemUI = ui.pop.shop.shopItemItem1UI;
 type ShopGunItemUI = ui.pop.shop.shopGunItemUI;
 /** 商城弹出层 */
 export default class ArenaShopPop
@@ -47,32 +35,22 @@ export default class ArenaShopPop
             use_exist: true,
             stay_scene: true,
         }) as Promise<ArenaShopPop>;
-        // const shop_data = arenaShopList();
-        // return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
-        //     dialog.initData(data);
+        const shop_data = arenaShopList();
+        return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
+            dialog.initData(data);
 
-        //     return dialog;
-        // });
-        return shop_dialog;
+            return dialog;
+        });
     }
     public static preLoad() {
         return loaderManager.preLoad('Dialog', 'pop/shop/shop.scene');
     }
     public init() {
-        const { item_list, gun_list } = this;
-
-        item_list.array = [];
-
-        item_list.renderHandler = new Handler(
-            item_list,
-            this.renderItemList,
-            null,
-            false,
-        );
+        const { gun_list } = this;
 
         gun_list.array = [];
         gun_list.renderHandler = new Handler(
-            item_list,
+            gun_list,
             this.renderGunList,
             null,
             false,
@@ -109,27 +87,6 @@ export default class ArenaShopPop
             });
         }
         gun_list.array = gun_arr;
-
-        const item_arr = [] as ItemRenderData[];
-        for (const item_item of item) {
-            const {
-                name,
-                id: item_id,
-                price: item_price,
-                num: item_num,
-                currency,
-            } = item_item;
-
-            const item_name = getItemName(item_id, name);
-            item_arr.push({
-                item_name,
-                item_id,
-                item_price,
-                item_num,
-                currency,
-            });
-        }
-        item_list.array = item_arr;
     }
     private renderGunList = (box: ShopGunItemUI, index: number) => {
         const { gun_name, gun_id, gun_status, gun_price, currency } = this
@@ -186,30 +143,6 @@ export default class ArenaShopPop
         }
         this.gun_list.refresh();
     }
-    private renderItemList = (box: ShopItemItemUI, index: number) => {
-        const { item_name, item_id, item_num, item_price, currency } = this
-            .item_list.array[index] as ItemRenderData;
-        const { name_label, icon, num_label, price_label, btn_buy } = box;
-        name_label.text = item_name;
-        num_label.text = item_num + '';
-        icon.skin = `image/pop/shop/icon/${item_id}.png`;
-        price_label.text = item_price + currency;
-        btn_buy.offAll();
-        btn_buy.on(Event.CLICK, btn_buy, () => {
-            BuyBulletPop.preEnter({
-                type: item_name,
-                id: item_id,
-                num: item_num,
-                price: item_price,
-                currency,
-            }).then((data) => {
-                arenaBuyItem(data.id, data.num).then(() => {
-                    TipPop.tip(tplStr('buySuccess'));
-                    this.close();
-                });
-            });
-        });
-    };
     /** 使用皮肤 */
     public useGunSkin(id: string) {
         const arr = this.gun_list.array as GunRenderData[];

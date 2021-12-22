@@ -1,10 +1,10 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":49,
-    "selecteID":51,
+    "selectedBox":2,
+    "selecteID":13,
     "searchKey":"Dialog",
-    "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":710},
+    "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/shop.ts","height":460},
     "nodeParent":-1,
     "maxID":58,
     "label":"Dialog",
@@ -31,7 +31,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"y":77,"x":26,"width":990,"skin":"image/pop/shop/bg.png","sizeGrid":"0,42,0,42","height":629},
+                    "props":{"y":77,"x":26,"width":990,"skin":"image/pop/shop/bg.png","sizeGrid":"0,42,0,42","height":369},
                     "nodeParent":13,
                     "label":"Image",
                     "isDirectory":false,
@@ -73,7 +73,7 @@
                     "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
-                    "props":{"y":654,"x":969,"texture":"image/pop/shop/star.png"},
+                    "props":{"y":401,"x":964,"texture":"image/pop/shop/star.png"},
                     "nodeParent":13,
                     "label":"Sprite",
                     "isDirectory":false,
@@ -209,91 +209,6 @@
                             "isAniNode":true,
                             "hasChild":false,
                             "compId":54,
-                            "child":[
-                                ]
-                        }]
-                }]
-        },
-        {
-            "x":15,
-            "type":"Box",
-            "searchKey":"Box",
-            "props":{"y":411,"x":48,"width":945,"height":253},
-            "nodeParent":2,
-            "label":"Box",
-            "isOpen":true,
-            "isDirectory":true,
-            "isAniNode":true,
-            "hasChild":true,
-            "compId":16,
-            "child":[
-                {
-                    "x":30,
-                    "type":"Image",
-                    "searchKey":"Image",
-                    "props":{"width":945,"top":0,"skin":"image/pop/shop/item_panel_bg.png","sizeGrid":"20,20,20,20","right":0,"left":0,"height":274,"bottom":0},
-                    "nodeParent":16,
-                    "label":"Image",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":17,
-                    "child":[
-                        ],
-                    "$LOCKED":true
-                },
-                {
-                    "x":30,
-                    "type":"List",
-                    "searchKey":"List,item_list",
-                    "props":{"y":10,"x":15,"width":914,"var":"item_list","spaceY":10,"spaceX":7,"repeatY":1,"repeatX":5,"height":232},
-                    "nodeParent":16,
-                    "label":"item_list",
-                    "isOpen":false,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":28,
-                    "child":[
-                        {
-                            "type":"UIView",
-                            "source":"pop/shop/shopItemItem1.scene",
-                            "searchKey":"UIView",
-                            "props":{"y":0,"x":0,"renderType":"render"},
-                            "nodeParent":28,
-                            "label":"UIView",
-                            "isDirectory":false,
-                            "isAniNode":false,
-                            "hasChild":false,
-                            "compId":48,
-                            "child":[
-                                ]
-                        }]
-                },
-                {
-                    "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":0,"texture":"image/pop/shop/tag_item.png"},
-                    "nodeParent":16,
-                    "label":"Sprite",
-                    "isOpen":true,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":55,
-                    "child":[
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,item_tag",
-                            "props":{"y":43,"x":-1,"width":60,"var":"item_tag","text":"道具","strokeColor":"#3a1686","stroke":1,"rotation":-48,"height":12,"fontSize":16,"font":"Arial","color":"#fffeaa","bold":true,"align":"center"},
-                            "nodeParent":55,
-                            "label":"item_tag",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":56,
                             "child":[
                                 ]
                         }]
