@@ -1,7 +1,13 @@
 import honor, { HonorDialog } from 'honor';
+import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { ui } from '@app/ui/layaMaxUI';
+import { getAllChildren } from '@app/utils/layaQueryElements';
+import { tplStr } from '@app/utils/utils';
+
+import { arenaGetRuleData } from './popSocket';
 
 export default class ArenaHelpPop
     extends ui.pop.arenaHelp.arenaHelpUI
@@ -19,6 +25,9 @@ export default class ArenaHelpPop
     }
     public async onAwake() {
         this.initEvent();
+        onLangChange(this, () => {
+            this.initLang();
+        });
     }
     private initEvent() {
         const { tab, tabBody } = this;
@@ -31,5 +40,57 @@ export default class ArenaHelpPop
             null,
             false,
         );
+    }
+    private async initLang() {
+        const { tabBody } = this;
+        try {
+            const boxList = await getAllChildren(tabBody);
+            const {
+                roomConfig: { freeNum, everydayConfig },
+                globalConfig: {
+                    initBulletNum,
+                    rankingScoreDown,
+                    skinBulletAddition: {
+                        1001: gun1001,
+                        1002: gun1002,
+                        1003: gun1003,
+                        1004: gun1004,
+                        1005: gun1005,
+                    },
+                },
+                matchTimeConfig: { deadlineTime },
+            } = arenaGetRuleData(1);
+
+            const labels1 = getAllChildren(boxList[0]) as Label[];
+            labels1[0].text = tplStr('arenaHelpRule11', { deadlineTime });
+            labels1[1].text = tplStr('arenaHelpRule12', { freeNum });
+            labels1[2].text = tplStr('arenaHelpRule13');
+
+            const labels2 = getAllChildren(boxList[1]) as Label[];
+            labels2[0].text = tplStr('arenaHelpRule21', { initBulletNum });
+            labels2[1].text = tplStr('arenaHelpRule22', {});
+            labels2[2].text = tplStr('arenaHelpRule23', {});
+            labels2[3].text = tplStr('arenaHelpRule24', {});
+
+            const labels3 = getAllChildren(boxList[2]) as Label[];
+            labels3[0].text = tplStr('arenaHelpRule31', { rankingScoreDown });
+            labels3[1].text = tplStr('arenaHelpRule32', {});
+            labels3[2].text = tplStr('arenaHelpRule33', {});
+            labels3[3].text = tplStr('arenaHelpRule34', {});
+            labels3[4].text = tplStr('arenaHelpRule35', {});
+
+            const labels4 = getAllChildren(boxList[3]) as Label[];
+            labels4[0].text = tplStr('arenaHelpRule41', {});
+            labels4[1].text = tplStr('arenaHelpRule42', {
+                gun1001,
+                gun1002,
+                gun1003,
+                gun1004,
+                gun1005,
+            });
+        } catch {}
+    }
+    public destroy() {
+        offLangChange(this);
     }
 }

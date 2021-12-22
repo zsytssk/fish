@@ -18,6 +18,7 @@ import {
     ARENA_OK_CODE,
 } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { getItem, setItem } from '@app/utils/localStorage';
 
 import { LotteryPopData } from './lottery';
 import { ShopData } from './shop';
@@ -324,5 +325,36 @@ export function arenaGetHallOfFame() {
             },
         );
         socket.send(ArenaEvent.GetHallOfFame);
+    }) as Promise<GetHallOfFameData>;
+}
+
+/** Arena 帮助 */
+export function arenaGetRuleData(mode: number) {
+    const tmp = getItem(`arenaGetRuleData:mode${mode}`);
+    if (tmp) {
+        return JSON.parse(tmp);
+    }
+
+    return new Promise((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return reject(undefined);
+        }
+        socket.event.once(
+            ArenaEvent.GetRuleData,
+            (data: GetHallOfFameData, code) => {
+                if (code !== ARENA_OK_CODE) {
+                    reject();
+                } else {
+                    setItem(
+                        `arenaGetRuleData:mode${mode}`,
+                        JSON.stringify(data),
+                        1,
+                    );
+                    resolve(data);
+                }
+            },
+        );
+        socket.send(ArenaEvent.GetRuleData, { mode });
     }) as Promise<GetHallOfFameData>;
 }

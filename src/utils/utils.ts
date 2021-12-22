@@ -5,6 +5,12 @@ import { ColorFilter } from 'laya/filters/ColorFilter';
 import { GlowFilter } from 'laya/filters/GlowFilter';
 import { Handler } from 'laya/utils/Handler';
 
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import {
+    International,
+    TypeInternationalTipLang,
+} from '@app/data/internationalConfig';
+
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';
 }
@@ -257,13 +263,15 @@ export function formatDateStr(a: number): string {
     return '' + a;
 }
 export function tplStr<T extends Record<string, unknown>>(
-    str: string,
-    data: T,
+    key: keyof TypeInternationalTipLang,
+    data?: T,
 ) {
-    let msg = str;
-    for (const key in data) {
-        console.log(key, msg);
-        msg = msg.replace(new RegExp(`{${key}}`, 'g'), data[key] + '');
+    const lang = getLang();
+    let msg = International[lang][key];
+    if (data) {
+        for (const key in data) {
+            msg = msg.replace(new RegExp(`{${key}}`, 'g'), data[key] + '');
+        }
     }
 
     return msg;

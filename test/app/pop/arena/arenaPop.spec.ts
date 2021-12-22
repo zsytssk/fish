@@ -1,4 +1,5 @@
 import { sleep } from '@app/utils/animate';
+import { setItem } from '@app/utils/localStorage';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
@@ -11,6 +12,7 @@ import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 
 import CompetitionInfoData from './competitionInfo.json';
 import GiftData from './gift.json';
+import HelpData from './help.json';
 import RankData from './rank.json';
 import SettleData from './settle.json';
 import TopPlayerData from './topPlayer.json';
@@ -22,6 +24,7 @@ export const arena_pop_test = {
         pop.initData(CompetitionInfoData);
     },
     openHelp: async () => {
+        setItem(`arenaGetRuleData:mode${1}`, JSON.stringify(HelpData));
         const pop = await ArenaHelpPop.preEnter();
     },
     openRank: async () => {
