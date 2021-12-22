@@ -1,6 +1,7 @@
 import SAT from 'sat';
 
 import { Laya } from 'Laya';
+import { ComponentManager } from 'comMan/component';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
@@ -22,9 +23,9 @@ import {
 } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
 import {
-    getUserInfo,
     getCurPlayer,
     getGameCurrency,
+    getUserInfo,
 } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
@@ -39,20 +40,17 @@ import {
     getPoolMousePos,
     getSkillItemByIndex,
     setAutoShootLight,
-    setBulletNum,
 } from '@app/view/viewState';
 
-import { GameCtrl as ArenaCtrl } from '../arena/gameCtrl';
 import { BulletCtrl } from './bulletCtrl';
-import { GameCtrl } from './gameCtrl';
-import { sendToGameSocket } from './gameSocket';
+import { GameCtrlUtils } from './gameCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
 
 // prettier-ignore
 const bullet_cost_arr  =
          [1, 2, 3, 4, 5, 10, 15, 20];
 /** 玩家的控制器 */
-export class PlayerCtrl {
+export class PlayerCtrl extends ComponentManager {
     /**
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
@@ -60,8 +58,9 @@ export class PlayerCtrl {
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
-        private game_ctrl: GameCtrl | ArenaCtrl,
+        public game_ctrl: GameCtrlUtils,
     ) {
+        super();
         this.init();
     }
     private init() {
@@ -70,7 +69,7 @@ export class PlayerCtrl {
     }
     private initGun() {
         const { view, model, game_ctrl } = this;
-        const { server_index, gun, bullet_num, is_cur_player } = model;
+        const { server_index, gun } = model;
         const { pos } = gun;
         if (game_ctrl.needUpSideDown(server_index)) {
             view.fixServerTopPos();
@@ -80,9 +79,6 @@ export class PlayerCtrl {
             view.fixClientTopPos();
         }
         view.setPos(pos.x, pos.y);
-        if (is_cur_player) {
-            setBulletNum(bullet_num);
-        }
     }
     private initEvent() {
         const {
@@ -98,41 +94,6 @@ export class PlayerCtrl {
         const { event: gun_event, direction, pos: gun_pos } = gun;
         const { btn_minus, btn_add } = view;
 
-        player_event.on(
-            PlayerEvent.CaptureFish,
-            (capture_info: CaptureInfo) => {
-                const {
-                    pos,
-                    data: { win, drop },
-                    resolve,
-                } = capture_info;
-                const { pos: end_pos } = gun;
-                if (!pos) {
-                    resolve();
-                }
-                if (is_cur_player) {
-                    /** 飞行技能 */
-                    if (drop) {
-                        const cur_balance = getGameCurrency();
-                        awardSkill(pos, end_pos, drop, cur_balance);
-                    }
-                    AudioCtrl.play(AudioRes.FlySkill);
-                }
-
-                if (!win) {
-                    resolve();
-                } else if (is_cur_player && win > 1000) {
-                    /** 奖励圆环 */
-                    showAwardCircle(pos, win, is_cur_player).then(resolve);
-                } else {
-                    /** 奖励金币动画 */
-                    showAwardCoin(pos, end_pos, win, is_cur_player).then(
-                        resolve,
-                    );
-                }
-            },
-            this,
-        );
         player_event.on(
             PlayerEvent.Destroy,
             () => {
@@ -223,7 +184,7 @@ export class PlayerCtrl {
                     data.robotId = user_id;
                     data.userId = getCurPlayer().user_id;
                 }
-                sendToGameSocket(ServerEvent.Shoot, data);
+                this.game_ctrl.sendToGameSocket(ServerEvent.Shoot, data);
             },
             this,
         );
@@ -245,7 +206,7 @@ export class PlayerCtrl {
                     _data.robotId = user_id;
                 }
 
-                sendToGameSocket(ServerEvent.Hit, _data);
+                this.game_ctrl.sendToGameSocket(ServerEvent.Hit, _data);
             },
             this,
         );
@@ -256,21 +217,14 @@ export class PlayerCtrl {
         view.setMySelfStyle();
         this.resetGetBulletCost();
 
-        player_event.on(
-            PlayerEvent.UpdateInfo,
-            () => {
-                const { bullet_num } = this.model;
-                setBulletNum(bullet_num);
-            },
-            this,
-        );
         gun_event.on(
             GunEvent.NotEnoughBulletNum,
             () => {
+                const socket = this.game_ctrl.getSocket();
                 if (this.game_ctrl.isTrial) {
-                    errorHandler(ServerErrCode.TrialNotBullet);
+                    errorHandler(ServerErrCode.TrialNotBullet, null, socket);
                 } else {
-                    errorHandler(ServerErrCode.ReExchange);
+                    errorHandler(ServerErrCode.ReExchange, null, socket);
                 }
             },
             this,
@@ -326,7 +280,7 @@ export class PlayerCtrl {
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
         if (bullet_cost) {
-            sendToGameSocket(ServerEvent.ChangeTurret, {
+            this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
                 multiple: Number(bullet_cost),
             } as ChangeTurretReq);
         }
@@ -345,7 +299,7 @@ export class PlayerCtrl {
         AudioCtrl.play(AudioRes.Click);
         const next = bullet_cost_arr[next_index];
         this.detectDisableChangeBulletCost(next);
-        sendToGameSocket(ServerEvent.ChangeTurret, {
+        this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
             multiple: next,
         } as ChangeTurretReq);
 
@@ -372,5 +326,7 @@ export class PlayerCtrl {
         this.view = undefined;
         this.game_ctrl = undefined;
         this.model = undefined;
+
+        super.destroy();
     }
 }

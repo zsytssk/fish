@@ -30,9 +30,7 @@ export function onPoolClick(once = false) {
 export function offPoolClick() {
     return viewState.game.offPoolClick();
 }
-export function setBulletNum(num: number) {
-    return viewState.game.setBulletNum(num);
-}
+
 export function onFishClick(once = false) {
     return viewState.game.onFishClick(once);
 }

@@ -179,7 +179,7 @@ export class GameModel extends ComponentManager {
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);
         if (!player) {
-            error(`Game:>resetSkill:> cant find player:>${data.userId}`);
+            error(`Game:>shoot:> cant find player:>${data.userId}`);
             return;
         }
         player.gun.addBullet(data.direction, !player.is_cur_player);

@@ -10,7 +10,7 @@ import { getParams } from '@app/utils/utils';
 
 import { test_data } from '../testData';
 import { sleep } from '../utils/testUtils';
-import { arena_test } from './arena/arena';
+import { arena_test } from './arena/arena.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { shoal_test } from './game/shoal/shoal.spec';

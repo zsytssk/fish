@@ -2,21 +2,16 @@ import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
 
 import { ServerEvent } from '@app/data/serverEvent';
-import {
-    FishBombCom,
-    FishBombEvent,
-    FishBombInfo,
-} from '@app/model/game/fish/fishBombCom';
+import { FishBombEvent, FishBombInfo } from '@app/model/game/fish/fishBombCom';
 import {
     FishEvent,
     FishModel,
     FishStatus,
 } from '@app/model/game/fish/fishModel';
 import { waitFishDestroy } from '@app/model/game/fish/fishModelUtils';
-import { activeExploding } from '@app/view/scenes/game/ani_wrap/exploding';
 import { FishView } from '@app/view/scenes/game/fishView';
 
-import { sendToGameSocket } from './gameSocket';
+import { GameCtrlUtils } from './gameCtrl';
 
 /** 鱼的控制器 */
 export class FishCtrl extends ComponentManager {
@@ -24,7 +19,11 @@ export class FishCtrl extends ComponentManager {
      * @param view 鱼对应的动画
      * @param model 鱼对应的model
      */
-    constructor(private view: FishView, private model: FishModel) {
+    constructor(
+        private view: FishView,
+        private model: FishModel,
+        private game_ctrl: GameCtrlUtils,
+    ) {
         super();
         this.init();
     }
@@ -91,7 +90,7 @@ export class FishCtrl extends ComponentManager {
         if (!is_cur_player) {
             res_data.robotId = player.user_id;
         }
-        sendToGameSocket(ServerEvent.FishBomb, res_data);
+        this.game_ctrl.sendToGameSocket(ServerEvent.FishBomb, res_data);
     }; //tslint:disable-line
     public setVisible = (visible: boolean) => {
         this.view.setVisible(visible);
@@ -112,6 +111,8 @@ export class FishCtrl extends ComponentManager {
         this.model?.event?.offAllCaller(this);
         view.destroy();
         super.destroy();
+
+        this.game_ctrl = undefined;
 
         this.model = undefined;
     }

@@ -47,7 +47,7 @@ export default class AlertPop
     public alert(msg: string, opt = {} as Opt) {
         this.initLang();
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             const { hide_cancel, confirm_text } = opt;
             const { label, btn_cancel, btn_confirm, btn_confirm_label } = this;
             label.text = msg;

@@ -123,7 +123,8 @@ type HitRep = {
     backAmount?: number;
     eid: string;
     bet?: string;
-    win: number;
+    win?: number;
+    winScore?: number;
     balance?: number;
     drop: HitDrop[];
 };

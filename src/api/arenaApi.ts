@@ -23,6 +23,7 @@ export enum ArenaRoomStatus {
 export type ArenaStatusData = {
     endDate: number;
     startDate: number;
+    userId: string;
     status: ArenaStatus;
 };
 
@@ -48,7 +49,7 @@ export type CompetitionInfo = {
         endTime: number;
         startPeriod: string;
         endPeriod: string;
-        fee: -1;
+        fee: number;
     };
     arenaStatus: ArenaStatus;
     champion: {
@@ -61,4 +62,87 @@ export type CompetitionInfo = {
 };
 
 export type SignUpReq = { currency: string };
-export type SignUpRes = { mode: number; currency: string };
+export type SignUpRes = {
+    mode: number;
+    currency: string;
+    status: ArenaGameStatus;
+};
+
+/** 用户的数据 */
+export type ServerUserInfo = {
+    seatId: number;
+    userId: string;
+    bulletNum: number;
+    multiple: number;
+    turretSkin: string;
+    lockFish: string;
+    lockLeft: number;
+    needEmit: boolean;
+};
+
+/** 复盘 */
+export type EnterGameRep = {
+    isTrial: 0 | 1;
+    roomId: number;
+    isFirstStart: boolean;
+    rate: number;
+    tableId: string;
+    currency: string;
+    frozen: boolean;
+    frozenLeft: number;
+    users: ServerUserInfo[];
+    fish: ServerFishInfo[];
+    items: ServerItemInfo[];
+};
+
+export type TableInRep = {
+    seatId: number;
+    userId: string;
+    multiple: number;
+    turretSkin: string;
+};
+
+export type GetDayRankingItem = {
+    userId: number;
+    score: number;
+    award: number;
+};
+export type GetDayRanking = {
+    today: GetDayRankingItem[];
+    yesterday: GetDayRankingItem[];
+};
+
+export type GiftItem = {
+    goodsId: number;
+    goodsNum: number;
+};
+export type GiftList = {
+    id: number;
+    modeId: number;
+    typeId: number;
+    giftId: number;
+    giftName: number;
+    currency: 'BTC';
+    price: number;
+    list: GiftItem[];
+};
+
+export type BuyGiftRep = {
+    id: number;
+};
+
+export type SettleData = {
+    userId: number | string;
+    ranking: number;
+    maxDayScore: number;
+    score: number;
+    rankingAward: number;
+};
+
+export type GetHallOfFameDataItem = {
+    userId: number | string;
+    startDate: string;
+    endDate: string;
+    score: number;
+};
+export type GetHallOfFameData = GetHallOfFameDataItem[];

@@ -1,4 +1,5 @@
 #include "Lighting.glsl";
+#include "LayaUtile.glsl"
 #include "Shadow.glsl"
 
 attribute vec4 a_Position;
@@ -65,15 +66,31 @@ vec4 shadowCasterVertex()
 	#endif  
 
 	vec3 normalWS = normalize(a_Normal*worldInvMat);//if no normalize will cause precision problem
+	vec4 positionCS;
+
+	#ifndef SHADOW
+		positionCS = u_ViewProjection * positionWS;
+	#endif
+	
+
 	#ifdef SHADOW
-		positionWS.xyz = applyShadowBias(positionWS.xyz,normalWS,u_ShadowLightDirection);
+		#ifndef DEPTHPASS
+			positionWS.xyz = applyShadowBias(positionWS.xyz,normalWS,u_ShadowLightDirection);
+		#endif
+		positionCS = u_ViewProjection * positionWS;
+		#ifndef DEPTHPASS
+			positionCS.z = max(positionCS.z, 0.0);//min ndc z is 0.0
+		#endif
 	#endif
 
-	vec4 positionCS = u_ViewProjection * positionWS;
+	
 	#ifdef SHADOW_SPOT
-		positionCS.z = positionCS.z-u_ShadowBias.x/positionCS.w;
+		#ifndef DEPTHPASS
+			positionCS.z = positionCS.z-u_ShadowBias.x/positionCS.w;
+			positionCS.z = max(positionCS.z, 0.0);//min ndc z is 0.0
+		#endif
 	#endif
-	positionCS.z = max(positionCS.z, 0.0);//min ndc z is 0.0
+	
 	
 	// //TODO没考虑UV动画呢
 	// #if defined(DIFFUSEMAP)&&defined(ALPHATEST)

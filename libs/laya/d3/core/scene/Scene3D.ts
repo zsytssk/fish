@@ -53,7 +53,6 @@ import { BaseRender } from "../render/BaseRender";
 import { RenderContext3D } from "../render/RenderContext3D";
 import { RenderElement } from "../render/RenderElement";
 import { RenderQueue } from "../render/RenderQueue";
-import { BoundsOctree } from "./BoundsOctree";
 import { Lightmap } from "./Lightmap";
 import { Scene3DShaderDeclaration } from "./Scene3DShaderDeclaration";
 import { ShadowCasterPass } from "../../shadowMap/ShadowCasterPass";
@@ -68,6 +67,9 @@ import { ReflectionProbeManager } from "../reflectionProbe/ReflectionProbeManage
 import { ShaderDataType } from "../../core/render/command/SetShaderDataCMD"
 import { Physics3D } from "../../Physics3D";
 import { PerformancePlugin } from "../../../utils/Performance";
+import { Sprite3D } from "../Sprite3D";
+import { ISceneRenderManager } from "./SceneRenderManager/ISceneRenderManager";
+import { BoundsOctree } from "./BoundsOctree";
 /**
  * 环境光模式
  */
@@ -176,7 +178,15 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** @internal */
 	static _configDefineValues: DefineDatas = new DefineDatas();
 
+	/** @internal 场景更新标记*/
+	static __updateMark: number = 0;
+	static set _updateMark(value: number) {
+		Scene3D.__updateMark = value;
+	}
 
+	static get _updateMark(): number {
+		return Scene3D.__updateMark;
+	}
 	/**
 	 * @internal
 	 */
@@ -239,7 +249,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	static load(url: string, complete: Handler): void {
 		ILaya.loader.create(url, complete, null, Scene3D.HIERARCHY);
 	}
-
 	/** @internal */
 	private _url: string;
 	/** @internal */
@@ -293,7 +302,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** @internal */
 	_cannonPhysicsSimulation: CannonPhysicsSimulation;
 	/** @internal */
-	_octree: BoundsOctree;
+	_octree: ISceneRenderManager;
 	/** @internal 只读,不允许修改。*/
 	_collsionTestList: number[] = [];
 
@@ -310,7 +319,16 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** @internal */
 	_animatorPool: SimpleSingletonList = new SimpleSingletonList();
 	/** @internal */
-	_scriptPool: Script3D[] = new Array<Script3D>();
+	_updateScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_lateUpdateScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_preRenderScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_postRenderScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_scriptPool:Script3D[] = new Array<Script3D>();
+
 	/** @internal */
 	_tempScriptPool: Script3D[] = new Array<Script3D>();
 	/** @internal */
@@ -346,6 +364,15 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	get url(): string {
 		return this._url;
+	}
+
+	set sceneRenderableManager(manager:ISceneRenderManager){
+		this._octree = manager;
+		for(let i = 0,n = this._renders.length;i<n;i++) {
+			let render = <BaseRender>this._renders.elements[i];
+			this._renders.remove(render);
+			this._addRenderObject(render);
+		}
 	}
 
 	/**
@@ -813,6 +840,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			}
 			this._scriptPool = this._tempScriptPool;
 			scripts.length = 0;
+
 			this._tempScriptPool = scripts;
 
 			this._needClearScriptPool = false;
@@ -823,7 +851,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	private _updateScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._updateScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = scripts[i];
 			(script && script.enabled) && (script.onUpdate());
@@ -834,7 +862,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	private _lateUpdateScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._lateUpdateScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = (<Script3D>scripts[i]);
 			(script && script.enabled) && (script.onLateUpdate());
@@ -1015,6 +1043,13 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		}
 	}
 
+	private _removeScriptInPool(scriptPool:Script3D[],script:Script3D){
+		let index = scriptPool.indexOf(script);
+		if(index!=-1){
+			scriptPool.splice(index,1);
+		}
+	}
+
 	/**
 	 * @internal
 	 */
@@ -1024,6 +1059,15 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		var scripts: Script3D[] = this._scriptPool;
 		script._indexInPool = scripts.length;
 		scripts.push(script);
+		if(script.onUpdate!==Script3D.prototype.onUpdate)
+			this._updateScriptPool.push(script);
+		if(script.onLateUpdate!==Script3D.prototype.onLateUpdate)
+			this._lateUpdateScriptPool.push(script);
+		if(script.onPreRender!==Script3D.prototype.onPreRender)
+			this._preRenderScriptPool.push(script);
+		if(script.onPostRender!==Script3D.prototype.onPostRender)
+			this._postRenderScriptPool.push(script);
+		
 	}
 
 	/**
@@ -1035,13 +1079,19 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		this._scriptPool[script._indexInPool]=null;
 		script._indexInPool = -1;
 		this._needClearScriptPool = true;
+		this._removeScriptInPool(this._updateScriptPool,script);
+		this._removeScriptInPool(this._lateUpdateScriptPool,script);
+		this._removeScriptInPool(this._preRenderScriptPool,script);
+		this._removeScriptInPool(this._postRenderScriptPool,script);
 	}
+
+	
 
 	/**
 	 * @internal
 	 */
 	_preRenderScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._preRenderScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = scripts[i];
 			(script && script.enabled) && (script.onPreRender());
@@ -1052,7 +1102,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	_postRenderScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._postRenderScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = scripts[i];
 			(script && script.enabled) && (script.onPostRender());
@@ -1273,7 +1323,17 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			this.ambientSphericalHarmonics = ambientSH;
 		}
 		var reflectionData: string = data.reflection;
-		(reflectionData != undefined) && (this.reflection = Loader.getRes(reflectionData));
+		if(reflectionData != undefined){
+			let tex = Loader.getRes(reflectionData);
+			if(tex){
+				this.reflection = tex;
+			}else{
+				let h = Handler.create(this,()=>{
+					this.reflection = Loader.getRes(reflectionData);
+				})
+				ILaya.loader.create(reflectionData, h);
+			}
+		}
 
 		var reflectionDecodingFormatData: number = data.reflectionDecodingFormat;
 		(reflectionDecodingFormatData != undefined) && (this.reflectionDecodingFormat = reflectionDecodingFormatData);
@@ -1293,7 +1353,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	_addRenderObject(render: BaseRender): void {
 		if (this._octree && render._supportOctree) {
-			this._octree.add(render);
+			this._octree.addRender(render);
 		} else {
 			this._renders.add(render);
 		}
@@ -1305,7 +1365,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	_removeRenderObject(render: BaseRender): void {
 		if (this._octree && render._supportOctree) {
-			this._octree.remove(render);
+			this._octree.removeRender(render);
 		} else {
 			this._renders.remove(render);
 		}
@@ -1392,7 +1452,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		this._prepareSceneToRender();
 		var i: number, n: number, n1: number;
 		PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_RENDER);
-			
+		Scene3D._updateMark++;
 		for (i = 0, n = this._cameraPool.length, n1 = n - 1; i < n; i++) {
 			if (Render.supportWebGLPlusRendering)
 				ShaderData.setRuntimeValueMode((i == n1) ? true : false);

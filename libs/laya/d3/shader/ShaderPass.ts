@@ -205,11 +205,11 @@ export class ShaderPass extends ShaderCompile {
 						cacheMap = cacheMap[i == 0 ? k : 0] = {};
 				}
 			}
-			this._cacheShaderHierarchy = resizeLength;
 		}
 		else {
+			++hierarchy;
 			for (var k in cacheMap)
-				this._resizeCacheShaderMap(cacheMap[k], ++hierarchy, resizeLength);
+				this._resizeCacheShaderMap(cacheMap[k], hierarchy, resizeLength);
 		}
 	}
 
@@ -286,6 +286,7 @@ export class ShaderPass extends ShaderCompile {
 				`#version 300 es\n
 				#define attribute in
 				#define varying out
+				#define textureCube texture
 				#define texture2D texture\n`;
 			fragmentHead =
 				`#version 300 es\n

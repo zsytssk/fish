@@ -40,7 +40,7 @@ import {
     viewState,
 } from '@app/view/viewState';
 
-import { sendToGameSocket } from '../gameSocket';
+import { GameCtrlUtils } from '../gameCtrl';
 
 /** 二次点击取消激活状态 */
 export function skillNormalActiveHandler(model: SkillModel) {
@@ -63,7 +63,10 @@ export function skillNormalActiveHandler(model: SkillModel) {
     }
 }
 /** 技能的激活前的处理 */
-export function skillPreActiveHandler(model: SkillModel) {
+export function skillPreActiveHandler(
+    model: SkillModel,
+    game_ctrl: GameCtrlUtils,
+) {
     const lang = getLang();
     const { buySkillTip, posBombTip, aimFish } = InternationalTip[lang];
     if (model.skill_core.num <= 0) {
@@ -82,7 +85,7 @@ export function skillPreActiveHandler(model: SkillModel) {
 
     if (model instanceof FreezeModel) {
         // 冰冻
-        sendToGameSocket(ServerEvent.UseFreeze);
+        game_ctrl.sendToGameSocket(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
         TopTipPop.tip(posBombTip, 2);
         const { pool } = viewState.game;
@@ -95,7 +98,7 @@ export function skillPreActiveHandler(model: SkillModel) {
             offMouseMove(pool);
             stopAim('aim_big');
             const fish_list = getBeBombFishIds(pos);
-            sendToGameSocket(ServerEvent.UseBomb, {
+            game_ctrl.sendToGameSocket(ServerEvent.UseBomb, {
                 bombPoint: pos,
                 fishList: fish_list,
             } as UseBombReq);
@@ -121,7 +124,7 @@ export function skillPreActiveHandler(model: SkillModel) {
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
         onFishClick(true).subscribe((fish_id: string) => {
-            sendToGameSocket(ServerEvent.LockFish, {
+            game_ctrl.sendToGameSocket(ServerEvent.LockFish, {
                 eid: fish_id,
                 needActive: true,
             } as LockFishRep);
@@ -133,9 +136,10 @@ export function skillPreActiveHandler(model: SkillModel) {
 export function skillActiveHandler(
     model: SkillModel,
     info: any,
-    player_model?: PlayerModel,
+    player_model: PlayerModel,
+    game_ctrl: GameCtrlUtils,
 ) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const lang = getLang();
         const { aimFish } = InternationalTip[lang];
         if (model instanceof LockFishModel) {
@@ -143,7 +147,7 @@ export function skillActiveHandler(
             if (!player_model.is_cur_player) {
                 debug(`lock:>skill:>skillActiveHandler`, is_tip);
                 if (player_model.need_emit && is_tip && fish) {
-                    sendToGameSocket(ServerEvent.LockFish, {
+                    game_ctrl.sendToGameSocket(ServerEvent.LockFish, {
                         robotId: player_model.user_id,
                         eid: fish.id,
                     } as LockFishReq);
@@ -160,7 +164,7 @@ export function skillActiveHandler(
 
             // 选中鱼
             onFishClick().subscribe((fish_id: string) => {
-                sendToGameSocket(ServerEvent.LockFish, {
+                game_ctrl.sendToGameSocket(ServerEvent.LockFish, {
                     eid: fish_id,
                 } as LockFishRep);
             });
@@ -170,7 +174,7 @@ export function skillActiveHandler(
             activeExploding(info as Point);
             offMouseMove(pool);
             AudioCtrl.play(AudioRes.Bomb);
-            resolve();
+            resolve(undefined);
         }
     });
 }
@@ -184,7 +188,7 @@ export function skillDisableHandler(model: SkillModel) {
         } else if (model instanceof BombModel) {
             offPoolClick();
         } else {
-            resolve();
+            resolve(undefined);
         }
     });
 }

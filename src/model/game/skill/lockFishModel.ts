@@ -1,7 +1,7 @@
+import SAT from 'sat';
+
 import { ComponentManager } from 'comMan/component';
 import { TimeoutCom } from 'comMan/timeoutCom';
-
-import SAT from 'sat';
 
 import { FishEvent, FishModel } from '@app/model/game/fish/fishModel';
 import { getAimFish, getFishById, detectInScreen } from '@app/model/modelState';

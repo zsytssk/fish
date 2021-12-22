@@ -7,7 +7,7 @@ import { LockFishModel } from './lockFishModel';
 import { SkillCoreCom } from './skillCoreCom';
 
 export type SkillActiveData = {
-    user_id: string;
+    user_id?: string;
     [key: string]: unknown;
 };
 /** 技能的接口 */

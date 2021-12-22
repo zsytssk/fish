@@ -36,7 +36,7 @@ export default class TopTipPop
      * @param msg 提示的信息
      */
     public tip(msg: string, time: number) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, _reject) => {
             if (!msg) {
                 return resolve();
             }

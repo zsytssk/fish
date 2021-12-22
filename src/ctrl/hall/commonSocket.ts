@@ -3,7 +3,6 @@ import {
     disableCurUserOperation,
     waitGameExchangeOrLeave,
 } from '@app/ctrl/game/gameCtrlUtils';
-import { sendToGameSocket } from '@app/ctrl/game/gameSocket';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import {
     bindSocketEvent,
@@ -106,7 +105,7 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
     bg_monitor.event.offAllCaller(bindObj);
 }
 
-export function errorHandler(code: number, data?: any) {
+export function errorHandler(code: number, data: any, socket?: WebSocketTrait) {
     const lang = getLang();
     const tip = InternationalTip[lang][code];
 
@@ -114,7 +113,7 @@ export function errorHandler(code: number, data?: any) {
         return exChangeBullet(tip);
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tip;
-        if (data && data.minAmount) {
+        if (data?.minAmount) {
             const msg = InternationalTip[lang].NoMoneyAmount;
             const { minAmount, currency } = data as RoomInError;
             errMsg = tplStr(msg, { minAmount, currency });
@@ -123,7 +122,7 @@ export function errorHandler(code: number, data?: any) {
             if (type === 'confirm') {
                 recharge();
             }
-            sendToGameSocket(ServerEvent.RoomOut);
+            socket?.send(ServerEvent.RoomOut);
         });
     } else if (code === ServerErrCode.NeedLogin) {
         return login();
@@ -178,7 +177,7 @@ export function tipCount(msg: string, count: number) {
 }
 
 let onExchanging = false;
-export async function exChangeBullet(tip: string) {
+export async function exChangeBullet(tip: string, socket?: WebSocketTrait) {
     disableCurUserOperation();
     if (onExchanging) {
         return;
@@ -191,9 +190,9 @@ export async function exChangeBullet(tip: string) {
     return asyncOnly(tip, () => {
         return AlertPop.alert(tip, { closeOnSide: false }).then((type) => {
             if (type === 'confirm') {
-                return sendToGameSocket(ServerEvent.ExchangeBullet);
+                return socket.send(ServerEvent.ExchangeBullet);
             }
-            sendToGameSocket(ServerEvent.RoomOut);
+            socket.send(ServerEvent.RoomOut);
         });
     });
 }

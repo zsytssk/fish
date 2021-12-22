@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":22,
-    "selecteID":67,
+    "selecteID":68,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":68,
+    "maxID":69,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -324,6 +324,20 @@
                             "hasChild":true,
                             "compId":22,
                             "child":[
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,btn_arena_record",
+                                    "props":{"y":24,"x":-249,"var":"btn_arena_record","stateNum":"1","skin":"image/hall/btn_record.png","anchorY":0.5,"anchorX":0.5},
+                                    "nodeParent":22,
+                                    "label":"btn_arena_record",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":68,
+                                    "child":[
+                                        ]
+                                },
                                 {
                                     "x":60,
                                     "type":"Button",

@@ -40,7 +40,7 @@ export class NewUserGuide {
                 return;
             }
 
-            await waitCreateSocket(ServerName.Hall);
+            // await waitCreateSocket(ServerName.Hall);
             const {
                 header: { btn_coin_select },
                 guide2,

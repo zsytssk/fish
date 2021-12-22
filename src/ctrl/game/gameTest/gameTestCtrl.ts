@@ -2,9 +2,12 @@ import honor from 'honor';
 import { ResItem } from 'honor/utils/loadRes';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
+import { offCommon } from '@app/ctrl/hall/commonSocket';
 import { WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
+import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
 import { res } from '@app/data/res';
+import { ServerName } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
@@ -14,7 +17,7 @@ import { FishView } from '@app/view/scenes/game/fishView';
 import GameView from '@app/view/scenes/game/gameView';
 
 import { FishCtrl } from '../fishCtrl';
-import { onGameSocket, offGameSocket } from '../gameSocket';
+import { onGameSocket } from '../gameSocket';
 import { PlayerCtrl } from '../playerCtrl';
 import { mockSocket, genUserInfo } from './utils';
 
@@ -84,7 +87,14 @@ export class GameTestCtrl {
             this,
         );
     }
-
+    public sendToGameSocket(...params: Parameters<WebSocketTrait['send']>) {
+        const socket = getSocket(ServerName.Game);
+        socket?.send(...params);
+    }
+    public offGameSocket() {
+        const socket = getSocket(ServerName.Game);
+        offCommon(socket, this);
+    }
     public calcClientIndex(server_index = 1) {
         return 1;
     }
@@ -103,7 +113,7 @@ export class GameTestCtrl {
         this.player_list.delete(ctrl);
     }
     public destroy() {
-        offGameSocket(this as any);
+        this.offGameSocket();
         this.model?.event?.offAllCaller(this);
 
         this.model = undefined;

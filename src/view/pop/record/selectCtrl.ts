@@ -11,9 +11,10 @@ type SelectedRender = (box: Sprite, data: any) => void;
 export class SelectCtrl {
     private select_box: Sprite;
     private select_list: SelectList;
+    public array: any[];
     private selected_render: SelectedRender;
     private list_render: SelectedRender;
-    public select_index: number = -1;
+    public select_index = -1;
     constructor(select_box: Sprite, select_list: SelectList) {
         this.select_box = select_box;
         this.select_list = select_list;
@@ -31,6 +32,7 @@ export class SelectCtrl {
             },
             [select_box, select_list],
         );
+        select_list.list.vScrollBarSkin = '';
         select_list.list.selectHandler = Handler.create(
             null,
             (index: number) => {
@@ -71,8 +73,11 @@ export class SelectCtrl {
         this.selected_render = render;
     }
     public setList(list: any[]) {
-        const { select_list } = this;
-        select_list.list.array = list;
+        setTimeout(() => {
+            const { select_list } = this;
+            select_list.list.array = list;
+            this.array = list;
+        });
     }
     public getList() {
         return this.select_list.list.array;
@@ -81,7 +86,9 @@ export class SelectCtrl {
         return this.select_index;
     }
     public setCurIndex(index: number) {
-        this.select_list.list.selectedIndex = index;
+        setTimeout(() => {
+            this.select_list.list.selectedIndex = index;
+        });
     }
     public getCurData() {
         return this.select_list.list.array[this.select_index];

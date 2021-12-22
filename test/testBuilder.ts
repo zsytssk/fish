@@ -1,5 +1,5 @@
 import { app_test } from './app/app.spec';
-import { arena_test } from './app/arena/arena';
+import { arena_test } from './app/arena/arena.spec';
 import { ani_wrap } from './app/game/aniWrap.spec';
 import { body_test } from './app/game/body.spec';
 import { fish_test } from './app/game/fish.spec';
@@ -10,6 +10,7 @@ import { guide_test } from './app/guide/guide.spec';
 import { hall_test } from './app/hall/hall.spec';
 import { path_test } from './app/path.spec';
 import { alert_test } from './app/pop/alert.spec';
+import { arena_pop_test } from './app/pop/arena/arenaPop.spec';
 import { help_test } from './app/pop/help.spec';
 import { lottery_test } from './app/pop/lottery.spec';
 import { pop_test } from './app/pop/pop.spec';
@@ -22,7 +23,7 @@ import { skill_item_view_test } from './app/view/SkillItemView.spec';
 import { gun_box_view_test } from './app/view/gunBoxView.spec';
 
 export const test = {
-    grand_prix_test: arena_test,
+    arena_test,
     game_test,
     fish_test,
     body_test,
@@ -44,4 +45,5 @@ export const test = {
     path_test,
     gun_box_view_test,
     skill_item_view_test,
+    arena_pop_test,
 };

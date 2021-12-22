@@ -1,5 +1,5 @@
 import { AppCtrl } from './appCtrl';
-import { GameCtrl as ArenaCtrl } from './arena/gameCtrl';
+import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
 

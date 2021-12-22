@@ -15,7 +15,7 @@ const buildMap = {
     },
     '2': async () => {
         await build('test');
-        await afterBuild(false);
+        await afterBuild();
     },
 };
 

@@ -1,7 +1,7 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":9,
+    "selectedBox":2,
     "selecteID":7,
     "searchKey":"Dialog",
     "props":{"width":450,"sceneColor":"#ffffff","runtime":"view/pop/tip.ts","mouseThrough":false,"mouseEnabled":true,"height":75},

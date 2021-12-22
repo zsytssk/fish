@@ -58,6 +58,26 @@ export function offArenaHallSocket(hall: HallCtrl) {
     offSocketEvent(arena_hall_socket, hall);
 }
 
+export async function waitConnectGameArena() {
+    let socket = getSocket(ServerName.ArenaHall);
+    if (!socket) {
+        const {
+            arenaSocketUrl: url,
+            PublicKey: publicKey,
+            Host: host,
+        } = Config;
+        socket = await connectArenaSocket({
+            url,
+            publicKey,
+            host,
+            code: Config.code,
+            name: ServerName.ArenaHall,
+        });
+    }
+    arena_hall_socket = socket;
+    return socket;
+}
+
 export async function connectArenaSocket(
     config: SocketConfig,
 ): Promise<WebSocketTrait> {

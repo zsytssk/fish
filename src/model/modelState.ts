@@ -19,11 +19,17 @@ export function getGameCurrency() {
     return modelState.app.game.currency;
 }
 /** 获取当前用户id */
-export function getCurUserId() {
+export function getCurUserId(isArena?: boolean) {
+    if (isArena) {
+        return modelState.app.arena_info.user_id;
+    }
     return modelState.app.user_info.user_id;
 }
 /** 获取鱼 */
-export function isCurUser(id: string) {
+export function isCurUser(id: string, isArena?: boolean) {
+    if (isArena) {
+        return id === modelState.app.arena_info.user_id;
+    }
     return id === modelState.app.user_info.user_id;
 }
 /** 获取鱼 */

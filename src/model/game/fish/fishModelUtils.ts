@@ -189,11 +189,11 @@ export async function playerCaptureFish(
         fish_bomb_com.active(player);
     }
     const pos = await fish.beCapture();
-    const { drop, win } = info;
+    const { drop, win, winScore } = info;
     if (!pos) {
         error(`cant find fish pos`);
     }
-    player.captureFish(pos, { win, drop } as CaptureGain);
+    player.captureFish(pos, { win, winScore, drop } as CaptureGain);
 }
 
 export function waitFishDestroy(fish: FishModel) {

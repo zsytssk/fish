@@ -369,6 +369,8 @@ export class Context {
 		WebGLContext.setDepthMask(gl, true);
 		WebGLContext.setFrontFace(gl, gl.CCW);
 		gl.viewport(0, 0, RenderState2D.width, RenderState2D.height);//还原2D视口
+		gl.enable(gl.SCISSOR_TEST);
+        gl.scissor(0, 0, RenderState2D.width, RenderState2D.height);
 	}
 
 	/**@internal */
@@ -1190,7 +1192,7 @@ export class Context {
 			this._drawTriUseAbsMatrix = true;
 			var tuv: Float32Array = this._tempUV;
 			tuv[0] = uv[0]; tuv[1] = uv[1]; tuv[2] = uv[2]; tuv[3] = uv[3]; tuv[4] = uv[4]; tuv[5] = uv[5]; tuv[6] = uv[6]; tuv[7] = uv[7];
-			this.drawTriangles(tex, 0, 0, tv, tuv, this._drawTexToDrawTri_Index, m, alpha, null, null);//用tuv而不是uv会提高效率
+			this.drawTriangles(tex, 0, 0, tv, tuv, this._drawTexToDrawTri_Index, m || this._curMat, alpha, null, null);//用tuv而不是uv会提高效率
 			this._drawTriUseAbsMatrix = false;
 			return true;
 		}
@@ -1352,6 +1354,19 @@ export class Context {
 			out[2] = a2 * ma + a3 * mc + tx; out[3] = a2 * mb + a3 * md + ty;
 			out[4] = a4 * ma + a5 * mc + tx; out[5] = a4 * mb + a5 * md + ty;
 			out[6] = a6 * ma + a7 * mc + tx; out[7] = a6 * mb + a7 * md + ty;
+			/* 旋转的情况下这个是错的。TODO
+			let dx = out[2] - out[0];
+			let minw = 1;	// 限制最小宽度为1，防止细线在缩小的情况下消失。
+			if (dx < minw) {
+				dx = minw - dx;
+				out[2] += dx;
+			}
+			dx = out[4] - out[6];
+			if (dx < minw) {
+				dx = minw - dx;
+				out[4] += dx;
+			}
+			*/
 		} else {
 			out[0] = a0 + tx; out[1] = a1 + ty;
 			out[2] = a2 + tx; out[3] = a3 + ty;
@@ -2510,29 +2525,40 @@ export class Context {
 		var d_bottom: number = bottom / h;
 
 		//处理进度条不好看的问题
-		if (left + right > width) {
-			var clipWidth: number = width;
-			needClip = true;
-			width = left + right;
-			this.save();
-			this.clipRect(0 + tx, 0 + ty, clipWidth, height);
-		}
+		// if (left + right > width) {
+		// 	var clipWidth: number = width;
+		// 	needClip = true;
+		// 	width = left + right;
+		// 	this.save();
+		// 	this.clipRect(0 + tx, 0 + ty, clipWidth, height);
+		// }
 
 		var imgid: number = (tex.bitmap as Texture2D).id;
 		var mat: Matrix = this._curMat;
 		var tuv = this._tempUV;
+
+		//解决九宫格设置left+right或top+bottom的累加值超过宽或高导致九宫格显示错乱的bug
+		var scale_x = 1;
+		var scale_y = 1;
+		if(left + right > width) scale_x = width / (left + right);
+		if(top + bottom > height) scale_y = height / (top +bottom);
+		left *= scale_x;
+		right *= scale_x;
+		top *= scale_y;
+		bottom *= scale_y;
+
 		// 整图的uv
 		// 一定是方的，所以uv只要左上右下就行
-		var uvl: number = uv[0];
-		var uvt: number = uv[1];
-		var uvr: number = uv[4];
-		var uvb: number = uv[5];
+		var uvl = uv[0];
+		var uvt = uv[1];
+		var uvr = uv[4];
+		var uvb = uv[5];
 
 		// 小图的uv
-		var uvl_: number = uvl;
-		var uvt_: number = uvt;
-		var uvr_: number = uvr;
-		var uvb_: number = uvb;
+		var uvl_ = uvl;
+		var uvt_ = uvt;
+		var uvr_ = uvr;
+		var uvb_ = uvb;
 
 		//绘制四个角
 		// 构造uv
