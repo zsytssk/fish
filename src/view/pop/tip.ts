@@ -50,7 +50,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
      * @param msg 提示的信息
      */
     public tip(msg: string, opt = {} as TipPopOpt) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, _reject) => {
             if (!msg) {
                 return resolve();
             }
