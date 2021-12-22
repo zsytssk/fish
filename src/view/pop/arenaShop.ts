@@ -27,23 +27,30 @@ export default class ArenaShopPop
 {
     public isModal = true;
     /** 是否初始化... */
-    private is_init = false;
-    public static preEnter() {
+    public static async preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        const shop_dialog = honor.director.openDialog({
+        const shop_dialog = (await honor.director.openDialog({
             dialog: ArenaShopPop,
             use_exist: true,
             stay_scene: true,
-        }) as Promise<ArenaShopPop>;
-        const shop_data = arenaShopList();
-        return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
-            dialog.initData(data);
+        })) as Promise<ArenaShopPop>;
 
-            return dialog;
-        });
+        return shop_dialog;
     }
     public static preLoad() {
         return loaderManager.preLoad('Dialog', 'pop/shop/shop.scene');
+    }
+    // tslint:disable-line
+    public onAwake() {
+        this.init();
+        onLangChange(this, (lang) => {
+            this.initLang(lang);
+        });
+    }
+    private initLang(lang: Lang) {
+        const { title } = this;
+
+        title.skin = `image/international/title_shop_${lang}.png`;
     }
     public init() {
         const { gun_list } = this;
@@ -57,14 +64,13 @@ export default class ArenaShopPop
         );
     }
     public onEnable() {
-        if (!this.is_init) {
-            this.init();
-        }
-        this.is_init = true;
+        arenaShopList().then((data) => {
+            this.initData(data);
+        });
     }
     public initData(data: ShopData) {
-        const { item_list, gun_list } = this;
-        const { gun, item } = data;
+        const { gun_list } = this;
+        const { gun } = data;
 
         const gun_arr = [] as GunRenderData[];
         for (const gun_item of gun) {
@@ -155,17 +161,7 @@ export default class ArenaShopPop
         }
         this.gun_list.refresh();
     }
-    // tslint:disable-line
-    public onAwake() {
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
-        });
-    }
-    private initLang(lang: Lang) {
-        const { title } = this;
 
-        title.skin = `image/international/title_shop_${lang}.png`;
-    }
     public destroy() {
         offLangChange(this);
         super.destroy();
