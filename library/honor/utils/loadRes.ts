@@ -1,5 +1,4 @@
-import { UIConfig } from 'UIConfig';
-import { Observable, Subscriber, combineLatest } from 'rxjs';
+import { combineLatest, Observable, Subscriber } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Laya, loader } from 'Laya';
@@ -7,7 +6,6 @@ import { HonorDialog } from 'honor';
 import { Scene } from 'laya/display/Scene';
 import { Event } from 'laya/events/Event';
 import { Dialog } from 'laya/ui/Dialog';
-import { DialogManager } from 'laya/ui/DialogManager';
 import { Handler } from 'laya/utils/Handler';
 
 type Ctor<T> = new (...args) => T;
@@ -28,29 +26,8 @@ export type LoadingCtor = Ctor<LoadingView> & {
 
 export type ProgressFn = (radio: number) => void;
 
-export function runScene(url: string, fn?: ProgressFn) {
-    return loadScene(url, fn).then((view: any) => {
-        view.open();
-        Laya.stage.on(Event.RESIZE, view, () => {
-            view.onResize(Laya.stage.width, Laya.stage.height);
-        });
-        view.onResize(Laya.stage.width, Laya.stage.height);
-        view.once(Event.UNDISPLAY, view, () => {
-            Laya.stage.offAllCaller(view);
-        });
-        return view;
-    });
-}
-
 export function openDialog(url: string, fn?: ProgressFn) {
     return loadDialog(url, fn).then((view: HonorDialog) => {
-        if (view.shadowAlpha) {
-            UIConfig.popupBgAlpha = view.shadowAlpha;
-        }
-        if (view.closeOn) {
-            UIConfig.popupBgAlpha = view.shadowAlpha;
-        }
-
         view.open();
         Laya.stage.on(Event.RESIZE, view, () => {
             view.onResize?.(Laya.stage.width, Laya.stage.height);
@@ -84,7 +61,7 @@ export function loadDialog(url: string, fn?: ProgressFn) {
 
 export function loadRes(
     res: Parameters<typeof loader.load>[0],
-    fn: ProgressFn,
+    fn?: ProgressFn,
 ) {
     return new Promise<void>((resolve) => {
         loader.load(
@@ -95,19 +72,19 @@ export function loadRes(
     });
 }
 
-export function testLoad(time: number, fn?: ProgressFn) {
+export function fakeLoad(time: number, fn?: ProgressFn) {
     return new Promise<void>((resolve) => {
         let space = 0;
 
         const interval = setInterval(() => {
-            space += 0.5;
+            space += 0.1;
             if (space > time) {
                 clearInterval(interval);
                 resolve();
                 return;
             }
             fn(space / time);
-        }, 500);
+        }, 100);
     });
 }
 

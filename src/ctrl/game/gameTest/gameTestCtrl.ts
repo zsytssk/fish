@@ -1,16 +1,15 @@
 import honor from 'honor';
-import { ResItem } from 'honor/utils/loadRes';
+import { loadRes, ResItem } from 'honor/utils/loadRes';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { offCommon } from '@app/ctrl/hall/commonSocket';
 import { WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
-import { SkillMap } from '@app/data/config';
 import { res } from '@app/data/res';
 import { ServerName } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
-import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
+import { PlayerModel } from '@app/model/game/playerModel';
 import { modelState } from '@app/model/modelState';
 import { setProps } from '@app/utils/utils';
 import { FishView } from '@app/view/scenes/game/fishView';
@@ -19,16 +18,14 @@ import GameView from '@app/view/scenes/game/gameView';
 import { FishCtrl } from '../fishCtrl';
 import { onGameSocket } from '../gameSocket';
 import { PlayerCtrl } from '../playerCtrl';
-import { mockSocket, genUserInfo } from './utils';
+import { genUserInfo, mockSocket } from './utils';
 
 export class GameTestCtrl {
     public player_list: Set<PlayerCtrl> = new Set();
     public fish_view: FishView;
     public static async preEnter() {
         const wait_view = GameView.preEnter() as Promise<GameView>;
-        const wait_load_res = honor.director.load(
-            res.gameTutorial as ResItem[],
-        );
+        const wait_load_res = loadRes(res.gameTutorial as ResItem[]);
         const wait_socket = mockSocket();
         const wait_enter = Promise.all([
             wait_view,

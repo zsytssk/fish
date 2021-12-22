@@ -2,17 +2,11 @@ import { Laya } from 'Laya';
 import { Scene } from 'laya/display/Scene';
 import { Event } from 'laya/events/Event';
 
-import { default as honor } from '../index';
-import {
-    dialogManager,
-    loaderManager,
-    sceneManager,
-    untilInit,
-} from '../state';
-import { ResItem } from '../utils/loadRes';
-import { SceneChangeListener, SceneRefUrl } from './SceneManager';
+import { dialogManager, loaderManager } from '../state';
+import { ProgressFn } from '../utils/loadRes';
+import { cur_scene, isLoadingScene, runScene } from './SceneManager';
 import { DialogOpenOpt } from './dialogManager';
-import { HonorDialogConfig, HonorScene, ViewType } from './view';
+import { HonorDialogConfig, HonorScene } from './view';
 
 export class DirectorCtor {
     public init() {
@@ -22,33 +16,28 @@ export class DirectorCtor {
 
     private onResize() {
         const { width, height } = Laya.stage;
-        sceneManager.onResize(width, height);
         dialogManager.onResize(width, height);
     }
     /**
      * 运行场景
      * @param url 场景的url
      */
-    public runScene(url: SceneRefUrl): Promise<Scene | void> {
-        return sceneManager.runScene(url).catch((err) => {
-            if (honor.DEBUG_MODE) {
-                console.error(err);
-            }
-        });
+    public runScene(url: string, progress: ProgressFn): Promise<Scene> {
+        return runScene(url, progress);
     }
     /**
      * 是否正在 loadingscene
      * @param url 场景的url
      */
     get isLoadingScene(): boolean {
-        return sceneManager.is_loading_scene;
+        return isLoadingScene;
     }
     /**
      * 获取当前正在运行场景
      * @param url 场景的url
      */
     get runningScene(): HonorScene {
-        return sceneManager.getCurScene();
+        return cur_scene;
     }
     /**
      * 打开弹出层
@@ -59,9 +48,6 @@ export class DirectorCtor {
      */
     public openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
         return dialogManager.openDialog(opt, config);
-    }
-    public load(res: ResItem[] | string[], type?: ViewType) {
-        return loaderManager.load(res, type);
     }
 
     public getDialogByName(name: string) {
@@ -93,32 +79,5 @@ export class DirectorCtor {
      */
     public setLoadPageForDialog(url: string) {
         return loaderManager.setLoadView('Dialog', url);
-    }
-    public async clearDialog(fn: SceneChangeListener) {
-        await untilInit();
-        sceneManager.sceneChangeAfterListener.push(fn);
-    }
-    public async onSceneChangeBefore(fn: SceneChangeListener) {
-        await untilInit();
-        sceneManager.sceneChangeBeforeListener.push(fn);
-    }
-    public async onSceneChangeAfter(fn: SceneChangeListener) {
-        await untilInit();
-        sceneManager.sceneChangeAfterListener.push(fn);
-    }
-    public async clearListener(fn: SceneChangeListener) {
-        await untilInit();
-        sceneManager.sceneChangeBeforeListener =
-            sceneManager.sceneChangeBeforeListener.filter((item) => {
-                return item !== fn;
-            });
-        sceneManager.sceneChangeAfterListener =
-            sceneManager.sceneChangeAfterListener.filter((item) => {
-                return item !== fn;
-            });
-    }
-    /** 隐藏遮罩 */
-    public hideDialog(visible: boolean) {
-        dialogManager.hideMask(visible);
     }
 }

@@ -1,4 +1,4 @@
-import honor, { HonorDialog, HonorDialogConfig } from 'honor';
+import { HonorDialog, HonorDialogConfig } from 'honor';
 import { openDialog } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 
@@ -27,7 +27,6 @@ export default class AlertPop
         const { hide_cancel, confirm_text } = opt;
         AudioCtrl.play(AudioRes.PopShow);
         const alert = (await openDialog('pop/alert/alert.scene')) as AlertPop;
-        console.log(`test:>`, alert);
         return await alert.alert(msg, { hide_cancel, confirm_text });
     }
     public onAwake() {

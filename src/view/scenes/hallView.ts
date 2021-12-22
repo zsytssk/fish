@@ -13,7 +13,7 @@ import { onStageClick, resizeContain } from '@app/utils/layaUtils';
 import { error } from '@app/utils/log';
 import { playSkeleton } from '@app/utils/utils';
 import honor, { HonorScene } from 'honor';
-import { ProgressFn, runScene } from 'honor/utils/loadRes';
+import { ProgressFn } from 'honor/utils/loadRes';
 import { Laya } from 'Laya';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
@@ -34,7 +34,7 @@ export default class HallView
     implements HonorScene
 {
     public static async  preEnter(progress: ProgressFn) {
-        return runScene('scenes/hall/hall.scene',progress);
+        return honor.director.runScene('scenes/hall/hall.scene',progress);
     }
 
     public onOpened() {
