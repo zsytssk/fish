@@ -6,13 +6,13 @@ import { DirectorCtor } from './ui/director';
 export let dialogManager: DialogManagerCtor;
 export let loaderManager: LoaderManagerCtor;
 export let sceneManager: SceneManagerCtor;
-export let director = new DirectorCtor();
+export const director = new DirectorCtor();
 
 let init_resolve = [] as Array<() => void>;
 let is_init = false;
 /** 等到所有的组件都初始化之后 resolve */
 export function untilInit() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, _reject) => {
         if (is_init) {
             return resolve();
         }
