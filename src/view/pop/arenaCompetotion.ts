@@ -48,7 +48,7 @@ export default class ArenaCompetitionPop
                     data.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
                     data.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT
                 ) {
-                    ctrlState.app.enterGrandPrix(data);
+                    ctrlState.app.enterArenaGame(data);
                     this.close();
                 } else {
                     this.renderSignButton(data.status);

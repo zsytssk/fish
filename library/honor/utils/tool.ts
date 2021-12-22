@@ -6,14 +6,14 @@ import { Sprite } from 'laya/display/Sprite';
 export function injectAfter<T, K extends ObjFilterKeys<T, Func<unknown>>>(
     instance: T,
     fun_name: K,
-    func: Func<unknown>,
+    func?: Func<unknown>,
 ) {
     return new Promise((resolve) => {
-        const ori_fun = instance[fun_name] as Func<unknown>;
+        const ori_fun = instance[fun_name] as Func<any>;
         instance[fun_name] = function (...params: unknown[]) {
             const result = ori_fun.apply(this, [...params]);
             afterPromise(result, async () => {
-                const res = await func(this, result, ...params);
+                const res = await func?.(this, result, ...params);
                 resolve(res);
             });
             return result;

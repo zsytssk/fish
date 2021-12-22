@@ -13,28 +13,16 @@ import { viewState } from '@app/view/viewState';
 import * as taskData from './data/taskData.json';
 
 export const arena_test = testBuild({
-    enter: async (add_player?: boolean) => {
+    enter: async () => {
         if (modelState?.app?.game) {
             return;
         }
 
-        await injectAfter(HallCtrl, 'preEnter', () => {
-            setTimeout(() => {
-                ctrlState.app.enterGrandPrix({});
-            });
-        });
-
-        if (!add_player) {
-            return;
+        if (!HallCtrl.instance) {
+            await injectAfter(HallCtrl, 'preEnter');
         }
 
-        let running = false;
-        await injectAfter(ArenaCtrl, 'preEnter', async () => {
-            if (running) {
-                return;
-            }
-            running = true;
-        });
+        await ctrlState.app.enterArenaGame({});
 
         await sleep(1);
 
@@ -43,11 +31,12 @@ export const arena_test = testBuild({
         }
     },
     showTask: async () => {
-        const grandPrixView = viewState.game as ArenaView;
+        await arena_test.enter();
+        const arenaGameView = viewState.game as ArenaView;
 
-        grandPrixView.showTaskPanel(taskData);
+        arenaGameView.showTaskPanel(taskData);
         await sleep(3);
-        grandPrixView.hideTaskPanel();
+        arenaGameView.hideTaskPanel();
     },
     setPlayerNum: async () => {
         const game = viewState.game as ArenaView;

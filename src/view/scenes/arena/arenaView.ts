@@ -21,6 +21,7 @@ import { getSpriteInfo } from '@app/utils/dataUtil';
 import { getChildrenByName } from '@app/utils/layaQueryElements';
 import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
+import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
 import TipPop from '@app/view/pop/tip';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
 
@@ -96,8 +97,7 @@ export default class ArenaView
     }
 
     public showTaskPanel(taskInfo: TriggerTaskRes) {
-        // TODO-lang
-        TipPop.tip('完成悬赏任务，有积分奖励！');
+        ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
         task_panel.visible = true;

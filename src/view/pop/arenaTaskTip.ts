@@ -5,7 +5,7 @@ import { getStringLength } from 'honor/utils/getStringLength';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { slide_down_in } from '@app/utils/animate';
+import { fade_in, fade_out, slide_down_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
 export default class ArenaTaskTipPop
@@ -82,6 +82,7 @@ export default class ArenaTaskTipPop
     private setTipText(msg: string) {
         const { label } = this;
         label.text = msg;
-        slide_down_in(this);
+        this.visible = false;
+        fade_in(this, 300);
     }
 }

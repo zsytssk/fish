@@ -60,7 +60,7 @@ export class AppCtrl {
         const game_model = this.model.enterGame();
         return GameCtrl.preEnter(data, game_model);
     }
-    public enterGrandPrix(data: Partial<RoomInRep>) {
+    public enterArenaGame(data: Partial<RoomInRep>) {
         const game_model = this.model.enterGame();
         return ArenaCtrl.preEnter(data, game_model);
     }
