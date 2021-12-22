@@ -6,6 +6,7 @@ import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
+import ArenaShopPop from '@app/view/pop/arenaShop';
 import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
 import ArenaTopPlayerPop from '@app/view/pop/arenaTopPlayer';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
@@ -15,6 +16,7 @@ import GiftData from './gift.json';
 import HelpData from './help.json';
 import RankData from './rank.json';
 import SettleData from './settle.json';
+import ShopData from './shop.json';
 import TopPlayerData from './topPlayer.json';
 
 export const arena_pop_test = {
@@ -73,5 +75,11 @@ export const arena_pop_test = {
         await ArenaGameStatus.start();
         await sleep(1);
         await ArenaGameStatus.end();
+    },
+    openShop: async () => {
+        const pop = await ArenaShopPop.preEnter();
+        console.log(`test:>`);
+        await sleep(1);
+        pop.initData(ShopData as any);
     },
 };

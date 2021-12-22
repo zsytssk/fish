@@ -3,7 +3,9 @@ import {
     CompetitionInfo,
     GetDayRanking,
     GetHallOfFameData,
+    GetRuleData,
     GiftList,
+    ShopListData,
     SignUpReq,
     SignUpRes,
 } from '@app/api/arenaApi';
@@ -335,26 +337,40 @@ export function arenaGetRuleData(mode: number) {
         return JSON.parse(tmp);
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<GetRuleData>((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
             return reject(undefined);
         }
-        socket.event.once(
-            ArenaEvent.GetRuleData,
-            (data: GetHallOfFameData, code) => {
-                if (code !== ARENA_OK_CODE) {
-                    reject();
-                } else {
-                    setItem(
-                        `arenaGetRuleData:mode${mode}`,
-                        JSON.stringify(data),
-                        1,
-                    );
-                    resolve(data);
-                }
-            },
-        );
+        socket.event.once(ArenaEvent.GetRuleData, (data: GetRuleData, code) => {
+            if (code !== ARENA_OK_CODE) {
+                reject();
+            } else {
+                setItem(
+                    `arenaGetRuleData:mode${mode}`,
+                    JSON.stringify(data),
+                    1,
+                );
+                resolve(data);
+            }
+        });
         socket.send(ArenaEvent.GetRuleData, { mode });
-    }) as Promise<GetHallOfFameData>;
+    });
+}
+/** Arena 商城 */
+export function arenaShopList() {
+    return new Promise<ShopListData>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        if (!socket) {
+            return reject(undefined);
+        }
+        socket.event.once(ArenaEvent.ShopList, (data: ShopListData, code) => {
+            if (code !== ARENA_OK_CODE) {
+                reject();
+            } else {
+                resolve(data);
+            }
+        });
+        socket.send(ArenaEvent.ShopList);
+    });
 }
