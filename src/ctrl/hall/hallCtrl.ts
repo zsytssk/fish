@@ -2,7 +2,7 @@ import honor from 'honor';
 import {
     toProgressObserver,
     fakeLoad,
-    mergeLoadingTask,
+    mergeProgressObserver,
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
@@ -46,7 +46,7 @@ export class HallCtrl {
             return this.instance;
         }
         return runAsyncTask(async () => {
-            const [view] = await mergeLoadingTask(
+            const [view] = await mergeProgressObserver(
                 [
                     toProgressObserver(HallView.preEnter)(),
                     toProgressObserver(fakeLoad)(0.5),

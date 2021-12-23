@@ -3,7 +3,7 @@ import { default as random } from 'lodash/random';
 import {
     fakeLoad,
     loadRes,
-    mergeLoadingTask,
+    mergeProgressObserver,
     ResItem,
     toProgressObserver,
 } from 'honor/utils/loadRes';
@@ -129,7 +129,7 @@ export class GameCtrl implements GameCtrlUtils {
                 });
             }
 
-            const [view] = await mergeLoadingTask(
+            const [view] = await mergeProgressObserver(
                 [
                     toProgressObserver(GameView.preEnter)(),
                     toProgressObserver(fakeLoad)(1),

@@ -5,7 +5,7 @@ import {
     toProgressObserver,
     fakeLoad,
     loadRes,
-    mergeLoadingTask,
+    mergeProgressObserver,
     ResItem,
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
@@ -129,7 +129,7 @@ export class GameCtrl implements GameCtrlUtils {
 
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
-            const [view] = await mergeLoadingTask(
+            const [view] = await mergeProgressObserver(
                 [
                     toProgressObserver(GameView.preEnter)(),
                     toProgressObserver(fakeLoad)(0.5),

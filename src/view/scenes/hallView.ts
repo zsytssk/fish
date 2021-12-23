@@ -33,7 +33,7 @@ export default class HallView
     extends ui.scenes.hall.hallUI
     implements HonorScene
 {
-    public static async  preEnter(progress: ProgressFn) {
+    public static async preEnter(progress: ProgressFn) {
         return honor.director.runScene('scenes/hall/hall.scene', progress);
     }
 

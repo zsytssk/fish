@@ -26,3 +26,13 @@ type SplitLast<T extends any[]> = T extends [...infer I, (infer L)?]
 
 type NotLastParameters<T extends FuncAny> = SplitLast<Parameters<T>>[0];
 type LastParameters<T extends FuncAny> = SplitLast<Parameters<T>>[1];
+
+type Mutable<T> = {
+    -readonly [K in keyof T]: T[K];
+};
+
+type UnpackArr<T> = T extends (infer K)[]
+    ? K extends [infer K1, infer K2]
+        ? [K1[], K2[]]
+        : never
+    : never;

@@ -135,18 +135,13 @@ export function promiseToProgressObserver<T extends FuncAny>(fn: T) {
     };
 }
 
-type UnpackArr<T> = T extends (infer K)[]
-    ? K extends [infer K1, infer K2]
-        ? [K1[], K2[]]
-        : never
-    : never;
 type LoadingProgress = [Observable<number>, Promise<unknown>];
-export async function mergeLoadingTask<T extends LoadingProgress[]>(
+export async function mergeProgressObserver<T extends LoadingProgress[]>(
     loadingProcess: T,
     progress?: ProgressFn | LoadingCtor,
 ) {
-    const observerArr: UnpackArr<typeof loadingProcess>[0] = [];
-    const promiseArr: UnpackArr<typeof loadingProcess>[1] = [];
+    const observerArr = [] as UnpackArr<T>[0];
+    const promiseArr = [] as UnpackArr<T>[1];
     for (const item of loadingProcess) {
         const [progressPipe, completePromise] = item;
         observerArr.push(progressPipe.pipe(startWith(0)));
