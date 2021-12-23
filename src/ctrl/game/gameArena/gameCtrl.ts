@@ -1,11 +1,11 @@
 import { default as random } from 'lodash/random';
 
 import {
-    convertToObserver,
     fakeLoad,
     loadRes,
     mergeLoadingTask,
     ResItem,
+    toProgressObserver,
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
@@ -21,12 +21,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip } from '@app/data/internationalConfig';
 import { res } from '@app/data/res';
-import {
-    ArenaEvent,
-    ServerErrCode,
-    ServerEvent,
-    ServerName,
-} from '@app/data/serverEvent';
+import { ArenaEvent, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { FreezingComEvent } from '@app/model/game/com/gameFreezeCom';
 import { ShoalEvent } from '@app/model/game/com/shoalCom';
 import { FishModel } from '@app/model/game/fish/fishModel';
@@ -131,10 +126,10 @@ export class GameCtrl implements GameCtrlUtils {
 
             const [view] = await mergeLoadingTask(
                 [
-                    convertToObserver(GameView.preEnter)(),
-                    convertToObserver(fakeLoad)(1),
-                    convertToObserver(AppCtrl.commonLoad)(),
-                    convertToObserver(loadRes)(other_res),
+                    toProgressObserver(GameView.preEnter)(),
+                    toProgressObserver(fakeLoad)(1),
+                    toProgressObserver(AppCtrl.commonLoad)(),
+                    toProgressObserver(loadRes)(other_res),
                 ],
                 Loading,
             );

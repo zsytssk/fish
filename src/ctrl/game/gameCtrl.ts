@@ -2,7 +2,7 @@ import { default as random } from 'lodash/random';
 
 import honor from 'honor';
 import {
-    convertToObserver,
+    toProgressObserver,
     fakeLoad,
     loadRes,
     mergeLoadingTask,
@@ -131,10 +131,10 @@ export class GameCtrl implements GameCtrlUtils {
             const other_res: ResItem[] = [bg_res, ...res.game];
             const [view] = await mergeLoadingTask(
                 [
-                    convertToObserver(GameView.preEnter)(),
-                    convertToObserver(fakeLoad)(0.5),
-                    convertToObserver(AppCtrl.commonLoad)(),
-                    convertToObserver(loadRes)(other_res),
+                    toProgressObserver(GameView.preEnter)(),
+                    toProgressObserver(fakeLoad)(0.5),
+                    toProgressObserver(AppCtrl.commonLoad)(),
+                    toProgressObserver(loadRes)(other_res),
                 ],
                 Loading,
             );

@@ -89,7 +89,7 @@ export function fakeLoad(time: number, fn?: ProgressFn) {
     });
 }
 
-export function convertToObserver<T extends FuncAny>(fn: T) {
+export function toProgressObserver<T extends FuncAny>(fn: T) {
     return function (
         ...args: NotLastParameters<T>
     ): [Observable<number>, Promise<ReturnType<T>>] {
@@ -103,6 +103,28 @@ export function convertToObserver<T extends FuncAny>(fn: T) {
             fn(...args, (radio: number) => {
                 subscriber?.next(radio);
             }).then((data: ReturnType<T>) => {
+                subscriber?.next(1);
+                subscriber?.complete();
+                resolve(data);
+            });
+        });
+
+        return [observer, promise];
+    };
+}
+
+export function promiseToProgressObserver<T extends FuncAny>(fn: T) {
+    return function (
+        ...args: Parameters<T>
+    ): [Observable<number>, Promise<ReturnType<T>>] {
+        let subscriber: Subscriber<number>;
+        let resolve: (value: ReturnType<T>) => void;
+        const promise = new Promise<ReturnType<T>>((_resolve) => {
+            resolve = _resolve;
+        });
+        const observer = new Observable((_subscriber: Subscriber<number>) => {
+            subscriber = _subscriber;
+            fn(...args).then((data: ReturnType<T>) => {
                 subscriber?.next(1);
                 subscriber?.complete();
                 resolve(data);
