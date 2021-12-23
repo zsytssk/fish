@@ -1,8 +1,8 @@
+import * as SAT from 'sat';
+
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
-
-import * as SAT from 'sat';
 
 import { Config } from '@app/data/config';
 import {
@@ -94,6 +94,7 @@ export class GunModel extends ComponentManager {
 
         this.skin = skin;
         this.player = player;
+
         this.initCom();
     }
     private initCom() {
@@ -211,9 +212,15 @@ export class GunModel extends ComponentManager {
         const { status, is_on, event, shoot_space, player, bullet_cost } = this;
 
         /** 当前用户的特殊处理 */
-        if (player.is_cur_player) {
+        if (
+            player.is_cur_player ||
+            // 大奖赛模式机器人显示子弹数需要处理
+            (player.game.game_mode === 2 && player.need_emit)
+        ) {
             if (player.bullet_num - bullet_cost < 0) {
-                event.emit(GunEvent.NotEnoughBulletNum);
+                if (player.is_cur_player) {
+                    event.emit(GunEvent.NotEnoughBulletNum);
+                }
                 return;
             }
         }

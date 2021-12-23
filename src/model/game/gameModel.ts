@@ -132,6 +132,7 @@ export class GameModel extends ComponentManager {
         this.player_map.set(data.user_id, player);
         this.event.emit(GameEvent.AddPlayer, player);
         player.init();
+
         return player;
     }
     public getCurPlayer() {
