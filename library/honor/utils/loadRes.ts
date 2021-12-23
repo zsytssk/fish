@@ -1,5 +1,5 @@
 import { combineLatest, Observable, Subscriber } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 
 import { Laya, loader } from 'Laya';
 import { HonorDialog } from 'honor';
@@ -83,26 +83,26 @@ export function fakeLoad(time: number, fn?: ProgressFn) {
                 resolve();
                 return;
             }
-            fn(space / time);
+
+            fn?.(space / time);
         }, 100);
     });
 }
 
-type LoadingProgress = [Observable<number>, Promise<unknown>];
 export function convertToObserver<T extends FuncAny>(fn: T) {
     return function (
         ...args: NotLastParameters<T>
-    ): [Observable<number>, Promise<unknown>] {
+    ): [Observable<number>, Promise<ReturnType<T>>] {
         let subscriber: Subscriber<number>;
-        let resolve: (value: unknown) => void;
-        const promise = new Promise((_resolve) => {
+        let resolve: (value: ReturnType<T>) => void;
+        const promise = new Promise<ReturnType<T>>((_resolve) => {
             resolve = _resolve;
         });
         const observer = new Observable((_subscriber: Subscriber<number>) => {
             subscriber = _subscriber;
             fn(...args, (radio: number) => {
                 subscriber?.next(radio);
-            }).then((data) => {
+            }).then((data: ReturnType<T>) => {
                 subscriber?.next(1);
                 subscriber?.complete();
                 resolve(data);
@@ -113,27 +113,38 @@ export function convertToObserver<T extends FuncAny>(fn: T) {
     };
 }
 
-export async function mergeLoadingTask(
-    loadingProcess: LoadingProgress[],
+type UnpackArr<T> = T extends (infer K)[]
+    ? K extends [infer K1, infer K2]
+        ? [K1[], K2[]]
+        : never
+    : never;
+type LoadingProgress = [Observable<number>, Promise<unknown>];
+export async function mergeLoadingTask<T extends LoadingProgress[]>(
+    loadingProcess: T,
     progress?: ProgressFn | LoadingCtor,
 ) {
-    const observerArr: Observable<number>[] = [];
-    const promiseArr = [];
+    const observerArr: UnpackArr<typeof loadingProcess>[0] = [];
+    const promiseArr: UnpackArr<typeof loadingProcess>[1] = [];
     for (const item of loadingProcess) {
         const [progressPipe, completePromise] = item;
-        observerArr.push(progressPipe);
+        observerArr.push(progressPipe.pipe(startWith(0)));
         promiseArr.push(completePromise);
     }
     const count = observerArr.length;
     const mergeProgress = combineLatest(observerArr).pipe(
-        map((arr) => arr.reduce((prev, cur) => prev + cur / count, 0)),
+        map((arr) => {
+            console.log(arr);
+            return arr.reduce((prev, cur) => prev + cur / count, 0);
+        }),
     );
     const allLoadCompleted = Promise.all(promiseArr);
     if ((progress as LoadingCtor)?.isLoadingView) {
         const loadingCtor = progress as LoadingCtor;
         const instance = await loadingCtor.load();
         instance.onShow();
-        mergeProgress.subscribe((radio) => instance.onProgress(radio));
+        mergeProgress.subscribe((radio) => {
+            instance.onProgress(radio);
+        });
         allLoadCompleted.then(() => {
             instance.onHide();
         });

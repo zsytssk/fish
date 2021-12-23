@@ -3,6 +3,7 @@ import { default as random } from 'lodash/random';
 import honor from 'honor';
 import {
     convertToObserver,
+    fakeLoad,
     loadRes,
     mergeLoadingTask,
     ResItem,

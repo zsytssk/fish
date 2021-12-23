@@ -20,7 +20,7 @@ type ObjFilterKeys<Base, Condition> = ObjFilterFlags<
 
 type ObjFilter<Base, Condition> = Pick<Base, ObjFilterKeys<Base, Condition>>;
 
-type SplitLast<T extends any[]> = T extends [...infer I, infer L]
+type SplitLast<T extends any[]> = T extends [...infer I, (infer L)?]
     ? [I, L]
     : never;
 
