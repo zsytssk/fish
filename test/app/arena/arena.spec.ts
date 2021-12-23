@@ -10,7 +10,7 @@ import { sleep } from '@app/utils/animate';
 import ArenaView from '@app/view/scenes/arena/arenaView';
 import { viewState } from '@app/view/viewState';
 
-import * as taskData from './data/taskData.json';
+import taskData from './data/taskData.json';
 
 export const arena_test = testBuild({
     enter: async () => {
@@ -32,11 +32,18 @@ export const arena_test = testBuild({
     },
     showTask: async () => {
         await arena_test.enter();
-        const arenaGameView = viewState.game as ArenaView;
+        const arena_ctrl = ctrlState.game as ArenaCtrl;
 
-        arenaGameView.showTaskPanel(taskData);
+        arena_ctrl.triggerTask(taskData.triggerTask);
         await sleep(3);
-        arenaGameView.hideTaskPanel();
+        arena_ctrl.taskRefresh(taskData.taskRefresh1);
+        await sleep(3);
+        arena_ctrl.taskRefresh(taskData.taskRefresh2);
+        await sleep(3);
+        arena_ctrl.taskFinish({
+            ...taskData.taskFinish,
+            userId: modelState.app.arena_info.user_id,
+        });
     },
     setPlayerNum: async () => {
         const game = viewState.game as ArenaView;

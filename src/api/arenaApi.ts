@@ -187,9 +187,14 @@ export type TaskTriggerRes = {
     name: string;
     award: number;
     duration: number;
-    list: { type: number; killNumber: number }[];
+    list: { index: number; type: number; killNumber: number }[];
 };
-export type TaskRefreshRes = { type: number; killNumber: number }[];
+export type TaskRefreshRes = {
+    index: number;
+    type: number;
+    reachNumber: number;
+    killNumber: number;
+}[];
 export type TaskFinishRes = {
     userId: string;
     taskId: number;
