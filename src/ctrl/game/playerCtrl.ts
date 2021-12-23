@@ -218,18 +218,6 @@ export class PlayerCtrl extends ComponentManager {
         this.resetGetBulletCost();
 
         gun_event.on(
-            GunEvent.NotEnoughBulletNum,
-            () => {
-                const socket = this.game_ctrl.getSocket();
-                if (this.game_ctrl.isTrial) {
-                    errorHandler(ServerErrCode.TrialNotBullet, null, socket);
-                } else {
-                    errorHandler(ServerErrCode.ReExchange, null, socket);
-                }
-            },
-            this,
-        );
-        gun_event.on(
             GunEvent.AutoShoot,
             (is_active: boolean) => {
                 setAutoShootLight(is_active);
