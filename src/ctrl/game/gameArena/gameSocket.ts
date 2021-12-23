@@ -240,7 +240,9 @@ function convertTableInData(data: TableInRep): PlayerInfo {
         userId: user_id,
         seatId: index,
         multiple: bullet_cost,
+        needEmit: need_emit,
         turretSkin: gun_skin,
+        bulletNum: bullet_num,
     } = data;
     const skills = genSkillMap(items_template, false);
     return {
@@ -250,8 +252,8 @@ function convertTableInData(data: TableInRep): PlayerInfo {
         gun_skin: `${Number(gun_skin) - 1000}`,
         nickname: '',
         avatar: '',
-        bullet_num: 0,
-        need_emit: false,
+        bullet_num: bullet_num || 0,
+        need_emit: need_emit || false,
         is_cur_player: false,
         skills,
     };

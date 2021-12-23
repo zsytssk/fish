@@ -99,6 +99,8 @@ export type TableInRep = {
     seatId: number;
     userId: string;
     multiple: number;
+    bulletNum: number;
+    needEmit?: boolean;
     turretSkin: string;
 };
 
