@@ -154,9 +154,8 @@ export async function mergeProgressObserver<T extends LoadingProgress[]>(
         }),
     );
     const allLoadCompleted = Promise.all(promiseArr);
-    if ((progress as LoadingCtor)?.isLoadingView) {
-        const loadingCtor = progress as LoadingCtor;
-        const instance = await loadingCtor.load();
+    if ('isLoadingView' in progress) {
+        const instance = await progress.load();
         instance.onShow();
         mergeProgress.subscribe((radio) => {
             instance.onProgress(radio);
