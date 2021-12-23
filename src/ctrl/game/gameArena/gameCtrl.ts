@@ -129,12 +129,12 @@ export class GameCtrl implements GameCtrlUtils {
                 });
             }
 
-            const [, , view] = await mergeLoadingTask(
+            const [view] = await mergeLoadingTask(
                 [
+                    convertToObserver(GameView.preEnter)(),
                     convertToObserver(fakeLoad)(3),
                     convertToObserver(AppCtrl.commonLoad)(),
                     convertToObserver(loadRes)(other_res),
-                    convertToObserver(GameView.preEnter)(),
                 ],
                 Loading,
             );

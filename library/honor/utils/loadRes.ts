@@ -133,7 +133,6 @@ export async function mergeLoadingTask<T extends LoadingProgress[]>(
     const count = observerArr.length;
     const mergeProgress = combineLatest(observerArr).pipe(
         map((arr) => {
-            console.log(arr);
             return arr.reduce((prev, cur) => prev + cur / count, 0);
         }),
     );
