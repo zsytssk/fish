@@ -178,6 +178,7 @@ export function convertEnterGame(data: EnterGameRep) {
             lockFish,
             lockLeft,
             needEmit,
+            score,
         } = user_source;
         const is_cur_player = isCurUser(user_id, true);
         const need_emit = isCurUser(user_id, true) || needEmit;
@@ -200,6 +201,7 @@ export function convertEnterGame(data: EnterGameRep) {
             gun_skin: `${Number(gun_skin) - 1000}`,
             nickname: '',
             avatar: '',
+            score,
             is_cur_player,
             skills,
             need_emit,

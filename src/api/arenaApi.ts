@@ -76,6 +76,7 @@ export type ServerUserInfo = {
     multiple: number;
     turretSkin: string;
     lockFish: string;
+    score: number;
     lockLeft: number;
     needEmit: boolean;
 };
