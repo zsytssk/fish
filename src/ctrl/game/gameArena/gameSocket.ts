@@ -1,4 +1,10 @@
-import { EnterGameRep, SettleData, TableInRep } from '@app/api/arenaApi';
+import {
+    EnterGameRep,
+    SettleData,
+    TableInRep,
+    TaskFinishRes,
+    TaskRefreshRes,
+} from '@app/api/arenaApi';
 import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
@@ -109,6 +115,15 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.UseSkin]: (data: UseSkinRep) => {
             game.changeSkin(data);
+        },
+        [ArenaEvent.TriggerTask]: (data: TaskRefreshRes) => {
+            game.triggerTask(data);
+        },
+        [ArenaEvent.TaskRefresh]: (data: TaskRefreshRes) => {
+            game.taskRefresh(data);
+        },
+        [ArenaEvent.TaskFinish]: (data: TaskFinishRes) => {
+            game.taskFinish(data);
         },
         [ArenaEvent.GameSettle]: (data: SettleData) => {
             game.GameSettle(data);

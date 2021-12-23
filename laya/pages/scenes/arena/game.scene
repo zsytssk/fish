@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":11,
+    "selectedBox":11,
+    "selecteID":48,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/arena/arenaView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":85,
+    "maxID":88,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -317,15 +317,15 @@
                             "child":[
                                 {
                                     "x":60,
-                                    "type":"Label",
-                                    "searchKey":"Label,task_name",
-                                    "props":{"y":6,"x":15,"text":"小鱼","name":"task_name","fontSize":18,"color":"#fff"},
+                                    "type":"Image",
+                                    "searchKey":"Image,task_name",
+                                    "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
                                     "nodeParent":61,
                                     "label":"task_name",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,
-                                    "compId":71,
+                                    "compId":85,
                                     "child":[
                                         ]
                                 },
@@ -359,15 +359,15 @@
                             "child":[
                                 {
                                     "x":60,
-                                    "type":"Label",
-                                    "searchKey":"Label,task_name",
-                                    "props":{"y":6,"x":15,"text":"小鱼","name":"task_name","fontSize":18,"color":"#fff"},
+                                    "type":"Image",
+                                    "searchKey":"Image,task_name",
+                                    "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
                                     "nodeParent":62,
                                     "label":"task_name",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,
-                                    "compId":77,
+                                    "compId":86,
                                     "child":[
                                         ]
                                 },
@@ -401,15 +401,15 @@
                             "child":[
                                 {
                                     "x":60,
-                                    "type":"Label",
-                                    "searchKey":"Label,task_name",
-                                    "props":{"y":6,"x":15,"text":"小鱼","name":"task_name","fontSize":18,"color":"#fff"},
+                                    "type":"Image",
+                                    "searchKey":"Image,task_name",
+                                    "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
                                     "nodeParent":63,
                                     "label":"task_name",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,
-                                    "compId":79,
+                                    "compId":87,
                                     "child":[
                                         ]
                                 },

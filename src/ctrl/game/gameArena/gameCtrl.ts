@@ -11,7 +11,12 @@ import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
 import { Loader } from 'laya/net/Loader';
 
-import { SettleData } from '@app/api/arenaApi';
+import {
+    SettleData,
+    TaskFinishRes,
+    TaskRefreshRes,
+    TaskTriggerRes,
+} from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
@@ -400,6 +405,22 @@ export class GameCtrl implements GameCtrlUtils {
         const player = this.model.getPlayerById(userId);
         log('接收到use skin', skinId);
         player.changeSkin(skinId);
+    }
+    public triggerTask(data: TaskTriggerRes) {
+        const { view } = this;
+        view.showTaskPanel(data);
+    }
+    public taskRefresh(data: TaskRefreshRes) {
+        const { view } = this;
+        view.updateTaskPanel(data);
+    }
+    public async taskFinish(data: TaskFinishRes) {
+        const { view } = this;
+        const player = this.model.getPlayerById(data.userId);
+        if (player.is_cur_player) {
+            await view.taskFinish(data);
+        }
+        player.updateInfo({ score: player.score + data.award });
     }
     public async GameSettle(data: SettleData) {
         await ArenaGameStatus.end();

@@ -7,8 +7,14 @@ import { ProgressFn } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 
+import {
+    TaskFinishRes,
+    TaskRefreshRes,
+    TaskTriggerRes,
+} from '@app/api/arenaApi';
 import {
     getLang,
     offLangChange,
@@ -27,6 +33,7 @@ import TipPop from '@app/view/pop/tip';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
 
 import { viewState } from '../../viewState';
+import { showAwardCircle } from '../game/ani_wrap/award/awardBig';
 import { FishView, FishViewInfo } from '../game/fishView';
 import GunBoxView from '../game/gunBoxView';
 import SkillItemView from '../game/skillItemView';
@@ -98,7 +105,7 @@ export default class ArenaView
         }
     }
 
-    public showTaskPanel(taskInfo: TriggerTaskRes) {
+    public showTaskPanel(taskInfo: TaskTriggerRes) {
         ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
@@ -107,17 +114,35 @@ export default class ArenaView
         task_time_num.text = taskInfo.duration + '';
 
         const node_list = getChildrenByName(task_panel, 'task_item');
-        for (const [index, item] of taskInfo.list.entries()) {
-            const item_node = node_list[index];
-            const node_task_name = item_node.getChildByName('task_name');
-            const node_task_num = item_node.getChildByName('task_name');
-            node_task_name.text = item.type;
-            node_task_num.text = item.killNumber;
+        for (const item of taskInfo.list) {
+            const item_node = node_list[item.index];
+            const node_task_name = item_node.getChildByName(
+                'task_name',
+            ) as Image;
+            const node_task_num = item_node.getChildByName('task_num') as Label;
+            node_task_name.skin = `image/pop/help/fish${item.type}.png`;
+            node_task_num.text = `0/${item.killNumber}`;
         }
     }
-    public hideTaskPanel() {
+    public updateTaskPanel(list: TaskRefreshRes) {
+        const { task_panel } = this;
+
+        const node_list = getChildrenByName(task_panel, 'task_item');
+        for (const item of list) {
+            const item_node = node_list[item.index];
+            const node_task_num = item_node.getChildByName('task_num');
+            node_task_num.text = `${item.reachNumber}/${item.killNumber}`;
+        }
+    }
+    public async taskFinish(data: TaskFinishRes) {
+        if (!data.isComplete) {
+            return;
+        }
+        const pos = { x: 1344 / 2, y: 750 / 2 };
         const { task_panel } = this;
         fade_out(task_panel);
+        await TipPop.tip('任务完成');
+        await showAwardCircle(pos, data.award, true);
     }
     public setPlayerScore(player_type: PlayerType, score: number) {
         const { my_score_panel, other_score_panel } = this;

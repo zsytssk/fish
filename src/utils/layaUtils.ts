@@ -50,7 +50,7 @@ export function onStageClick(
     });
 }
 
-type ClickNode = Sprite & {
+export type ClickNode = Sprite & {
     is_disable: boolean;
 };
 /**

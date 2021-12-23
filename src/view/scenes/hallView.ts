@@ -9,7 +9,7 @@ import { type ArenaModel } from '@app/model/arena/arenaModel';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { fade_in, fade_out } from '@app/utils/animate';
 import { formatDateRange } from '@app/utils/dayjsUtil';
-import { onStageClick, resizeContain } from '@app/utils/layaUtils';
+import { ClickNode, onStageClick, resizeContain } from '@app/utils/layaUtils';
 import { error } from '@app/utils/log';
 import { playSkeleton } from '@app/utils/utils';
 import honor, { HonorScene } from 'honor';
@@ -34,7 +34,7 @@ export default class HallView
     implements HonorScene
 {
     public static async  preEnter(progress: ProgressFn) {
-        return honor.director.runScene('scenes/hall/hall.scene',progress);
+        return honor.director.runScene('scenes/hall/hall.scene', progress);
     }
 
     public onOpened() {
@@ -184,12 +184,13 @@ export default class HallView
     }
     public updateArenaInfo(info: ArenaModel) {
         const {status, open_timezone} = info;
-        const {arena_status, arena_timezone,  btn_competition, } = this;
-
+        const {arena_timezone,  btn_competition} = this;
 
         arena_timezone.text = formatDateRange(open_timezone)
         const gray = btn_competition.getChildByName('gray') as Image;
-        gray.visible = status === ArenaStatus.Maintenance
+        gray.visible = status === ArenaStatus.Maintenance;
+        (btn_competition as unknown as ClickNode).is_disable = gray.visible;
+        console.log(`test:>`, btn_competition)
 
     }
     public coinMenuRender(box: Box, index: number) {

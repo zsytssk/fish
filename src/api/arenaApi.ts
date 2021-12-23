@@ -181,3 +181,23 @@ export type BuyGoodsData = {
     goodsId: number | string;
     goodsNum: number;
 };
+
+export type TaskTriggerRes = {
+    taskId: number;
+    name: string;
+    award: number;
+    duration: number;
+    list: { index: number; type: number; killNumber: number }[];
+};
+export type TaskRefreshRes = {
+    index: number;
+    type: number;
+    reachNumber: number;
+    killNumber: number;
+}[];
+export type TaskFinishRes = {
+    userId: string;
+    taskId: number;
+    isComplete: boolean;
+    award: number;
+};
