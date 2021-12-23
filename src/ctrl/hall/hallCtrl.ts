@@ -1,5 +1,9 @@
 import honor from 'honor';
-import { convertToObserver, mergeLoadingTask } from 'honor/utils/loadRes';
+import {
+    convertToObserver,
+    fakeLoad,
+    mergeLoadingTask,
+} from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
@@ -45,12 +49,13 @@ export class HallCtrl {
             const [view] = await mergeLoadingTask(
                 [
                     convertToObserver(HallView.preEnter)(),
+                    convertToObserver(fakeLoad)(0.5),
                     convertToObserver(AppCtrl.commonLoad)(),
                 ],
                 Loading,
             );
 
-            const ctrl = new HallCtrl(view);
+            const ctrl = new HallCtrl(view as HallView);
             this.instance = ctrl;
             return ctrl;
         }, this);

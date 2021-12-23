@@ -132,7 +132,7 @@ export class GameCtrl implements GameCtrlUtils {
             const [view] = await mergeLoadingTask(
                 [
                     convertToObserver(GameView.preEnter)(),
-                    convertToObserver(fakeLoad)(3),
+                    convertToObserver(fakeLoad)(1),
                     convertToObserver(AppCtrl.commonLoad)(),
                     convertToObserver(loadRes)(other_res),
                 ],

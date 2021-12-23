@@ -129,11 +129,12 @@ export class GameCtrl implements GameCtrlUtils {
 
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
-            const [, , view] = await mergeLoadingTask(
+            const [view] = await mergeLoadingTask(
                 [
+                    convertToObserver(GameView.preEnter)(),
+                    convertToObserver(fakeLoad)(0.5),
                     convertToObserver(AppCtrl.commonLoad)(),
                     convertToObserver(loadRes)(other_res),
-                    convertToObserver(GameView.preEnter)(),
                 ],
                 Loading,
             );

@@ -77,7 +77,7 @@ export function fakeLoad(time: number, fn?: ProgressFn) {
         let space = 0;
 
         const interval = setInterval(() => {
-            space += 0.1;
+            space += 0.05;
             if (space > time) {
                 clearInterval(interval);
                 resolve();
@@ -85,7 +85,7 @@ export function fakeLoad(time: number, fn?: ProgressFn) {
             }
 
             fn?.(space / time);
-        }, 100);
+        }, 50);
     });
 }
 
