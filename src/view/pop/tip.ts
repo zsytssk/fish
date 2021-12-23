@@ -4,9 +4,7 @@ import { getStringLength } from 'honor/utils/getStringLength';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { startCount, clearCount } from '@app/utils/count';
-
-import { showNodeZone } from '../../../test/utils/testUtils';
+import { clearCount, startCount } from '@app/utils/count';
 
 type TipPopOpt = {
     count: number;
@@ -50,7 +48,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
      * @param msg 提示的信息
      */
     public tip(msg: string, opt = {} as TipPopOpt) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, _reject) => {
             if (!msg) {
                 return resolve();
             }
