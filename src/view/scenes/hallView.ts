@@ -14,7 +14,7 @@ import {
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { fade_in, fade_out } from '@app/utils/animate';
-import { onStageClick, resizeContain } from '@app/utils/layaUtils';
+import { ClickNode, onStageClick, resizeContain } from '@app/utils/layaUtils';
 import { error } from '@app/utils/log';
 import { playSkeleton } from '@app/utils/utils';
 
@@ -179,12 +179,13 @@ export default class HallView
     }
     public updateArenaInfo(info: ArenaModel) {
         const {status, open_timezone} = info;
-        const {arena_status, arena_timezone,  btn_competition, } = this;
-
+        const {arena_timezone,  btn_competition} = this;
 
         arena_timezone.text = formatDateRange(open_timezone)
         const gray = btn_competition.getChildByName('gray') as Image;
-        gray.visible = status === ArenaStatus.Maintenance
+        gray.visible = status === ArenaStatus.Maintenance;
+        (btn_competition as unknown as ClickNode).is_disable = gray.visible;
+        console.log(`test:>`, btn_competition)
 
     }
     public coinMenuRender(box: Box, index: number) {
