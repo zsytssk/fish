@@ -144,9 +144,9 @@ export const ArenaEvent = {
     GameSettle: 'gameSettle',
     /**  触发任务 */
     TriggerTask: 'triggerTask',
-    /**  人物刷新 */
+    /** 任务刷新 */
     TaskRefresh: 'taskRefresh',
-    /**  人物完成 */
+    /** 任务完成 */
     TaskFinish: 'taskFinish',
     /**  商品列表 */
     ShopList: 'shopList',
