@@ -16,11 +16,7 @@ import {
     GunEvent,
     LevelInfo,
 } from '@app/model/game/gun/gunModel';
-import {
-    CaptureInfo,
-    PlayerEvent,
-    PlayerModel,
-} from '@app/model/game/playerModel';
+import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
 import {
     getCurPlayer,
@@ -30,9 +26,6 @@ import {
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
 import { darkNode, unDarkNode } from '@app/utils/utils';
-import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
-import { showAwardCoin } from '@app/view/scenes/game/ani_wrap/award/awardCoin';
-import { awardSkill } from '@app/view/scenes/game/ani_wrap/award/awardSkill';
 import GunBoxView from '@app/view/scenes/game/gunBoxView';
 import {
     getAutoShootSkillItem,

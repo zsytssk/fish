@@ -140,8 +140,8 @@ export async function mergeProgressObserver<T extends LoadingProgress[]>(
     loadingProcess: T,
     progress?: ProgressFn | LoadingCtor,
 ) {
-    const observerArr = [] as UnpackArr<T>[0];
-    const promiseArr = [] as UnpackArr<T>[1];
+    const observerArr = [] as UnpackArrDeep<T>[0];
+    const promiseArr = [] as UnpackArrDeep<T>[1];
     for (const item of loadingProcess) {
         const [progressPipe, completePromise] = item;
         observerArr.push(progressPipe.pipe(startWith(0)));

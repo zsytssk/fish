@@ -36,3 +36,15 @@ type UnpackArr<T> = T extends (infer K)[]
         ? [K1[], K2[]]
         : never
     : never;
+
+// type A = [[T1, K1], [T2, K2],...];
+// UnpackArrDeep<A> = [[T1, T2, ...], [K1, K2, ...]]
+type UnpackArrDeep<T> = T extends [infer I, ...infer L]
+    ? I extends [infer I1, infer I2]
+        ? UnpackArrDeep<L> extends [infer L1, infer L2]
+            ? [[I1, ...L1], [I2, ...L2]]
+            : [[I1], [I2]]
+        : never
+    : T extends []
+    ? []
+    : UnpackArr<T>;

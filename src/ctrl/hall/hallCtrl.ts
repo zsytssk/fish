@@ -45,13 +45,16 @@ export class HallCtrl {
         if (this.instance) {
             return this.instance;
         }
+
+        const arr = [
+            toProgressObserver(HallView.preEnter)(),
+            toProgressObserver(fakeLoad)(0.5),
+            toProgressObserver(AppCtrl.commonLoad)(),
+        ] as const;
+
         return runAsyncTask(async () => {
             const [view] = await mergeProgressObserver(
-                [
-                    toProgressObserver(HallView.preEnter)(),
-                    toProgressObserver(fakeLoad)(0.5),
-                    toProgressObserver(AppCtrl.commonLoad)(),
-                ],
+                arr as Mutable<typeof arr>,
                 Loading,
             );
 
