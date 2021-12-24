@@ -1,9 +1,11 @@
 import { Config } from '@app/data/config';
-import { ArenaEvent, ServerName } from '@app/data/serverEvent';
+import { isProd } from '@app/data/env';
+import { ArenaEvent, ServerErrCode, ServerName } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
-import { getParams } from '@app/utils/utils';
+import { getParams, tplStr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
 
 import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
 import {
@@ -76,6 +78,12 @@ export async function connectArenaSocket(
     config: SocketConfig,
 ): Promise<WebSocketTrait> {
     const socket = await createSocket(config);
+    if (!socket && isProd()) {
+        AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
+            location.reload();
+        });
+        return;
+    }
 
     const token = Config.token;
     if (token) {

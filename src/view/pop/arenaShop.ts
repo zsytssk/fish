@@ -19,21 +19,33 @@ import { buySkinAlert } from './buyBullet';
 import { arenaBuyItem, arenaShopList, arenaUseGunSkin } from './popSocket';
 import { getItemName, GunRenderData, GunSkinStatus, ShopData } from './shop';
 
+export type ArenaShopPopInfo = {
+    modeId: number;
+    currency: string;
+};
 type ShopGunItemUI = ui.pop.shop.shopGunItemUI;
 /** 商城弹出层 */
 export default class ArenaShopPop
     extends ui.pop.shop.arenaShopUI
     implements HonorDialog
 {
+    private data: ArenaShopPopInfo;
     public isModal = true;
     /** 是否初始化... */
-    public static async preEnter() {
+    public static async preEnter(data: ArenaShopPopInfo) {
         AudioCtrl.play(AudioRes.PopShow);
-        const shop_dialog = (await honor.director.openDialog({
-            dialog: ArenaShopPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as Promise<ArenaShopPop>;
+        const shop_dialog = (await honor.director.openDialog(
+            {
+                dialog: ArenaShopPop,
+                use_exist: true,
+                stay_scene: true,
+            },
+            {
+                beforeOpen(dialog: ArenaShopPop) {
+                    dialog.data = data;
+                },
+            },
+        )) as ArenaShopPop;
 
         return shop_dialog;
     }
@@ -64,7 +76,7 @@ export default class ArenaShopPop
         );
     }
     public onEnable() {
-        arenaShopList().then((data) => {
+        arenaShopList(this.data).then((data) => {
             this.initData(data);
         });
     }

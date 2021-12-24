@@ -1,18 +1,18 @@
 import honor from 'honor';
 import {
-    toProgressObserver,
     fakeLoad,
     mergeProgressObserver,
+    promiseToProgressObserver,
+    toProgressObserver,
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { gotoGuide } from '@app/ctrl/guide/guideConfig';
-import { disconnectSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
-import { ArenaEvent, ServerName } from '@app/data/serverEvent';
+import { ArenaEvent } from '@app/data/serverEvent';
 import { ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
@@ -32,10 +32,10 @@ import {
     onNicknameChange,
 } from './hallCtrlUtil';
 import {
-    offHallSocket,
-    connectHallSocket,
-    roomIn,
     bindHallSocket,
+    connectHallSocket,
+    offHallSocket,
+    roomIn,
 } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
 
@@ -54,6 +54,7 @@ export class HallCtrl {
         const arr = [
             toProgressObserver(HallView.preEnter)(),
             toProgressObserver(fakeLoad)(0.5),
+            toProgressObserver(AppCtrl.commonLoad)(),
             toProgressObserver(AppCtrl.commonLoad)(),
         ] as const;
 
@@ -89,7 +90,9 @@ export class HallCtrl {
         return ctrlState.app.enterArenaGame(data);
     }
     private async init() {
-        await bindHallSocket(this);
+        try {
+            await bindHallSocket(this);
+        } catch {}
 
         try {
             console.log(`test:>connectArenaHallSocket`);

@@ -197,7 +197,7 @@ export class GameCtrl implements GameCtrlUtils {
 
         onNodeWithAni(btn_shop, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaShopPop.preEnter();
+            ArenaShopPop.preEnter({ modeId: 1, currency: this.currency });
         });
         onNodeWithAni(btn_gift, CLICK, (e: Event) => {
             e.stopPropagation();

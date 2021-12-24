@@ -2,13 +2,13 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
-const findParam = require('./script/findEnv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const TerserPlugin = require('terser-webpack-plugin');
 
-const ENV = findParam('ENV');
+const ENV = process.env.ENV;
+console.log(`test:>`, ENV);
 const common_config = (mode) => ({
     entry: {
         bundle: ['./test/test.ts', './src/main.ts'],

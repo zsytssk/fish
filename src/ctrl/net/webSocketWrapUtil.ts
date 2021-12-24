@@ -5,6 +5,7 @@ import { Observable, Subscriber } from 'rxjs';
 import { EventCom } from 'comMan/eventCom';
 import { Utils } from 'laya/utils/Utils';
 
+import { sleep } from '@app/utils/animate';
 import { error } from '@app/utils/log';
 
 import {
@@ -26,20 +27,33 @@ const SocketMapEvent = {
     Disconnect: 'disconnect',
 };
 
-export function createSocket(config: Config) {
-    return new Promise((resolve, reject) => {
-        const { name } = config;
-        const ctor = socket_ctor || WebSocketWrapCtrl;
-        const socket = new ctor(config);
-        socket.event.once(SocketEvent.Init, () => {
-            socket_map_event.emit(SocketMapEvent.Create, name, socket);
-            socket_map.set(name, socket);
-            resolve(socket);
-        });
-    }) as Promise<WebSocketTrait>;
+/** 重试三次 */
+export async function createSocket(config: Config, retry = 3) {
+    let socket: WebSocketTrait;
+    for (let i = 0; i < retry; i++) {
+        try {
+            socket = (await new Promise((resolve, _reject) => {
+                const { name } = config;
+                const ctor = socket_ctor || WebSocketWrapCtrl;
+                const socket = new ctor(config);
+
+                socket.event.once(SocketEvent.Init, () => {
+                    socket_map_event.emit(SocketMapEvent.Create, name, socket);
+                    socket_map.set(name, socket);
+                    resolve(socket);
+                });
+            })) as WebSocketTrait;
+            break;
+        } catch {
+            await sleep(3);
+            console.log(`test:>createSocket:>failed`, config.name);
+            continue;
+        }
+    }
+    return socket;
 }
 export function waitCreateSocket(name: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = socket_map.get(name);
         if (socket) {
             return resolve(socket);

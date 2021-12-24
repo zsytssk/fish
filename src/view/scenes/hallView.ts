@@ -190,7 +190,6 @@ export default class HallView
         const gray = btn_competition.getChildByName('gray') as Image;
         gray.visible = status === ArenaStatus.Maintenance;
         (btn_competition as unknown as ClickNode).is_disable = gray.visible;
-        console.log(`test:>`, btn_competition)
 
     }
     public coinMenuRender(box: Box, index: number) {

@@ -23,6 +23,7 @@ import {
 import { modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 
+import { ArenaShopPopInfo } from './arenaShop';
 import { LotteryPopData } from './lottery';
 import { ShopData } from './shop';
 
@@ -360,7 +361,7 @@ export function arenaGetRuleData(mode: number) {
     });
 }
 /** Arena 商城 */
-export function arenaShopList() {
+export function arenaShopList(data: ArenaShopPopInfo) {
     return new Promise<ShopData>((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
@@ -373,7 +374,7 @@ export function arenaShopList() {
                 resolve(arenaGenShopInfo(data));
             }
         });
-        socket.send(ArenaEvent.ShopList);
+        socket.send(ArenaEvent.ShopList, data);
     });
 }
 

@@ -20,8 +20,12 @@ export default class AlertPop
     public isModal = true;
     shadowAlpha: 0.1;
     public close_resolve: (type: CloseType) => void;
+    public _zOrder = 1001;
     public get zOrder() {
-        return 100;
+        return this._zOrder;
+    }
+    public set zOrder(value) {
+        this._zOrder = value;
     }
     public static async alert(msg: string, opt = {} as Opt) {
         const { hide_cancel, confirm_text } = opt;

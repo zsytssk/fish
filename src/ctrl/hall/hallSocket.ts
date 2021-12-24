@@ -20,39 +20,38 @@ import { connectSocket } from './login';
  */
 let hall_socket: WebSocketTrait;
 export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
-    try {
-        let socket = getSocket(ServerName.Hall);
-        if (!socket) {
-            const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
-            socket = await connectSocket({
-                url,
-                publicKey,
-                host,
-                code: Config.code,
-                name: ServerName.Hall,
-            });
-            hall_socket = socket;
-        }
-
-        /** 确保在复盘时已经有用户数据，不然进入游戏之后无法判断当前用户从而导致一堆问题 */
-        await new Promise((resolve) => {
-            hall_socket.event.once(ServerEvent.UserAccount, (data) => {
-                modelState.app.initUserInfo(data);
-                resolve(undefined);
-            });
-            sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
+    let socket = getSocket(ServerName.Hall);
+    if (!socket) {
+        const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
+        socket = await connectSocket({
+            url,
+            publicKey,
+            host,
+            code: Config.code,
+            name: ServerName.Hall,
         });
+        hall_socket = socket;
 
-        const data = await checkReplay();
-        if (data.isReplay) {
-            // debugger;
-            return [true, data];
+        if (!socket) {
+            throw Error('ConnectFailed');
         }
-        return [false];
-    } catch (err) {
-        error(`connectHallSocket:>error`, err);
-        return [false];
     }
+
+    /** 确保在复盘时已经有用户数据，不然进入游戏之后无法判断当前用户从而导致一堆问题 */
+    await new Promise((resolve) => {
+        hall_socket.event.once(ServerEvent.UserAccount, (data) => {
+            modelState.app.initUserInfo(data);
+            resolve(undefined);
+        });
+        sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
+    });
+
+    const data = await checkReplay();
+    if (data.isReplay) {
+        // debugger;
+        return [true, data];
+    }
+    return [false];
 }
 
 export function sendToHallSocket(
@@ -79,6 +78,21 @@ export async function bindHallSocket(hall: HallCtrl) {
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
+        },
+        [SocketEvent.End]: () => {
+            alert(1);
+        },
+        [SocketEvent.Error]: () => {
+            alert(1);
+        },
+        [SocketEvent.Close]: () => {
+            alert(1);
+        },
+        [SocketEvent.Reconnecting]: () => {
+            alert(1);
+        },
+        [SocketEvent.Init]: () => {
+            alert(1);
         },
         [ServerEvent.UserAccount]: (data, _code) => {
             modelState.app.initUserInfo(data);

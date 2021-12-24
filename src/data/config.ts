@@ -6,9 +6,7 @@ declare global {
     }
 }
 
-type Env = 'DEV' | 'TEST' | 'PROD';
 export const Config = {
-    Env: ENV as Env,
     PublicKey:
         'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMUws+7NKknmImMYUsSr4DOKYVrs1s7BQzGBgkkTptjGiektUmxm3BNZq34ugF6Vob9V0vU5r0S7vfyuOTC87uFeGe+rBJf7si4kE5wsJiEBlLNZjrz0T30xHGJlf+eizYVKPkpo3012rKvHN0obBlN7iBsdiGpLGP3sPAgO2tFQIDAQAB',
     SocketUrl: '',

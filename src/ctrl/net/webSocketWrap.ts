@@ -155,8 +155,8 @@ export class WebSocketWrapCtrl
                     if (!data) {
                         return;
                     }
-                    log(`${name}:>接收:>`, data);
                     const { cmd, res, data: _data, code, msg } = data;
+                    log(`${name}:>接收:>${cmd}`, data);
                     this.event.emit(cmd, res || _data, code, msg);
                 }
                 break;

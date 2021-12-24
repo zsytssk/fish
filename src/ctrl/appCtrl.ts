@@ -3,6 +3,7 @@ import { loadRes, ProgressFn } from 'honor/utils/loadRes';
 
 import GameConfig from '@app/GameConfig';
 import { Config } from '@app/data/config';
+import { isProd } from '@app/data/env';
 import { font_list, res } from '@app/data/res';
 import { AppModel } from '@app/model/appModel';
 import { BgMonitor } from '@app/utils/bgMonitor';
@@ -42,10 +43,17 @@ export class AppCtrl {
 
         this.keyboard_number = new KeyBoardNumber();
         AudioCtrl.init();
-        const [isReplay, replayData] = await connectHallSocket();
-        if (isReplay) {
-            this.enterGame(replayData);
-            return;
+        try {
+            const [isReplay, replayData] = await connectHallSocket();
+            if (isReplay) {
+                this.enterGame(replayData);
+                return;
+            }
+        } catch {
+            if (isProd()) {
+                platform.hideLoading();
+                return;
+            }
         }
 
         await HallCtrl.preEnter();
