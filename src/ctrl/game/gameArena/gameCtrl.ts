@@ -431,8 +431,6 @@ export class GameCtrl implements GameCtrlUtils {
         const { userId } = data;
         if (isCurUser(userId, true)) {
             disableAllUserOperation();
-            this.offGameSocket();
-            disconnectSocket(ServerName.ArenaHall);
             model.destroy();
             HallCtrl.preEnter();
         } else {
@@ -453,6 +451,7 @@ export class GameCtrl implements GameCtrlUtils {
         const { bg_monitor } = ctrlState.app;
         this.model?.event.offAllCaller(this);
         bg_monitor.event.offAllCaller(this);
+        this.offGameSocket();
         this.view = undefined;
         this.model = undefined;
         GameCtrl.instance = undefined;

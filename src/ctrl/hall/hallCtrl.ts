@@ -95,12 +95,6 @@ export class HallCtrl {
             console.log(`test:>connectArenaHallSocket`);
             await connectArenaHallSocket(this);
             sendToArenaHallSocket(ArenaEvent.ArenaStatus);
-            // sendToArenaHallSocket(ArenaEvent.CompetitionInfo, {
-            //     currency: modelState.app.user_info.cur_balance,
-            // });
-            // sendToArenaHallSocket(ArenaEvent.GetDayRanking, { date: 1 });
-            // sendToArenaHallSocket(ArenaEvent.GetHallOfFame);
-            // sendToArenaHallSocket(ArenaEvent.MatchChampionList);
         } catch {}
 
         AudioCtrl.playBg(AudioRes.HallBg);

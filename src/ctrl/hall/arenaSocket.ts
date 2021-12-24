@@ -18,7 +18,7 @@ let arena_hall_socket: WebSocketTrait;
 export async function connectArenaHallSocket(hall: HallCtrl) {
     let socket = getSocket(ServerName.ArenaHall);
     if (socket) {
-        return true;
+        return;
     }
 
     const { arenaSocketUrl: url, PublicKey: publicKey, Host: host } = Config;
@@ -31,8 +31,6 @@ export async function connectArenaHallSocket(hall: HallCtrl) {
     });
     arena_hall_socket = socket;
     bindArenaHallSocket(socket, hall);
-
-    return true;
 }
 
 export function sendToArenaHallSocket(
@@ -47,10 +45,6 @@ function bindArenaHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
         [ArenaEvent.ArenaStatus]: (data, _code) => {
             modelState.app.arena_info.updateInfo(data);
         },
-        [ArenaEvent.CompetitionInfo]: () => {},
-        [ArenaEvent.GetDayRanking]: () => {},
-        [ArenaEvent.GetHallOfFame]: () => {},
-        [ArenaEvent.MatchChampionList]: () => {},
     });
 }
 /** 解除绑定ArenaSocket */
