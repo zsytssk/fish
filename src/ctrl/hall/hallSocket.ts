@@ -9,6 +9,8 @@ import { Config } from '@app/data/config';
 import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { error } from '@app/utils/log';
+import { tplStr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
@@ -80,20 +82,11 @@ export async function bindHallSocket(hall: HallCtrl) {
             sendToHallSocket(ServerEvent.UserAccount);
         },
         [SocketEvent.End]: () => {
-            alert(1);
+            AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
+                location.reload();
+            });
         },
-        [SocketEvent.Error]: () => {
-            alert(1);
-        },
-        [SocketEvent.Close]: () => {
-            alert(1);
-        },
-        [SocketEvent.Reconnecting]: () => {
-            alert(1);
-        },
-        [SocketEvent.Init]: () => {
-            alert(1);
-        },
+
         [ServerEvent.UserAccount]: (data, _code) => {
             modelState.app.initUserInfo(data);
         },
