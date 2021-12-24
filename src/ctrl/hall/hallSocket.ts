@@ -81,12 +81,6 @@ export async function bindHallSocket(hall: HallCtrl) {
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
         },
-        [SocketEvent.End]: () => {
-            AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
-                location.reload();
-            });
-        },
-
         [ServerEvent.UserAccount]: (data, _code) => {
             modelState.app.initUserInfo(data);
         },

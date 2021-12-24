@@ -32,20 +32,17 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
     bindSocketEvent(socket, bindObj, {
         [ErrCode]: (res: ErrorData) => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            const { OtherLogin } = InternationalTip[lang];
             if (res.code === ServerErrCode.TokenExpire) {
                 removeItem('local_token');
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(logoutTip, { hide_cancel: true }).then(
+                AlertPop.alert(tplStr('logoutTip'), { hide_cancel: true }).then(
                     (type) => {
                         location.reload();
                     },
                 );
             } else if (res.code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(OtherLogin, {
+                AlertPop.alert(tplStr('OtherLogin'), {
                     hide_cancel: true,
                 }).then(() => {
                     location.reload();
@@ -54,12 +51,10 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         },
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_no: number) => {
-            const lang = getLang();
             if (try_no !== 0) {
                 return;
             }
-            const { NetError } = InternationalTip[lang];
-            TipPop.tip(NetError, {
+            TipPop.tip(tplStr('logoutTip'), {
                 count: 20,
                 show_count: true,
                 auto_hide: false,
@@ -72,12 +67,9 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         },
         /** 断开连接 */
         [SocketEvent.End]: () => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-
-            AlertPop.alert(logoutTip, {
+            AlertPop.alert(tplStr('logoutTip'), {
                 hide_cancel: true,
-            }).then((type) => {
+            }).then(() => {
                 location.reload();
             });
         },

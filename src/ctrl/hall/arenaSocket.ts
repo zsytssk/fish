@@ -7,17 +7,14 @@ import { log } from '@app/utils/log';
 import { getParams, tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 
-import {
-    Config as SocketConfig,
-    SocketEvent,
-    WebSocketTrait,
-} from '../net/webSocketWrap';
+import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
 import {
     bindSocketEvent,
     createSocket,
     getSocket,
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
+import { commonSocket } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 
 let arena_hall_socket: WebSocketTrait;
@@ -51,12 +48,9 @@ function bindArenaHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
         [ArenaEvent.ArenaStatus]: (data, _code) => {
             modelState.app.arena_info.updateInfo(data);
         },
-        [SocketEvent.End]: () => {
-            AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
-                location.reload();
-            });
-        },
     });
+
+    commonSocket(socket, hall);
 }
 /** 解除绑定ArenaSocket */
 export function offArenaHallSocket(hall: HallCtrl) {
