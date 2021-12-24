@@ -21,7 +21,11 @@ import HallView from '@app/view/scenes/hallView';
 import Loading from '@app/view/scenes/loadingView';
 
 import { AppCtrl } from '../appCtrl';
-import { connectArenaHallSocket, sendToArenaHallSocket } from './arenaSocket';
+import {
+    bindArenaHallSocket,
+    connectArenaHallSocket,
+    sendToArenaHallSocket,
+} from './arenaSocket';
 import {
     getAllLangList,
     offBindEvent,
@@ -95,8 +99,7 @@ export class HallCtrl {
         } catch {}
 
         try {
-            console.log(`test:>connectArenaHallSocket`);
-            await connectArenaHallSocket(this);
+            await bindArenaHallSocket(this);
             sendToArenaHallSocket(ArenaEvent.ArenaStatus);
         } catch {}
 

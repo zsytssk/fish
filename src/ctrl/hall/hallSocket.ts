@@ -35,7 +35,7 @@ export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
         hall_socket = socket;
 
         if (!socket) {
-            throw Error('ConnectFailed');
+            throw Error(`ConnectFailed:${ServerName.Hall}}`);
         }
     }
 

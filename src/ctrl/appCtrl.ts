@@ -6,6 +6,7 @@ import { Config } from '@app/data/config';
 import { isProd } from '@app/data/env';
 import { font_list, res } from '@app/data/res';
 import { AppModel } from '@app/model/appModel';
+import { modelState } from '@app/model/modelState';
 import { BgMonitor } from '@app/utils/bgMonitor';
 import { KeyBoardNumber } from '@app/utils/layaKeyboard';
 import Loading, { LoadingEvent } from '@app/view/scenes/loadingView';
@@ -14,6 +15,7 @@ import { ctrlState } from './ctrlState';
 import { AudioCtrl } from './ctrlUtils/audioCtrl';
 import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
+import { connectArenaHallSocket } from './hall/arenaSocket';
 import { HallCtrl } from './hall/hallCtrl';
 import { connectHallSocket } from './hall/hallSocket';
 
@@ -47,6 +49,20 @@ export class AppCtrl {
             const [isReplay, replayData] = await connectHallSocket();
             if (isReplay) {
                 this.enterGame(replayData);
+                return;
+            }
+        } catch {
+            if (isProd()) {
+                platform.hideLoading();
+                return;
+            }
+        }
+        try {
+            const isArenaReplay = await connectArenaHallSocket(true);
+            if (isArenaReplay) {
+                this.enterArenaGame({
+                    currency: modelState.app.user_info.cur_balance,
+                });
                 return;
             }
         } catch {

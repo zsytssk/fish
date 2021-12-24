@@ -20,11 +20,9 @@ import {
 import { SkillStatus } from '@app/model/game/skill/skillCoreCom';
 import { SkillModel } from '@app/model/game/skill/skillModel';
 import { getAimFish, modelState } from '@app/model/modelState';
-import { offMouseMove, onMouseMove, onNode } from '@app/utils/layaUtils';
+import { offMouseMove, onMouseMove } from '@app/utils/layaUtils';
 import { debug } from '@app/utils/log';
 import { onKeyBoardEvent, onNodeEvent } from '@app/utils/rxUtils';
-import AlertPop from '@app/view/pop/alert';
-import ShopPop from '@app/view/pop/shop';
 import TopTipPop from '@app/view/pop/topTip';
 import {
     activeAim,
@@ -34,9 +32,9 @@ import {
 import { activeExploding } from '@app/view/scenes/game/ani_wrap/exploding';
 import {
     offFishClick,
+    offPoolClick,
     onFishClick,
     onPoolClick,
-    offPoolClick,
     viewState,
 } from '@app/view/viewState';
 

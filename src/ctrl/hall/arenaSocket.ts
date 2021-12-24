@@ -1,3 +1,4 @@
+import { ArenaGameStatus, ArenaStatus } from '@app/api/arenaApi';
 import { Config } from '@app/data/config';
 import { isProd } from '@app/data/env';
 import { ArenaEvent, ServerErrCode, ServerName } from '@app/data/serverEvent';
@@ -6,6 +7,7 @@ import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
 import { getParams, tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
+import { getCompetitionInfo } from '@app/view/pop/popSocket';
 
 import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
 import {
@@ -18,22 +20,51 @@ import { commonSocket } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 
 let arena_hall_socket: WebSocketTrait;
-export async function connectArenaHallSocket(hall: HallCtrl) {
+export async function connectArenaHallSocket(checkReplay = false) {
     let socket = getSocket(ServerName.ArenaHall);
-    if (socket) {
-        return;
+    if (!socket) {
+        const {
+            arenaSocketUrl: url,
+            PublicKey: publicKey,
+            Host: host,
+        } = Config;
+        socket = await connectArenaSocket({
+            url,
+            publicKey,
+            host,
+            code: Config.code,
+            name: ServerName.ArenaHall,
+        });
+        arena_hall_socket = socket;
+
+        if (!socket) {
+            throw Error(`ConnectFailed:${ServerName.ArenaHall}}`);
+        }
     }
 
-    const { arenaSocketUrl: url, PublicKey: publicKey, Host: host } = Config;
-    socket = await connectArenaSocket({
-        url,
-        publicKey,
-        host,
-        code: Config.code,
-        name: ServerName.ArenaHall,
-    });
-    arena_hall_socket = socket;
-    bindArenaHallSocket(socket, hall);
+    if (checkReplay) {
+        const { status: arenaStatus } = await new Promise((resolve) => {
+            arena_hall_socket.event.once(ArenaEvent.ArenaStatus, (data) => {
+                modelState.app.arena_info.updateInfo(data);
+                resolve(data);
+            });
+            sendToArenaHallSocket(ArenaEvent.ArenaStatus);
+        });
+
+        if (arenaStatus !== ArenaStatus.Open) {
+            return false;
+        }
+
+        const {
+            myself: { status },
+        } = await getCompetitionInfo();
+
+        const isInGame =
+            status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
+            status === ArenaGameStatus.GAME_STATUS_PLAYING;
+
+        return isInGame;
+    }
 }
 
 export function sendToArenaHallSocket(
@@ -43,14 +74,18 @@ export function sendToArenaHallSocket(
 }
 
 /** 绑定ArenaSocket */
-function bindArenaHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
-    bindSocketEvent(socket, hall, {
+export async function bindArenaHallSocket(hall: HallCtrl) {
+    if (!arena_hall_socket) {
+        await connectArenaHallSocket();
+    }
+
+    bindSocketEvent(arena_hall_socket, hall, {
         [ArenaEvent.ArenaStatus]: (data, _code) => {
             modelState.app.arena_info.updateInfo(data);
         },
     });
 
-    commonSocket(socket, hall);
+    commonSocket(arena_hall_socket, hall);
 }
 /** 解除绑定ArenaSocket */
 export function offArenaHallSocket(hall: HallCtrl) {
