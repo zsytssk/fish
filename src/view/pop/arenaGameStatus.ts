@@ -5,7 +5,6 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { fade_out, scale_in, sleep } from '@app/utils/animate';
-import { startCount } from '@app/utils/count';
 
 export default class ArenaGameStatus
     extends ui.pop.alert.arenaGameStatusUI
@@ -14,7 +13,6 @@ export default class ArenaGameStatus
     public isShowEffect = false;
     public isPopupCenter = true;
     public static instance: ArenaGameStatus;
-    public zOrder = 100;
     constructor() {
         super();
     }
@@ -55,14 +53,7 @@ export default class ArenaGameStatus
 
         count_label.text = '3';
         await scale_in(count_box, 500, Ease.elasticOut);
-        console.log(
-            `test:>`,
-            count_box,
-            count_box.visible,
-            count_box.scaleX,
-            count_box.scaleY,
-            count_box.alpha,
-        );
+
         count_label.text = '2';
         await scale_in(count_box, 500, Ease.elasticOut);
         count_label.text = '1';
