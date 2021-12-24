@@ -1,7 +1,10 @@
 import { Component } from 'comMan/component';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { AudioRes } from '@app/data/audioRes';
+import { ServerErrCode } from '@app/data/serverEvent';
+import { GunEvent } from '@app/model/game/gun/gunModel';
 import {
     CaptureInfo,
     PlayerEvent,
@@ -21,6 +24,7 @@ export class NormalPlayerCom implements Component {
     private init() {
         const { model, game_ctrl } = this;
         const event = model.event;
+        const gun_event = model.gun.event;
         const view = game_ctrl.view;
 
         event.on(PlayerEvent.UpdateInfo, () => {
@@ -65,9 +69,23 @@ export class NormalPlayerCom implements Component {
             this,
         );
 
-        if (model.is_cur_player) {
-            view.setBulletNum(model.bullet_num);
+        if (!model.is_cur_player) {
+            return;
         }
+        view.setBulletNum(model.bullet_num);
+
+        gun_event.on(
+            GunEvent.NotEnoughBulletNum,
+            () => {
+                const socket = this.game_ctrl.getSocket();
+                if (this.game_ctrl.isTrial) {
+                    errorHandler(ServerErrCode.TrialNotBullet, null, socket);
+                } else {
+                    errorHandler(ServerErrCode.ReExchange, null, socket);
+                }
+            },
+            this,
+        );
     }
     public destroy() {
         const {

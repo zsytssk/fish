@@ -6,6 +6,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { Lang, InternationalTip } from '@app/data/internationalConfig';
 import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
+import { formatDateTime } from '@app/utils/dayjsUtil';
 import LayaProgressCtrl from '@app/utils/layaProgressCtrl';
 
 /** 声音的弹出层 */
@@ -41,8 +42,9 @@ export default class VoicePop
         this.music_ctrl = music_ctrl;
         this.voice_ctrl = voice_ctrl;
 
-        version.text = honor.utils.formatTimestamp(
+        version.text = formatDateTime(
             Number((window as any).version),
+            'YYYY/MM/DD HH:mm',
         );
     }
     private onMusicChange = (radio: number) => {

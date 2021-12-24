@@ -7,9 +7,8 @@ import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { AudioRes } from '@app/data/audioRes';
-import { ServerErrCode, ServerEvent } from '@app/data/serverEvent';
+import { ServerEvent } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import {
     AddBulletInfo,
@@ -210,18 +209,6 @@ export class PlayerCtrl extends ComponentManager {
         view.setMySelfStyle();
         this.resetGetBulletCost();
 
-        gun_event.on(
-            GunEvent.NotEnoughBulletNum,
-            () => {
-                const socket = this.game_ctrl.getSocket();
-                if (this.game_ctrl.isTrial) {
-                    errorHandler(ServerErrCode.TrialNotBullet, null, socket);
-                } else {
-                    errorHandler(ServerErrCode.ReExchange, null, socket);
-                }
-            },
-            this,
-        );
         gun_event.on(
             GunEvent.AutoShoot,
             (is_active: boolean) => {

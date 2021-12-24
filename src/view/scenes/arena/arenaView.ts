@@ -24,8 +24,9 @@ import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
 import { fade_in, fade_out } from '@app/utils/animate';
+import { clearCount, startCount } from '@app/utils/count';
 import { getSpriteInfo } from '@app/utils/dataUtil';
-import { getChildrenByName } from '@app/utils/layaQueryElements';
+import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
 import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
 import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
@@ -105,13 +106,20 @@ export default class ArenaView
         }
     }
 
+    private countId;
     public showTaskPanel(taskInfo: TaskTriggerRes) {
         ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
         task_panel.visible = true;
         task_award_num.text = taskInfo.award + '';
-        task_time_num.text = taskInfo.duration + '';
+
+        task_time_num.text = formatTime(taskInfo.duration, 2);
+        this.countId = startCount(taskInfo.duration, 1, (radio) => {
+            const count_now = Math.floor(taskInfo.duration * radio);
+            console.log(`test:>`, formatTime(count_now, 2));
+            task_time_num.text = formatTime(count_now, 2);
+        });
 
         const node_list = getChildrenByName(task_panel, 'task_item');
         for (const item of taskInfo.list) {
@@ -138,6 +146,8 @@ export default class ArenaView
         if (!data.isComplete) {
             return;
         }
+
+        clearCount(this.countId);
         const pos = { x: 1344 / 2, y: 750 / 2 };
         const { task_panel } = this;
         fade_out(task_panel);

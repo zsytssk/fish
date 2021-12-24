@@ -4,9 +4,7 @@ import { getStringLength } from 'honor/utils/getStringLength';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { startCount, clearCount } from '@app/utils/count';
-
-import { showNodeZone } from '../../../test/utils/testUtils';
+import { clearCount, startCount } from '@app/utils/count';
 
 type TipPopOpt = {
     count: number;

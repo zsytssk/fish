@@ -76,6 +76,7 @@ export type ServerUserInfo = {
     multiple: number;
     turretSkin: string;
     lockFish: string;
+    score: number;
     lockLeft: number;
     needEmit: boolean;
 };
@@ -99,6 +100,8 @@ export type TableInRep = {
     seatId: number;
     userId: string;
     multiple: number;
+    bulletNum: number;
+    needEmit?: boolean;
     turretSkin: string;
 };
 
