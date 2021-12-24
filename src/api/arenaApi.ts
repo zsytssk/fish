@@ -10,6 +10,14 @@ export enum ArenaStatus {
     Settle = 4,
 }
 
+export type ServerItemInfo = {
+    itemId: string;
+    number: number;
+    duration: number;
+    coolTime: number;
+    usedTime: number;
+};
+
 /** 房间状态 */
 export enum ArenaRoomStatus {
     /** 未开始  */

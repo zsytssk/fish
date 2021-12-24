@@ -51,7 +51,7 @@ export function leaveGame() {
 export async function connectSocket(
     config: SocketConfig,
 ): Promise<WebSocketTrait> {
-    const socket = await createSocket(config);
+    const socket = await createSocket(config, isProd() ? 3 : 1);
     if (!socket && isProd()) {
         AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
             location.reload();

@@ -1,5 +1,6 @@
 import {
     EnterGameRep,
+    ServerItemInfo,
     SettleData,
     TableInRep,
     TaskFinishRes,
@@ -313,7 +314,7 @@ function genSkillMap(items: ServerItemInfo[], is_cur_player: boolean) {
     for (const item of items) {
         const {
             itemId: item_id,
-            count: num,
+            number: num,
             usedTime: used_time,
             coolTime: cool_time,
             duration,
