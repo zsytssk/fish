@@ -73,14 +73,12 @@ export class SelectCtrl {
         this.selected_render = render;
     }
     public setList(list: any[]) {
-        setTimeout(() => {
-            const { select_list } = this;
-            select_list.list.array = list;
-            this.array = list;
-        });
+        const { select_list } = this;
+        select_list.list.array = list;
+        this.array = list;
     }
     public getList() {
-        return this.select_list.list.array;
+        return this.array;
     }
     public getCurIndex() {
         return this.select_index;
@@ -91,7 +89,7 @@ export class SelectCtrl {
         });
     }
     public getCurData() {
-        return this.select_list.list.array[this.select_index];
+        return this.array[this.select_index];
     }
     public destroy() {
         this.select_box = undefined;
