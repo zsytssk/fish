@@ -1,10 +1,13 @@
 import {
     EnterGameRep,
+    LockFishRep,
     ServerItemInfo,
     SettleData,
     TableInRep,
     TaskFinishRes,
     TaskRefreshRes,
+    TaskTriggerRes,
+    UseFreezeRep,
 } from '@app/api/arenaApi';
 import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
@@ -64,24 +67,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             game.onHit(data);
         },
-        [ServerEvent.FishBomb]: (data: UseBombRep, code: number) => {
-            if (code !== OK_CODE) {
-                game.resetSkill(SkillMap.Bomb, getCurUserId());
-                return;
-            }
-            game.activeSkill(SkillMap.Bomb, convertBombData(data));
-        },
-        [ServerEvent.UseBomb]: (data: UseBombRep, code: number) => {
-            if (code !== OK_CODE) {
-                game.resetSkill(SkillMap.Bomb, getCurUserId());
-                return;
-            }
-            const _data = convertBombData(data);
-            game.activeSkill(SkillMap.Bomb, {
-                ..._data,
-                is_bomb_fish: true,
-            } as BombInfo);
-        },
         [ServerEvent.UseFreeze]: (data: UseFreezeRep, code: number) => {
             if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
@@ -117,7 +102,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.UseSkin]: (data: UseSkinRep) => {
             game.changeSkin(data);
         },
-        [ArenaEvent.TriggerTask]: (data: TaskRefreshRes) => {
+        [ArenaEvent.TriggerTask]: (data: TaskTriggerRes) => {
             game.triggerTask(data);
         },
         [ArenaEvent.TaskRefresh]: (data: TaskRefreshRes) => {
@@ -161,8 +146,7 @@ export function convertEnterGame(data: EnterGameRep) {
         items,
         fish,
         isFirstStart,
-        frozen,
-        frozenLeft,
+        table: { frozen, frozenLeft },
         currency,
     } = data;
     const users = [] as PlayerInfo[];
@@ -261,20 +245,11 @@ function convertTableInData(data: TableInRep): PlayerInfo {
         skills,
     };
 }
-function convertBombData(data: UseBombRep): BombInfo {
-    const {
-        userId: user_id,
-        bombPoint: pos,
-        count: num,
-        killedFish: fish_list,
-    } = data;
-    const used_time = 0;
-    return { user_id, pos, num, used_time, fish_list };
-}
+
 function convertFreezeData(data: UseFreezeRep): FreezeInfo {
     const {
         userId: user_id,
-        count: num,
+        number: num,
         duration,
         frozenFishList: fish_list,
     } = data;
@@ -285,27 +260,16 @@ function convertAUtoShootData(data: AutoShootRep): AutoShootInfo {
     const { userId: user_id, autoShoot } = data;
     return { user_id, autoShoot };
 }
-// function convertUseLockData(data: UseLockRep): LockFishActiveInfo {
-//     const { userId: user_id, count: num, duration, lockedFish: fish } = data;
-//     const used_time = 0;
-//     return {
-//         user_id,
-//         used_time,
-//         num,
-//         fish,
-//         is_tip: true,
-//         duration: duration / 1000,
-//     };
-// }
+
 function convertLockFishData(data: LockFishRep): LockFishActiveInfo {
-    const { userId: user_id, eid: fish, needActive, duration, count } = data;
+    const { userId: user_id, eid: fish, needActive, duration, number } = data;
     return {
         user_id,
         fish,
         needActive,
         duration: duration / 1000,
         used_time: 0,
-        num: Number(count),
+        num: Number(number),
     };
 }
 

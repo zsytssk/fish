@@ -67,14 +67,15 @@ export class FishCtrl extends ComponentManager {
         );
     }
     public onBomb = async (data: FishBombInfo) => {
-        const { id: eid } = this.model;
+        const { model, game_ctrl } = this;
+        const { id: eid } = model;
         const { pos: bombPoint, fish_list, player } = data;
         const { need_emit, is_cur_player } = player;
         if (!need_emit) {
             return;
         }
 
-        await waitFishDestroy(this.model);
+        await waitFishDestroy(model);
         /** 在销毁的时候才发送命令给服务器 防止 将已经杀死的鱼发送给服务器 */
         const fishList = [] as string[];
         for (const fish of fish_list) {
@@ -90,7 +91,7 @@ export class FishCtrl extends ComponentManager {
         if (!is_cur_player) {
             res_data.robotId = player.user_id;
         }
-        this.game_ctrl.sendToGameSocket(ServerEvent.FishBomb, res_data);
+        game_ctrl.sendToGameSocket(ServerEvent.FishBomb, res_data);
     }; //tslint:disable-line
     public setVisible = (visible: boolean) => {
         this.view.setVisible(visible);

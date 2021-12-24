@@ -18,6 +18,21 @@ export type ServerItemInfo = {
     usedTime: number;
 };
 
+export type UseFreezeRep = {
+    userId: string;
+    number: number;
+    duration: number;
+    frozenFishList: string[];
+};
+
+export type LockFishRep = {
+    userId: string;
+    duration: number;
+    needActive: boolean;
+    eid: string;
+    number: number;
+};
+
 /** 房间状态 */
 export enum ArenaRoomStatus {
     /** 未开始  */
@@ -97,8 +112,11 @@ export type EnterGameRep = {
     rate: number;
     tableId: string;
     currency: string;
-    frozen: boolean;
-    frozenLeft: number;
+    table: {
+        tableId: string;
+        frozen: boolean;
+        frozenLeft: number;
+    };
     users: ServerUserInfo[];
     fish: ServerFishInfo[];
     items: ServerItemInfo[];

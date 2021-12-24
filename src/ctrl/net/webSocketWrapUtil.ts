@@ -28,7 +28,7 @@ const SocketMapEvent = {
 };
 
 /** 重试三次 */
-export async function createSocket(config: Config, retry = 3) {
+export async function createSocket(config: Config, retry = 3, wait = 3) {
     let socket: WebSocketTrait;
     for (let i = 0; i < retry; i++) {
         try {
@@ -45,7 +45,7 @@ export async function createSocket(config: Config, retry = 3) {
             })) as WebSocketTrait;
             break;
         } catch {
-            await sleep(3);
+            await sleep(wait);
             console.log(`test:>createSocket:>failed`, config.name);
             continue;
         }

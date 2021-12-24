@@ -38,7 +38,7 @@ import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
-import { setProps } from '@app/utils/utils';
+import { setProps, tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
@@ -285,6 +285,13 @@ export class GameCtrl implements GameCtrlUtils {
             },
             this,
         );
+    }
+    public buySkillTip() {
+        AlertPop.alert(tplStr('buySkillTip')).then((type) => {
+            if (type === 'confirm') {
+                ArenaGiftPop.preEnter();
+            }
+        });
     }
     public sendToGameSocket(...params: Parameters<WebSocketTrait['send']>) {
         const socket = getSocket(ServerName.ArenaHall);

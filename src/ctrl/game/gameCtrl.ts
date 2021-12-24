@@ -34,7 +34,7 @@ import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
-import { setProps } from '@app/utils/utils';
+import { setProps, tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import HelpPop from '@app/view/pop/help';
 import LotteryPop from '@app/view/pop/lottery';
@@ -80,6 +80,7 @@ export type GameCtrlUtils = {
     needUpSideDown(index: number): boolean;
     calcClientIndex(index: number): number;
     getSocket: () => WebSocketTrait;
+    buySkillTip: () => void;
     isTrial: EnterGameRep['isTrial'];
 };
 
@@ -208,6 +209,13 @@ export class GameCtrl implements GameCtrlUtils {
                     this.sendToGameSocket(ServerEvent.RoomOut);
                 }
             });
+        });
+    }
+    public buySkillTip() {
+        AlertPop.alert(tplStr('buySkillTip')).then((type) => {
+            if (type === 'confirm') {
+                ShopPop.preEnter();
+            }
         });
     }
     public needUpSideDown(server_index: number) {

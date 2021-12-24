@@ -68,14 +68,9 @@ export function skillPreActiveHandler(
     game_ctrl: GameCtrlUtils,
 ) {
     const lang = getLang();
-    const { buySkillTip, posBombTip, aimFish } = InternationalTip[lang];
+    const { posBombTip, aimFish } = InternationalTip[lang];
     if (model.skill_core.num <= 0) {
-        AlertPop.alert(buySkillTip).then((type) => {
-            if (type === 'confirm') {
-                ShopPop.preEnter();
-            }
-        });
-        return;
+        return game_ctrl.buySkillTip();
     }
     /** 二次点击取消激活状态 */
     if (model.skill_core.status !== SkillStatus.Normal) {
