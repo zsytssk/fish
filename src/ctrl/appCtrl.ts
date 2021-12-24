@@ -14,6 +14,7 @@ import { AudioCtrl } from './ctrlUtils/audioCtrl';
 import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
+import { connectHallSocket } from './hall/hallSocket';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -40,8 +41,14 @@ export class AppCtrl {
         });
 
         this.keyboard_number = new KeyBoardNumber();
-        await HallCtrl.preEnter();
         AudioCtrl.init();
+        const [isReplay, replayData] = await connectHallSocket();
+        if (isReplay) {
+            this.enterGame(replayData);
+            return;
+        }
+
+        await HallCtrl.preEnter();
     }
     /** 公共loading */
     public static async commonLoad(progress: ProgressFn) {

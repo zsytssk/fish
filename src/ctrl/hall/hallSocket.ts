@@ -1,6 +1,7 @@
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import {
     bindSocketEvent,
+    disconnectSocket,
     getSocket,
     offSocketEvent,
 } from '@app/ctrl/net/webSocketWrapUtil';
@@ -18,49 +19,42 @@ import { connectSocket } from './login';
  * @return 是否进入游戏
  */
 let hall_socket: WebSocketTrait;
-export async function connectHallSocket(hall: HallCtrl) {
+export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
     try {
         let socket = getSocket(ServerName.Hall);
-        if (socket) {
-            return true;
+        if (!socket) {
+            const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
+            socket = await connectSocket({
+                url,
+                publicKey,
+                host,
+                code: Config.code,
+                name: ServerName.Hall,
+            });
+            hall_socket = socket;
         }
-
-        const { SocketUrl: url, PublicKey: publicKey, Host: host } = Config;
-        socket = await connectSocket({
-            url,
-            publicKey,
-            host,
-            code: Config.code,
-            name: ServerName.Hall,
-        });
-        hall_socket = socket;
 
         /** 确保在复盘时已经有用户数据，不然进入游戏之后无法判断当前用户从而导致一堆问题 */
         await new Promise((resolve) => {
-            bindHallSocket(hall_socket, hall);
-
-            hall_socket.event.once(
-                ServerEvent.UserAccount,
-                () => {
-                    resolve(undefined);
-                },
-                hall,
-            );
+            hall_socket.event.once(ServerEvent.UserAccount, (data) => {
+                modelState.app.initUserInfo(data);
+                resolve(undefined);
+            });
             sendToHallSocket(ServerEvent.UserAccount, { domain: Config.Host });
         });
 
-        const data = await checkReplay(hall);
+        const data = await checkReplay();
         if (data.isReplay) {
             // debugger;
-            hall.enterGame(data);
-            return true;
+            return [true, data];
         }
-        return false;
+        return [false];
     } catch (err) {
         error(`connectHallSocket:>error`, err);
-        return false;
+        return [false];
     }
 }
+
 export function sendToHallSocket(
     ...params: Parameters<WebSocketTrait['send']>
 ) {
@@ -72,11 +66,16 @@ export function offHallSocket(hall: HallCtrl) {
     }
     offSocketEvent(hall_socket, hall);
     offCommon(hall_socket, hall);
+    disconnectSocket(ServerName.Hall);
+    hall_socket = undefined;
 }
-function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
-    commonSocket(socket, hall);
+export async function bindHallSocket(hall: HallCtrl) {
+    if (!hall_socket) {
+        await connectHallSocket();
+    }
+    commonSocket(hall_socket, hall);
 
-    bindSocketEvent(socket, hall, {
+    bindSocketEvent(hall_socket, hall, {
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
@@ -87,7 +86,7 @@ function bindHallSocket(socket: WebSocketTrait, hall: HallCtrl) {
     });
 }
 
-export async function checkReplay(hall: HallCtrl) {
+export async function checkReplay(bindObj?: any) {
     return new Promise<CheckReplayRep>((resolve, _reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
@@ -95,7 +94,7 @@ export async function checkReplay(hall: HallCtrl) {
             (data: CheckReplayRep) => {
                 resolve(data);
             },
-            hall,
+            bindObj,
         );
         socket.send(ServerEvent.CheckReplay);
     });

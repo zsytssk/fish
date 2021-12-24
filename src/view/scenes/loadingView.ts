@@ -50,6 +50,7 @@ export default class Loading extends ui.scenes.loadingUI {
     public onHide() {
         log('load:>onHide');
         Loading.timeout = setTimeout(() => {
+            log('load:>onHide1');
             Loading.event_com.emit(LoadingEvent.Hide);
             this.close();
         }, 300);

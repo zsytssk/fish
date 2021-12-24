@@ -31,7 +31,12 @@ import {
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
-import { offHallSocket, connectHallSocket, roomIn } from './hallSocket';
+import {
+    offHallSocket,
+    connectHallSocket,
+    roomIn,
+    bindHallSocket,
+} from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
 
 export class HallCtrl {
@@ -84,7 +89,7 @@ export class HallCtrl {
         return ctrlState.app.enterArenaGame(data);
     }
     private async init() {
-        const enter_game = await connectHallSocket(this);
+        await bindHallSocket(this);
 
         try {
             console.log(`test:>connectArenaHallSocket`);
@@ -98,11 +103,7 @@ export class HallCtrl {
             // sendToArenaHallSocket(ArenaEvent.MatchChampionList);
         } catch {}
 
-        if (enter_game) {
-            return this.destroy();
-        } else {
-            AudioCtrl.playBg(AudioRes.HallBg);
-        }
+        AudioCtrl.playBg(AudioRes.HallBg);
 
         this.initModelEvent();
         if (getItem('guide') !== 'end') {
@@ -170,7 +171,6 @@ export class HallCtrl {
         offBindEvent(this);
         offLangChange(this);
         offHallSocket(this);
-        disconnectSocket(ServerName.Hall);
         arena_info.event.offAllCaller(this);
         honor.director.closeAllDialogs();
         HallCtrl.leave();
