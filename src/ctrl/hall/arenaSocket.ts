@@ -56,7 +56,8 @@ export async function connectArenaHallSocket(checkReplay = false) {
         if (
             roomStatus !== ArenaStatus.Open ||
             (userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP &&
-                userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER)
+                userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
+                userStatus !== ArenaGameStatus.GAME_STATUS_PLAYING)
         ) {
             return false;
         }

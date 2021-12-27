@@ -51,7 +51,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         [SocketEvent.Reconnecting]: (try_index: number) => {
             console.log(`test:>Reconnecting`, try_index);
             if (try_index === 0) {
-                TipPop.tip(tplStr('logoutTip'), {
+                TipPop.tip(tplStr('NetError'), {
                     count: 10,
                     show_count: true,
                     auto_hide: false,

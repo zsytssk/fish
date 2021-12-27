@@ -106,7 +106,8 @@ export default class ArenaCompetitionPop
         const { btn_sign, cost_label } = this;
         if (
             status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
-            status === ArenaGameStatus.GAME_STATUS_PLAYING
+            status === ArenaGameStatus.GAME_STATUS_PLAYING ||
+            status === ArenaGameStatus.GAME_STATUS_TABLE_OUT
         ) {
             (btn_sign as Button).label = '继续游戏';
             cost_label.visible = false;

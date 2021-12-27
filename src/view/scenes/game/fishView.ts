@@ -181,7 +181,7 @@ export class FishView extends Sprite {
     public syncPos(pos: Point, velocity: SAT.Vector, horizon_turn: boolean) {
         const { turn_ani, fish_ani, visible, shadow_node, shadow_info } = this;
 
-        if (!visible) {
+        if (!visible || !shadow_node) {
             return;
         }
         const angle = vectorToDegree(velocity) + 90;
