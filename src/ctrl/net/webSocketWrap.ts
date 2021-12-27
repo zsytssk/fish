@@ -32,7 +32,6 @@ const ping_pong_map = {
 
 /** 默认socket的事件 */
 export const SocketEvent = {
-    Init: 'init',
     Connect: 'connect',
     Reconnecting: 'reconnecting',
     Reconnected: 'reconnected',
@@ -44,8 +43,9 @@ export const SocketEvent = {
 
 export interface WebSocketTrait {
     event: EventCom;
-    setParams(params: {}): void;
-    send(cmd: string, data?: {}): void;
+    setParams(params: any): void;
+    send(cmd: string, data?: any): void;
+    connect(): Promise<boolean>;
     disconnect(): void;
     reconnect(): void;
     config: Config;
@@ -57,7 +57,7 @@ export class WebSocketWrapCtrl
     implements WebSocketTrait
 {
     private ws: WebSocketCtrl;
-    private params: {} = {};
+    private params: any = {};
     public event: EventCom;
     public config: Config;
 
@@ -65,19 +65,18 @@ export class WebSocketWrapCtrl
         super();
         this.config = config;
         this.init();
+        WebSocketCtrl.log = log;
     }
     private init() {
         const event = new EventCom();
         this.addCom(event);
         this.event = event;
-        this.connect();
     }
-    private connect() {
+    public async connect() {
         const new_url = genUrl(this.config);
         const ws = new WebSocketCtrl({
             url: new_url,
             handlers: {
-                onInit: this.onInit,
                 onData: this.onData,
                 onClose: this.onClose,
                 onEnd: this.onEnd,
@@ -86,7 +85,11 @@ export class WebSocketWrapCtrl
             },
             ping_pong_map,
         });
-        this.ws = ws;
+        const status = await ws.connect();
+        if (status) {
+            this.ws = ws;
+        }
+        return status;
     }
     public get status() {
         if (this.ws) {
@@ -95,7 +98,7 @@ export class WebSocketWrapCtrl
         return 'CLOSED';
     }
     /** 设置本地默认参数 */
-    public setParams(params: {}) {
+    public setParams(params: any) {
         this.params = {
             ...this.params,
             ...params,
@@ -108,7 +111,7 @@ export class WebSocketWrapCtrl
             params,
             config: { name },
         } = this;
-        log(`${name}:>发送:>`, cmd, data);
+        log(`${name}:>发送:>${cmd}`, data);
         const send_data = {
             cmd,
             params: {
@@ -134,9 +137,7 @@ export class WebSocketWrapCtrl
         }
         this.ws.reconnect();
     }
-    private onInit = () => {
-        this.event.emit(SocketEvent.Init);
-    }; //tslint:disable-line
+
     private onData = (raw_msg: string) => {
         const { name } = this.config;
         const data_str = raw_msg.substring(1);

@@ -1,5 +1,4 @@
 import { EventCom } from 'comMan/eventCom';
-
 import { Status } from 'honor/net/websocket';
 
 import {
@@ -14,17 +13,17 @@ export class MockWebSocket implements WebSocketTrait {
     public event = new EventCom();
     public sendEvent = new EventCom();
     public config: Config;
-    public reconnect() {}
     public status = 'OPEN' as Status;
     constructor(config: Config) {
         this.config = config;
-        setTimeout(() => {
-            this.event.emit(SocketEvent.Init);
-        });
     }
     public setParams(params: {}) {
         log(params);
     }
+    public connect() {
+        return Promise.resolve(true);
+    }
+    public reconnect() {}
     public send(cmd: string, data: {}) {
         this.sendEvent.emit(cmd, data);
         log(`mockWebSocket:>`, cmd, data);

@@ -3,17 +3,11 @@ import { JSEncrypt } from 'jsencrypt';
 import { Observable, Subscriber } from 'rxjs';
 
 import { EventCom } from 'comMan/eventCom';
-import { Utils } from 'laya/utils/Utils';
 
 import { sleep } from '@app/utils/animate';
-import { error } from '@app/utils/log';
+import { log, error } from '@app/utils/log';
 
-import {
-    Config,
-    WebSocketTrait,
-    WebSocketWrapCtrl,
-    SocketEvent,
-} from './webSocketWrap';
+import { Config, WebSocketTrait, WebSocketWrapCtrl } from './webSocketWrap';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();
@@ -29,28 +23,22 @@ const SocketMapEvent = {
 
 /** 重试三次 */
 export async function createSocket(config: Config, retry = 3, wait = 3) {
-    let socket: WebSocketTrait;
     for (let i = 0; i < retry; i++) {
-        try {
-            socket = (await new Promise((resolve, _reject) => {
-                const { name } = config;
-                const ctor = socket_ctor || WebSocketWrapCtrl;
-                const socket = new ctor(config);
+        const { name } = config;
+        const ctor = socket_ctor || WebSocketWrapCtrl;
+        const socket = new ctor(config);
+        const status = await socket.connect();
 
-                socket.event.once(SocketEvent.Init, () => {
-                    socket_map_event.emit(SocketMapEvent.Create, name, socket);
-                    socket_map.set(name, socket);
-                    resolve(socket);
-                });
-            })) as WebSocketTrait;
-            break;
-        } catch {
+        log(`test:>createSocket:>${name}:>${i + 1}=${status}`);
+        if (status) {
+            socket_map_event.emit(SocketMapEvent.Create, name, socket);
+            socket_map.set(name, socket);
+            return socket;
+        } else {
             await sleep(wait);
-            console.log(`test:>createSocket:>failed`, config.name);
             continue;
         }
     }
-    return socket;
 }
 export function waitCreateSocket(name: string) {
     return new Promise((resolve, _reject) => {

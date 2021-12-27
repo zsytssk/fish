@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { log } from '@app/utils/log';
+import { sleep } from '../utils/tool';
 
 export type Config = {
     url: string;
@@ -13,8 +13,6 @@ export type PingPongMap = {
 };
 
 export type Handlers = {
-    /** 初始化 */
-    onInit?: () => void;
     /** 接收数据 */
     onData?: (data: string) => void;
     /** 出现错误 */
@@ -36,12 +34,8 @@ export class WebSocketCtrl {
     public url: string;
     public handlers: Handlers;
     private ws: WebSocket;
-    /** 重连次数 */
-    private reconnect_count = 0;
     /** 重连最大次数 */
     private reconnect_max = 3;
-    /** 重连倒计时 */
-    private reconnect_timeout: number;
     /** 心跳倒计时 - timeout  */
     private heartbeat_interval: number;
     /** 心跳倒计时 - 没收到返回 timeout */
@@ -53,26 +47,35 @@ export class WebSocketCtrl {
     /** ping pong 对应的字符 */
     private ping_pong_map?: PingPongMap;
     public status: Status;
+    public static log: (...params: any) => void;
     constructor(config: Config) {
         this.url = config.url;
         this.handlers = config.handlers;
         this.ping_pong_map = config.ping_pong_map;
-        this.connect();
     }
-    public connect() {
-        if (this.ws) {
-            return;
-        }
+    public async connect() {
         const { url } = this;
-        log('WebSocket:> 连接:>', url);
+        WebSocketCtrl.log?.('WebSocket:> 连接:>', url, this.status);
 
         this.status = 'CONNECTING';
-        const ws = new WebSocket(url);
-        ws.onopen = this.onopen;
-        ws.onmessage = this.onmessage;
-        ws.onerror = this.onError;
-        ws.onclose = this.onclose;
-        this.ws = ws;
+        return new Promise<boolean>((resolve, _reject) => {
+            try {
+                const ws = new WebSocket(url);
+                ws.onopen = () => {
+                    ws.onmessage = this.onmessage;
+                    ws.onerror = this.onError;
+                    ws.onclose = this.onclose;
+                    this.ws = ws;
+                    this.onopen();
+                    resolve(true);
+                };
+                ws.onerror = ws.onclose = () => {
+                    resolve(false);
+                };
+            } catch {
+                resolve(false);
+            }
+        });
     }
     public send(msg: string) {
         const { status, ws } = this;
@@ -82,24 +85,12 @@ export class WebSocketCtrl {
         ws.send(msg);
     }
     private onopen = () => {
-        log('WebSocket:> 连接上了');
+        WebSocketCtrl.log?.('WebSocket:> 连接上了');
+
         this.status = 'OPEN';
-        const { onInit, onReconnected } = this.handlers;
 
         if (this.ping_pong_map) {
             this.startHeartBeat();
-        }
-
-        this.reconnect_count = 0;
-        /** 第一次是初始化, 后面都是重连 */
-        if (typeof onInit === 'function') {
-            onInit();
-            this.handlers.onInit = null;
-        } else {
-            /** 重连成功 */
-            if (typeof onReconnected === 'function') {
-                onReconnected();
-            }
         }
     }; //tslint:disable-line
     private onmessage = (ev: MessageEvent) => {
@@ -126,6 +117,10 @@ export class WebSocketCtrl {
         }
     }; //tslint:disable-line
     private onclose = () => {
+        if (!this.ws) {
+            return;
+        }
+
         if (typeof this.handlers.onClose === 'function') {
             this.handlers.onClose();
         }
@@ -135,30 +130,18 @@ export class WebSocketCtrl {
     /**
      * 重连
      */
-    public reconnect() {
-        log('WebSocket:> 断线重连');
-        const { reconnect_count, reconnect_max, handlers } = this;
-        this.status = 'CONNECTING';
-        if (reconnect_count > reconnect_max) {
-            this.end();
-            return;
-        }
-        if (
-            typeof handlers.onReconnect === 'function' &&
-            reconnect_count === 0
-        ) {
-            handlers.onReconnect(reconnect_count);
-        }
-        this.reset();
+    public async reconnect() {
+        WebSocketCtrl.log?.('WebSocket:> 断线重连');
+        const { reconnect_max, handlers } = this;
 
-        /** 第一次马上重连, 后面 延迟3s重连 */
-        const time = reconnect_count === 0 ? 0 : 3000;
-        clearTimeout(this.reconnect_timeout);
-        this.reconnect_timeout = setTimeout(() => {
+        for (let i = 0; i < reconnect_max; i++) {
+            handlers.onReconnect?.(i + 1);
+            this.reset();
             this.connect();
-        }, time) as any;
-
-        this.reconnect_count++;
+            await sleep(3);
+        }
+        this.end();
+        return;
     }
     public startHeartBeat() {
         const { heartbeat_time, heartbeat_gap_time } = this;
@@ -200,7 +183,7 @@ export class WebSocketCtrl {
     }
     /** 真正的关闭 */
     private end() {
-        log('WebSocket:> 断开连接');
+        WebSocketCtrl.log?.('WebSocket:> 断开连接');
         this.reset();
         this.status = 'CLOSED';
         if (this.handlers.onEnd) {

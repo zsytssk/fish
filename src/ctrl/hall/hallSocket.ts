@@ -8,9 +8,6 @@ import {
 import { Config } from '@app/data/config';
 import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
-import { error } from '@app/utils/log';
-import { tplStr } from '@app/utils/utils';
-import AlertPop from '@app/view/pop/alert';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';

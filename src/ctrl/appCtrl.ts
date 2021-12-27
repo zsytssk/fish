@@ -45,6 +45,7 @@ export class AppCtrl {
 
         this.keyboard_number = new KeyBoardNumber();
         AudioCtrl.init();
+
         try {
             const [isReplay, replayData] = await connectHallSocket();
             if (isReplay) {
@@ -57,6 +58,7 @@ export class AppCtrl {
                 return;
             }
         }
+
         try {
             const isArenaReplay = await connectArenaHallSocket(true);
             if (isArenaReplay) {
