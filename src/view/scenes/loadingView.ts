@@ -40,7 +40,7 @@ export default class Loading extends ui.scenes.loadingUI {
     }
 
     public onShow() {
-        log('load:>onShow', this);
+        log('load:>onShow');
         clearTimeout(Loading.timeout);
         Loading.event_com.emit(LoadingEvent.Show);
         this.open(false);

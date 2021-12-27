@@ -2,6 +2,7 @@ import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 
 import {
+    ArenaGameStatus,
     ArenaRoomStatus,
     ArenaStatus,
     type ArenaStatusData,
@@ -12,7 +13,8 @@ export const ArenaModelEvent = {
 };
 
 export class ArenaModel extends ComponentManager {
-    status: ArenaStatus;
+    room_status: ArenaStatus;
+    user_status: ArenaGameStatus;
     open_timezone: LocalRange;
     game_status: ArenaRoomStatus;
     user_id:string;
@@ -24,8 +26,9 @@ export class ArenaModel extends ComponentManager {
         return this.getCom(EventCom);
     }
     public updateInfo(info: ArenaStatusData) {
-        const { status, startDate,userId, endDate } = info;
-        this.status = status;
+        const { roomStatus, userStatus, startDate,userId, endDate } = info;
+        this.room_status = roomStatus;
+        this.user_status = userStatus;
         this.user_id = userId;
         this.open_timezone = [startDate, endDate];
         this.event.emit(ArenaModelEvent.UpdateInfo, this);

@@ -47,7 +47,8 @@ export type ArenaStatusData = {
     endDate: number;
     startDate: number;
     userId: string;
-    status: ArenaStatus;
+    roomStatus: ArenaStatus;
+    userStatus: ArenaGameStatus;
 };
 
 /** 游戏状态 */
@@ -62,8 +63,10 @@ export enum ArenaGameStatus {
     GAME_STATUS_SIGNUP_OVER = 4,
     /** 游戏中 */
     GAME_STATUS_PLAYING = 5,
+    /** 用户暂时离开 */
+    GAME_STATUS_TABLE_OUT = 6,
     /** 已完成结算 */
-    GAME_STATUS_SETTLEMENT = 6,
+    GAME_STATUS_SETTLEMENT = 7,
 }
 
 export type CompetitionInfo = {

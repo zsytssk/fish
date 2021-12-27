@@ -100,7 +100,9 @@ export class HallCtrl {
 
         try {
             await bindArenaHallSocket(this);
-            sendToArenaHallSocket(ArenaEvent.ArenaStatus);
+            sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
+                currency: modelState.app.user_info.cur_balance,
+            });
         } catch {}
 
         AudioCtrl.playBg(AudioRes.HallBg);

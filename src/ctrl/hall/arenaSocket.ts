@@ -43,27 +43,25 @@ export async function connectArenaHallSocket(checkReplay = false) {
     }
 
     if (checkReplay) {
-        const { status: arenaStatus } = await new Promise((resolve) => {
+        const { roomStatus, userStatus } = await new Promise((resolve) => {
             arena_hall_socket.event.once(ArenaEvent.ArenaStatus, (data) => {
                 modelState.app.arena_info.updateInfo(data);
                 resolve(data);
             });
-            sendToArenaHallSocket(ArenaEvent.ArenaStatus);
+            sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
+                currency: modelState.app.user_info.cur_balance,
+            });
         });
 
-        if (arenaStatus !== ArenaStatus.Open) {
+        if (
+            roomStatus !== ArenaStatus.Open ||
+            (userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP &&
+                userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER)
+        ) {
             return false;
         }
 
-        const {
-            myself: { status },
-        } = await getCompetitionInfo();
-
-        const isInGame =
-            status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
-            status === ArenaGameStatus.GAME_STATUS_PLAYING;
-
-        return isInGame;
+        return true;
     }
 }
 

@@ -237,6 +237,7 @@ export function getCompetitionInfo() {
                 resolve(_data);
             },
         );
+        console.log(`test:>arenaStatus`, modelState.app.user_info.cur_balance);
         socket.send(ArenaEvent.CompetitionInfo, {
             currency: modelState.app.user_info.cur_balance,
         });
