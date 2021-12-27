@@ -11,7 +11,7 @@ import { SkillMap } from '@app/data/config';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { getCurPlayer } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
-import { addZeroToNum } from '@app/utils/utils';
+import { addZeroToNum, tplStr } from '@app/utils/utils';
 
 import AlertPop from './alert';
 import { buyItem } from './popSocket';
@@ -81,11 +81,9 @@ export default class BuyBulletPop
     }
     private setNum(num: number) {
         const { price } = this.buy_info;
-        const lang = getLang();
-        const { beyondBulletNum } = InternationalTip[lang];
         const user = getCurPlayer();
         if (num * price > user.bullet_num) {
-            TipPop.tip(beyondBulletNum);
+            TipPop.tip(tplStr('beyondBulletNum'));
             num = Math.floor(user.bullet_num / price);
         }
         this.buy_info.num = num;

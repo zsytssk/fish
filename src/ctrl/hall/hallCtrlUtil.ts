@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Lang, InternationalTip } from '@app/data/internationalConfig';
 import { ServerErrCode } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
@@ -77,9 +78,6 @@ export function offBindEvent(item: any) {
 export function getAllLangList() {
     const result = [];
     for (const key in Lang) {
-        if (!Lang.hasOwnProperty(key)) {
-            continue;
-        }
         result.push(Lang[key]);
     }
     return result;

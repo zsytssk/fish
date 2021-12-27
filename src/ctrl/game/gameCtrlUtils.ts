@@ -99,10 +99,11 @@ export function tipExchange(data: Data) {
     if (!data.currency) {
         return;
     }
-    const tip = tplStr('enterGameCostTip', {
-        bringAmount: data.bringAmount,
-        bulletNum: data.bulletNum,
-        currency: data.currency,
-    });
-    TipPop.tip(tip);
+    TipPop.tip(
+        tplStr('enterGameCostTip', {
+            bringAmount: data.bringAmount,
+            bulletNum: data.bulletNum,
+            currency: data.currency,
+        }),
+    );
 }

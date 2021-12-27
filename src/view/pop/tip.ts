@@ -11,6 +11,7 @@ type TipPopOpt = {
     show_count?: boolean;
     click_through?: boolean;
     auto_hide?: boolean;
+    repeat?: boolean;
 };
 const DefaultOpt = {
     count: 2,
@@ -56,23 +57,30 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                 ...DefaultOpt,
                 ...opt,
             };
-            const { count, show_count, click_through, auto_hide } = opt;
+            const { count, show_count, click_through, auto_hide, repeat } = opt;
             const new_msg = show_count ? `${msg} ${count}` : msg;
-
             this.mouseThrough = click_through;
-            clearCount(this.count_id);
-            this.count_id = startCount(count, 1, (radio: number) => {
-                if (show_count) {
-                    const count_now = Math.floor(count * radio);
-                    this.setTipText(`${msg} ${count_now}`);
-                }
-                if (radio === 0) {
-                    if (auto_hide) {
-                        this.close();
+
+            const fn = () => {
+                clearCount(this.count_id);
+                this.count_id = startCount(count, 1, (radio: number) => {
+                    if (show_count) {
+                        const count_now = Math.floor(count * radio);
+                        this.setTipText(`${msg} ${count_now}`);
                     }
-                    resolve();
-                }
-            });
+                    if (radio === 0) {
+                        if (auto_hide) {
+                            this.close();
+                        }
+                        if (repeat) {
+                            fn();
+                        }
+                        resolve();
+                    }
+                });
+            };
+
+            fn();
             this.show();
             this.setTipText(new_msg);
         });

@@ -9,12 +9,15 @@ import { sleep } from '../../utils/testUtils';
 export const alert_test = {
     topTip: async (msg) => {
         TipPop.tip(tplStr('logoutTip'), {
-            count: 20,
+            count: 5,
             show_count: true,
             auto_hide: false,
             click_through: false,
+            repeat: true,
         });
-        // TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
+        setTimeout(() => {
+            TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
+        }, 10 * 1000);
     },
     showTip: async (msg) => {
         // TipPop.tip(msg || 'this is a test', {
