@@ -105,6 +105,9 @@ for (const key in AudioRes) {
 
 const AlertRes = [
     'pop/alert/alert.json',
+    'pop/alert/topTip.json',
+    'pop/alert/tip.json',
+    'pop/alert/alert.json',
     'image/pop/alert/alert_bg_01.png',
     'image/pop/alert/alert_bg_02.png',
     'image/pop/alert/btn_close.png',

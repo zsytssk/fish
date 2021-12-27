@@ -35,7 +35,6 @@ export const SocketEvent = {
     Connect: 'connect',
     Reconnecting: 'reconnecting',
     Reconnected: 'reconnected',
-    Close: 'close',
     Error: 'error',
     End: 'end',
     CheckError: 'CheckError',
@@ -78,7 +77,6 @@ export class WebSocketWrapCtrl
             url: new_url,
             handlers: {
                 onData: this.onData,
-                onClose: this.onClose,
                 onEnd: this.onEnd,
                 onReconnect: this.onReconnect,
                 onReconnected: this.onReconnected,
@@ -170,9 +168,6 @@ export class WebSocketWrapCtrl
             case ServerMsgType.MsgAck:
                 break;
         }
-    }; //tslint:disable-line
-    private onClose = () => {
-        this.event.emit(SocketEvent.Close);
     }; //tslint:disable-line
     private onEnd = () => {
         this.event.emit(SocketEvent.End);

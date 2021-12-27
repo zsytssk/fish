@@ -1,5 +1,6 @@
 import { tipExchange } from '@app/ctrl/game/gameCtrlUtils';
 import { asyncOnly, clearAsyncOnly } from '@app/utils/asyncQue';
+import { tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
 
@@ -7,7 +8,13 @@ import { sleep } from '../../utils/testUtils';
 
 export const alert_test = {
     topTip: async (msg) => {
-        TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
+        TipPop.tip(tplStr('logoutTip'), {
+            count: 20,
+            show_count: true,
+            auto_hide: false,
+            click_through: false,
+        });
+        // TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
     },
     showTip: async (msg) => {
         // TipPop.tip(msg || 'this is a test', {

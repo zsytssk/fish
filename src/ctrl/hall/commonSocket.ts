@@ -50,16 +50,16 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             }
         },
         /** 重连 */
-        [SocketEvent.Reconnecting]: (try_no: number) => {
-            if (try_no !== 0) {
-                return;
+        [SocketEvent.Reconnecting]: (try_index: number) => {
+            console.log(`test:>Reconnecting`, try_index);
+            if (try_index === 0) {
+                TipPop.tip(tplStr('logoutTip'), {
+                    count: 20,
+                    show_count: true,
+                    auto_hide: false,
+                    click_through: false,
+                });
             }
-            TipPop.tip(tplStr('logoutTip'), {
-                count: 20,
-                show_count: true,
-                auto_hide: false,
-                click_through: false,
-            });
         },
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
