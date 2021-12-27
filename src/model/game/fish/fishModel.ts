@@ -111,6 +111,7 @@ export class FishModel extends ComponentManager {
     private onMoveChange = (displace_info: DisplaceInfo) => {
         const { body } = this;
         const { pos, velocity, is_complete, visible } = displace_info;
+
         if (is_complete) {
             return this.destroy();
         }
@@ -120,6 +121,7 @@ export class FishModel extends ComponentManager {
             this.velocity = velocity;
 
             body.update(pos, velocity);
+
             this.event.emit(FishEvent.Move, {
                 pos,
                 velocity,

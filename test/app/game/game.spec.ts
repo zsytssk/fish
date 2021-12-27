@@ -13,11 +13,7 @@ export const game_test = {
             return;
         }
 
-        await injectAfter(HallCtrl, 'preEnter', () => {
-            setTimeout(() => {
-                ctrlState.app.enterGame({});
-            });
-        });
+        ctrlState.app.enterGame({});
 
         if (!add_player) {
             return;

@@ -204,8 +204,14 @@ export function convertEnterGame(data: EnterGameRep) {
     const fish_list: string[] = [];
     if (frozen && fish) {
         for (const fish_item of fish) {
-            if (fish_item.frozen) {
+            if (!fish_item.frozen) {
+                continue;
+            }
+            if (!fish_item.group) {
                 fish_list.push(fish_item.eid);
+            }
+            for (const group_item of fish_item.group) {
+                fish_list.push(group_item.eid);
             }
         }
     }

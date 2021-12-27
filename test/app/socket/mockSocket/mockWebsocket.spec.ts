@@ -26,6 +26,7 @@ export const mock_web_socket_test = {
             name: 'game',
             host: '',
         });
+
         await createSocket({
             url: '',
             publicKey: '',
@@ -168,7 +169,7 @@ export const mock_web_socket_test = {
                     ServerEvent.UseFreeze,
                     {
                         userId: test_data.userId,
-                        duration: 10000,
+                        duration: 30 * 1000,
                         count: 1000,
                         frozenFishList: fish_arr,
                     } as UseFreezeRep,

@@ -14,23 +14,23 @@ import { arena_test } from './arena/arena.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { shoal_test } from './game/shoal/shoal.spec';
+import { skill_test } from './game/skill.spec';
 import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
+    platform.hideLoading();
     commonTest();
     await mock_web_socket_test.create();
     modelState.app.user_info.setUserId(test_data.userId);
-    (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
-    // mock_web_socket_test.runTest(ServerEvent.Hit);
-    // mock_web_socket_test.runTest(ServerEvent.FishBomb);
-    // mock_web_socket_test.runTest(ServerEvent.UseBomb);
-    // mock_web_socket_test.runTest(ServerEvent.UseLock);
-    // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
-    await arena_test.enter(true);
+    // (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
+    (mock_web_socket_test[ServerEvent.UseFreeze] as () => void)();
+    await game_test.enterGame();
 
-    await sleep(0.5);
-    shoal_test.addShoal1();
-    player_test.add_cur_player();
+    await sleep(5);
+    skill_test.freezing();
+    // shoal_test.addShoal1();
+    // player_test.add_cur_player();
+
     // await sleep(0.5);
     // grand_prix_test.showTask();
 }

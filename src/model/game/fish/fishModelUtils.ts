@@ -58,7 +58,7 @@ export function createFishGroup(
     }
     const displace = createFishDisplace(data);
     const move_com = new DisplaceMoveCom(displace);
-
+    const size = group.length;
     /**  onUpdate + destroy 需要提前处理,
      * onUpdate 在原来的update基础上需要加上相对的 pos
      * destroy 只有所有的鱼个都 destroy 就把原来的 move_com destroy
@@ -74,7 +74,7 @@ export function createFishGroup(
                         sub_fn(_move_info);
                     },
                     id: index,
-                    isStop: false,
+                    isStop: undefined,
                 });
             },
             () => {
@@ -90,6 +90,7 @@ export function createFishGroup(
                 const hasStopItem = [...update_fn_map.values()].find(
                     (item) => item.isStop === true,
                 );
+
                 if (!hasStopItem) {
                     move_com.start();
                 }

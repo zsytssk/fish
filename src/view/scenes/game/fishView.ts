@@ -184,6 +184,7 @@ export class FishView extends Sprite {
         if (!visible || !shadow_node) {
             return;
         }
+
         const angle = vectorToDegree(velocity) + 90;
         if (horizon_turn) {
             /** angle(-90 - 90) + 90 = 0-180 */

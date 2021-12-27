@@ -128,12 +128,10 @@ export const skill_test = {
     },
 
     freezing: () => {
-        fish_test.addFish();
+        fish_test.addFishGroup();
 
-        setTimeout(() => {
-            const [_, { id }] = [...modelState.app.game.fish_map][0];
-            modelState.app.game.freezing_com.freezing(5, [id]);
-        }, 5000);
+        const fish_list = [...modelState.app.game.fish_map].map(([id]) => id);
+        modelState.app.game.freezing_com.freezing(5, fish_list);
     },
 
     uiSetNum: () => {

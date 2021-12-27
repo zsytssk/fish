@@ -324,9 +324,12 @@ export class GameCtrl implements GameCtrlUtils {
         this.currency = currency;
         this.addPlayers(users);
         this.addFish(fish);
+
         /** 复盘冰冻 */
         if (frozen) {
-            model.freezing_com.freezing(frozen_left, fish_list);
+            setTimeout(() => {
+                model.freezing_com.freezing(frozen_left, fish_list);
+            });
         }
     }
     public calcClientIndex(server_index: number) {

@@ -28,12 +28,14 @@ export class FishCtrl extends ComponentManager {
         this.init();
     }
     private init() {
+        const { visible } = this.model;
         this.addCom(new TimeoutCom());
         this.initEvent();
+
+        this.setVisible(visible);
+        this.syncPos();
     }
     private initEvent() {
-        const { visible } = this.model;
-        this.setVisible(visible);
         const event = this.model.event;
         const { view } = this;
         event.on(FishBombEvent.FishBomb, this.onBomb, this);
@@ -99,6 +101,7 @@ export class FishCtrl extends ComponentManager {
     public syncPos = () => {
         const { view } = this;
         const { pos, velocity, horizon_turn, visible } = this.model;
+
         view.syncPos(pos, velocity, horizon_turn);
     }; //tslint:disable-line
     public beCapture = (handler: FuncVoid) => {

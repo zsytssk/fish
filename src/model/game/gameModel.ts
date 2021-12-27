@@ -76,6 +76,7 @@ export class GameModel extends ComponentManager {
         } else {
             /** 创建鱼组 */
             const fish_arr = createFishGroup(fish_info, this);
+
             for (const fish of fish_arr) {
                 fish_map.set(fish.id, fish);
                 this.event.emit(GameEvent.AddFish, fish);
