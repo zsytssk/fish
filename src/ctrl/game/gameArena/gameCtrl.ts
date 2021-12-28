@@ -47,12 +47,13 @@ import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import ArenaShopPop from '@app/view/pop/arenaShop';
 import VoicePop from '@app/view/pop/voice';
-import GameView, { AddFishViewInfo } from '@app/view/scenes/arena/arenaView';
+import GameView from '@app/view/scenes/arena/arenaView';
 import {
     activeFreeze,
     stopFreeze,
 } from '@app/view/scenes/game/ani_wrap/freeze';
 import { activeShoalWave } from '@app/view/scenes/game/ani_wrap/shoalWave';
+import { AddFishViewInfo } from '@app/view/scenes/game/gameView';
 import Loading from '@app/view/scenes/loadingView';
 
 import { AppCtrl } from '../../appCtrl';
@@ -225,10 +226,11 @@ export class GameCtrl implements GameCtrlUtils {
         event.on(
             GameEvent.AddFish,
             (fish: FishModel) => {
-                const { type, id, horizon_turn, currency } = fish;
+                const { type, group_id, id, horizon_turn, currency } = fish;
                 const fish_view_info: AddFishViewInfo = {
                     type,
                     currency,
+                    group_id,
                     id,
                     horizon_turn,
                 };

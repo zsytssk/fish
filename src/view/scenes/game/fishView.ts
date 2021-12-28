@@ -29,6 +29,7 @@ import {
 export type FishViewInfo = {
     type: string;
     id: string;
+    group_id?: string;
     currency: string;
 };
 export class FishView extends Sprite {

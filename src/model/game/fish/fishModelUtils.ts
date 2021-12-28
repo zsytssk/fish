@@ -47,7 +47,13 @@ export function createFishGroup(
     data: ServerFishInfo,
     game: GameModel,
 ): FishModel[] {
-    const { fishId: groupType, group, score, currencyFish } = data;
+    const {
+        eid: group_id,
+        fishId: groupType,
+        group,
+        score,
+        currencyFish,
+    } = data;
     const result = [] as FishModel[];
     const { group: sprite_group } = getSpriteInfo(
         'fish',
@@ -141,6 +147,7 @@ export function createFishGroup(
         } as MoveCom;
         const fish_data: FishData = {
             id,
+            group_id,
             type,
             score,
             currency: currencyFish,

@@ -185,7 +185,7 @@ export class PlayerCtrl extends ComponentManager {
             GunEvent.CastFish,
             (data: { fish: FishModel; level: number }) => {
                 const {
-                    fish: { id: eid },
+                    fish: { id: eid, group_id: gid },
                     level: multiple,
                 } = data;
                 const { user_id, is_cur_player: is_cur } = this.model;
@@ -194,6 +194,9 @@ export class PlayerCtrl extends ComponentManager {
                     eid,
                     multiple,
                 };
+                if (gid) {
+                    _data.gid = gid;
+                }
                 if (!is_cur) {
                     _data.robotId = user_id;
                 }

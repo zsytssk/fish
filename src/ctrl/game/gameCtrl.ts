@@ -227,9 +227,10 @@ export class GameCtrl implements GameCtrlUtils {
         event.on(
             GameEvent.AddFish,
             (fish: FishModel) => {
-                const { type, id, horizon_turn, currency } = fish;
+                const { type, group_id, id, horizon_turn, currency } = fish;
                 const fish_view_info: AddFishViewInfo = {
                     type,
+                    group_id,
                     currency,
                     id,
                     horizon_turn,

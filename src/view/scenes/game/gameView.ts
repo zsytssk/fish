@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 
 import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
-import { loadScene, ProgressFn, runScene } from 'honor/utils/loadRes';
+import { ProgressFn } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
@@ -28,25 +28,27 @@ import GunBoxView from './gunBoxView';
 import SkillItemView from './skillItemView';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
+export type FishViewClickInfo = { id: string; group_id: string };
 const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
+
 export default class GameView
     extends ui.scenes.game.gameUI
     implements HonorScene
 {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
-    private fish_click_observer: Subscriber<string>;
+    private fish_click_observer: Subscriber<FishViewClickInfo>;
     private pool_click_observer: Subscriber<Point>;
     private resize_scale: number;
     private bg_num = 1;
     private bullet_box_pos: number;
     private bullet_box_dir: BulletBoxDir;
     public static async preEnter(progress: ProgressFn) {
-        const game: GameView = await honor.director.runScene(
+        const game = (await honor.director.runScene(
             'scenes/game/game.scene',
             progress,
-        );
+        )) as GameView;
         const { ani_wrap, ani_overlay } = game;
         setProps(viewState, { game, ani_wrap, ani_overlay });
         return game;
@@ -208,7 +210,7 @@ export default class GameView
     }
 
     /** 获取点击pool中的位置 */
-    public onFishClick(once = false): Observable<string> {
+    public onFishClick(once = false): Observable<FishViewClickInfo> {
         this.offFishClick();
         const observable = new Observable((subscriber) => {
             const { pool } = this;
@@ -216,7 +218,8 @@ export default class GameView
                 e.stopPropagation();
                 const { target } = e;
                 if (target instanceof FishView) {
-                    subscriber.next(target.info.id);
+                    const { id, group_id } = target.info;
+                    subscriber.next({ id, group_id });
                 }
             };
             subscriber.add(() => {
@@ -224,7 +227,7 @@ export default class GameView
             });
             pool.on(Event.CLICK, pool, fun);
             this.fish_click_observer = subscriber;
-        }) as Observable<string>;
+        }) as Observable<FishViewClickInfo>;
 
         if (once) {
             return observable.pipe(first());

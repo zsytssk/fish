@@ -34,6 +34,7 @@ export type FishMoveData = {
 export type FishData = {
     type: string;
     id: string;
+    group_id?: string;
     score: number;
     currency: string;
 };
@@ -47,6 +48,8 @@ export enum FishStatus {
 export class FishModel extends ComponentManager {
     /** 唯一标示 */
     public id: string;
+    /* 鱼组id */
+    public group_id?: string;
     /** 鱼的类型 */
     public type: string;
     /** 位置 */
@@ -75,11 +78,11 @@ export class FishModel extends ComponentManager {
         this.initCom(data);
     }
     private initCom(data: FishData) {
-        const { type, id, score, currency } = data;
+        const { type, group_id, id, score, currency } = data;
 
         setProps(
             this as FishModel,
-            { type, id, score: score || 0, currency } as FishData,
+            { type, id, group_id, score: score || 0, currency } as FishData,
         );
         const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;

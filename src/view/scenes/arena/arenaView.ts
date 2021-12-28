@@ -35,13 +35,13 @@ import { createSkeletonPool } from '@app/view/viewStateUtils';
 
 import { viewState } from '../../viewState';
 import { showAwardCircle } from '../game/ani_wrap/award/awardBig';
-import { FishView, FishViewInfo } from '../game/fishView';
+import { FishView } from '../game/fishView';
+import { AddFishViewInfo, FishViewClickInfo } from '../game/gameView';
 import GunBoxView from '../game/gunBoxView';
 import SkillItemView from '../game/skillItemView';
 
 type PlayerType = 'current' | 'other';
 
-export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 export type BulletBoxDir = 'left' | 'right';
 export default class ArenaView
     extends ui.scenes.arena.gameUI
@@ -49,7 +49,7 @@ export default class ArenaView
 {
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upside_down: boolean;
-    private fish_click_observer: Subscriber<string>;
+    private fish_click_observer: Subscriber<FishViewClickInfo>;
     private pool_click_observer: Subscriber<Point>;
     private resize_scale: number;
     private bg_num = 1;
@@ -242,7 +242,7 @@ export default class ArenaView
     }
 
     /** 获取点击pool中的位置 */
-    public onFishClick(once = false): Observable<string> {
+    public onFishClick(once = false): Observable<FishViewClickInfo> {
         this.offFishClick();
         const observable = new Observable((subscriber) => {
             const { pool } = this;
@@ -250,7 +250,8 @@ export default class ArenaView
                 e.stopPropagation();
                 const { target } = e;
                 if (target instanceof FishView) {
-                    subscriber.next(target.info.id);
+                    const { id, group_id } = target.info;
+                    subscriber.next({ id, group_id });
                 }
             };
             subscriber.add(() => {
@@ -258,7 +259,7 @@ export default class ArenaView
             });
             pool.on(Event.CLICK, pool, fun);
             this.fish_click_observer = subscriber;
-        }) as Observable<string>;
+        }) as Observable<FishViewClickInfo>;
 
         if (once) {
             return observable.pipe(first());

@@ -111,6 +111,7 @@ type ShootReq = {
 type ShootRep = ShootReq;
 type HitReq = {
     eid: string;
+    gid?: string;
     robotId?: string;
     multiple: number;
 };
@@ -168,13 +169,16 @@ type UseLockRep = {
 /** 锁定鱼 */
 type LockFishReq = {
     eid: string;
+    gid?: string;
     robotId?: string;
+    needActive: boolean;
 };
 type LockFishRep = {
     userId: string;
     duration: number;
     needActive: boolean;
     eid: string;
+    gid?: string;
     count: number;
 };
 type FishBombReq = {

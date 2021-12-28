@@ -116,11 +116,12 @@ export function skillPreActiveHandler(
         TopTipPop.tip(aimFish, 2);
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
-        onFishClick(true).subscribe((fish_id: string) => {
-            game_ctrl.sendToGameSocket(ServerEvent.LockFish, {
-                eid: fish_id,
-                needActive: true,
-            } as LockFishRep);
+        onFishClick(true).subscribe(({ id, group_id }) => {
+            const data = { eid: id, needActive: true } as LockFishReq;
+            if (group_id) {
+                data.gid = group_id;
+            }
+            game_ctrl.sendToGameSocket(ServerEvent.LockFish, data);
         });
     }
 }
@@ -140,10 +141,15 @@ export function skillActiveHandler(
             if (!player_model.is_cur_player) {
                 debug(`lock:>skill:>skillActiveHandler`, is_tip);
                 if (player_model.need_emit && is_tip && fish) {
-                    game_ctrl.sendToGameSocket(ServerEvent.LockFish, {
-                        robotId: player_model.user_id,
+                    const data = {
                         eid: fish.id,
-                    } as LockFishReq);
+                        robotId: player_model.user_id,
+                    } as LockFishReq;
+
+                    if (fish.group_id) {
+                        data.gid = fish.group_id;
+                    }
+                    game_ctrl.sendToGameSocket(ServerEvent.LockFish, data);
                 }
                 return;
             }
@@ -156,10 +162,12 @@ export function skillActiveHandler(
             activeAimFish(fish, fire, gun_pos);
 
             // 选中鱼
-            onFishClick().subscribe((fish_id: string) => {
-                game_ctrl.sendToGameSocket(ServerEvent.LockFish, {
-                    eid: fish_id,
-                } as LockFishRep);
+            onFishClick().subscribe(({ id, group_id }) => {
+                const data = { eid: id, needActive: true } as LockFishReq;
+                if (group_id) {
+                    data.gid = group_id;
+                }
+                game_ctrl.sendToGameSocket(ServerEvent.LockFish, data);
             });
             // ...
         } else if (model instanceof BombModel) {
