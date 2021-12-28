@@ -1,0 +1,22 @@
+{
+    "eid": "F:Ntx_tfI.8",
+    "fishId": "G4",
+    "currencyFish": "",
+    "score": 5,
+    "group": [
+        { "eid": "F:Ntx_tfI.9", "index": 0 },
+        { "eid": "F:Ntx_tfI.A", "index": 1 },
+        { "eid": "F:Ntx_tfI.B", "index": 2 },
+        { "eid": "F:Ntx_tfI.C", "index": 3 },
+        { "eid": "F:Ntx_tfI.D", "index": 4 }
+    ],
+    "displaceType": "path",
+    "displaceLen": "",
+    "pathNo": "66",
+    "usedTime": 29540,
+    "totalTime": 59540,
+    "funList": [],
+    "pathList": [],
+    "reverse": false,
+    "frozen": false
+}

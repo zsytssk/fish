@@ -11,6 +11,8 @@ import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 
 import { body_test } from './body.spec';
+import fish1Json from './data/fish1.json';
+import fish2Json from './data/fish2.json';
 
 type FishModelPath = FishModel & {
     path_no: number;
@@ -94,35 +96,9 @@ export const fish_test = {
 
     /** 鱼组的测试 */
     addFishGroup: () => {
-        // body_test.runTest('show_shape');
         const game = modelState.app.game;
-        const typeId = 'G2';
-        const pathId = 3;
-        const time = 40 * 1000;
-        const fish_data = {
-            eid: '00' + typeId,
-            fishId: `${typeId}`,
-            displaceType: 'path',
-            pathNo: `${pathId}`,
-            totalTime: time,
-            usedTime: time / 3,
-            reverse: true,
-            group: [
-                {
-                    eid: `00g1`,
-                    index: 1,
-                },
-                {
-                    eid: `00g2`,
-                    index: 2,
-                },
-                {
-                    eid: `00g3`,
-                    index: 3,
-                },
-            ],
-        } as ServerFishInfo;
-        game.addFish(fish_data);
+
+        game.addFish(fish1Json as any);
     },
 
     /** 鱼组的测试 */

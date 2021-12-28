@@ -18,10 +18,6 @@ export const arena_test = testBuild({
             return;
         }
 
-        if (!HallCtrl.instance) {
-            await injectAfter(HallCtrl, 'preEnter');
-        }
-
         await ctrlState.app.enterArenaGame({});
 
         await sleep(1);

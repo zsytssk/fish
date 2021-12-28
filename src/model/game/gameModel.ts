@@ -63,6 +63,7 @@ export class GameModel extends ComponentManager {
     public addFish(fish_info: ServerFishInfo) {
         const { group } = fish_info;
         const { fish_map } = this;
+
         if (!group) {
             /** 创建单个鱼 */
             const fish = createFish(fish_info, this);

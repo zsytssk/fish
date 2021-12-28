@@ -11,6 +11,7 @@ import { getParams } from '@app/utils/utils';
 import { test_data } from '../testData';
 import { sleep } from '../utils/testUtils';
 import { arena_test } from './arena/arena.spec';
+import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
 import { shoal_test } from './game/shoal/shoal.spec';
@@ -24,10 +25,11 @@ export async function localTest() {
     modelState.app.user_info.setUserId(test_data.userId);
     // (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
     (mock_web_socket_test[ServerEvent.UseFreeze] as () => void)();
-    await game_test.enterGame();
+    await arena_test.enter();
 
-    await sleep(5);
-    skill_test.freezing();
+    await sleep(2);
+    fish_test.addFishGroup();
+    // skill_test.freezing();
     // shoal_test.addShoal1();
     // player_test.add_cur_player();
 

@@ -232,6 +232,7 @@ export class GameCtrl implements GameCtrlUtils {
                     id,
                     horizon_turn,
                 };
+
                 const fish_view = view.addFish(fish_view_info);
                 new FishCtrl(fish_view, fish, this);
             },
