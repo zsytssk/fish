@@ -1,3 +1,5 @@
+import { app_test } from 'test/app/app.spec';
+
 import { default as random } from 'lodash/random';
 
 import {
@@ -26,14 +28,20 @@ import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip } from '@app/data/internationalConfig';
 import { res } from '@app/data/res';
-import { ArenaEvent, ServerEvent, ServerName } from '@app/data/serverEvent';
+import {
+    ArenaEvent,
+    ARENA_OK_CODE,
+    OK_CODE,
+    ServerEvent,
+    ServerName,
+} from '@app/data/serverEvent';
 import { FreezingComEvent } from '@app/model/game/com/gameFreezeCom';
 import { ShoalEvent } from '@app/model/game/com/shoalCom';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
-import { isCurUser } from '@app/model/modelState';
+import { isCurUser, modelState } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -46,6 +54,7 @@ import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import ArenaShopPop from '@app/view/pop/arenaShop';
+import { competitionSignUp } from '@app/view/pop/popSocket';
 import VoicePop from '@app/view/pop/voice';
 import GameView from '@app/view/scenes/arena/arenaView';
 import {
@@ -437,15 +446,28 @@ export class GameCtrl implements GameCtrlUtils {
     }
     public async GameSettle(data: SettleData) {
         await ArenaGameStatus.end();
-        await ArenaSettlePop.preEnter(data);
+        await ArenaSettlePop.preEnter(data).then((type) => {
+            if (type === 'continue') {
+                competitionSignUp(data.currency).then((_data) => {
+                    if (_data.code !== ARENA_OK_CODE) {
+                        this.leave();
+                    } else {
+                        this?.model.destroy();
+                        ctrlState.app.enterArenaGame({
+                            currency: _data.currency,
+                        });
+                    }
+                });
+            } else {
+                this.leave();
+            }
+        });
     }
     public tableOut(data: TableOutRep) {
         const { model } = this;
         const { userId } = data;
         if (isCurUser(userId, true)) {
-            disableAllUserOperation();
-            model.destroy();
-            HallCtrl.preEnter();
+            this.leave();
         } else {
             const player = model.getPlayerById(userId);
             if (!player) {
@@ -456,7 +478,11 @@ export class GameCtrl implements GameCtrlUtils {
             player.destroy();
         }
     }
-
+    private leave() {
+        disableAllUserOperation();
+        this?.model.destroy();
+        HallCtrl.preEnter();
+    }
     public reset() {
         this.model.clear();
     }

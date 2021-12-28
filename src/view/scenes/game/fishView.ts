@@ -233,12 +233,13 @@ export class FishView extends Sprite {
         if (this?.fish_ani?.filters) {
             this.fish_ani.filters = [];
         }
-        if (this.shadow_node) {
+
+        if (!this.destroyed) {
             this.shadow_node.rotation = 0;
+            recoverSkeletonPool('fish', type, this.fish_ani);
+            recoverSkeletonPool('other', 'coin_light', this.coin_light);
+            recoverImgPool(`image/game/shadow`, this.shadow_node);
         }
-        recoverSkeletonPool('other', 'coin_light', this.coin_light);
-        recoverSkeletonPool('fish', type, this.fish_ani);
-        recoverImgPool(`image/game/shadow`, this.shadow_node);
 
         this.fish_ani = undefined;
         this.shadow_node = undefined;

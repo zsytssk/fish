@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Lang, InternationalTip } from '@app/data/internationalConfig';
 import { ServerErrCode } from '@app/data/serverEvent';
+import { ArenaModel, ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap, UserInfoEvent } from '@app/model/userInfo/userInfoModel';
 import AlertPop from '@app/view/pop/alert';
@@ -15,6 +16,7 @@ export function onLangChange(item: any, callback: (lang: Lang) => void) {
         }
     });
 }
+
 export function getLang() {
     return modelState.app?.user_info?.lang;
 }
@@ -23,6 +25,7 @@ export function offLangChange(item: any) {
     const { event } = modelState.app.user_info;
     event.offAllCaller(item);
 }
+
 export function onCurBalanceChange(
     item: any,
     callback: (type: string) => void,
@@ -53,6 +56,20 @@ export function onNicknameChange(
         callback(nickname);
     });
 }
+
+export function onArenaInfoChange(
+    item: any,
+    callback: (info: ArenaModel) => void,
+) {
+    const { arena_info } = modelState.app;
+    const { event } = arena_info;
+    event.on(ArenaModelEvent.UpdateInfo, callback, item);
+
+    setTimeout(() => {
+        callback(arena_info);
+    });
+}
+
 export function onAccountChange(
     item: any,
     callback: (info: AccountMap) => void,
@@ -68,11 +85,12 @@ export function onAccountChange(
 }
 
 export function offBindEvent(item: any) {
-    const { user_info, setting } = modelState.app;
+    const { user_info, setting, arena_info } = modelState.app;
     const { event: user_info_event } = user_info;
     const { event: setting_event } = setting;
     user_info_event.offAllCaller(item);
     setting_event.offAllCaller(item);
+    arena_info.event.offAllCaller(item);
 }
 
 export function getAllLangList() {

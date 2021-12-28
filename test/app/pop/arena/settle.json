@@ -1,7 +1,10 @@
 {
-    "userId": "zsy",
-    "ranking": 12,
-    "maxDayScore": 4000,
-    "score": 1200,
-    "rankingAward": 20
+    "currency": "BTC",
+    "fee": "1",
+    "isGuest": false,
+    "maxDayScore": 0,
+    "ranking": 2,
+    "rankingAward": 1,
+    "score": 0,
+    "userId": "G61ca771168e6c3a190a3d482"
 }

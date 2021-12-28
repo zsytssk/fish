@@ -2,7 +2,9 @@ import honor, { HonorDialog } from 'honor';
 import { loadRes } from 'honor/utils/loadRes';
 import { Label } from 'laya/ui/Label';
 
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
 import { getMonthDateList } from '@app/utils/dayjsUtil';
@@ -36,6 +38,7 @@ export default class ArenaRewardRecordPop
             use_exist: true,
             stay_scene: true,
         })) as ArenaRewardRecordPop;
+        AudioCtrl.play(AudioRes.PopShow);
         return item_record;
     }
     public static preLoad() {

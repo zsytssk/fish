@@ -2,7 +2,9 @@ import honor, { HonorDialog } from 'honor';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { getAllChildren } from '@app/utils/layaQueryElements';
 import { resizeContain } from '@app/utils/layaUtils';
@@ -21,7 +23,7 @@ export default class ArenaHelpPop
             use_exist: true,
             stay_scene: true,
         })) as ArenaHelpPop;
-
+        AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
     public async onAwake() {

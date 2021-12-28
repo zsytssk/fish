@@ -3,6 +3,8 @@ import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
 import { GiftItem, GiftList } from '@app/api/arenaApi';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 
@@ -21,7 +23,7 @@ export default class ArenaGiftPop
             use_exist: true,
             stay_scene: true,
         })) as ArenaGiftPop;
-
+        AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
     public async onAwake() {

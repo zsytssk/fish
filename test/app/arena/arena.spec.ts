@@ -43,12 +43,10 @@ export const arena_test = testBuild({
     },
     setPlayerNum: async () => {
         const game = viewState.game as ArenaView;
-        game.setPlayerBulletNum('current', 1000);
+        game.setScorePanelVisible(false, true);
         await sleep(1);
-        game.setPlayerBulletNum('other', 1000);
+        game.setBulletScoreNum(false, 1000, 100);
         await sleep(1);
-        game.setPlayerScore('current', 1000);
-        await sleep(1);
-        game.setPlayerScore('other', 1000);
+        game.setScorePanelVisible(false, false);
     },
 });

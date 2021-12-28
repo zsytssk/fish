@@ -238,7 +238,7 @@ export class PlayerCtrl extends ComponentManager {
         });
     }
     private handleAutoShoot(model: AutoShootModel, view: Sprite) {
-        view.on(Event.CLICK, view, (e: Event) => {
+        view.on(Event.CLICK, this, (e: Event) => {
             e.stopPropagation();
             log('auto shoot');
             model.toggle();
@@ -304,6 +304,7 @@ export class PlayerCtrl extends ComponentManager {
         Laya.stage.offAllCaller(view);
         player_event.offAllCaller(this);
         gun_event.offAllCaller(this);
+        getAutoShootSkillItem().offAllCaller(view);
 
         view.destroy();
         this.view = undefined;

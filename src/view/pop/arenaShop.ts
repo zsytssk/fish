@@ -33,7 +33,6 @@ export default class ArenaShopPop
     public isModal = true;
     /** 是否初始化... */
     public static async preEnter(data: ArenaShopPopInfo) {
-        AudioCtrl.play(AudioRes.PopShow);
         const shop_dialog = (await honor.director.openDialog(
             {
                 dialog: ArenaShopPop,
@@ -46,7 +45,7 @@ export default class ArenaShopPop
                 },
             },
         )) as ArenaShopPop;
-
+        AudioCtrl.play(AudioRes.PopShow);
         return shop_dialog;
     }
     public static preLoad() {

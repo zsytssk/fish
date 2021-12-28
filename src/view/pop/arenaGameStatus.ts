@@ -17,13 +17,13 @@ export default class ArenaGameStatus
         super();
     }
     public static async start() {
-        AudioCtrl.play(AudioRes.PopShow);
         const pop = (await honor.director.openDialog({
             dialog: ArenaGameStatus,
             use_exist: true,
             show_effect: false,
         })) as ArenaGameStatus;
         this.instance = pop;
+        AudioCtrl.play(AudioRes.PopShow);
         await pop.start();
         return pop;
     }

@@ -245,12 +245,13 @@ export function getCompetitionInfo() {
 }
 
 /** Arena 报名 */
-export function competitionSignUp() {
+export function competitionSignUp(currency?: string) {
     return new Promise((resolve, _reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         socket.event.once(ArenaEvent.SignUp, (data: SignUpRes, code) => {
             resolve({
-                currency: modelState.app.user_info.cur_balance,
+                code,
+                currency: currency || modelState.app.user_info.cur_balance,
                 ...data,
             });
         });

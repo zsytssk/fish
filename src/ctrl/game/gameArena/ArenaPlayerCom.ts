@@ -73,12 +73,17 @@ export class ArenaPlayerCom implements Component {
             this,
         );
 
+        view.setScorePanelVisible(is_cur_player, true);
         view.setBulletScoreNum(is_cur_player, bullet_num, score);
     }
     public destroy() {
         const {
-            model: { event: player_event },
+            game_ctrl,
+            model: { event: player_event, is_cur_player },
         } = this;
+
+        const view = game_ctrl.view;
+        view?.setScorePanelVisible(is_cur_player, false);
         player_event.offAllCaller(this);
     }
 }

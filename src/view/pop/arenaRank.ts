@@ -5,6 +5,8 @@ import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
 import { GetDayRanking, GetDayRankingItem } from '@app/api/arenaApi';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 
 import { arenaGetDayRanking } from './popSocket';
@@ -21,6 +23,7 @@ export default class ArenaRankPop
             stay_scene: true,
         })) as ArenaRankPop;
 
+        AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
     public async onAwake() {

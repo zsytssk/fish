@@ -5,8 +5,10 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -30,7 +32,7 @@ export default class ArenaCompetitionPop
             use_exist: true,
             stay_scene: true,
         })) as ArenaCompetitionPop;
-
+        AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
     public async onAwake() {

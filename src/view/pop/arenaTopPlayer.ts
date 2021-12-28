@@ -2,6 +2,8 @@ import honor, { HonorDialog } from 'honor';
 import { Handler } from 'laya/utils/Handler';
 
 import { GetHallOfFameData, GetHallOfFameDataItem } from '@app/api/arenaApi';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 
 import { arenaGetHallOfFame } from './popSocket';
@@ -18,6 +20,7 @@ export default class ArenaTopPlayerPop
             stay_scene: true,
         })) as ArenaTopPlayerPop;
 
+        AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
     public async onAwake() {

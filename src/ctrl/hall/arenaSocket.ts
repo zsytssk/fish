@@ -87,8 +87,10 @@ export async function bindArenaHallSocket(hall: HallCtrl) {
     commonSocket(arena_hall_socket, hall);
 }
 /** 解除绑定ArenaSocket */
-export function offArenaHallSocket(hall: HallCtrl) {
-    offSocketEvent(arena_hall_socket, hall);
+export function offArenaHallSocket(hall: any) {
+    if (arena_hall_socket) {
+        offSocketEvent(arena_hall_socket, hall);
+    }
 }
 
 export async function waitConnectGameArena() {

@@ -154,21 +154,7 @@ export default class ArenaView
         await TipPop.tip('任务完成');
         await showAwardCircle(pos, data.award, true);
     }
-    public setPlayerScore(player_type: PlayerType, score: number) {
-        const { my_score_panel, other_score_panel } = this;
-        const panel =
-            player_type === 'current' ? my_score_panel : other_score_panel;
 
-        const score_num_node = panel.getChildByName('score_num') as Label;
-        score_num_node.text = `${score}`;
-    }
-    public setPlayerBulletNum(player_type: PlayerType, bullet_num: number) {
-        const { my_score_panel, other_score_panel } = this;
-        const panel =
-            player_type === 'current' ? my_score_panel : other_score_panel;
-        const bullet_num_node = panel.getChildByName('bullet_num') as Label;
-        bullet_num_node.text = `${bullet_num}`;
-    }
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */
     public upSideDown() {
         const { pool, gun_wrap, ani_wrap, ani_overlay } = this;
@@ -281,7 +267,17 @@ export default class ArenaView
         gun_wrap.addChild(gun);
         return gun;
     }
+    public setScorePanelVisible(is_cur_player: boolean, visible: boolean) {
+        const panel = is_cur_player
+            ? this.my_score_panel
+            : this.other_score_panel;
 
+        if (visible) {
+            fade_in(panel, 200);
+        } else {
+            fade_out(panel, 200);
+        }
+    }
     public setBulletScoreNum(
         is_cur_player: boolean,
         bullet_num: number,

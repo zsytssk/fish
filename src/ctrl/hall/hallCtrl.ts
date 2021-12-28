@@ -2,7 +2,6 @@ import honor from 'honor';
 import {
     fakeLoad,
     mergeProgressObserver,
-    promiseToProgressObserver,
     toProgressObserver,
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
@@ -13,7 +12,6 @@ import { gotoGuide } from '@app/ctrl/guide/guideConfig';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
 import { ArenaEvent } from '@app/data/serverEvent';
-import { ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { getItem } from '@app/utils/localStorage';
@@ -23,24 +21,19 @@ import Loading from '@app/view/scenes/loadingView';
 import { AppCtrl } from '../appCtrl';
 import {
     bindArenaHallSocket,
-    connectArenaHallSocket,
+    offArenaHallSocket,
     sendToArenaHallSocket,
 } from './arenaSocket';
 import {
     getAllLangList,
     offBindEvent,
-    offLangChange,
     onAccountChange,
+    onArenaInfoChange,
     onCurBalanceChange,
     onLangChange,
     onNicknameChange,
 } from './hallCtrlUtil';
-import {
-    bindHallSocket,
-    connectHallSocket,
-    offHallSocket,
-    roomIn,
-} from './hallSocket';
+import { bindHallSocket, offHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
 
 export class HallCtrl {
@@ -132,11 +125,11 @@ export class HallCtrl {
         onNicknameChange(this, (nickname: string) => {
             view.setNickname(nickname);
         });
-        arena_info.event.on(
-            ArenaModelEvent.UpdateInfo,
-            (info) => view.updateArenaInfo(info),
-            this,
-        );
+        onArenaInfoChange(this, (info) => {
+            console.log(`test:>onArenaInfoChange`, view.destroyed);
+            view.updateArenaInfo(info);
+        });
+
         view.setFlagData(getAllLangList());
     }
     public selectCoin = (index: number) => {
@@ -168,12 +161,10 @@ export class HallCtrl {
     }; // tslint:disable-line
 
     public destroy() {
-        const { arena_info } = modelState.app;
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
-        offLangChange(this);
         offHallSocket(this);
-        arena_info.event.offAllCaller(this);
+        offArenaHallSocket(this);
         honor.director.closeAllDialogs();
         HallCtrl.leave();
     }

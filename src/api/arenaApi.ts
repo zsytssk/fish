@@ -92,7 +92,7 @@ export type SignUpRes = {
     mode: number;
     currency: string;
     status: ArenaGameStatus;
-};
+} & { code?: number };
 
 /** 用户的数据 */
 export type ServerUserInfo = {
@@ -168,7 +168,11 @@ export type SettleData = {
     ranking: number;
     maxDayScore: number;
     score: number;
+    currency: string;
     rankingAward: number;
+
+    fee: string;
+    isGuest: boolean;
 };
 
 export type GetHallOfFameDataItem = {
