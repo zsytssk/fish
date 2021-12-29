@@ -21,6 +21,7 @@ export async function getAllFiles() {
         if (config.containFiles.indexOf(etx) === -1) {
             continue;
         }
+
         const file = path.resolve(bin, name);
         const stat = await lstatFile(file);
         allSize += stat.size;
@@ -31,5 +32,5 @@ export async function getAllFiles() {
 }
 
 export function genMd5FromStr(str: string) {
-    return 'f' + MD5(str);
+    return ('f' + MD5(str)).slice(0, 11);
 }

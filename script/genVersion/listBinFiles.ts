@@ -1,4 +1,5 @@
 import * as path from 'path';
+
 import { exists } from '../zutil/ls/asyncUtil';
 import { excuse } from '../zutil/ls/exec';
 import { calcClosestDepth } from '../zutil/ls/pathUtil';
@@ -108,6 +109,10 @@ async function findBinFile(ori_file: string): Promise<string | string[]> {
     /** laya/pages  中直接copy到 bin 文件 */
     if (ori_file.indexOf(laya_pages) === 0) {
         const pages_file = ori_file.replace(laya_pages, bin);
+        const json_file = pages_file.replace('.scene', '.json');
+        if (await exists(path.resolve(project_folder, json_file))) {
+            return json_file;
+        }
         if (await exists(path.resolve(project_folder, pages_file))) {
             return pages_file;
         }

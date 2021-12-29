@@ -14,7 +14,8 @@
         "test": "cross-env ENV=TEST webpack --progress --mode development",
         "prod": "cross-env ENV=PROD webpack --progress --mode production",
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
-        "zipFile": "ts-node --project ./script/tsconfig.json --files ./script/zipFile/index.ts",
+        "zipFile": "cross-env run=true ts-node --project ./script/tsconfig.json --files ./script/zipFile/zipFile.ts",
+        "genVersion": "cross-env run=true ts-node --project ./script/tsconfig.json --files ./script/genVersion/genVersion.ts",
         "lint": "eslint . --ext .ts"
     },
     "devDependencies": {

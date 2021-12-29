@@ -1,5 +1,6 @@
 import md5File from 'md5-file';
 import * as path from 'path';
+
 import { write } from '../zutil/ls/write';
 import { stringify } from '../zutil/utils/stringify';
 import { bin, intConfig, project_folder, version_pos } from './const';
@@ -18,18 +19,22 @@ export async function genVersion() {
         result[key] = md5;
     }
     const file_path = path.resolve(project_folder, version_pos, 'version.json');
-    write(file_path, stringify(result));
+    await write(file_path, stringify(result));
+}
+
+if (process.env.run === 'true') {
+    genVersion();
 }
 
 async function getFileMd5(file: string): Promise<string> {
     return new Promise((resolve, reject) => {
         file = path.resolve(project_folder, file);
         return md5File(file)
-            .then(hash => {
-                hash = hash.substr(0, 8);
+            .then((hash) => {
+                hash = hash.slice(0, 8);
                 resolve(hash);
             })
-            .catch(err => {
+            .catch((err) => {
                 reject(err);
             });
     });

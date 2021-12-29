@@ -1,8 +1,11 @@
-import * as path from 'path';
 import * as child_process from 'child_process';
+import * as path from 'path';
+
 import { genVersion } from '../genVersion/genVersion';
+import { zipFile } from '../zipFile/zipFile';
 import { cp } from '../zutil/ls/main';
 import { clear } from '../zutil/ls/rm';
+import { sleep } from '../zutil/utils/utils';
 import { dist_path, project_path } from './const';
 
 const { execSync } = child_process;
@@ -17,8 +20,16 @@ export async function build(type: BuildType = 'prod') {
 }
 
 export async function afterBuild(push = false) {
+    console.log(`------------------`);
     await genVersion();
+    console.log(`genVersion success!`);
+    console.log(`------------------`);
+    await zipFile();
+    console.log(`zipFile success!`);
+    console.log(`------------------`);
     await copyBinToDist();
+    console.log(`copyBinToDist success!`);
+    console.log(`------------------`);
     // await compress(dist_bin);
     if (push) {
         await pushRemote();
