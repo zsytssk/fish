@@ -14,6 +14,7 @@
         "test": "cross-env ENV=TEST webpack --progress --mode development",
         "prod": "cross-env ENV=PROD webpack --progress --mode production",
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
+        "zipFile": "ts-node --project ./script/tsconfig.json --files ./script/zipFile/index.ts",
         "lint": "eslint . --ext .ts"
     },
     "devDependencies": {
@@ -46,6 +47,8 @@
     "dependencies": {
         "@types/bezier-js": "^4.1.0",
         "@types/sat": "0.0.31",
+        "@zip.js/zip.js": "^2.3.23",
+        "adm-zip": "^0.5.9",
         "bezier-js": "^4.1.1",
         "clean-webpack-plugin": "^4.0.0",
         "crypto-js": "^4.1.1",

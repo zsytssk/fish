@@ -1,0 +1,5 @@
+{
+    "containFiles": ["png", "jpg", "json", "atlas", "sk", "fnt"],
+    "distFolder": "./build/zip",
+    "fileNum": 20
+}
