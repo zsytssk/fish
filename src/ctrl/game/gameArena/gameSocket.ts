@@ -146,6 +146,7 @@ export function convertEnterGame(data: EnterGameRep) {
         items,
         fish,
         isFirstStart,
+        task,
         table: { frozen, frozenLeft },
         currency,
     } = data;
@@ -223,6 +224,7 @@ export function convertEnterGame(data: EnterGameRep) {
         users,
         frozen,
         isFirstStart,
+        task,
         currency,
         frozen_left: frozenLeft / 1000,
         fish_list,

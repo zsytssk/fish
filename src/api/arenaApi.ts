@@ -120,6 +120,7 @@ export type EnterGameRep = {
         frozen: boolean;
         frozenLeft: number;
     };
+    task: TaskTriggerRes;
     users: ServerUserInfo[];
     fish: ServerFishInfo[];
     items: ServerItemInfo[];
@@ -219,18 +220,19 @@ export type BuyGoodsData = {
 };
 
 export type TaskTriggerRes = {
-    taskId: number;
-    name: string;
+    id: number;
+    taskName: string;
     award: number;
-    duration: number;
-    list: { index: number; type: number; killNumber: number }[];
+    taskTime: number;
+    list: { fishId: number; killNumber: number; reachNumber: number }[];
 };
 export type TaskRefreshRes = {
-    index: number;
-    type: number;
-    reachNumber: number;
-    killNumber: number;
-}[];
+    list: {
+        fishId: number;
+        reachNumber: number;
+        killNumber: number;
+    }[];
+};
 export type TaskFinishRes = {
     userId: string;
     taskId: number;

@@ -51,6 +51,7 @@ export default class ArenaView
     public upside_down: boolean;
     private fish_click_observer: Subscriber<FishViewClickInfo>;
     private pool_click_observer: Subscriber<Point>;
+    private task_arr = [];
     private resize_scale: number;
     private bg_num = 1;
     private bullet_box_pos: number;
@@ -107,37 +108,46 @@ export default class ArenaView
     }
 
     private countId;
-    public showTaskPanel(taskInfo: TaskTriggerRes) {
-        ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
+    public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
+        if (showTip) {
+            ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
+        }
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
         task_panel.visible = true;
         task_award_num.text = taskInfo.award + '';
 
-        task_time_num.text = formatTime(taskInfo.duration, 2);
-        this.countId = startCount(taskInfo.duration, 1, (radio) => {
-            const count_now = Math.floor(taskInfo.duration * radio);
-            console.log(`test:>`, formatTime(count_now, 2));
+        task_time_num.text = formatTime(taskInfo.taskTime, 2);
+        this.countId = startCount(taskInfo.taskTime, 1, (radio) => {
+            const count_now = Math.floor(taskInfo.taskTime * radio);
             task_time_num.text = formatTime(count_now, 2);
         });
 
+        const task_arr = [];
         const node_list = getChildrenByName(task_panel, 'task_item');
-        for (const item of taskInfo.list) {
-            const item_node = node_list[item.index];
+        for (const [index, item] of taskInfo.list.entries()) {
+            const item_node = node_list[index];
             const node_task_name = item_node.getChildByName(
                 'task_name',
             ) as Image;
-            const node_task_num = item_node.getChildByName('task_num') as Label;
-            node_task_name.skin = `image/pop/help/fish${item.type}.png`;
-            node_task_num.text = `0/${item.killNumber}`;
-        }
-    }
-    public updateTaskPanel(list: TaskRefreshRes) {
-        const { task_panel } = this;
 
+            item_node.visible = true;
+            const node_task_num = item_node.getChildByName('task_num') as Label;
+            node_task_name.skin = `image/pop/help/fish${item.fishId}.png`;
+            node_task_num.text = `0/${item.killNumber}`;
+            task_arr.push(item.fishId);
+        }
+        this.task_arr = task_arr;
+    }
+    public updateTaskPanel(data: TaskRefreshRes) {
+        const { task_panel } = this;
+        const { list } = data;
         const node_list = getChildrenByName(task_panel, 'task_item');
         for (const item of list) {
-            const item_node = node_list[item.index];
+            const index = this.task_arr.findIndex(
+                (fishId) => fishId === item.fishId,
+            );
+            const item_node = node_list[index];
             const node_task_num = item_node.getChildByName('task_num');
             node_task_num.text = `${item.reachNumber}/${item.killNumber}`;
         }
@@ -151,6 +161,11 @@ export default class ArenaView
         const pos = { x: 1344 / 2, y: 750 / 2 };
         const { task_panel } = this;
         fade_out(task_panel);
+
+        const node_list = getChildrenByName(task_panel, 'task_item');
+        for (const item_node of node_list) {
+            item_node.visible = false;
+        }
         await TipPop.tip('任务完成');
         await showAwardCircle(pos, data.award, true);
     }
