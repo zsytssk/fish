@@ -84,18 +84,13 @@ export class ZipResManager {
             } else {
                 ZipResManager.instance.loadZip(zipName, url).then((item) => {
                     item.getData().then((data: Uint8Array) => {
-                        if (url === 'image/loading/loading_logo.png') {
-                            console.log(`test:>`, data);
-                        }
                         const biStr = [];
                         let i = data.length;
                         while (i--) {
                             biStr[i] = String.fromCharCode(data[i]);
                         }
                         const base64 = window.btoa(biStr.join(''));
-                        if (url === 'image/loading/loading_logo.png') {
-                            console.log(`test:>`, base64);
-                        }
+
                         function clear(): void {
                             const img: any = image;
                             img.onload = null;

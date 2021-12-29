@@ -113,7 +113,7 @@ async function run(
 
     if (zip_path && zip_folder) {
         const zip_manager = new ZipResManager();
-        start_task.push(zip_manager.init(zip_path, zip_folder, version));
+        start_task.push(zip_manager.init(zip_path, zip_folder, defaultVersion));
     }
 
     await Promise.all(start_task);

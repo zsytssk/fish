@@ -2,8 +2,8 @@ import archiver from 'archiver';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { readFile } from '../zutil/ls/asyncUtil';
-import { rm } from '../zutil/ls/rm';
+import { mk } from '../zutil/ls/mk';
+import { clear } from '../zutil/ls/rm';
 import { write } from '../zutil/ls/write';
 import config from './config.json';
 import { bin, genMd5FromStr, getAllFiles } from './getFile';
@@ -29,43 +29,32 @@ async function main() {
     }
 
     const dist_file_map: { [key: string]: string[] } = {};
-    await rm(config.distFolder);
+    await clear(config.distFolder);
+    await mk(config.distFolder);
     for (const [name, file_list] of Object.entries(zip_file_map)) {
         if (!dist_file_map[name]) {
             dist_file_map[name] = [];
         }
 
-        // for (var i = 0; i < files.length; i++) {
-        //     console.log(files[i]);
-        //     //将被打包文件的流添加进archiver对象中
-        //     zipArchiver.append(fs.createReadStream(files[i]), {
-        //         name: files[i],
-        //     });
-        // }
-        // //打包
-
-        await new Promise<void>((resolve, _reject) => {
+        await new Promise<void>((resolve, reject) => {
             const outputFile = path.resolve(config.distFolder, `${name}.zip`);
             const output = fs.createWriteStream(outputFile);
-            //生成archiver对象，打包类型为zip
             const zipArchiver = archiver('zip');
             //将打包对象与输出流关联
             zipArchiver.pipe(output);
+
             for (const item of file_list) {
                 const rel_path = path.relative(bin, item);
                 dist_file_map[name].push(rel_path);
-                // let content: string | Buffer = await readFile(item);
-                // if (item.indexOf('loading_logo.png') !== -1) {
-                //     console.log(`test:>`);
-                //     content = Buffer.from(content);
-                // }
                 zipArchiver.append(fs.createReadStream(item), {
                     name: rel_path,
                 });
-                console.log(`test:>1`, item);
             }
-            output.on('end', function () {
+            output.on('finish', () => {
                 resolve();
+            });
+            output.on('error', (error) => {
+                reject();
             });
             zipArchiver.finalize();
         });

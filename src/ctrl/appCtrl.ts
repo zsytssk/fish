@@ -45,41 +45,38 @@ export class AppCtrl {
             platform.hideLoading();
         });
 
-        await Loading.load();
-        Loading.instance.show();
+        this.keyboard_number = new KeyBoardNumber();
+        AudioCtrl.init();
 
-        // this.keyboard_number = new KeyBoardNumber();
-        // AudioCtrl.init();
+        try {
+            const [isReplay, replayData] = await connectHallSocket();
+            if (isReplay) {
+                this.enterGame(replayData);
+                return;
+            }
+        } catch {
+            if (isProd()) {
+                platform.hideLoading();
+                return;
+            }
+        }
 
-        // try {
-        //     const [isReplay, replayData] = await connectHallSocket();
-        //     if (isReplay) {
-        //         this.enterGame(replayData);
-        //         return;
-        //     }
-        // } catch {
-        //     if (isProd()) {
-        //         platform.hideLoading();
-        //         return;
-        //     }
-        // }
+        try {
+            const isArenaReplay = await connectArenaHallSocket(true);
+            if (isArenaReplay) {
+                this.enterArenaGame({
+                    currency: modelState.app.user_info.cur_balance,
+                });
+                return;
+            }
+        } catch {
+            if (isProd()) {
+                platform.hideLoading();
+                return;
+            }
+        }
 
-        // try {
-        //     const isArenaReplay = await connectArenaHallSocket(true);
-        //     if (isArenaReplay) {
-        //         this.enterArenaGame({
-        //             currency: modelState.app.user_info.cur_balance,
-        //         });
-        //         return;
-        //     }
-        // } catch {
-        //     if (isProd()) {
-        //         platform.hideLoading();
-        //         return;
-        //     }
-        // }
-
-        // await HallCtrl.preEnter();
+        await HallCtrl.preEnter();
     }
     /** 公共loading */
     public static async commonLoad(progress: ProgressFn) {
