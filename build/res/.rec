@@ -238,6 +238,8 @@ P 2C0DAFF5 icon_voice.png
 P B98DC719 progress_voice$bar.png
 P 459ACF62 progress_voice.png
 P DFFFA89D split_line.png
+D image/pop/arenaCompetitionInfo
+D image/pop/arenaRank
 D image/pop/guide
 P 1778398D btn_next.png
 P AE3378D7 btn_skip.png

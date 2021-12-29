@@ -88,6 +88,7 @@ export class PromptGuide {
 
         const { html_div } = view;
         html_div.style.width = 579;
+        html_div.style.whiteSpace = 'nowrap';
     }
 
     /**
