@@ -219,15 +219,14 @@ export type BuyGoodsData = {
 };
 
 export type TaskTriggerRes = {
-    taskId: number;
-    name: string;
+    id: number;
+    taskName: string;
     award: number;
-    duration: number;
-    list: { index: number; type: number; killNumber: number }[];
+    taskTime: number;
+    list: { fishId: number; killNumber: number; reachNumber: number }[];
 };
 export type TaskRefreshRes = {
-    index: number;
-    type: number;
+    fishId: number;
     reachNumber: number;
     killNumber: number;
 }[];
