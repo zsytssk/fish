@@ -37,44 +37,49 @@ export class AppCtrl {
             defaultVersion: Config.CdnVersion,
             versionPath: `./version.json?v=${Config.CdnVersion}`,
             basePath: Config.cndUrl,
+            zip_path: './zip/zip_map.json',
+            zip_folder: './zip',
         });
 
         Loading.event_com.once(LoadingEvent.Show, () => {
             platform.hideLoading();
         });
 
-        this.keyboard_number = new KeyBoardNumber();
-        AudioCtrl.init();
+        await Loading.load();
+        Loading.instance.show();
 
-        try {
-            const [isReplay, replayData] = await connectHallSocket();
-            if (isReplay) {
-                this.enterGame(replayData);
-                return;
-            }
-        } catch {
-            if (isProd()) {
-                platform.hideLoading();
-                return;
-            }
-        }
+        // this.keyboard_number = new KeyBoardNumber();
+        // AudioCtrl.init();
 
-        try {
-            const isArenaReplay = await connectArenaHallSocket(true);
-            if (isArenaReplay) {
-                this.enterArenaGame({
-                    currency: modelState.app.user_info.cur_balance,
-                });
-                return;
-            }
-        } catch {
-            if (isProd()) {
-                platform.hideLoading();
-                return;
-            }
-        }
+        // try {
+        //     const [isReplay, replayData] = await connectHallSocket();
+        //     if (isReplay) {
+        //         this.enterGame(replayData);
+        //         return;
+        //     }
+        // } catch {
+        //     if (isProd()) {
+        //         platform.hideLoading();
+        //         return;
+        //     }
+        // }
 
-        await HallCtrl.preEnter();
+        // try {
+        //     const isArenaReplay = await connectArenaHallSocket(true);
+        //     if (isArenaReplay) {
+        //         this.enterArenaGame({
+        //             currency: modelState.app.user_info.cur_balance,
+        //         });
+        //         return;
+        //     }
+        // } catch {
+        //     if (isProd()) {
+        //         platform.hideLoading();
+        //         return;
+        //     }
+        // }
+
+        // await HallCtrl.preEnter();
     }
     /** 公共loading */
     public static async commonLoad(progress: ProgressFn) {

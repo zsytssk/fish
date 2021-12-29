@@ -10,6 +10,7 @@ import { WebGL } from 'laya/webgl/WebGL';
 import { initState, director } from './state';
 import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
+import { ZipResManager } from './utils/zipResManager';
 
 export type {
     HonorDialog,
@@ -22,6 +23,8 @@ export type GameConfig = any;
 export type HonorExternConfig = {
     basePath?: string;
     versionPath?: string;
+    zip_path?: string;
+    zip_folder?: string;
     defaultVersion?: string;
 };
 const name = 'Honor';
@@ -103,9 +106,14 @@ async function run(
     });
     start_task.push(fileconfig_task);
 
-    const { versionPath } = extern_config;
+    const { versionPath, zip_path, zip_folder } = extern_config;
     if (versionPath) {
         start_task.push(loadRes([versionPath]));
+    }
+
+    if (zip_path && zip_folder) {
+        const zip_manager = new ZipResManager();
+        start_task.push(zip_manager.init(zip_path, zip_folder, version));
     }
 
     await Promise.all(start_task);
