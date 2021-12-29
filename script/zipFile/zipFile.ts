@@ -33,6 +33,7 @@ export async function zipFile() {
     const dist_file_map: { [key: string]: string[] } = {};
     await clear(config.distFolder);
     await mk(config.distFolder);
+
     for (const [name, file_list] of Object.entries(zip_file_map)) {
         if (!dist_file_map[name]) {
             dist_file_map[name] = [];
@@ -41,7 +42,7 @@ export async function zipFile() {
         await new Promise<void>((resolve, reject) => {
             const outputFile = path.resolve(config.distFolder, `${name}.zip`);
             const output = fs.createWriteStream(outputFile);
-            const zipArchiver = archiver('zip');
+            const zipArchiver = archiver('zip', { zlib: { level: 9 } });
             //将打包对象与输出流关联
             zipArchiver.pipe(output);
 

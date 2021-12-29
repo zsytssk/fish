@@ -102,6 +102,10 @@
             type="text/javascript"
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
+        <script
+            type="text/javascript"
+            src="bitgame/zip.min.js?v=<%= Date.now() %>"
+        ></script>
         <script type="text/javascript">
             var version = '<%= Date.now() %>';
             function loadLib(url) {
@@ -120,8 +124,8 @@
                     'js/libs.js?v=<%= Date.now() %>',
                 ];
 
-                for (const file of localFiles) {
-                    loadLib(file);
+                for (var i = 0; i < localFiles.length; i++) {
+                    loadLib(localFiles[i]);
                 }
             }
 
@@ -227,6 +231,10 @@
             type="text/javascript"
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
+        <script
+            type="text/javascript"
+            src="bitgame/zip.min.js?v=<%= Date.now() %>"
+        ></script>
 
         <script type="text/javascript">
             var version = '<%= Date.now() %>';
@@ -246,8 +254,8 @@
                     'js/libs.js?v=<%= Date.now() %>',
                 ];
 
-                for (const file of localFiles) {
-                    loadLib(file);
+                for (var i = 0; i < localFiles.length; i++) {
+                    loadLib(localFiles[i]);
                 }
             }
 

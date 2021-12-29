@@ -26,6 +26,9 @@ const common_config = (mode) => ({
             module: false,
         },
     },
+    externals: {
+        '@zip.js/zip.js': 'window.zip',
+    },
     resolve: {
         modules: [
             path.resolve('./node_modules'),
@@ -59,7 +62,6 @@ const common_config = (mode) => ({
                               {
                                   loader: 'thread-loader',
                               },
-
                               {
                                   loader: 'babel-loader',
                               },
