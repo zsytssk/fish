@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
     <head>
         <title>BitFishing</title>
@@ -6,7 +7,7 @@
         <meta name="renderer" content="webkit" />
         <meta
             name="viewport"
-            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+            content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="full-screen" content="true" />
@@ -35,7 +36,7 @@
             href="./favicon/favicon-16x16.png"
         />
         <link rel="manifest" href="./favicon/site.webmanifest" />
-        <style>
+        <style type="text/css">
             html {
                 -ms-touch-action: none;
             }
@@ -94,11 +95,15 @@
             }
         </style>
     </head>
+
     <body>
-        <script src="bitgame/paladin.min.js?v=1640781156415"></script>
-        <script src="bitgame/zip.min.js?v=1640781156415"></script>
-        <script>
-            var version = '1640781156415';
+        
+        <script
+            type="text/javascript"
+            src="bitgame/paladin.min.js?v=1640782114503"
+        ></script>
+        <script type="text/javascript">
+            var version = '1640782114503';
             function loadLib(url) {
                 var script = document.createElement('script');
                 script.async = false;
@@ -110,9 +115,9 @@
                 location.href.indexOf('172.16.5.24') !== -1
             ) {
                 var localFiles = [
-                    'js/bundle.js?v=1640781156415',
-                    'js/laya.js?v=1640781156415',
-                    'js/libs.js?v=1640781156415',
+                    'js/bundle.js?v=1640782114503',
+                    'js/laya.js?v=1640782114503',
+                    'js/libs.js?v=1640782114503',
                 ];
 
                 for (var i = 0; i < localFiles.length; i++) {
@@ -168,9 +173,9 @@
                 loadType: 2,
                 success: function (res) {
                     var files = [
-                        res.cdn + 'js/bundle.js?v=1640781156415',
-                        res.cdn + 'js/laya.js?v=1640781156415',
-                        res.cdn + 'js/libs.js?v=1640781156415'
+                        res.cdn + 'js/bundle.js?v=1640782114503',
+                        res.cdn + 'js/laya.js?v=1640782114503',
+                        res.cdn + 'js/libs.js?v=1640782114503'
                     ];
 
                     for (var i = 0; i < files.length; i++) {
@@ -214,5 +219,9 @@
                 }
             };
         </script>
+        
+
+        <!-- production -->
+        
     </body>
 </html>
