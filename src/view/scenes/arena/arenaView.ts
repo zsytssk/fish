@@ -153,10 +153,6 @@ export default class ArenaView
         }
     }
     public async taskFinish(data: TaskFinishRes) {
-        if (!data.isComplete) {
-            return;
-        }
-
         clearCount(this.countId);
         const pos = { x: 1344 / 2, y: 750 / 2 };
         const { task_panel } = this;
@@ -165,6 +161,9 @@ export default class ArenaView
         const node_list = getChildrenByName(task_panel, 'task_item');
         for (const item_node of node_list) {
             item_node.visible = false;
+        }
+        if (!data.isComplete) {
+            return;
         }
         await TipPop.tip('任务完成');
         await showAwardCircle(pos, data.award, true);
