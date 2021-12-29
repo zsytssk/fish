@@ -127,6 +127,8 @@ export class ZipResManager {
         return false;
     }
     private async loadZip(zip_name: string, res_url: string) {
+        console.log(`test:>ZipResManager`, res_url);
+
         let zip_res = this.zipResMap[zip_name];
         if (!zip_res) {
             let list: ZipResItem[];
