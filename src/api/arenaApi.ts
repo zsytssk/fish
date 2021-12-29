@@ -227,10 +227,12 @@ export type TaskTriggerRes = {
     list: { fishId: number; killNumber: number; reachNumber: number }[];
 };
 export type TaskRefreshRes = {
-    fishId: number;
-    reachNumber: number;
-    killNumber: number;
-}[];
+    list: {
+        fishId: number;
+        reachNumber: number;
+        killNumber: number;
+    }[];
+};
 export type TaskFinishRes = {
     userId: string;
     taskId: number;

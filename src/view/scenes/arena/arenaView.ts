@@ -139,16 +139,15 @@ export default class ArenaView
         }
         this.task_arr = task_arr;
     }
-    public updateTaskPanel(list: TaskRefreshRes) {
+    public updateTaskPanel(data: TaskRefreshRes) {
         const { task_panel } = this;
-
+        const { list } = data;
         const node_list = getChildrenByName(task_panel, 'task_item');
         for (const item of list) {
             const index = this.task_arr.findIndex(
                 (fishId) => fishId === item.fishId,
             );
             const item_node = node_list[index];
-            item_node.visible = false;
             const node_task_num = item_node.getChildByName('task_num');
             node_task_num.text = `${item.reachNumber}/${item.killNumber}`;
         }

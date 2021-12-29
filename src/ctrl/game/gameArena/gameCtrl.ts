@@ -1,5 +1,3 @@
-import { app_test } from 'test/app/app.spec';
-
 import { default as random } from 'lodash/random';
 
 import {
@@ -23,7 +21,7 @@ import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { getChannel, getLang } from '@app/ctrl/hall/hallCtrlUtil';
-import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip } from '@app/data/internationalConfig';
@@ -31,7 +29,6 @@ import { res } from '@app/data/res';
 import {
     ArenaEvent,
     ARENA_OK_CODE,
-    OK_CODE,
     ServerEvent,
     ServerName,
 } from '@app/data/serverEvent';
@@ -41,7 +38,7 @@ import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
-import { isCurUser, modelState } from '@app/model/modelState';
+import { isCurUser } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';

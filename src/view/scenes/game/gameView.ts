@@ -44,7 +44,7 @@ export default class GameView
     private bg_num = 1;
     private bullet_box_pos: number;
     private bullet_box_dir: BulletBoxDir;
-    public static async preEnter(progress: ProgressFn) {
+    public static async preEnter(progress?: ProgressFn) {
         const game = (await honor.director.runScene(
             'scenes/game/game.scene',
             progress,
