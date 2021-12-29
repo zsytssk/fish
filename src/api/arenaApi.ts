@@ -120,6 +120,7 @@ export type EnterGameRep = {
         frozen: boolean;
         frozenLeft: number;
     };
+    task: TaskTriggerRes;
     users: ServerUserInfo[];
     fish: ServerFishInfo[];
     items: ServerItemInfo[];

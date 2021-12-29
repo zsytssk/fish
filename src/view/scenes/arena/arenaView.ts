@@ -108,8 +108,10 @@ export default class ArenaView
     }
 
     private countId;
-    public showTaskPanel(taskInfo: TaskTriggerRes) {
-        ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
+    public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
+        if (showTip) {
+            ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
+        }
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
         task_panel.visible = true;
@@ -128,6 +130,8 @@ export default class ArenaView
             const node_task_name = item_node.getChildByName(
                 'task_name',
             ) as Image;
+
+            item_node.visible = true;
             const node_task_num = item_node.getChildByName('task_num') as Label;
             node_task_name.skin = `image/pop/help/fish${item.fishId}.png`;
             node_task_num.text = `0/${item.killNumber}`;

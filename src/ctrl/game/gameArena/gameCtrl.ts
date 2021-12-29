@@ -323,6 +323,7 @@ export class GameCtrl implements GameCtrlUtils {
             fish,
             users,
             frozen,
+            task,
             frozen_left,
             fish_list,
             isFirstStart,
@@ -342,6 +343,9 @@ export class GameCtrl implements GameCtrlUtils {
             setTimeout(() => {
                 model.freezing_com.freezing(frozen_left, fish_list);
             });
+        }
+        if (task) {
+            this.triggerTask(task, false);
         }
     }
     public calcClientIndex(server_index: number) {
@@ -428,9 +432,9 @@ export class GameCtrl implements GameCtrlUtils {
         log('接收到use skin', skinId);
         player.changeSkin(skinId);
     }
-    public triggerTask(data: TaskTriggerRes) {
+    public triggerTask(data: TaskTriggerRes, showTip = true) {
         const { view } = this;
-        view.showTaskPanel(data);
+        view.showTaskPanel(data, showTip);
     }
     public taskRefresh(data: TaskRefreshRes) {
         const { view } = this;
