@@ -76,7 +76,7 @@ export default class ArenaCompetitionPop
             ArenaTopPlayerPop.preEnter();
         });
         onNodeWithAni(btn_help, Event.CLICK, () => {
-            ArenaHelpPop.preEnter(currency);
+            ArenaHelpPop.preEnter(this.currency);
         });
         onNodeWithAni(btn_best, Event.CLICK, () => {
             ArenaRankPop.preEnter();

@@ -233,7 +233,7 @@ export function getCompetitionInfo(currency: string) {
         }
         socket.event.once(
             ArenaEvent.CompetitionInfo,
-            (_data: CompetitionInfo) => {
+            (_data: CompetitionInfo, code: number) => {
                 resolve(_data);
             },
         );
