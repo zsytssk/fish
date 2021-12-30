@@ -183,12 +183,13 @@ export default class HallView
         resizeContain(left_wrap, space);
     }
     public updateArenaInfo(info: ArenaModel) {
-        const {status, open_timezone} = info;
+        const {room_status, open_timezone} = info;
         const {arena_timezone,  btn_competition} = this;
 
         arena_timezone.text = formatDateRange(open_timezone)
         const gray = btn_competition.getChildByName('gray') as Image;
-        gray.visible = status === ArenaStatus.Maintenance;
+        const notOpen = room_status === ArenaStatus.Maintenance || room_status === ArenaStatus.NoOpen;
+        gray.visible = notOpen;
         (btn_competition as unknown as ClickNode).is_disable = gray.visible;
 
     }
