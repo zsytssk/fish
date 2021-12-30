@@ -20,7 +20,7 @@ import {
     ArenaEvent,
     ARENA_OK_CODE,
 } from '@app/data/serverEvent';
-import { modelState } from '@app/model/modelState';
+import { getCurUserId, modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 
 import { ArenaShopPopInfo } from './arenaShop';
@@ -69,7 +69,7 @@ export function useGunSkin(skin: string) {
         });
         socket.send(ServerEvent.UseSkin, {
             skinId: skin,
-            userId: modelState.app.user_info.user_id,
+            userId: getCurUserId(),
         });
     }) as Promise<boolean>;
 }
@@ -82,7 +82,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
                 return errorHandler(code, data, socket);
             }
 
-            const userId = modelState.app.user_info.user_id;
+            const userId = getCurUserId();
             const change_arr = [] as ChangeUserNumInfo['change_arr'];
 
             if (num) {
@@ -92,7 +92,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
                     type: 'skill',
                 });
             }
-            if (-cost_bullet) {
+            if (cost_bullet) {
                 change_arr.push({
                     num: -cost_bullet * num,
                     type: 'bullet',
@@ -299,20 +299,42 @@ export function arenaGiftList() {
 }
 /** Arena 礼包 giftList */
 export function arenaBuyGift() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
-            return reject(undefined);
+            return reject();
         }
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
                 reject();
             } else {
-                resolve(data);
+                const userId = getCurUserId(true);
+                const change_arr: ChangeUserNumInfo['change_arr'] = [];
+                for (const item of data) {
+                    const { itemId, num } = item;
+                    if (itemId === '3001') {
+                        change_arr.push({
+                            num: num,
+                            type: 'bullet',
+                        });
+                    } else {
+                        change_arr.push({
+                            id: itemId,
+                            num,
+                            type: 'skill',
+                        });
+                    }
+                }
+                ctrlState.game.changeUserNumInfo({
+                    userId,
+                    change_arr,
+                });
+
+                resolve();
             }
         });
         socket.send(ArenaEvent.BuyGift);
-    }) as Promise<BuyGiftRep>;
+    });
 }
 /** Arena 礼包 giftList */
 export function arenaGetHallOfFame() {
@@ -415,7 +437,7 @@ export function arenaUseGunSkin(skin: string) {
         });
         socket.send(ServerEvent.UseSkin, {
             skinId: skin,
-            userId: modelState.app.user_info.user_id,
+            userId: getCurUserId(),
         });
     }) as Promise<boolean>;
 }
@@ -428,7 +450,7 @@ export function arenaBuyItem(goodsId: string, goodsNum?: number) {
                 return errorHandler(code, data, socket);
             }
 
-            const userId = modelState.app.user_info.user_id;
+            const userId = getCurUserId();
             const change_arr = [] as ChangeUserNumInfo['change_arr'];
 
             if (goodsNum) {

@@ -160,9 +160,10 @@ export type GiftList = {
     list: GiftItem[];
 };
 
-export type BuyGiftRep = {
+export type BuyGiftReq = {
     id: number;
 };
+export type BuyGiftRep = { itemId: string; num: number }[];
 
 export type SettleData = {
     userId: number | string;
