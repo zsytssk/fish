@@ -34,6 +34,7 @@ export default class HallView
     implements HonorScene
 {
     public static async preEnter(progress: ProgressFn) {
+
         return honor.director.runScene('scenes/hall/hall.scene', progress);
     }
 

@@ -40,6 +40,8 @@ export enum ServerErrCode {
     EnterGameError = 505,
     /** 网络异常 */
     NetError = 511,
+    /** 维护中 */
+    Maintain = 601,
 }
 
 export type ErrorData = {

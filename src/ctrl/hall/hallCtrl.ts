@@ -52,7 +52,6 @@ export class HallCtrl {
             toProgressObserver(HallView.preEnter)(),
             toProgressObserver(fakeLoad)(0.5),
             toProgressObserver(AppCtrl.commonLoad)(),
-            toProgressObserver(AppCtrl.commonLoad)(),
         ] as const;
 
         return runAsyncTask(async () => {
@@ -60,7 +59,6 @@ export class HallCtrl {
                 arr as Mutable<typeof arr>,
                 Loading,
             );
-
             const ctrl = new HallCtrl(view as HallView);
             this.instance = ctrl;
             return ctrl;

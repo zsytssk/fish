@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import * as zip from '@zip.js/zip.js';
-import * as zip from 'zip';
+import * as JSZip from 'jszip';
 
 import { loader } from 'Laya';
 import { Loader } from 'laya/net/Loader';
 import { Utils } from 'laya/utils/Utils';
 
-import { loadRes } from './loadRes';
+import { httpLoad, loadRes } from './loadRes';
 
 type ZipMap = { [key: string]: string };
 type ZipResItem = {
@@ -84,14 +84,7 @@ export class ZipResManager {
                 return oldImgFn.apply(this, [...params]);
             } else {
                 ZipResManager.instance.loadZip(zipName, url).then((item) => {
-                    item.getData().then((data: Uint8Array) => {
-                        const biStr = [];
-                        let i = data.length;
-                        while (i--) {
-                            biStr[i] = String.fromCharCode(data[i]);
-                        }
-                        const base64 = window.btoa(biStr.join(''));
-
+                    item.getData().then((data: string) => {
                         function clear(): void {
                             const img: any = image;
                             img.onload = null;
@@ -111,7 +104,7 @@ export class ZipResManager {
                         image.crossOrigin = '';
                         image.onload = onload;
                         image.onerror = onerror;
-                        image.src = `data:image/png;base64,${base64}`;
+                        image.src = `data:image/png;base64,${data}`;
                         (Loader as any)._imgCache[url] = image;
                     });
                 });
@@ -128,56 +121,45 @@ export class ZipResManager {
         return false;
     }
     private async loadZip(zip_name: string, res_url: string) {
-
         let zip_res = this.zipResMap[zip_name];
         if (!zip_res) {
-            let list: ZipResItem[];
-            if (this.loadProcessList[zip_name]) {
-                list = await this.loadProcessList[zip_name];
-            } else {
-                const reader = new (zip as any).ZipReader(
-                    new (zip as any).HttpReader(
-                        `${this.zip_folder}/${zip_name}.zip?version=${this.version}`,
-                    ),
-                );
+            if (!this.loadProcessList[zip_name]) {
+                const path = `${this.zip_folder}/${zip_name}.zip?version=${this.version}`;
 
-                const loadedProcessItem = (this.loadProcessList[zip_name] =
-                    reader.getEntries().then((file_list) => {
-                        return file_list.map((item) => {
+                this.loadProcessList[zip_name] = httpLoad(
+                    path,
+                    Loader.BUFFER,
+                ).then((data: any) => {
+                    return JSZip.loadAsync(data).then((zip: any) => {
+                        const file_list = Object.keys(zip.files);
+                        return file_list.map((file_name) => {
                             return {
-                                name: item.filename,
+                                name: file_name,
                                 getData: async () => {
-                                    const etx = item.filename.split('.')[1];
+                                    const etx = file_name.split('.')[1];
 
-                                    let writer: any;
                                     if (etx === 'sk') {
-                                        writer = new (
-                                            zip as any
-                                        ).Uint8ArrayWriter();
+                                        return zip
+                                            .file(file_name)
+                                            .async('uint8array');
                                     } else if (etx === 'png' || etx === 'jpg') {
-                                        writer = new (
-                                            zip as any
-                                        ).Uint8ArrayWriter();
+                                        return zip
+                                            .file(file_name)
+                                            .async('base64');
                                     } else {
-                                        writer = new (zip as any).TextWriter();
+                                        return zip
+                                            .file(file_name)
+                                            .async('string');
                                     }
-                                    return await item.getData(writer, {
-                                        onprogress: (index, max) => {
-                                            // onprogress callback
-                                        },
-                                    });
                                 },
                             };
                         });
-                    }));
-
-                list = await loadedProcessItem;
+                    });
+                });
             }
-
+            const list = await this.loadProcessList[zip_name];
             this.zipResMap[zip_name] = zip_res = list;
         }
-
-        // console.log(`test:>`, res_url);
         return zip_res.find((item) => item.name === res_url);
     }
 }
