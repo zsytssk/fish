@@ -41,7 +41,7 @@ const common_config = (mode) => ({
         rules: [
             {
                 test: /(\.ts|\.js|\.cjs)$/,
-                exclude: [/\bcore-js\b/],
+                exclude: [/(\bcore-js\b|@zip.js)/],
                 use:
                     mode === 'development'
                         ? [
