@@ -26,6 +26,10 @@ export class ArenaModel extends ComponentManager {
         return this.getCom(EventCom);
     }
     public updateInfo(info: ArenaStatusData) {
+        if (!info) {
+            this.event.emit(ArenaModelEvent.UpdateInfo, this);
+            return;
+        }
         const { roomStatus, userStatus, startDate,userId, endDate } = info;
         this.room_status = roomStatus;
         this.user_status = userStatus;

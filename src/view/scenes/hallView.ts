@@ -182,15 +182,21 @@ export default class HallView
         });
         resizeContain(left_wrap, space);
     }
-    public updateArenaInfo(info: ArenaModel) {
-        const {room_status, open_timezone} = info;
+    public updateArenaInfo(info?: ArenaModel) {
         const {arena_timezone,  btn_competition} = this;
+        if (!info?.room_status) {
+            (btn_competition as unknown as ClickNode).is_disable = true;
+            arena_timezone.text = '维护中'
+            return;
+        }
+
+        const {room_status, open_timezone} = info;
 
         arena_timezone.text = formatDateRange(open_timezone)
         const gray = btn_competition.getChildByName('gray') as Image;
         const notOpen = room_status === ArenaStatus.Maintenance || room_status === ArenaStatus.NoOpen;
         gray.visible = notOpen;
-        (btn_competition as unknown as ClickNode).is_disable = gray.visible;
+        (btn_competition as unknown as ClickNode).is_disable = notOpen;
 
     }
     public coinMenuRender(box: Box, index: number) {

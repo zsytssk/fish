@@ -17,7 +17,7 @@ export function init() {
     Config.isLogin = platform_info.isLogin;
     Config.cndUrl = platform_info.cdn;
     Config.arenaSocketUrl = getParams('arenaSocket')
-        ? 'ws://${getParams("arenaSocket")}'
+        ? `ws://${getParams('arenaSocket')}`
         : 'ws://172.16.6.184:7019';
     Config.lang = covertLang(platform_info.lang);
 }

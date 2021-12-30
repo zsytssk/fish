@@ -314,7 +314,7 @@ export class GameCtrl implements GameCtrlUtils {
         return getSocket(ServerName.ArenaHall);
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
-        const { model, view } = this;
+        const { model } = this;
         const {
             isTrial,
             fish,
@@ -479,7 +479,7 @@ export class GameCtrl implements GameCtrlUtils {
             player.destroy();
         }
     }
-    private leave() {
+    public leave() {
         disableAllUserOperation();
         this?.model.destroy();
         HallCtrl.preEnter();

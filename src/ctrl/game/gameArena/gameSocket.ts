@@ -9,14 +9,14 @@ import {
     TaskTriggerRes,
     UseFreezeRep,
 } from '@app/api/arenaApi';
-import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
+import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
+import { commonSocket } from '@app/ctrl/hall/commonSocket';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
-import { ArenaEvent, ServerEvent } from '@app/data/serverEvent';
+import { ArenaEvent, ARENA_OK_CODE, ServerEvent } from '@app/data/serverEvent';
 import { PlayerInfo } from '@app/model/game/playerModel';
 import { AutoShootInfo } from '@app/model/game/skill/autoShootModel';
-import { BombInfo } from '@app/model/game/skill/bombModel';
 import { FreezeInfo } from '@app/model/game/skill/freezeModel';
 import {
     LockFishActiveInfo,
@@ -28,53 +28,71 @@ import { getCurPlayer, getCurUserId, isCurUser } from '@app/model/modelState';
 import { tipExchange } from '../gameCtrlUtils';
 import { GameCtrl } from './gameCtrl';
 
-const OK_CODE = 0;
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     let currency: string;
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
-            if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
             }
             currency = data.currency;
             game.onEnterGame(convertEnterGame(data));
         },
-        [ServerEvent.TableIn]: (data: TableInRep) => {
+        [ServerEvent.TableIn]: (data: TableInRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
-        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep) => {
+        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
+
             if (!isCurUser(data.userId, true)) {
                 return;
             }
-
             game.setPlayersEmit(data.robotIds);
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
-            if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
             }
             game.tableOut(data);
         },
-        [ServerEvent.Shoot]: (data: ShootRep) => {
+        [ServerEvent.Shoot]: (data: ShootRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.onShoot(data);
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
-            // Todo
-            if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
             }
             game.onHit(data);
         },
         [ServerEvent.UseFreeze]: (data: UseFreezeRep, code: number) => {
-            if (code !== OK_CODE) {
+            if (code !== ARENA_OK_CODE) {
+                const result = arenaErrHandler(game, code, data, socket);
+                if (result) {
+                    return;
+                }
+            }
+
+            if (code !== ARENA_OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
             game.activeSkill(SkillMap.Freezing, convertFreezeData(data));
         },
-        [ServerEvent.autoShoot]: (data: AutoShootRep) => {
+        [ServerEvent.autoShoot]: (data: AutoShootRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
+
             const { autoShoot } = data;
             if (!autoShoot) {
                 game.disableSkill(SkillMap.Auto, data.userId);
@@ -83,41 +101,72 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
         },
         [ServerEvent.LockFish]: (data: LockFishRep, code: number) => {
-            if (code !== OK_CODE) {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
+
+            if (code !== ARENA_OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
             game.activeSkill(SkillMap.LockFish, convertLockFishData(data));
         },
-        [ServerEvent.AddFish]: (data: ServerAddFishRep['fish']) => {
+        [ServerEvent.AddFish]: (
+            data: ServerAddFishRep['fish'],
+            code: number,
+        ) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.addFish(data);
         },
-        [ServerEvent.FishShoal]: (data: FishShoal) => {
+        [ServerEvent.FishShoal]: (data: FishShoal, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.shoalComingTip(data.reverse);
             game.addFish(data.fish);
         },
-        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
+        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.changeBulletCost(data);
         },
-        [ServerEvent.UseSkin]: (data: UseSkinRep) => {
+        [ServerEvent.UseSkin]: (data: UseSkinRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.changeSkin(data);
         },
-        [ArenaEvent.TriggerTask]: (data: TaskTriggerRes) => {
+        [ArenaEvent.TriggerTask]: (data: TaskTriggerRes, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.triggerTask(data);
         },
-        [ArenaEvent.TaskRefresh]: (data: TaskRefreshRes) => {
+        [ArenaEvent.TaskRefresh]: (data: TaskRefreshRes, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.taskRefresh(data);
         },
-        [ArenaEvent.TaskFinish]: (data: TaskFinishRes) => {
+        [ArenaEvent.TaskFinish]: (data: TaskFinishRes, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.taskFinish(data);
         },
-        [ArenaEvent.GameSettle]: (data: SettleData) => {
+        [ArenaEvent.GameSettle]: (data: SettleData, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
+            }
             game.GameSettle(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
-            if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+            if (code !== ARENA_OK_CODE) {
+                return arenaErrHandler(game, code, data, socket);
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();

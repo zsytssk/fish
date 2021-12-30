@@ -1,7 +1,16 @@
-import { ArenaGameStatus, ArenaStatus } from '@app/api/arenaApi';
+import {
+    ArenaGameStatus,
+    ArenaStatus,
+    ArenaStatusData,
+} from '@app/api/arenaApi';
 import { Config } from '@app/data/config';
 import { isProd } from '@app/data/env';
-import { ArenaEvent, ServerErrCode, ServerName } from '@app/data/serverEvent';
+import {
+    ArenaEvent,
+    ARENA_OK_CODE,
+    ServerErrCode,
+    ServerName,
+} from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
@@ -9,6 +18,7 @@ import { getParams, tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
 
+import { GameCtrl } from '../game/gameArena/gameCtrl';
 import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
 import {
     bindSocketEvent,
@@ -16,7 +26,7 @@ import {
     getSocket,
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
-import { commonSocket } from './commonSocket';
+import { commonSocket, errorHandler } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 
 let arena_hall_socket: WebSocketTrait;
@@ -43,21 +53,28 @@ export async function connectArenaHallSocket(checkReplay = false) {
     }
 
     if (checkReplay) {
-        const { roomStatus, userStatus } = await new Promise((resolve) => {
-            arena_hall_socket.event.once(ArenaEvent.ArenaStatus, (data) => {
-                modelState.app.arena_info.updateInfo(data);
-                resolve(data);
-            });
+        const data = await new Promise<ArenaStatusData | void>((resolve) => {
+            arena_hall_socket.event.once(
+                ArenaEvent.ArenaStatus,
+                (data: ArenaStatusData, code: number) => {
+                    if (code !== ARENA_OK_CODE) {
+                        return resolve();
+                    }
+                    modelState.app.arena_info.updateInfo(data);
+                    resolve(data);
+                },
+            );
             sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
                 currency: modelState.app.user_info.cur_balance,
             });
         });
 
         if (
-            roomStatus !== ArenaStatus.Open ||
-            (userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP &&
-                userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
-                userStatus !== ArenaGameStatus.GAME_STATUS_PLAYING)
+            !data ||
+            data.roomStatus !== ArenaStatus.Open ||
+            (data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP &&
+                data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
+                data.userStatus !== ArenaGameStatus.GAME_STATUS_PLAYING)
         ) {
             return false;
         }
@@ -92,7 +109,7 @@ export function offArenaHallSocket(hall: any) {
         offSocketEvent(arena_hall_socket, hall);
     }
 }
-getParams('arenaSocket');
+
 export async function waitConnectGameArena() {
     let socket = getSocket(ServerName.ArenaHall);
     if (!socket) {
@@ -153,4 +170,21 @@ export function getArenaGuestToken(socket: WebSocketTrait) {
         });
         socket.send(ArenaEvent.Guess);
     }) as Promise<string>;
+}
+
+export function arenaErrHandler(
+    game_ctrl: GameCtrl,
+    code: number,
+    data?: any,
+    socket?: WebSocketTrait,
+) {
+    if (code === ServerErrCode.Maintenance) {
+        AlertPop.alert('游戏维护中，请退出游戏！', {
+            hide_cancel: true,
+        }).then(() => {
+            game_ctrl.leave();
+        });
+        return true;
+    }
+    errorHandler(code, data, socket);
 }
