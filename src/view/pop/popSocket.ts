@@ -306,7 +306,7 @@ export function arenaBuyGift() {
         }
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
-                reject();
+                errorHandler(code);
             } else {
                 const userId = getCurUserId(true);
                 const change_arr: ChangeUserNumInfo['change_arr'] = [];
