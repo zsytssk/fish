@@ -92,7 +92,7 @@ export function offArenaHallSocket(hall: any) {
         offSocketEvent(arena_hall_socket, hall);
     }
 }
-
+getParams('arenaSocket');
 export async function waitConnectGameArena() {
     let socket = getSocket(ServerName.ArenaHall);
     if (!socket) {
