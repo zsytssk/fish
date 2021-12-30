@@ -8,8 +8,6 @@ import { Utils } from 'laya/utils/Utils';
 
 import { loadRes } from './loadRes';
 
-// declare let zip: any;
-
 type ZipMap = { [key: string]: string };
 type ZipResItem = {
     name: string;
@@ -130,7 +128,6 @@ export class ZipResManager {
         return false;
     }
     private async loadZip(zip_name: string, res_url: string) {
-        console.log(`test:>ZipResManager`, res_url);
 
         let zip_res = this.zipResMap[zip_name];
         if (!zip_res) {
@@ -138,8 +135,8 @@ export class ZipResManager {
             if (this.loadProcessList[zip_name]) {
                 list = await this.loadProcessList[zip_name];
             } else {
-                const reader = new zip.ZipReader(
-                    new zip.HttpReader(
+                const reader = new (zip as any).ZipReader(
+                    new (zip as any).HttpReader(
                         `${this.zip_folder}/${zip_name}.zip?version=${this.version}`,
                     ),
                 );
@@ -154,11 +151,15 @@ export class ZipResManager {
 
                                     let writer: any;
                                     if (etx === 'sk') {
-                                        writer = new zip.Uint8ArrayWriter();
+                                        writer = new (
+                                            zip as any
+                                        ).Uint8ArrayWriter();
                                     } else if (etx === 'png' || etx === 'jpg') {
-                                        writer = new zip.Uint8ArrayWriter();
+                                        writer = new (
+                                            zip as any
+                                        ).Uint8ArrayWriter();
                                     } else {
-                                        writer = new zip.TextWriter();
+                                        writer = new (zip as any).TextWriter();
                                     }
                                     return await item.getData(writer, {
                                         onprogress: (index, max) => {
