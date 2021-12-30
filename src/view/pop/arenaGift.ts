@@ -19,11 +19,22 @@ export default class ArenaGiftPop
     public isModal = true;
     private data: GiftList;
     public static async preEnter() {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaGiftPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaGiftPop;
+        const pop = (await honor.director.openDialog(
+            {
+                dialog: ArenaGiftPop,
+                use_exist: true,
+                stay_scene: true,
+            },
+            {
+                beforeOpen: (pop: ArenaGiftPop) => {
+                    arenaGiftList().then((data) => {
+                        if (data) {
+                            pop.initData(data);
+                        }
+                    });
+                },
+            },
+        )) as ArenaGiftPop;
         AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
@@ -45,13 +56,7 @@ export default class ArenaGiftPop
             false,
         );
     }
-    public onEnable() {
-        // arenaGiftList().then((data) => {
-        //     if (data) {
-        //         this.initData(data);
-        //     }
-        // });
-    }
+
     public initData(data: GiftList) {
         this.data = data;
         const { btn, list } = this;

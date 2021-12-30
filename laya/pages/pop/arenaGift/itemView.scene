@@ -31,7 +31,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,icon",
-                    "props":{"width":88,"var":"icon","skin":"image/pop/shop/icon/bullet.png","height":87,"centerY":0,"centerX":0},
+                    "props":{"width":88,"var":"icon","skin":"image/pop/shop/icon/3001.png","height":87,"centerY":0,"centerX":0},
                     "nodeParent":4,
                     "label":"icon",
                     "isOpen":true,
