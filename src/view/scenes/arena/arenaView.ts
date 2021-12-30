@@ -7,6 +7,7 @@ import { ProgressFn } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Point } from 'laya/maths/Point';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 
@@ -154,8 +155,7 @@ export default class ArenaView
     }
     public async taskFinish(data: TaskFinishRes) {
         clearCount(this.countId);
-        const pos = { x: 1344 / 2, y: 750 / 2 };
-        const { task_panel } = this;
+        const { task_panel, ani_wrap } = this;
         fade_out(task_panel);
 
         const node_list = getChildrenByName(task_panel, 'task_item');
@@ -165,6 +165,12 @@ export default class ArenaView
         if (!data.isComplete) {
             return;
         }
+        const { width, height } = task_panel;
+        let pos = task_panel.localToGlobal(
+            new Point(width / 2, height / 2),
+            true,
+        );
+        pos = ani_wrap.globalToLocal(pos, true);
         await TipPop.tip('任务完成');
         await showAwardCircle(pos, data.award, true);
     }

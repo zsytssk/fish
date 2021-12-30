@@ -216,7 +216,7 @@ export class GameCtrl implements GameCtrlUtils {
         });
         onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaHelpPop.preEnter();
+            ArenaHelpPop.preEnter(this.currency);
         });
         onNodeWithAni(btn_music, CLICK, (e: Event) => {
             e.stopPropagation();

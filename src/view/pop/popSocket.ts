@@ -225,7 +225,7 @@ export function getRecentBullet() {
     }) as Promise<GetRecentBulletRep>;
 }
 
-export function getCompetitionInfo() {
+export function getCompetitionInfo(currency: string) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
@@ -237,9 +237,8 @@ export function getCompetitionInfo() {
                 resolve(_data);
             },
         );
-        console.log(`test:>arenaStatus`, modelState.app.user_info.cur_balance);
         socket.send(ArenaEvent.CompetitionInfo, {
-            currency: modelState.app.user_info.cur_balance,
+            currency,
         });
     }) as Promise<CompetitionInfo>;
 }
@@ -358,10 +357,10 @@ export function arenaGetHallOfFame() {
 }
 
 /** Arena 帮助 */
-export function arenaGetRuleData(mode: number) {
+export function arenaGetRuleData(mode: number, currency: string) {
     const tmp = getItem(`arenaGetRuleData:mode${mode}`);
     if (tmp) {
-        return JSON.parse(tmp);
+        return Promise.resolve(JSON.parse(tmp) as GetRuleData);
     }
 
     return new Promise<GetRuleData>((resolve, reject) => {
@@ -381,7 +380,7 @@ export function arenaGetRuleData(mode: number) {
                 resolve(data);
             }
         });
-        socket.send(ArenaEvent.GetRuleData, { mode });
+        socket.send(ArenaEvent.GetRuleData, { mode, currency });
     });
 }
 /** Arena 商城 */

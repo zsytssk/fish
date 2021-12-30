@@ -22,21 +22,37 @@
             }
         ]
     },
-    "taskRefresh1": [
-        {
-            "index": 1,
-            "type": 2,
-            "killNumber": 10,
-            "reachNumber": 1
-        }
-    ],
-    "taskRefresh2": [
-        {
-            "index": 2,
-            "type": 2,
-            "killNumber": 10,
-            "reachNumber": 2
-        }
-    ],
+    "taskRefresh1": {
+        "list": [
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            },
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            }
+        ]
+    },
+    "taskRefresh2": {
+        "list": [
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            },
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            }
+        ]
+    },
     "taskFinish": { "taskId": 1001, "isComplete": true, "award": 100 }
 }

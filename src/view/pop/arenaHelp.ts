@@ -17,13 +17,15 @@ export default class ArenaHelpPop
     implements HonorDialog
 {
     public isModal = true;
-    public static async preEnter() {
+    private currency: string;
+    public static async preEnter(currency: string) {
         const pop = (await honor.director.openDialog({
             dialog: ArenaHelpPop,
             use_exist: true,
             stay_scene: true,
         })) as ArenaHelpPop;
         AudioCtrl.play(AudioRes.PopShow);
+        pop.currency = currency;
         return pop;
     }
     public async onAwake() {
@@ -62,7 +64,7 @@ export default class ArenaHelpPop
                     },
                 },
                 matchTimeConfig: { deadlineTime },
-            } = arenaGetRuleData(1);
+            } = await arenaGetRuleData(1, this.currency);
 
             const labels1 = getAllChildren(boxList[0]) as Label[];
             labels1[0].text = tplStr('arenaHelpRule11', { deadlineTime });

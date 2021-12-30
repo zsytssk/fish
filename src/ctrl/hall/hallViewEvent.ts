@@ -5,6 +5,7 @@ import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
+import { modelState } from '@app/model/modelState';
 import { onNode, isClosest, onNodeWithAni } from '@app/utils/layaUtils';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
@@ -106,7 +107,7 @@ export function hallViewEvent(hall: HallCtrl) {
         clickLight.visible = true;
         playSkeletonOnce(clickLight, 0).then(() => {
             clickLight.visible = false;
-            ArenaCompetitionPop.preEnter();
+            ArenaCompetitionPop.preEnter(modelState.app.user_info.cur_balance);
         });
     });
     onNodeWithAni(btn_recharge, CLICK, async () => {

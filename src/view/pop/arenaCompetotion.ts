@@ -23,16 +23,26 @@ export default class ArenaCompetitionPop
     implements HonorDialog
 {
     public isModal = true;
+    public currency: string;
     public get zOrder() {
         return 100;
     }
-    public static async preEnter() {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaCompetitionPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaCompetitionPop;
+    public static async preEnter(currency: string) {
+        const pop = (await honor.director.openDialog(
+            {
+                dialog: ArenaCompetitionPop,
+                use_exist: true,
+                stay_scene: true,
+            },
+            {
+                beforeOpen: (pop: ArenaCompetitionPop) => {
+                    pop.currency = currency;
+                    pop.requestData();
+                },
+            },
+        )) as ArenaCompetitionPop;
         AudioCtrl.play(AudioRes.PopShow);
+        pop.currency = currency;
         return pop;
     }
     public async onAwake() {
@@ -41,8 +51,8 @@ export default class ArenaCompetitionPop
             this.initLang();
         });
     }
-    public async onEnable() {
-        const data = await getCompetitionInfo();
+    public async requestData() {
+        const data = await getCompetitionInfo(this.currency);
         if (data) {
             this.initData(data);
         }
@@ -66,7 +76,7 @@ export default class ArenaCompetitionPop
             ArenaTopPlayerPop.preEnter();
         });
         onNodeWithAni(btn_help, Event.CLICK, () => {
-            ArenaHelpPop.preEnter();
+            ArenaHelpPop.preEnter(currency);
         });
         onNodeWithAni(btn_best, Event.CLICK, () => {
             ArenaRankPop.preEnter();
