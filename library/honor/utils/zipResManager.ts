@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import * as zip from '@zip.js/zip.js';
+import * as zip from 'zip';
+
 import { loader } from 'Laya';
 import { Loader } from 'laya/net/Loader';
 import { Utils } from 'laya/utils/Utils';
 
 import { loadRes } from './loadRes';
 
-require('@zip.js/zip.js/dist/zip.min.js');
-
-declare let zip: any;
+// declare let zip: any;
 
 type ZipMap = { [key: string]: string };
 type ZipResItem = {

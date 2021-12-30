@@ -41,7 +41,7 @@ const common_config = (mode) => ({
         rules: [
             {
                 test: /(\.ts|\.js|\.cjs)$/,
-                exclude: [/(\bcore-js\b|@zip.js)/],
+                exclude: [/(\bcore-js\b)/],
                 use:
                     mode === 'development'
                         ? [
@@ -111,9 +111,9 @@ const dev_config = {
         static: {
             directory: path.join(__dirname, 'bin'),
         },
-        port: 5001,
+        port: 5002,
         https: false,
-        open: 'http://localhost:5001',
+        open: 'http://localhost:5002',
     },
 };
 
