@@ -1,6 +1,5 @@
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
-import { Box } from 'laya/ui/Box';
 import { Handler } from 'laya/utils/Handler';
 
 import { GiftItem, GiftList } from '@app/api/arenaApi';
@@ -8,9 +7,11 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNodeWithAni } from '@app/utils/layaUtils';
+import { tplStr } from '@app/utils/utils';
 
 import { getSkillName } from './buyBullet';
 import { arenaBuyGift, arenaGiftList } from './popSocket';
+import TipPop from './tip';
 
 export default class ArenaGiftPop
     extends ui.pop.arenaGift.arenaGiftUI
@@ -46,7 +47,10 @@ export default class ArenaGiftPop
         onNodeWithAni(btn, Event.CLICK, () => {
             const id = this.data.id;
             if (id) {
-                arenaBuyGift(id).then(() => this.close());
+                arenaBuyGift().then(() => {
+                    TipPop.tip(tplStr('buySuccess'));
+                    this.close();
+                });
             }
         });
         list.renderHandler = new Handler(

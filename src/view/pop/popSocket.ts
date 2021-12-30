@@ -298,7 +298,7 @@ export function arenaGiftList() {
     }) as Promise<GiftList>;
 }
 /** Arena 礼包 giftList */
-export function arenaBuyGift(id: number) {
+export function arenaBuyGift() {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
@@ -311,7 +311,7 @@ export function arenaBuyGift(id: number) {
                 resolve(data);
             }
         });
-        socket.send(ArenaEvent.BuyGift, { id });
+        socket.send(ArenaEvent.BuyGift);
     }) as Promise<BuyGiftRep>;
 }
 /** Arena 礼包 giftList */
