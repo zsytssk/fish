@@ -1,5 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
+import { Box } from 'laya/ui/Box';
 import { Handler } from 'laya/utils/Handler';
 
 import { GiftItem, GiftList } from '@app/api/arenaApi';
@@ -45,29 +46,37 @@ export default class ArenaGiftPop
         );
     }
     public onEnable() {
-        arenaGiftList().then((data) => {
-            if (data) {
-                this.initData(data);
-            }
-        });
+        // arenaGiftList().then((data) => {
+        //     if (data) {
+        //         this.initData(data);
+        //     }
+        // });
     }
     public initData(data: GiftList) {
         this.data = data;
         const { btn, list } = this;
         btn.label = `${data.price}${data.currency}`;
         list.array = data.list;
+        const num = data.list.length;
+        list.repeatX = num;
+        if (num == 4) {
+            list.spaceX = 45;
+        } else if (num > 4) {
+            list.spaceX = 20;
+        } else {
+            list.spaceX = 95;
+        }
+        list.centerX = list.centerX === 0 ? 1 : 0;
     }
     private listRenderHandler(box: ui.pop.arenaGift.itemViewUI, index: number) {
         const { name_label, num_label, icon } = box;
         const data = this.list.array[index] as GiftItem;
 
-        icon.skin = `image/pop/shop/icon/${data.goodsId}.png`;
-        num_label.text = data.goodsNum + '';
-        const name = getSkillName(data.goodsId + '');
+        icon.skin = `image/pop/shop/icon/${data.itemId}.png`;
+        num_label.text = data.num + '';
+        const name = getSkillName(data.itemId + '');
         if (name) {
-            name_label.text = `${getSkillName(data.goodsId + '')} x${
-                data.goodsNum
-            }`;
+            name_label.text = `${getSkillName(data.itemId + '')} x${data.num}`;
         } else {
             name_label.text = ``;
         }

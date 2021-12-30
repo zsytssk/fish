@@ -13,6 +13,7 @@ import { arenaGenShopInfo, arenaShopList } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 
 import CompetitionInfoData from './competitionInfo.json';
+import Gift1Data from './gift1.json';
 import GiftData from './gift.json';
 import HelpData from './help.json';
 import RankData from './rank.json';
@@ -42,6 +43,10 @@ export const arena_pop_test = {
         await sleep(1);
         pop.initData(GiftData as any);
 
+        await sleep(1);
+        pop.initData(Gift1Data as any);
+        await sleep(1);
+        pop.initData(GiftData as any);
         return pop;
     },
     openSettle: async () => {

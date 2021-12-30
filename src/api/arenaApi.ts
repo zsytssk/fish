@@ -146,8 +146,8 @@ export type GetDayRanking = {
 };
 
 export type GiftItem = {
-    goodsId: number;
-    goodsNum: number;
+    itemId: number;
+    num: number;
 };
 export type GiftList = {
     id: number;
