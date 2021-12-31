@@ -1,3 +1,5 @@
+import Big from 'big.js';
+
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
@@ -10,6 +12,10 @@ import {
     International,
     TypeInternationalTipLang,
 } from '@app/data/internationalConfig';
+
+export function calcPercent(num: number | string) {
+    return Big(num).mul(100);
+}
 
 export function isFunc(func: Func<void>): boolean {
     return func && typeof func === 'function';

@@ -9,7 +9,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { getAllChildren } from '@app/utils/layaQueryElements';
 import { resizeContain } from '@app/utils/layaUtils';
-import { tplIntr } from '@app/utils/utils';
+import { calcPercent, tplIntr } from '@app/utils/utils';
 
 import { arenaGetRuleData } from './popSocket';
 
@@ -84,14 +84,25 @@ export default class ArenaHelpPop
             labels3[4].text = tplIntr('arenaHelpRule35', {});
             resizeContain(boxList[2], 10, 'vertical');
 
+            console.log(
+                `test:>`,
+                gun1001,
+                tplIntr('arenaHelpRule42', {
+                    gun1001,
+                    gun1002,
+                    gun1003,
+                    gun1004,
+                    gun1005,
+                }),
+            );
             const labels4 = getAllChildren(boxList[3]) as Label[];
             labels4[0].text = tplIntr('arenaHelpRule41', {});
             labels4[1].text = tplIntr('arenaHelpRule42', {
-                gun1001,
-                gun1002,
-                gun1003,
-                gun1004,
-                gun1005,
+                gun1001: calcPercent(gun1001),
+                gun1002: calcPercent(gun1002),
+                gun1003: calcPercent(gun1003),
+                gun1004: calcPercent(gun1004),
+                gun1005: calcPercent(gun1005),
             });
             resizeContain(boxList[3], 10, 'vertical');
         } catch {}
