@@ -12,6 +12,7 @@ import {
 } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { ChangeUserNumInfo } from '@app/ctrl/game/gameCtrl';
+import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import {
@@ -234,6 +235,11 @@ export function getCompetitionInfo(currency: string) {
         socket.event.once(
             ArenaEvent.CompetitionInfo,
             (_data: CompetitionInfo, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code);
+                    reject(code);
+                    return;
+                }
                 resolve(_data);
             },
         );

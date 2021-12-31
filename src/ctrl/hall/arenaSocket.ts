@@ -17,6 +17,7 @@ import { log } from '@app/utils/log';
 import { getParams, tplStr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
+import TipPop from '@app/view/pop/tip';
 
 import { GameCtrl } from '../game/gameArena/gameCtrl';
 import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
@@ -173,17 +174,21 @@ export function getArenaGuestToken(socket: WebSocketTrait) {
 }
 
 export function arenaErrHandler(
-    game_ctrl: GameCtrl,
+    ctrl: GameCtrl | any,
     code: number,
     data?: any,
     socket?: WebSocketTrait,
 ) {
     if (code === ServerErrCode.Maintenance) {
-        AlertPop.alert('游戏维护中，请退出游戏！', {
-            hide_cancel: true,
-        }).then(() => {
-            game_ctrl.leave();
-        });
+        if (ctrl instanceof GameCtrl) {
+            AlertPop.alert('游戏维护中，请退出游戏！', {
+                hide_cancel: true,
+            }).then(() => {
+                ctrl.leave();
+            });
+        } else {
+            TipPop.tip('游戏维护中');
+        }
         return true;
     }
     errorHandler(code, data, socket);
