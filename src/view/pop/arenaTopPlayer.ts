@@ -13,7 +13,7 @@ export default class ArenaTopPlayerPop
     implements HonorDialog
 {
     public isModal = true;
-    public static async preEnter() {
+    public static async preEnter(data: GetHallOfFameData) {
         const pop = (await honor.director.openDialog({
             dialog: ArenaTopPlayerPop,
             use_exist: true,
@@ -21,6 +21,7 @@ export default class ArenaTopPlayerPop
         })) as ArenaTopPlayerPop;
 
         AudioCtrl.play(AudioRes.PopShow);
+        pop.initData(data);
         return pop;
     }
     public async onAwake() {
@@ -34,13 +35,6 @@ export default class ArenaTopPlayerPop
             null,
             false,
         );
-    }
-    public onEnable() {
-        arenaGetHallOfFame().then((data) => {
-            if (data) {
-                this.initData(data);
-            }
-        });
     }
     public initData(data: GetHallOfFameData) {
         const { list } = this;

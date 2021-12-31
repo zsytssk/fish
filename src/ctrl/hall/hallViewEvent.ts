@@ -108,12 +108,10 @@ export function hallViewEvent(hall: HallCtrl) {
         clickLight.visible = true;
         playSkeletonOnce(clickLight, 0).then(() => {
             clickLight.visible = false;
-            getCompetitionInfo(modelState.app.user_info.cur_balance).then(
-                (data) => {
-                    ArenaCompetitionPop.preEnter(data);
-                },
-            );
-            ArenaCompetitionPop.preEnter();
+            const currency = modelState.app.user_info.cur_balance;
+            getCompetitionInfo(currency).then((data) => {
+                ArenaCompetitionPop.preEnter(data, currency);
+            });
         });
     });
     onNodeWithAni(btn_recharge, CLICK, async () => {

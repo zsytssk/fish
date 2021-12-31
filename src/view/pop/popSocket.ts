@@ -252,11 +252,6 @@ export function competitionSignUp(currency?: string) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         socket.event.once(ArenaEvent.SignUp, (data: SignUpRes, code) => {
-            if (code !== ARENA_OK_CODE) {
-                arenaErrHandler(null, code);
-                return reject();
-            }
-
             resolve({
                 code,
                 currency: currency || modelState.app.user_info.cur_balance,
@@ -358,8 +353,8 @@ export function arenaGetHallOfFame() {
 }
 
 /** Arena 帮助 */
-export function arenaGetRuleData(mode: number, currency: string) {
-    const tmp = getItem(`arenaGetRuleData:mode${mode}`);
+export function arenaGetRuleData(modeId: number, currency: string) {
+    const tmp = getItem(`arenaGetRuleData:mode${modeId}`);
     if (tmp) {
         return Promise.resolve(JSON.parse(tmp) as GetRuleData);
     }
@@ -375,14 +370,14 @@ export function arenaGetRuleData(mode: number, currency: string) {
                 reject();
             } else {
                 setItem(
-                    `arenaGetRuleData:mode${mode}`,
+                    `arenaGetRuleData:mode${modeId}`,
                     JSON.stringify(data),
                     1,
                 );
                 resolve(data);
             }
         });
-        socket.send(ArenaEvent.GetRuleData, { mode, currency });
+        socket.send(ArenaEvent.GetRuleData, { modeId, currency });
     });
 }
 

@@ -2,6 +2,7 @@ import honor, { HonorDialog } from 'honor';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
+import { GetRuleData } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
@@ -17,22 +18,18 @@ export default class ArenaHelpPop
     implements HonorDialog
 {
     public isModal = true;
-    private currency: string;
-    public static async preEnter(currency: string) {
+    public static async preEnter(data: GetRuleData) {
         const pop = (await honor.director.openDialog({
             dialog: ArenaHelpPop,
             use_exist: true,
             stay_scene: true,
         })) as ArenaHelpPop;
         AudioCtrl.play(AudioRes.PopShow);
-        pop.currency = currency;
+        pop.initData(data);
         return pop;
     }
     public async onAwake() {
         this.initEvent();
-        onLangChange(this, () => {
-            this.initLang();
-        });
     }
     private initEvent() {
         const { tab, tabBody } = this;
@@ -46,7 +43,7 @@ export default class ArenaHelpPop
             false,
         );
     }
-    private async initLang() {
+    public async initData(data: GetRuleData) {
         const { tabBody } = this;
         try {
             const boxList = await getAllChildren(tabBody);
@@ -64,7 +61,7 @@ export default class ArenaHelpPop
                     },
                 },
                 matchTimeConfig: { deadlineTime },
-            } = await arenaGetRuleData(1, this.currency);
+            } = data;
 
             const labels1 = getAllChildren(boxList[0]) as Label[];
             labels1[0].text = tplIntr('arenaHelpRule11', { deadlineTime });

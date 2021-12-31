@@ -5,9 +5,11 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
+import { ARENA_OK_CODE } from '@app/data/serverEvent';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -15,7 +17,13 @@ import { onNodeWithAni } from '@app/utils/layaUtils';
 import ArenaHelpPop from './arenaHelp';
 import ArenaRankPop from './arenaRank';
 import ArenaTopPlayerPop from './arenaTopPlayer';
-import { competitionSignUp } from './popSocket';
+import {
+    arenaGetDayRanking,
+    arenaGetHallOfFame,
+    arenaGetRuleData,
+    competitionSignUp,
+} from './popSocket';
+import TipPop from './tip';
 
 export default class ArenaCompetitionPop
     extends ui.pop.arenaCompetitionInfo.arenaCompetitionInfoUI
@@ -26,7 +34,7 @@ export default class ArenaCompetitionPop
     public get zOrder() {
         return 100;
     }
-    public static async preEnter(data: CompetitionInfo) {
+    public static async preEnter(data: CompetitionInfo, currency: string) {
         const pop = (await honor.director.openDialog(
             {
                 dialog: ArenaCompetitionPop,
@@ -35,7 +43,7 @@ export default class ArenaCompetitionPop
             },
             {
                 beforeOpen: (pop: ArenaCompetitionPop) => {
-                    pop.initData(data);
+                    pop.initData(data, currency);
                 },
             },
         )) as ArenaCompetitionPop;
@@ -55,28 +63,40 @@ export default class ArenaCompetitionPop
         onNodeWithAni(btn_sign, Event.CLICK, () => {
             competitionSignUp().then((data) => {
                 if (
-                    data.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
-                    data.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT
+                    data?.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
+                    data?.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT
                 ) {
                     HallCtrl.instance?.enterArena(data);
                     this.close();
                 } else {
                     this.renderSignButton(data.status);
+
+                    if (data.code !== ARENA_OK_CODE) {
+                        arenaErrHandler(null, data.code);
+                    }
                 }
             });
         });
         onNodeWithAni(btn_famous, Event.CLICK, () => {
-            ArenaTopPlayerPop.preEnter();
+            arenaGetHallOfFame().then((data) => {
+                ArenaTopPlayerPop.preEnter(data);
+            });
         });
         onNodeWithAni(btn_help, Event.CLICK, () => {
-            ArenaHelpPop.preEnter(this.currency);
+            arenaGetRuleData(1, this.currency).then((data) => {
+                ArenaHelpPop.preEnter(data);
+            });
         });
         onNodeWithAni(btn_best, Event.CLICK, () => {
-            ArenaRankPop.preEnter();
+            arenaGetDayRanking().then((data) => {
+                ArenaRankPop.preEnter(data);
+            });
         });
     }
-    public initData(data: CompetitionInfo) {
+    public initData(data: CompetitionInfo, currency: string) {
         const { timezone_label, openTime, myScore, myRank, rankList } = this;
+
+        this.currency = data.currency;
 
         const status = data.myself.status;
         const fee = data.match.fee;
@@ -105,7 +125,19 @@ export default class ArenaCompetitionPop
         }
         rankList.array = array;
         rankList.hScrollBarSkin = '';
-        this.renderSignButton(status, fee);
+        const sign_status = this.renderSignButton(status, fee);
+
+        if (currency !== data.currency) {
+            if (sign_status === 'continue') {
+                TipPop.tip(
+                    `尽管你选择的货币${currency}, 但是目前你在${data.currency}游戏还没结束，点击继续游戏`,
+                );
+            } else if (sign_status === 'sign') {
+                TipPop.tip(
+                    `暂不支持你选择的货币${currency}, 点击继续游戏使用${data.currency}报名进入游戏`,
+                );
+            }
+        }
     }
     private renderSignButton(status: ArenaGameStatus, fee?: number) {
         const { btn_sign, cost_label } = this;
@@ -117,11 +149,13 @@ export default class ArenaCompetitionPop
             (btn_sign as Button).label = '继续游戏';
             cost_label.visible = false;
             btn_sign.labelPadding = '0,0,5,0';
+            return 'continue';
         } else if (status === ArenaGameStatus.GAME_STATUS_CLOSE) {
             (btn_sign as Button).label = '暂未开始';
             cost_label.visible = false;
             (btn_sign as Button).disabled = true;
             btn_sign.labelPadding = '0,0,5,0';
+            return 'not_open';
         } else if (
             status === ArenaGameStatus.GAME_STATUS_FREE ||
             status === ArenaGameStatus.GAME_STATUS_SIGNUP
@@ -130,6 +164,7 @@ export default class ArenaCompetitionPop
             cost_label.text = `费用：${fee}USDT`;
             (btn_sign as Button).label = '报名';
             btn_sign.labelPadding = '0,0,15,0';
+            return 'sign';
         }
     }
     private rankListRender(
