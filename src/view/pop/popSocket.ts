@@ -7,19 +7,20 @@ import {
     GetRuleData,
     GiftList,
     ShopListData,
+    ShopListDataItem,
     SignUpReq,
     SignUpRes,
 } from '@app/api/arenaApi';
-import { ctrlState } from '@app/ctrl/ctrlState';
 import { ChangeUserNumInfo } from '@app/ctrl/game/gameCtrl';
+import { changeUserAccount, getItemType } from '@app/ctrl/game/gameCtrlUtils';
 import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import {
-    ServerName,
-    ServerEvent,
     ArenaEvent,
     ARENA_OK_CODE,
+    ServerEvent,
+    ServerName,
 } from '@app/data/serverEvent';
 import { getCurUserId, modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
@@ -99,10 +100,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
                     type: 'bullet',
                 });
             }
-            ctrlState.game.changeUserNumInfo({
-                userId,
-                change_arr,
-            });
+            changeUserAccount(userId, change_arr);
             resolve(true);
         });
         socket.send(ServerEvent.Buy, { itemId, num } as BuyReq);
@@ -317,24 +315,13 @@ export function arenaBuyGift() {
                 const change_arr: ChangeUserNumInfo['change_arr'] = [];
                 for (const item of data) {
                     const { itemId, num } = item;
-                    if (itemId === '3001') {
-                        change_arr.push({
-                            num: num,
-                            type: 'bullet',
-                        });
-                    } else {
-                        change_arr.push({
-                            id: itemId,
-                            num,
-                            type: 'skill',
-                        });
-                    }
+                    change_arr.push({
+                        id: itemId,
+                        num,
+                        type: getItemType(itemId),
+                    });
                 }
-                ctrlState.game.changeUserNumInfo({
-                    userId,
-                    change_arr,
-                });
-
+                changeUserAccount(userId, change_arr);
                 resolve();
             }
         });
@@ -389,9 +376,14 @@ export function arenaGetRuleData(mode: number, currency: string) {
         socket.send(ArenaEvent.GetRuleData, { mode, currency });
     });
 }
+
+export type ArenaShopList = {
+    gun: ShopListDataItem[];
+    item: ShopListDataItem[];
+};
 /** Arena 商城 */
 export function arenaShopList(data: ArenaShopPopInfo) {
-    return new Promise<ShopData>((resolve, reject) => {
+    return new Promise<ArenaShopList>((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
             return reject(undefined);
@@ -407,71 +399,58 @@ export function arenaShopList(data: ArenaShopPopInfo) {
     });
 }
 
-export function arenaGenShopInfo(data: ShopListData): ShopData {
-    const result = { gun: [], item: [] } as ShopData;
+export function arenaGenShopInfo(data: ShopListData) {
+    const result = { gun: [], item: [] } as ArenaShopList;
 
     for (const item of data) {
-        const { currency, itemType, itemId, status, price, num, itemName } =
-            item;
+        const { itemType } = item;
         if (itemType === 1) {
-            result.gun.push({
-                currency,
-                id: itemId,
-                price,
-                status,
-                name: itemName,
-            });
+            result.gun.push(item);
         } else {
-            result.item.push({
-                currency,
-                id: itemId,
-                price,
-                num,
-                name: itemName,
-            });
+            result.item.push(item);
         }
     }
     return result;
 }
 
 export function arenaUseGunSkin(skin: string) {
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
-        socket.event.once(ServerEvent.UseSkin, (data: UseSkinReq) => {
-            resolve(true);
-        });
+        socket.event.once(
+            ServerEvent.UseSkin,
+            (data: UseSkinReq, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code, data, socket);
+                    reject();
+                    return;
+                }
+                resolve(true);
+            },
+        );
         socket.send(ServerEvent.UseSkin, {
             skinId: skin,
-            userId: getCurUserId(),
+            userId: getCurUserId(true),
         });
     }) as Promise<boolean>;
 }
 
-export function arenaBuyItem(goodsId: string, goodsNum?: number) {
-    return new Promise((resolve, _reject) => {
+export function arenaBuyItem(id: string, itemId: string, num = 1) {
+    return new Promise<boolean>((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
-        socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
-            if (code !== 200) {
-                return errorHandler(code, data, socket);
+        socket.event.once(ArenaEvent.BuyGoods, (data: BuyRep, code: number) => {
+            if (code !== ARENA_OK_CODE) {
+                arenaErrHandler(null, code, data, socket);
+                reject();
+                return;
             }
 
-            const userId = getCurUserId();
-            const change_arr = [] as ChangeUserNumInfo['change_arr'];
+            // 更新技能数量
+            changeUserAccount(getCurUserId(), [
+                { id: itemId, num, type: getItemType(itemId) },
+            ]);
 
-            if (goodsNum) {
-                change_arr.push({
-                    id: goodsId,
-                    num: goodsNum,
-                    type: 'skill',
-                });
-            }
-
-            ctrlState.game.changeUserNumInfo({
-                userId,
-                change_arr,
-            });
             resolve(true);
         });
-        socket.send(ArenaEvent.BuyGoods, { goodsId, goodsNum } as BuyGoodsData);
-    }) as Promise<boolean>;
+        socket.send(ArenaEvent.BuyGoods, { id, num } as BuyGoodsData);
+    });
 }

@@ -262,7 +262,7 @@ export function formatDateStr(a: number): string {
     }
     return '' + a;
 }
-export function tplStr<T extends Record<string, unknown>>(
+export function tplIntr<T extends Record<string, unknown>>(
     key: keyof TypeInternationalTipLang,
     data?: T,
 ) {
@@ -275,4 +275,14 @@ export function tplStr<T extends Record<string, unknown>>(
     }
 
     return msg;
+}
+export function tplStr<T extends Record<string, unknown>>(
+    str: string,
+    data?: T,
+) {
+    for (const key in data) {
+        str = str.replace(new RegExp(`{${key}}`, 'g'), data[key] + '');
+    }
+
+    return str;
 }

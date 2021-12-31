@@ -1,6 +1,6 @@
 import { tipExchange } from '@app/ctrl/game/gameCtrlUtils';
 import { asyncOnly, clearAsyncOnly } from '@app/utils/asyncQue';
-import { tplStr } from '@app/utils/utils';
+import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
 
@@ -8,7 +8,7 @@ import { sleep } from '../../utils/testUtils';
 
 export const alert_test = {
     topTip: async (msg) => {
-        TipPop.tip(tplStr('logoutTip'), {
+        TipPop.tip(tplIntr('logoutTip'), {
             count: 5,
             show_count: true,
             auto_hide: false,

@@ -43,7 +43,7 @@ import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
-import { setProps, tplStr } from '@app/utils/utils';
+import { setProps, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
@@ -67,7 +67,7 @@ import { waitConnectGameArena } from '../../hall/arenaSocket';
 import { offCommon } from '../../hall/commonSocket';
 import { WebSocketTrait } from '../../net/webSocketWrap';
 import { FishCtrl } from '../fishCtrl';
-import { GameCtrlUtils } from '../gameCtrl';
+import { ChangeUserNumInfo, GameCtrlUtils } from '../gameCtrl';
 import {
     disableAllUserOperation,
     disableCurUserOperation,
@@ -77,15 +77,6 @@ import {
 import { PlayerCtrl } from '../playerCtrl';
 import { ArenaPlayerCom } from './ArenaPlayerCom';
 import { convertEnterGame, onGameSocket } from './gameSocket';
-
-export type ChangeUserNumInfo = {
-    userId: string;
-    change_arr: Array<{
-        id?: string;
-        num: number;
-        type: 'skill' | 'bullet';
-    }>;
-};
 
 /** 大奖赛ctrl */
 export class GameCtrl implements GameCtrlUtils {
@@ -296,7 +287,7 @@ export class GameCtrl implements GameCtrlUtils {
         );
     }
     public buySkillTip() {
-        AlertPop.alert(tplStr('buySkillTip')).then((type) => {
+        AlertPop.alert(tplIntr('buySkillTip')).then((type) => {
             if (type === 'confirm') {
                 ArenaGiftPop.preEnter();
             }
@@ -413,7 +404,7 @@ export class GameCtrl implements GameCtrlUtils {
             const { type, num, id } = item;
             if (type === 'skill') {
                 player.addSkillNum(id, num);
-            } else {
+            } else if (type === 'bullet') {
                 player.updateInfo({
                     bullet_num: player.bullet_num + num,
                 });

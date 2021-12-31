@@ -4,10 +4,14 @@ import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import { changeBulletNum } from '@app/ctrl/game/gameCtrlUtils';
+import {
+    changeBulletNum,
+    changeUserAccount,
+} from '@app/ctrl/game/gameCtrlUtils';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { getCurUserId } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
 import { tween } from '@app/utils/layaTween';
@@ -195,7 +199,7 @@ export default class LotteryPop
     }
     /** 抽奖动画 */
     public runLotteryAni(id: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, _reject) => {
             const { lottery_list, btn_lottery } = this;
             const arr = lottery_list.array as LotteryRenderData[];
 
@@ -247,7 +251,9 @@ export default class LotteryPop
         const is_bullet = lottery_type === 'bullet';
 
         if (is_bullet) {
-            changeBulletNum(lottery_num);
+            changeUserAccount(getCurUserId(), [
+                { type: 'bullet', num: lottery_num },
+            ]);
         }
         RewardPop.preEnter({ type: lottery_type, num: lottery_num }).then(
             () => {

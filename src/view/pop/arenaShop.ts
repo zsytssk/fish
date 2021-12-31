@@ -5,6 +5,7 @@ import { Button } from 'laya/ui/Button';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
+import { ShopListDataItem } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import {
     getLang,
@@ -16,7 +17,12 @@ import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
 
 import { buySkinAlert } from './buyBullet';
-import { arenaBuyItem, arenaShopList, arenaUseGunSkin } from './popSocket';
+import {
+    arenaBuyItem,
+    ArenaShopList,
+    arenaShopList,
+    arenaUseGunSkin,
+} from './popSocket';
 import { getItemName, GunRenderData, GunSkinStatus, ShopData } from './shop';
 
 export type ArenaShopPopInfo = {
@@ -79,42 +85,22 @@ export default class ArenaShopPop
             this.initData(data);
         });
     }
-    public initData(data: ShopData) {
+    public initData(data: ArenaShopList) {
         const { gun_list } = this;
         const { gun } = data;
 
-        const gun_arr = [] as GunRenderData[];
-        for (const gun_item of gun) {
-            const {
-                name,
-                id: gun_id,
-                status: gun_status,
-                price: gun_price,
-                currency,
-            } = gun_item;
-
-            const gun_name = getItemName(gun_id, name);
-
-            gun_arr.push({
-                currency,
-                gun_name,
-                gun_id,
-                gun_status,
-                gun_price,
-            });
-        }
-        gun_list.array = gun_arr;
+        gun_list.array = gun;
     }
     private renderGunList = (box: ShopGunItemUI, index: number) => {
-        const { gun_name, gun_id, gun_status, gun_price, currency } = this
-            .gun_list.array[index] as GunRenderData;
+        const { itemName, itemId, status, price, id, currency } = this.gun_list
+            .array[index] as ShopListDataItem;
         const { name_label, icon, stack_btn, icon_check, select_bd } = box;
         const lang = getLang();
         const { use, inUse } = InternationalTip[lang];
 
-        name_label.text = gun_name;
-        icon.skin = `image/pop/shop/icon/${gun_id}.png`;
-        const status_index = gun_status;
+        name_label.text = itemName;
+        icon.skin = `image/pop/shop/icon/${itemId}.png`;
+        const status_index = status;
         stack_btn.selectedIndex = status_index;
         const cur_btn = stack_btn.getChildAt(status_index) as Button;
         const cur_label = cur_btn.getChildByName('label') as Label;
@@ -123,26 +109,26 @@ export default class ArenaShopPop
         select_bd.visible = false;
         cur_btn.offAll();
 
-        if (gun_status === GunSkinStatus.NoHave) {
-            cur_label.text = `${gun_price}${currency}`;
+        if (status === GunSkinStatus.NoHave) {
+            cur_label.text = `${price}${currency}`;
             cur_btn.on(Event.CLICK, cur_btn, () => {
-                buySkinAlert(gun_price, gun_name).then((_status) => {
+                buySkinAlert(price, itemName, currency).then((_status) => {
                     if (!_status) {
                         return;
                     }
-                    arenaBuyItem(gun_id, 1).then(() => {
-                        this.buyGunSkin(gun_id);
+                    arenaBuyItem(id, itemId, 1).then(() => {
+                        this.buyGunSkin(id);
                     });
                 });
             });
-        } else if (gun_status === GunSkinStatus.Have) {
+        } else if (status === GunSkinStatus.Have) {
             cur_label.text = use;
             cur_btn.on(Event.CLICK, cur_btn, () => {
-                arenaUseGunSkin(gun_id).then(() => {
-                    this.useGunSkin(gun_id);
+                arenaUseGunSkin(itemId).then(() => {
+                    this.useGunSkin(itemId);
                 });
             });
-        } else if (gun_status === GunSkinStatus.Used) {
+        } else if (status === GunSkinStatus.Used) {
             cur_label.text = inUse;
             icon_check.visible = true;
             select_bd.visible = true;
@@ -151,10 +137,10 @@ export default class ArenaShopPop
     /** 购买皮肤 */
     public buyGunSkin(id: string) {
         // this.gun_list.changeItem();
-        const arr = this.gun_list.array as GunRenderData[];
+        const arr = this.gun_list.array as ShopListDataItem[];
         for (const item of arr) {
-            if (item.gun_id === id) {
-                item.gun_status = GunSkinStatus.Have;
+            if (item.id === id) {
+                item.status = GunSkinStatus.Have;
                 break;
             }
         }
