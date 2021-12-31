@@ -5,8 +5,8 @@ module.exports = {
             '@babel/plugin-transform-runtime',
             {
                 corejs: 3,
-                helpers: false,
-                regenerator: false,
+                helpers: true,
+                regenerator: true,
                 useESModules: false,
             },
         ],
