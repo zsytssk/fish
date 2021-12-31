@@ -4,7 +4,6 @@ import { Button } from 'laya/ui/Button';
 import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
-import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
@@ -16,18 +15,18 @@ import { onNodeWithAni } from '@app/utils/layaUtils';
 import ArenaHelpPop from './arenaHelp';
 import ArenaRankPop from './arenaRank';
 import ArenaTopPlayerPop from './arenaTopPlayer';
-import { competitionSignUp, getCompetitionInfo } from './popSocket';
+import { competitionSignUp } from './popSocket';
 
 export default class ArenaCompetitionPop
     extends ui.pop.arenaCompetitionInfo.arenaCompetitionInfoUI
     implements HonorDialog
 {
     public isModal = true;
-    public currency: string;
+    private currency: string;
     public get zOrder() {
         return 100;
     }
-    public static async preEnter(currency: string) {
+    public static async preEnter(data: CompetitionInfo) {
         const pop = (await honor.director.openDialog(
             {
                 dialog: ArenaCompetitionPop,
@@ -36,13 +35,12 @@ export default class ArenaCompetitionPop
             },
             {
                 beforeOpen: (pop: ArenaCompetitionPop) => {
-                    pop.currency = currency;
-                    pop.requestData();
+                    pop.initData(data);
                 },
             },
         )) as ArenaCompetitionPop;
         AudioCtrl.play(AudioRes.PopShow);
-        pop.currency = currency;
+
         return pop;
     }
     public async onAwake() {
@@ -51,12 +49,7 @@ export default class ArenaCompetitionPop
             this.initLang();
         });
     }
-    public async requestData() {
-        const data = await getCompetitionInfo(this.currency);
-        if (data) {
-            this.initData(data);
-        }
-    }
+
     private initEvent() {
         const { btn_sign, btn_famous, btn_help, btn_best } = this;
         onNodeWithAni(btn_sign, Event.CLICK, () => {

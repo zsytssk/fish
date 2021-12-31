@@ -249,9 +249,14 @@ export function getCompetitionInfo(currency: string) {
 
 /** Arena 报名 */
 export function competitionSignUp(currency?: string) {
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         socket.event.once(ArenaEvent.SignUp, (data: SignUpRes, code) => {
+            if (code !== ARENA_OK_CODE) {
+                arenaErrHandler(null, code);
+                return reject();
+            }
+
             resolve({
                 code,
                 currency: currency || modelState.app.user_info.cur_balance,
@@ -274,6 +279,7 @@ export function arenaGetDayRanking() {
             ArenaEvent.GetDayRanking,
             (data: GetDayRanking, code) => {
                 if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code);
                     reject();
                 } else {
                     resolve(data);
@@ -292,6 +298,7 @@ export function arenaGiftList() {
         }
         socket.event.once(ArenaEvent.GiftList, (data: GiftList, code) => {
             if (code !== ARENA_OK_CODE) {
+                arenaErrHandler(null, code);
                 reject();
             } else {
                 resolve(data);
@@ -309,7 +316,7 @@ export function arenaBuyGift() {
         }
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
-                errorHandler(code);
+                arenaErrHandler(null, code);
             } else {
                 const userId = getCurUserId(true);
                 const change_arr: ChangeUserNumInfo['change_arr'] = [];
@@ -339,6 +346,7 @@ export function arenaGetHallOfFame() {
             ArenaEvent.GetHallOfFame,
             (data: GetHallOfFameData, code) => {
                 if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code);
                     reject();
                 } else {
                     resolve(data);
@@ -363,6 +371,7 @@ export function arenaGetRuleData(mode: number, currency: string) {
         }
         socket.event.once(ArenaEvent.GetRuleData, (data: GetRuleData, code) => {
             if (code !== ARENA_OK_CODE) {
+                arenaErrHandler(null, code);
                 reject();
             } else {
                 setItem(
@@ -390,6 +399,7 @@ export function arenaShopList(data: ArenaShopPopInfo) {
         }
         socket.event.once(ArenaEvent.ShopList, (data: ShopListData, code) => {
             if (code !== ARENA_OK_CODE) {
+                arenaErrHandler(null, code);
                 reject();
             } else {
                 resolve(arenaGenShopInfo(data));
