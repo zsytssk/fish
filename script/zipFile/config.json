@@ -1,5 +1,5 @@
 {
     "containFiles": ["png", "jpg", "json", "atlas", "sk", "fnt"],
     "distFolder": "./bin/zip",
-    "fileNum": 20
+    "fileNum": 30
 }

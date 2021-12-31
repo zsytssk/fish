@@ -1,8 +1,7 @@
 import { Bezier } from 'bezier-js';
-
 import SAT from 'sat';
 
-import GameConfig from '@app/GameConfig';
+import { default as GameConfig } from '@app/GameConfig';
 import { PATH } from '@app/data/path';
 import { FishSpriteInfo } from '@app/data/sprite';
 import { getSpriteInfo } from '@app/utils/dataUtil';
@@ -12,8 +11,8 @@ import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
 
-export const stage_width = GameConfig.width;
-export const stage_height = GameConfig.height;
+export const stage_width = GameConfig?.width;
+export const stage_height = GameConfig?.height;
 
 /** 寻找屏幕中一个点的朝着一个方向的直线 离开屏幕的点 */
 export function getLineOutPoint(point: Point, derivative: SAT.Vector) {

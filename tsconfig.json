@@ -10,7 +10,6 @@
         "sourceMap": true,
         "watch": true,
         "moduleResolution": "node",
-
         "esModuleInterop": true,
         "baseUrl": "./",
         "noEmit": true,

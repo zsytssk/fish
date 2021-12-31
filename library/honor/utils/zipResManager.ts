@@ -17,6 +17,7 @@ export class ZipResManager {
     private zipMap: ZipMap;
     private version: string;
     public static instance: ZipResManager;
+    private loadingMap: { [key: string]: Promise<any> } = {};
     private loadProcessList: { [key: string]: Promise<ZipResItem[]> } = {};
     private zipResMap: { [key: string]: ZipResItem[] } = {};
     private zip_folder: string;
@@ -41,6 +42,8 @@ export class ZipResManager {
         });
     }
     private injectLoad() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
         const oldFn = (Loader.prototype as any)._loadHttpRequest;
         (Loader.prototype as any)._loadHttpRequest = function (
             ...params: any[]
@@ -48,7 +51,9 @@ export class ZipResManager {
             let url = params[0];
             const type = params[1];
             const onLoadCaller = params[2];
-            const oLoad = params[3];
+            const onLoad = params[3];
+            const onErrorCaller = params[6];
+            const onError = params[7];
 
             url = url.split('?')[0].replace(location.origin + '/', '');
 
@@ -56,16 +61,34 @@ export class ZipResManager {
             if (!zipName) {
                 return oldFn.apply(this, [...params]);
             } else {
-                ZipResManager.instance.loadZip(zipName, url).then((item) => {
-                    item.getData().then((data: string) => {
-                        if (type === 'json') {
-                            data = JSON.parse(data);
-                        } else if (type === 'xml') {
-                            data = Utils.parseXMLFromString(data);
-                        }
-                        oLoad.apply(onLoadCaller, [data]);
+                if (!self.loadingMap[url]) {
+                    self.loadingMap[url] = ZipResManager.instance
+                        .loadZip(zipName, url)
+                        .then((item) => {
+                            return item.getData().then((data) => {
+                                return new Promise((resolve, reject) => {
+                                    try {
+                                        if (type === 'json') {
+                                            data = JSON.parse(data as string);
+                                        } else if (type === 'xml') {
+                                            data =
+                                                Utils.parseXMLFromString(data);
+                                        }
+                                        resolve(data);
+                                    } catch {
+                                        reject();
+                                    }
+                                });
+                            });
+                        });
+                }
+                self.loadingMap[url]
+                    .then((data) => {
+                        onLoad.apply(onLoadCaller, [data]);
+                    })
+                    .catch(() => {
+                        onError.call(onErrorCaller);
                     });
-                });
             }
         };
 
@@ -83,31 +106,43 @@ export class ZipResManager {
             if (!zipName) {
                 return oldImgFn.apply(this, [...params]);
             } else {
-                ZipResManager.instance.loadZip(zipName, url).then((item) => {
-                    item.getData().then((data: string) => {
-                        function clear(): void {
-                            const img: any = image;
-                            img.onload = null;
-                            img.onerror = null;
-                            delete (Loader as any)._imgCache[url];
-                        }
-                        function onerror() {
-                            clear();
-                            onError.call(onErrorCaller);
-                        }
-                        function onload() {
-                            clear();
-                            onLoad.call(onLoadCaller, image);
-                        }
+                if (!self.loadingMap[url]) {
+                    self.loadingMap[url] = ZipResManager.instance
+                        .loadZip(zipName, url)
+                        .then((item) => {
+                            return item.getData().then((data) => {
+                                return new Promise((resolve, reject) => {
+                                    function clear(): void {
+                                        const img: any = image;
+                                        img.onload = null;
+                                        img.onerror = null;
+                                    }
+                                    function onerror() {
+                                        clear();
+                                        reject();
+                                    }
+                                    function onload() {
+                                        clear();
+                                        resolve(image);
+                                    }
 
-                        const image = new window.Image();
-                        image.crossOrigin = '';
-                        image.onload = onload;
-                        image.onerror = onerror;
-                        image.src = `data:image/png;base64,${data}`;
-                        (Loader as any)._imgCache[url] = image;
+                                    const image = new window.Image();
+                                    image.crossOrigin = '';
+                                    image.onload = onload;
+                                    image.onerror = onerror;
+                                    image.src = `data:image/png;base64,${data}`;
+                                });
+                            });
+                        });
+                }
+
+                self.loadingMap[url]
+                    .then((image: HTMLImageElement) => {
+                        onLoad.call(onLoadCaller, image);
+                    })
+                    .catch(() => {
+                        onError.call(onErrorCaller);
                     });
-                });
             }
         };
     }
