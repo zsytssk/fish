@@ -19,6 +19,9 @@ export async function zipFile() {
     const entries = Object.entries(fileMap);
     for (const [index, [name, info]] of entries.entries()) {
         tmpSize += info.size;
+        if (config.maxFileSize && info.size > config.maxFileSize) {
+            continue;
+        }
         tmpList.push(name);
         version_str += info.version;
         if (tmpSize > split_size || index === entries.length - 1) {

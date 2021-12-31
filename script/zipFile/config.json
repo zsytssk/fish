@@ -1,5 +1,6 @@
 {
     "containFiles": ["png", "jpg", "json", "atlas", "sk", "fnt"],
     "distFolder": "./bin/zip",
-    "fileNum": 30
+    "fileNum": 30,
+    "maxFileSize": 100000
 }
