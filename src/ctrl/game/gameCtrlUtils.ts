@@ -1,25 +1,32 @@
 import { ctrlState } from '@app/ctrl/ctrlState';
-import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import { waitCreateSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { ServerEvent, ServerName } from '@app/data/serverEvent';
 import { LockFishModel } from '@app/model/game/skill/lockFishModel';
-import { modelState, getCurPlayer, isCurUser } from '@app/model/modelState';
-import { tplStr } from '@app/utils/utils';
+import { isCurUser, modelState } from '@app/model/modelState';
+import { tplIntr } from '@app/utils/utils';
 import TipPop from '@app/view/pop/tip';
 
-export function changeBulletNum(num: number) {
-    const userId = modelState.app.user_info.user_id;
+import { ChangeUserNumInfo } from './gameCtrl';
+
+export function changeUserAccount(
+    userId: string,
+    arr: ChangeUserNumInfo['change_arr'],
+) {
     ctrlState.game.changeUserNumInfo({
         userId,
-        change_arr: [
-            {
-                num,
-                type: 'bullet',
-            },
-        ],
+        change_arr: arr,
     });
+}
+
+export function getItemType(itemId: string) {
+    if (itemId === '3001') {
+        return 'bullet';
+    }
+    if (itemId.indexOf('200') === 0) {
+        return 'skill';
+    }
+    return;
 }
 
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
@@ -100,7 +107,7 @@ export function tipExchange(data: Data) {
         return;
     }
     TipPop.tip(
-        tplStr('enterGameCostTip', {
+        tplIntr('enterGameCostTip', {
             bringAmount: data.bringAmount,
             bulletNum: data.bulletNum,
             currency: data.currency,

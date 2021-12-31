@@ -14,7 +14,7 @@ import {
 import { AudioRes } from '@app/data/audioRes';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
-import { tplStr } from '@app/utils/utils';
+import { tplIntr } from '@app/utils/utils';
 
 import BuyBulletPop, { buySkinAlert } from './buyBullet';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
@@ -56,6 +56,7 @@ export type ItemRenderData = {
     currency?: string;
     item_name: string;
     item_id: string;
+    id?: string;
     item_price: number;
     item_num: number;
 };
@@ -240,7 +241,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 price: item_price,
             }).then((data) => {
                 buyItem(data.id, data.num, data.price).then(() => {
-                    TipPop.tip(tplStr('buySuccess'));
+                    TipPop.tip(tplIntr('buySuccess'));
                     this.close();
                 });
             });

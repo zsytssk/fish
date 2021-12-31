@@ -7,7 +7,7 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNodeWithAni } from '@app/utils/layaUtils';
-import { tplStr } from '@app/utils/utils';
+import { tplIntr } from '@app/utils/utils';
 
 import { getSkillName } from './buyBullet';
 import { arenaBuyGift, arenaGiftList } from './popSocket';
@@ -48,7 +48,7 @@ export default class ArenaGiftPop
             const id = this.data.id;
             if (id) {
                 arenaBuyGift().then(() => {
-                    TipPop.tip(tplStr('buySuccess'));
+                    TipPop.tip(tplIntr('buySuccess'));
                     this.close();
                 });
             }

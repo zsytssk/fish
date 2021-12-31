@@ -14,7 +14,7 @@ import {
 import { modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
-import { getParams, tplStr } from '@app/utils/utils';
+import { getParams, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import TipPop from '@app/view/pop/tip';
@@ -140,7 +140,7 @@ export async function connectArenaSocket(
         isProd() ? 3 : 0,
     );
     if (!socket && isProd()) {
-        AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
+        AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {
             location.reload();
         });
         return;

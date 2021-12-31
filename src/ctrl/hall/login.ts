@@ -3,7 +3,7 @@ import { isProd } from '@app/data/env';
 import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
-import { getParams, tplStr } from '@app/utils/utils';
+import { getParams, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 
 import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
@@ -57,7 +57,7 @@ export async function connectSocket(
         isProd() ? 3 : 0,
     );
     if (!socket && isProd()) {
-        AlertPop.alert(tplStr(ServerErrCode.NetError)).then(() => {
+        AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {
             location.reload();
         });
         return;

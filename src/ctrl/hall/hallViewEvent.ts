@@ -11,6 +11,7 @@ import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
 import { playSkeleton, playSkeletonOnce } from '@app/utils/utils';
 import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 import GameRecord from '@app/view/pop/record/gameRecord';
 import ItemRecord from '@app/view/pop/record/itemRecord';
@@ -107,7 +108,10 @@ export function hallViewEvent(hall: HallCtrl) {
         clickLight.visible = true;
         playSkeletonOnce(clickLight, 0).then(() => {
             clickLight.visible = false;
-            ArenaCompetitionPop.preEnter(modelState.app.user_info.cur_balance);
+            const currency = modelState.app.user_info.cur_balance;
+            getCompetitionInfo(currency).then((data) => {
+                ArenaCompetitionPop.preEnter(data, currency);
+            });
         });
     });
     onNodeWithAni(btn_recharge, CLICK, async () => {

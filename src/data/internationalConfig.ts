@@ -96,8 +96,9 @@ export const International = {
         OtherLogin: 'Login error, please refresh and try again.',
         InputEmptyWarn: 'Input value cannot be blank!',
         Delete: 'Delete',
-        buyItemTip: 'Confirm cost $1 $2,purchase $3 $4.',
-        buySkinTip: 'Confirm cost $1 个 $2,purchase $3.',
+        buyItemTip:
+            'Confirm cost {cost_num} {cost_name},purchase {num} {name}.',
+        buySkinTip: 'Confirm cost {num} {name},purchase {item}.',
         beyondBulletNum: 'Exceeds current ammunition limit',
         itemListTitle: 'Items stored',
         itemList1: 'Item types',
@@ -142,7 +143,7 @@ export const International = {
         arenaHelpRule41:
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
-            '炮臺皮膚      命中加成 \n 皮膚1           {1001}%\n 皮膚2           {1002}%\n 皮膚3           {1003}%\n 皮膚4           {1004}%\n 皮膚5           {1005}%\n',
+            '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -235,8 +236,9 @@ export const International = {
         OtherLogin: '다른 곳에서 로그인 시도, 새로고침해 주세요',
         InputEmptyWarn: '빈칸을 입력해주세요!',
         Delete: '삭제',
-        buyItemTip: '$1개의 $2를 소비하여, $3개의 $4를 구매',
-        buySkinTip: '$1개의 $2를 소비하여, $3 구매',
+        buyItemTip:
+            '{cost_num}개의 {cost_name}를 소비하여, {num}개의 {name}를 구매',
+        buySkinTip: '{num}개의 {name}를 소비하여, {item} 구매',
         beyondBulletNum: '현재 총알 수량 초과',
         itemListTitle: '아이템 보관량',
         itemList1: '아이템',
@@ -281,7 +283,7 @@ export const International = {
         arenaHelpRule41:
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
-            '炮臺皮膚      命中加成 \n 皮膚1           {1001}%\n 皮膚2           {1002}%\n 皮膚3           {1003}%\n 皮膚4           {1004}%\n 皮膚5           {1005}%\n',
+            '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -374,9 +376,9 @@ export const International = {
         OtherLogin: 'サイト外でログオフし、更新して再試行してください',
         InputEmptyWarn: '入力した値は空にできません...！',
         Delete: '削除する',
-        buyItemTip: '費用$1$2、購入$3$4を確認します。',
-        buySkinTip: '确认花费$1个$2, 购买$3.',
-        beyondBulletNum: '費用$1$2、購入$3を確認します。',
+        buyItemTip: '費用{cost_num}{cost_name}、購入{num}{name}を確認します。',
+        buySkinTip: '費用{num}{name}、購入{item}を確認します。',
+        beyondBulletNum: '現在の弾丸数を超える',
         itemListTitle: 'アイテムの在庫',
         itemList1: '道具',
         itemList2: '合計購入金額',
@@ -420,7 +422,7 @@ export const International = {
         arenaHelpRule41:
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
-            '炮臺皮膚      命中加成 \n 皮膚1           {1001}%\n 皮膚2           {1002}%\n 皮膚3           {1003}%\n 皮膚4           {1004}%\n 皮膚5           {1005}%\n',
+            '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -513,8 +515,8 @@ export const International = {
         OtherLogin: '异地登录，请刷新重试',
         InputEmptyWarn: '输入的值不能为空...!',
         Delete: '删除',
-        buyItemTip: '确认花费$1个$2, 购买$3个$4.',
-        buySkinTip: '确认花费$1个$2, 购买$3.',
+        buyItemTip: '确认花费{cost_num}个{cost_name}, 购买{num}个{name}.',
+        buySkinTip: '确认花费{num}个{name}, 购买{item}.',
         beyondBulletNum: '超出当前的子弹数目',
         itemListTitle: '道具存量',
         itemList1: '道具类型',
@@ -648,8 +650,8 @@ export const International = {
         OtherLogin: '異地登錄，請刷新重試',
         InputEmptyWarn: '輸入的值不能為空...!',
         Delete: '刪除',
-        buyItemTip: '確認花費$1個$2, 購買$3個$4.',
-        buySkinTip: '確認花費$1個$2, 購買$3.',
+        buyItemTip: '確認花費{cost_num}個{cost_name}, 購買{num}個{name}.',
+        buySkinTip: '確認花費{num}個{name}, 購買{item}.',
         beyondBulletNum: '超出當前的子彈數目',
         itemListTitle: '道具存量',
         itemList1: '道具類型',

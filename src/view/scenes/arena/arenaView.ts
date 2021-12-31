@@ -108,7 +108,7 @@ export default class ArenaView
         }
     }
 
-    private countId;
+    private countId: number;
     public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
         if (showTip) {
             ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
@@ -335,6 +335,7 @@ export default class ArenaView
          *  在这里放一个try catch防止卡死
          */
         try {
+            clearCount(this.countId);
             offLangChange(this);
             super.destroy();
         } catch (err) {

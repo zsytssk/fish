@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CryptoJS from 'crypto-js';
 import { JSEncrypt } from 'jsencrypt';
 import { Observable, Subscriber } from 'rxjs';
@@ -156,6 +157,26 @@ export function encrypt(name: string, msg: string) {
         },
     );
     return encryptData.toString();
+}
+
+export function socketEventToPromise(
+    socket: WebSocketTrait,
+    event: string,
+    OK_CODE: number,
+) {
+    return <T>(data: any) => {
+        return new Promise<T>((resolve, reject) => {
+            socket.event.once(event, (_data: T, code: number) => {
+                if (code !== OK_CODE) {
+                    reject({ code, data: _data });
+                    return;
+                }
+
+                resolve(_data);
+            });
+            socket.send(event, data);
+        });
+    };
 }
 
 export function bindSocketEvent(

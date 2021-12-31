@@ -11,7 +11,7 @@ import { SkillMap } from '@app/data/config';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { getCurPlayer } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
-import { addZeroToNum, tplStr } from '@app/utils/utils';
+import { addZeroToNum, tplIntr } from '@app/utils/utils';
 
 import AlertPop from './alert';
 import { buyItem } from './popSocket';
@@ -83,7 +83,7 @@ export default class BuyBulletPop
         const { price } = this.buy_info;
         const user = getCurPlayer();
         if (num * price > user.bullet_num) {
-            TipPop.tip(tplStr('beyondBulletNum'));
+            TipPop.tip(tplIntr('beyondBulletNum'));
             num = Math.floor(user.bullet_num / price);
         }
         this.buy_info.num = num;
@@ -153,29 +153,24 @@ export default class BuyBulletPop
 }
 
 export function getSkillName(id: string) {
-    const lang = getLang();
-    const { bomb, lock, freeze } = InternationalTip[lang];
-
     switch (id) {
         case SkillMap.Bomb:
-            return bomb;
+            return tplIntr('bomb');
         case SkillMap.Freezing:
-            return freeze;
+            return tplIntr('freeze');
         case SkillMap.LockFish:
-            return lock;
+            return tplIntr('lock');
     }
 }
 
 export function buyItemAlert(num: number, price: number, id: string) {
     return new Promise((resolve, reject) => {
-        const lang = getLang();
-        const { bullet, buySuccess } = InternationalTip[lang];
-        const { buyItemTip: buyTip } = InternationalTip[lang];
-        const tip = buyTip
-            .replace(`$1`, num * price + '')
-            .replace(`$2`, bullet)
-            .replace(`$3`, num + '')
-            .replace(`$4`, getSkillName(id));
+        const tip = tplIntr('buyItemTip', {
+            cost_num: num * price,
+            cost_name: tplIntr('bullet'),
+            num: num,
+            name: getSkillName(id),
+        });
 
         AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {
@@ -186,15 +181,14 @@ export function buyItemAlert(num: number, price: number, id: string) {
         });
     });
 }
-export function buySkinAlert(price: number, name: string) {
+export function buySkinAlert(num: number, item: string, name?: string) {
     return new Promise((resolve, reject) => {
-        const lang = getLang();
-        const { bullet } = InternationalTip[lang];
-        const { buySkinTip } = InternationalTip[lang];
-        const tip = buySkinTip
-            .replace(`$1`, price + '')
-            .replace(`$2`, bullet)
-            .replace(`$3`, name);
+        name = name || tplIntr('bullet');
+        const tip = tplIntr('buySkinTip', {
+            num,
+            name,
+            item,
+        });
 
         AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {

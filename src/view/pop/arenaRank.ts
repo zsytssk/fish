@@ -16,7 +16,7 @@ export default class ArenaRankPop
     implements HonorDialog
 {
     public isModal = true;
-    public static async preEnter() {
+    public static async preEnter(data: GetDayRanking) {
         const pop = (await honor.director.openDialog({
             dialog: ArenaRankPop,
             use_exist: true,
@@ -24,6 +24,7 @@ export default class ArenaRankPop
         })) as ArenaRankPop;
 
         AudioCtrl.play(AudioRes.PopShow);
+        pop.initData(data);
         return pop;
     }
     public async onAwake() {
@@ -53,13 +54,7 @@ export default class ArenaRankPop
             false,
         );
     }
-    public onEnable() {
-        arenaGetDayRanking().then((data) => {
-            if (data) {
-                this.initData(data);
-            }
-        });
-    }
+
     public initData(data: GetDayRanking) {
         const { today_list, yes_list } = this;
         const { today, yesterday } = data;

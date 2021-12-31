@@ -77,6 +77,7 @@ export type CompetitionInfo = {
         endPeriod: string;
         fee: number;
     };
+    currency: string;
     arenaStatus: ArenaStatus;
     champion: {
         amount: string;
@@ -205,19 +206,22 @@ export type GetRuleData = {
     };
 };
 
-export type ShopListData = {
+export type ShopListDataItem = {
     currency: string;
     itemId: string;
+    id: string;
     itemName: string;
     itemType: number;
     price: number;
     num: number;
     status: number;
-}[];
+};
+
+export type ShopListData = ShopListDataItem[];
 
 export type BuyGoodsData = {
-    goodsId: number | string;
-    goodsNum: number;
+    id: number | string;
+    num: number;
 };
 
 export type TaskTriggerRes = {

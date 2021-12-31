@@ -34,7 +34,7 @@ import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
-import { setProps, tplStr } from '@app/utils/utils';
+import { setProps, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import HelpPop from '@app/view/pop/help';
 import LotteryPop from '@app/view/pop/lottery';
@@ -70,7 +70,7 @@ export type ChangeUserNumInfo = {
     change_arr: Array<{
         id?: string;
         num: number;
-        type: 'skill' | 'bullet';
+        type?: 'skill' | 'bullet';
     }>;
 };
 
@@ -81,6 +81,7 @@ export type GameCtrlUtils = {
     calcClientIndex(index: number): number;
     getSocket: () => WebSocketTrait;
     buySkillTip: () => void;
+    changeUserNumInfo: (data: ChangeUserNumInfo) => void;
     isTrial: EnterGameRep['isTrial'];
 };
 
@@ -212,7 +213,7 @@ export class GameCtrl implements GameCtrlUtils {
         });
     }
     public buySkillTip() {
-        AlertPop.alert(tplStr('buySkillTip')).then((type) => {
+        AlertPop.alert(tplIntr('buySkillTip')).then((type) => {
             if (type === 'confirm') {
                 ShopPop.preEnter();
             }
@@ -395,7 +396,7 @@ export class GameCtrl implements GameCtrlUtils {
             const { type, num, id } = item;
             if (type === 'skill') {
                 player.addSkillNum(id, num);
-            } else {
+            } else if (type === 'bullet') {
                 player.updateInfo({
                     bullet_num: player.bullet_num + num,
                 });

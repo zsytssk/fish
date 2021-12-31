@@ -18,7 +18,7 @@ import {
 import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { removeItem } from '@app/utils/localStorage';
-import { tplStr } from '@app/utils/utils';
+import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
 
@@ -33,14 +33,14 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             if (code === ServerErrCode.TokenExpire) {
                 removeItem('local_token');
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(tplStr('logoutTip'), { hide_cancel: true }).then(
-                    (type) => {
-                        location.reload();
-                    },
-                );
+                AlertPop.alert(tplIntr('logoutTip'), {
+                    hide_cancel: true,
+                }).then((type) => {
+                    location.reload();
+                });
             } else if (code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(tplStr('OtherLogin'), {
+                AlertPop.alert(tplIntr('OtherLogin'), {
                     hide_cancel: true,
                 }).then(() => {
                     location.reload();
@@ -51,7 +51,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         [SocketEvent.Reconnecting]: (try_index: number) => {
             console.log(`test:>Reconnecting`, try_index);
             if (try_index === 0) {
-                TipPop.tip(tplStr('NetError'), {
+                TipPop.tip(tplIntr('NetError'), {
                     count: 10,
                     show_count: true,
                     auto_hide: false,
@@ -66,7 +66,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         },
         /** 断开连接 */
         [SocketEvent.End]: () => {
-            AlertPop.alert(tplStr('logoutTip'), {
+            AlertPop.alert(tplIntr('logoutTip'), {
                 hide_cancel: true,
             }).then(() => {
                 location.reload();
@@ -101,15 +101,15 @@ export function errorHandler(
     data?: any,
     socket?: WebSocketTrait,
 ) {
-    const tip = tplStr(code);
+    const tip = tplIntr(code);
 
     if (code === ServerErrCode.ReExchange) {
-        return exChangeBullet(tplStr(ServerErrCode.ReExchange));
+        return exChangeBullet(tplIntr(ServerErrCode.ReExchange));
     } else if (code === ServerErrCode.NoMoney) {
-        let errMsg = tplStr(ServerErrCode.NoMoney);
+        let errMsg = tplIntr(ServerErrCode.NoMoney);
         if (data?.minAmount) {
             const { minAmount, currency } = data as RoomInError;
-            errMsg = tplStr('NoMoneyAmount', { minAmount, currency });
+            errMsg = tplIntr('NoMoneyAmount', { minAmount, currency });
         }
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
@@ -130,20 +130,20 @@ export function errorHandler(
             socket.send(ServerEvent.RoomOut);
         });
     } else if (code === ServerErrCode.TrialTimeHall) {
-        return TipPop.tip(tplStr(ServerErrCode.TrialTimeGame));
+        return TipPop.tip(tplIntr(ServerErrCode.TrialTimeGame));
     } else if (code === ServerErrCode.TrialClose) {
-        return TipPop.tip(tplStr(ServerErrCode.TrialClose));
+        return TipPop.tip(tplIntr(ServerErrCode.TrialClose));
     } else if (
         code === ServerErrCode.NetError ||
         code === ServerErrCode.EnterGameError
     ) {
-        return AlertPop.alert(tplStr(ServerErrCode.NetError), {
+        return AlertPop.alert(tplIntr(ServerErrCode.NetError), {
             hide_cancel: true,
         }).then(() => {
             location.reload();
         });
     } else if (code === ServerErrCode.OverLimit) {
-        return AlertPop.alert(tplStr(ServerErrCode.OverLimit), {
+        return AlertPop.alert(tplIntr(ServerErrCode.OverLimit), {
             hide_cancel: true,
         }).then(() => {
             const socket = getSocket(ServerName.Game);
@@ -156,7 +156,7 @@ export function errorHandler(
 }
 
 export function tipComeBack() {
-    TipPop.tip(tplStr('NetComeBack'));
+    TipPop.tip(tplIntr('NetComeBack'));
 }
 export function tipCount(msg: string, count: number) {
     TipPop.tip(msg, {

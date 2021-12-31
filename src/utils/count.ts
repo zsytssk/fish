@@ -38,7 +38,7 @@ export function clearCount(index: number) {
     if (!item) {
         return;
     }
-    count_map.get(index)();
+    item();
     count_map.delete(index);
     if (count_map.size === 0) {
         // count_index = 0;
