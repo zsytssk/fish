@@ -165,14 +165,12 @@ export function getSkillName(id: string) {
 
 export function buyItemAlert(num: number, price: number, id: string) {
     return new Promise((resolve, reject) => {
-        const lang = getLang();
-        const { bullet } = InternationalTip[lang];
-        const { buyItemTip: buyTip } = InternationalTip[lang];
-        const tip = buyTip
-            .replace(`$1`, num * price + '')
-            .replace(`$2`, bullet)
-            .replace(`$3`, num + '')
-            .replace(`$4`, getSkillName(id));
+        const tip = tplIntr('buyItemTip', {
+            cost_num: num * price,
+            cost_name: tplIntr('bullet'),
+            num: num,
+            name: getSkillName(id),
+        });
 
         AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {

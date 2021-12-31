@@ -98,7 +98,8 @@ export default class ArenaShopPop
         const lang = getLang();
         const { use, inUse } = InternationalTip[lang];
 
-        name_label.text = itemName;
+        const gun_name = getItemName(itemId, itemName);
+        name_label.text = gun_name;
         icon.skin = `image/pop/shop/icon/${itemId}.png`;
         const status_index = status;
         stack_btn.selectedIndex = status_index;
@@ -112,12 +113,12 @@ export default class ArenaShopPop
         if (status === GunSkinStatus.NoHave) {
             cur_label.text = `${price}${currency}`;
             cur_btn.on(Event.CLICK, cur_btn, () => {
-                buySkinAlert(price, itemName, currency).then((_status) => {
+                buySkinAlert(price, gun_name, currency).then((_status) => {
                     if (!_status) {
                         return;
                     }
                     arenaBuyItem(id, itemId, 1).then(() => {
-                        this.buyGunSkin(id);
+                        this.buyGunSkin(itemId);
                     });
                 });
             });
@@ -135,11 +136,11 @@ export default class ArenaShopPop
         }
     };
     /** 购买皮肤 */
-    public buyGunSkin(id: string) {
+    public buyGunSkin(itemId: string) {
         // this.gun_list.changeItem();
         const arr = this.gun_list.array as ShopListDataItem[];
         for (const item of arr) {
-            if (item.id === id) {
+            if (item.itemId === itemId) {
                 item.status = GunSkinStatus.Have;
                 break;
             }
@@ -147,13 +148,13 @@ export default class ArenaShopPop
         this.gun_list.refresh();
     }
     /** 使用皮肤 */
-    public useGunSkin(id: string) {
-        const arr = this.gun_list.array as GunRenderData[];
+    public useGunSkin(itemId: string) {
+        const arr = this.gun_list.array as ShopListDataItem[];
         for (const item of arr) {
-            if (item.gun_id === id) {
-                item.gun_status = GunSkinStatus.Used;
-            } else if (item.gun_status !== GunSkinStatus.NoHave) {
-                item.gun_status = GunSkinStatus.Have;
+            if (item.itemId === itemId) {
+                item.status = GunSkinStatus.Used;
+            } else if (item.status !== GunSkinStatus.NoHave) {
+                item.status = GunSkinStatus.Have;
             }
         }
         this.gun_list.refresh();
