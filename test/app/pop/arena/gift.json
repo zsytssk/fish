@@ -1,23 +1,13 @@
 {
-    "id": 1,
-    "modeId": 1,
-    "typeId": 1,
-    "giftId": 1,
-    "giftName": 1,
     "currency": "BTC",
-    "price": 1,
+    "id": 1,
     "list": [
-        {
-            "goodsId": 1001,
-            "goodsNum": 10
-        },
-        {
-            "goodsId": 1002,
-            "goodsNum": 10
-        },
-        {
-            "goodsId": 1003,
-            "goodsNum": 10
-        }
-    ]
+        { "itemId": "3001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 }
+    ],
+    "price": "1"
 }

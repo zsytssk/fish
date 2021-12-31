@@ -2,7 +2,7 @@ import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
 import { WebSocketTrait, SocketEvent } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
-import { ServerEvent } from '@app/data/serverEvent';
+import { OK_CODE, ServerEvent } from '@app/data/serverEvent';
 import { PlayerInfo } from '@app/model/game/playerModel';
 import { AutoShootInfo } from '@app/model/game/skill/autoShootModel';
 import { BombInfo } from '@app/model/game/skill/bombModel';
@@ -21,7 +21,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data, socket);
             }
             game.onEnterGame(convertEnterGame(data));
@@ -38,7 +38,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.setPlayersEmit(data.robotIds);
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data, socket);
             }
             game.tableOut(data);
@@ -48,20 +48,20 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             // Todo
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data, socket);
             }
             game.onHit(data);
         },
         [ServerEvent.FishBomb]: (data: UseBombRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Bomb, getCurUserId());
                 return;
             }
             game.activeSkill(SkillMap.Bomb, convertBombData(data));
         },
         [ServerEvent.UseBomb]: (data: UseBombRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Bomb, getCurUserId());
                 return;
             }
@@ -72,7 +72,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             } as BombInfo);
         },
         [ServerEvent.UseFreeze]: (data: UseFreezeRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
@@ -87,7 +87,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
         },
         [ServerEvent.LockFish]: (data: LockFishRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
@@ -111,7 +111,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data, socket);
             }
             const player = getCurPlayer();

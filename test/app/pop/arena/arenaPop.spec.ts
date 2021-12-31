@@ -13,6 +13,7 @@ import { arenaGenShopInfo, arenaShopList } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 
 import CompetitionInfoData from './competitionInfo.json';
+import Gift1Data from './gift1.json';
 import GiftData from './gift.json';
 import HelpData from './help.json';
 import RankData from './rank.json';
@@ -22,13 +23,13 @@ import TopPlayerData from './topPlayer.json';
 
 export const arena_pop_test = {
     openCompetitionInfo: async () => {
-        const pop = await ArenaCompetitionPop.preEnter();
+        const pop = await ArenaCompetitionPop.preEnter('BTC');
         await sleep(2);
         pop.initData(CompetitionInfoData);
     },
     openHelp: async () => {
         setItem(`arenaGetRuleData:mode${1}`, JSON.stringify(HelpData));
-        const pop = await ArenaHelpPop.preEnter();
+        const pop = await ArenaHelpPop.preEnter('BTC');
     },
     openRank: async () => {
         const pop = await ArenaRankPop.preEnter();
@@ -42,6 +43,10 @@ export const arena_pop_test = {
         await sleep(1);
         pop.initData(GiftData as any);
 
+        await sleep(1);
+        pop.initData(Gift1Data as any);
+        await sleep(1);
+        pop.initData(GiftData as any);
         return pop;
     },
     openSettle: async () => {

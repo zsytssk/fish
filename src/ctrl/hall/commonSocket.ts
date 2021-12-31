@@ -96,7 +96,11 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
     bg_monitor.event.offAllCaller(bindObj);
 }
 
-export function errorHandler(code: number, data: any, socket?: WebSocketTrait) {
+export function errorHandler(
+    code: number,
+    data?: any,
+    socket?: WebSocketTrait,
+) {
     const tip = tplStr(code);
 
     if (code === ServerErrCode.ReExchange) {

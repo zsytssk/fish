@@ -2,6 +2,8 @@ import { range } from 'lodash';
 import SAT from 'sat';
 import { Test } from 'testBuilder';
 
+import { Point } from 'laya/maths/Point';
+
 import { FishEvent } from '@app/model/game/fish/fishModel';
 import { modelState } from '@app/model/modelState';
 import {
@@ -19,6 +21,7 @@ import {
     activeShoalWave,
     stopShoalWave,
 } from '@app/view/scenes/game/ani_wrap/shoalWave';
+import { viewState } from '@app/view/viewState';
 
 /** 冰冻 鱼群 爆炸 瞄准...测试 */
 export const ani_wrap = {
@@ -54,8 +57,9 @@ export const ani_wrap = {
             showAwardCoin(pos1, end_pos1, num1, false);
         }, 3000);
     },
-    showAwardCircle: (t, d) => {
-        const pos = { x: 1200, y: 700 };
+    showAwardCircle: (pos, t, d) => {
+        const { ani_wrap } = viewState.game;
+        pos = ani_wrap.globalToLocal(new Point(pos.x, pos.y), true);
         const num = 100000;
         showAwardCircle(pos, num, true, t, d);
     },

@@ -500,7 +500,7 @@ type TweenLoopParam = {
     ease_fn?: EaseFn;
     is_jump?: boolean;
     end_jump?: boolean;
-    step_fn?: (index: number) => boolean;
+    step_fn?: (index: number) => boolean | void;
 };
 export function tweenLoop({
     sprite,

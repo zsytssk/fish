@@ -104,10 +104,6 @@ export function skillPreActiveHandler(
         } = model.skill_core.player;
         const fish = getAimFish();
         if (!is_cur && need_emit) {
-            // sendToGameSocket(ServerEvent.LockFish, {
-            //     robotId: user_id,
-            //     eid: fish.id,
-            // } as LockFishReq);
             return;
         }
 
@@ -163,7 +159,7 @@ export function skillActiveHandler(
 
             // 选中鱼
             onFishClick().subscribe(({ id, group_id }) => {
-                const data = { eid: id, needActive: true } as LockFishReq;
+                const data = { eid: id } as LockFishReq;
                 if (group_id) {
                     data.gid = group_id;
                 }

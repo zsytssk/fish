@@ -124,7 +124,6 @@ export class HallCtrl {
             view.setNickname(nickname);
         });
         onArenaInfoChange(this, (info) => {
-            console.log(`test:>onArenaInfoChange`, view.destroyed);
             view.updateArenaInfo(info);
         });
 

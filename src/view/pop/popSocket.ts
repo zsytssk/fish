@@ -12,6 +12,7 @@ import {
 } from '@app/api/arenaApi';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { ChangeUserNumInfo } from '@app/ctrl/game/gameCtrl';
+import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import {
@@ -20,7 +21,7 @@ import {
     ArenaEvent,
     ARENA_OK_CODE,
 } from '@app/data/serverEvent';
-import { modelState } from '@app/model/modelState';
+import { getCurUserId, modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 
 import { ArenaShopPopInfo } from './arenaShop';
@@ -69,7 +70,7 @@ export function useGunSkin(skin: string) {
         });
         socket.send(ServerEvent.UseSkin, {
             skinId: skin,
-            userId: modelState.app.user_info.user_id,
+            userId: getCurUserId(),
         });
     }) as Promise<boolean>;
 }
@@ -82,7 +83,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
                 return errorHandler(code, data, socket);
             }
 
-            const userId = modelState.app.user_info.user_id;
+            const userId = getCurUserId();
             const change_arr = [] as ChangeUserNumInfo['change_arr'];
 
             if (num) {
@@ -92,7 +93,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
                     type: 'skill',
                 });
             }
-            if (-cost_bullet) {
+            if (cost_bullet) {
                 change_arr.push({
                     num: -cost_bullet * num,
                     type: 'bullet',
@@ -225,7 +226,7 @@ export function getRecentBullet() {
     }) as Promise<GetRecentBulletRep>;
 }
 
-export function getCompetitionInfo() {
+export function getCompetitionInfo(currency: string) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
@@ -233,13 +234,17 @@ export function getCompetitionInfo() {
         }
         socket.event.once(
             ArenaEvent.CompetitionInfo,
-            (_data: CompetitionInfo) => {
+            (_data: CompetitionInfo, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code);
+                    reject(code);
+                    return;
+                }
                 resolve(_data);
             },
         );
-        console.log(`test:>arenaStatus`, modelState.app.user_info.cur_balance);
         socket.send(ArenaEvent.CompetitionInfo, {
-            currency: modelState.app.user_info.cur_balance,
+            currency,
         });
     }) as Promise<CompetitionInfo>;
 }
@@ -298,21 +303,43 @@ export function arenaGiftList() {
     }) as Promise<GiftList>;
 }
 /** Arena 礼包 giftList */
-export function arenaBuyGift(id: number) {
-    return new Promise((resolve, reject) => {
+export function arenaBuyGift() {
+    return new Promise<void>((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
-            return reject(undefined);
+            return reject();
         }
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
-                reject();
+                errorHandler(code);
             } else {
-                resolve(data);
+                const userId = getCurUserId(true);
+                const change_arr: ChangeUserNumInfo['change_arr'] = [];
+                for (const item of data) {
+                    const { itemId, num } = item;
+                    if (itemId === '3001') {
+                        change_arr.push({
+                            num: num,
+                            type: 'bullet',
+                        });
+                    } else {
+                        change_arr.push({
+                            id: itemId,
+                            num,
+                            type: 'skill',
+                        });
+                    }
+                }
+                ctrlState.game.changeUserNumInfo({
+                    userId,
+                    change_arr,
+                });
+
+                resolve();
             }
         });
-        socket.send(ArenaEvent.BuyGift, { id });
-    }) as Promise<BuyGiftRep>;
+        socket.send(ArenaEvent.BuyGift);
+    });
 }
 /** Arena 礼包 giftList */
 export function arenaGetHallOfFame() {
@@ -336,10 +363,10 @@ export function arenaGetHallOfFame() {
 }
 
 /** Arena 帮助 */
-export function arenaGetRuleData(mode: number) {
+export function arenaGetRuleData(mode: number, currency: string) {
     const tmp = getItem(`arenaGetRuleData:mode${mode}`);
     if (tmp) {
-        return JSON.parse(tmp);
+        return Promise.resolve(JSON.parse(tmp) as GetRuleData);
     }
 
     return new Promise<GetRuleData>((resolve, reject) => {
@@ -359,7 +386,7 @@ export function arenaGetRuleData(mode: number) {
                 resolve(data);
             }
         });
-        socket.send(ArenaEvent.GetRuleData, { mode });
+        socket.send(ArenaEvent.GetRuleData, { mode, currency });
     });
 }
 /** Arena 商城 */
@@ -415,7 +442,7 @@ export function arenaUseGunSkin(skin: string) {
         });
         socket.send(ServerEvent.UseSkin, {
             skinId: skin,
-            userId: modelState.app.user_info.user_id,
+            userId: getCurUserId(),
         });
     }) as Promise<boolean>;
 }
@@ -428,7 +455,7 @@ export function arenaBuyItem(goodsId: string, goodsNum?: number) {
                 return errorHandler(code, data, socket);
             }
 
-            const userId = modelState.app.user_info.user_id;
+            const userId = getCurUserId();
             const change_arr = [] as ChangeUserNumInfo['change_arr'];
 
             if (goodsNum) {
