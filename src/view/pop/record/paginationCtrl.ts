@@ -1,5 +1,4 @@
 import { EventCom } from 'comMan/eventCom';
-
 import { Sprite } from 'laya/display/Sprite';
 import { Box } from 'laya/ui/Box';
 import { Button } from 'laya/ui/Button';
@@ -57,13 +56,20 @@ export class PaginationCtrl extends EventCom {
     }
     private render(data: RenderData, trigger_change = true) {
         const { view } = this;
-        const { pagination_arr, cur_page, item_range, has_prev, has_next } =
-            data;
+        const {
+            pagination_arr,
+            page_size,
+            cur_page,
+            item_range,
+            has_prev,
+            has_next,
+        } = data;
 
         view.removeChildren();
         if (pagination_arr.length <= 1) {
             this.emit(PaginationEvent.Change, {
                 cur: cur_page,
+                page_size,
                 range: item_range,
                 trigger_change,
             });

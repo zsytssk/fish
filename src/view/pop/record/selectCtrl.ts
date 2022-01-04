@@ -74,8 +74,8 @@ export class SelectCtrl {
     }
     public setList(list: any[]) {
         const { select_list } = this;
-        select_list.list.array = list;
         this.array = list;
+        select_list.list.array = list;
     }
     public getList() {
         return this.array;
@@ -84,6 +84,7 @@ export class SelectCtrl {
         return this.select_index;
     }
     public setCurIndex(index: number) {
+        this.select_index = index;
         setTimeout(() => {
             this.select_list.list.selectedIndex = index;
         });

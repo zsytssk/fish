@@ -1,4 +1,6 @@
 import {
+    ArenaAwardListReq,
+    ArenaAwardListRes,
     BuyGiftRep,
     BuyGoodsData,
     CompetitionInfo,
@@ -6,6 +8,7 @@ import {
     GetHallOfFameData,
     GetRuleData,
     GiftList,
+    MatchListRes,
     ShopListData,
     ShopListDataItem,
     SignUpReq,
@@ -457,5 +460,42 @@ export function arenaBuyItem(id: string, itemId: string, num = 1) {
             resolve(true);
         });
         socket.send(ArenaEvent.BuyGoods, { id, num } as BuyGoodsData);
+    });
+}
+
+export function arenaAwardList(params: ArenaAwardListReq) {
+    return new Promise<ArenaAwardListRes>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(
+            ArenaEvent.AwardList,
+            (data: ArenaAwardListRes, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code, data, socket);
+                    reject();
+                    return;
+                }
+
+                resolve(data);
+            },
+        );
+        socket.send(ArenaEvent.AwardList, params);
+    });
+}
+export function arenaMatchList(modeId: number) {
+    return new Promise<MatchListRes>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(
+            ArenaEvent.MatchList,
+            (data: MatchListRes, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code, data, socket);
+                    reject();
+                    return;
+                }
+
+                resolve(data);
+            },
+        );
+        socket.send(ArenaEvent.MatchList, { modeId });
     });
 }

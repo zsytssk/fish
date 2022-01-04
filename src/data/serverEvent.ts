@@ -96,6 +96,8 @@ export const ServerEvent = {
     RoomIn: 'roomIn',
     RoomOut: 'roomOut',
     CheckReplay: 'checkReplay',
+    /** 获取Arena的socket地址 */
+    GetArenaWsUrl: 'getArenaWsUrl',
 
     /** 兑换子弹 */
     ExchangeBullet: 'exchangeBullet',
@@ -138,6 +140,10 @@ export const ArenaEvent = {
     GetHallOfFame: 'getHallOfFame',
     /**  总冠军 */
     MatchChampionList: 'matchChampionList',
+    /**  奖励查询 */
+    AwardList: 'awardList',
+    /**  奖励查询-期数 */
+    MatchList: 'matchList',
     /**  帮助信息 */
     GetRuleData: 'getRuleData',
     /**  报名 */

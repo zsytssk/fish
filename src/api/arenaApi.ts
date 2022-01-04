@@ -244,3 +244,29 @@ export type TaskFinishRes = {
     isComplete: boolean;
     award: number;
 };
+
+export type ArenaAwardListReq = {
+    modeId: number;
+    type: 1 | 2; //奖励类型 1日排行 2总冠军
+    dayId?: string; //日排行参数
+    matchId?: number; //总冠军参数 期数
+    pageNum: number; //当前页
+    pageSize: number; //每页显示数量
+};
+export type ArenaAwardListResItem = {
+    ranking: number;
+    time: number;
+    award: number;
+    currency: string;
+};
+export type ArenaAwardListRes = {
+    list: ArenaAwardListResItem[];
+    pageNum: number; //当前页
+    pageSize: number; //每页显示数量
+    pages: number; //总页
+    total: number;
+};
+
+export type MatchListRes = {
+    id: number;
+}[];

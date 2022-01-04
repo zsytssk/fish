@@ -144,6 +144,10 @@ export const International = {
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
             '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
+        arenaAwardTitle: '奖励查询',
+        arenaAwardItemTitle1: '名次',
+        arenaAwardItemTitle2: '时间',
+        arenaAwardItemTitle3: '奖励',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -284,6 +288,10 @@ export const International = {
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
             '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
+        arenaAwardTitle: '奖励查询',
+        arenaAwardItemTitle1: '名次',
+        arenaAwardItemTitle2: '时间',
+        arenaAwardItemTitle3: '奖励',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -423,6 +431,10 @@ export const International = {
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
             '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
+        arenaAwardTitle: '奖励查询',
+        arenaAwardItemTitle1: '名次',
+        arenaAwardItemTitle2: '时间',
+        arenaAwardItemTitle3: '奖励',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -562,6 +574,10 @@ export const International = {
             'a) 炮台加成 使用不同炮台皮肤，比赛中命中率加成不一样，不累加命中',
         arenaHelpRule42:
             '炮台皮肤      命中加成 \n 皮肤1           {gun1001}%\n 皮肤2           {gun1002}%\n 皮肤3           {gun1003}%\n 皮肤4           {gun1004}%\n 皮肤5           {gun1005}%\n',
+        arenaAwardTitle: '奖励查询',
+        arenaAwardItemTitle1: '名次',
+        arenaAwardItemTitle2: '时间',
+        arenaAwardItemTitle3: '奖励',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -697,6 +713,10 @@ export const International = {
             'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
         arenaHelpRule42:
             '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
+        arenaAwardTitle: '奖励查询',
+        arenaAwardItemTitle1: '名次',
+        arenaAwardItemTitle2: '时间',
+        arenaAwardItemTitle3: '奖励',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',
