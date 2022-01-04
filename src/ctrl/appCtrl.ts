@@ -1,3 +1,5 @@
+import { config } from 'rxjs';
+
 import honor from 'honor';
 import { loadRes, ProgressFn } from 'honor/utils/loadRes';
 
@@ -17,7 +19,7 @@ import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { connectArenaHallSocket } from './hall/arenaSocket';
 import { HallCtrl } from './hall/hallCtrl';
-import { connectHallSocket } from './hall/hallSocket';
+import { connectHallSocket, getArenaWs } from './hall/hallSocket';
 
 /** 顶级 ctrl */
 export class AppCtrl {
@@ -48,6 +50,9 @@ export class AppCtrl {
 
         try {
             const [isReplay, replayData] = await connectHallSocket();
+            await getArenaWs(1).then((data) => {
+                Config.arenaSocketUrl = data;
+            });
             if (isReplay) {
                 this.enterGame(replayData);
                 return;

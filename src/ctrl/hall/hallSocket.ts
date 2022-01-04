@@ -89,7 +89,7 @@ export async function bindHallSocket(hall: HallCtrl) {
     });
 }
 
-export async function getArenaWs(modeId: string) {
+export async function getArenaWs(modeId: number) {
     return new Promise<string>((resolve, reject) => {
         const socket = getSocket(ServerName.Hall);
         socket.event.once(
