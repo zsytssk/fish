@@ -6,7 +6,12 @@ import {
     offSocketEvent,
 } from '@app/ctrl/net/webSocketWrapUtil';
 import { Config } from '@app/data/config';
-import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
+import {
+    OK_CODE,
+    ServerErrCode,
+    ServerEvent,
+    ServerName,
+} from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
@@ -81,6 +86,24 @@ export async function bindHallSocket(hall: HallCtrl) {
         [ServerEvent.UserAccount]: (data, _code) => {
             modelState.app.initUserInfo(data);
         },
+    });
+}
+
+export async function getArenaWs(modeId: string) {
+    return new Promise<string>((resolve, reject) => {
+        const socket = getSocket(ServerName.Hall);
+        socket.event.once(
+            ServerEvent.GetArenaWsUrl,
+            (data: string, code: number) => {
+                if (code !== OK_CODE) {
+                    errorHandler(code);
+                    reject();
+                    return;
+                }
+                resolve(data);
+            },
+        );
+        socket.send(ServerEvent.GetArenaWsUrl, { modeId });
     });
 }
 
