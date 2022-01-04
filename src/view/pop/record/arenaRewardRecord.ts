@@ -97,12 +97,9 @@ export default class ArenaRewardRecordPop
             this.isInit = true;
             return;
         }
-        const {
-            select_ctrl1: select_coin_ctrl,
-            select_ctrl2: select_item_ctrl,
-        } = this;
-        select_coin_ctrl.setCurIndex(0);
-        select_item_ctrl.setCurIndex(0);
+        const { select_ctrl1: select_ctrl1, select_ctrl2: select_ctrl2 } = this;
+        select_ctrl1.setCurIndex(0);
+        select_ctrl2.setCurIndex(0);
         setTimeout(() => {
             this.search();
         });
@@ -176,15 +173,10 @@ export default class ArenaRewardRecordPop
     };
 
     private search() {
-        const {
-            empty_tip,
-            select_ctrl1: select_coin_ctrl,
-            select_ctrl2: select_item_ctrl,
-            pagination_ctrl,
-        } = this;
+        const { empty_tip, select_ctrl1, select_ctrl2, pagination_ctrl } = this;
 
-        const coin_data = select_coin_ctrl.getCurData() || {};
-        const item_data = select_item_ctrl.getCurData() || {};
+        const coin_data = select_ctrl1.getCurData() || {};
+        const item_data = select_ctrl2.getCurData() || {};
         const itemId = item_data.item_id;
         const currency = coin_data.coin_id;
         this.renderRecordList([]);
