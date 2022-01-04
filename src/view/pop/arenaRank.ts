@@ -9,8 +9,6 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 
-import { arenaGetDayRanking } from './popSocket';
-
 export default class ArenaRankPop
     extends ui.pop.arenaRank.arenaRankUI
     implements HonorDialog
@@ -56,9 +54,11 @@ export default class ArenaRankPop
     }
 
     public initData(data: GetDayRanking) {
-        const { today_list, yes_list } = this;
+        const { yes_empty_tip, today_empty_tip, today_list, yes_list } = this;
         const { today, yesterday } = data;
 
+        today_empty_tip.visible = Boolean(today?.length);
+        yes_empty_tip.visible = Boolean(yesterday?.length);
         today_list.array = today;
         yes_list.array = yesterday;
     }

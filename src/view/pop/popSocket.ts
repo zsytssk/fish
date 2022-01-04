@@ -331,7 +331,7 @@ export function arenaBuyGift() {
     });
 }
 /** Arena 礼包 giftList */
-export function arenaGetHallOfFame() {
+export function arenaGetHallOfFame(modeId: number) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
@@ -348,7 +348,7 @@ export function arenaGetHallOfFame() {
                 }
             },
         );
-        socket.send(ArenaEvent.GetHallOfFame);
+        socket.send(ArenaEvent.GetHallOfFame, { modeId });
     }) as Promise<GetHallOfFameData>;
 }
 

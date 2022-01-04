@@ -78,7 +78,7 @@ export default class ArenaCompetitionPop
             });
         });
         onNodeWithAni(btn_famous, Event.CLICK, () => {
-            arenaGetHallOfFame().then((data) => {
+            arenaGetHallOfFame(1).then((data) => {
                 ArenaTopPlayerPop.preEnter(data);
             });
         });
