@@ -69,8 +69,8 @@ export default class ArenaRankPop
         const { yes_empty_tip, today_empty_tip, today_list, yes_list } = this;
         const { today, yesterday } = data;
 
-        today_empty_tip.visible = Boolean(today?.length);
-        yes_empty_tip.visible = Boolean(yesterday?.length);
+        today_empty_tip.visible = Boolean(!today?.length);
+        yes_empty_tip.visible = Boolean(!yesterday?.length);
         today_list.array = today;
         yes_list.array = yesterday;
     }

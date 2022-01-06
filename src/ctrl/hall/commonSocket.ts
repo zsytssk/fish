@@ -29,7 +29,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
     const { ErrCode } = ServerEvent;
     bindSocketEvent(socket, bindObj, {
         [ErrCode]: (res: ErrorData, code: number) => {
-            code = res.code || code;
+            code = res?.code || code;
             if (code === ServerErrCode.TokenExpire) {
                 removeItem('local_token');
                 disconnectSocket(socket.config.name);

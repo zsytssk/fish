@@ -51,7 +51,11 @@ import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import ArenaShopPop from '@app/view/pop/arenaShop';
-import { competitionSignUp } from '@app/view/pop/popSocket';
+import {
+    arenaGetDayRanking,
+    arenaGetRuleData,
+    competitionSignUp,
+} from '@app/view/pop/popSocket';
 import VoicePop from '@app/view/pop/voice';
 import GameView from '@app/view/scenes/arena/arenaView';
 import {
@@ -203,11 +207,15 @@ export class GameCtrl implements GameCtrlUtils {
         });
         onNodeWithAni(btn_rank, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaRankPop.preEnter();
+            arenaGetDayRanking().then((data) => {
+                ArenaRankPop.preEnter(data);
+            });
         });
         onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaHelpPop.preEnter(this.currency);
+            arenaGetRuleData(1, this.currency).then((data) => {
+                ArenaHelpPop.preEnter(data);
+            });
         });
         onNodeWithAni(btn_music, CLICK, (e: Event) => {
             e.stopPropagation();

@@ -242,8 +242,8 @@ export default class ArenaCompetitionPop
         myScoreLabel.text = tplIntr('arenaCompetitionSmallTip2');
         myRankLabel.text = tplIntr('arenaCompetitionSmallTip3');
         tip.text = tplIntr('arenaCompetitionTip');
-        btn_famous.label = tplIntr('arenaCompetitionBtn1');
-        btn_help.label = tplIntr('arenaCompetitionBtn2');
-        btn_best.label = tplIntr('arenaCompetitionBtn3');
+        btn_famous.label = tplIntr('arenaTopPlayerTitle');
+        btn_help.label = tplIntr('arenaHelpTitle');
+        btn_best.label = tplIntr('arenaRankTitle');
     }
 }
