@@ -29,7 +29,18 @@ export default class ArenaHelpPop
         return pop;
     }
     public async onAwake() {
+        onLangChange(this, () => {
+            this.initLang();
+        });
         this.initEvent();
+    }
+    private initLang() {
+        const { title, tab0, tab1, tab2, tab3 } = this;
+        title.text = tplIntr('arenaHelpTitle');
+        tab0.label = tplIntr('arenaHelpTab0');
+        tab1.label = tplIntr('arenaHelpTab1');
+        tab2.label = tplIntr('arenaHelpTab2');
+        tab3.label = tplIntr('arenaHelpTab3');
     }
     private initEvent() {
         const { tab, tabBody } = this;

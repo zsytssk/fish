@@ -362,10 +362,10 @@
         {
             "x":15,
             "type":"Label",
-            "searchKey":"Label",
-            "props":{"y":367,"x":656,"wordWrap":true,"width":316,"valign":"middle","text":"排名5分钟刷新一次 日排名奖励在23:30后发放","height":70,"fontSize":20,"color":"#fff6cd","align":"center"},
+            "searchKey":"Label,tip",
+            "props":{"y":367,"x":656,"wordWrap":true,"width":316,"var":"tip","valign":"middle","text":"排名5分钟刷新一次 日排名奖励在23:30后发放","height":70,"fontSize":20,"color":"#fff6cd","align":"center"},
             "nodeParent":2,
-            "label":"Label",
+            "label":"tip",
             "isOpen":true,
             "isDirectory":false,
             "isAniNode":true,

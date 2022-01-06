@@ -13,6 +13,7 @@ import { ARENA_OK_CODE } from '@app/data/serverEvent';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
+import { tplIntr } from '@app/utils/utils';
 
 import ArenaHelpPop from './arenaHelp';
 import ArenaRankPop from './arenaRank';
@@ -98,15 +99,16 @@ export default class ArenaCompetitionPop
 
         this.currency = data.currency;
 
+        // TODO-lang
         const status = data.myself.status;
         const fee = data.match.fee;
         openTime.text = `${data.match.startPeriod}-${data.match.endPeriod}`;
-        timezone_label.text = `活动时间：${formatDateTime(
-            data.match.startTime,
-            'MM.DD HH:mm',
-        )}-${formatDateTime(data.match.endTime, 'MM.DD HH:mm')}`;
+        timezone_label.text = tplIntr('openTime', {
+            startTime: formatDateTime(data.match.startTime, 'MM.DD HH:mm'),
+            endTime: `${formatDateTime(data.match.endTime, 'MM.DD HH:mm')}`,
+        });
         myScore.text = data.myself.score + '';
-        myRank.text = data.myself.ranking + '' || '暂未上榜';
+        myRank.text = data.myself.ranking + '' || tplIntr('notInRank');
 
         rankList.renderHandler = new Handler(
             this,
@@ -130,11 +132,17 @@ export default class ArenaCompetitionPop
         if (currency !== data.currency) {
             if (sign_status === 'continue') {
                 TipPop.tip(
-                    `尽管你选择的货币${currency}, 但是目前你在${data.currency}游戏还没结束，点击继续游戏`,
+                    tplIntr('arenaNotEndCurrency', {
+                        currency1: currency,
+                        currency2: data.currency,
+                    }),
                 );
             } else if (sign_status === 'sign') {
                 TipPop.tip(
-                    `暂不支持你选择的货币${currency}, 点击继续游戏使用${data.currency}报名进入游戏`,
+                    tplIntr('arenaNotSupportCurrency', {
+                        currency1: currency,
+                        currency2: data.currency,
+                    }),
                 );
             }
         }
@@ -146,12 +154,12 @@ export default class ArenaCompetitionPop
             status === ArenaGameStatus.GAME_STATUS_PLAYING ||
             status === ArenaGameStatus.GAME_STATUS_TABLE_OUT
         ) {
-            (btn_sign as Button).label = '继续游戏';
+            (btn_sign as Button).label = tplIntr('continueGame');
             cost_label.visible = false;
             btn_sign.labelPadding = '0,0,5,0';
             return 'continue';
         } else if (status === ArenaGameStatus.GAME_STATUS_CLOSE) {
-            (btn_sign as Button).label = '暂未开始';
+            (btn_sign as Button).label = tplIntr('noStart');
             cost_label.visible = false;
             (btn_sign as Button).disabled = true;
             btn_sign.labelPadding = '0,0,5,0';
@@ -161,8 +169,11 @@ export default class ArenaCompetitionPop
             status === ArenaGameStatus.GAME_STATUS_SIGNUP
         ) {
             cost_label.visible = true;
-            cost_label.text = `费用：${fee}USDT`;
-            (btn_sign as Button).label = '报名';
+            cost_label.text = tplIntr('feeStr', {
+                fee,
+                currency: 'USDT',
+            });
+            (btn_sign as Button).label = tplIntr('sign');
             btn_sign.labelPadding = '0,0,15,0';
             return 'sign';
         }
@@ -175,7 +186,12 @@ export default class ArenaCompetitionPop
             this.rankList.array[index];
         const { rankLabel, sign, signBg, num_label, nickname, scoreLabel } =
             box;
-        const rankArr = ['总冠军', '冠军', '亚军', '季军'];
+        const rankArr = [
+            tplIntr('allFirstPlace'),
+            tplIntr('firstPlace'),
+            tplIntr('secondPlace'),
+            tplIntr('thirdPlace'),
+        ];
 
         const isTopRank = endRanking === startRanking;
         rankLabel.text = isAllTop
@@ -186,7 +202,7 @@ export default class ArenaCompetitionPop
         nickname.text = userId || '';
 
         if (score) {
-            scoreLabel.text = `积分：${score}`;
+            scoreLabel.text = tplIntr('score', { score });
         } else {
             scoreLabel.text = ``;
         }
@@ -211,6 +227,23 @@ export default class ArenaCompetitionPop
     }
 
     private initLang() {
-        //
+        const {
+            title,
+            openTimeLabel,
+            myScoreLabel,
+            myRankLabel,
+            tip,
+            btn_famous,
+            btn_help,
+            btn_best,
+        } = this;
+        title.text = tplIntr('arenaCompetitionTitle');
+        openTimeLabel.text = tplIntr('arenaCompetitionSmallTip1');
+        myScoreLabel.text = tplIntr('arenaCompetitionSmallTip2');
+        myRankLabel.text = tplIntr('arenaCompetitionSmallTip3');
+        tip.text = tplIntr('arenaCompetitionTip');
+        btn_famous.label = tplIntr('arenaCompetitionBtn1');
+        btn_help.label = tplIntr('arenaCompetitionBtn2');
+        btn_best.label = tplIntr('arenaCompetitionBtn3');
     }
 }

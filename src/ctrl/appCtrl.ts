@@ -50,9 +50,9 @@ export class AppCtrl {
 
         try {
             const [isReplay, replayData] = await connectHallSocket();
-            await getArenaWs(1).then((data) => {
-                Config.arenaSocketUrl = data;
-            });
+            // await getArenaWs(1).then((data) => {
+            //     Config.arenaSocketUrl = data;
+            // });
             if (isReplay) {
                 this.enterGame(replayData);
                 return;

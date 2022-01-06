@@ -4,13 +4,14 @@ import { Handler } from 'laya/utils/Handler';
 
 import { GiftItem, GiftList } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { tplIntr } from '@app/utils/utils';
 
-import { getSkillName } from './buyBullet';
 import { arenaBuyGift, arenaGiftList } from './popSocket';
+import { getItemName } from './shop';
 import TipPop from './tip';
 
 export default class ArenaGiftPop
@@ -40,7 +41,14 @@ export default class ArenaGiftPop
         return pop;
     }
     public async onAwake() {
+        onLangChange(this, () => {
+            this.initLang();
+        });
         this.initEvent();
+    }
+    private initLang() {
+        const { title } = this;
+        title.text = tplIntr('arenaGiftTitle');
     }
     private initEvent() {
         const { btn, list } = this;
@@ -83,9 +91,9 @@ export default class ArenaGiftPop
 
         icon.skin = `image/pop/shop/icon/${data.itemId}.png`;
         num_label.text = data.num + '';
-        const name = getSkillName(data.itemId + '');
+        const name = getItemName(data.itemId + '');
         if (name) {
-            name_label.text = `${getSkillName(data.itemId + '')} x${data.num}`;
+            name_label.text = `${getItemName(data.itemId + '')} x${data.num}`;
         } else {
             name_label.text = ``;
         }

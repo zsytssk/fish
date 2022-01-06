@@ -13,8 +13,8 @@ import {
     formatDateTime,
     getMonthDateList,
 } from '@app/utils/dayjsUtil';
+import { tplIntr } from '@app/utils/utils';
 
-import { getSkillName } from '../buyBullet';
 import { arenaAwardList, arenaMatchList, getItemList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
@@ -65,8 +65,8 @@ export default class ArenaRewardRecordPop
         select_ctrl1.setRender(this.renderSelectedItem1, this.renderMenuItem1);
         select_ctrl1.init();
         const itemList1 = [
-            { label: '日排行奖励', value: 1 },
-            { label: '每期总排行奖励', value: 2 },
+            { label: tplIntr('arenaAwardDayRank'), value: 1 },
+            { label: tplIntr('arenaAwardGradeRank'), value: 2 },
         ];
         select_ctrl1.setList(itemList1);
         select_ctrl1.setCurIndex(0);
@@ -149,7 +149,7 @@ export default class ArenaRewardRecordPop
             const gradeList = await arenaMatchList(1);
             arr = gradeList.map((item, _index) => {
                 return {
-                    label: `第${item.id}期`,
+                    label: tplIntr('arenaRewardTpl', { grade: item.id }),
                     value: item.id.valueOf(),
                 };
             });

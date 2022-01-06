@@ -12,6 +12,7 @@ import {
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
+import { SkillMap } from '@app/data/config';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
 import { tplIntr } from '@app/utils/utils';
@@ -266,22 +267,22 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
 }
 
-export function getItemName(id: string, name: string) {
-    const lang = getLang();
-    const { skin, bomb, freeze, lock } = InternationalTip[lang];
+export function getItemName(id: string, name?: string) {
     let suffer_prefix = '';
-    if (name.indexOf('皮肤') !== -1) {
+    if (name && name?.indexOf('皮肤') !== -1) {
         suffer_prefix = name.replace('皮肤', '');
     }
     let item_name = '';
-    if (id === '2001') {
-        item_name = lock;
-    } else if (id === '2002') {
-        item_name = freeze;
-    } else if (id === '2003') {
-        item_name = bomb;
+    if (id === SkillMap.LockFish) {
+        item_name = tplIntr('lock');
+    } else if (id === SkillMap.Freezing) {
+        item_name = tplIntr('freeze');
+    } else if (id === SkillMap.Bomb) {
+        item_name = tplIntr('bomb');
+    } else if (id === SkillMap.Bullet) {
+        item_name = tplIntr('bullet');
     } else {
-        item_name = skin;
+        item_name = tplIntr('skin');
     }
 
     return item_name + suffer_prefix;

@@ -29,7 +29,12 @@ import { clearCount, startCount } from '@app/utils/count';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
 import { error } from '@app/utils/log';
-import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
+import {
+    playSkeleton,
+    playSkeletonOnce,
+    setProps,
+    tplIntr,
+} from '@app/utils/utils';
 import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
 import TipPop from '@app/view/pop/tip';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
@@ -111,7 +116,7 @@ export default class ArenaView
     private countId: number;
     public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
         if (showTip) {
-            ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
+            ArenaTaskTipPop.tip(tplIntr('taskStartTip'));
         }
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
@@ -171,7 +176,7 @@ export default class ArenaView
             true,
         );
         pos = ani_wrap.globalToLocal(pos, true);
-        await TipPop.tip('任务完成');
+        await TipPop.tip(tplIntr('taskCompletedTip', { score: data.award }));
         await showAwardCircle(pos, data.award, true);
     }
 

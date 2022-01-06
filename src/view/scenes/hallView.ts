@@ -11,7 +11,7 @@ import { fade_in, fade_out } from '@app/utils/animate';
 import { formatDateRange } from '@app/utils/dayjsUtil';
 import { ClickNode, onStageClick, resizeContain } from '@app/utils/layaUtils';
 import { error } from '@app/utils/log';
-import { playSkeleton } from '@app/utils/utils';
+import { playSkeleton, tplIntr } from '@app/utils/utils';
 import honor, { HonorScene } from 'honor';
 import { ProgressFn } from 'honor/utils/loadRes';
 import { Laya } from 'Laya';
@@ -121,8 +121,8 @@ export default class HallView
 
         // TODO-lang
         match_timezone.text = stayTuned;
-        arena_status.text = '大奖赛';
-        match_status.text = '竞技场';
+        arena_status.text = tplIntr('arenaTitle');
+        match_status.text = tplIntr('matchTitle');
 
         const btn_arr = ['btn_play', 'btn_try'];
         for (const [key, item] of map) {
@@ -186,7 +186,7 @@ export default class HallView
         const {arena_timezone,  btn_competition} = this;
         if (!info?.room_status) {
             (btn_competition as unknown as ClickNode).is_disable = true;
-            arena_timezone.text = '维护中'
+            arena_timezone.text = tplIntr('maintaining')
             return;
         }
 

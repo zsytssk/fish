@@ -15,6 +15,7 @@ import { addZeroToNum, tplIntr } from '@app/utils/utils';
 
 import AlertPop from './alert';
 import { buyItem } from './popSocket';
+import { getItemName } from './shop';
 import TipPop from './tip';
 
 type BuyInfo = {
@@ -76,6 +77,9 @@ export default class BuyBulletPop
                         this.setNum(Number(value));
                     }
                 },
+                nullMsg: tplIntr('keyboardEmpTip'),
+                delTxt: tplIntr('Delete'),
+                confirmTxt: tplIntr('confirm'),
             });
         });
     }
@@ -152,24 +156,13 @@ export default class BuyBulletPop
     }
 }
 
-export function getSkillName(id: string) {
-    switch (id) {
-        case SkillMap.Bomb:
-            return tplIntr('bomb');
-        case SkillMap.Freezing:
-            return tplIntr('freeze');
-        case SkillMap.LockFish:
-            return tplIntr('lock');
-    }
-}
-
 export function buyItemAlert(num: number, price: number, id: string) {
     return new Promise((resolve, reject) => {
         const tip = tplIntr('buyItemTip', {
             cost_num: num * price,
             cost_name: tplIntr('bullet'),
             num: num,
-            name: getSkillName(id),
+            name: getItemName(id + ''),
         });
 
         AlertPop.alert(tip).then((type) => {

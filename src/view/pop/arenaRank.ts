@@ -6,8 +6,10 @@ import { Handler } from 'laya/utils/Handler';
 
 import { GetDayRanking, GetDayRankingItem } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
+import { tplIntr } from '@app/utils/utils';
 
 export default class ArenaRankPop
     extends ui.pop.arenaRank.arenaRankUI
@@ -26,7 +28,17 @@ export default class ArenaRankPop
         return pop;
     }
     public async onAwake() {
+        onLangChange(this, () => {
+            this.initLang();
+        });
         this.initEvent();
+    }
+    private initLang() {
+        const { tab0, title, tab1, today_empty_tip, yes_empty_tip } = this;
+        title.text = tplIntr('arenaRankTitle');
+        tab0.label = tplIntr('arenaRankTab0');
+        tab1.label = tplIntr('arenaRankTab1');
+        today_empty_tip.text = yes_empty_tip.text = tplIntr('noData');
     }
     private initEvent() {
         const { tab, tabBody, today_list, yes_list } = this;
@@ -74,7 +86,7 @@ export default class ArenaRankPop
         const label3 = box.getChildByName('label3') as Label;
         clip.index = index;
         label1.text = data.userId + '';
-        label2.text = `获得积分：${data.score}`;
-        label3.text = `预计奖励：${data.award}`;
+        label2.text = tplIntr('arenaRankScore', { score: data.score });
+        label3.text = tplIntr('arenaRankAward', { award: data.award });
     }
 }

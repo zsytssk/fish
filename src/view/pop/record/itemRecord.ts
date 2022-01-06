@@ -11,8 +11,8 @@ import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { ui } from '@app/ui/layaMaxUI';
 
-import { getSkillName } from '../buyBullet';
 import { getItemList } from '../popSocket';
+import { getItemName } from '../shop';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 
@@ -68,7 +68,7 @@ export default class ItemRecord
         select_item_ctrl.setRender(this.renderSelectItem);
         select_item_ctrl.init();
         const ItemList = ['2001', '2002', '2003'].map((item) => {
-            return { item_name: getSkillName(item), item_id: item };
+            return { item_name: getItemName(item), item_id: item };
         });
         ItemList.unshift({ item_name: 'ALL', item_id: undefined });
         select_item_ctrl.setList(ItemList);
@@ -198,7 +198,7 @@ export default class ItemRecord
             return {
                 buy_total: item.buyNum,
                 remain: item.curNum,
-                type: getSkillName(item.itemId + ''),
+                type: getItemName(item.itemId + ''),
                 give_total: item.prizeNum,
                 no: item.currency,
             };

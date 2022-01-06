@@ -181,13 +181,13 @@ export function arenaErrHandler(
 ) {
     if (code === ServerErrCode.Maintenance) {
         if (ctrl instanceof GameCtrl) {
-            AlertPop.alert('游戏维护中，请退出游戏！', {
+            AlertPop.alert(tplIntr('maintainTip'), {
                 hide_cancel: true,
             }).then(() => {
                 ctrl.leave();
             });
         } else {
-            TipPop.tip('游戏维护中');
+            TipPop.tip(tplIntr('maintainTip'));
         }
         return true;
     }

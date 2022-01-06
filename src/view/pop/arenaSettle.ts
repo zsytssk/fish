@@ -3,9 +3,11 @@ import { Event } from 'laya/events/Event';
 
 import { SettleData } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNodeWithAni } from '@app/utils/layaUtils';
+import { tplIntr } from '@app/utils/utils';
 
 type SettleType = 'continue' | 'not_continue';
 export default class ArenaSettlePop
@@ -30,12 +32,20 @@ export default class ArenaSettlePop
 
     public onClosed(type?: SettleType): void {
         type = type === 'continue' ? type : 'not_continue';
-        console.log(`test:>onClosed`, type);
         this.resolve(type);
     }
 
     public async onAwake() {
+        onLangChange(this, () => {
+            this.initLang();
+        });
         this.initEvent();
+    }
+    private initLang() {
+        const { name_label, title, tip_label } = this;
+        title.text = tplIntr('arenaSettleTitle');
+        tip_label.text = tplIntr('arenaSettle1');
+        name_label.text = tplIntr('arenaSettle2');
     }
     private initEvent() {
         const { btn_continue } = this;
@@ -58,11 +68,17 @@ export default class ArenaSettlePop
         const { num_label, guess_label, info_label, btn_continue, reward_box } =
             this;
 
-        btn_continue.label = `重新参赛 ${fee}${currency}`;
-        guess_label.text = `本次捕获分数：${score}`;
-        info_label.text = `${userId}\n当前排名：${
-            ranking || '~'
-        }\n今日最高捕获分数： ${maxDayScore}\n本次捕获分数：${score}`;
+        btn_continue.label = tplIntr('arenaSettleReSign', {
+            fee,
+            currency,
+        });
+        guess_label.text = tplIntr('arenaSettleReStatic');
+        info_label.text = tplIntr('arenaSettleReTpl', {
+            userId,
+            ranking: ranking || '~',
+            maxDayScore,
+            score,
+        });
         num_label.text = rankingAward + '';
 
         guess_label.visible = isGuest;
