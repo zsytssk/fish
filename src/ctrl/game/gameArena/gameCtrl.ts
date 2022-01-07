@@ -20,11 +20,10 @@ import {
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
-import { getChannel, getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { getChannel } from '@app/ctrl/hall/hallCtrlUtil';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { res } from '@app/data/res';
 import {
     ArenaEvent,
@@ -319,6 +318,11 @@ export class GameCtrl implements GameCtrlUtils {
             isFirstStart,
             currency,
         } = data;
+
+        this.isTrial = isTrial;
+        if (isTrial) {
+            this.view.setTrialStyle();
+        }
 
         if (isFirstStart) {
             ArenaGameStatus.start();

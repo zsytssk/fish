@@ -5,7 +5,6 @@ import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ProgressFn } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Point } from 'laya/maths/Point';
 import { Image } from 'laya/ui/Image';
@@ -21,7 +20,7 @@ import {
     offLangChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
 import { fade_in, fade_out } from '@app/utils/animate';

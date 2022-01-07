@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { ServerErrCode } from '@app/data/serverEvent';
 import { ArenaModel, ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';

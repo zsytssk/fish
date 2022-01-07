@@ -1,8 +1,7 @@
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 
-import { onLangChange, offLangChange } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { ui } from '@app/ui/layaMaxUI';
 import { tplIntr, tplStr } from '@app/utils/utils';
 
@@ -31,8 +30,8 @@ export default class RewardPop
         await pop.showReward(data);
     }
     public onAwake() {
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const { btn_confirm } = this;
@@ -40,11 +39,10 @@ export default class RewardPop
             this.close();
         });
     }
-    private initLang(lang: Lang) {
+    private initLang() {
         const { btn_confirm_label } = this;
-        const { confirm } = InternationalTip[lang];
 
-        btn_confirm_label.text = confirm;
+        btn_confirm_label.text = tplIntr('confirm');
     }
     public showReward(data: RewardData) {
         return new Promise<void>((resolve, _reject) => {

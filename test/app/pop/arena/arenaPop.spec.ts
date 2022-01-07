@@ -23,18 +23,17 @@ import TopPlayerData from './topPlayer.json';
 
 export const arena_pop_test = {
     openCompetitionInfo: async () => {
-        const pop = await ArenaCompetitionPop.preEnter('BTC');
-        await sleep(2);
-        pop.initData(CompetitionInfoData);
+        const pop = await ArenaCompetitionPop.preEnter(
+            CompetitionInfoData,
+            'BTC',
+        );
     },
     openHelp: async () => {
         setItem(`arenaGetRuleData:mode${1}`, JSON.stringify(HelpData));
-        const pop = await ArenaHelpPop.preEnter('BTC');
+        const pop = await ArenaHelpPop.preEnter(HelpData);
     },
     openRank: async () => {
-        const pop = await ArenaRankPop.preEnter();
-        await sleep(1);
-        pop.initData(RankData);
+        const pop = await ArenaRankPop.preEnter(RankData);
 
         return pop;
     },
@@ -54,10 +53,9 @@ export const arena_pop_test = {
         return pop;
     },
     openTopPlayer: async () => {
-        const pop = await ArenaTopPlayerPop.preEnter();
+        const pop = await ArenaTopPlayerPop.preEnter(TopPlayerData);
         await sleep(1);
 
-        pop.initData(TopPlayerData);
         return pop;
     },
     openRewardRecord: async () => {

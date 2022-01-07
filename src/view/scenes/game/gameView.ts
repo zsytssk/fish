@@ -13,7 +13,7 @@ import {
     offLangChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
 import { fade_in } from '@app/utils/animate';

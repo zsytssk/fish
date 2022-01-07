@@ -7,11 +7,10 @@ import {
     onAccountChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNode } from '@app/utils/layaUtils';
-import { getDateFromNow } from '@app/utils/utils';
+import { getDateFromNow, tplIntr } from '@app/utils/utils';
 
 import { getBulletList, getRecentBullet } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
@@ -92,8 +91,8 @@ export default class GameRecord
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_date_ctrl = select_date_ctrl;
 
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
     }
     public onEnable() {
@@ -119,18 +118,16 @@ export default class GameRecord
             this.search(1);
         });
     }
-    private initLang(lang: Lang) {
-        const { gameListTitle, search, prize, cost } = InternationalTip[lang];
-        const { noData } = InternationalTip[lang];
+    private initLang() {
         const { title, title_box, btn_search_label, empty_tip } = this;
 
-        title.text = gameListTitle;
-        const arr = [cost, prize];
+        title.text = tplIntr('gameListTitle');
+        const arr = [tplIntr('cost'), tplIntr('prize')];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = search;
-        empty_tip.text = noData;
+        btn_search_label.text = tplIntr('search');
+        empty_tip.text = tplIntr('noData');
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;

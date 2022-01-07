@@ -6,16 +6,11 @@ import { ArenaAwardListReq, ArenaAwardListResItem } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
-import {
-    formatDateRange,
-    formatDateTime,
-    getMonthDateList,
-} from '@app/utils/dayjsUtil';
+import { formatDateTime, getMonthDateList } from '@app/utils/dayjsUtil';
 import { tplIntr } from '@app/utils/utils';
 
-import { arenaAwardList, arenaMatchList, getItemList } from '../popSocket';
+import { arenaAwardList, arenaMatchList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 
@@ -57,8 +52,8 @@ export default class ArenaRewardRecordPop
             btn_search,
         } = this;
 
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const select_ctrl1 = new SelectCtrl(select_item1, item_menu1);
@@ -105,28 +100,20 @@ export default class ArenaRewardRecordPop
         select_ctrl1.setCurIndex(0);
         select_ctrl2.setCurIndex(0);
     }
-    private initLang(lang: Lang) {
-        const {
-            arenaAwardTitle,
-            search,
-            arenaAwardItemTitle1,
-            arenaAwardItemTitle2,
-            arenaAwardItemTitle3,
-        } = InternationalTip[lang];
-        const { noData } = InternationalTip[lang];
+    private initLang() {
         const { title, title_box, btn_search_label, empty_tip } = this;
 
-        title.text = arenaAwardTitle;
-        empty_tip.text = noData;
+        title.text = tplIntr('arenaAwardTitle');
+        empty_tip.text = tplIntr('noData');
         const arr = [
-            arenaAwardItemTitle1,
-            arenaAwardItemTitle2,
-            arenaAwardItemTitle3,
+            tplIntr('arenaAwardItemTitle1'),
+            tplIntr('arenaAwardItemTitle2'),
+            tplIntr('arenaAwardItemTitle3'),
         ];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = search;
+        btn_search_label.text = tplIntr('search');
     }
     private renderSelectedItem1 = async (
         box: SelectItemUI,

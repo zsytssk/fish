@@ -6,14 +6,10 @@ import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import {
-    getLang,
-    offLangChange,
-    onLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
 import { covertLang, tplIntr, tplStr } from '@app/utils/utils';
 
@@ -253,12 +249,11 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
     private initLang(lang: Lang) {
         const { title, item_tag, skin_tag } = this;
-        const { skin, item } = InternationalTip[lang];
         const ani_name = covertLang(lang);
 
         title.skin = `image/international/title_shop_${ani_name}.png`;
-        item_tag.text = item;
-        skin_tag.text = skin;
+        item_tag.text = tplIntr('item');
+        skin_tag.text = tplIntr('skin');
     }
     public destroy() {
         offLangChange(this);

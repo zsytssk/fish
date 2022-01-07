@@ -7,9 +7,9 @@ import {
     onAccountChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { ui } from '@app/ui/layaMaxUI';
+import { tplIntr, tplStr } from '@app/utils/utils';
 
 import { getItemList } from '../popSocket';
 import { getItemName } from '../shop';
@@ -60,8 +60,8 @@ export default class ItemRecord
         });
         select_coin_ctrl.init();
 
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const select_item_ctrl = new SelectCtrl(select_item, item_menu);
@@ -107,26 +107,22 @@ export default class ItemRecord
             this.search();
         });
     }
-    private initLang(lang: Lang) {
-        const {
-            itemListTitle,
-            search,
-            itemList1,
-            itemList2,
-            itemList3,
-            gameNo,
-            remainingNum,
-        } = InternationalTip[lang];
-        const { noData } = InternationalTip[lang];
+    private initLang() {
         const { title, title_box, btn_search_label, empty_tip } = this;
 
-        title.text = itemListTitle;
-        empty_tip.text = noData;
-        const arr = [itemList1, itemList2, itemList3, remainingNum, gameNo];
+        title.text = tplIntr('itemListTitle');
+        empty_tip.text = tplIntr('noData');
+        const arr = [
+            tplIntr('itemList1'),
+            tplIntr('itemList2'),
+            tplIntr('itemList3'),
+            tplIntr('remainingNum'),
+            tplIntr('gameNo'),
+        ];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = search;
+        btn_search_label.text = tplStr('search');
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;

@@ -189,7 +189,7 @@ export type EnterGameData = {
 let items_template: ServerItemInfo[];
 export function convertEnterGame(data: EnterGameRep) {
     const {
-        isTrial,
+        isGuest,
         rate,
         users: users_source,
         items,
@@ -267,7 +267,7 @@ export function convertEnterGame(data: EnterGameRep) {
     }
 
     return {
-        isTrial,
+        isTrial: isGuest,
         exchange_rate: rate,
         fish,
         users,

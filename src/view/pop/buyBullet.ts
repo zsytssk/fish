@@ -7,14 +7,11 @@ import {
     offLangChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { SkillMap } from '@app/data/config';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { getCurPlayer } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { addZeroToNum, tplIntr } from '@app/utils/utils';
 
 import AlertPop from './alert';
-import { buyItem } from './popSocket';
 import { getItemName } from './shop';
 import TipPop from './tip';
 
@@ -127,12 +124,10 @@ export default class BuyBulletPop
             intro.text = `${tplIntr('buyBulletCost')}${cost}${typename}`;
         }
     }
-    private initLang(lang: Lang) {
-        const { purchase } = InternationalTip[lang];
+    private initLang() {
         const { title, btn_label } = this;
 
-        title.text = purchase;
-        btn_label.text = purchase;
+        btn_label.text = title.text = tplIntr('purchase');
         this.setIntro();
     }
     public buy(info: BuyInfo) {

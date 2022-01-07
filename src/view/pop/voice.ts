@@ -3,11 +3,11 @@ import honor, { HonorDialog } from 'honor';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { Lang, InternationalTip } from '@app/data/internationalConfig';
 import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import LayaProgressCtrl from '@app/utils/layaProgressCtrl';
+import { tplIntr } from '@app/utils/utils';
 
 /** 声音的弹出层 */
 export default class VoicePop
@@ -22,8 +22,8 @@ export default class VoicePop
         honor.director.openDialog({ dialog: VoicePop, use_exist: true });
     }
     public onAwake() {
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const { voice, music } = modelState.app.setting;
@@ -66,12 +66,11 @@ export default class VoicePop
         super.destroy();
     }
 
-    private initLang(lang: Lang) {
+    private initLang() {
         const { sound_label, music_label, title } = this;
-        const { music, soundEffects, volumeSetting } = InternationalTip[lang];
 
-        title.text = volumeSetting;
-        sound_label.text = soundEffects;
-        music_label.text = music;
+        title.text = tplIntr('volumeSetting');
+        sound_label.text = tplIntr('soundEffects');
+        music_label.text = tplIntr('music');
     }
 }

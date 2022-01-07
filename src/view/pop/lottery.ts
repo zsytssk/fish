@@ -4,13 +4,10 @@ import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import {
-    changeBulletNum,
-    changeUserAccount,
-} from '@app/ctrl/game/gameCtrlUtils';
+import { changeUserAccount } from '@app/ctrl/game/gameCtrlUtils';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { getCurUserId } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';

@@ -4,7 +4,7 @@ import {
     offLangChange,
     onLangChange
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { type ArenaModel } from '@app/model/arena/arenaModel';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { fade_in, fade_out } from '@app/utils/animate';
@@ -179,9 +179,8 @@ export default class HallView
         }
         user_box.visible = true;
 
-        onLangChange(this, (lang) => {
-            const { guest } = InternationalTip[lang];
-            nickname.text = guest;
+        onLangChange(this, () => {
+            nickname.text = tplIntr('guest');
         });
         resizeContain(left_wrap, space);
     }

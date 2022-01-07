@@ -72,8 +72,8 @@ export default class ArenaSettlePop
             fee,
             currency,
         });
-        guess_label.text = tplIntr('arenaSettleReStatic');
-        info_label.text = tplIntr('arenaSettleReTpl', {
+        guess_label.text = tplIntr('arenaSettleReStatic', { score });
+        info_label.text = tplIntr('arenaSettleTpl', {
             userId,
             ranking: ranking || '~',
             maxDayScore,

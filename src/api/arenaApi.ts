@@ -110,7 +110,7 @@ export type ServerUserInfo = {
 
 /** 复盘 */
 export type EnterGameRep = {
-    isTrial: 0 | 1;
+    isGuest: 0 | 1;
     roomId: number;
     isFirstStart: boolean;
     rate: number;
