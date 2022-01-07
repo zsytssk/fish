@@ -1,12 +1,11 @@
 import { default as random } from 'lodash/random';
 
-import honor from 'honor';
 import {
-    toProgressObserver,
     fakeLoad,
     loadRes,
     mergeProgressObserver,
     ResItem,
+    toProgressObserver,
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
@@ -15,12 +14,11 @@ import { Loader } from 'laya/net/Loader';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
-import { getChannel, getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { getChannel } from '@app/ctrl/hall/hallCtrlUtil';
 import { waitConnectGame } from '@app/ctrl/hall/login';
 import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { res } from '@app/data/res';
 import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
 import { FreezingComEvent } from '@app/model/game/com/gameFreezeCom';
@@ -112,10 +110,7 @@ export class GameCtrl implements GameCtrlUtils {
                     }
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
                     if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
-                        const lang = getLang();
-                        await AlertPop.alert(
-                            InternationalTip[lang].delayUpdateAccount,
-                        );
+                        await AlertPop.alert(tplIntr('delayUpdateAccount'));
                     }
                     tipExchange(data);
                 });
@@ -201,11 +196,8 @@ export class GameCtrl implements GameCtrlUtils {
             ShopPop.preEnter();
         });
         onNodeWithAni(btn_leave, CLICK, (e: Event) => {
-            const lang = getLang();
-            const { leaveTip } = InternationalTip[lang];
-
             e.stopPropagation();
-            AlertPop.alert(leaveTip).then((type) => {
+            AlertPop.alert(tplIntr('leaveTip')).then((type) => {
                 if (type === 'confirm') {
                     this.sendToGameSocket(ServerEvent.RoomOut);
                 }
@@ -416,11 +408,9 @@ export class GameCtrl implements GameCtrlUtils {
         const { model } = this;
         const { userId, isTimeOut } = data;
         if (isCurUser(userId)) {
-            const lang = getLang();
-            const { kickedTip } = InternationalTip[lang];
-            const timeout_tip =
-                InternationalTip[lang][ServerErrCode.TrialTimeGame];
-            const tip = isTimeOut ? timeout_tip : kickedTip;
+            const tip = isTimeOut
+                ? tplIntr(ServerErrCode.TrialTimeGame)
+                : tplIntr('kickedTip');
             disableAllUserOperation();
             this.offGameSocket();
             disconnectSocket(ServerName.Game);

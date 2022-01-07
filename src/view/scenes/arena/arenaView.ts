@@ -30,6 +30,7 @@ import { getSpriteInfo } from '@app/utils/dataUtil';
 import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
 import { error } from '@app/utils/log';
 import {
+    covertLang,
     playSkeleton,
     playSkeletonOnce,
     setProps,
@@ -308,15 +309,13 @@ export default class ArenaView
         bullet_num: number,
         score_num: number,
     ) {
-        const lang = getLang();
-        const { NumBullet } = InternationalTip[lang];
         const panel = is_cur_player
             ? this.my_score_panel
             : this.other_score_panel;
 
         const bullet_num_label = panel.getChildByName('bullet_num') as Label;
         const score_num_label = panel.getChildByName('score_num') as Label;
-        bullet_num_label.text = `${NumBullet}: ${bullet_num}`;
+        bullet_num_label.text = `${tplIntr('NumBullet')}: ${bullet_num}`;
         score_num_label.text = score_num + '';
     }
     public getSkillItemByIndex(index: number) {
@@ -327,8 +326,12 @@ export default class ArenaView
     }
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
+        const ani_name = covertLang(lang);
+
         this.skill_box.auto_shoot_light.visible = status;
-        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        const skin_name = status
+            ? `auto_cancel_${ani_name}`
+            : `auto_${ani_name}`;
         this.skill_box.auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     public getPoolMousePos() {

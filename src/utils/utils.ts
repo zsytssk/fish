@@ -10,6 +10,7 @@ import { Handler } from 'laya/utils/Handler';
 import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import {
     InternationalTip,
+    Lang,
     TypeInternationalTipLang,
 } from '@app/data/internationalConfig';
 
@@ -291,4 +292,18 @@ export function tplStr<T extends Record<string, unknown>>(
     }
 
     return str;
+}
+
+export function covertLang(ori_lang: string) {
+    const save_lang = ori_lang;
+    if (save_lang === 'zh-Hant') {
+        return 'hk';
+    } else if (save_lang === 'zh-Hans') {
+        return 'zh';
+    } else if (save_lang === 'ja') {
+        return 'jp';
+    } else if (save_lang === 'ko') {
+        return 'kor';
+    }
+    return 'en';
 }

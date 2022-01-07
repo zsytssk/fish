@@ -7,14 +7,11 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ShopListDataItem } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import {
-    getLang,
-    offLangChange,
-    onLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
+import { covertLang, tplIntr } from '@app/utils/utils';
 
 import { buySkinAlert } from './buyBullet';
 import {
@@ -23,7 +20,7 @@ import {
     arenaShopList,
     arenaUseGunSkin,
 } from './popSocket';
-import { getItemName, GunRenderData, GunSkinStatus, ShopData } from './shop';
+import { getItemName, GunSkinStatus } from './shop';
 
 export type ArenaShopPopInfo = {
     modeId: number;
@@ -66,8 +63,8 @@ export default class ArenaShopPop
     }
     private initLang(lang: Lang) {
         const { title } = this;
-
-        title.skin = `image/international/title_shop_${lang}.png`;
+        const ani_name = covertLang(lang);
+        title.skin = `image/international/title_shop_${ani_name}.png`;
     }
     public init() {
         const { gun_list } = this;
@@ -95,8 +92,6 @@ export default class ArenaShopPop
         const { itemName, itemId, status, price, id, currency } = this.gun_list
             .array[index] as ShopListDataItem;
         const { name_label, icon, stack_btn, icon_check, select_bd } = box;
-        const lang = getLang();
-        const { use, inUse } = InternationalTip[lang];
 
         const gun_name = getItemName(itemId, itemName);
         name_label.text = gun_name;
@@ -123,14 +118,14 @@ export default class ArenaShopPop
                 });
             });
         } else if (status === GunSkinStatus.Have) {
-            cur_label.text = use;
+            cur_label.text = tplIntr('use');
             cur_btn.on(Event.CLICK, cur_btn, () => {
                 arenaUseGunSkin(itemId).then(() => {
                     this.useGunSkin(itemId);
                 });
             });
         } else if (status === GunSkinStatus.Used) {
-            cur_label.text = inUse;
+            cur_label.text = tplIntr('inUse');
             icon_check.visible = true;
             select_bd.visible = true;
         }

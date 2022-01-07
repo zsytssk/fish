@@ -117,15 +117,14 @@ export default class BuyBulletPop
     private setIntro() {
         const lang = getLang();
         const { intro, buy_info } = this;
-        const { buyBulletCost, bullet } = InternationalTip[lang];
         const { price, num, currency } = buy_info;
 
-        const typename = currency || bullet;
+        const typename = currency || tplIntr('bullet');
         const cost = price * num;
         if (lang === 'en') {
-            intro.text = `${buyBulletCost} ${cost} ${typename}`;
+            intro.text = `${tplIntr('buyBulletCost')} ${cost} ${typename}`;
         } else {
-            intro.text = `${buyBulletCost}${cost}${typename}`;
+            intro.text = `${tplIntr('buyBulletCost')}${cost}${typename}`;
         }
     }
     private initLang(lang: Lang) {

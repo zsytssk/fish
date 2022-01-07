@@ -4,10 +4,8 @@ import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { Config } from '@app/data/config';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { ServerEvent } from '@app/data/serverEvent';
 import { getBeBombFishIds } from '@app/model/game/fish/fishModelUtils';
 import { PlayerModel } from '@app/model/game/playerModel';
@@ -23,6 +21,7 @@ import { getAimFish, modelState } from '@app/model/modelState';
 import { offMouseMove, onMouseMove } from '@app/utils/layaUtils';
 import { debug } from '@app/utils/log';
 import { onKeyBoardEvent, onNodeEvent } from '@app/utils/rxUtils';
+import { tplIntr } from '@app/utils/utils';
 import TopTipPop from '@app/view/pop/topTip';
 import {
     activeAim,
@@ -65,8 +64,6 @@ export function skillPreActiveHandler(
     model: SkillModel,
     game_ctrl: GameCtrlUtils,
 ) {
-    const lang = getLang();
-    const { posBombTip, aimFish } = InternationalTip[lang];
     if (model.skill_core.num <= 0) {
         return game_ctrl.buySkillTip();
     }
@@ -80,7 +77,7 @@ export function skillPreActiveHandler(
         // 冰冻
         game_ctrl.sendToGameSocket(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
-        TopTipPop.tip(posBombTip, 2);
+        TopTipPop.tip(tplIntr('posBombTip'), 2);
         const { pool } = viewState.game;
         const { PoolWidth, PoolHeight } = Config;
         activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
@@ -109,7 +106,7 @@ export function skillPreActiveHandler(
 
         const player = modelState.app.game.getCurPlayer();
 
-        TopTipPop.tip(aimFish, 2);
+        TopTipPop.tip(tplIntr('aimFish'), 2);
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
         onFishClick(true).subscribe(({ id, group_id }) => {
@@ -130,8 +127,6 @@ export function skillActiveHandler(
     game_ctrl: GameCtrlUtils,
 ) {
     return new Promise((resolve, _reject) => {
-        const lang = getLang();
-        const { aimFish } = InternationalTip[lang];
         if (model instanceof LockFishModel) {
             const { fish, is_tip, gun_pos } = info as LockActiveData;
             if (!player_model.is_cur_player) {
@@ -152,7 +147,7 @@ export function skillActiveHandler(
 
             if (is_tip) {
                 // 激活锁定之后 提示选中鱼 选中之后发给服务器...
-                TopTipPop.tip(aimFish, 2);
+                TopTipPop.tip(tplIntr('aimFish'), 2);
             }
             const fire = !is_tip;
             activeAimFish(fish, fire, gun_pos);
@@ -178,7 +173,7 @@ export function skillActiveHandler(
 
 /** 技能的disabled处理 */
 export function skillDisableHandler(model: SkillModel) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         if (model instanceof LockFishModel) {
             stopAim('aim');
             offFishClick();

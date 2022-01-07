@@ -6,14 +6,11 @@ import {
     resetMockSocketCtor,
 } from '@app/ctrl/game/gameTest/utils';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
-import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from '@app/data/internationalConfig';
-import { ServerName } from '@app/data/serverEvent';
 import { sleep } from '@app/utils/animate';
 import { error } from '@app/utils/log';
+import { tplIntr } from '@app/utils/utils';
 
 import { GameTestCtrl } from '../../game/gameTest/gameTestCtrl';
-import { waitCreateSocket } from '../../net/webSocketWrapUtil';
 import { showPromptByNode } from '../core/guideUtils';
 import { PromptPos } from '../core/prompt';
 import { guide_state } from '../guideState';
@@ -27,10 +24,6 @@ export class NewUserGuide {
     }
 
     public async showStartPrompt() {
-        const lang = getLang();
-        const { tour1, tour2, tour3, tour4, tour5, tour6 } =
-            InternationalTip[lang];
-
         let game_ctrl: GameTestCtrl;
         try {
             const { guide_dialog } = guide_state;
@@ -46,9 +39,14 @@ export class NewUserGuide {
                 guide2,
             } = hall_ctrl.view;
 
-            await showPromptByNode(btn_coin_select, [tour1], 'bottom', true);
+            await showPromptByNode(
+                btn_coin_select,
+                [tplIntr('tour1')],
+                'bottom',
+                true,
+            );
 
-            await showPromptByNode(guide2, [tour2], 'top', true);
+            await showPromptByNode(guide2, [tplIntr('tour2')], 'top', true);
 
             // const game_ctrl = await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
             hall_ctrl.destroy();
@@ -62,18 +60,18 @@ export class NewUserGuide {
             const dir: PromptPos = bullet_box.x > 1334 / 2 ? 'left' : 'right';
             guide_dialog.setBtnNextDir(dir);
             cur_gun.stopPosTip();
-            await showPromptByNode(bullet_box, [tour3], dir, true);
+            await showPromptByNode(bullet_box, [tplIntr('tour3')], dir, true);
 
             cur_gun.setMySelfStyle();
             await sleep(1);
-            await showPromptByNode(cur_gun, [tour4], 'top', true);
+            await showPromptByNode(cur_gun, [tplIntr('tour4')], 'top', true);
             sleep(2);
             genFishInfo(game_ctrl);
 
             const fish = game_ctrl.fish_view;
             await showPromptByNode(
                 { sprite: fish, shape: 'circle' },
-                [tour5],
+                [tplIntr('tour5')],
                 'top',
                 true,
                 'point',
@@ -85,7 +83,13 @@ export class NewUserGuide {
 
             const { skill_box } = game_ctrl.view;
             guide_dialog.setBtnNextDir('right');
-            await showPromptByNode(skill_box, [tour6], 'top', true, 'start');
+            await showPromptByNode(
+                skill_box,
+                [tplIntr('tour6')],
+                'top',
+                true,
+                'start',
+            );
             resetMockSocketCtor(game_ctrl);
             return true;
         } catch (err) {

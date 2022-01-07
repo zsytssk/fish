@@ -19,7 +19,14 @@ import { ui } from '@app/ui/layaMaxUI';
 import { fade_in } from '@app/utils/animate';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { error } from '@app/utils/log';
-import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
+import {
+    covertLang,
+    playSkeleton,
+    playSkeletonOnce,
+    setProps,
+    tplIntr,
+    tplStr,
+} from '@app/utils/utils';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
 
 import { viewState } from '../../viewState';
@@ -29,7 +36,7 @@ import SkillItemView from './skillItemView';
 
 export type AddFishViewInfo = FishViewInfo & { horizon_turn: boolean };
 export type FishViewClickInfo = { id: string; group_id: string };
-const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 $0</span> = <span color="#ffdd76">$1</span> <span>$2</span> </div>`;
+const exchange_rate_tpl = `<div style="width: 500px;height: 32px;line-height:32px;font-size: 20px;color:#fff;align:center;"><span>1 {name}</span> = <span color="#ffdd76">{rate}</span> <span>{currency}</span> </div>`;
 export type BulletBoxDir = 'left' | 'right';
 
 export default class GameView
@@ -59,9 +66,13 @@ export default class GameView
         });
     }
     private initLang(lang: Lang) {
+        const ani_name = covertLang(lang);
+
         const { auto_shoot_txt } = this.skill_box;
         const status = this.skill_box.auto_shoot_light.visible;
-        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        const skin_name = status
+            ? `auto_cancel_${ani_name}`
+            : `auto_${ani_name}`;
         auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     /** 设置游客样式 */
@@ -250,10 +261,8 @@ export default class GameView
         return gun;
     }
     public setBulletNum(num: number) {
-        const lang = getLang();
-        const { NumBullet } = InternationalTip[lang];
         const { bullet_num } = this;
-        bullet_num.text = `${NumBullet}: ` + num;
+        bullet_num.text = `${tplIntr('NumBullet')}: ` + num;
     }
     public getSkillItemByIndex(index: number) {
         return this.skill_box.skill_list.getChildAt(index) as SkillItemView;
@@ -263,19 +272,22 @@ export default class GameView
     }
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
+        const ani_name = covertLang(lang);
+
         this.skill_box.auto_shoot_light.visible = status;
-        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        const skin_name = status
+            ? `auto_cancel_${ani_name}`
+            : `auto_${ani_name}`;
         this.skill_box.auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     public setExchangeRate(rate: number, currency: string) {
-        const lang = getLang();
-        const { bullet } = InternationalTip[lang];
-
         const { exchange_rate } = this;
-        exchange_rate.innerHTML = exchange_rate_tpl
-            .replace('$0', bullet)
-            .replace('$1', rate + '')
-            .replace('$2', currency);
+        exchange_rate.innerHTML = tplStr(exchange_rate_tpl, {
+            name: tplIntr('bullet'),
+            rate,
+            currency,
+        });
+
         exchange_rate.style.font = '20px Arial';
     }
     public setEnergyRadio(radio: number) {

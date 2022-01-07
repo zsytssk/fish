@@ -3,10 +3,9 @@ import { openDialog } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
+import { tplIntr } from '@app/utils/utils';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
@@ -78,11 +77,9 @@ export default class AlertPop
         this.close_resolve = undefined;
     }
     private initLang() {
-        const lang = getLang();
         const { title, btn_confirm_label, btn_cancel_label } = this;
-        const { tips, cancel, confirm } = InternationalTip[lang];
-        title.text = tips;
-        btn_confirm_label.text = confirm;
-        btn_cancel_label.text = cancel;
+        title.text = tplIntr('tips');
+        btn_confirm_label.text = tplIntr('confirm');
+        btn_cancel_label.text = tplIntr('cancel');
     }
 }

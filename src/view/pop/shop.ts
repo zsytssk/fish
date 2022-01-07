@@ -15,7 +15,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
-import { tplIntr } from '@app/utils/utils';
+import { covertLang, tplIntr, tplStr } from '@app/utils/utils';
 
 import BuyBulletPop, { buySkinAlert } from './buyBullet';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
@@ -164,8 +164,6 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             index
         ] as GunRenderData;
         const { name_label, icon, stack_btn, icon_check, select_bd } = box;
-        const lang = getLang();
-        const { use, inUse } = InternationalTip[lang];
 
         name_label.text = gun_name;
         icon.skin = `image/pop/shop/icon/${gun_id}.png`;
@@ -189,14 +187,14 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 });
             });
         } else if (gun_status === GunSkinStatus.Have) {
-            cur_label.text = use;
+            cur_label.text = tplStr('use');
             cur_btn.on(Event.CLICK, cur_btn, () => {
                 useGunSkin(gun_id).then(() => {
                     this.useGunSkin(gun_id);
                 });
             });
         } else if (gun_status === GunSkinStatus.Used) {
-            cur_label.text = inUse;
+            cur_label.text = tplStr('inUse');
             icon_check.visible = true;
             select_bd.visible = true;
         }
@@ -256,8 +254,9 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     private initLang(lang: Lang) {
         const { title, item_tag, skin_tag } = this;
         const { skin, item } = InternationalTip[lang];
+        const ani_name = covertLang(lang);
 
-        title.skin = `image/international/title_shop_${lang}.png`;
+        title.skin = `image/international/title_shop_${ani_name}.png`;
         item_tag.text = item;
         skin_tag.text = skin;
     }

@@ -19,5 +19,5 @@ export function init() {
     Config.arenaSocketUrl = getParams('arenaSocket')
         ? `ws://${getParams('arenaSocket')}`
         : 'ws://172.16.6.184:7019';
-    Config.lang = (platform_info.lang || 'en') as Lang;
+    Config.lang = (getParams('lang') || platform_info.lang) as Lang;
 }

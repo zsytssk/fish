@@ -17,7 +17,7 @@ import { sleep } from '@app/utils/animate';
 import { tween } from '@app/utils/layaTween';
 import { onNode, resizeParent } from '@app/utils/layaUtils';
 import { log } from '@app/utils/log';
-import { playSkeletonOnce } from '@app/utils/utils';
+import { covertLang, playSkeletonOnce, tplIntr } from '@app/utils/utils';
 
 import HelpPop from './help';
 import { LotteryExchangeCtrl } from './lotteryExchangeCtrl';
@@ -281,12 +281,12 @@ export default class LotteryPop
     }
     private initLang(lang: Lang) {
         const { title, btn_label, sub_title, lottery_exchange_ctrl } = this;
-        const { luckyDraw, redemption } = InternationalTip[lang];
-        btn_label.text = luckyDraw;
-        sub_title.text = redemption;
+        const ani_name = covertLang(lang);
+        btn_label.text = tplIntr('luckyDraw');
+        sub_title.text = tplIntr('redemption');
         lottery_exchange_ctrl.refresh();
         resizeParent(btn_label, 30, 142);
 
-        title.skin = `image/international/txt_lottery_${lang}.png`;
+        title.skin = `image/international/txt_lottery_${ani_name}.png`;
     }
 }

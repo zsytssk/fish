@@ -11,7 +11,7 @@ import { fade_in, fade_out } from '@app/utils/animate';
 import { formatDateRange } from '@app/utils/dayjsUtil';
 import { ClickNode, onStageClick, resizeContain } from '@app/utils/layaUtils';
 import { error } from '@app/utils/log';
-import { playSkeleton, tplIntr } from '@app/utils/utils';
+import { covertLang, playSkeleton, tplIntr } from '@app/utils/utils';
 import honor, { HonorScene } from 'honor';
 import { ProgressFn } from 'honor/utils/loadRes';
 import { Laya } from 'Laya';
@@ -113,36 +113,37 @@ export default class HallView
     private initLang(lang: Lang) {
         const { arena_status, match_status,match_timezone,match_box, normal_box, btn_play_now } = this;
         const { btn_get, btn_charge, middle_btn_wrap } = this.header;
-        const { stayTuned } = InternationalTip[lang];
+        const ani_name = covertLang(lang);
+
         const map = [
             ['normal', normal_box],
             ['match', match_box],
         ] as Array<[string, Box]>;
 
         // TODO-lang
-        match_timezone.text = stayTuned;
+        match_timezone.text = tplIntr('stayTuned');
         arena_status.text = tplIntr('arenaTitle');
         match_status.text = tplIntr('matchTitle');
 
         const btn_arr = ['btn_play', 'btn_try'];
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
             for (const btn_item of btn_arr) {
                 const btn = item.getChildByName(btn_item);
                 const item_ani = btn.getChildByName('ani') as Skeleton;
-                playSkeleton(item_ani, `standby_${lang}`, true);
+                playSkeleton(item_ani, `standby_${ani_name}`, true);
             }
         }
         const play_now_ani = btn_play_now.getChildByName('ani') as Skeleton;
-        playSkeleton(play_now_ani, `standby_${lang}`, true);
+        playSkeleton(play_now_ani, `standby_${ani_name}`, true);
 
         (
             btn_charge.getChildByName('txt_label') as Image
-        ).skin = `image/international/charge_${lang}.png`;
+        ).skin = `image/international/charge_${ani_name}.png`;
         (
             btn_get.getChildByName('txt_label') as Image
-        ).skin = `image/international/withdraw_${lang}.png`;
+        ).skin = `image/international/withdraw_${ani_name}.png`;
         resizeContain(middle_btn_wrap, 10);
         this.activeAni('normal');
     }
@@ -156,6 +157,8 @@ export default class HallView
     public activeAni(type: string) {
         const { normal_box, match_box } = this;
         const lang = getLang();
+        const ani_name = covertLang(lang);
+
         const map = [
             ['normal', normal_box],
             ['match', match_box],
@@ -163,7 +166,7 @@ export default class HallView
 
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
         }
     }
     public setNickname(nickname_str: string) {

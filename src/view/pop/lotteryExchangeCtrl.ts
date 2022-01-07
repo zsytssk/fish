@@ -2,12 +2,10 @@ import { afterActive } from 'honor/utils/tool';
 import { Event } from 'laya/events/Event';
 import { Box } from 'laya/ui/Box';
 
-import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import { ItemMap } from '@app/data/config';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
 import { ui } from '@app/ui/layaMaxUI';
-import { createDarkFilter, createColorFilter } from '@app/utils/utils';
+import { createColorFilter, createDarkFilter, tplIntr } from '@app/utils/utils';
 
 import { ExchangeData } from './lottery';
 import { runTicketExchange } from './popSocket';
@@ -77,8 +75,6 @@ export class LotteryExchangeCtrl {
             btn_buy,
             item_type,
         } = item;
-        const lang = getLang();
-        const { Num } = InternationalTip[lang];
 
         const { exchange_type, exchange_id, exchange_num, cost_num, cur_num } =
             item_data;
@@ -94,7 +90,7 @@ export class LotteryExchangeCtrl {
         coin_icon.filters = [createColorFilter('#64280e')];
         num_label.text = num_str;
         item_type.text = exchange_type.toUpperCase();
-        remain_label.text = `${Num}: ${cur_num}/${cost_num}`;
+        remain_label.text = `${tplIntr('Num')}: ${cur_num}/${cost_num}`;
 
         let scale = 1 / (num_str.length / 3);
         let scale2 = 1 / (exchange_type.length / 4);

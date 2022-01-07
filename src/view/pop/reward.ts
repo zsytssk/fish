@@ -1,22 +1,19 @@
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
 
-import {
-    getLang,
-    onLangChange,
-    offLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
+import { onLangChange, offLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
+import { tplIntr, tplStr } from '@app/utils/utils';
 
 type RewardData = {
     type: string;
     num: number;
 };
 
-const tip_tpl1 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span style="margin-right: 10px;">&nbsp;$1&nbsp;</span><span color="#ffdd76">$2</span></div>`;
+const tip_tpl1 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>{tip}</span><span style="margin-right: 10px;">&nbsp;{name}&nbsp;</span><span color="#ffdd76">{num}</span></div>`;
 
-const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>$0</span><span color="#ffdd76" style="margin-right: 10px;">&nbsp;$2&nbsp;</span><span>$1</span></div>`;
+const tip_tpl2 = `<div style="width: 392px;height: 32px;line-height:32px;font-size: 24px;color:#d3d6ff;align:center;"><span>{tip}</span><span color="#ffdd76" style="margin-right: 10px;">&nbsp;{num}&nbsp;</span><span>{name}</span></div>`;
 /** 恭喜获得提示框 */
 export default class RewardPop
     extends ui.pop.lottery.rewardUI
@@ -50,9 +47,7 @@ export default class RewardPop
         btn_confirm_label.text = confirm;
     }
     public showReward(data: RewardData) {
-        return new Promise((resolve, reject) => {
-            const lang = getLang();
-            const { luckyDrawTip2, bullet } = InternationalTip[lang];
+        return new Promise<void>((resolve, _reject) => {
             const { item_num, item_type, bullet_icon, bullet_num, txt_label } =
                 this;
 
@@ -60,18 +55,20 @@ export default class RewardPop
             const { type, num } = data;
 
             const is_bullet = type === 'bullet';
-            const name = is_bullet ? bullet : type;
+            const name = is_bullet ? tplIntr('bullet') : type;
             const num_str = num + '';
             if (is_bullet) {
-                txt_label.innerHTML = tip_tpl1
-                    .replace('$0', luckyDrawTip2)
-                    .replace('$1', name)
-                    .replace('$2', `x${num}`);
+                txt_label.innerHTML = tplStr(tip_tpl1, {
+                    tip: tplIntr('luckyDrawTip2'),
+                    name,
+                    num: `x${num}`,
+                });
             } else {
-                txt_label.innerHTML = tip_tpl2
-                    .replace('$0', luckyDrawTip2)
-                    .replace('$1', name)
-                    .replace('$2', `${num}`);
+                txt_label.innerHTML = tplStr(tip_tpl2, {
+                    tip: tplIntr('luckyDrawTip2'),
+                    name,
+                    num,
+                });
             }
 
             item_num.visible =

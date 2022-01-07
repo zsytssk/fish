@@ -114,10 +114,7 @@ export class GameCtrl implements GameCtrlUtils {
                     }
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
                     if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
-                        const lang = getLang();
-                        await AlertPop.alert(
-                            InternationalTip[lang].delayUpdateAccount,
-                        );
+                        await AlertPop.alert(tplIntr('delayUpdateAccount'));
                     }
                     tipExchange(data);
                 });
@@ -186,11 +183,8 @@ export class GameCtrl implements GameCtrlUtils {
         );
 
         btn_leave.on(CLICK, this, (e: Event) => {
-            const lang = getLang();
-            const { leaveTip } = InternationalTip[lang];
-
             e.stopPropagation();
-            AlertPop.alert(leaveTip).then((type) => {
+            AlertPop.alert(tplIntr('leaveTip')).then((type) => {
                 if (type === 'confirm') {
                     this.sendToGameSocket(ServerEvent.TableOut);
                 }

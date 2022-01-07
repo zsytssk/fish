@@ -4,6 +4,7 @@ import { ServerErrCode } from '@app/data/serverEvent';
 import { ArenaModel, ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap, UserInfoEvent } from '@app/model/userInfo/userInfoModel';
+import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 
 export function onLangChange(item: any, callback: (lang: Lang) => void) {
@@ -48,10 +49,8 @@ export function onNicknameChange(
     let { nickname } = user_info;
     event.on(UserInfoEvent.NicknameChange, callback, item);
     setTimeout(() => {
-        const lang = getLang();
-        const { guest } = InternationalTip[lang];
         if (!nickname) {
-            nickname = guest;
+            nickname = tplIntr('guest');
         }
         callback(nickname);
     });
@@ -138,8 +137,7 @@ export function withdraw() {
 }
 /** 提示刷新页面 */
 export function alertNetErrRefresh() {
-    const lang = getLang();
-    return AlertPop.alert(InternationalTip[lang][ServerErrCode.NetError], {
+    return AlertPop.alert(tplIntr(ServerErrCode.NetError), {
         hide_cancel: true,
     }).then(() => {
         location.reload();
