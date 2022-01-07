@@ -653,32 +653,20 @@ export const International = {
             '当前货币余额不足，最小需携带{minAmount}{currency}才可进场，请去充值或者切换其他货币。',
         platformDiffCurrencyEnterGameErr:
             '您还有未完成的游戏，系统自动帮您复盘。',
-        arenaHelpRule11:
-            'a) 捕鱼大奖赛，以活动形式指定时间段开放，每个时段结束前{deadlineTime}分钟停止报名',
-        arenaHelpRule12:
-            'b)大奖赛每次开放均可获赠{freeNum}次免费挑战的次数（游客玩家和正式账号获得一次），免费挑战次数不累积',
-        arenaHelpRule13:
-            'c) 重复挑战需要报名消耗货币，消耗的货币数量每次都一样',
-        arenaHelpRule21:
-            'a) 报名成功后，每个玩家可以射击{initBulletNum}发子弹，击杀鱼后可以获得鱼倍率对应的积分，1倍=1积分。',
+        arenaHelpRule11: 'a) 捕鱼大奖赛，以活动形式指定时间段开放，每个时段结束前{deadlineTime}分钟停止报名',
+        arenaHelpRule12: 'b)大奖赛每次开放均可获赠{freeNum}次免费挑战的次数（游客玩家和正式账号获得一次），免费挑战次数不累积',
+        arenaHelpRule13: 'c) 重复挑战需要报名消耗货币，消耗的货币数量每次都一样',
+        arenaHelpRule21: 'a) 报名成功后，每个玩家可以射击{initBulletNum}发子弹，击杀鱼后可以获得鱼倍率对应的积分，1倍=1积分。',
         arenaHelpRule22: 'b) 大奖赛中炮台倍率越高，击杀鱼的概率也相应增加',
-        arenaHelpRule23:
-            'c) 玩家开炮后，若剩余子弹为500倍数，触发悬赏任务，完成可获得额外积分奖励',
-        arenaHelpRule24:
-            'd) 所有子弹打完后，本次挑战结束。最终积分可以参与排名(注意:子弹未打完的成绩不参与排名)',
-        arenaHelpRule31:
-            'a)每日取单次最高积分进入排名(至少需要{rankingScoreDown}分才可参与排名)',
+        arenaHelpRule23: 'c) 玩家开炮后，若剩余子弹为500倍数，触发悬赏任务，完成可获得额外积分奖励',
+        arenaHelpRule24: 'd) 所有子弹打完后，本次挑战结束。最终积分可以参与排名(注意:子弹未打完的成绩不参与排名)',
+        arenaHelpRule31: 'a)每日取单次最高积分进入排名(至少需要{rankingScoreDown}分才可参与排名)',
         arenaHelpRule32: 'b)积分相同的情况下，先达到的玩家排名在前',
-        arenaHelpRule33:
-            'c)日排行奖励发放时间为每日23:35，最终排名以23:30之后为准。( 注意: 23:00之前的排名奖励仅作预览，不是实际发放奖励)',
-        arenaHelpRule34:
-            'd) 总冠军奖励发放时间为每次活动结束后第二天0:05，单次积分最高的玩家为总冠军，获得额外的大奖',
-        arenaHelpRule35:
-            'e) 比赛的奖励直接发放到账号上，玩家可以在大厅界面查看大奖赛奖励发放记录',
-        arenaHelpRule41:
-            'a) 炮台加成 使用不同炮台皮肤，比赛中命中率加成不一样，不累加命中',
-        arenaHelpRule42:
-            '炮台皮肤      命中加成 \n 皮肤1           {gun1001}%\n 皮肤2           {gun1002}%\n 皮肤3           {gun1003}%\n 皮肤4           {gun1004}%\n 皮肤5           {gun1005}%\n',
+        arenaHelpRule33: 'c)日排行奖励发放时间为每日23:35，最终排名以23:30之后为准。( 注意: 23:00之前的排名奖励仅作预览，不是实际发放奖励)',
+        arenaHelpRule34: 'd) 总冠军奖励发放时间为每次活动结束后第二天0:05，单次积分最高的玩家为总冠军，获得额外的大奖',
+        arenaHelpRule35: 'e) 比赛的奖励直接发放到账号上，玩家可以在大厅界面查看大奖赛奖励发放记录',
+        arenaHelpRule41: 'a) 炮台加成 使用不同炮台皮肤，比赛中命中率加成不一样，不累加命中',
+        arenaHelpRule42: '炮台皮肤      命中加成 \n 皮肤1           {gun1001}%\n 皮肤2           {gun1002}%\n 皮肤3           {gun1003}%\n 皮肤4           {gun1004}%\n 皮肤5           {gun1005}%\n',
         arenaAwardTitle: '奖励查询',
         arenaAwardItemTitle1: '名次',
         arenaAwardItemTitle2: '时间',
@@ -695,10 +683,8 @@ export const International = {
         openTime: '活动时间：{startTime}-{endTime}',
         notInRank: '暂未上榜',
         // @TODO-产品给提示
-        arenaNotEndCurrency:
-            '尽管你选择的货币{currency1}, 但是目前你在{currency2}游戏还没结束，点击继续游戏',
-        arenaNotSupportCurrency:
-            '暂不支持你选择的货币{currency1}, 点击继续游戏使用{currency2}报名进入游戏',
+        arenaNotEndCurrency: '尽管你选择的货币{currency1}, 但是目前你在{currency2}游戏还没结束，点击继续游戏',
+        arenaNotSupportCurrency: '暂不支持你选择的货币{currency1}, 点击继续游戏使用{currency2}报名进入游戏',
         maintainQuitTip: '游戏维护中，请退出游戏！',
         maintainTip: '游戏维护中',
         keyboardEmpTip: '输入的值不能为空',
@@ -713,8 +699,7 @@ export const International = {
         arenaSettleTitle: '比赛结算',
         arenaSettleReSign: '重新参赛 {fee}{currency}',
         arenaSettleReStatic: '本次捕获分数：{score}',
-        arenaSettleTpl:
-            '{userId}\n当前排名：{ranking}\n今日最高捕获分数： {maxDayScore}\n本次捕获分数：{score}',
+        arenaSettleTpl: '{userId}\n当前排名：{ranking}\n今日最高捕获分数： {maxDayScore}\n本次捕获分数：{score}',
         arenaSettle1: '*比赛结束前，奖励可能产生变化',
         arenaSettle2: '排行奖励',
         arenaRankScore: '获得积分：{score}',

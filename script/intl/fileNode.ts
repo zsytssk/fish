@@ -53,7 +53,6 @@ export class FileNode {
             }
         }
 
-        console.log(task_arr.length);
         task_arr.sort((a, b) => b.node.pos - a.node.pos);
 
         let { source } = this;
