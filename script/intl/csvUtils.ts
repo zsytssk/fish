@@ -89,7 +89,7 @@ export function dataToRawData(data: string[][]): RawData {
 }
 
 export function encryptBl(str: string): string {
-    return str.replaceAll('\n', '-n-');
+    return str.replaceAll('\n', '\\n');
 }
 export function decryptBl(str: string): string {
     return str.replaceAll('-n-', '\\n');
