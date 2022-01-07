@@ -1,0 +1,4 @@
+{
+    "export_path": "./intl",
+    "headers": ["translationId", "zh-Hans", "en", "ja", "ko", "zh-Hant"]
+}

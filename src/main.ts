@@ -19,22 +19,5 @@ export function init() {
     Config.arenaSocketUrl = getParams('arenaSocket')
         ? `ws://${getParams('arenaSocket')}`
         : 'ws://172.16.6.184:7019';
-    Config.lang = covertLang(platform_info.lang);
-}
-
-export function covertLang(ori_lang: string) {
-    const save_lang = ori_lang;
-    let lang: Lang = Lang.En;
-    if (save_lang === 'en') {
-        lang = 'en' as Lang;
-    } else if (save_lang === 'zh-Hant') {
-        lang = 'hk' as Lang;
-    } else if (save_lang === 'zh-Hans') {
-        lang = 'zh' as Lang;
-    } else if (save_lang === 'ja') {
-        lang = 'jp' as Lang;
-    } else if (save_lang === 'ko') {
-        lang = 'kor' as Lang;
-    }
-    return lang;
+    Config.lang = (platform_info.lang || 'en') as Lang;
 }

@@ -9,7 +9,7 @@ import { Handler } from 'laya/utils/Handler';
 
 import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import {
-    International,
+    InternationalTip,
     TypeInternationalTipLang,
 } from '@app/data/internationalConfig';
 
@@ -273,7 +273,7 @@ export function tplIntr<T extends Record<string, unknown>>(
     data?: T,
 ) {
     const lang = getLang();
-    let msg = International[lang][key];
+    let msg = InternationalTip[lang][key];
     if (data) {
         for (const key in data) {
             msg = msg.replace(new RegExp(`{${key}}`, 'g'), data[key] + '');
