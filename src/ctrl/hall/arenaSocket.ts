@@ -6,8 +6,10 @@ import {
 import { Config } from '@app/data/config';
 import { isProd } from '@app/data/env';
 import {
+    ArenaErrCode,
     ArenaEvent,
     ARENA_OK_CODE,
+    ErrorData,
     ServerErrCode,
     ServerName,
 } from '@app/data/serverEvent';
@@ -20,15 +22,20 @@ import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import TipPop from '@app/view/pop/tip';
 
 import { GameCtrl } from '../game/gameArena/gameCtrl';
-import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
+import {
+    Config as SocketConfig,
+    SocketEvent,
+    WebSocketTrait,
+} from '../net/webSocketWrap';
 import {
     bindSocketEvent,
     createSocket,
     getSocket,
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
-import { commonSocket, errorHandler } from './commonSocket';
+import { tipComeBack } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
+import { recharge } from './hallCtrlUtil';
 
 let arena_hall_socket: WebSocketTrait;
 export async function connectArenaHallSocket(checkReplay = false) {
@@ -90,6 +97,10 @@ export function sendToArenaHallSocket(
     arena_hall_socket.send(...params);
 }
 
+export function getArenaSocket() {
+    return arena_hall_socket;
+}
+
 /** 绑定ArenaSocket */
 export async function bindArenaHallSocket(hall: HallCtrl) {
     if (!arena_hall_socket) {
@@ -102,8 +113,41 @@ export async function bindArenaHallSocket(hall: HallCtrl) {
         },
     });
 
-    commonSocket(arena_hall_socket, hall);
+    commonArenaSocket(arena_hall_socket, hall);
 }
+
+export function commonArenaSocket(socket: WebSocketTrait, bindObj: any) {
+    bindSocketEvent(socket, bindObj, {
+        [ArenaEvent.ErrCode]: (res: ErrorData, code: number) => {
+            code = res?.code || code;
+        },
+        /** 重连 */
+        [SocketEvent.Reconnecting]: (try_index: number) => {
+            if (try_index === 0) {
+                TipPop.tip(tplIntr('NetError'), {
+                    count: 10,
+                    show_count: true,
+                    auto_hide: false,
+                    click_through: false,
+                    repeat: true,
+                });
+            }
+        },
+        /** 重连 */
+        [SocketEvent.Reconnected]: () => {
+            tipComeBack();
+        },
+        /** 断开连接 */
+        [SocketEvent.End]: () => {
+            AlertPop.alert(tplIntr('logoutTip'), {
+                hide_cancel: true,
+            }).then(() => {
+                location.reload();
+            });
+        },
+    });
+}
+
 /** 解除绑定ArenaSocket */
 export function offArenaHallSocket(hall: any) {
     if (arena_hall_socket) {
@@ -179,8 +223,8 @@ export function arenaErrHandler(
     data?: any,
     socket?: WebSocketTrait,
 ) {
-    if (code === ServerErrCode.Maintenance) {
-        if (ctrl instanceof GameCtrl) {
+    if (code === ArenaErrCode.Maintenance) {
+        if (typeof ctrl.leave === 'function') {
             AlertPop.alert(tplIntr('maintainTip'), {
                 hide_cancel: true,
             }).then(() => {
@@ -190,6 +234,31 @@ export function arenaErrHandler(
             TipPop.tip(tplIntr('maintainTip'));
         }
         return true;
+    } else if (code === ArenaErrCode.NoMoney) {
+        const errMsg = tplIntr(ServerErrCode.NoMoney);
+
+        return AlertPop.alert(errMsg).then((type) => {
+            if (type === 'confirm') {
+                recharge();
+            }
+        });
+    } else if (code === ArenaErrCode.NoOpen) {
+        TipPop.tip(tplIntr('gameNoOpen'));
+        socket.send(ArenaEvent.ArenaStatus);
+    } else if (code === ArenaErrCode.GameEnded) {
+        TipPop.tip(tplIntr('GameEnded'));
+        socket.send(ArenaEvent.ArenaStatus);
+    } else if (code === ArenaErrCode.SignUpFail) {
+        TipPop.tip(tplIntr('SignUpFail'));
+        socket.send(ArenaEvent.ArenaStatus);
+    } else if (code === ArenaErrCode.BulletLack) {
+        TipPop.tip(tplIntr('BulletLack'));
+    } else if (
+        code === ArenaErrCode.BuyGiftFail ||
+        code === ArenaErrCode.BuyShopFail
+    ) {
+        TipPop.tip(tplIntr('BuyFail'));
+    } else if (code === ArenaErrCode.ItemNotExist) {
+        TipPop.tip(tplIntr('ItemNotExist'));
     }
-    errorHandler(code, data, socket);
 }

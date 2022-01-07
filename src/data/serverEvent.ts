@@ -127,6 +127,28 @@ export const ServerEvent = {
     GetUserInfo: 'getUserInfo',
 };
 
+/** socket 错误码 */
+export enum ArenaErrCode {
+    /** 余额不足 */
+    NoMoney = 302,
+    /** 比赛暂未开启 */
+    NoOpen = 201,
+    /** 比赛已结束 */
+    GameEnded = 202,
+    /** 用户报名失败 */
+    SignUpFail = 303,
+    /** 用户子弹数不足 */
+    BulletLack = 304,
+    /** 用户礼包购买失败 */
+    BuyGiftFail = 305,
+    /** 用户商城购买失败 */
+    BuyShopFail = 306,
+    /** 道具不存在 */
+    ItemNotExist = 401,
+    /** 维护中 */
+    Maintenance = 601,
+}
+
 export const ArenaEvent = {
     /** 大厅游客 */
     Guess: 'guest',
@@ -165,4 +187,7 @@ export const ArenaEvent = {
     /**  购买礼品 */
     BuyGift: 'buyGift',
     ...CommonGameEvent,
+
+    /** 其他部分 */
+    ErrCode: 'error',
 };

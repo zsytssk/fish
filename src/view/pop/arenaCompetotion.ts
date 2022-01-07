@@ -5,11 +5,18 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
+import {
+    arenaErrHandler,
+    bindArenaHallSocket,
+    getArenaSocket,
+    offArenaHallSocket,
+} from '@app/ctrl/hall/arenaSocket';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { ARENA_OK_CODE } from '@app/data/serverEvent';
+import { ArenaEvent, ARENA_OK_CODE } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -54,6 +61,18 @@ export default class ArenaCompetitionPop
     }
     public async onAwake() {
         this.initEvent();
+
+        const socket = getArenaSocket();
+        if (socket) {
+            bindSocketEvent(socket, this, {
+                [ArenaEvent.CompetitionInfo]: (data, code) => {
+                    if (code !== ARENA_OK_CODE) {
+                        return arenaErrHandler(this, code);
+                    }
+                    this.initData(data, modelState.app.user_info.cur_balance);
+                },
+            });
+        }
         onLangChange(this, () => {
             this.initLang();
         });
@@ -245,5 +264,9 @@ export default class ArenaCompetitionPop
         btn_famous.label = tplIntr('arenaTopPlayerTitle');
         btn_help.label = tplIntr('arenaHelpTitle');
         btn_best.label = tplIntr('arenaRankTitle');
+    }
+    public destroy(destroyChild?: boolean) {
+        offArenaHallSocket(this);
+        super.destroy(destroyChild);
     }
 }
