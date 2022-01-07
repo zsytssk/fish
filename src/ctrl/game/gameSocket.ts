@@ -26,11 +26,17 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             game.onEnterGame(convertEnterGame(data));
         },
-        [ServerEvent.TableIn]: (data: TableInRep) => {
+        [ServerEvent.TableIn]: (data: TableInRep, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
-        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep) => {
+        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             if (!isCurUser(data.userId)) {
                 return;
             }
@@ -43,7 +49,10 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             game.tableOut(data);
         },
-        [ServerEvent.Shoot]: (data: ShootRep) => {
+        [ServerEvent.Shoot]: (data: ShootRep, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             game.onShoot(data);
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
@@ -103,10 +112,18 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.RoomOut]: (data: RoomOutRep) => {
             game.roomOut(data);
         },
-        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
+        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep, code) => {
+            // Todo
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             game.changeBulletCost(data);
         },
-        [ServerEvent.UseSkin]: (data: UseSkinRep) => {
+        [ServerEvent.UseSkin]: (data: UseSkinRep, code) => {
+            // Todo
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             game.changeSkin(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {

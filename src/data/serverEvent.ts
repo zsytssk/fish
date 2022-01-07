@@ -21,6 +21,8 @@ export enum ServerErrCode {
     /** 余额不足 */
     NoMoney = 101,
     /** 重新带入 */
+    Maintaining = 111,
+    /** 重新带入 */
     ReExchange = 112,
     /** 需要登陆 */
     NeedLogin = 114,
@@ -40,8 +42,6 @@ export enum ServerErrCode {
     EnterGameError = 505,
     /** 网络异常 */
     NetError = 511,
-    /** 维护中 */
-    Maintenance = 601,
 }
 
 export type ErrorData = {

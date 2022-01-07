@@ -43,7 +43,10 @@ export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
 
     /** 确保在复盘时已经有用户数据，不然进入游戏之后无法判断当前用户从而导致一堆问题 */
     await new Promise((resolve) => {
-        hall_socket.event.once(ServerEvent.UserAccount, (data) => {
+        hall_socket.event.once(ServerEvent.UserAccount, (data, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             modelState.app.initUserInfo(data);
             resolve(undefined);
         });
@@ -83,7 +86,10 @@ export async function bindHallSocket(hall: HallCtrl) {
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
         },
-        [ServerEvent.UserAccount]: (data, _code) => {
+        [ServerEvent.UserAccount]: (data, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, hall_socket);
+            }
             modelState.app.initUserInfo(data);
         },
     });

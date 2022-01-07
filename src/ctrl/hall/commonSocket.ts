@@ -26,9 +26,8 @@ import { recharge } from './hallCtrlUtil';
 import { login } from './login';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
-    const { ErrCode } = ServerEvent;
     bindSocketEvent(socket, bindObj, {
-        [ErrCode]: (res: ErrorData, code: number) => {
+        [ServerEvent.ErrCode]: (res: ErrorData, code: number) => {
             code = res?.code || code;
             if (code === ServerErrCode.TokenExpire) {
                 removeItem('local_token');
@@ -103,7 +102,20 @@ export function errorHandler(
 ) {
     const tip = tplIntr(code);
 
-    if (code === ServerErrCode.ReExchange) {
+    if (code === ServerErrCode.Maintaining) {
+        platform.hideLoading();
+
+        AlertPop.alert(tplIntr('maintainTip'), {
+            hide_cancel: true,
+        }).then(() => {
+            if (socket.config.name === 'game') {
+                socket.send(ServerEvent.RoomOut);
+            }
+            setTimeout(() => {
+                location.reload();
+            });
+        });
+    } else if (code === ServerErrCode.ReExchange) {
         return exChangeBullet(tplIntr(ServerErrCode.ReExchange));
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tplIntr(ServerErrCode.NoMoney);
