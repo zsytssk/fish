@@ -1,14 +1,23 @@
-import * as ts from 'typescript';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as path from 'path';
-import { exists, readFile } from './script/ls/asyncUtil';
-import { findNodeValue, findValueNode, getNodeName } from './utils';
-import { write } from './script/ls/write';
+import * as ts from 'typescript';
+
+import { exists, readFile } from '../zutil/ls/asyncUtil';
+import { write } from '../zutil/ls/write';
+import { RawData } from './csvUtils';
+import {
+    findNodeValue,
+    findValueNode,
+    getNodeName,
+    replaceRange,
+} from './utils';
 
 type Range = [number, number];
 type NameMap = string;
 export class FileNode {
     private rel_map: Map<string, FileNode> = new Map();
     private source_file: ts.SourceFile;
+    private source: string;
     constructor(private file_path: string) {}
     public async findTargetNode(name_path: NameMap[]) {
         if (!this.source_file) {
@@ -19,20 +28,45 @@ export class FileNode {
                 source,
                 ts.ScriptTarget.Latest,
             );
+
+            this.source = source;
         }
 
         return this.innerFindTargetNode(name_path, this.source_file.statements);
     }
-    public replaceNode(node: ts.Node, content: string) {
-        // const range: Range = [find_node.pos, find_node.end];
-        // console.log(source.slice(...range));
-        // const new_source = replaceRange(source, range, ` '${value}'`);
-        // await write(file_path, new_source);
+    public async replaceData(data: RawData) {
+        const task_arr = [] as {
+            node: ts.Node;
+            str: string;
+            key_arr: string[];
+        }[];
+        for (const [key, val] of Object.entries(data)) {
+            for (const item of val) {
+                const key_arr = ['International', item.lang, key];
+                const target_node = await this.findTargetNode(key_arr);
+                if (!target_node) {
+                    console.error(`cant find node for ${key_arr}`);
+                    continue;
+                }
+                const node = findValueNode(target_node);
+                task_arr.push({ node, str: item.str, key_arr });
+            }
+        }
+
+        console.log(task_arr.length);
+        task_arr.sort((a, b) => b.node.pos - a.node.pos);
+
+        let { source } = this;
+        task_arr.map((item) => {
+            const range: Range = [item.node.pos, item.node.end];
+            source = replaceRange(source, range, ` '${item.str}'`);
+        });
+        await write(this.file_path, source);
     }
     private async innerFindTargetNode(
         name_path: NameMap[],
         statements: ts.NodeArray<ts.Node>,
-    ) {
+    ): Promise<ts.Node> {
         const [first, ...rest] = [...name_path];
         let node = await this.findMatchNode(first, statements);
 

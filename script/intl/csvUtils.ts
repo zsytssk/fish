@@ -51,7 +51,7 @@ export async function readCsv(file_path: string) {
             });
     });
 
-    const raw_data = dataToRawData(data);
+    return dataToRawData(data);
 }
 
 export function rawDataToData(data: RawData): Data {
@@ -79,7 +79,7 @@ export function dataToRawData(data: string[][]): RawData {
                 key = str;
                 continue;
             }
-            inner_item.push({ str, lang: id });
+            inner_item.push({ str: decryptBl(str), lang: id });
         }
 
         result[key] = inner_item;
@@ -92,5 +92,5 @@ export function encryptBl(str: string): string {
     return str.replaceAll('\n', '-n-');
 }
 export function decryptBl(str: string): string {
-    return str.replaceAll('-n-', '\n');
+    return str.replaceAll('-n-', '\\n');
 }
