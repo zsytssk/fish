@@ -51,7 +51,8 @@ export async function readCsv(file_path: string) {
             });
     });
 
-    return dataToRawData(data);
+    const [headers, ...reset] = data;
+    return dataToRawData(headers, reset);
 }
 
 export function rawDataToData(data: RawData): Data {
@@ -67,9 +68,8 @@ export function rawDataToData(data: RawData): Data {
 
     return result;
 }
-export function dataToRawData(data: string[][]): RawData {
+export function dataToRawData(headers: string[], data: string[][]): RawData {
     const result = {} as RawData;
-    const headers = config.headers;
     for (const item of data) {
         let key: string;
         const inner_item = [];
