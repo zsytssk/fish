@@ -79,7 +79,7 @@ export function dataToRawData(headers: string[], data: string[][]): RawData {
                 key = str;
                 continue;
             }
-            inner_item.push({ str: decryptBl(str), lang: id });
+            inner_item.push({ str, lang: id });
         }
 
         result[key] = inner_item;
@@ -90,7 +90,4 @@ export function dataToRawData(headers: string[], data: string[][]): RawData {
 
 export function encryptBl(str: string): string {
     return str.replaceAll('\n', '\\n');
-}
-export function decryptBl(str: string): string {
-    return str.replaceAll('-n-', '\\n');
 }

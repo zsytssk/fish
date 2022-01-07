@@ -14,8 +14,8 @@
         "test": "cross-env ENV=TEST webpack --progress --mode development",
         "prod": "cross-env ENV=PROD webpack --progress --mode production",
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
-        "intlExport": "cross-env type=export ts-node --project ./script/tsconfig.json --files ./script/intl/main.ts",
-        "intlImport": "cross-env type=import ts-node --project ./script/tsconfig.json --files ./script/intl/main.ts",
+        "intlExport": "cross-env type=export ts-node --project ./script/tsconfig.json --files ./script/intl/index.ts",
+        "intlImport": "cross-env type=import ts-node --project ./script/tsconfig.json --files ./script/intl/index.ts",
         "lint": "eslint . --ext .ts"
     },
     "devDependencies": {
