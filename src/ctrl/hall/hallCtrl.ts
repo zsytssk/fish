@@ -128,8 +128,6 @@ export class HallCtrl {
         onArenaInfoChange(this, (info) => {
             view.updateArenaInfo(info);
         });
-
-        view.setFlagData(getAllLangList());
     }
     public selectCoin = (index: number) => {
         if (index === -1) {

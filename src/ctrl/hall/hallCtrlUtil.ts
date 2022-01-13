@@ -92,13 +92,6 @@ export function offBindEvent(item: any) {
     arena_info.event.offAllCaller(item);
 }
 
-export function getAllLangList() {
-    const result = [];
-    for (const key in Lang) {
-        result.push(Lang[key]);
-    }
-    return result;
-}
 
 export function getChannel() {
     return (window as any).paladin?.sys?.config?.channel;

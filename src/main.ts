@@ -16,8 +16,10 @@ export function init() {
     Config.token = platform_info.token;
     Config.isLogin = platform_info.isLogin;
     Config.cndUrl = platform_info.cdn;
-    Config.arenaSocketUrl = getParams('arenaSocket')
-        ? `ws://${getParams('arenaSocket')}`
-        : 'ws://172.16.6.184:7019';
+    const testUrl = getParams('arenaSocket');
+    if (testUrl) {
+        Config.arenaSocketUrl = testUrl;
+    }
+
     Config.lang = (getParams('lang') || platform_info.lang) as Lang;
 }

@@ -294,7 +294,8 @@ export default class HallView
 
     public setFlag(type: string) {
         const { flag } = this.header;
-        flag.skin = `image/common/flag/flag_${type}.png`;
+
+        flag.skin = `image/common/flag/flag_${covertLang(type)}.png`;
     }
     public destroy() {
         /** 在游戏中 突然修改代码 无法避免会报错（大厅骨骼动画销毁报错， 应该是还没有初始化）
