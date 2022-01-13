@@ -132,6 +132,8 @@ export enum ArenaErrCode {
     /** 余额不足 */
     NoMoney = 302,
     /** 比赛暂未开启 */
+    TokenExpire = 11,
+    /** 比赛暂未开启 */
     NoOpen = 201,
     /** 比赛已结束 */
     GameEnded = 202,

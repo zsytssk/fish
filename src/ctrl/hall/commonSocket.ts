@@ -21,6 +21,7 @@ import { removeItem } from '@app/utils/localStorage';
 import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
+import Loading from '@app/view/scenes/loadingView';
 
 import { recharge } from './hallCtrlUtil';
 import { login } from './login';
@@ -30,13 +31,8 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         [ServerEvent.ErrCode]: (res: ErrorData, code: number) => {
             code = res?.code || code;
             if (code === ServerErrCode.TokenExpire) {
-                removeItem('local_token');
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(tplIntr('logoutTip'), {
-                    hide_cancel: true,
-                }).then((type) => {
-                    location.reload();
-                });
+                tokenExpireTip();
             } else if (code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
                 AlertPop.alert(tplIntr('OtherLogin'), {
@@ -165,6 +161,16 @@ export function errorHandler(
     if (tip) {
         TipPop.tip(tip);
     }
+}
+
+export function tokenExpireTip() {
+    removeItem('local_token');
+    removeItem('local_arena_token');
+    AlertPop.alert(tplIntr('logoutTip'), {
+        hide_cancel: true,
+    }).then(() => {
+        location.reload();
+    });
 }
 
 export function tipComeBack() {

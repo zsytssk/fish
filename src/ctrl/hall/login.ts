@@ -56,10 +56,7 @@ export async function connectSocket(
         isProd() ? 3 : 1,
         isProd() ? 3 : 0,
     );
-    if (!socket && isProd()) {
-        AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {
-            location.reload();
-        });
+    if (!socket) {
         return;
     }
 

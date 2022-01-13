@@ -7,10 +7,13 @@ import GameConfig from '@app/GameConfig';
 import { Config } from '@app/data/config';
 import { isProd } from '@app/data/env';
 import { font_list, res } from '@app/data/res';
+import { ArenaErrCode, ServerErrCode } from '@app/data/serverEvent';
 import { AppModel } from '@app/model/appModel';
 import { modelState } from '@app/model/modelState';
 import { BgMonitor } from '@app/utils/bgMonitor';
 import { KeyBoardNumber } from '@app/utils/layaKeyboard';
+import { tplIntr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
 import Loading, { LoadingEvent } from '@app/view/scenes/loadingView';
 
 import { ctrlState } from './ctrlState';
@@ -18,6 +21,7 @@ import { AudioCtrl } from './ctrlUtils/audioCtrl';
 import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { connectArenaHallSocket } from './hall/arenaSocket';
+import { tokenExpireTip } from './hall/commonSocket';
 import { HallCtrl } from './hall/hallCtrl';
 import { connectHallSocket, getArenaWs } from './hall/hallSocket';
 
@@ -50,17 +54,16 @@ export class AppCtrl {
 
         try {
             const [isReplay, replayData] = await connectHallSocket();
-            // await getArenaWs(1).then((data) => {
-            //     Config.arenaSocketUrl = data;
-            // });
+            await getArenaWs(1).then((data) => {
+                Config.arenaSocketUrl = data;
+            });
             if (isReplay) {
                 this.enterGame(replayData);
                 return;
             }
-        } catch {
+        } catch (err) {
             if (isProd()) {
-                platform.hideLoading();
-                return;
+                return this.initSocketErr(err);
             }
         }
 
@@ -72,14 +75,28 @@ export class AppCtrl {
                 });
                 return;
             }
-        } catch {
+        } catch (err) {
             if (isProd()) {
-                platform.hideLoading();
-                return;
+                return this.initSocketErr(err);
             }
         }
 
         await HallCtrl.preEnter();
+    }
+    public initSocketErr(err: any) {
+        Loading.load().then(() => {
+            Loading.instance.onShow();
+            Loading.instance.onProgress(1);
+        });
+        if (
+            err === ServerErrCode.TokenExpire ||
+            err === ArenaErrCode.TokenExpire
+        ) {
+            return tokenExpireTip();
+        }
+        AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {
+            location.reload();
+        });
     }
     /** 公共loading */
     public static async commonLoad(progress: ProgressFn) {

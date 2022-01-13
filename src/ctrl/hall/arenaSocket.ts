@@ -11,11 +11,12 @@ import {
     ARENA_OK_CODE,
     ErrorData,
     ServerErrCode,
+    ServerEvent,
     ServerName,
 } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
-import { log } from '@app/utils/log';
+import { error, log } from '@app/utils/log';
 import { getParams, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
@@ -56,26 +57,34 @@ export async function connectArenaHallSocket(checkReplay = false) {
         arena_hall_socket = socket;
 
         if (!socket) {
-            throw Error(`ConnectFailed:${ServerName.ArenaHall}}`);
+            error(`ConnectFailed:${ServerName.ArenaHall}`);
+            throw Error(ServerErrCode.NetError + '');
         }
     }
 
     if (checkReplay) {
-        const data = await new Promise<ArenaStatusData | void>((resolve) => {
-            arena_hall_socket.event.once(
-                ArenaEvent.ArenaStatus,
-                (data: ArenaStatusData, code: number) => {
-                    if (code !== ARENA_OK_CODE) {
-                        return resolve();
-                    }
-                    modelState.app.arena_info.updateInfo(data);
-                    resolve(data);
-                },
-            );
-            sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
-                currency: modelState.app.user_info.cur_balance,
-            });
-        });
+        const data = await new Promise<ArenaStatusData | void>(
+            (resolve, reject) => {
+                arena_hall_socket.event.once(
+                    ServerEvent.ErrCode,
+                    (res, code) => reject(res?.code || code),
+                    null,
+                );
+                arena_hall_socket.event.once(
+                    ArenaEvent.ArenaStatus,
+                    (data: ArenaStatusData, code: number) => {
+                        if (code !== ARENA_OK_CODE) {
+                            return resolve();
+                        }
+                        modelState.app.arena_info.updateInfo(data);
+                        resolve(data);
+                    },
+                );
+                sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
+                    currency: modelState.app.user_info.cur_balance,
+                });
+            },
+        );
 
         if (
             !data ||
@@ -183,10 +192,7 @@ export async function connectArenaSocket(
         isProd() ? 3 : 1,
         isProd() ? 3 : 0,
     );
-    if (!socket && isProd()) {
-        AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {
-            location.reload();
-        });
+    if (!socket) {
         return;
     }
 
