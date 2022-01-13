@@ -81,7 +81,7 @@ export default class ArenaCompetitionPop
     private initEvent() {
         const { btn_sign, btn_famous, btn_help, btn_best } = this;
         onNodeWithAni(btn_sign, Event.CLICK, () => {
-            competitionSignUp().then((data) => {
+            competitionSignUp(this.currency).then((data) => {
                 if (
                     data?.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
                     data?.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT

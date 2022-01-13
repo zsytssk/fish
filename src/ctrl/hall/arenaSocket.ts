@@ -22,6 +22,7 @@ import AlertPop from '@app/view/pop/alert';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import TipPop from '@app/view/pop/tip';
 
+import { getGameCurrency } from '../ctrlState';
 import { GameCtrl } from '../game/gameArena/gameCtrl';
 import {
     Config as SocketConfig,
@@ -245,7 +246,10 @@ export function arenaErrHandler(
 
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
-                recharge((ctrl as GameCtrl)?.currency);
+                const currency =
+                    getGameCurrency() || modelState.app.user_info.cur_balance;
+                console.log(`test:>`, currency);
+                recharge(currency);
             }
         });
     } else if (code === ArenaErrCode.NoOpen) {

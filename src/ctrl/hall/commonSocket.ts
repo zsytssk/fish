@@ -1,4 +1,4 @@
-import { ctrlState } from '@app/ctrl/ctrlState';
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
 import {
     disableCurUserOperation,
     waitGameExchangeOrLeave,
@@ -15,6 +15,7 @@ import {
     ServerEvent,
     ServerName,
 } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
 import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { removeItem } from '@app/utils/localStorage';
@@ -120,7 +121,9 @@ export function errorHandler(
         }
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
-                recharge();
+                const currency =
+                    getGameCurrency() || modelState.app.user_info.cur_balance;
+                recharge(currency);
             }
             socket?.send(ServerEvent.RoomOut);
         });
