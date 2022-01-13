@@ -12,6 +12,7 @@ import { AppModel } from '@app/model/appModel';
 import { modelState } from '@app/model/modelState';
 import { BgMonitor } from '@app/utils/bgMonitor';
 import { KeyBoardNumber } from '@app/utils/layaKeyboard';
+import { removeItem } from '@app/utils/localStorage';
 import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import Loading, { LoadingEvent } from '@app/view/scenes/loadingView';
@@ -77,7 +78,10 @@ export class AppCtrl {
             }
         } catch (err) {
             if (isProd()) {
-                return this.initSocketErr(err);
+                if (err === ArenaErrCode.TokenExpire) {
+                    removeItem('local_arena_token');
+                }
+                // return this.initSocketErr(err);
             }
         }
 
@@ -88,10 +92,7 @@ export class AppCtrl {
             Loading.instance.onShow();
             Loading.instance.onProgress(1);
         });
-        if (
-            err === ServerErrCode.TokenExpire ||
-            err === ArenaErrCode.TokenExpire
-        ) {
+        if (err === ServerErrCode.TokenExpire) {
             return tokenExpireTip();
         }
         AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {

@@ -13,6 +13,7 @@ import {
     ServerName,
 } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { error } from '@app/utils/log';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
@@ -37,6 +38,7 @@ export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
         hall_socket = socket;
 
         if (!socket) {
+            error(`ConnectFailed:${ServerName.Hall}`);
             throw Error(ServerErrCode.NetError + '');
         }
     }

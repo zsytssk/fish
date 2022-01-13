@@ -21,7 +21,6 @@ import { removeItem } from '@app/utils/localStorage';
 import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
-import Loading from '@app/view/scenes/loadingView';
 
 import { recharge } from './hallCtrlUtil';
 import { login } from './login';
@@ -165,7 +164,6 @@ export function errorHandler(
 
 export function tokenExpireTip() {
     removeItem('local_token');
-    removeItem('local_arena_token');
     AlertPop.alert(tplIntr('logoutTip'), {
         hide_cancel: true,
     }).then(() => {
