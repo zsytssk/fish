@@ -9,7 +9,7 @@ import {
 } from '@app/ctrl/hall/hallCtrlUtil';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { ui } from '@app/ui/layaMaxUI';
-import { tplIntr, tplStr } from '@app/utils/utils';
+import { tplIntr } from '@app/utils/utils';
 
 import { getItemList } from '../popSocket';
 import { getItemName } from '../shop';
@@ -122,7 +122,7 @@ export default class ItemRecord
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = tplStr('search');
+        btn_search_label.text = tplIntr('search');
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;

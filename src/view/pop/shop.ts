@@ -183,14 +183,14 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 });
             });
         } else if (gun_status === GunSkinStatus.Have) {
-            cur_label.text = tplStr('use');
+            cur_label.text = tplIntr('use');
             cur_btn.on(Event.CLICK, cur_btn, () => {
                 useGunSkin(gun_id).then(() => {
                     this.useGunSkin(gun_id);
                 });
             });
         } else if (gun_status === GunSkinStatus.Used) {
-            cur_label.text = tplStr('inUse');
+            cur_label.text = tplIntr('inUse');
             icon_check.visible = true;
             select_bd.visible = true;
         }
