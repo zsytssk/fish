@@ -104,7 +104,7 @@ export function skillPreActiveHandler(
             return;
         }
 
-        const player = modelState.app.game.getCurPlayer();
+        const player = modelState.game.getCurPlayer();
 
         TopTipPop.tip(tplIntr('aimFish'), 2);
         activeAimFish(fish, false, player.gun.pos);

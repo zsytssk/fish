@@ -1,5 +1,6 @@
 import { Component } from 'comMan/component';
 
+import { getGameCurrency } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { AudioRes } from '@app/data/audioRes';
@@ -10,7 +11,6 @@ import {
     PlayerEvent,
     PlayerModel,
 } from '@app/model/game/playerModel';
-import { getGameCurrency } from '@app/model/modelState';
 import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
 import { showAwardCoin } from '@app/view/scenes/game/ani_wrap/award/awardCoin';
 import { awardSkill } from '@app/view/scenes/game/ani_wrap/award/awardSkill';

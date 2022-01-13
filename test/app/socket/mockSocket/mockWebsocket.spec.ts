@@ -160,7 +160,7 @@ export const mock_web_socket_test = {
 
         sendEvent.on(ServerEvent.UseFreeze, () => {
             sleep(0.1).then(() => {
-                const fish_model_arr = modelState.app.game.getAllFish();
+                const fish_model_arr = modelState.game.getAllFish();
                 const fish_arr = [...fish_model_arr.values()].map((item) => {
                     return item.id;
                 });
@@ -209,7 +209,7 @@ export const mock_web_socket_test = {
     otherLockFish: async () => {
         await game_test.enterGame();
         const other_id = test_data.otherUserId + '0';
-        const player = modelState.app.game.getPlayerById(other_id);
+        const player = modelState.game.getPlayerById(other_id);
         if (!player) {
             player_test.add_cur_player(1);
             await sleep(1);

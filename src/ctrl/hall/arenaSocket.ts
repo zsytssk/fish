@@ -245,7 +245,7 @@ export function arenaErrHandler(
 
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
-                recharge();
+                recharge((ctrl as GameCtrl)?.currency);
             }
         });
     } else if (code === ArenaErrCode.NoOpen) {

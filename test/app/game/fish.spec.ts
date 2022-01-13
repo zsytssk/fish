@@ -27,7 +27,7 @@ export const fish_test = {
         const usedTime = (time * 1) / 5;
         // const usedTime = 0;
         const fish_data = genFishInfo(typeId, pathId, time, usedTime);
-        modelState.app.game.addFish(fish_data);
+        modelState.game.addFish(fish_data);
     },
 
     fishView: async (typeId: number, pathId: number, time: number) => {
@@ -36,7 +36,7 @@ export const fish_test = {
             pathId = i;
             time = time || 12;
             const fish_data = genFishInfo(typeId, pathId, time * 1000);
-            const fishModel = modelState.app.game.addFish(
+            const fishModel = modelState.game.addFish(
                 fish_data,
             ) as FishModelPath;
             fishModel.path_no = pathId;
@@ -51,7 +51,7 @@ export const fish_test = {
         // const usedTime = (time * 1) / 2;
         // // const usedTime = 0;
         // const fish_data = genFishInfo(typeId, pathId, time, usedTime);
-        // modelState.app.game.addFish(fish_data);
+        // modelState.game.addFish(fish_data);
     },
 
     fishPath: async (typeId: number, pathId: number, time: number) => {
@@ -74,7 +74,7 @@ export const fish_test = {
             pathId = i;
             time = time || 12;
             const fish_data = genFishInfo(typeId, pathId, time * 1000);
-            const fishModel = modelState.app.game.addFish(
+            const fishModel = modelState.game.addFish(
                 fish_data,
             ) as FishModelPath;
             fishModel.path_no = pathId;
@@ -89,14 +89,14 @@ export const fish_test = {
             const time = 30 * 1000;
             const fish_data = genFishInfo(typeId, pathId, time, time / 3);
 
-            modelState.app.game.addFish(fish_data);
+            modelState.game.addFish(fish_data);
             await sleep(10);
         }
     },
 
     /** 鱼组的测试 */
     addFishGroup: () => {
-        const game = modelState.app.game;
+        const game = modelState.game;
 
         game.addFish(fish1Json as any);
     },
@@ -104,7 +104,7 @@ export const fish_test = {
     /** 鱼组的测试 */
     fishTotalTime: () => {
         // body_test.runTest('show_shape');
-        const game = modelState.app.game;
+        const game = modelState.game;
         const typeId = 1;
         const pathId = 90;
         const time = 100;
@@ -133,7 +133,7 @@ export const fish_test = {
             const pathId = i;
             const time = 15000;
             const fish_data = genFishInfo(typeId, pathId, time);
-            modelState.app.game.addFish(fish_data);
+            modelState.game.addFish(fish_data);
             await sleep(5);
         }
     },
@@ -145,7 +145,7 @@ export const fish_test = {
             const pathId = 2;
             const time = 15000;
             const fish_data = genFishInfo(typeId, pathId, time);
-            modelState.app.game.addFish(fish_data);
+            modelState.game.addFish(fish_data);
             await sleep(5);
         }
     },
@@ -159,7 +159,7 @@ export const fish_test = {
     },
 
     listPlayerId: () => {
-        const fish_list = modelState.app.game['fish_map'];
+        const fish_list = modelState.game['fish_map'];
         const id_list = [...fish_list.values()].map((fish) => {
             return fish.id;
         });
@@ -175,7 +175,7 @@ export const fish_test = {
             time = time || 100000000;
             const usedTime = time / 2;
             const fish_data = genFishInfo(typeId, pathId, time, usedTime);
-            const fish_model = modelState.app.game.addFish(fish_data);
+            const fish_model = modelState.game.addFish(fish_data);
             await sleep(3);
             (fish_model as FishModel).destroy();
         }
@@ -187,7 +187,7 @@ export const fish_test = {
             const pathId = i;
             const time = 20000000;
             const fish_data = genFishInfo(typeId, pathId, time, time / 3);
-            modelState.app.game.addFish(fish_data);
+            modelState.game.addFish(fish_data);
         }
     },
 };

@@ -42,9 +42,6 @@ export class GameModel extends ComponentManager {
     public setGameMode(mode: GameMode) {
         this.game_mode = mode;
     }
-    public setCurrency(currency: string) {
-        this.currency = currency;
-    }
     private initCom() {
         this.addCom(new EventCom(), new TimeoutCom());
     }

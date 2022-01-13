@@ -10,7 +10,7 @@ export function getUserInfo() {
     return modelState.app.user_info;
 }
 export function getCurPlayer() {
-    return modelState.app.game.getPlayerById(modelState.app.user_info.user_id);
+    return modelState.game.getPlayerById(modelState.app.user_info.user_id);
 }
 
 /** 等待socket连接上 */

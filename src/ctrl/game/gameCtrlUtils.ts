@@ -31,7 +31,7 @@ export function getItemType(itemId: string) {
 
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableCurUserOperation() {
-    const cur_player = modelState.app.game.getCurPlayer();
+    const cur_player = modelState.game.getCurPlayer();
     if (!cur_player) {
         return;
     }
@@ -42,7 +42,7 @@ export function disableCurUserOperation() {
 
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableAllUserOperation() {
-    const players = modelState.app.game.getPlayers();
+    const players = modelState.game.getPlayers();
     for (const [_, player] of players) {
         if (!player.need_emit) {
             continue;

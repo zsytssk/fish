@@ -27,7 +27,7 @@ import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
-import { isCurUser } from '@app/model/modelState';
+import { isCurUser, modelState } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -81,6 +81,7 @@ export type GameCtrlUtils = {
     buySkillTip: () => void;
     changeUserNumInfo: (data: ChangeUserNumInfo) => void;
     isTrial: EnterGameRep['isTrial'];
+    currency: string;
 };
 
 /** 游戏ctrl */
@@ -88,16 +89,14 @@ export class GameCtrl implements GameCtrlUtils {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
+    public currency = '';
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
     }
     private static instance: GameCtrl;
-    public static async preEnter(
-        data: Partial<RoomInRep>,
-        game_model: GameModel,
-    ) {
+    public static async preEnter(data: Partial<RoomInRep>) {
         if (this.instance) {
             return this.instance;
         }
@@ -136,10 +135,13 @@ export class GameCtrl implements GameCtrlUtils {
                 Loading,
             );
 
+            const game_model = new GameModel();
             const ctrl = new GameCtrl(view as GameView, game_model);
+            ctrl.currency = data.currency;
             this.instance = ctrl;
             ctrl.init(data.socketUrl, bg_num);
             setProps(ctrlState, { game: ctrl });
+            setProps(modelState, { game: game_model });
 
             return ctrl;
         }, this);
@@ -450,5 +452,6 @@ export class GameCtrl implements GameCtrlUtils {
         this.model = undefined;
         GameCtrl.instance = undefined;
         setProps(ctrlState, { game: undefined });
+        setProps(modelState, { game: undefined });
     }
 }

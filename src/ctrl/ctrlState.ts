@@ -9,3 +9,7 @@ type CtrlState = {
     hall: HallCtrl;
 };
 export const ctrlState = {} as CtrlState;
+
+export function getGameCurrency() {
+    return ctrlState.game?.currency;
+}

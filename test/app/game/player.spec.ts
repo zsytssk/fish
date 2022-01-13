@@ -13,7 +13,7 @@ import { test_data } from '../../testData';
 /** @type {PlayerModel} 的测试 */
 export const player_test = testBuild({
     add_cur_player: (server_index = 1) => {
-        const player = modelState.app.game.getPlayerById(test_data.userId);
+        const player = modelState.game.getPlayerById(test_data.userId);
         if (player) {
             player.destroy();
         }
@@ -49,7 +49,7 @@ export const player_test = testBuild({
                 },
             },
         } as PlayerInfo;
-        console.log(`test:>2`, modelState.app.game);
+        console.log(`test:>2`, modelState.game);
         ctrlState.game.addPlayers([player_data]);
     },
 
@@ -58,7 +58,7 @@ export const player_test = testBuild({
         const other_id = test_data.otherUserId + i;
         i++;
 
-        const other_player = modelState.app.game.getPlayerById(other_id);
+        const other_player = modelState.game.getPlayerById(other_id);
         if (!other_player) {
             seat_index = isNaN(Number(seat_index)) ? 3 : seat_index;
 
@@ -119,7 +119,7 @@ export const player_test = testBuild({
     },
 
     list_player_id: () => {
-        const player_list = modelState.app.game['player_list'];
+        const player_list = modelState.game['player_list'];
         for (const player of player_list) {
             console.log(
                 `${player.server_index}:>${player.user_id}${
@@ -130,7 +130,7 @@ export const player_test = testBuild({
     },
 
     repeat_hit: () => {
-        const cur_player = modelState.app.game.getCurPlayer();
+        const cur_player = modelState.game.getCurPlayer();
         const game_ctrl = ctrlState.game;
         cur_player.gun.event.on(
             GunEvent.CastFish,

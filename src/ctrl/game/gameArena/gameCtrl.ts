@@ -37,7 +37,7 @@ import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
-import { isCurUser } from '@app/model/modelState';
+import { isCurUser, modelState } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -94,10 +94,7 @@ export class GameCtrl implements GameCtrlUtils {
         this.model.setGameMode(2);
     }
     private static instance: GameCtrl;
-    public static async preEnter(
-        data: Partial<RoomInRep>,
-        game_model: GameModel,
-    ) {
+    public static async preEnter(data: Partial<RoomInRep>) {
         if (this.instance) {
             return this.instance;
         }
@@ -137,10 +134,12 @@ export class GameCtrl implements GameCtrlUtils {
                 Loading,
             );
 
+            const game_model = new GameModel();
             const ctrl = new GameCtrl(view as GameView, game_model);
             this.instance = ctrl;
             ctrl.init(data.currency, bg_num);
             setProps(ctrlState, { game: ctrl });
+            setProps(modelState, { game: game_model });
 
             return ctrl;
         }, this);
@@ -493,5 +492,6 @@ export class GameCtrl implements GameCtrlUtils {
         this.model = undefined;
         GameCtrl.instance = undefined;
         setProps(ctrlState, { game: undefined });
+        setProps(modelState, { game: undefined });
     }
 }

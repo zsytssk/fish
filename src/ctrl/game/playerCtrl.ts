@@ -17,11 +17,7 @@ import {
 } from '@app/model/game/gun/gunModel';
 import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
-import {
-    getCurPlayer,
-    getGameCurrency,
-    getUserInfo,
-} from '@app/model/modelState';
+import { getCurPlayer, getUserInfo } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
 import { darkNode, unDarkNode } from '@app/utils/utils';
@@ -34,6 +30,7 @@ import {
     setAutoShootLight,
 } from '@app/view/viewState';
 
+import { getGameCurrency } from '../ctrlState';
 import { BulletCtrl } from './bulletCtrl';
 import { GameCtrlUtils } from './gameCtrl';
 import { SkillCtrl } from './skill/skillCtrl';

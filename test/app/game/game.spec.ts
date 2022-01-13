@@ -9,7 +9,7 @@ import { sleep } from '@app/utils/animate';
 
 export const game_test = {
     enterGame: async (add_player?: boolean) => {
-        if (modelState && modelState.app && modelState.app.game) {
+        if (modelState && modelState.app && modelState.game) {
             return;
         }
 

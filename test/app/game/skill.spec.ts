@@ -19,7 +19,7 @@ export const skill_test = {
     autoShoot: () => {
         const player_id = modelState.app.user_info.user_id;
         player_test.add_cur_player();
-        const player = modelState.app.game.getPlayerById(player_id);
+        const player = modelState.game.getPlayerById(player_id);
         player.gun.autoShoot.active();
 
         setTimeout(() => {
@@ -30,13 +30,13 @@ export const skill_test = {
     autoBomb: async () => {
         const socket = getSocket(ServerName.Game);
         const pos = { x: 939, y: 348 };
-        const fish_old_list = [...modelState.app.game.fish_map.values()].map(
+        const fish_old_list = [...modelState.game.fish_map.values()].map(
             (item) => {
                 return item.id;
             },
         );
         await sleep(5);
-        const fish_new_list = [...modelState.app.game.fish_map.values()].map(
+        const fish_new_list = [...modelState.game.fish_map.values()].map(
             (item) => {
                 return item.id;
             },
@@ -81,7 +81,7 @@ export const skill_test = {
         const player_id = modelState.app.user_info.user_id;
         fish_test.addFishGroup();
         player_test.add_cur_player();
-        const player = modelState.app.game.getPlayerById(player_id);
+        const player = modelState.game.getPlayerById(player_id);
 
         await sleep(1);
         const lockFish = player.skill_map.get(
@@ -89,7 +89,7 @@ export const skill_test = {
         ) as LockFishModel;
         /** 提示锁定不攻击 */
         setTimeout(() => {
-            const [, fish] = [...modelState.app.game.fish_map][0];
+            const [, fish] = [...modelState.game.fish_map][0];
             lockFish.active({
                 num: 10,
                 fish: fish.id,
@@ -100,7 +100,7 @@ export const skill_test = {
 
         /** 锁定+攻击 */
         setTimeout(() => {
-            const [, fish] = [...modelState.app.game.fish_map][0];
+            const [, fish] = [...modelState.game.fish_map][0];
             lockFish.active({
                 num: 10,
                 fish: fish.id,
@@ -119,7 +119,7 @@ export const skill_test = {
         const player_id = modelState.app.user_info.user_id;
         fish_test.addFish();
         player_test.add_cur_player();
-        const player = modelState.app.game.getPlayerById(player_id);
+        const player = modelState.game.getPlayerById(player_id);
         player.gun.toggleSpeedUp(true);
 
         setTimeout(() => {
@@ -130,8 +130,8 @@ export const skill_test = {
     freezing: () => {
         fish_test.addFishGroup();
 
-        const fish_list = [...modelState.app.game.fish_map].map(([id]) => id);
-        modelState.app.game.freezing_com.freezing(5, fish_list);
+        const fish_list = [...modelState.game.fish_map].map(([id]) => id);
+        modelState.game.freezing_com.freezing(5, fish_list);
     },
 
     uiSetNum: () => {

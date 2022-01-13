@@ -1,5 +1,3 @@
-import { config } from 'rxjs';
-
 import honor from 'honor';
 import { loadRes, ProgressFn } from 'honor/utils/loadRes';
 
@@ -105,11 +103,9 @@ export class AppCtrl {
         honor.utils.registerFontSize(font_list);
     }
     public enterGame(data: Partial<RoomInRep>) {
-        const game_model = this.model.enterGame();
-        return GameCtrl.preEnter(data, game_model);
+        return GameCtrl.preEnter(data);
     }
     public enterArenaGame(data: Partial<RoomInRep>) {
-        const game_model = this.model.enterGame();
-        return ArenaCtrl.preEnter(data, game_model);
+        return ArenaCtrl.preEnter(data);
     }
 }

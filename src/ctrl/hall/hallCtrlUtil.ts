@@ -92,14 +92,14 @@ export function offBindEvent(item: any) {
     arena_info.event.offAllCaller(item);
 }
 
-
 export function getChannel() {
     return (window as any).paladin?.sys?.config?.channel;
 }
-export function recharge() {
+export function recharge(currency?: string) {
     const app = modelState.app;
     const { account_map, cur_balance } = app.user_info;
-    if (account_map.get(cur_balance).hide) {
+    currency = currency || cur_balance;
+    if (account_map.get(currency).hide) {
         return;
     }
     if (!paladin.sys.config.isLogin) {
@@ -107,7 +107,7 @@ export function recharge() {
     }
     (window as any)?.paladin.pay.recharge({
         data: {
-            currency: cur_balance,
+            currency: currency,
             gameNo: (window as any)?.paladin.sys.config.gameId,
             isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
         },

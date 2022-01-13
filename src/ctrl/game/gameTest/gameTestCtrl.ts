@@ -42,7 +42,7 @@ export class GameTestCtrl {
         return wait_enter;
     }
     constructor(public view: GameView, public model: GameModel) {
-        modelState.app.game = model;
+        modelState.game = model;
         this.onModel();
         genUserInfo(this);
     }
