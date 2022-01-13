@@ -120,7 +120,6 @@ export default class HallView
             ['match', match_box],
         ] as Array<[string, Box]>;
 
-        // TODO-lang
         match_timezone.text = tplIntr('stayTuned');
         arena_status.text = tplIntr('arenaTitle');
         match_status.text = tplIntr('matchTitle');

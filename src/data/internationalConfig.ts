@@ -712,7 +712,6 @@ export const International = {
         score: '积分: {score}',
         openTime: '活动时间：{startTime}-{endTime}',
         notInRank: '暂未上榜',
-        // @TODO-产品给提示
         arenaNotEndCurrency:
             '尽管你选择的货币{currency1}, 但是目前你在{currency2}游戏还没结束，点击继续游戏',
         arenaNotSupportCurrency:
@@ -908,7 +907,6 @@ export const International = {
         score: '積分: {score}',
         openTime: '活動時間：{startTime}-{endTime}',
         notInRank: '暫未上榜',
-        // @TODO-産品給提示
         arenaNotEndCurrency:
             '盡管你選擇的貨幣{currency1}, 但是目前你在{currency2}遊戲還冇結束，點擊繼續遊戲',
         arenaNotSupportCurrency:

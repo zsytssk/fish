@@ -118,10 +118,11 @@ export default class ArenaCompetitionPop
 
         this.currency = data.currency;
 
-        // TODO-lang
         const status = data.myself.status;
         const fee = data.match.fee;
-        openTime.text = `${data.match.startPeriod}-${data.match.endPeriod}`;
+        openTime.text = data.match.startPeriod
+            ? `${data.match.startPeriod}-${data.match.endPeriod}`
+            : '~';
         timezone_label.text = tplIntr('openTime', {
             startTime: formatDateTime(data.match.startTime, 'MM.DD HH:mm'),
             endTime: `${formatDateTime(data.match.endTime, 'MM.DD HH:mm')}`,
