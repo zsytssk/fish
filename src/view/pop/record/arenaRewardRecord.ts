@@ -32,13 +32,13 @@ export default class ArenaRewardRecordPop
     private isInit = false;
     public static async preEnter() {
         const item_record = (await honor.director.openDialog(
-            'pop/record/itemRecord.scene',
+            'pop/record/arenaRewardRecord.scene',
         )) as ArenaRewardRecordPop;
         AudioCtrl.play(AudioRes.PopShow);
         return item_record;
     }
     public static preLoad() {
-        return loadRes('pop/record/itemRecord.scene');
+        return loadRes('pop/record/arenaRewardRecord.scene');
     }
     public onAwake() {
         const {

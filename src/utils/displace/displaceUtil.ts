@@ -360,17 +360,19 @@ export function createFishDisplace(data: ServerFishInfo) {
     let curve_list: CurveInfo[];
     switch (displaceType) {
         case 'path':
-            let path_arr: number[][];
-            if (pathNo) {
-                path_arr = PATH[pathNo];
-            } else if (pathList) {
-                path_arr = pathList;
+            {
+                let path_arr: number[][];
+                if (pathNo) {
+                    path_arr = PATH[pathNo];
+                } else if (pathList) {
+                    path_arr = pathList;
+                }
+                if (!path_arr) {
+                    error(`cant find path for no:${pathNo}`);
+                    return;
+                }
+                curve_list = createCurvesByPath(path_arr, fishId);
             }
-            if (!path_arr) {
-                error(`cant find path for no:${pathNo}`);
-                return;
-            }
-            curve_list = createCurvesByPath(path_arr, fishId);
             break;
         default:
             curve_list = createCurvesByFun(funList, fishId, displaceLen);
