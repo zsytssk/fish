@@ -144,8 +144,10 @@ export default class ArenaCompetitionPop
             startTime: formatDateTime(data.match.startTime, 'MM.DD HH:mm'),
             endTime: `${formatDateTime(data.match.endTime, 'MM.DD HH:mm')}`,
         });
-        myScore.text = data.myself.score + '';
-        myRank.text = data.myself.ranking + '' || tplIntr('notInRank');
+        myScore.text = data.myself.score ? data.myself.score + '' : '~';
+        myRank.text = data.myself.ranking
+            ? data.myself.ranking + ''
+            : tplIntr('notInRank');
 
         rankList.renderHandler = new Handler(
             this,
