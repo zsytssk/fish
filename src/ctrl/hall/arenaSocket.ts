@@ -19,7 +19,6 @@ import { getItem, setItem } from '@app/utils/localStorage';
 import { error, log } from '@app/utils/log';
 import { getParams, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
-import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import TipPop from '@app/view/pop/tip';
 
 import { getGameCurrency } from '../ctrlState';
@@ -89,9 +88,9 @@ export async function connectArenaHallSocket(checkReplay = false) {
 
         if (
             !data ||
-            data.roomStatus !== ArenaStatus.Open ||
-            (data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP &&
-                data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
+            (data.roomStatus !== ArenaStatus.Open &&
+                data.roomStatus !== ArenaStatus.Maintenance) ||
+            (data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
                 data.userStatus !== ArenaGameStatus.GAME_STATUS_PLAYING)
         ) {
             return false;

@@ -33,16 +33,6 @@ export type LockFishRep = {
     number: number;
 };
 
-/** 房间状态 */
-export enum ArenaRoomStatus {
-    /** 未开始  */
-    NoOpen = 1,
-    /** 开始  */
-    Open = 2,
-    /** 进行中  */
-    OnGoing = 3,
-}
-
 export type ArenaStatusData = {
     endDate: number;
     startDate: number;
@@ -57,8 +47,8 @@ export enum ArenaGameStatus {
     GAME_STATUS_CLOSE = 1,
     /** 首次免费玩 */
     GAME_STATUS_FREE = 2,
-    /** 比赛开始 */
-    GAME_STATUS_SIGNUP = 3,
+    /** 未报名 */
+    GAME_STATUS_NO_SIGNUP = 3,
     /** 已报名 */
     GAME_STATUS_SIGNUP_OVER = 4,
     /** 游戏中 */

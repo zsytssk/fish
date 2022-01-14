@@ -186,7 +186,7 @@ export default class ArenaCompetitionPop
             return 'not_open';
         } else if (
             status === ArenaGameStatus.GAME_STATUS_FREE ||
-            status === ArenaGameStatus.GAME_STATUS_SIGNUP
+            status === ArenaGameStatus.GAME_STATUS_NO_SIGNUP
         ) {
             cost_label.visible = true;
             cost_label.text = tplIntr('feeStr', {
