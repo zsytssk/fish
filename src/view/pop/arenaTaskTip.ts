@@ -21,6 +21,7 @@ export default class ArenaTaskTipPop
         AudioCtrl.play(AudioRes.PopShow);
         const tip_dialog = await honor.director.openDialog<ArenaTaskTipPop>(
             'pop/alert/arenaTaskTip.scene',
+            { before_open_param: msg },
         );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
@@ -30,6 +31,9 @@ export default class ArenaTaskTipPop
         if (instance?.visible) {
             instance?.close();
         }
+    }
+    public onBeforeOpen(msg: string) {
+        this.analysisSize(msg);
     }
 
     /**显示提示信息
@@ -47,7 +51,7 @@ export default class ArenaTaskTipPop
                     resolve();
                 }
             });
-            this.analysisSize(msg);
+
             this.setTipText(msg);
         });
     }
