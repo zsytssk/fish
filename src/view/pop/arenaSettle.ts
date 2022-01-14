@@ -76,7 +76,7 @@ export default class ArenaSettlePop
         info_label.text = tplIntr('arenaSettleTpl', {
             userId,
             ranking: ranking || '~',
-            maxDayScore,
+            maxDayScore: maxDayScore || '~',
             score,
         });
         num_label.text = rankingAward + '';

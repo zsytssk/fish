@@ -27,10 +27,6 @@ export class NormalPlayerCom implements Component {
         const gun_event = model.gun.event;
         const view = game_ctrl.view;
 
-        event.on(PlayerEvent.UpdateInfo, () => {
-            const { bullet_num } = this.model;
-            view.setBulletNum(bullet_num);
-        });
         event.on(
             PlayerEvent.CaptureFish,
             (capture_info: CaptureInfo) => {
@@ -72,7 +68,12 @@ export class NormalPlayerCom implements Component {
         if (!model.is_cur_player) {
             return;
         }
+
         view.setBulletNum(model.bullet_num);
+        event.on(PlayerEvent.UpdateInfo, () => {
+            const { bullet_num } = this.model;
+            view.setBulletNum(bullet_num);
+        });
 
         gun_event.on(
             GunEvent.NotEnoughBulletNum,

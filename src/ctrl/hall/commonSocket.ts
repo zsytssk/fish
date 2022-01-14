@@ -112,7 +112,7 @@ export function errorHandler(
             });
         });
     } else if (code === ServerErrCode.ReExchange) {
-        return exChangeBullet(tplIntr(ServerErrCode.ReExchange));
+        return exChangeBullet(tplIntr(ServerErrCode.ReExchange), socket);
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tplIntr(ServerErrCode.NoMoney);
         if (data?.minAmount) {
@@ -187,7 +187,7 @@ export function tipCount(msg: string, count: number) {
 }
 
 let onExchanging = false;
-export async function exChangeBullet(tip: string, socket?: WebSocketTrait) {
+export async function exChangeBullet(tip: string, socket: WebSocketTrait) {
     disableCurUserOperation();
     if (onExchanging) {
         return;
