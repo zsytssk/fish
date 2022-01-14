@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
@@ -35,7 +34,7 @@ export default class ArenaShopPop
 {
     /** 是否初始化... */
     public static async preEnter(param: ArenaShopPopInfo) {
-        const shop_dialog = await openDialog<ArenaShopPop>(
+        const shop_dialog = await honor.director.openDialog<ArenaShopPop>(
             'pop/shop/arenaShop.scene',
         );
         AudioCtrl.play(AudioRes.PopShow);

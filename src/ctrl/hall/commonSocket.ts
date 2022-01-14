@@ -198,7 +198,7 @@ export async function exChangeBullet(tip: string, socket: WebSocketTrait) {
         onExchanging = false;
     });
     return asyncOnly(tip, () => {
-        return AlertPop.alert(tip, { closeOnSide: false }).then((type) => {
+        return AlertPop.alert(tip, { close_on_side: false }).then((type) => {
             if (type === 'confirm') {
                 return socket.send(ServerEvent.ExchangeBullet);
             }

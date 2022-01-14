@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
@@ -61,7 +60,9 @@ export default class LotteryPop
         lottery_cost: number;
     };
     public static preEnter() {
-        const pop = openDialog<LotteryPop>('pop/lottery/lottery.scene');
+        const pop = honor.director.openDialog<LotteryPop>(
+            'pop/lottery/lottery.scene',
+        );
         const exchange_data = getLotteryData();
 
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {

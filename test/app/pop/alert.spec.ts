@@ -31,6 +31,7 @@ export const alert_test = {
         AlertPop.alert('this is a test', {
             hide_cancel: true,
             confirm_text: 'reverse',
+            close_on_side: false,
         });
 
         sleep(3).then(() => {

@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Handler } from 'laya/utils/Handler';
@@ -44,7 +43,7 @@ export default class ArenaCompetitionPop
         return 100;
     }
     public static async preEnter(data: CompetitionInfo, currency: string) {
-        const pop = await openDialog<ArenaCompetitionPop>(
+        const pop = await honor.director.openDialog<ArenaCompetitionPop>(
             'pop/arenaCompetitionInfo/arenaCompetitionInfo.scene',
         );
         AudioCtrl.play(AudioRes.PopShow);

@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
@@ -36,7 +35,7 @@ export default class BuyBulletPop
     private buy_info: BuyInfo;
     private resolve: (info: BuyResultData) => void;
     public static async preEnter(info: BuyInfo): Promise<BuyResultData> {
-        const dialog = await openDialog<BuyBulletPop>(
+        const dialog = await honor.director.openDialog<BuyBulletPop>(
             'pop/alert/buyBullet.scene',
         );
         return dialog.buy(info);

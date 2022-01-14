@@ -235,7 +235,7 @@ export class FishView extends Sprite {
         }
 
         if (!this.destroyed) {
-            if (this.shadow_node.displayedInStage) {
+            if (this.shadow_node?.displayedInStage) {
                 this.shadow_node.rotation = 0;
             }
             recoverSkeletonPool('fish', type, this.fish_ani);

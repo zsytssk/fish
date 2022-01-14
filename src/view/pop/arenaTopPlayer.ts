@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Handler } from 'laya/utils/Handler';
 
 import { GetHallOfFameData, GetHallOfFameDataItem } from '@app/api/arenaApi';
@@ -14,7 +13,7 @@ export default class ArenaTopPlayerPop
     implements HonorDialog
 {
     public static async preEnter(data: GetHallOfFameData) {
-        const pop = await openDialog<ArenaTopPlayerPop>(
+        const pop = await honor.director.openDialog<ArenaTopPlayerPop>(
             'pop/arenaTopPlayer/arenaTopPlayer.scene',
         );
         pop.initData(data);

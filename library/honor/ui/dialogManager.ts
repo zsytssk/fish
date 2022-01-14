@@ -1,22 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UIConfig } from 'UIConfig';
 
 import { Laya } from 'Laya';
-import { loadDialog } from 'honor/utils/loadRes';
-import {
-    injectAfter,
-    createScene,
-    afterEnable,
-    afterActive,
-} from 'honor/utils/tool';
+import { loadDialog, ProgressFn } from 'honor/utils/loadRes';
+import { injectAfter } from 'honor/utils/tool';
 import { Event } from 'laya/events/Event';
 import { Dialog } from 'laya/ui/Dialog';
-import { DialogManager } from 'laya/ui/DialogManager';
 import { Ease } from 'laya/utils/Ease';
 import { Handler } from 'laya/utils/Handler';
 import { Tween } from 'laya/utils/Tween';
 
-import { detectChangeScene } from './sceneManager';
-import { HonorDialog, HonorDialogConfig, DEFAULT_CONFIG } from './view';
+import { cur_scene, detectChangeScene } from './sceneManager';
+import { HonorDialog } from './view';
 
 /**
  * 全局默认弹出对话框效果，可以设置一个效果代替默认的弹出效果，
@@ -79,303 +74,108 @@ const defaultCloseEffect = function (dialog: HonorDialog) {
     );
 };
 
-type DialogOptObj = {
-    dialog: DialogRefUrl;
-    use_exist?: boolean;
-    show_effect?: boolean;
-    /** 是否只能存在一个场景中 */
-    stay_scene?: boolean;
-};
-export type DialogOpenOpt = DialogRefUrl | DialogOptObj;
-
-export type DialogRefUrl = string | Ctor<HonorDialog> | HonorDialog;
-type DialogInfo = {
-    url: DialogRefUrl;
-    dialog: HonorDialog;
-    config: HonorDialogConfig;
-};
-type WaitOpenDialogMap = Map<DialogRefUrl, Promise<HonorDialog>>;
 /**
  * <code>DialogManager</code> 对话框管理容器，所有的对话框都在该容器内，并且受管理器管理。
  * 任意对话框打开和关闭，都会触发管理类的open和close事件
  * 可以通过UIConfig设置弹出框背景透明度，模式窗口点击边缘是否关闭，点击窗口是否切换层次等
  * 通过设置对话框的zOrder属性，可以更改弹出的层次
  */
-export class DialogManagerCtor {
-    /** 正在打开的 dialog */
-    private wait_dialog_task = new Map() as WaitOpenDialogMap;
-    /** 已经打开的 dialog */
-    private open_dialog_list: DialogInfo[] = [];
-    /** 缓存关闭的 dialog */
-    private dialog_pool_list: DialogInfo[] = [];
-    private dialog_manager: DialogManager;
-    constructor() {
-        UIConfig.closeDialogOnSide = false;
-        const dialog_manager = Dialog.manager;
-        injectAfter(
-            dialog_manager,
-            'doClose',
-            this.injectDoCloseAfter.bind(this),
-        );
-        dialog_manager.popupEffectHandler = new Handler(
-            dialog_manager,
-            defaultPopupEffect,
-        );
-        dialog_manager.closeEffectHandler = new Handler(
-            dialog_manager,
-            defaultCloseEffect,
-        );
-        this.dialog_manager = dialog_manager;
+
+export function initDialog() {
+    UIConfig.closeDialogOnSide = false;
+    const dialog_manager = Dialog.manager;
+
+    dialog_manager.popupEffectHandler = new Handler(
+        dialog_manager,
+        defaultPopupEffect,
+    );
+    dialog_manager.closeEffectHandler = new Handler(
+        dialog_manager,
+        defaultCloseEffect,
+    );
+}
+
+export type OpenDialogOpt<T extends HonorDialog> = {
+    use_exist?: boolean;
+    /** 是否只能存在一个场景中 */
+    stay_scene?: boolean;
+    close_on_side?: boolean;
+    before_open_param?: Parameters<T['onBeforeOpen']>;
+};
+const DEFAULT_CONFIG = {
+    use_exist: true,
+    stay_scene: true,
+    close_on_side: true,
+    before_open_param: [] as any,
+};
+const loading_map: { [key: string]: Promise<HonorDialog> } = {};
+
+export async function openDialog<T extends HonorDialog>(
+    url: string,
+    opt = {} as OpenDialogOpt<T>,
+    fn?: ProgressFn,
+): Promise<T> {
+    let detectChange: () => boolean;
+    let view_wait_open: Promise<T>;
+
+    opt = {
+        ...DEFAULT_CONFIG,
+        ...opt,
+    };
+
+    if (opt.stay_scene) {
+        detectChange = detectChangeScene();
     }
-    public onResize(width: number, height: number) {
-        const { open_dialog_list } = this;
-        for (const pop_info of open_dialog_list) {
-            const { dialog } = pop_info;
-            if (dialog.onResize) {
-                dialog.onResize(width, height);
-            }
-        }
+
+    if (opt.use_exist) {
+        view_wait_open = loading_map[url] as Promise<T>;
     }
-    /** @todo 逻辑需要整理下 getViewByPool 不再使用... */
-    public async openDialog(opt: DialogOpenOpt, config?: HonorDialogConfig) {
-        let url = opt as DialogRefUrl;
-        let use_exist: boolean;
-        let show_effect: boolean;
-        let stay_scene = false;
 
-        if ((opt as DialogOptObj).dialog) {
-            const opt_obj = opt as DialogOptObj;
-            url = opt_obj.dialog;
-            use_exist = opt_obj.use_exist;
-            show_effect = opt_obj.show_effect;
-            stay_scene = opt_obj.stay_scene || false;
-        }
-        const { wait_dialog_task, open_dialog_list } = this;
+    if (!view_wait_open) {
+        view_wait_open = loading_map[url] = loadDialog(url, fn).then((view) => {
+            loading_map[url] = Promise.resolve(view);
+            return view;
+        }) as Promise<T>;
+    }
 
-        let detectChange: () => boolean;
-        if (stay_scene) {
-            detectChange = detectChangeScene();
-        }
+    const view = await view_wait_open;
 
-        /** 使用正在打开或者已经打开的弹出层... */
-        let dialog: HonorDialog;
-        if (use_exist) {
-            /** 正在打开的dialog */
-            const wait_open_dialog = wait_dialog_task.get(url);
-            if (wait_open_dialog) {
-                dialog = await wait_open_dialog.then((_dialog) => {
-                    return _dialog;
-                });
-            } else {
-                /** 已经打开的dialog */
-                const item = open_dialog_list.find((_item) => {
-                    return _item.url === url;
-                });
-                if (item) {
-                    dialog = item.dialog;
-                }
-            }
-        }
-
-        /** 如果没有找到dialog(use_exist=true), 后者use_exist=false */
-        if (!dialog) {
-            /** 已经打开dialog, 从wait_dialog_task移除, 放到open_dialog_list中 */
-            const wait_open_dialog = this.createDialog(url);
-            wait_dialog_task.set(
-                url,
-                wait_open_dialog.then((_dialog) => {
-                    wait_dialog_task.delete(url);
-                    return _dialog;
-                }),
-            );
-
-            dialog = await wait_open_dialog;
-        }
-
-        /** 设置dialog的配置 */
-        const dialog_config = this.setDialogConfig(url, dialog, config);
-        // 异步打开弹出层, 用来在外面设置弹出层的大小使 弹出层可以居中...
-        await afterActive(dialog).then(() => {
-            if (dialog.onResize) {
-                const { width, height } = Laya.stage;
-                dialog.onResize(width, height);
-            }
-
-            const ori_show_effect = dialog.popupEffect;
-            if (show_effect !== undefined && show_effect === false) {
-                dialog.popupEffect = null;
-            }
-            if (dialog_config.beforeOpen) {
-                dialog_config.beforeOpen(dialog);
-            }
-            if (detectChange?.()) {
-                throw Error('change scene! dialog cant open in diff scene!');
-            }
-            dialog.open(dialog_config.closeOther);
-            if (ori_show_effect) {
-                dialog.popupEffect = ori_show_effect;
-            }
-            this.afterOpen(dialog);
-
-            this.checkMask();
+    Laya.stage.offAllCaller(view);
+    Laya.stage.on(Event.RESIZE, view, () => {
+        view.onResize?.(Laya.stage.width, Laya.stage.height);
+    });
+    view.onResize?.(Laya.stage.width, Laya.stage.height);
+    view.once(Event.UNDISPLAY, view, () => {
+        Laya.stage.offAllCaller(view);
+    });
+    if (opt.stay_scene && cur_scene) {
+        Laya.stage.offAllCaller(view);
+        cur_scene.once(Event.UNDISPLAY, view, () => {
+            view.close();
         });
-
-        await afterEnable(dialog);
-
-        return dialog;
     }
-    private async createDialog(url: DialogRefUrl): Promise<HonorDialog> {
-        /** 使用dialog_pool_list的弹出层 */
-        const { dialog_pool_list } = this;
-        for (let i = 0; i < dialog_pool_list.length; i++) {
-            const item = dialog_pool_list[i];
-            if (item.url === url) {
-                dialog_pool_list.splice(i, 1);
-                const dialog = item.dialog;
-                return dialog;
-            }
-        }
+    const { maskLayer } = Dialog.manager;
 
-        let new_dialog: HonorDialog;
-        /** 创建弹出层 */
-        if (typeof url === 'string') {
-            new_dialog = (await loadDialog(url)) as HonorDialog;
-        } else if (typeof url === 'function') {
-            new_dialog = (await createScene(url).then((dialog) => {
-                return dialog as Dialog;
-            })) as HonorDialog;
-        } else if (url instanceof Dialog) {
-            new_dialog = url;
-        }
-        return new_dialog;
-    }
-    /** 在dialog关闭之后将没有destroy的dialog放在dialog_pool_list, 下次利用 */
-    private setDialogConfig(
-        url: DialogRefUrl,
-        dialog: HonorDialog,
-        config: HonorDialogConfig = {},
-    ) {
-        const { open_dialog_list } = this;
-        config = {
-            ...DEFAULT_CONFIG,
-            ...dialog.config,
-            ...config,
-        };
-        const item = open_dialog_list.find((_item) => {
-            return _item.dialog === dialog;
+    maskLayer.offAllCaller(view);
+    if (opt.close_on_side) {
+        maskLayer.once(Event.CLICK, view, () => {
+            view.close();
         });
+    }
 
-        if (item) {
-            item.config = config;
-        } else {
-            open_dialog_list.push({
-                url,
-                dialog,
-                config,
-            });
-        }
-        return config;
-    }
-    private getDialogConfig(dialog: HonorDialog): HonorDialogConfig {
-        const { open_dialog_list } = this;
-        const item = open_dialog_list.find((_item) => {
-            return _item.dialog === dialog;
-        });
-        return item && item.config;
-    }
-    /** 在dialog关闭之后将没有destroy的dialog放在dialog_pool_list, 下次利用 */
-    private injectDoCloseAfter(
-        dialog_manager: DialogManager,
-        result,
-        dialog: HonorDialog,
-    ) {
-        const { open_dialog_list, dialog_pool_list } = this;
-        let dialog_info: DialogInfo;
-        for (let i = 0; i < open_dialog_list.length; i++) {
-            const item = open_dialog_list[i];
-            if (item.dialog === dialog) {
-                dialog_info = item;
-                open_dialog_list.splice(i, 1);
-                break;
-            }
-        }
-        this.checkMask();
-        if (dialog_info && !dialog.destroyed) {
-            dialog_pool_list.push(dialog_info);
-        }
-    }
-    /** 在dialog打开之后 */
-    private afterOpen(dialog: HonorDialog) {
-        const config = this.getDialogConfig(dialog);
-        if (config && config.autoClose) {
-            Laya.timer.once(config.autoClose as number, dialog, dialog.close);
-        }
-    }
-    /** 在dialog打开之后, 设置背景 + 点击关闭 */
-    private checkMask() {
-        const { dialog_manager } = this;
-        const { maskLayer } = dialog_manager;
-        for (let i = dialog_manager.numChildren - 1; i > -1; i--) {
-            const dialog = dialog_manager.getChildAt(i) as HonorDialog;
-            if (dialog && dialog.isModal) {
-                const dialog_config = this.getDialogConfig(dialog);
-                if (!dialog_config) {
-                    continue;
-                }
-                UIConfig.popupBgAlpha = dialog_config.shadowAlpha;
-                UIConfig.popupBgColor = dialog_config.shadowColor;
-                if (dialog_config.closeOnSide) {
-                    maskLayer.offAllCaller(dialog_manager);
-                    maskLayer.once(Event.CLICK, dialog_manager, () => {
-                        dialog.close();
-                    });
-                }
+    // TipPop 让 open在计算大小之后再执行open
+    view.onBeforeOpen?.(...(opt.before_open_param as any));
+    view.open(false);
 
-                const { width, height } = maskLayer;
-                maskLayer.graphics.clear(true);
-                maskLayer.graphics.drawRect(
-                    0,
-                    0,
-                    width,
-                    height,
-                    UIConfig.popupBgColor,
-                );
-                maskLayer.alpha = UIConfig.popupBgAlpha;
-                return;
-            }
+    // 黑魔法 在view掉用destroy后执行
+    injectAfter(view as Dialog, 'destroy', () => {
+        if (loading_map[url]) {
+            delete loading_map[url];
         }
+    });
+
+    if (opt?.stay_scene && detectChange()) {
+        throw Error('change scene! dialog cant open in diff scene!');
     }
-    public closeAllDialogs() {
-        this.dialog_manager.closeAll();
-    }
-    public getDialogsByGroup(group: string) {
-        this.dialog_manager.getDialogsByGroup(group);
-    }
-    public closeDialogsByGroup(group: string) {
-        this.dialog_manager.closeByGroup(group);
-    }
-    public getDialogByName(name: string) {
-        const { open_dialog_list } = this;
-        for (const item of open_dialog_list) {
-            const { dialog } = item;
-            if (dialog.name === name) {
-                return dialog;
-            }
-        }
-    }
-    public closeDialogByName(name: string) {
-        const { open_dialog_list } = this;
-        for (const item of open_dialog_list) {
-            const { dialog } = item;
-            if (dialog.name === name) {
-                return dialog.close();
-            }
-        }
-    }
-    /** 隐藏遮罩 */
-    public hideMask(visible: boolean) {
-        const { dialog_manager } = this;
-        const { maskLayer } = dialog_manager;
-        maskLayer.visible = visible;
-    }
+    return view;
 }

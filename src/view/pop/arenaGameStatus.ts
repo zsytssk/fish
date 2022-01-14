@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Ease } from 'laya/utils/Ease';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
@@ -18,7 +17,7 @@ export default class ArenaGameStatus
         super();
     }
     public static async start() {
-        const pop = await openDialog<ArenaGameStatus>(
+        const pop = await honor.director.openDialog<ArenaGameStatus>(
             'pop/alert/arenaGameStatus.scene',
             {
                 use_exist: true,
@@ -31,7 +30,7 @@ export default class ArenaGameStatus
     }
     public static async end() {
         AudioCtrl.play(AudioRes.PopShow);
-        const pop = await openDialog<ArenaGameStatus>(
+        const pop = await honor.director.openDialog<ArenaGameStatus>(
             'pop/alert/arenaGameStatus.scene',
             {
                 use_exist: true,

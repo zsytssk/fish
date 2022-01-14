@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { loadRes } from 'honor/utils/loadRes';
 import { Label } from 'laya/ui/Label';
 
@@ -39,7 +38,9 @@ export default class ItemRecord
     private all_list: GetItemListItemRep[];
     private isInit = false;
     public static async preEnter() {
-        const item_record = await openDialog('pop/record/itemRecord.scene');
+        const item_record = await honor.director.openDialog(
+            'pop/record/itemRecord.scene',
+        );
         return item_record;
     }
     public static preLoad() {

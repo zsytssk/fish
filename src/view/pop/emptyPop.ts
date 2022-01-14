@@ -5,7 +5,7 @@ import { log } from '@app/utils/log';
 
 export default class EmptyPop extends Dialog implements HonorDialog {
     public static preEnter() {
-        honor.director.openDialog(EmptyPop);
+        honor.director.honor.director.openDialog(EmptyPop);
     }
     public onEnable() {
         log('EmptyScene enable');

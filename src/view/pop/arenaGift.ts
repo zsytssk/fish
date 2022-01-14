@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
@@ -21,7 +20,7 @@ export default class ArenaGiftPop
 {
     private data: GiftList;
     public static async preEnter() {
-        const pop = await openDialog<ArenaGiftPop>(
+        const pop = await honor.director.openDialog<ArenaGiftPop>(
             'pop/arenaGift/arenaGift.scene',
         );
         arenaGiftList().then((data) => {

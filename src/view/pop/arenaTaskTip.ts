@@ -1,6 +1,5 @@
 import { Laya } from 'Laya';
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { getStringLength } from 'honor/utils/getStringLength';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
@@ -20,7 +19,7 @@ export default class ArenaTaskTipPop
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = await openDialog<ArenaTaskTipPop>(
+        const tip_dialog = await honor.director.openDialog<ArenaTaskTipPop>(
             'pop/alert/arenaTaskTip.scene',
         );
         this.instance = tip_dialog;

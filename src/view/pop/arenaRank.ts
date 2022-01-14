@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Box } from 'laya/ui/Box';
 import { Clip } from 'laya/ui/Clip';
 import { Label } from 'laya/ui/Label';
@@ -17,7 +16,7 @@ export default class ArenaRankPop
     implements HonorDialog
 {
     public static async preEnter(data: GetDayRanking) {
-        const pop = await openDialog<ArenaRankPop>(
+        const pop = await honor.director.openDialog<ArenaRankPop>(
             'pop/arenaRank/arenaRank.scene',
         );
 

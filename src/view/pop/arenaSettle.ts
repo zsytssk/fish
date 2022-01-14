@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 
 import { SettleData } from '@app/api/arenaApi';
@@ -19,7 +18,7 @@ export default class ArenaSettlePop
     public static async preEnter(data: SettleData) {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise<SettleType>(async (resolve, _reject) => {
-            const pop = await openDialog<ArenaSettlePop>(
+            const pop = await honor.director.openDialog<ArenaSettlePop>(
                 'pop/arenaSettle/arenaSettle.scene',
             );
             AudioCtrl.play(AudioRes.PopShow);

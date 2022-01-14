@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
@@ -18,7 +17,7 @@ export default class VoicePop
     private music_ctrl: LayaProgressCtrl;
     private voice_ctrl: LayaProgressCtrl;
     public static preEnter() {
-        openDialog('pop/alert/voice.scene', { use_exist: true });
+        honor.director.openDialog('pop/alert/voice.scene', { use_exist: true });
         AudioCtrl.play(AudioRes.PopShow);
     }
     public onAwake() {

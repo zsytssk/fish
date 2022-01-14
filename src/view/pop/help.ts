@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { loadRes } from 'honor/utils/loadRes';
 import { Box } from 'laya/ui/Box';
 import { Handler } from 'laya/utils/Handler';
@@ -28,7 +27,9 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
     private slider_glr: LayaSlider;
     private times_tpl: string;
     public static async preEnter(index = 0) {
-        const help_pop = await openDialog<HelpPop>('pop/help/help.scene');
+        const help_pop = await honor.director.openDialog<HelpPop>(
+            'pop/help/help.scene',
+        );
 
         help_pop.goto(index);
     }

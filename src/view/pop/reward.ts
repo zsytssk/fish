@@ -1,5 +1,4 @@
 import honor, { HonorDialog } from 'honor';
-import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
@@ -21,7 +20,9 @@ export default class RewardPop
 {
     private close_resolve: () => void;
     public static async preEnter(data: RewardData) {
-        const pop = (await openDialog('pop/lottery/reward.scene')) as RewardPop;
+        const pop = (await honor.director.openDialog(
+            'pop/lottery/reward.scene',
+        )) as RewardPop;
 
         await pop.showReward(data);
     }
