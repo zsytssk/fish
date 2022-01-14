@@ -1,5 +1,4 @@
 import { Bezier } from 'bezier-js';
-
 import SAT from 'sat';
 
 import GameConfig from '@app/GameConfig';
@@ -11,9 +10,6 @@ import { error } from '@app/utils/log';
 import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
-
-export const stage_width = GameConfig.width;
-export const stage_height = GameConfig.height;
 
 /** 寻找屏幕中一个点的朝着一个方向的直线 离开屏幕的点 */
 export function getLineOutPoint(point: Point, derivative: SAT.Vector) {
@@ -128,6 +124,8 @@ export function calcNormalLen(position: OffsetPos, fish_type: string) {
 }
 /** 直立行走鱼的边缘路径直接垂直与边框就可以了 */
 export function calcFixLen(start_pos: Point, fish_type: string) {
+    const stage_width = GameConfig.width;
+    const stage_height = GameConfig.height;
     const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
 
     let fish_len: number;

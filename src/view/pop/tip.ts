@@ -1,4 +1,4 @@
-import { HonorDialog } from 'honor';
+import honor, { HonorDialog } from 'honor';
 import { getStringLength } from 'honor/utils/getStringLength';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
