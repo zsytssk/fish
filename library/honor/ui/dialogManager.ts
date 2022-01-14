@@ -147,7 +147,7 @@ export class DialogManagerCtor {
             const opt_obj = opt as DialogOptObj;
             url = opt_obj.dialog;
             use_exist = opt_obj.use_exist;
-            show_effect = opt_obj.use_exist;
+            show_effect = opt_obj.show_effect;
             stay_scene = opt_obj.stay_scene || false;
         }
         const { wait_dialog_task, open_dialog_list } = this;

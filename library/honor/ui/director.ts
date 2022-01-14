@@ -4,8 +4,8 @@ import { Event } from 'laya/events/Event';
 
 import { dialogManager } from '../state';
 import { ProgressFn } from '../utils/loadRes';
-import { cur_scene, isLoadingScene, runScene } from './SceneManager';
 import { DialogOpenOpt } from './dialogManager';
+import { cur_scene, isLoadingScene, runScene } from './sceneManager';
 import { HonorDialogConfig, HonorScene } from './view';
 
 export class DirectorCtor {
