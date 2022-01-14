@@ -42,7 +42,8 @@ export default class ArenaTaskTipPop
     public tip(msg: string, time: number) {
         return new Promise<void>((resolve, _reject) => {
             if (!msg) {
-                return resolve();
+                resolve();
+                return;
             }
 
             startCount(time, 1, (radio: number) => {
