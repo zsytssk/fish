@@ -51,7 +51,7 @@ export class NewUserGuide {
             // const game_ctrl = await hall_ctrl.roomIn({ isTrial: 0, roomId: 1 });
             hall_ctrl.destroy();
             game_ctrl = await GameTestCtrl.preEnter();
-            honor.director.openDialog(guide_dialog);
+            guide_dialog.open(false);
 
             const { bullet_box } = game_ctrl.view;
             await sleep(1);

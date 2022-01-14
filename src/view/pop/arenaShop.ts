@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
@@ -35,20 +36,18 @@ export default class ArenaShopPop
     private data: ArenaShopPopInfo;
     public isModal = true;
     /** 是否初始化... */
-    public static async preEnter(data: ArenaShopPopInfo) {
-        const shop_dialog = (await honor.director.openDialog(
+    public static async preEnter(param: ArenaShopPopInfo) {
+        const shop_dialog = await openDialog<ArenaShopPop>(
+            'pop/shop/arenaShop.scene',
             {
-                dialog: ArenaShopPop,
                 use_exist: true,
                 stay_scene: true,
             },
-            {
-                beforeOpen(dialog: ArenaShopPop) {
-                    dialog.data = data;
-                },
-            },
-        )) as ArenaShopPop;
+        );
         AudioCtrl.play(AudioRes.PopShow);
+        arenaShopList(param).then((data) => {
+            shop_dialog.initData(data);
+        });
         return shop_dialog;
     }
     public static preLoad() {
@@ -76,11 +75,6 @@ export default class ArenaShopPop
             null,
             false,
         );
-    }
-    public onEnable() {
-        arenaShopList(this.data).then((data) => {
-            this.initData(data);
-        });
     }
     public initData(data: ArenaShopList) {
         const { gun_list } = this;

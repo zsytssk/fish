@@ -1,10 +1,9 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":34,
-    "selecteID":42,
+    "selectedBox":2,
     "searchKey":"Dialog",
-    "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/buyBullet.png","height":427},
+    "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/buyBullet.png","runtime":"view/pop/buyBullet.ts","height":427},
     "nodeParent":-1,
     "maxID":50,
     "label":"Dialog",

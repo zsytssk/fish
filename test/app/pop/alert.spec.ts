@@ -3,21 +3,16 @@ import { asyncOnly, clearAsyncOnly } from '@app/utils/asyncQue';
 import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
+import TopTipPop from '@app/view/pop/topTip';
 
 import { sleep } from '../../utils/testUtils';
 
 export const alert_test = {
     topTip: async (msg) => {
-        TipPop.tip(tplIntr('logoutTip'), {
-            count: 5,
-            show_count: true,
-            auto_hide: false,
-            click_through: false,
-            repeat: true,
-        });
+        TopTipPop.tip(tplIntr('logoutTip'), 3);
         setTimeout(() => {
-            TipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
-        }, 10 * 1000);
+            TopTipPop.tip(msg || '点击屏幕内您想投放炸弹的位置');
+        }, 5 * 1000);
     },
     showTip: async (msg) => {
         // TipPop.tip(msg || 'this is a test', {
@@ -35,7 +30,7 @@ export const alert_test = {
     showAlert: () => {
         AlertPop.alert('this is a test', {
             hide_cancel: true,
-            confirm_text: 'reeresrs',
+            confirm_text: 'reverse',
         });
 
         sleep(3).then(() => {

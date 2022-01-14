@@ -1,6 +1,6 @@
 import { Laya } from 'Laya';
 import Honor, { HonorDialog, HonorDialogConfig } from 'honor';
-import { openDialog } from 'honor/utils/loadRes';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Rectangle } from 'laya/maths/Rectangle';
@@ -24,7 +24,6 @@ export default class GuideDialog
     extends ui.pop.guide.GuideDialogUI
     implements HonorDialog
 {
-    public config: HonorDialogConfig = {};
     private mask_area: Sprite;
     private blank_area: Sprite;
     public blank_shape: Shape;
@@ -39,9 +38,6 @@ export default class GuideDialog
     constructor() {
         super();
         this.isShowEffect = undefined;
-        this.config = {
-            shadowAlpha: 0,
-        };
     }
     public onAwake() {
         this.init();

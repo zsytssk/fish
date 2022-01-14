@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Handler } from 'laya/utils/Handler';
@@ -44,20 +45,12 @@ export default class ArenaCompetitionPop
         return 100;
     }
     public static async preEnter(data: CompetitionInfo, currency: string) {
-        const pop = (await honor.director.openDialog(
-            {
-                dialog: ArenaCompetitionPop,
-                use_exist: true,
-                stay_scene: true,
-            },
-            {
-                beforeOpen: (pop: ArenaCompetitionPop) => {
-                    pop.initData(data, currency);
-                },
-            },
-        )) as ArenaCompetitionPop;
+        const pop = await openDialog<ArenaCompetitionPop>(
+            'pop/arenaCompetitionInfo/arenaCompetitionInfo.scene',
+            { use_exist: true, stay_scene: true },
+        );
         AudioCtrl.play(AudioRes.PopShow);
-
+        pop.onData(data, currency);
         return pop;
     }
     public async onAwake() {
@@ -70,13 +63,41 @@ export default class ArenaCompetitionPop
                     if (code !== ARENA_OK_CODE) {
                         return arenaErrHandler(this, code);
                     }
-                    this.initData(data, modelState.app.user_info.cur_balance);
+                    this.initData(data);
                 },
             });
         }
         onLangChange(this, () => {
             this.initLang();
         });
+    }
+
+    public onData(data: CompetitionInfo, currency: string): void {
+        const status = data.myself.status;
+        const fee = data.match.fee;
+
+        this.initData(data);
+        const sign_status = this.renderSignButton(status, fee);
+
+        if (currency !== data.currency) {
+            sleep(0.5).then(() => {
+                if (sign_status === 'continue') {
+                    TipPop.tip(
+                        tplIntr('arenaNotEndCurrency', {
+                            currency1: currency,
+                            currency2: data.currency,
+                        }),
+                    );
+                } else if (sign_status === 'sign') {
+                    TipPop.tip(
+                        tplIntr('arenaNotSupportCurrency', {
+                            currency1: currency,
+                            currency2: data.currency,
+                        }),
+                    );
+                }
+            });
+        }
     }
 
     private initEvent() {
@@ -114,13 +135,11 @@ export default class ArenaCompetitionPop
             });
         });
     }
-    public initData(data: CompetitionInfo, currency: string) {
+    public initData(data: CompetitionInfo) {
         const { timezone_label, openTime, myScore, myRank, rankList } = this;
 
         this.currency = data.currency;
 
-        const status = data.myself.status;
-        const fee = data.match.fee;
         openTime.text = data.match.startPeriod
             ? `${data.match.startPeriod}-${data.match.endPeriod}`
             : '~';
@@ -148,27 +167,6 @@ export default class ArenaCompetitionPop
         }
         rankList.array = array;
         rankList.hScrollBarSkin = '';
-        const sign_status = this.renderSignButton(status, fee);
-
-        if (currency !== data.currency) {
-            sleep(0.5).then(() => {
-                if (sign_status === 'continue') {
-                    TipPop.tip(
-                        tplIntr('arenaNotEndCurrency', {
-                            currency1: currency,
-                            currency2: data.currency,
-                        }),
-                    );
-                } else if (sign_status === 'sign') {
-                    TipPop.tip(
-                        tplIntr('arenaNotSupportCurrency', {
-                            currency1: currency,
-                            currency2: data.currency,
-                        }),
-                    );
-                }
-            });
-        }
     }
     private renderSignButton(status: ArenaGameStatus, fee?: number) {
         const { btn_sign, cost_label } = this;
@@ -270,6 +268,7 @@ export default class ArenaCompetitionPop
         btn_best.label = tplIntr('arenaRankTitle');
     }
     public destroy(destroyChild?: boolean) {
+        alert(1);
         offArenaHallSocket(this);
         super.destroy(destroyChild);
     }

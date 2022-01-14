@@ -35,6 +35,7 @@ export const DEFAULT_CONFIG = {
 export interface HonorDialog extends Dialog {
     HonorEffectTween?: Tween;
     config?: HonorDialogConfig;
+    onBeforeOpen?: (...param: any) => any;
     /** 弹出层打开之前调用... */
     onResize?(width?: number, height?: number): void;
 }

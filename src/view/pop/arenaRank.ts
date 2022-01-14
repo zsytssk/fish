@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Box } from 'laya/ui/Box';
 import { Clip } from 'laya/ui/Clip';
 import { Label } from 'laya/ui/Label';
@@ -17,11 +18,13 @@ export default class ArenaRankPop
 {
     public isModal = true;
     public static async preEnter(data: GetDayRanking) {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaRankPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaRankPop;
+        const pop = await openDialog<ArenaRankPop>(
+            'pop/arenaRank/arenaRank.scene',
+            {
+                use_exist: true,
+                stay_scene: true,
+            },
+        );
 
         AudioCtrl.play(AudioRes.PopShow);
         pop.initData(data);
@@ -31,6 +34,7 @@ export default class ArenaRankPop
         onLangChange(this, () => {
             this.initLang();
         });
+
         this.initEvent();
     }
     private initLang() {
@@ -63,8 +67,9 @@ export default class ArenaRankPop
             ['yesterday'],
             false,
         );
+        today_list.array = [];
+        yes_list.array = [];
     }
-
     public initData(data: GetDayRanking) {
         const { yes_empty_tip, today_empty_tip, today_list, yes_list } = this;
         const { today, yesterday } = data;

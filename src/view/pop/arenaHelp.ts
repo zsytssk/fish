@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
@@ -11,19 +12,19 @@ import { getAllChildren } from '@app/utils/layaQueryElements';
 import { resizeContain } from '@app/utils/layaUtils';
 import { calcPercent, tplIntr } from '@app/utils/utils';
 
-import { arenaGetRuleData } from './popSocket';
-
 export default class ArenaHelpPop
     extends ui.pop.arenaHelp.arenaHelpUI
     implements HonorDialog
 {
     public isModal = true;
     public static async preEnter(data: GetRuleData) {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaHelpPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaHelpPop;
+        const pop = await openDialog<ArenaHelpPop>(
+            'pop/arenaHelp/arenaHelp.scene',
+            {
+                use_exist: true,
+                stay_scene: true,
+            },
+        );
         AudioCtrl.play(AudioRes.PopShow);
         pop.initData(data);
         return pop;

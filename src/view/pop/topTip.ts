@@ -1,5 +1,6 @@
 import { Laya } from 'Laya';
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { getStringLength } from 'honor/utils/getStringLength';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
@@ -8,7 +9,6 @@ import { ui } from '@app/ui/layaMaxUI';
 import { slide_down_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
-const url = 'pop/alert/topTip.scene';
 export default class TopTipPop
     extends ui.pop.alert.topTipUI
     implements HonorDialog
@@ -22,7 +22,10 @@ export default class TopTipPop
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(url)) as TopTipPop;
+        const tip_dialog = await openDialog<TopTipPop>(
+            'pop/alert/topTip.scene',
+            { use_exist: true, stay_scene: true },
+        );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
     }

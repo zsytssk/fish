@@ -1,4 +1,5 @@
-import honor, { HonorDialog } from 'honor';
+import { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { getStringLength } from 'honor/utils/getStringLength';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
@@ -19,25 +20,24 @@ const DefaultOpt = {
     auto_hide: true,
 };
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
-    public isModal = true;
     private count_id: number;
     private static instance: TipPop;
     public static async tip(msg: string, opt?: TipPopOpt) {
         AudioCtrl.play(AudioRes.PopShow);
-        this.instance = (await honor.director.openDialog(
-            { dialog: TipPop, use_exist: true },
-            {
-                beforeOpen(dialog: TipPop) {
-                    dialog.analysisSize(msg);
-                },
-            },
-        )) as TipPop;
-        await this.instance.tip(msg, opt);
+        this.instance = await openDialog<TipPop>('pop/alert/tip.scene', {
+            use_exist: true,
+            beforeOpenParam: [msg],
+        });
+
+        this.instance.tip(msg, opt);
     }
     public static async hide() {
         if (this.instance) {
             this.instance.close();
         }
+    }
+    public onBeforeOpen(msg: string) {
+        this.analysisSize(msg);
     }
     public onResize(width: number, height: number) {
         this.width = width;
@@ -81,7 +81,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
             };
 
             fn();
-            this.show();
+
             this.setTipText(new_msg);
         });
     }

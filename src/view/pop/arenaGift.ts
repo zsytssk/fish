@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
@@ -21,22 +22,18 @@ export default class ArenaGiftPop
     public isModal = true;
     private data: GiftList;
     public static async preEnter() {
-        const pop = (await honor.director.openDialog(
+        const pop = await openDialog<ArenaGiftPop>(
+            'pop/arenaGift/arenaGift.scene',
             {
-                dialog: ArenaGiftPop,
                 use_exist: true,
                 stay_scene: true,
             },
-            {
-                beforeOpen: (pop: ArenaGiftPop) => {
-                    arenaGiftList().then((data) => {
-                        if (data) {
-                            pop.initData(data);
-                        }
-                    });
-                },
-            },
-        )) as ArenaGiftPop;
+        );
+        arenaGiftList().then((data) => {
+            if (data) {
+                pop.initData(data);
+            }
+        });
         AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
@@ -46,6 +43,7 @@ export default class ArenaGiftPop
         });
         this.initEvent();
     }
+
     private initLang() {
         const { title } = this;
         title.text = tplIntr('arenaGiftTitle');

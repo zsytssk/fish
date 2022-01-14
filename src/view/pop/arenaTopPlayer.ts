@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Handler } from 'laya/utils/Handler';
 
 import { GetHallOfFameData, GetHallOfFameDataItem } from '@app/api/arenaApi';
@@ -8,22 +9,21 @@ import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { tplIntr } from '@app/utils/utils';
 
-import { arenaGetHallOfFame } from './popSocket';
-
 export default class ArenaTopPlayerPop
     extends ui.pop.arenaTopPlayer.arenaTopPlayerUI
     implements HonorDialog
 {
     public isModal = true;
     public static async preEnter(data: GetHallOfFameData) {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaTopPlayerPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaTopPlayerPop;
-
-        AudioCtrl.play(AudioRes.PopShow);
+        const pop = await openDialog<ArenaTopPlayerPop>(
+            'pop/arenaTopPlayer/arenaTopPlayer.scene',
+            {
+                use_exist: true,
+                stay_scene: true,
+            },
+        );
         pop.initData(data);
+        AudioCtrl.play(AudioRes.PopShow);
         return pop;
     }
     public async onAwake() {

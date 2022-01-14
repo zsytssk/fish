@@ -2,7 +2,6 @@ import { UIConfig } from 'UIConfig';
 
 import { Laya } from 'Laya';
 import { loadDialog } from 'honor/utils/loadRes';
-import { detectChangeScene } from 'honor/utils/sceneUtils';
 import {
     injectAfter,
     createScene,
@@ -16,6 +15,7 @@ import { Ease } from 'laya/utils/Ease';
 import { Handler } from 'laya/utils/Handler';
 import { Tween } from 'laya/utils/Tween';
 
+import { detectChangeScene } from './sceneManager';
 import { HonorDialog, HonorDialogConfig, DEFAULT_CONFIG } from './view';
 
 /**

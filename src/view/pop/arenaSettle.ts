@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { Event } from 'laya/events/Event';
 
 import { SettleData } from '@app/api/arenaApi';
@@ -19,13 +20,16 @@ export default class ArenaSettlePop
     public static async preEnter(data: SettleData) {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise<SettleType>(async (resolve, _reject) => {
-            const pop = (await honor.director.openDialog({
-                dialog: ArenaSettlePop,
-                use_exist: true,
-                stay_scene: true,
-            })) as ArenaSettlePop;
+            const pop = await openDialog<ArenaSettlePop>(
+                'pop/arenaSettle/arenaSettle.scene',
+                {
+                    use_exist: true,
+                    stay_scene: true,
+                },
+            );
             AudioCtrl.play(AudioRes.PopShow);
-            pop.initData(data, resolve);
+            pop.initData(data);
+            pop.resolve = resolve;
             return pop;
         });
     }
@@ -53,8 +57,7 @@ export default class ArenaSettlePop
             this.close('continue');
         });
     }
-
-    public initData(data: SettleData, resolve: (type: SettleType) => void) {
+    public initData(data: SettleData) {
         const {
             userId,
             ranking,
@@ -83,6 +86,5 @@ export default class ArenaSettlePop
 
         guess_label.visible = isGuest;
         info_label.visible = reward_box.visible = !isGuest;
-        this.resolve = resolve;
     }
 }

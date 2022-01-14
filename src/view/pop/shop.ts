@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { openDialog } from 'honor/ui/sceneManager';
 import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
@@ -69,17 +70,14 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     public isModal = true;
     /** 是否初始化... */
     private is_init = false;
-    public static preEnter() {
+    public static async preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        const shop_dialog = honor.director.openDialog({
-            dialog: ShopPop,
+        const shop_dialog = await openDialog<ShopPop>('pop/shop/shop.scene', {
             use_exist: true,
             stay_scene: true,
-        }) as Promise<ShopPop>;
-        const shop_data = getShopInfo();
-        return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
-            dialog.initData(data);
         });
+        const shop_data = await getShopInfo();
+        shop_dialog.initData(shop_data);
     }
     public static preLoad() {
         return loadRes('pop/shop/shop.scene');
