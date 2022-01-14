@@ -18,10 +18,10 @@ import { HonorDialog } from './view';
  * 如果不想有任何效果，可以赋值为null
  */
 const defaultPopupEffect = function (dialog: HonorDialog) {
-    if (dialog.HonorEffectTween) {
-        (dialog.HonorEffectTween as Tween).complete();
+    if ((dialog as any).HonorEffectTween) {
+        ((dialog as any).HonorEffectTween as Tween).complete();
     }
-    dialog.HonorEffectTween = Tween.from(
+    (dialog as any).HonorEffectTween = Tween.from(
         dialog,
         {
             x: Laya.stage.width / 2,
@@ -33,7 +33,7 @@ const defaultPopupEffect = function (dialog: HonorDialog) {
         300,
         Ease.backOut,
         Handler.create(this, () => {
-            dialog.HonorEffectTween = undefined;
+            (dialog as any).HonorEffectTween = undefined;
             dialog.scale(1, 1);
             dialog.alpha = 1;
             this.doOpen(dialog);
@@ -47,11 +47,11 @@ const defaultPopupEffect = function (dialog: HonorDialog) {
  * 如果不想有任何效果，可以赋值为null
  */
 const defaultCloseEffect = function (dialog: HonorDialog) {
-    if (dialog.HonorEffectTween) {
-        (dialog.HonorEffectTween as Tween).complete();
+    if ((dialog as any).HonorEffectTween) {
+        ((dialog as any).HonorEffectTween as Tween).complete();
     }
 
-    dialog.HonorEffectTween = Tween.to(
+    (dialog as any).HonorEffectTween = Tween.to(
         dialog,
         {
             x: Laya.stage.width / 2,
@@ -63,7 +63,7 @@ const defaultCloseEffect = function (dialog: HonorDialog) {
         300,
         Ease.backIn,
         Handler.create(this, () => {
-            dialog.HonorEffectTween = undefined;
+            (dialog as any).HonorEffectTween = undefined;
             dialog.scale(1, 1);
             dialog.alpha = 1;
             this.doClose(dialog);
@@ -156,6 +156,7 @@ export async function openDialog<T extends HonorDialog>(
     }
     const { maskLayer } = Dialog.manager;
 
+    // 点击空白区域 关闭弹框
     maskLayer.offAllCaller(view);
     if (opt.close_on_side) {
         maskLayer.once(Event.CLICK, view, () => {

@@ -11,12 +11,7 @@ import { initState, director } from './state';
 import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
 
-export type {
-    HonorDialog,
-    HonorDialogConfig,
-    HonorScene,
-    HonorLoadScene,
-} from './ui/view';
+export type { HonorDialog, HonorScene } from './ui/view';
 
 export type GameConfig = any;
 export type HonorExternConfig = {

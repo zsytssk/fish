@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Laya } from 'Laya';
-import { loadDialog, loadScene, ProgressFn } from 'honor/utils/loadRes';
-import { injectAfter } from 'honor/utils/tool';
+import { loadScene, ProgressFn } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
-import { Dialog } from 'laya/ui/Dialog';
 
-import { HonorDialog, HonorScene } from './view';
+import { HonorScene } from './view';
 
 export type SceneChangeData = {
     cur: string | undefined;
