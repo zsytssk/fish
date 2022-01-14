@@ -141,8 +141,8 @@ export default class ArenaCompetitionPop
             ? `${data.match.startPeriod}-${data.match.endPeriod}`
             : '~';
         timezone_label.text = tplIntr('openTime', {
-            startTime: formatDateTime(data.match.startTime, 'MM.DD HH:mm'),
-            endTime: `${formatDateTime(data.match.endTime, 'MM.DD HH:mm')}`,
+            startTime: formatDateTime(data.match.startTime, 'MM.DD'),
+            endTime: `${formatDateTime(data.match.endTime, 'MM.DD')}`,
         });
         myScore.text = data.myself.score ? data.myself.score + '' : '~';
         myRank.text = data.myself.ranking
