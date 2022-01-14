@@ -101,7 +101,6 @@ export class LockFishModel extends ComponentManager implements SkillModel {
         if (needActive) {
             skill_core.active(info, (_status) => {
                 if (_status === SkillStatus.Disable) {
-                    log(`test:>lockFish:>disable`);
                     this.unLock();
                 }
             });
@@ -116,9 +115,7 @@ export class LockFishModel extends ComponentManager implements SkillModel {
     public tipLock() {
         const { gun, skill_core } = this;
         const fish = getAimFish();
-        if (fish) {
-            log('test:>tipLock', fish, fish.destroyed);
-        }
+
         skill_core.activeEvent({
             fish,
             is_tip: true,

@@ -44,7 +44,6 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         },
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
-            console.log(`test:>Reconnecting`, try_index);
             if (try_index === 0) {
                 TipPop.tip(tplIntr('NetError'), {
                     count: 10,

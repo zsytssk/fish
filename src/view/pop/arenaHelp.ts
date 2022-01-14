@@ -90,17 +90,6 @@ export default class ArenaHelpPop
             labels3[4].text = tplIntr('arenaHelpRule35', {});
             resizeContain(boxList[2], 10, 'vertical');
 
-            console.log(
-                `test:>`,
-                gun1001,
-                tplIntr('arenaHelpRule42', {
-                    gun1001,
-                    gun1002,
-                    gun1003,
-                    gun1004,
-                    gun1005,
-                }),
-            );
             const labels4 = getAllChildren(boxList[3]) as Label[];
             labels4[0].text = tplIntr('arenaHelpRule41', {});
             labels4[1].text = tplIntr('arenaHelpRule42', {

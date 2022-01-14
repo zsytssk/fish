@@ -139,7 +139,6 @@ export default class ArenaRewardRecordPop
             });
         }
 
-        console.log(`test:>`, arr);
         this.select_ctrl2.setList(arr);
         this.select_ctrl2.setCurIndex(0);
     };

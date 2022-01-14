@@ -5,7 +5,7 @@ import { getStringLength } from 'honor/utils/getStringLength';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in, fade_out, slide_down_in } from '@app/utils/animate';
+import { fade_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
 export default class ArenaTaskTipPop

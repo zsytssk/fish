@@ -247,7 +247,6 @@ export function arenaErrHandler(
             if (type === 'confirm') {
                 const currency =
                     getGameCurrency() || modelState.app.user_info.cur_balance;
-                console.log(`test:>`, currency);
                 recharge(currency);
             }
         });

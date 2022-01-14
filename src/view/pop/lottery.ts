@@ -121,7 +121,6 @@ export default class LotteryPop
 
         const len = lottery_arr.length;
         if (len < 5) {
-            log(`test:>lottery:>0`, lottery_arr);
             for (let i = 0; i < 5 - len; i++) {
                 lottery_arr.push({
                     lottery_id: 'xx',
@@ -137,7 +136,6 @@ export default class LotteryPop
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
-        log(`test:>lottery:>1`, val, lottery_arr);
         btn_lottery.disabled = val < 1;
         lottery_exchange_ctrl.renderData([...exchange]);
 
