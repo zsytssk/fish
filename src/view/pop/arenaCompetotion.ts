@@ -18,6 +18,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { ArenaEvent, ARENA_OK_CODE } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
+import { sleep } from '@app/utils/animate';
 import { formatDateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { tplIntr } from '@app/utils/utils';
@@ -150,21 +151,23 @@ export default class ArenaCompetitionPop
         const sign_status = this.renderSignButton(status, fee);
 
         if (currency !== data.currency) {
-            if (sign_status === 'continue') {
-                TipPop.tip(
-                    tplIntr('arenaNotEndCurrency', {
-                        currency1: currency,
-                        currency2: data.currency,
-                    }),
-                );
-            } else if (sign_status === 'sign') {
-                TipPop.tip(
-                    tplIntr('arenaNotSupportCurrency', {
-                        currency1: currency,
-                        currency2: data.currency,
-                    }),
-                );
-            }
+            sleep(0.5).then(() => {
+                if (sign_status === 'continue') {
+                    TipPop.tip(
+                        tplIntr('arenaNotEndCurrency', {
+                            currency1: currency,
+                            currency2: data.currency,
+                        }),
+                    );
+                } else if (sign_status === 'sign') {
+                    TipPop.tip(
+                        tplIntr('arenaNotSupportCurrency', {
+                            currency1: currency,
+                            currency2: data.currency,
+                        }),
+                    );
+                }
+            });
         }
     }
     private renderSignButton(status: ArenaGameStatus, fee?: number) {
