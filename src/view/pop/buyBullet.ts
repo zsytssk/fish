@@ -33,7 +33,6 @@ export default class BuyBulletPop
     extends ui.pop.alert.buyBulletUI
     implements HonorDialog
 {
-    public isModal = true;
     private buy_info: BuyInfo;
     private resolve: (info: BuyResultData) => void;
     public static async preEnter(info: BuyInfo): Promise<BuyResultData> {

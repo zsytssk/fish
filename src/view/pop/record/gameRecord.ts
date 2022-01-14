@@ -34,7 +34,6 @@ export default class GameRecord
     extends ui.pop.record.gameRecordUI
     implements HonorDialog
 {
-    public isModal = true;
     private select_coin_ctrl: SelectCtrl;
     private select_date_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;

@@ -19,7 +19,6 @@ export default class RewardPop
     extends ui.pop.lottery.rewardUI
     implements HonorDialog
 {
-    public isModal = true;
     private close_resolve: () => void;
     public static async preEnter(data: RewardData) {
         const pop = (await openDialog('pop/lottery/reward.scene')) as RewardPop;

@@ -33,7 +33,6 @@ export default class ItemRecord
     extends ui.pop.record.itemRecordUI
     implements HonorDialog
 {
-    public isModal = true;
     private select_coin_ctrl: SelectCtrl;
     private select_item_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;

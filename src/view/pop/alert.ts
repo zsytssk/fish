@@ -16,7 +16,6 @@ export default class AlertPop
     extends ui.pop.alert.alertUI
     implements HonorDialog
 {
-    public isModal = true;
     shadowAlpha: 0.1;
     public close_resolve: (type: CloseType) => void;
     public _zOrder = 1001;

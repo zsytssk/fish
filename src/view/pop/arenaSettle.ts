@@ -15,7 +15,6 @@ export default class ArenaSettlePop
     extends ui.pop.arenaSettle.arenaSettleUI
     implements HonorDialog
 {
-    public isModal = true;
     public resolve: (type: SettleType) => void;
     public static async preEnter(data: SettleData) {
         // eslint-disable-next-line no-async-promise-executor

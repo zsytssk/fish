@@ -3,7 +3,7 @@
     "type":"Dialog",
     "selectedBox":2,
     "searchKey":"Dialog",
-    "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaRank/arenaRank.png","runtime":"view/pop/arenaRank.ts","height":634},
+    "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaRank/arenaRank.png","runtime":"view/pop/arenaRank.ts","isModal":true,"height":634},
     "nodeParent":-1,
     "maxID":37,
     "label":"Dialog",

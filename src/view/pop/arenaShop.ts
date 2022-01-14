@@ -33,8 +33,6 @@ export default class ArenaShopPop
     extends ui.pop.shop.arenaShopUI
     implements HonorDialog
 {
-    private data: ArenaShopPopInfo;
-    public isModal = true;
     /** 是否初始化... */
     public static async preEnter(param: ArenaShopPopInfo) {
         const shop_dialog = await openDialog<ArenaShopPop>(

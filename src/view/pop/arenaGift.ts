@@ -19,7 +19,6 @@ export default class ArenaGiftPop
     extends ui.pop.arenaGift.arenaGiftUI
     implements HonorDialog
 {
-    public isModal = true;
     private data: GiftList;
     public static async preEnter() {
         const pop = await openDialog<ArenaGiftPop>(

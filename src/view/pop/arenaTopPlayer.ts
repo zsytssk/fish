@@ -13,7 +13,6 @@ export default class ArenaTopPlayerPop
     extends ui.pop.arenaTopPlayer.arenaTopPlayerUI
     implements HonorDialog
 {
-    public isModal = true;
     public static async preEnter(data: GetHallOfFameData) {
         const pop = await openDialog<ArenaTopPlayerPop>(
             'pop/arenaTopPlayer/arenaTopPlayer.scene',

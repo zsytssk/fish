@@ -4,7 +4,6 @@ import { Dialog } from 'laya/ui/Dialog';
 import { log } from '@app/utils/log';
 
 export default class EmptyPop extends Dialog implements HonorDialog {
-    public isModal = true;
     public static preEnter() {
         honor.director.openDialog(EmptyPop);
     }

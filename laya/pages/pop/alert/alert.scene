@@ -3,7 +3,7 @@
     "type":"Dialog",
     "selectedBox":2,
     "searchKey":"Dialog",
-    "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/alert.png","runtime":"view/pop/alert.ts","height":429},
+    "props":{"width":658,"sceneColor":"#000000","sceneBg":"laya/views/pop/alert/alert.png","runtime":"view/pop/alert.ts","isModal":true,"height":429},
     "nodeParent":-1,
     "maxID":22,
     "label":"Dialog",

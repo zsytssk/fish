@@ -25,7 +25,6 @@ type SkillItemData = {
 };
 
 export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
-    public isModal = true;
     private slider_glr: LayaSlider;
     private times_tpl: string;
     public static async preEnter(index = 0) {

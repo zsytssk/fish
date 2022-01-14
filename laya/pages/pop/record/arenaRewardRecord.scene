@@ -1,10 +1,9 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":69,
-    "selecteID":93,
+    "selectedBox":2,
     "searchKey":"Dialog",
-    "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/itemRecord.ts","height":604},
+    "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/itemRecord.ts","isModal":true,"height":604},
     "nodeParent":-1,
     "maxID":94,
     "label":"Dialog",

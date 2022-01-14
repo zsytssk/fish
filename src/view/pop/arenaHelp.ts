@@ -16,7 +16,6 @@ export default class ArenaHelpPop
     extends ui.pop.arenaHelp.arenaHelpUI
     implements HonorDialog
 {
-    public isModal = true;
     public static async preEnter(data: GetRuleData) {
         const pop = await openDialog<ArenaHelpPop>(
             'pop/arenaHelp/arenaHelp.scene',

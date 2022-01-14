@@ -27,7 +27,6 @@ export default class ArenaRewardRecordPop
     extends ui.pop.record.arenaRewardRecordUI
     implements HonorDialog
 {
-    public isModal = true;
     private select_ctrl1: SelectCtrl;
     private select_ctrl2: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;

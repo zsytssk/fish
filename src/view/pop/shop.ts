@@ -67,7 +67,6 @@ type ShopItemItemUI = ui.pop.shop.shopItemItemUI;
 
 /** 商城弹出层 */
 export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
-    public isModal = true;
     /** 是否初始化... */
     private is_init = false;
     public static async preEnter() {

@@ -54,7 +54,6 @@ export default class LotteryPop
     implements HonorDialog
 {
     private is_init = false;
-    public isModal = true;
     private lottery_interval: number;
     private lottery_exchange_ctrl: LotteryExchangeCtrl;
     private remain_info: {

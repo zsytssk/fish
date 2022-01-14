@@ -39,7 +39,6 @@ export default class ArenaCompetitionPop
     extends ui.pop.arenaCompetitionInfo.arenaCompetitionInfoUI
     implements HonorDialog
 {
-    public isModal = true;
     private currency: string;
     public get zOrder() {
         return 100;
