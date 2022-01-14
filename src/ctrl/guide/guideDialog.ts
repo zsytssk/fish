@@ -1,5 +1,6 @@
 import { Laya } from 'Laya';
 import Honor, { HonorDialog, HonorDialogConfig } from 'honor';
+import { openDialog } from 'honor/utils/loadRes';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Rectangle } from 'laya/maths/Rectangle';
@@ -54,7 +55,7 @@ export default class GuideDialog
         start_label.text = tplIntr('tourStart');
     }
     public static async preEnter() {
-        const dialog = (await Honor.director.openDialog(
+        const dialog = (await openDialog(
             'pop/guide/GuideDialog.scene',
         )) as GuideDialog;
         return dialog;

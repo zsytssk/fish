@@ -1,6 +1,14 @@
 import honor from 'honor';
-import { loadRes, ResItem } from 'honor/utils/loadRes';
+import {
+    fakeLoad,
+    loadRes,
+    mergeProgressObserver,
+    ResItem,
+    toProgressObserver,
+    promiseToProgressObserver,
+} from 'honor/utils/loadRes';
 
+import { AppCtrl } from '@app/ctrl/appCtrl';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { offCommon } from '@app/ctrl/hall/commonSocket';
 import { WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
@@ -14,32 +22,41 @@ import { modelState } from '@app/model/modelState';
 import { setProps } from '@app/utils/utils';
 import { FishView } from '@app/view/scenes/game/fishView';
 import GameView from '@app/view/scenes/game/gameView';
+import Loading from '@app/view/scenes/loadingView';
 
 import { FishCtrl } from '../fishCtrl';
+import { GameCtrlUtils } from '../gameCtrl';
+import { NormalPlayerCom } from '../gameNormal/NormalPlayerCom';
 import { onGameSocket } from '../gameSocket';
 import { PlayerCtrl } from '../playerCtrl';
 import { genUserInfo, mockSocket } from './utils';
 
-export class GameTestCtrl {
+export class GameTestCtrl implements GameCtrlUtils {
+    public currency = '';
+    public isTrial: EnterGameRep['isTrial'];
+    changeUserNumInfo(data: any) {
+        /*  */
+    }
+
     public player_list: Set<PlayerCtrl> = new Set();
     public fish_view: FishView;
     public static async preEnter() {
-        const wait_view = GameView.preEnter() as Promise<GameView>;
-        const wait_load_res = loadRes(res.gameTutorial as ResItem[]);
-        const wait_socket = mockSocket();
-        const wait_enter = Promise.all([
-            wait_view,
-            wait_socket,
-            wait_load_res,
-        ]).then(([view, socket]) => {
-            const game_model = modelState.app.enterGame();
-            const ctrl = new GameTestCtrl(view as GameView, game_model);
-            ctrl.view.showBubbleRefresh(1);
-            onGameSocket(socket as WebSocketTrait, ctrl as any);
-            return ctrl;
-        });
+        const [view, socket] = await mergeProgressObserver(
+            [
+                toProgressObserver(GameView.preEnter)(),
+                promiseToProgressObserver(mockSocket)(),
+                toProgressObserver(fakeLoad)(1),
+                toProgressObserver(AppCtrl.commonLoad)(),
+                toProgressObserver(loadRes)(res.gameTutorial),
+            ],
+            Loading,
+        );
 
-        return wait_enter;
+        const game_model = new GameModel();
+        const ctrl = new GameTestCtrl(view as GameView, game_model);
+        ctrl.view.showBubbleRefresh(1);
+        onGameSocket(socket as WebSocketTrait, ctrl as any);
+        return ctrl;
     }
     constructor(public view: GameView, public model: GameModel) {
         modelState.game = model;
@@ -63,7 +80,7 @@ export class GameTestCtrl {
                     currency,
                 });
                 this.fish_view = fish_view;
-                const ctrl = new FishCtrl(fish_view, fish);
+                const ctrl = new FishCtrl(fish_view, fish, this);
             },
             this,
         );
@@ -72,6 +89,11 @@ export class GameTestCtrl {
             (player: PlayerModel) => {
                 const player_view = view.addGun();
                 const ctrl = new PlayerCtrl(player_view, player, this as any);
+                const normal_player_com = new NormalPlayerCom(
+                    player,
+                    this as any,
+                );
+                ctrl.addCom(normal_player_com);
                 this.player_list.add(ctrl);
             },
             this,
@@ -91,6 +113,10 @@ export class GameTestCtrl {
     public offGameSocket() {
         const socket = getSocket(ServerName.Game);
         offCommon(socket, this);
+    }
+    buySkillTip() {}
+    getSocket() {
+        return getSocket(ServerName.Game);
     }
     public calcClientIndex(server_index = 1) {
         return 1;

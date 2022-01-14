@@ -28,7 +28,7 @@ export type ProgressFn = (radio: number) => void;
 
 export function openDialog(url: string, fn?: ProgressFn) {
     return loadDialog(url, fn).then((view: HonorDialog) => {
-        view.open();
+        view.open(false);
         Laya.stage.on(Event.RESIZE, view, () => {
             view.onResize?.(Laya.stage.width, Laya.stage.height);
         });
