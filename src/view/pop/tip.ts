@@ -26,7 +26,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         AudioCtrl.play(AudioRes.PopShow);
         this.instance = await openDialog<TipPop>('pop/alert/tip.scene', {
             use_exist: true,
-            beforeOpenParam: [msg],
+            before_open_param: [msg],
         });
 
         this.instance.tip(msg, opt);

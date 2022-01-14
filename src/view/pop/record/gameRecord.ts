@@ -39,10 +39,7 @@ export default class GameRecord
     private select_date_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
     public static async preEnter() {
-        const game_record = await openDialog('pop/record/gameRecord.scene', {
-            use_exist: true,
-            stay_scene: true,
-        });
+        const game_record = await openDialog('pop/record/gameRecord.scene');
         return game_record;
     }
     public static preLoad() {

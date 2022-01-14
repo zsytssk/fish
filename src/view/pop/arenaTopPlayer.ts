@@ -17,10 +17,6 @@ export default class ArenaTopPlayerPop
     public static async preEnter(data: GetHallOfFameData) {
         const pop = await openDialog<ArenaTopPlayerPop>(
             'pop/arenaTopPlayer/arenaTopPlayer.scene',
-            {
-                use_exist: true,
-                stay_scene: true,
-            },
         );
         pop.initData(data);
         AudioCtrl.play(AudioRes.PopShow);

@@ -29,10 +29,7 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
     private slider_glr: LayaSlider;
     private times_tpl: string;
     public static async preEnter(index = 0) {
-        const help_pop = await openDialog<HelpPop>('pop/help/help.scene', {
-            use_exist: true,
-            stay_scene: true,
-        });
+        const help_pop = await openDialog<HelpPop>('pop/help/help.scene');
 
         help_pop.goto(index);
     }

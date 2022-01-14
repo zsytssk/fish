@@ -39,10 +39,6 @@ export default class ArenaShopPop
     public static async preEnter(param: ArenaShopPopInfo) {
         const shop_dialog = await openDialog<ArenaShopPop>(
             'pop/shop/arenaShop.scene',
-            {
-                use_exist: true,
-                stay_scene: true,
-            },
         );
         AudioCtrl.play(AudioRes.PopShow);
         arenaShopList(param).then((data) => {

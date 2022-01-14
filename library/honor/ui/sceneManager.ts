@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Laya } from 'Laya';
 import { loadDialog, loadScene, ProgressFn } from 'honor/utils/loadRes';
 import { injectAfter } from 'honor/utils/tool';
@@ -51,21 +52,32 @@ type Opt<T extends HonorDialog> = {
     use_exist?: boolean;
     /** 是否只能存在一个场景中 */
     stay_scene?: boolean;
-    beforeOpenParam?: Parameters<T['onBeforeOpen']>;
+    before_open_param?: Parameters<T['onBeforeOpen']>;
+};
+const DEFAULT_CONFIG = {
+    use_exist: true,
+    stay_scene: true,
+    before_open_param: [] as any,
 };
 const loading_map: { [key: string]: Promise<HonorDialog> } = {};
 export async function openDialog<T extends HonorDialog>(
     url: string,
-    opt?: Opt<T>,
+    opt = {} as Opt<T>,
     fn?: ProgressFn,
 ): Promise<T> {
     let detectChange: () => boolean;
     let view_wait_open: Promise<T>;
-    if (opt?.stay_scene) {
+
+    opt = {
+        ...DEFAULT_CONFIG,
+        ...opt,
+    };
+
+    if (opt.stay_scene) {
         detectChange = detectChangeScene();
     }
 
-    if (opt?.use_exist) {
+    if (opt.use_exist) {
         view_wait_open = loading_map[url] as Promise<T>;
     }
 
@@ -86,10 +98,15 @@ export async function openDialog<T extends HonorDialog>(
     view.once(Event.UNDISPLAY, view, () => {
         Laya.stage.offAllCaller(view);
     });
+    if (opt.stay_scene && cur_scene) {
+        Laya.stage.offAllCaller(view);
+        cur_scene.once(Event.UNDISPLAY, view, () => {
+            view.close();
+        });
+    }
 
-    const beforeOpenParam = opt?.beforeOpenParam || ([] as any);
     // TipPop 让 open在计算大小之后再执行open
-    view.onBeforeOpen?.(...beforeOpenParam);
+    view.onBeforeOpen?.(...(opt.before_open_param as any));
     view.open(false);
 
     // 黑魔法 在view掉用destroy后执行

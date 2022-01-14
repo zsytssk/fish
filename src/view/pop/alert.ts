@@ -28,10 +28,7 @@ export default class AlertPop
     }
     public static async alert(msg: string, opt = {} as Opt) {
         const { hide_cancel, confirm_text } = opt;
-        const alert = (await openDialog('pop/alert/alert.scene', {
-            use_exist: true,
-            stay_scene: true,
-        })) as AlertPop;
+        const alert = (await openDialog('pop/alert/alert.scene')) as AlertPop;
         AudioCtrl.play(AudioRes.PopShow);
         return await alert.alert(msg, { hide_cancel, confirm_text });
     }

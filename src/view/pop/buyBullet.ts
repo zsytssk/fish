@@ -39,10 +39,6 @@ export default class BuyBulletPop
     public static async preEnter(info: BuyInfo): Promise<BuyResultData> {
         const dialog = await openDialog<BuyBulletPop>(
             'pop/alert/buyBullet.scene',
-            {
-                use_exist: true,
-                stay_scene: true,
-            },
         );
         return dialog.buy(info);
     }

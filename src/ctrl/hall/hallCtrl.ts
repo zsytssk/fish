@@ -165,7 +165,7 @@ export class HallCtrl {
         offBindEvent(this);
         offHallSocket(this);
         offArenaHallSocket(this);
-        honor.director.closeAllDialogs();
+        // honor.director.closeAllDialogs();
         HallCtrl.leave();
     }
 }

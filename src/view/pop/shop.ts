@@ -72,10 +72,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     private is_init = false;
     public static async preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        const shop_dialog = await openDialog<ShopPop>('pop/shop/shop.scene', {
-            use_exist: true,
-            stay_scene: true,
-        });
+        const shop_dialog = await openDialog<ShopPop>('pop/shop/shop.scene');
         const shop_data = await getShopInfo();
         shop_dialog.initData(shop_data);
     }

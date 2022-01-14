@@ -20,10 +20,6 @@ export default class ArenaHelpPop
     public static async preEnter(data: GetRuleData) {
         const pop = await openDialog<ArenaHelpPop>(
             'pop/arenaHelp/arenaHelp.scene',
-            {
-                use_exist: true,
-                stay_scene: true,
-            },
         );
         AudioCtrl.play(AudioRes.PopShow);
         pop.initData(data);

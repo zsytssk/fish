@@ -24,10 +24,6 @@ export default class ArenaGiftPop
     public static async preEnter() {
         const pop = await openDialog<ArenaGiftPop>(
             'pop/arenaGift/arenaGift.scene',
-            {
-                use_exist: true,
-                stay_scene: true,
-            },
         );
         arenaGiftList().then((data) => {
             if (data) {

@@ -33,10 +33,9 @@ export default class ArenaRewardRecordPop
     private pagination_ctrl: PaginationCtrl;
     private isInit = false;
     public static async preEnter() {
-        const item_record = (await openDialog('pop/record/itemRecord.scene', {
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaRewardRecordPop;
+        const item_record = (await openDialog(
+            'pop/record/itemRecord.scene',
+        )) as ArenaRewardRecordPop;
         AudioCtrl.play(AudioRes.PopShow);
         return item_record;
     }

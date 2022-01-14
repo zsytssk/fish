@@ -22,10 +22,7 @@ export default class RewardPop
     public isModal = true;
     private close_resolve: () => void;
     public static async preEnter(data: RewardData) {
-        const pop = (await openDialog('pop/lottery/reward.scene', {
-            use_exist: true,
-            stay_scene: true,
-        })) as RewardPop;
+        const pop = (await openDialog('pop/lottery/reward.scene')) as RewardPop;
 
         await pop.showReward(data);
     }

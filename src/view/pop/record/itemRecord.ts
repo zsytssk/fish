@@ -40,10 +40,7 @@ export default class ItemRecord
     private all_list: GetItemListItemRep[];
     private isInit = false;
     public static async preEnter() {
-        const item_record = await openDialog('pop/record/itemRecord.scene', {
-            use_exist: true,
-            stay_scene: true,
-        });
+        const item_record = await openDialog('pop/record/itemRecord.scene');
         return item_record;
     }
     public static preLoad() {

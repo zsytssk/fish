@@ -62,10 +62,7 @@ export default class LotteryPop
         lottery_cost: number;
     };
     public static preEnter() {
-        const pop = openDialog<LotteryPop>('pop/lottery/lottery.scene', {
-            use_exist: true,
-            stay_scene: true,
-        });
+        const pop = openDialog<LotteryPop>('pop/lottery/lottery.scene');
         const exchange_data = getLotteryData();
 
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {

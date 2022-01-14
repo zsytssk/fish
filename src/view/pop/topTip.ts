@@ -24,7 +24,6 @@ export default class TopTipPop
         AudioCtrl.play(AudioRes.PopShow);
         const tip_dialog = await openDialog<TopTipPop>(
             'pop/alert/topTip.scene',
-            { use_exist: true, stay_scene: true },
         );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);

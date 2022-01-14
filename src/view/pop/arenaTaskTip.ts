@@ -22,7 +22,6 @@ export default class ArenaTaskTipPop
         AudioCtrl.play(AudioRes.PopShow);
         const tip_dialog = await openDialog<ArenaTaskTipPop>(
             'pop/alert/arenaTaskTip.scene',
-            { use_exist: true, stay_scene: true },
         );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);

@@ -22,10 +22,6 @@ export default class ArenaSettlePop
         return new Promise<SettleType>(async (resolve, _reject) => {
             const pop = await openDialog<ArenaSettlePop>(
                 'pop/arenaSettle/arenaSettle.scene',
-                {
-                    use_exist: true,
-                    stay_scene: true,
-                },
             );
             AudioCtrl.play(AudioRes.PopShow);
             pop.initData(data);

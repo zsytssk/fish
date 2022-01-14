@@ -20,10 +20,6 @@ export default class ArenaRankPop
     public static async preEnter(data: GetDayRanking) {
         const pop = await openDialog<ArenaRankPop>(
             'pop/arenaRank/arenaRank.scene',
-            {
-                use_exist: true,
-                stay_scene: true,
-            },
         );
 
         AudioCtrl.play(AudioRes.PopShow);

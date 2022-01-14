@@ -47,7 +47,6 @@ export default class ArenaCompetitionPop
     public static async preEnter(data: CompetitionInfo, currency: string) {
         const pop = await openDialog<ArenaCompetitionPop>(
             'pop/arenaCompetitionInfo/arenaCompetitionInfo.scene',
-            { use_exist: true, stay_scene: true },
         );
         AudioCtrl.play(AudioRes.PopShow);
         pop.onData(data, currency);
