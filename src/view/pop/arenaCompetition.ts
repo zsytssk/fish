@@ -7,7 +7,6 @@ import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import {
     arenaErrHandler,
-    bindArenaHallSocket,
     getArenaSocket,
     offArenaHallSocket,
 } from '@app/ctrl/hall/arenaSocket';
@@ -16,7 +15,6 @@ import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ArenaEvent, ARENA_OK_CODE } from '@app/data/serverEvent';
-import { modelState } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
 import { formatDateTime } from '@app/utils/dayjsUtil';

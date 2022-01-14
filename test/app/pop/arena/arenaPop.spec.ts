@@ -1,6 +1,6 @@
 import { sleep } from '@app/utils/animate';
 import { setItem } from '@app/utils/localStorage';
-import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaCompetitionPop from '@app/view/pop/arenaCompetition';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
@@ -81,8 +81,7 @@ export const arena_pop_test = {
         await ArenaGameStatus.end();
     },
     openShop: async () => {
-        const pop = await ArenaShopPop.preEnter();
-        console.log(`test:>`);
+        const pop = await ArenaShopPop.preEnter({ modeId: 1, currency: 'BTC' });
         await sleep(1);
         pop.initData(arenaGenShopInfo(ShopData as any));
     },

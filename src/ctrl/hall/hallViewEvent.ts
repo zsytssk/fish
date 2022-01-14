@@ -10,7 +10,7 @@ import { onNode, isClosest, onNodeWithAni } from '@app/utils/layaUtils';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
 import { covertLang, playSkeleton, playSkeletonOnce } from '@app/utils/utils';
-import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaCompetitionPop from '@app/view/pop/arenaCompetition';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 import GameRecord from '@app/view/pop/record/gameRecord';

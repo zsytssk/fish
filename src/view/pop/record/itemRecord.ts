@@ -38,7 +38,7 @@ export default class ItemRecord
     private all_list: GetItemListItemRep[];
     private isInit = false;
     public static async preEnter() {
-        const item_record = await honor.director.openDialog(
+        const item_record = await honor.director.openDialog<ItemRecord>(
             'pop/record/itemRecord.scene',
         );
         return item_record;

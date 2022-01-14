@@ -75,6 +75,7 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
         );
         const shop_data = await getShopInfo();
         shop_dialog.initData(shop_data);
+        return shop_dialog;
     }
     public static preLoad() {
         return loadRes('pop/shop/shop.scene');

@@ -67,6 +67,7 @@ export default class LotteryPop
 
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {
             dialog.initData(data);
+            return dialog;
         });
     }
     public static preLoad() {

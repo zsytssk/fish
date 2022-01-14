@@ -6,6 +6,7 @@
         "endPeriod": "12:12",
         "fee": -1
     },
+    "currency": "BTC",
     "arenaStatus": 2,
     "champion": [
         {
