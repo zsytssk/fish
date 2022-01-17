@@ -282,10 +282,12 @@ export class PlayerCtrl extends ComponentManager {
         const { user_id } = getUserInfo();
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
-        if (bullet_cost) {
-            this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
-                multiple: Number(bullet_cost),
-            } as ChangeTurretReq);
+        if (bullet_cost !== this.model.bullet_cost + '') {
+            setTimeout(() => {
+                this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
+                    multiple: Number(bullet_cost),
+                } as ChangeTurretReq);
+            });
         }
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
