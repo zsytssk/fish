@@ -8,11 +8,13 @@ import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
+import { SkillMap } from '@app/data/config';
 import { ServerEvent } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import {
     AddBulletInfo,
     GunEvent,
+    GunStatus,
     LevelInfo,
 } from '@app/model/game/gun/gunModel';
 import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
@@ -20,7 +22,8 @@ import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
 import { getCurPlayer, getUserInfo } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
-import { darkNode, unDarkNode } from '@app/utils/utils';
+import { darkNode, tplIntr, unDarkNode } from '@app/utils/utils';
+import TipPop from '@app/view/pop/tip';
 import GunBoxView from '@app/view/scenes/game/gunBoxView';
 import {
     getAutoShootSkillItem,
@@ -208,6 +211,26 @@ export class PlayerCtrl extends ComponentManager {
         }
         view.setMySelfStyle();
         this.resetGetBulletCost();
+
+        gun_event.on(
+            GunEvent.NotEnoughBulletNum,
+            () => {
+                if (gun.status === GunStatus.AutoShoot) {
+                    const skill_model = this.model.getSkill(
+                        SkillMap.Auto,
+                    ) as AutoShootModel;
+                    setTimeout(() => {
+                        if (this.model.bullet_num) {
+                            TipPop.tip(
+                                tplIntr('NotEnoughBulletNumChangeTurretTip'),
+                            );
+                        }
+                        skill_model.toggle();
+                    });
+                }
+            },
+            this,
+        );
 
         gun_event.on(
             GunEvent.AutoShoot,

@@ -163,6 +163,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             game.GameSettle(data);
         },
+
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
             if (code !== ARENA_OK_CODE) {

@@ -62,13 +62,22 @@ export default class ArenaSettlePop
             isGuest,
             currency,
         } = data;
-        const { num_label, guess_label, info_label, btn_continue, reward_box } =
-            this;
+        const {
+            num_label,
+            guess_label,
+            info_label,
+            btn_label,
+            btn_continue,
+            reward_box,
+        } = this;
 
-        btn_continue.label = tplIntr('arenaSettleReSign', {
+        btn_label.text = tplIntr('arenaSettleReSign', {
             fee,
             currency,
         });
+        const width = btn_label.getBounds().width + 40;
+        btn_continue.width = width > 230 ? width : 230;
+
         guess_label.text = tplIntr('arenaSettleReStatic', { score });
         info_label.text = tplIntr('arenaSettleTpl', {
             userId,

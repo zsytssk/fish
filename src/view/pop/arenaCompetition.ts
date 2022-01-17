@@ -99,19 +99,18 @@ export default class ArenaCompetitionPop
         const { btn_sign, btn_famous, btn_help, btn_best } = this;
         onNodeWithAni(btn_sign, Event.CLICK, () => {
             competitionSignUp(this.currency).then((data) => {
-                if (
-                    data?.status !== ArenaGameStatus.GAME_STATUS_CLOSE &&
-                    data?.status !== ArenaGameStatus.GAME_STATUS_SETTLEMENT
-                ) {
-                    HallCtrl.instance?.enterArena(data);
-                    this.close();
-                } else {
-                    this.renderSignButton(data.status);
+                const hasStatus = data.status !== undefined;
 
-                    if (data.code !== ARENA_OK_CODE) {
-                        arenaErrHandler(null, data.code);
-                    }
+                if (hasStatus) {
+                    this.renderSignButton(data.status);
                 }
+                if (data.code !== ARENA_OK_CODE && !hasStatus) {
+                    arenaErrHandler(null, data.code);
+                    return;
+                }
+
+                HallCtrl.instance?.enterArena(data);
+                this.close();
             });
         });
         onNodeWithAni(btn_famous, Event.CLICK, () => {
@@ -265,7 +264,6 @@ export default class ArenaCompetitionPop
         btn_best.label = tplIntr('arenaRankTitle');
     }
     public destroy(destroyChild?: boolean) {
-        alert(1);
         offArenaHallSocket(this);
         super.destroy(destroyChild);
     }

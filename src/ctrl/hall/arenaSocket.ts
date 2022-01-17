@@ -129,6 +129,7 @@ export function commonArenaSocket(socket: WebSocketTrait, bindObj: any) {
     bindSocketEvent(socket, bindObj, {
         [ArenaEvent.ErrCode]: (res: ErrorData, code: number) => {
             code = res?.code || code;
+            arenaErrHandler(null, code);
         },
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
@@ -256,9 +257,24 @@ export function arenaErrHandler(
     } else if (code === ArenaErrCode.GameEnded) {
         TipPop.tip(tplIntr('GameEnded'));
         socket.send(ArenaEvent.ArenaStatus);
-    } else if (code === ArenaErrCode.SignUpFail) {
-        TipPop.tip(tplIntr('SignUpFail'));
-        socket.send(ArenaEvent.ArenaStatus);
+    } else if (
+        code === ArenaErrCode.SignUpFail ||
+        code === ArenaErrCode.GuestSignUpFail
+    ) {
+        // @TODO
+        const errMsg =
+            code === ArenaErrCode.GuestSignUpFail
+                ? tplIntr('GuestSignUpFail')
+                : tplIntr('SignUpFail');
+        if (typeof ctrl?.leave === 'function') {
+            return AlertPop.alert(errMsg).then((type) => {
+                if (type === 'confirm') {
+                    ctrl?.leave();
+                }
+            });
+        } else {
+            TipPop.tip(errMsg);
+        }
     } else if (code === ArenaErrCode.BulletLack) {
         TipPop.tip(tplIntr('BulletLack'));
     } else if (

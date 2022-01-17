@@ -3,11 +3,14 @@ import { Component } from 'comMan/component';
 import { getGameCurrency } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
+import { GunEvent, GunStatus } from '@app/model/game/gun/gunModel';
 import {
     CaptureInfo,
     PlayerEvent,
     PlayerModel,
 } from '@app/model/game/playerModel';
+import { tplIntr } from '@app/utils/utils';
+import TipPop from '@app/view/pop/tip';
 import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
 import { showAwardCoin } from '@app/view/scenes/game/ani_wrap/award/awardCoin';
 import { awardSkill } from '@app/view/scenes/game/ani_wrap/award/awardSkill';
@@ -75,6 +78,25 @@ export class ArenaPlayerCom implements Component {
 
         view.setScorePanelVisible(is_cur_player, true);
         view.setBulletScoreNum(is_cur_player, bullet_num, score);
+
+        if (!model.is_cur_player) {
+            return;
+        }
+
+        // 当前用户炮台倍数小于
+        model.gun.event.on(
+            GunEvent.NotEnoughBulletNum,
+            () => {
+                setTimeout(() => {
+                    if (this.model.bullet_num) {
+                        TipPop.tip(
+                            tplIntr('NotEnoughBulletNumChangeTurretTip'),
+                        );
+                    }
+                });
+            },
+            this,
+        );
     }
     public destroy() {
         const {

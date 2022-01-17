@@ -66,7 +66,7 @@ import { AddFishViewInfo } from '@app/view/scenes/game/gameView';
 import Loading from '@app/view/scenes/loadingView';
 
 import { AppCtrl } from '../../appCtrl';
-import { waitConnectGameArena } from '../../hall/arenaSocket';
+import { arenaErrHandler, waitConnectGameArena } from '../../hall/arenaSocket';
 import { offCommon } from '../../hall/commonSocket';
 import { WebSocketTrait } from '../../net/webSocketWrap';
 import { FishCtrl } from '../fishCtrl';
@@ -447,7 +447,7 @@ export class GameCtrl implements GameCtrlUtils {
             if (type === 'continue') {
                 competitionSignUp(data.currency).then((_data) => {
                     if (_data.code !== ARENA_OK_CODE) {
-                        this.leave();
+                        arenaErrHandler(this, _data.code);
                     } else {
                         this?.model.destroy();
                         ctrlState.app.enterArenaGame({

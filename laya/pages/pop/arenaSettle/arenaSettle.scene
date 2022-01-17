@@ -2,10 +2,11 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
+    "selecteID":6,
     "searchKey":"Dialog",
     "props":{"width":1083,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaSettle/arenaSettle.png","runtime":"view/pop/arenaSettle.ts","isModal":true,"height":442},
     "nodeParent":-1,
-    "maxID":20,
+    "maxID":21,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -103,15 +104,29 @@
             "x":15,
             "type":"Button",
             "searchKey":"Button,btn_continue",
-            "props":{"y":386,"x":541,"var":"btn_continue","stateNum":"1","skin":"image/pop/arenaSettle/btn.png","labelStrokeColor":"#914516","labelStroke":2,"labelSize":20,"labelPadding":"0,0,5,0","labelColors":"#fff","label":"重新参赛 1USDT","anchorY":0.5,"anchorX":0.5},
+            "props":{"y":386,"x":541,"width":285,"var":"btn_continue","stateNum":"1","skin":"image/pop/arenaSettle/btn.png","sizeGrid":"0,100,0,120","labelStrokeColor":"#914516","labelStroke":2,"labelSize":20,"labelPadding":"0,0,5,0","labelColors":"#fff","height":59,"anchorY":0.5,"anchorX":0.5},
             "nodeParent":2,
             "label":"btn_continue",
-            "isDirectory":false,
+            "isOpen":true,
+            "isDirectory":true,
             "isAniNode":true,
-            "hasChild":false,
+            "hasChild":true,
             "compId":6,
             "child":[
-                ]
+                {
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,btn_label",
+                    "props":{"y":15.5,"var":"btn_label","text":"重新参赛 1USDT","strokeColor":"#914516","stroke":2,"fontSize":20,"color":"#fff","centerX":0},
+                    "nodeParent":6,
+                    "label":"btn_label",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":20,
+                    "child":[
+                        ]
+                }]
         },
         {
             "x":15,
