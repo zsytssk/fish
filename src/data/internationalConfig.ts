@@ -191,6 +191,7 @@ export const International = {
         BuyFail: '',
         ItemNotExist: '',
         NotEnoughBulletNumChangeTurretTip: '',
+        GiftOnlyOnce: '',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -378,6 +379,7 @@ export const International = {
         BuyFail: '',
         ItemNotExist: '',
         NotEnoughBulletNumChangeTurretTip: '',
+        GiftOnlyOnce: '',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -564,6 +566,7 @@ export const International = {
         BuyFail: '',
         ItemNotExist: '',
         NotEnoughBulletNumChangeTurretTip: '',
+        GiftOnlyOnce: '',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -721,7 +724,7 @@ export const International = {
         arenaNotEndCurrency:
             '尽管你选择的货币{currency1}, 但是目前你在{currency2}游戏还没结束，点击继续游戏',
         arenaNotSupportCurrency:
-            '本模式不支持{currency1}货币，以为你自动转换{currency2}',
+            '本模式不支持{currency1}货币，已为你自动转换{currency2}',
         maintainQuitTip: '游戏维护中，请退出游戏！',
         maintainTip: '游戏维护中',
         keyboardEmpTip: '输入的值不能为空',
@@ -765,6 +768,7 @@ export const International = {
         BuyFail: '购买失败',
         ItemNotExist: '道具不存在',
         NotEnoughBulletNumChangeTurretTip: '子弹数量不足请切换炮台倍数',
+        GiftOnlyOnce: '礼包当天只能买一次！',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -918,7 +922,7 @@ export const International = {
         arenaNotEndCurrency:
             '盡管你選擇的貨幣{currency1}, 但是目前你在{currency2}遊戲還冇結束，點擊繼續遊戲',
         arenaNotSupportCurrency:
-            '本模式不支持{currency1}貨幣，以為你自動轉換{currency2}',
+            '本模式不支持{currency1}貨幣，已為你自動轉換{currency2}',
         maintainQuitTip: '遊戲維護中，請退出遊戲！',
         maintainTip: '遊戲維護中',
         keyboardEmpTip: '輸入的值不能為空',
@@ -962,6 +966,7 @@ export const International = {
         BuyFail: '購買失敗',
         ItemNotExist: '道具不存在',
         NotEnoughBulletNumChangeTurretTip: '子彈數量不足請切換炮臺倍數',
+        GiftOnlyOnce: '礼包当天只能买一次！',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',

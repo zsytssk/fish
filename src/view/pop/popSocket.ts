@@ -254,15 +254,16 @@ export function getCompetitionInfo(currency: string) {
 export function competitionSignUp(currency?: string) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
+        currency = currency || modelState.app.user_info.cur_balance;
         socket.event.once(ArenaEvent.SignUp, (data: SignUpRes, code) => {
             resolve({
                 code,
-                currency: currency || modelState.app.user_info.cur_balance,
+                currency,
                 ...data,
             });
         });
         socket.send(ArenaEvent.SignUp, {
-            currency: modelState.app.user_info.cur_balance,
+            currency,
         } as SignUpReq);
     }) as Promise<SignUpRes>;
 }
@@ -315,6 +316,7 @@ export function arenaBuyGift() {
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
                 arenaErrHandler(null, code);
+                reject(code);
             } else {
                 const userId = getCurUserId(true);
                 const change_arr: ChangeUserNumInfo['change_arr'] = [];

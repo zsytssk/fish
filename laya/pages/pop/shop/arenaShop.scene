@@ -2,6 +2,7 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
+    "selecteID":51,
     "searchKey":"Dialog",
     "props":{"width":1045,"sceneColor":"#000000","sceneBg":"laya/views/pop/shop.png","runtime":"view/pop/arenaShop.ts","isModal":true,"height":460},
     "nodeParent":-1,

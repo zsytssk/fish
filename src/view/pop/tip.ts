@@ -21,17 +21,24 @@ const DefaultOpt = {
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     private count_id: number;
     private static instance: TipPop;
+    public _zOrder = 1001;
+    public get zOrder() {
+        return this._zOrder;
+    }
+    public set zOrder(value) {
+        this._zOrder = value;
+    }
     public static async tip(msg: string, opt?: TipPopOpt) {
         AudioCtrl.play(AudioRes.PopShow);
         this.instance = await honor.director.openDialog<TipPop>(
             'pop/alert/tip.scene',
             {
-                use_exist: true,
+                stay_scene: false,
                 before_open_param: [msg],
             },
         );
 
-        this.instance.tip(msg, opt);
+        return this.instance.tip(msg, opt);
     }
     public static async hide() {
         if (this.instance) {

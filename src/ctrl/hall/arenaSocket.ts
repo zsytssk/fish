@@ -284,5 +284,7 @@ export function arenaErrHandler(
         TipPop.tip(tplIntr('BuyFail'));
     } else if (code === ArenaErrCode.ItemNotExist) {
         TipPop.tip(tplIntr('ItemNotExist'));
+    } else if (code === ArenaErrCode.GiftOnlyOnce) {
+        TipPop.tip(tplIntr('GiftOnlyOnce'));
     }
 }

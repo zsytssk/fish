@@ -19,7 +19,7 @@ import {
 } from '@app/model/game/gun/gunModel';
 import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
-import { getCurPlayer, getUserInfo } from '@app/model/modelState';
+import { getCurPlayer, getCurUserId, getUserInfo } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
 import { darkNode, tplIntr, unDarkNode } from '@app/utils/utils';
@@ -220,11 +220,6 @@ export class PlayerCtrl extends ComponentManager {
                         SkillMap.Auto,
                     ) as AutoShootModel;
                     setTimeout(() => {
-                        if (this.model.bullet_num) {
-                            TipPop.tip(
-                                tplIntr('NotEnoughBulletNumChangeTurretTip'),
-                            );
-                        }
                         skill_model.toggle();
                     });
                 }
@@ -279,15 +274,24 @@ export class PlayerCtrl extends ComponentManager {
     private resetGetBulletCost() {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { isTrial } = this.game_ctrl;
-        const { user_id } = getUserInfo();
+        const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
-        if (bullet_cost !== this.model.bullet_cost + '') {
+        console.log(
+            `test:>resetGetBulletCost`,
+            bullet_cost,
+            this.model.bullet_cost,
+        );
+        if (
+            bullet_cost !== this.model.bullet_cost + '' &&
+            Number(bullet_cost)
+        ) {
+            // Arena 的enterGame和tableIn的时间差，差这么多
             setTimeout(() => {
                 this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
                     multiple: Number(bullet_cost),
                 } as ChangeTurretReq);
-            });
+            }, 800);
         }
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
@@ -309,7 +313,7 @@ export class PlayerCtrl extends ComponentManager {
         } as ChangeTurretReq);
 
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
-        const { user_id } = getUserInfo();
+        const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }

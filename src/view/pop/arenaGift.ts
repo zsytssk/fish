@@ -47,10 +47,14 @@ export default class ArenaGiftPop
         onNodeWithAni(btn, Event.CLICK, () => {
             const id = this.data.id;
             if (id) {
-                arenaBuyGift().then(() => {
-                    TipPop.tip(tplIntr('buySuccess'));
-                    this.close();
-                });
+                arenaBuyGift()
+                    .then(() => {
+                        TipPop.tip(tplIntr('buySuccess'));
+                        this.close();
+                    })
+                    .catch(() => {
+                        this.close();
+                    });
             }
         });
         list.renderHandler = new Handler(

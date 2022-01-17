@@ -147,6 +147,8 @@ export enum ArenaErrCode {
     BuyGiftFail = 305,
     /** 用户商城购买失败 */
     BuyShopFail = 306,
+    /** 礼包当天只能买一次 */
+    GiftOnlyOnce = 307,
     /** 道具不存在 */
     ItemNotExist = 401,
     /** 维护中 */

@@ -81,6 +81,7 @@ export type GameCtrlUtils = {
     buySkillTip: () => void;
     changeUserNumInfo: (data: ChangeUserNumInfo) => void;
     isTrial: EnterGameRep['isTrial'];
+    isArena: boolean;
     currency: string;
 };
 
@@ -90,6 +91,7 @@ export class GameCtrl implements GameCtrlUtils {
     public view: GameView;
     private model: GameModel;
     public currency = '';
+    public isArena = false;
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;

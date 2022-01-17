@@ -9,6 +9,7 @@ import {
     PlayerEvent,
     PlayerModel,
 } from '@app/model/game/playerModel';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { tplIntr } from '@app/utils/utils';
 import TipPop from '@app/view/pop/tip';
 import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
@@ -89,8 +90,15 @@ export class ArenaPlayerCom implements Component {
             () => {
                 setTimeout(() => {
                     if (this.model.bullet_num) {
-                        TipPop.tip(
-                            tplIntr('NotEnoughBulletNumChangeTurretTip'),
+                        return asyncOnly(
+                            'NotEnoughBulletNumChangeTurretTip',
+                            () => {
+                                return TipPop.tip(
+                                    tplIntr(
+                                        'NotEnoughBulletNumChangeTurretTip',
+                                    ),
+                                );
+                            },
                         );
                     }
                 });

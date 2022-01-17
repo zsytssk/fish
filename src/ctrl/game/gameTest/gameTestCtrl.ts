@@ -34,6 +34,7 @@ import { genUserInfo, mockSocket } from './utils';
 export class GameTestCtrl implements GameCtrlUtils {
     public currency = '';
     public isTrial: EnterGameRep['isTrial'];
+    public isArena = false;
     changeUserNumInfo(data: any) {
         /*  */
     }

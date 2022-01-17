@@ -116,6 +116,10 @@ export default class ArenaShopPop
             icon_check.visible = true;
             select_bd.visible = true;
         }
+        const width = cur_label.width + 30;
+        cur_btn.width = width > 143 ? width : 143;
+        // 触发重新渲染来定位
+        cur_label.centerX = cur_label.centerX === 0 ? -1 : 0;
     };
     /** 购买皮肤 */
     public buyGunSkin(itemId: string) {
