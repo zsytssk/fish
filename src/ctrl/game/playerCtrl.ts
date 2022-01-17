@@ -2,6 +2,7 @@ import SAT from 'sat';
 
 import { Laya } from 'Laya';
 import { ComponentManager } from 'comMan/component';
+import { TimeoutCom } from 'comMan/timeoutCom';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
@@ -47,12 +48,14 @@ export class PlayerCtrl extends ComponentManager {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
+    private time_out = new TimeoutCom();
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
         public game_ctrl: GameCtrlUtils,
     ) {
         super();
+        this.addCom(this.time_out);
         this.init();
     }
     private init() {
@@ -219,9 +222,9 @@ export class PlayerCtrl extends ComponentManager {
                     const skill_model = this.model.getSkill(
                         SkillMap.Auto,
                     ) as AutoShootModel;
-                    setTimeout(() => {
+                    this.time_out.createTimeout(() => {
                         skill_model.toggle();
-                    });
+                    }, 0);
                 }
             },
             this,
@@ -287,7 +290,7 @@ export class PlayerCtrl extends ComponentManager {
             Number(bullet_cost)
         ) {
             // Arena 的enterGame和tableIn的时间差，差这么多
-            setTimeout(() => {
+            this.time_out.createTimeout(() => {
                 this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
                     multiple: Number(bullet_cost),
                 } as ChangeTurretReq);
