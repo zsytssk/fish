@@ -40,9 +40,10 @@ export default class ArenaTopPlayerPop
         );
     }
     public initData(data: GetHallOfFameData) {
-        const { list } = this;
+        const { list, empty_tip } = this;
         list.array = data;
         list.hScrollBarSkin = '';
+        empty_tip.visible = Boolean(!data?.length);
     }
     private listRenderHandler(
         box: ui.pop.arenaTopPlayer.itemUI,

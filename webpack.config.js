@@ -105,7 +105,6 @@ const dev_config = {
     stats: {
         warnings: false,
     },
-    watch: ENV === 'DEV' ? true : false,
     devServer: {
         allowedHosts: 'all',
         host: '0.0.0.0',
