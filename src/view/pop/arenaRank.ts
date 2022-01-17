@@ -80,9 +80,14 @@ export default class ArenaRankPop
         }
 
         const clip = box.getChildByName('clip') as Clip;
+        const label0 = box.getChildByName('label0') as Label;
         const label1 = box.getChildByName('label1') as Label;
         const label2 = box.getChildByName('label2') as Label;
         const label3 = box.getChildByName('label3') as Label;
+
+        clip.visible = index < 3;
+        label0.visible = index >= 3;
+        label0.text = index + 1 + '';
         clip.index = index;
         label1.text = data.userId + '';
         label2.text = tplIntr('arenaRankScore', { score: data.score });
