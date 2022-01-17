@@ -18,10 +18,8 @@ import { HonorDialog } from './view';
  * 如果不想有任何效果，可以赋值为null
  */
 const defaultPopupEffect = function (dialog: HonorDialog) {
-    if ((dialog as any).HonorEffectTween) {
-        ((dialog as any).HonorEffectTween as Tween).complete();
-    }
-    (dialog as any).HonorEffectTween = Tween.from(
+    dialog.scale(1, 1);
+    dialog._effectTween = Tween.from(
         dialog,
         {
             x: Laya.stage.width / 2,
@@ -47,11 +45,7 @@ const defaultPopupEffect = function (dialog: HonorDialog) {
  * 如果不想有任何效果，可以赋值为null
  */
 const defaultCloseEffect = function (dialog: HonorDialog) {
-    if ((dialog as any).HonorEffectTween) {
-        ((dialog as any).HonorEffectTween as Tween).complete();
-    }
-
-    (dialog as any).HonorEffectTween = Tween.to(
+    dialog._effectTween = Tween.to(
         dialog,
         {
             x: Laya.stage.width / 2,

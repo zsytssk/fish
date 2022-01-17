@@ -90,7 +90,9 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                         if (repeat) {
                             fn();
                         }
-                        resolve();
+                        setTimeout(() => {
+                            resolve();
+                        });
                     }
                 });
             };

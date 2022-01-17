@@ -88,8 +88,8 @@ export class ArenaPlayerCom implements Component {
         model.gun.event.on(
             GunEvent.NotEnoughBulletNum,
             () => {
-                setTimeout(() => {
-                    if (this.model.bullet_num) {
+                if (this.model.bullet_num) {
+                    setTimeout(() => {
                         return asyncOnly(
                             'NotEnoughBulletNumChangeTurretTip',
                             () => {
@@ -100,8 +100,8 @@ export class ArenaPlayerCom implements Component {
                                 );
                             },
                         );
-                    }
-                });
+                    });
+                }
             },
             this,
         );
