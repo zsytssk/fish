@@ -21,6 +21,7 @@ const DefaultOpt = {
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     private count_id: number;
     private static instance: TipPop;
+    private task_len: number[] = [];
     public _zOrder = 1001;
     public get zOrder() {
         return this._zOrder;
@@ -69,17 +70,22 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
             const { count, show_count, click_through, auto_hide, repeat } = opt;
             const new_msg = show_count ? `${msg} ${count}` : msg;
             this.mouseThrough = click_through;
+            this.task_len.push(1);
 
             const fn = () => {
-                clearCount(this.count_id);
+                clearCount(this.count_id, true);
                 this.count_id = startCount(count, 1, (radio: number) => {
                     if (show_count) {
                         const count_now = Math.floor(count * radio);
                         this.setTipText(`${msg} ${count_now}`);
                     }
                     if (radio === 0) {
+                        this.task_len.pop();
                         if (auto_hide) {
-                            this.close();
+                            // 最后一个需要显示才隐藏
+                            if (this.task_len.length === 0) {
+                                this.close();
+                            }
                         }
                         if (repeat) {
                             fn();

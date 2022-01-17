@@ -91,6 +91,11 @@ export default class ArenaRankPop
         clip.index = index;
         label1.text = data.userId + '';
         label2.text = tplIntr('arenaRankScore', { score: data.score });
-        label3.text = tplIntr('arenaRankAward', { award: data.award });
+
+        if (type === 'yesterday') {
+            label3.text = tplIntr('arenaRankAward1', { award: data.award });
+        } else {
+            label3.text = tplIntr('arenaRankAward2', { award: data.award });
+        }
     }
 }
