@@ -45,6 +45,12 @@ export default class ArenaTopPlayerPop
         list.array = data;
         list.hScrollBarSkin = '';
         empty_tip.visible = Boolean(!data?.length);
+        if (data.length < 3) {
+            list.width = data.length * 177 + (data.length - 1) * 10 + 16 * 2;
+        } else {
+            list.width = 955;
+        }
+        list.centerX = list.centerX === 0 ? -1 : 0;
     }
     private listRenderHandler(
         box: ui.pop.arenaTopPlayer.itemUI,
