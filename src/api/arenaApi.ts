@@ -1,13 +1,15 @@
 /** 游戏状态 */
 export enum ArenaStatus {
     /** 维护中  */
-    Maintenance = 1,
+    ROOM_STATUS_MAINTAIN = 1,
     /** 未开启  */
-    NoOpen = 2,
-    /** 开启  */
-    Open = 3,
-    /** 结束  */
-    Settle = 4,
+    ROOM_STATUS_DISABLE = 2,
+    /** 预热开启  */
+    ROOM_STATUS_ENABLE_PREHEAT = 3,
+    /** 开启中  */
+    ROOM_STATUS_ENABLE = 4,
+    /** 已结算  */
+    ROOM_STATUS_SETTLEMENT = 5,
 }
 
 export type ServerItemInfo = {

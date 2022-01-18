@@ -187,7 +187,7 @@ export default class HallView
         const {arena_timezone,  btn_competition} = this;
         const gray = btn_competition.getChildByName('gray') as Image;
 
-        if (!info?.room_status || info?.room_status === ArenaStatus.Maintenance) {
+        if (!info?.room_status || info?.room_status === ArenaStatus.ROOM_STATUS_MAINTAIN) {
             (btn_competition as unknown as ClickNode).is_disable = true;
             arena_timezone.text = tplIntr('maintaining')
             gray.visible = true;
@@ -197,11 +197,11 @@ export default class HallView
         const {room_status, open_timezone} = info;
 
 
-        const notOpen =  room_status === ArenaStatus.NoOpen;
+        const notOpen =  room_status === ArenaStatus.ROOM_STATUS_DISABLE;
         gray.visible = notOpen;
         if (notOpen) {
             arena_timezone.text = tplIntr('noOpen');
-        } else if (room_status === ArenaStatus.NoOpen) {
+        } else if (room_status === ArenaStatus.ROOM_STATUS_ENABLE_PREHEAT) {
             arena_timezone.text = tplIntr('preStartTime', {time: formatUTC0DateTime(open_timezone[0], 'MM/DD')})
         } else {
             arena_timezone.text = formatDateRange(open_timezone)

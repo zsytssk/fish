@@ -89,8 +89,7 @@ export async function connectArenaHallSocket(checkReplay = false) {
 
         if (
             !data ||
-            (data.roomStatus !== ArenaStatus.Open &&
-                data.roomStatus !== ArenaStatus.Maintenance) ||
+            data.roomStatus !== ArenaStatus.ROOM_STATUS_ENABLE ||
             (data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
                 data.userStatus !== ArenaGameStatus.GAME_STATUS_PLAYING)
         ) {

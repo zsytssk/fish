@@ -182,6 +182,12 @@ export default class ArenaCompetitionPop
             (btn_sign as Button).disabled = true;
             btn_sign.labelPadding = '0,0,5,0';
             return 'not_open';
+        } else if (status === ArenaGameStatus.GAME_STATUS_SETTLEMENT) {
+            (btn_sign as Button).label = tplIntr('GameEnded');
+            cost_label.visible = false;
+            (btn_sign as Button).disabled = true;
+            btn_sign.labelPadding = '0,0,5,0';
+            return 'not_open';
         } else if (
             status === ArenaGameStatus.GAME_STATUS_FREE ||
             status === ArenaGameStatus.GAME_STATUS_NO_SIGNUP

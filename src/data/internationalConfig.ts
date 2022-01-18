@@ -736,8 +736,7 @@ export const International = {
         score: '积分: {score}',
         openTime: '活动时间：{startTime}-{endTime}',
         notInRank: '暂未上榜',
-        arenaNotEndCurrency:
-            '尽管你选择的货币{currency1}, 但是目前你在{currency2}游戏还没结束，点击继续游戏',
+        arenaNotEndCurrency: '有未结束比赛，请点击继续游戏',
         arenaNotSupportCurrency:
             '本模式不支持{currency1}货币，已为你自动转换{currency2}',
         maintainQuitTip: '游戏维护中，请退出游戏！',
@@ -938,8 +937,7 @@ export const International = {
         score: '積分: {score}',
         openTime: '活動時間：{startTime}-{endTime}',
         notInRank: '暫未上榜',
-        arenaNotEndCurrency:
-            '盡管你選擇的貨幣{currency1}, 但是目前你在{currency2}遊戲還冇結束，點擊繼續遊戲',
+        arenaNotEndCurrency: '有未结束比赛，请点击继续游戏',
         arenaNotSupportCurrency:
             '本模式不支持{currency1}貨幣，已為你自動轉換{currency2}',
         maintainQuitTip: '遊戲維護中，請退出遊戲！',
