@@ -31,7 +31,6 @@ const defaultPopupEffect = function (dialog: HonorDialog) {
         300,
         Ease.backOut,
         Handler.create(this, () => {
-            (dialog as any).HonorEffectTween = undefined;
             dialog.scale(1, 1);
             dialog.alpha = 1;
             this.doOpen(dialog);
@@ -57,7 +56,6 @@ const defaultCloseEffect = function (dialog: HonorDialog) {
         300,
         Ease.backIn,
         Handler.create(this, () => {
-            (dialog as any).HonorEffectTween = undefined;
             dialog.scale(1, 1);
             dialog.alpha = 1;
             this.doClose(dialog);

@@ -748,7 +748,7 @@ export const International = {
         arenaSettle2: '排行奖励',
         arenaRankScore: '获得积分：{score}',
         arenaRankAward1: '预计奖励：{award}',
-        arenaRankAward2: '预计奖励：{award}',
+        arenaRankAward2: '奖励：{award}',
         arenaRankTitle: '每日排行',
         arenaRankTab0: '今日排行',
         arenaRankTab1: '昨日排行',
