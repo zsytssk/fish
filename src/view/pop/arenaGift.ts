@@ -68,8 +68,12 @@ export default class ArenaGiftPop
 
     public initData(data: GiftList) {
         this.data = data;
-        const { btn, list } = this;
-        btn.label = `${data.price}${data.currency}`;
+        const { btn, list, btn_label } = this;
+
+        btn_label.text = `${data.price}${data.currency}`;
+        const width = btn_label.width + 50;
+        btn.width = width > 161 ? width : 161;
+
         list.array = data.list;
         const num = data.list.length;
         list.repeatX = num;
