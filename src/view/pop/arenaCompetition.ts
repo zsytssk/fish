@@ -246,12 +246,12 @@ export default class ArenaCompetitionPop
             : isTopRank
             ? rankArr[startRanking]
             : `${startRanking}-${endRanking}`;
-        nickname.text = userId || '';
+        nickname.text = userId || tplIntr('noUser');
 
         if (score) {
             scoreLabel.text = tplIntr('score', { score });
         } else {
-            scoreLabel.text = ``;
+            scoreLabel.text = tplIntr('score', { score: '--' });
         }
         num_label.text = amount || '';
         const signSkin = isAllTop

@@ -249,6 +249,7 @@ export type ArenaAwardListResItem = {
     time: number;
     award: number;
     currency: string;
+    userId: string;
 };
 export type ArenaAwardListRes = {
     list: ArenaAwardListResItem[];

@@ -103,6 +103,7 @@ export default class ArenaRewardRecordPop
         title.text = tplIntr('arenaAwardTitle');
         empty_tip.text = tplIntr('noData');
         const arr = [
+            tplIntr('arenaAwardItemTitle0'),
             tplIntr('arenaAwardItemTitle1'),
             tplIntr('arenaAwardItemTitle2'),
             tplIntr('arenaAwardItemTitle3'),
@@ -195,6 +196,7 @@ export default class ArenaRewardRecordPop
 
         record_list.array = data.map((item) => {
             return {
+                username: item.userId,
                 grade: item.ranking,
                 time: formatUTC0DateTime(item.time),
                 num: item.award + item.currency,
