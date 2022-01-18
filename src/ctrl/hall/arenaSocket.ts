@@ -224,7 +224,7 @@ export function getArenaGuestToken(socket: WebSocketTrait) {
     }) as Promise<string>;
 }
 
-export function arenaErrHandler(
+export async function arenaErrHandler(
     ctrl: GameCtrl | any,
     code: number,
     data?: any,

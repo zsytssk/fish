@@ -450,7 +450,7 @@ export function arenaBuyItem(id: string, itemId: string, num = 1) {
         socket.event.once(ArenaEvent.BuyGoods, (data: BuyRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
                 arenaErrHandler(null, code, data, socket);
-                reject();
+                reject(code);
                 return;
             }
 

@@ -99,9 +99,13 @@ export default class ArenaShopPop
                     if (!_status) {
                         return;
                     }
-                    arenaBuyItem(id, itemId, 1).then(() => {
-                        this.buyGunSkin(itemId);
-                    });
+                    arenaBuyItem(id, itemId, 1)
+                        .then(() => {
+                            this.buyGunSkin(itemId);
+                        })
+                        .catch(() => {
+                            this.close();
+                        });
                 });
             });
         } else if (status === GunSkinStatus.Have) {

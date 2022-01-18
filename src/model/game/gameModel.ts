@@ -97,7 +97,6 @@ export class GameModel extends ComponentManager {
     public captureFish(info: HitRep) {
         const { userId, eid, backAmount } = info;
         const player = this.getPlayerById(userId);
-        const fish = this.getFishById(eid);
 
         if (!player) {
             error(`Game:>captureFish:> cant find player for ${userId}`);
@@ -108,7 +107,11 @@ export class GameModel extends ComponentManager {
                 bullet_num: player.bullet_num + backAmount,
             });
         }
+        if (!eid) {
+            return;
+        }
 
+        const fish = this.getFishById(eid);
         if (!fish) {
             error(`Game:>captureFish:> cant find fish for ${eid}`);
             return;

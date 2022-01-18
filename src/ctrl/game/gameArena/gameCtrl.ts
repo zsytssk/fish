@@ -444,11 +444,14 @@ export class GameCtrl implements GameCtrlUtils {
     }
     public async GameSettle(data: SettleData) {
         await ArenaGameStatus.end();
+        this.reset();
         await ArenaSettlePop.preEnter(data).then((type) => {
             if (type === 'continue') {
                 competitionSignUp(data.currency).then((_data) => {
                     if (_data.code !== ARENA_OK_CODE) {
-                        arenaErrHandler(this, _data.code);
+                        arenaErrHandler(this, _data.code).then(() => {
+                            this.leave();
+                        });
                     } else {
                         this?.model.destroy();
                         ctrlState.app.enterArenaGame({
