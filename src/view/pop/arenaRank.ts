@@ -93,9 +93,13 @@ export default class ArenaRankPop
         label2.text = tplIntr('arenaRankScore', { score: data.score });
 
         if (type === 'yesterday') {
-            label3.text = tplIntr('arenaRankAward2', { award: data.award });
+            label3.text = tplIntr('arenaRankAward2', {
+                award: data.award + data.currency,
+            });
         } else {
-            label3.text = tplIntr('arenaRankAward1', { award: data.award });
+            label3.text = tplIntr('arenaRankAward1', {
+                award: data.award + data.currency,
+            });
         }
     }
 }

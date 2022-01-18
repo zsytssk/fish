@@ -131,6 +131,7 @@ export type GetDayRankingItem = {
     userId: number;
     score: number;
     award: number;
+    currency: string;
 };
 export type GetDayRanking = {
     today: GetDayRankingItem[];
