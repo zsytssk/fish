@@ -8,7 +8,7 @@ import { Lang } from '@app/data/internationalConfig';
 import { type ArenaModel } from '@app/model/arena/arenaModel';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { fade_in, fade_out } from '@app/utils/animate';
-import { formatDateRange } from '@app/utils/dayjsUtil';
+import { formatDateRange, formatUTC0DateTime } from '@app/utils/dayjsUtil';
 import { ClickNode, onStageClick, resizeContain } from '@app/utils/layaUtils';
 import { error } from '@app/utils/log';
 import { covertLang, playSkeleton, tplIntr } from '@app/utils/utils';
@@ -185,19 +185,29 @@ export default class HallView
     }
     public updateArenaInfo(info?: ArenaModel) {
         const {arena_timezone,  btn_competition} = this;
-        if (!info?.room_status) {
+        const gray = btn_competition.getChildByName('gray') as Image;
+
+        if (!info?.room_status || info?.room_status === ArenaStatus.Maintenance) {
             (btn_competition as unknown as ClickNode).is_disable = true;
             arena_timezone.text = tplIntr('maintaining')
+            gray.visible = true;
             return;
         }
 
         const {room_status, open_timezone} = info;
 
-        arena_timezone.text = formatDateRange(open_timezone)
-        const gray = btn_competition.getChildByName('gray') as Image;
-        const notOpen = room_status === ArenaStatus.Maintenance || room_status === ArenaStatus.NoOpen;
+
+        const notOpen =  room_status === ArenaStatus.NoOpen;
         gray.visible = notOpen;
+        if (notOpen) {
+            arena_timezone.text = tplIntr('noOpen');
+        } else if (room_status === ArenaStatus.NoOpen) {
+            arena_timezone.text = tplIntr('preStartTime', {time: formatUTC0DateTime(open_timezone[0], 'MM/DD')})
+        } else {
+            arena_timezone.text = formatDateRange(open_timezone)
+        }
         (btn_competition as unknown as ClickNode).is_disable = notOpen;
+
 
     }
     public coinMenuRender(box: Box, index: number) {

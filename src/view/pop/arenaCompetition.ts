@@ -17,7 +17,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { ArenaEvent, ARENA_OK_CODE } from '@app/data/serverEvent';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
-import { formatDateTime } from '@app/utils/dayjsUtil';
+import { formatUTC0DateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { tplIntr } from '@app/utils/utils';
 
@@ -130,6 +130,7 @@ export default class ArenaCompetitionPop
         });
     }
     public initData(data: CompetitionInfo) {
+        console.log(`test:>`, data);
         const { timezone_label, openTime, myScore, myRank, rankList } = this;
 
         this.currency = data.currency;
@@ -138,8 +139,8 @@ export default class ArenaCompetitionPop
             ? `${data.match.startPeriod}-${data.match.endPeriod}`
             : '~';
         timezone_label.text = tplIntr('openTime', {
-            startTime: formatDateTime(data.match.startTime, 'MM.DD'),
-            endTime: `${formatDateTime(data.match.endTime, 'MM.DD')}`,
+            startTime: formatUTC0DateTime(data.match.startTime, 'MM.DD'),
+            endTime: `${formatUTC0DateTime(data.match.endTime, 'MM.DD')}`,
         });
         myScore.text = data.myself.score ? data.myself.score + '' : '~';
         myRank.text = data.myself.ranking
@@ -186,10 +187,14 @@ export default class ArenaCompetitionPop
             status === ArenaGameStatus.GAME_STATUS_NO_SIGNUP
         ) {
             cost_label.visible = true;
-            cost_label.text = tplIntr('feeStr', {
-                fee,
-                currency: 'USDT',
-            });
+            if (status === ArenaGameStatus.GAME_STATUS_FREE || fee === 0) {
+                cost_label.text = tplIntr('feeFreeStr');
+            } else {
+                cost_label.text = tplIntr('feeStr', {
+                    fee,
+                    currency: 'USDT',
+                });
+            }
             (btn_sign as Button).label = tplIntr('sign');
             btn_sign.labelPadding = '0,0,15,0';
             return 'sign';

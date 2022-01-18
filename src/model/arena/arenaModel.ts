@@ -3,7 +3,6 @@ import { EventCom } from 'comMan/eventCom';
 
 import {
     ArenaGameStatus,
-    ArenaRoomStatus,
     ArenaStatus,
     type ArenaStatusData,
 } from '@app/api/arenaApi';
@@ -16,7 +15,6 @@ export class ArenaModel extends ComponentManager {
     room_status: ArenaStatus;
     user_status: ArenaGameStatus;
     open_timezone: LocalRange;
-    game_status: ArenaRoomStatus;
     user_id:string;
     constructor() {
     super();

@@ -15,6 +15,7 @@ import {
     ServerName,
 } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { error, log } from '@app/utils/log';
 import { getParams, tplIntr } from '@app/utils/utils';
@@ -232,10 +233,12 @@ export async function arenaErrHandler(
 ) {
     if (code === ArenaErrCode.Maintenance) {
         if (typeof ctrl.leave === 'function') {
-            AlertPop.alert(tplIntr('maintainTip'), {
-                hide_cancel: true,
-            }).then(() => {
-                ctrl.leave();
+            asyncOnly('maintainQuitTipAlert', async () => {
+                return AlertPop.alert(tplIntr('maintainQuitTip'), {
+                    hide_cancel: true,
+                }).then(() => {
+                    ctrl.leave();
+                });
             });
         } else {
             TipPop.tip(tplIntr('maintainTip'));
@@ -253,10 +256,10 @@ export async function arenaErrHandler(
         });
     } else if (code === ArenaErrCode.NoOpen) {
         TipPop.tip(tplIntr('gameNoOpen'));
-        socket.send(ArenaEvent.ArenaStatus);
+        socket?.send(ArenaEvent.ArenaStatus);
     } else if (code === ArenaErrCode.GameEnded) {
         TipPop.tip(tplIntr('GameEnded'));
-        socket.send(ArenaEvent.ArenaStatus);
+        socket?.send(ArenaEvent.ArenaStatus);
     } else if (
         code === ArenaErrCode.SignUpFail ||
         code === ArenaErrCode.GuestSignUpFail

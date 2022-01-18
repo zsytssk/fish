@@ -7,9 +7,13 @@ import { sleep } from '@app/utils/animate';
 import ArenaView from '@app/view/scenes/arena/arenaView';
 import { viewState } from '@app/view/viewState';
 
+import statusData from './data/statusData.json';
 import taskData from './data/taskData.json';
 
 export const arena_test = testBuild({
+    status: async () => {
+        modelState.app.arena_info.updateInfo(statusData.status1);
+    },
     enter: async () => {
         if (modelState?.game) {
             return;

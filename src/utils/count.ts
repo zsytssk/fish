@@ -41,12 +41,12 @@ export function clearCount(index: number, finish = false) {
     if (!item) {
         return;
     }
-    if (finish) {
-        item.complete();
-    }
     item.off();
     count_map.delete(index);
     if (count_map.size === 0) {
         // count_index = 0;
+    }
+    if (finish) {
+        item.complete();
     }
 }

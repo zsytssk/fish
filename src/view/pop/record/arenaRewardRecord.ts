@@ -7,7 +7,7 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { formatDateTime, getMonthDateList } from '@app/utils/dayjsUtil';
+import { formatUTC0DateTime, getMonthDateList } from '@app/utils/dayjsUtil';
 import { tplIntr } from '@app/utils/utils';
 
 import { arenaAwardList, arenaMatchList } from '../popSocket';
@@ -196,7 +196,7 @@ export default class ArenaRewardRecordPop
         record_list.array = data.map((item) => {
             return {
                 grade: item.ranking,
-                time: formatDateTime(item.time),
+                time: formatUTC0DateTime(item.time),
                 num: item.award + item.currency,
             };
         });
