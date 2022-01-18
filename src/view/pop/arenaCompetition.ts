@@ -3,7 +3,11 @@ import { Event } from 'laya/events/Event';
 import { Button } from 'laya/ui/Button';
 import { Handler } from 'laya/utils/Handler';
 
-import { ArenaGameStatus, CompetitionInfo } from '@app/api/arenaApi';
+import {
+    ArenaGameStatus,
+    ArenaStatus,
+    CompetitionInfo,
+} from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import {
     arenaErrHandler,
@@ -12,9 +16,9 @@ import {
 } from '@app/ctrl/hall/arenaSocket';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
-import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
+import { bindSocketEvent, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { ArenaEvent, ARENA_OK_CODE } from '@app/data/serverEvent';
+import { ArenaEvent, ARENA_OK_CODE, ServerName } from '@app/data/serverEvent';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
 import { formatUTC0DateTime } from '@app/utils/dayjsUtil';
@@ -72,7 +76,11 @@ export default class ArenaCompetitionPop
         const fee = data.match.fee;
 
         this.initData(data);
-        const sign_status = this.renderSignButton(status, fee);
+        const sign_status = this.renderSignButton(
+            data.arenaStatus,
+            status,
+            fee,
+        );
 
         if (currency !== data.currency) {
             sleep(0.5).then(() => {
@@ -99,13 +107,18 @@ export default class ArenaCompetitionPop
         const { btn_sign, btn_famous, btn_help, btn_best } = this;
         onNodeWithAni(btn_sign, Event.CLICK, () => {
             competitionSignUp(this.currency).then((data) => {
-                const hasStatus = data.status !== undefined;
+                const canEnter =
+                    data.status &&
+                    (data.status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
+                        data.status === ArenaGameStatus.GAME_STATUS_PLAYING ||
+                        data.status === ArenaGameStatus.GAME_STATUS_TABLE_OUT);
 
-                if (hasStatus) {
-                    this.renderSignButton(data.status);
-                }
-                if (data.code !== ARENA_OK_CODE && !hasStatus) {
+                if (data.code !== ARENA_OK_CODE && !canEnter) {
                     arenaErrHandler(null, data.code);
+                    const socket = getSocket(ServerName.ArenaHall);
+                    socket.send(ArenaEvent.CompetitionInfo, {
+                        currency: this.currency,
+                    });
                     return;
                 }
 
@@ -130,7 +143,6 @@ export default class ArenaCompetitionPop
         });
     }
     public initData(data: CompetitionInfo) {
-        console.log(`test:>`, data);
         const { timezone_label, openTime, myScore, myRank, rankList } = this;
 
         this.currency = data.currency;
@@ -165,8 +177,15 @@ export default class ArenaCompetitionPop
         rankList.array = array;
         rankList.hScrollBarSkin = '';
     }
-    private renderSignButton(status: ArenaGameStatus, fee?: number) {
+    private renderSignButton(
+        arena_status: ArenaStatus,
+        user_status: ArenaGameStatus,
+        fee?: number,
+    ) {
         const { btn_sign, cost_label } = this;
+        const status = calcUserStatus(arena_status, user_status);
+
+        console.log(`test:>`, arena_status, user_status, status);
         if (
             status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
             status === ArenaGameStatus.GAME_STATUS_PLAYING ||
@@ -278,4 +297,21 @@ export default class ArenaCompetitionPop
         offArenaHallSocket(this);
         super.destroy(destroyChild);
     }
+}
+
+export function calcUserStatus(
+    arena_status: ArenaStatus,
+    user_status: ArenaGameStatus,
+) {
+    if (
+        arena_status !== ArenaStatus.ROOM_STATUS_ENABLE &&
+        arena_status !== ArenaStatus.ROOM_STATUS_SETTLEMENT
+    ) {
+        return ArenaGameStatus.GAME_STATUS_CLOSE;
+    }
+
+    if (arena_status === ArenaStatus.ROOM_STATUS_SETTLEMENT) {
+        return ArenaGameStatus.GAME_STATUS_SETTLEMENT;
+    }
+    return user_status;
 }

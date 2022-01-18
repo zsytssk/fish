@@ -256,7 +256,7 @@ export class PlayerCtrl extends ComponentManager {
         });
     }
     private handleAutoShoot(model: AutoShootModel, view: Sprite) {
-        view.on(Event.CLICK, this, (e: Event) => {
+        view.on(Event.CLICK, this.view, (e: Event) => {
             e.stopPropagation();
             log('auto shoot');
             model.toggle();
@@ -280,11 +280,7 @@ export class PlayerCtrl extends ComponentManager {
         const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
-        console.log(
-            `test:>resetGetBulletCost`,
-            bullet_cost,
-            this.model.bullet_cost,
-        );
+
         if (
             bullet_cost !== this.model.bullet_cost + '' &&
             Number(bullet_cost)
@@ -333,7 +329,7 @@ export class PlayerCtrl extends ComponentManager {
         Laya.stage.offAllCaller(view);
         player_event.offAllCaller(this);
         gun_event.offAllCaller(this);
-        getAutoShootSkillItem().offAllCaller(view);
+        getAutoShootSkillItem().offAllCaller(this);
 
         view.destroy();
         this.view = undefined;

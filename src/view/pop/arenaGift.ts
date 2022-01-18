@@ -6,6 +6,7 @@ import { GiftItem, GiftList } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
+import { SkillMap } from '@app/data/config';
 import { ui } from '@app/ui/layaMaxUI';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { tplIntr } from '@app/utils/utils';
@@ -82,12 +83,22 @@ export default class ArenaGiftPop
         list.centerX = list.centerX === 0 ? 1 : 0;
     }
     private listRenderHandler(box: ui.pop.arenaGift.itemViewUI, index: number) {
-        const { name_label, num_label, icon } = box;
+        const { name_label, num_label, icon, btn_ques } = box;
         const data = this.list.array[index] as GiftItem;
 
         icon.skin = `image/pop/shop/icon/${data.itemId}.png`;
         num_label.text = data.num + '';
         const name = getItemName(data.itemId + '');
+
+        btn_ques.offAllCaller(this);
+        if (data.itemId + '' === SkillMap.Bullet) {
+            btn_ques.visible = true;
+            btn_ques.on(Event.CLICK, this, () => {
+                TipPop.tip(tplIntr('GiftBulletTip'));
+            });
+        } else {
+            btn_ques.visible = false;
+        }
         if (name) {
             name_label.text = `${getItemName(data.itemId + '')} x${data.num}`;
         } else {

@@ -141,6 +141,8 @@ export enum ArenaErrCode {
     SignUpFail = 303,
     /** 游客报名失败 */
     GuestSignUpFail = 308,
+    /** 报名截止 */
+    UserSignUpDeadline = 309,
     /** 用户子弹数不足 */
     BulletLack = 304,
     /** 用户礼包购买失败 */

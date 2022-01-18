@@ -277,6 +277,8 @@ export async function arenaErrHandler(
         } else {
             TipPop.tip(errMsg);
         }
+    } else if (code === ArenaErrCode.UserSignUpDeadline) {
+        TipPop.tip(tplIntr('UserSignUpDeadline'));
     } else if (code === ArenaErrCode.BulletLack) {
         TipPop.tip(tplIntr('BulletLack'));
     } else if (
