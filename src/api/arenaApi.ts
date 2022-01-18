@@ -170,8 +170,8 @@ export type SettleData = {
 
 export type GetHallOfFameDataItem = {
     userId: number | string;
-    startDate: string;
-    endDate: string;
+    startDate: number;
+    endDate: number;
     score: number;
 };
 export type GetHallOfFameData = GetHallOfFameDataItem[];

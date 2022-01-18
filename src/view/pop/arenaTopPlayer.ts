@@ -6,6 +6,7 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
+import { formatDateRange } from '@app/utils/dayjsUtil';
 import { tplIntr } from '@app/utils/utils';
 
 export default class ArenaTopPlayerPop
@@ -54,6 +55,6 @@ export default class ArenaTopPlayerPop
 
         score_label.text = tplIntr('score', { score: data.score });
         nickname_label.text = `${data.userId}`;
-        time_label.text = `${data.startDate}-${data.endDate}`;
+        time_label.text = formatDateRange([data.startDate, data.endDate]);
     }
 }
