@@ -22,6 +22,10 @@ export const GunEvent = {
     WillAddBullet: 'will_add_bullet',
     /** 添加子弹 */
     AddBullet: 'add_bullet',
+    /** 最大子弹数量 */
+    MaxBulletNum: 'max_bullet_num',
+    /** 销毁子弹 */
+    RemoveBullet: 'remove_bullet',
     /** 方向改变 */
     DirectionChange: 'direction_change',
     /** 开关 */
@@ -71,6 +75,8 @@ export class GunModel extends ComponentManager {
     public skin_level: string;
     /** 炮皮肤 */
     public hole_num: number;
+    /** 最大子弹 */
+    private max_bullet_num = 25;
     /** 子弹列表 */
     private bullet_map: Map<string, BulletGroup> = new Map();
     /** 所属的玩家 */
@@ -223,6 +229,10 @@ export class GunModel extends ComponentManager {
                 }
                 return;
             }
+            if (this.bullet_map.size >= this.max_bullet_num) {
+                event.emit(GunEvent.MaxBulletNum);
+                return;
+            }
         }
         if (!force && status === GunStatus.LockFish) {
             return;
@@ -304,6 +314,7 @@ export class GunModel extends ComponentManager {
     public removeBullet(bullet: BulletGroup) {
         const { bullet_map } = this;
         bullet_map.delete(bullet.id);
+        this.event.emit(GunEvent.RemoveBullet);
     }
     public destroy() {
         const { bullet_map } = this;

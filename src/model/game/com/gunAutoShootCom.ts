@@ -20,6 +20,13 @@ export class GunAutoShootCom extends ComponentManager {
             },
             this,
         );
+        event.on(
+            GunEvent.RemoveBullet,
+            () => {
+                gun.preAddBullet(gun.direction, true);
+            },
+            this,
+        );
         gun.setStatus(GunStatus.AutoShoot);
         gun.preAddBullet(gun.direction, true);
         gun.event.emit(GunEvent.AutoShoot, true);
