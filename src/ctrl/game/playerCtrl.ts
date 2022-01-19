@@ -336,7 +336,7 @@ export class PlayerCtrl extends ComponentManager {
         Laya.stage.offAllCaller(view);
         player_event.offAllCaller(this);
         gun_event.offAllCaller(this);
-        getAutoShootSkillItem().offAllCaller(this);
+        getAutoShootSkillItem().offAllCaller(this.view);
 
         view.destroy();
         this.view = undefined;

@@ -42,6 +42,12 @@ export async function fade_in(
         sprite,
         start_props,
         time,
+    }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
+        sprite.visible = true;
+        sprite.alpha = 1;
     });
 }
 export async function fade_out(

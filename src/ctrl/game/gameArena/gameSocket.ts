@@ -36,6 +36,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             if (code !== ARENA_OK_CODE) {
                 return arenaErrHandler(game, code, data, socket);
             }
+            game.reset();
             currency = data.currency;
             game.onEnterGame(convertEnterGame(data));
         },
@@ -177,7 +178,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             tipExchange(data);
         },
         [SocketEvent.Reconnected]: () => {
-            game.reset();
             socket.send(ServerEvent.EnterGame, { replay: true, currency });
         },
     });
