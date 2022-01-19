@@ -23,7 +23,7 @@ import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
 import { formatUTC0DateTime } from '@app/utils/dayjsUtil';
 import { onNodeWithAni } from '@app/utils/layaUtils';
-import { tplIntr } from '@app/utils/utils';
+import { createColorFilter, tplIntr } from '@app/utils/utils';
 
 import ArenaHelpPop from './arenaHelp';
 import ArenaRankPop from './arenaRank';
@@ -185,12 +185,12 @@ export default class ArenaCompetitionPop
         const { btn_sign, cost_label } = this;
         const status = calcUserStatus(arena_status, user_status);
 
-        console.log(`test:>`, arena_status, user_status, status);
         if (
             status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
             status === ArenaGameStatus.GAME_STATUS_PLAYING ||
             status === ArenaGameStatus.GAME_STATUS_TABLE_OUT
         ) {
+            (btn_sign as Button).disabled = false;
             (btn_sign as Button).label = tplIntr('continueGame');
             cost_label.visible = false;
             btn_sign.labelPadding = '0,0,5,0';
@@ -211,6 +211,7 @@ export default class ArenaCompetitionPop
             status === ArenaGameStatus.GAME_STATUS_FREE ||
             status === ArenaGameStatus.GAME_STATUS_NO_SIGNUP
         ) {
+            (btn_sign as Button).disabled = false;
             cost_label.visible = true;
             if (status === ArenaGameStatus.GAME_STATUS_FREE || fee === 0) {
                 cost_label.text = tplIntr('feeFreeStr');

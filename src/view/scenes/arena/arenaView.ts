@@ -107,11 +107,6 @@ export default class ArenaView
             width = 1334;
         }
         ctrl_box.width = width;
-
-        let scale = 1;
-        if (width < 1290) {
-            scale = 0.8;
-        }
     }
 
     private countId: number;
