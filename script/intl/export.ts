@@ -18,6 +18,10 @@ export async function exportIntl() {
         if (item.length == 5) {
             delete result[key];
         }
+
+        if (item.length <= 2) {
+            console.log(`test:>`, key);
+        }
     }
 
     await writeCsv(result);

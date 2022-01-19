@@ -737,7 +737,7 @@ export const International = {
         arenaAwardItemTitle3: '奖励',
         continueGame: '继续游戏',
         noStart: '比赛暂未开始',
-        preStartTime: '',
+        preStartTime: '{time}開啓',
         noOpen: '暫未开启',
         sign: '报名',
         feeStr: '费用：{fee}{currency}',
