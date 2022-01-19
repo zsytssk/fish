@@ -32,15 +32,15 @@ export const arena_test = testBuild({
         const arena_ctrl = ctrlState.game as ArenaCtrl;
 
         arena_ctrl.triggerTask(taskData.triggerTask);
-        await sleep(3);
-        arena_ctrl.taskRefresh(taskData.taskRefresh1);
-        await sleep(3);
-        arena_ctrl.taskRefresh(taskData.taskRefresh2);
-        await sleep(3);
-        arena_ctrl.taskFinish({
-            ...taskData.taskFinish,
-            userId: modelState.app.arena_info.user_id,
-        });
+        // await sleep(3);
+        // arena_ctrl.taskRefresh(taskData.taskRefresh1);
+        // await sleep(3);
+        // arena_ctrl.taskRefresh(taskData.taskRefresh2);
+        // await sleep(3);
+        // arena_ctrl.taskFinish({
+        //     ...taskData.taskFinish,
+        //     userId: modelState.app.arena_info.user_id,
+        // });
     },
     setPlayerNum: async () => {
         const game = viewState.game as ArenaView;

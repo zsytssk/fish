@@ -9,6 +9,7 @@ import { Event } from 'laya/events/Event';
 import { Point as LayaPoint } from 'laya/maths/Point';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
+import { Ease } from 'laya/utils/Ease';
 
 import {
     TaskFinishRes,
@@ -23,7 +24,7 @@ import {
 import { Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in, fade_out } from '@app/utils/animate';
+import { fade_in, fade_out, scale_in } from '@app/utils/animate';
 import { clearCount, startCount } from '@app/utils/count';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
@@ -119,7 +120,7 @@ export default class ArenaView
             TipPop.tip(tplIntr('taskStartTip'));
         }
         const { task_panel, task_award_num, task_time_num } = this;
-        fade_in(task_panel);
+        scale_in(task_panel, 300, Ease.bounceOut);
         task_panel.visible = true;
         task_award_num.text = taskInfo.award + '';
 
