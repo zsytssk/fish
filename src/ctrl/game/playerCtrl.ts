@@ -20,11 +20,10 @@ import {
 } from '@app/model/game/gun/gunModel';
 import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
-import { getCurPlayer, getCurUserId, getUserInfo } from '@app/model/modelState';
+import { getCurPlayer, getCurUserId } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
-import { darkNode, tplIntr, unDarkNode } from '@app/utils/utils';
-import TipPop from '@app/view/pop/tip';
+import { darkNode, unDarkNode } from '@app/utils/utils';
 import GunBoxView from '@app/view/scenes/game/gunBoxView';
 import {
     getAutoShootSkillItem,
@@ -229,6 +228,7 @@ export class PlayerCtrl extends ComponentManager {
                     const skill_model = this.model.getSkill(
                         SkillMap.Auto,
                     ) as AutoShootModel;
+                    console.warn(`test:>NotEnoughBulletNum`);
                     this.time_out.createTimeout(() => {
                         skill_model.toggle();
                     }, 0);

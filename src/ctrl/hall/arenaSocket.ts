@@ -38,6 +38,7 @@ import {
 import { tipComeBack } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 import { recharge } from './hallCtrlUtil';
+import { login } from './login';
 
 let arena_hall_socket: WebSocketTrait;
 export async function connectArenaHallSocket(checkReplay = false) {
@@ -259,24 +260,24 @@ export async function arenaErrHandler(
     } else if (code === ArenaErrCode.GameEnded) {
         TipPop.tip(tplIntr('GameEnded'));
         socket?.send(ArenaEvent.ArenaStatus);
-    } else if (
-        code === ArenaErrCode.SignUpFail ||
-        code === ArenaErrCode.GuestSignUpFail
-    ) {
+    } else if (code === ArenaErrCode.SignUpFail) {
         // @TODO
-        const errMsg =
-            code === ArenaErrCode.GuestSignUpFail
-                ? tplIntr('GuestSignUpFail')
-                : tplIntr('SignUpFail');
+        const errMsg = tplIntr('SignUpFail');
         if (typeof ctrl?.leave === 'function') {
             return AlertPop.alert(errMsg).then((type) => {
-                if (type === 'confirm') {
-                    ctrl?.leave();
-                }
+                ctrl?.leave();
             });
         } else {
             TipPop.tip(errMsg);
         }
+    } else if (code === ArenaErrCode.GuestSignUpFail) {
+        const errMsg = tplIntr('GuestSignUpFail');
+        return AlertPop.alert(errMsg).then((type) => {
+            ctrl?.leave();
+            if (type === 'confirm') {
+                login();
+            }
+        });
     } else if (code === ArenaErrCode.UserSignUpDeadline) {
         TipPop.tip(tplIntr('UserSignUpDeadline'));
     } else if (code === ArenaErrCode.BulletLack) {

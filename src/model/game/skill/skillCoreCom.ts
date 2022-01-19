@@ -3,7 +3,7 @@ import { EventCom } from 'comMan/eventCom';
 
 import { PlayerModel } from '@app/model/game/playerModel';
 import { clearCount, startCount } from '@app/utils/count';
-import { debug } from '@app/utils/log';
+import { debug, error } from '@app/utils/log';
 import { setProps, callFunc } from '@app/utils/utils';
 
 /** 技能的状态 */
@@ -151,7 +151,6 @@ export class SkillCoreCom extends ComponentManager {
         if (this.status === SkillStatus.Active) {
             return;
         }
-        debug(`SkillCoreCom:>reset:>`);
         this.setStatus(SkillStatus.Normal);
         clearCount(this.count_index);
     }
