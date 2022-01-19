@@ -51,7 +51,7 @@ const defaultCloseEffect = function (dialog: HonorDialog) {
             alpha: 0,
         },
         300,
-        Ease.backIn,
+        Ease.quintOut,
         Handler.create(this, this.doClose, [dialog]),
         0,
         false,
