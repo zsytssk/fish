@@ -1,4 +1,5 @@
 import honor, { HonorDialog } from 'honor';
+import { OpenDialogOpt } from 'honor/ui/dialogManager';
 import { getStringLength } from 'honor/utils/getStringLength';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
@@ -29,13 +30,19 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     public set zOrder(value) {
         this._zOrder = value;
     }
-    public static async tip(msg: string, opt?: TipPopOpt) {
+    public static async tip(
+        msg: string,
+        opt?: TipPopOpt,
+        dialogOpt?: OpenDialogOpt<TipPop>,
+    ) {
+        dialogOpt = dialogOpt || {};
         AudioCtrl.play(AudioRes.PopShow);
         this.instance = await honor.director.openDialog<TipPop>(
             'pop/alert/tip.scene',
             {
                 stay_scene: false,
                 before_open_param: [msg],
+                ...dialogOpt,
             },
         );
 

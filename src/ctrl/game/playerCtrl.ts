@@ -203,7 +203,7 @@ export class PlayerCtrl extends ComponentManager {
                     _data.robotId = user_id;
                 }
 
-                if (is_cur && !_data.eid) {
+                if (!_data.eid) {
                     this.model.updateInfo({
                         bullet_num: this.model.bullet_num + multiple,
                     });
