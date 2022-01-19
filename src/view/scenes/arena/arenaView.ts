@@ -6,7 +6,7 @@ import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ProgressFn } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Event } from 'laya/events/Event';
-import { Point } from 'laya/maths/Point';
+import { Point as LayaPoint } from 'laya/maths/Point';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 
@@ -116,7 +116,7 @@ export default class ArenaView
     private countId: number;
     public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
         if (showTip) {
-            ArenaTaskTipPop.tip(tplIntr('taskStartTip'));
+            TipPop.tip(tplIntr('taskStartTip'));
         }
         const { task_panel, task_award_num, task_time_num } = this;
         fade_in(task_panel);
@@ -172,11 +172,11 @@ export default class ArenaView
         }
         const { width, height } = task_panel;
         let pos = task_panel.localToGlobal(
-            new Point(width / 2, height / 2),
+            new LayaPoint(width / 2, height / 2),
             true,
         );
         pos = ani_wrap.globalToLocal(pos, true);
-        await TipPop.tip(tplIntr('taskCompletedTip', { score: data.award }));
+        TipPop.tip(tplIntr('taskCompletedTip', { score: data.award }));
         await showAwardCircle(pos, data.award, true);
     }
 

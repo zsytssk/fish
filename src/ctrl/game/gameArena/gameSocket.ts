@@ -260,6 +260,7 @@ export function convertEnterGame(data: EnterGameRep) {
             }
             if (!fish_item.group) {
                 fish_list.push(fish_item.eid);
+                continue;
             }
             for (const group_item of fish_item.group) {
                 fish_list.push(group_item.eid);

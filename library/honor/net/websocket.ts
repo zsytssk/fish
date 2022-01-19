@@ -85,6 +85,7 @@ export class WebSocketCtrl {
         try {
             ws.send(msg);
         } catch (err) {
+            console.error(err);
             this.reconnect();
         }
     }

@@ -53,9 +53,14 @@ export const arena_pop_test = {
         return pop;
     },
     openTopPlayer: async () => {
-        const pop = await ArenaTopPlayerPop.preEnter(TopPlayerData);
+        const pop = await ArenaTopPlayerPop.preEnter(
+            TopPlayerData.slice(0, 2) as any,
+        );
         await sleep(1);
 
+        await ArenaTopPlayerPop.preEnter(TopPlayerData as any);
+        await sleep(1);
+        await ArenaTopPlayerPop.preEnter(TopPlayerData.slice(0, 2) as any);
         return pop;
     },
     openRewardRecord: async () => {
