@@ -112,10 +112,14 @@ export async function mockShoot() {
     const user_id = modelState.app.user_info.user_id;
     const { event } = getSocket(ServerName.Game) as MockWebSocket;
 
-    event.emit(ServerEvent.Shoot, {
-        userId: user_id,
-        direction: { x: 1.3, y: -1 },
-    } as ShootRep);
+    event.emit(
+        ServerEvent.Shoot,
+        {
+            userId: user_id,
+            direction: { x: 1.3, y: -1 },
+        } as ShootRep,
+        200,
+    );
 
     return sleep(2);
 }

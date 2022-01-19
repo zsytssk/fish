@@ -11,25 +11,31 @@ import { getAllChildren } from '@app/utils/layaQueryElements';
 import { resizeContain } from '@app/utils/layaUtils';
 import { calcPercent, tplIntr } from '@app/utils/utils';
 
-import { arenaGetRuleData } from './popSocket';
-
 export default class ArenaHelpPop
     extends ui.pop.arenaHelp.arenaHelpUI
     implements HonorDialog
 {
-    public isModal = true;
     public static async preEnter(data: GetRuleData) {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaHelpPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaHelpPop;
+        const pop = await honor.director.openDialog<ArenaHelpPop>(
+            'pop/arenaHelp/arenaHelp.scene',
+        );
         AudioCtrl.play(AudioRes.PopShow);
         pop.initData(data);
         return pop;
     }
     public async onAwake() {
+        onLangChange(this, () => {
+            this.initLang();
+        });
         this.initEvent();
+    }
+    private initLang() {
+        const { title, tab0, tab1, tab2, tab3 } = this;
+        title.text = tplIntr('arenaHelpTitle');
+        tab0.label = tplIntr('arenaHelpTab0');
+        tab1.label = tplIntr('arenaHelpTab1');
+        tab2.label = tplIntr('arenaHelpTab2');
+        tab3.label = tplIntr('arenaHelpTab3');
     }
     private initEvent() {
         const { tab, tabBody } = this;
@@ -84,17 +90,6 @@ export default class ArenaHelpPop
             labels3[4].text = tplIntr('arenaHelpRule35', {});
             resizeContain(boxList[2], 10, 'vertical');
 
-            console.log(
-                `test:>`,
-                gun1001,
-                tplIntr('arenaHelpRule42', {
-                    gun1001,
-                    gun1002,
-                    gun1003,
-                    gun1004,
-                    gun1005,
-                }),
-            );
             const labels4 = getAllChildren(boxList[3]) as Label[];
             labels4[0].text = tplIntr('arenaHelpRule41', {});
             labels4[1].text = tplIntr('arenaHelpRule42', {

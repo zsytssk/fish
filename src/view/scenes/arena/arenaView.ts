@@ -5,11 +5,11 @@ import honor, { HonorScene } from 'honor';
 import { createSkeleton } from 'honor/utils/createSkeleton';
 import { ProgressFn } from 'honor/utils/loadRes';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
-import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
-import { Point } from 'laya/maths/Point';
+import { Point as LayaPoint } from 'laya/maths/Point';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
+import { Ease } from 'laya/utils/Ease';
 
 import {
     TaskFinishRes,
@@ -21,15 +21,21 @@ import {
     offLangChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in, fade_out } from '@app/utils/animate';
+import { fade_in, fade_out, scale_in } from '@app/utils/animate';
 import { clearCount, startCount } from '@app/utils/count';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
 import { error } from '@app/utils/log';
-import { playSkeleton, playSkeletonOnce, setProps } from '@app/utils/utils';
+import {
+    covertLang,
+    playSkeleton,
+    playSkeletonOnce,
+    setProps,
+    tplIntr,
+} from '@app/utils/utils';
 import ArenaTaskTipPop from '@app/view/pop/arenaTaskTip';
 import TipPop from '@app/view/pop/tip';
 import { createSkeletonPool } from '@app/view/viewStateUtils';
@@ -101,20 +107,15 @@ export default class ArenaView
             width = 1334;
         }
         ctrl_box.width = width;
-
-        let scale = 1;
-        if (width < 1290) {
-            scale = 0.8;
-        }
     }
 
     private countId: number;
     public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
         if (showTip) {
-            ArenaTaskTipPop.tip('完成悬赏任务，有积分奖励！');
+            TipPop.tip(tplIntr('taskStartTip'));
         }
         const { task_panel, task_award_num, task_time_num } = this;
-        fade_in(task_panel);
+        scale_in(task_panel, 300, Ease.bounceOut);
         task_panel.visible = true;
         task_award_num.text = taskInfo.award + '';
 
@@ -167,11 +168,11 @@ export default class ArenaView
         }
         const { width, height } = task_panel;
         let pos = task_panel.localToGlobal(
-            new Point(width / 2, height / 2),
+            new LayaPoint(width / 2, height / 2),
             true,
         );
         pos = ani_wrap.globalToLocal(pos, true);
-        await TipPop.tip('任务完成');
+        TipPop.tip(tplIntr('taskCompletedTip', { score: data.award }));
         await showAwardCircle(pos, data.award, true);
     }
 
@@ -303,15 +304,13 @@ export default class ArenaView
         bullet_num: number,
         score_num: number,
     ) {
-        const lang = getLang();
-        const { NumBullet } = InternationalTip[lang];
         const panel = is_cur_player
             ? this.my_score_panel
             : this.other_score_panel;
 
         const bullet_num_label = panel.getChildByName('bullet_num') as Label;
         const score_num_label = panel.getChildByName('score_num') as Label;
-        bullet_num_label.text = `${NumBullet}: ${bullet_num}`;
+        bullet_num_label.text = `${tplIntr('NumBullet')}: ${bullet_num}`;
         score_num_label.text = score_num + '';
     }
     public getSkillItemByIndex(index: number) {
@@ -322,8 +321,12 @@ export default class ArenaView
     }
     public setAutoShootLight(status: boolean) {
         const lang = getLang();
+        const ani_name = covertLang(lang);
+
         this.skill_box.auto_shoot_light.visible = status;
-        const skin_name = status ? `auto_cancel_${lang}` : `auto_${lang}`;
+        const skin_name = status
+            ? `auto_cancel_${ani_name}`
+            : `auto_${ani_name}`;
         this.skill_box.auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     public getPoolMousePos() {

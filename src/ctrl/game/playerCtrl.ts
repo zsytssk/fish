@@ -2,26 +2,25 @@ import SAT from 'sat';
 
 import { Laya } from 'Laya';
 import { ComponentManager } from 'comMan/component';
+import { TimeoutCom } from 'comMan/timeoutCom';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
+import { SkillMap } from '@app/data/config';
 import { ServerEvent } from '@app/data/serverEvent';
 import { FishModel } from '@app/model/game/fish/fishModel';
 import {
     AddBulletInfo,
     GunEvent,
+    GunStatus,
     LevelInfo,
 } from '@app/model/game/gun/gunModel';
 import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
 import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
-import {
-    getCurPlayer,
-    getGameCurrency,
-    getUserInfo,
-} from '@app/model/modelState';
+import { getCurPlayer, getCurUserId } from '@app/model/modelState';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { log } from '@app/utils/log';
 import { darkNode, unDarkNode } from '@app/utils/utils';
@@ -34,6 +33,7 @@ import {
     setAutoShootLight,
 } from '@app/view/viewState';
 
+import { getGameCurrency } from '../ctrlState';
 import { BulletCtrl } from './bulletCtrl';
 import { GameCtrlUtils } from './gameCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
@@ -47,12 +47,14 @@ export class PlayerCtrl extends ComponentManager {
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
+    private time_out = new TimeoutCom();
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
         public game_ctrl: GameCtrlUtils,
     ) {
         super();
+        this.addCom(this.time_out);
         this.init();
     }
     private init() {
@@ -201,6 +203,13 @@ export class PlayerCtrl extends ComponentManager {
                     _data.robotId = user_id;
                 }
 
+                if (is_cur && !_data.eid) {
+                    this.model.updateInfo({
+                        bullet_num: this.model.bullet_num + multiple,
+                    });
+                    return;
+                }
+
                 this.game_ctrl.sendToGameSocket(ServerEvent.Hit, _data);
             },
             this,
@@ -211,6 +220,22 @@ export class PlayerCtrl extends ComponentManager {
         }
         view.setMySelfStyle();
         this.resetGetBulletCost();
+
+        gun_event.on(
+            GunEvent.NotEnoughBulletNum,
+            () => {
+                if (gun.status === GunStatus.AutoShoot) {
+                    const skill_model = this.model.getSkill(
+                        SkillMap.Auto,
+                    ) as AutoShootModel;
+                    console.warn(`test:>NotEnoughBulletNum`);
+                    this.time_out.createTimeout(() => {
+                        skill_model.toggle();
+                    }, 0);
+                }
+            },
+            this,
+        );
 
         gun_event.on(
             GunEvent.AutoShoot,
@@ -238,7 +263,7 @@ export class PlayerCtrl extends ComponentManager {
         });
     }
     private handleAutoShoot(model: AutoShootModel, view: Sprite) {
-        view.on(Event.CLICK, this, (e: Event) => {
+        view.on(Event.CLICK, this.view, (e: Event) => {
             e.stopPropagation();
             log('auto shoot');
             model.toggle();
@@ -259,13 +284,20 @@ export class PlayerCtrl extends ComponentManager {
     private resetGetBulletCost() {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { isTrial } = this.game_ctrl;
-        const { user_id } = getUserInfo();
+        const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
-        if (bullet_cost) {
-            this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
-                multiple: Number(bullet_cost),
-            } as ChangeTurretReq);
+
+        if (
+            bullet_cost !== this.model.bullet_cost + '' &&
+            Number(bullet_cost)
+        ) {
+            // Arena 的enterGame和tableIn的时间差，差这么多
+            this.time_out.createTimeout(() => {
+                this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
+                    multiple: Number(bullet_cost),
+                } as ChangeTurretReq);
+            }, 800);
         }
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
@@ -287,7 +319,7 @@ export class PlayerCtrl extends ComponentManager {
         } as ChangeTurretReq);
 
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
-        const { user_id } = getUserInfo();
+        const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }
@@ -304,7 +336,7 @@ export class PlayerCtrl extends ComponentManager {
         Laya.stage.offAllCaller(view);
         player_event.offAllCaller(this);
         gun_event.offAllCaller(this);
-        getAutoShootSkillItem().offAllCaller(view);
+        getAutoShootSkillItem().offAllCaller(this);
 
         view.destroy();
         this.view = undefined;

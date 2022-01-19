@@ -7,14 +7,11 @@ import { Handler } from 'laya/utils/Handler';
 
 import { ShopListDataItem } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import {
-    getLang,
-    offLangChange,
-    onLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
+import { covertLang, tplIntr } from '@app/utils/utils';
 
 import { buySkinAlert } from './buyBullet';
 import {
@@ -23,7 +20,7 @@ import {
     arenaShopList,
     arenaUseGunSkin,
 } from './popSocket';
-import { getItemName, GunRenderData, GunSkinStatus, ShopData } from './shop';
+import { getItemName, GunSkinStatus } from './shop';
 
 export type ArenaShopPopInfo = {
     modeId: number;
@@ -35,23 +32,15 @@ export default class ArenaShopPop
     extends ui.pop.shop.arenaShopUI
     implements HonorDialog
 {
-    private data: ArenaShopPopInfo;
-    public isModal = true;
     /** 是否初始化... */
-    public static async preEnter(data: ArenaShopPopInfo) {
-        const shop_dialog = (await honor.director.openDialog(
-            {
-                dialog: ArenaShopPop,
-                use_exist: true,
-                stay_scene: true,
-            },
-            {
-                beforeOpen(dialog: ArenaShopPop) {
-                    dialog.data = data;
-                },
-            },
-        )) as ArenaShopPop;
+    public static async preEnter(param: ArenaShopPopInfo) {
+        const shop_dialog = await honor.director.openDialog<ArenaShopPop>(
+            'pop/shop/arenaShop.scene',
+        );
         AudioCtrl.play(AudioRes.PopShow);
+        arenaShopList(param).then((data) => {
+            shop_dialog.initData(data);
+        });
         return shop_dialog;
     }
     public static preLoad() {
@@ -66,8 +55,8 @@ export default class ArenaShopPop
     }
     private initLang(lang: Lang) {
         const { title } = this;
-
-        title.skin = `image/international/title_shop_${lang}.png`;
+        const ani_name = covertLang(lang);
+        title.skin = `image/international/title_shop_${ani_name}.png`;
     }
     public init() {
         const { gun_list } = this;
@@ -80,11 +69,6 @@ export default class ArenaShopPop
             false,
         );
     }
-    public onEnable() {
-        arenaShopList(this.data).then((data) => {
-            this.initData(data);
-        });
-    }
     public initData(data: ArenaShopList) {
         const { gun_list } = this;
         const { gun } = data;
@@ -95,8 +79,6 @@ export default class ArenaShopPop
         const { itemName, itemId, status, price, id, currency } = this.gun_list
             .array[index] as ShopListDataItem;
         const { name_label, icon, stack_btn, icon_check, select_bd } = box;
-        const lang = getLang();
-        const { use, inUse } = InternationalTip[lang];
 
         const gun_name = getItemName(itemId, itemName);
         name_label.text = gun_name;
@@ -117,23 +99,31 @@ export default class ArenaShopPop
                     if (!_status) {
                         return;
                     }
-                    arenaBuyItem(id, itemId, 1).then(() => {
-                        this.buyGunSkin(itemId);
-                    });
+                    arenaBuyItem(id, itemId, 1)
+                        .then(() => {
+                            this.buyGunSkin(itemId);
+                        })
+                        .catch(() => {
+                            this.close();
+                        });
                 });
             });
         } else if (status === GunSkinStatus.Have) {
-            cur_label.text = use;
+            cur_label.text = tplIntr('use');
             cur_btn.on(Event.CLICK, cur_btn, () => {
                 arenaUseGunSkin(itemId).then(() => {
                     this.useGunSkin(itemId);
                 });
             });
         } else if (status === GunSkinStatus.Used) {
-            cur_label.text = inUse;
+            cur_label.text = tplIntr('inUse');
             icon_check.visible = true;
             select_bd.visible = true;
         }
+        const width = cur_label.width + 30;
+        cur_btn.width = width > 143 ? width : 143;
+        // 触发重新渲染来定位
+        cur_label.centerX = cur_label.centerX === 0 ? -1 : 0;
     };
     /** 购买皮肤 */
     public buyGunSkin(itemId: string) {

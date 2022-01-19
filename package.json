@@ -16,6 +16,8 @@
         "build": "ts-node --project ./script/tsconfig.json --files ./script/build/build.ts",
         "zipFile": "cross-env run=true ts-node --project ./script/tsconfig.json --files ./script/zipFile/zipFile.ts",
         "genVersion": "cross-env run=true ts-node --project ./script/tsconfig.json --files ./script/genVersion/genVersion.ts",
+        "intlExport": "cross-env type=export ts-node --project ./script/tsconfig.json --files ./script/intl/index.ts",
+        "intlImport": "cross-env type=import ts-node --project ./script/tsconfig.json --files ./script/intl/index.ts",
         "lint": "eslint . --ext .ts"
     },
     "devDependencies": {
@@ -47,6 +49,8 @@
         "webpack-glsl-loader": "^1.0.1"
     },
     "dependencies": {
+        "@fast-csv/format": "^4.3.5",
+        "@fast-csv/parse": "^4.3.6",
         "@types/bezier-js": "^4.1.0",
         "@types/sat": "0.0.31",
         "@zip.js/zip.js": "^2.3.23",
@@ -62,7 +66,8 @@
         "md5-file": "^5.0.0",
         "rxjs": "^7.4.0",
         "sat": "^0.8.0",
-        "socket.io-client": "^2.3.0"
+        "socket.io-client": "^2.3.0",
+        "ts-node": "^10.4.0"
     },
     "repository": {
         "type": "git",

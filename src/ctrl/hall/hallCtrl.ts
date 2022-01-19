@@ -25,7 +25,6 @@ import {
     sendToArenaHallSocket,
 } from './arenaSocket';
 import {
-    getAllLangList,
     offBindEvent,
     onAccountChange,
     onArenaInfoChange,
@@ -87,14 +86,18 @@ export class HallCtrl {
     private async init() {
         try {
             await bindHallSocket(this);
-        } catch {}
+        } catch {
+            //
+        }
 
         try {
             await bindArenaHallSocket(this);
             sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
                 currency: modelState.app.user_info.cur_balance,
             });
-        } catch {}
+        } catch {
+            //
+        }
 
         AudioCtrl.playBg(AudioRes.HallBg);
 
@@ -126,8 +129,6 @@ export class HallCtrl {
         onArenaInfoChange(this, (info) => {
             view.updateArenaInfo(info);
         });
-
-        view.setFlagData(getAllLangList());
     }
     public selectCoin = (index: number) => {
         if (index === -1) {
@@ -162,7 +163,6 @@ export class HallCtrl {
         offBindEvent(this);
         offHallSocket(this);
         offArenaHallSocket(this);
-        honor.director.closeAllDialogs();
         HallCtrl.leave();
     }
 }

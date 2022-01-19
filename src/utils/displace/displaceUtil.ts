@@ -11,9 +11,6 @@ import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
 
-export const stage_width = GameConfig?.width;
-export const stage_height = GameConfig?.height;
-
 /** 寻找屏幕中一个点的朝着一个方向的直线 离开屏幕的点 */
 export function getLineOutPoint(point: Point, derivative: SAT.Vector) {
     /** 结束坐标 */
@@ -127,6 +124,8 @@ export function calcNormalLen(position: OffsetPos, fish_type: string) {
 }
 /** 直立行走鱼的边缘路径直接垂直与边框就可以了 */
 export function calcFixLen(start_pos: Point, fish_type: string) {
+    const stage_width = GameConfig.width;
+    const stage_height = GameConfig.height;
     const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
 
     let fish_len: number;
@@ -361,17 +360,19 @@ export function createFishDisplace(data: ServerFishInfo) {
     let curve_list: CurveInfo[];
     switch (displaceType) {
         case 'path':
-            let path_arr: number[][];
-            if (pathNo) {
-                path_arr = PATH[pathNo];
-            } else if (pathList) {
-                path_arr = pathList;
+            {
+                let path_arr: number[][];
+                if (pathNo) {
+                    path_arr = PATH[pathNo];
+                } else if (pathList) {
+                    path_arr = pathList;
+                }
+                if (!path_arr) {
+                    error(`cant find path for no:${pathNo}`);
+                    return;
+                }
+                curve_list = createCurvesByPath(path_arr, fishId);
             }
-            if (!path_arr) {
-                error(`cant find path for no:${pathNo}`);
-                return;
-            }
-            curve_list = createCurvesByPath(path_arr, fishId);
             break;
         default:
             curve_list = createCurvesByFun(funList, fishId, displaceLen);

@@ -1,4 +1,4 @@
-import { ctrlState } from '@app/ctrl/ctrlState';
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
 import {
     disableCurUserOperation,
     waitGameExchangeOrLeave,
@@ -15,6 +15,7 @@ import {
     ServerEvent,
     ServerName,
 } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
 import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { removeItem } from '@app/utils/localStorage';
@@ -26,18 +27,12 @@ import { recharge } from './hallCtrlUtil';
 import { login } from './login';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
-    const { ErrCode } = ServerEvent;
     bindSocketEvent(socket, bindObj, {
-        [ErrCode]: (res: ErrorData, code: number) => {
-            code = res.code || code;
+        [ServerEvent.ErrCode]: (res: ErrorData, code: number) => {
+            code = res?.code || code;
             if (code === ServerErrCode.TokenExpire) {
-                removeItem('local_token');
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(tplIntr('logoutTip'), {
-                    hide_cancel: true,
-                }).then((type) => {
-                    location.reload();
-                });
+                tokenExpireTip();
             } else if (code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
                 AlertPop.alert(tplIntr('OtherLogin'), {
@@ -49,7 +44,6 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         },
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
-            console.log(`test:>Reconnecting`, try_index);
             if (try_index === 0) {
                 TipPop.tip(tplIntr('NetError'), {
                     count: 10,
@@ -103,8 +97,21 @@ export function errorHandler(
 ) {
     const tip = tplIntr(code);
 
-    if (code === ServerErrCode.ReExchange) {
-        return exChangeBullet(tplIntr(ServerErrCode.ReExchange));
+    if (code === ServerErrCode.Maintaining) {
+        platform.hideLoading();
+
+        AlertPop.alert(tplIntr('maintainTip'), {
+            hide_cancel: true,
+        }).then(() => {
+            if (socket.config.name === 'game') {
+                socket.send(ServerEvent.RoomOut);
+            }
+            setTimeout(() => {
+                location.reload();
+            });
+        });
+    } else if (code === ServerErrCode.ReExchange) {
+        return exChangeBullet(tplIntr(ServerErrCode.ReExchange), socket);
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tplIntr(ServerErrCode.NoMoney);
         if (data?.minAmount) {
@@ -113,7 +120,9 @@ export function errorHandler(
         }
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
-                recharge();
+                const currency =
+                    getGameCurrency() || modelState.app.user_info.cur_balance;
+                recharge(currency);
             }
             socket?.send(ServerEvent.RoomOut);
         });
@@ -155,6 +164,15 @@ export function errorHandler(
     }
 }
 
+export function tokenExpireTip() {
+    removeItem('local_token');
+    AlertPop.alert(tplIntr('logoutTip'), {
+        hide_cancel: true,
+    }).then(() => {
+        location.reload();
+    });
+}
+
 export function tipComeBack() {
     TipPop.tip(tplIntr('NetComeBack'));
 }
@@ -168,7 +186,7 @@ export function tipCount(msg: string, count: number) {
 }
 
 let onExchanging = false;
-export async function exChangeBullet(tip: string, socket?: WebSocketTrait) {
+export async function exChangeBullet(tip: string, socket: WebSocketTrait) {
     disableCurUserOperation();
     if (onExchanging) {
         return;
@@ -179,7 +197,7 @@ export async function exChangeBullet(tip: string, socket?: WebSocketTrait) {
         onExchanging = false;
     });
     return asyncOnly(tip, () => {
-        return AlertPop.alert(tip, { closeOnSide: false }).then((type) => {
+        return AlertPop.alert(tip, { close_on_side: false }).then((type) => {
             if (type === 'confirm') {
                 return socket.send(ServerEvent.ExchangeBullet);
             }

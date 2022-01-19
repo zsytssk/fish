@@ -21,7 +21,7 @@ export type AccountMap = Map<
 /** 当前用户信息.. */
 export class UserInfoModel extends ComponentManager {
     /** 语言 */
-    public lang: Lang;
+    public lang = 'en' as Lang;
     /** 当前钱币类型 */
     public cur_balance = 'BTC';
     /** 用户id */
@@ -65,7 +65,6 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.lang = lang;
-        setItem('local_lang', lang);
         this.event.emit(UserInfoEvent.LangChange, lang);
     }
     public setUserId(name: string) {

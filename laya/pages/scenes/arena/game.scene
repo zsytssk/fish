@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":55,
-    "selecteID":61,
+    "selectedBox":2,
+    "selecteID":55,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -279,7 +279,7 @@
                     "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,task_panel",
-                    "props":{"y":512,"x":0,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png"},
+                    "props":{"y":578,"x":175,"width":350,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png","pivotY":66,"pivotX":175,"height":132},
                     "nodeParent":11,
                     "label":"task_panel",
                     "isOpen":true,
@@ -302,7 +302,6 @@
                             "compId":61,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,task_name",
                                     "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
@@ -316,7 +315,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_num",
                                     "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
@@ -344,7 +342,6 @@
                             "compId":62,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,task_name",
                                     "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
@@ -358,7 +355,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_num",
                                     "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
@@ -386,7 +382,6 @@
                             "compId":63,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,task_name",
                                     "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
@@ -400,7 +395,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_num",
                                     "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},

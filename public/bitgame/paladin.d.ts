@@ -1,6 +1,6 @@
 
 /**
- * @version 1.1.13
+ * @version 1.1.15
  * 
  * @description
  * Paladin SDK的主要命名空间，引擎代码中所有的类，函数，属性和常量都在这个命名空间中定义。
@@ -271,6 +271,30 @@ declare namespace paladin {
     }
 
     export const comps: IComps;
+
+    /**
+     * 初始化
+     * @param {string} url 请求地址
+     * @param {string} origin 请求域名
+     * @param {array} files 加载文件列表
+     * @param {number} loadType 加载类型 0:默认, 1: defer, 2: async
+     * @param {function} success 成功回调
+     * @param {function} error 失败回调
+     * @param {string} appID 游戏ID
+     * @param {string} version 游戏版本
+     * @param {string} storeID 分发渠道
+     * @param {string} engine 游戏引擎
+     */
+    interface IInitData {
+        url?: string;
+        origin?: string;
+        files?: string[];
+        loadType?: number,
+        success: (res: any) => void,
+        error?: () => void;
+    }
+
+    export async function init(params: IInitData): Promise<void>;
 }
 
 /**
@@ -512,6 +536,10 @@ declare namespace paladin {
  * 粘贴 paladin.account.paste();
  * 
  * 币种 paladin.account.currency({ name: 'USDT', balance: 0 });
+ * 
+ * 分享 paladin.account.share({ title: '', desc: '', img: '', type: '' });
+ * 
+ * 跳转 paladin.account.redirect({ url: '' });
  */
 declare namespace paladin {
     /**
@@ -591,6 +619,22 @@ declare namespace paladin {
          * @param {object} data 数据
          */
         currency(data?: IAccountBasicData): void;
+
+        /**
+         * 分享
+         * @param {string} title 标题
+         * @param {string} desc 描述
+         * @param {string} img 图片
+         * @param {string} type 类型 facebook, twitter, telegram
+         */
+        share(data?: { title: string; desc: string; img: string; type: string; }): void;
+
+
+        /**
+         * 跳转
+         * @param {string} url 跳转路径
+         */
+        redirect(data: { url: string; }): void;
 
         /**
          * 跳转页面

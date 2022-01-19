@@ -38,6 +38,7 @@ export enum SkillMap {
     LockFish = '2001',
     Freezing = '2002',
     Bomb = '2003',
+    Bullet = '3001',
     Auto = 'A2004',
     Super = 'A2004',
 }

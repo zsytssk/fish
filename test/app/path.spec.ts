@@ -1,6 +1,6 @@
+import GameConfig from '@app/GameConfig';
 import { PATH } from '@app/data/path';
 import { SPRITE } from '@app/data/sprite';
-import { stage_width, stage_height } from '@app/utils/displace/displaceUtil';
 
 export const path_test = {
     /** 检测有问题的路径 */
@@ -69,13 +69,13 @@ function isRight(p: Point) {
     if (x < 0) {
         return true;
     }
-    if (x > stage_width) {
+    if (x > GameConfig.width) {
         return true;
     }
     if (y < 0) {
         return true;
     }
-    if (y > stage_height) {
+    if (y > GameConfig.height) {
         return true;
     }
 

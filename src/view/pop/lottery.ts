@@ -4,20 +4,17 @@ import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import {
-    changeBulletNum,
-    changeUserAccount,
-} from '@app/ctrl/game/gameCtrlUtils';
+import { changeUserAccount } from '@app/ctrl/game/gameCtrlUtils';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { getCurUserId } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
 import { tween } from '@app/utils/layaTween';
 import { onNode, resizeParent } from '@app/utils/layaUtils';
 import { log } from '@app/utils/log';
-import { playSkeletonOnce } from '@app/utils/utils';
+import { covertLang, playSkeletonOnce, tplIntr } from '@app/utils/utils';
 
 import HelpPop from './help';
 import { LotteryExchangeCtrl } from './lotteryExchangeCtrl';
@@ -56,7 +53,6 @@ export default class LotteryPop
     implements HonorDialog
 {
     private is_init = false;
-    public isModal = true;
     private lottery_interval: number;
     private lottery_exchange_ctrl: LotteryExchangeCtrl;
     private remain_info: {
@@ -64,15 +60,14 @@ export default class LotteryPop
         lottery_cost: number;
     };
     public static preEnter() {
-        const pop = honor.director.openDialog({
-            dialog: LotteryPop,
-            use_exist: true,
-            stay_scene: true,
-        }) as Promise<LotteryPop>;
+        const pop = honor.director.openDialog<LotteryPop>(
+            'pop/lottery/lottery.scene',
+        );
         const exchange_data = getLotteryData();
 
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {
             dialog.initData(data);
+            return dialog;
         });
     }
     public static preLoad() {
@@ -127,7 +122,6 @@ export default class LotteryPop
 
         const len = lottery_arr.length;
         if (len < 5) {
-            log(`test:>lottery:>0`, lottery_arr);
             for (let i = 0; i < 5 - len; i++) {
                 lottery_arr.push({
                     lottery_id: 'xx',
@@ -143,7 +137,6 @@ export default class LotteryPop
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
-        log(`test:>lottery:>1`, val, lottery_arr);
         btn_lottery.disabled = val < 1;
         lottery_exchange_ctrl.renderData([...exchange]);
 
@@ -281,12 +274,12 @@ export default class LotteryPop
     }
     private initLang(lang: Lang) {
         const { title, btn_label, sub_title, lottery_exchange_ctrl } = this;
-        const { luckyDraw, redemption } = InternationalTip[lang];
-        btn_label.text = luckyDraw;
-        sub_title.text = redemption;
+        const ani_name = covertLang(lang);
+        btn_label.text = tplIntr('luckyDraw');
+        sub_title.text = tplIntr('redemption');
         lottery_exchange_ctrl.refresh();
         resizeParent(btn_label, 30, 142);
 
-        title.skin = `image/international/txt_lottery_${lang}.png`;
+        title.skin = `image/international/txt_lottery_${ani_name}.png`;
     }
 }

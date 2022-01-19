@@ -8,7 +8,7 @@ export const voice_test = {
     open_dialog: () => {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve) => {
-            const pop = (await honor.director.openDialog(VoicePop)) as VoicePop;
+            const pop = await VoicePop.preEnter();
             setTimeout(() => {
                 resolve();
             }, 1000);

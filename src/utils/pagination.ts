@@ -153,6 +153,7 @@ export class Pagination {
             has_left_spread,
             has_right_spread,
             page_num,
+            item_page_num,
         } = this;
 
         const pagination_arr = [] as PaginationItem[];
@@ -184,6 +185,7 @@ export class Pagination {
             has_prev,
             pagination_arr,
             pagination_range,
+            page_size: item_page_num,
             page_num,
         };
     }

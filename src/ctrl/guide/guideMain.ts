@@ -24,7 +24,7 @@ export class GuideMain {
     }
     public async init() {
         if (this.guide_dialog) {
-            await Honor.director.openDialog(this.guide_dialog);
+            this.guide_dialog.open(false);
             return;
         }
         const guide_dialog = await GuideDialog.preEnter();

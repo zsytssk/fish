@@ -1,6 +1,6 @@
 {
     "currency": "BTC",
-    "fee": "1",
+    "fee": "0.0000000000001",
     "isGuest": false,
     "maxDayScore": 0,
     "ranking": 2,

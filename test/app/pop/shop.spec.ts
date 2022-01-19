@@ -1,5 +1,3 @@
-import honor from 'honor';
-
 import ShopPop from '@app/view/pop/shop';
 
 import shopData from './shop.json';
@@ -11,7 +9,7 @@ export const shop_test = {
     renderData: async () => {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve) => {
-            const shop = (await honor.director.openDialog(ShopPop)) as ShopPop;
+            const shop = await ShopPop.preEnter();
             setTimeout(() => {
                 shop.initData(shopData);
                 resolve();
@@ -20,7 +18,7 @@ export const shop_test = {
     },
     use_gun_skin: async () => {
         await shop_test.renderData();
-        const pop = (await honor.director.openDialog(ShopPop)) as ShopPop;
+        const pop = await ShopPop.preEnter();
         pop.useGunSkin(shopData.gun[1].id);
 
         setTimeout(() => {

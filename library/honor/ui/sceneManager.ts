@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Laya } from 'Laya';
 import { loadScene, ProgressFn } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
@@ -29,4 +30,18 @@ export async function runScene(url: string, fn?: ProgressFn) {
     });
 
     return view;
+}
+
+export function detectChangeScene() {
+    const prev = cur_scene;
+
+    return () => {
+        if (!cur_scene) {
+            return true;
+        }
+        if (prev !== cur_scene) {
+            return true;
+        }
+        return false;
+    };
 }

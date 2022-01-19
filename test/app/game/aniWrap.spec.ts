@@ -79,8 +79,8 @@ export const ani_wrap = {
         pop_tip_ani.y = 200;
     },
     aim: () => {
-        const gun = [...modelState.app.game['player_list']][0].gun;
-        const [_, fish] = [...modelState.app.game.fish_map][0];
+        const gun = [...modelState.game['player_list']][0].gun;
+        const [_, fish] = [...modelState.game.fish_map][0];
         fish.event.on(FishEvent.Move, () => {
             const { pos } = fish;
             const x = pos.x - gun.pos.x;

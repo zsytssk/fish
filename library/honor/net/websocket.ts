@@ -82,7 +82,12 @@ export class WebSocketCtrl {
         if (status !== 'OPEN') {
             return console.error(`socket is no connected!`);
         }
-        ws.send(msg);
+        try {
+            ws.send(msg);
+        } catch (err) {
+            console.error(err);
+            this.reconnect();
+        }
     }
     private onopen = () => {
         WebSocketCtrl.log?.('WebSocket:> 连接上了');

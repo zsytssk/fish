@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { Lang } from '@app/data/internationalConfig';
 import { ServerErrCode } from '@app/data/serverEvent';
 import { ArenaModel, ArenaModelEvent } from '@app/model/arena/arenaModel';
 import { modelState } from '@app/model/modelState';
 import { AccountMap, UserInfoEvent } from '@app/model/userInfo/userInfoModel';
+import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 
 export function onLangChange(item: any, callback: (lang: Lang) => void) {
@@ -48,10 +49,8 @@ export function onNicknameChange(
     let { nickname } = user_info;
     event.on(UserInfoEvent.NicknameChange, callback, item);
     setTimeout(() => {
-        const lang = getLang();
-        const { guest } = InternationalTip[lang];
         if (!nickname) {
-            nickname = guest;
+            nickname = tplIntr('guest');
         }
         callback(nickname);
     });
@@ -93,21 +92,14 @@ export function offBindEvent(item: any) {
     arena_info.event.offAllCaller(item);
 }
 
-export function getAllLangList() {
-    const result = [];
-    for (const key in Lang) {
-        result.push(Lang[key]);
-    }
-    return result;
-}
-
 export function getChannel() {
     return (window as any).paladin?.sys?.config?.channel;
 }
-export function recharge() {
+export function recharge(currency?: string) {
     const app = modelState.app;
     const { account_map, cur_balance } = app.user_info;
-    if (account_map.get(cur_balance).hide) {
+    currency = currency || cur_balance;
+    if (account_map.get(currency).hide) {
         return;
     }
     if (!paladin.sys.config.isLogin) {
@@ -115,7 +107,7 @@ export function recharge() {
     }
     (window as any)?.paladin.pay.recharge({
         data: {
-            currency: cur_balance,
+            currency: currency,
             gameNo: (window as any)?.paladin.sys.config.gameId,
             isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
         },
@@ -138,8 +130,7 @@ export function withdraw() {
 }
 /** 提示刷新页面 */
 export function alertNetErrRefresh() {
-    const lang = getLang();
-    return AlertPop.alert(InternationalTip[lang][ServerErrCode.NetError], {
+    return AlertPop.alert(tplIntr(ServerErrCode.NetError), {
         hide_cancel: true,
     }).then(() => {
         location.reload();

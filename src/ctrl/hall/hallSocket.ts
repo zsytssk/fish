@@ -6,8 +6,14 @@ import {
     offSocketEvent,
 } from '@app/ctrl/net/webSocketWrapUtil';
 import { Config } from '@app/data/config';
-import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
+import {
+    OK_CODE,
+    ServerErrCode,
+    ServerEvent,
+    ServerName,
+} from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { error } from '@app/utils/log';
 
 import { commonSocket, errorHandler, offCommon } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
@@ -32,13 +38,23 @@ export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
         hall_socket = socket;
 
         if (!socket) {
-            throw Error(`ConnectFailed:${ServerName.Hall}}`);
+            error(`ConnectFailed:${ServerName.Hall}`);
+            throw Error(ServerErrCode.NetError + '');
         }
     }
 
     /** 确保在复盘时已经有用户数据，不然进入游戏之后无法判断当前用户从而导致一堆问题 */
-    await new Promise((resolve) => {
-        hall_socket.event.once(ServerEvent.UserAccount, (data) => {
+    await new Promise((resolve, reject) => {
+        // 绑定绑定 token 过期的情况
+        hall_socket.event.once(
+            ServerEvent.ErrCode,
+            (res, code) => reject(res?.code || code),
+            null,
+        );
+        hall_socket.event.once(ServerEvent.UserAccount, (data, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, socket);
+            }
             modelState.app.initUserInfo(data);
             resolve(undefined);
         });
@@ -78,9 +94,30 @@ export async function bindHallSocket(hall: HallCtrl) {
         [SocketEvent.Reconnected]: () => {
             sendToHallSocket(ServerEvent.UserAccount);
         },
-        [ServerEvent.UserAccount]: (data, _code) => {
+        [ServerEvent.UserAccount]: (data, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data, hall_socket);
+            }
             modelState.app.initUserInfo(data);
         },
+    });
+}
+
+export async function getArenaWs(modeId: number) {
+    return new Promise<string>((resolve, reject) => {
+        const socket = getSocket(ServerName.Hall);
+        socket.event.once(
+            ServerEvent.GetArenaWsUrl,
+            (data: string, code: number) => {
+                if (code !== OK_CODE) {
+                    errorHandler(code);
+                    reject();
+                    return;
+                }
+                resolve(data);
+            },
+        );
+        socket.send(ServerEvent.GetArenaWsUrl, { modeId });
     });
 }
 

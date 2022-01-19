@@ -17,11 +17,12 @@ export default class ArenaGameStatus
         super();
     }
     public static async start() {
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaGameStatus,
-            use_exist: true,
-            show_effect: false,
-        })) as ArenaGameStatus;
+        const pop = await honor.director.openDialog<ArenaGameStatus>(
+            'pop/alert/arenaGameStatus.scene',
+            {
+                use_exist: true,
+            },
+        );
         this.instance = pop;
         AudioCtrl.play(AudioRes.PopShow);
         await pop.start();
@@ -29,11 +30,12 @@ export default class ArenaGameStatus
     }
     public static async end() {
         AudioCtrl.play(AudioRes.PopShow);
-        const pop = (await honor.director.openDialog({
-            dialog: ArenaGameStatus,
-            use_exist: true,
-            show_effect: false,
-        })) as ArenaGameStatus;
+        const pop = await honor.director.openDialog<ArenaGameStatus>(
+            'pop/alert/arenaGameStatus.scene',
+            {
+                use_exist: true,
+            },
+        );
         this.instance = pop;
         await pop.end();
         return pop;

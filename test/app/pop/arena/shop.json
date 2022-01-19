@@ -4,7 +4,7 @@
         "itemId": "1001",
         "itemName": "皮肤1",
         "itemType": 1,
-        "price": 1,
+        "price": "0.00000001",
         "num": 10,
         "status": 0
     },
@@ -13,18 +13,18 @@
         "itemId": "1002",
         "itemName": "皮肤2",
         "itemType": 1,
-        "price": 1,
+        "price": "0.0000001",
         "num": 10,
-        "status": 1
+        "status": 0
     },
     {
         "currency": "BTC",
         "itemId": "1003",
         "itemName": "皮肤3",
         "itemType": 1,
-        "price": 1,
+        "price": 0.000001,
         "num": 10,
-        "status": 2
+        "status": 0
     },
     {
         "currency": "BTC",

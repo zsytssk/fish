@@ -16,9 +16,7 @@ export const lottery_test = {
     renderData: () => {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve) => {
-            const pop = (await honor.director.openDialog(
-                LotteryPop,
-            )) as LotteryPop;
+            const pop = await LotteryPop.preEnter();
             setTimeout(() => {
                 pop.initData(Data);
                 resolve();
@@ -31,7 +29,7 @@ export const lottery_test = {
     },
 
     tween: async () => {
-        const pop = (await honor.director.openDialog(LotteryPop)) as LotteryPop;
+        const pop = await LotteryPop.preEnter();
 
         await sleep(1);
         pop.initData(Data);
@@ -50,6 +48,5 @@ export const lottery_test = {
             }
             // pop.testAni(cur_round_index, cur_index === num);
         });
-        console.log(`tween:>end`);
     },
 };

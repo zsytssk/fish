@@ -11,4 +11,5 @@
 #IDE编译调试的会修改此文件格式
 /src/GameConfig.ts
 
+/intl
 

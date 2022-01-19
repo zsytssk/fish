@@ -12,12 +12,7 @@ import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
 import { ZipResManager } from './utils/zipResManager';
 
-export type {
-    HonorDialog,
-    HonorDialogConfig,
-    HonorScene,
-    HonorLoadScene,
-} from './ui/view';
+export type { HonorDialog, HonorScene } from './ui/view';
 
 export type GameConfig = any;
 export type HonorExternConfig = {

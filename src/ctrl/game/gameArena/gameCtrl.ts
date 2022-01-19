@@ -20,11 +20,10 @@ import {
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
-import { getChannel, getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { getChannel } from '@app/ctrl/hall/hallCtrlUtil';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { res } from '@app/data/res';
 import {
     ArenaEvent,
@@ -38,7 +37,7 @@ import { FishModel } from '@app/model/game/fish/fishModel';
 import { GameEvent, GameModel } from '@app/model/game/gameModel';
 import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
-import { isCurUser } from '@app/model/modelState';
+import { isCurUser, modelState } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
@@ -51,7 +50,11 @@ import ArenaHelpPop from '@app/view/pop/arenaHelp';
 import ArenaRankPop from '@app/view/pop/arenaRank';
 import ArenaSettlePop from '@app/view/pop/arenaSettle';
 import ArenaShopPop from '@app/view/pop/arenaShop';
-import { competitionSignUp } from '@app/view/pop/popSocket';
+import {
+    arenaGetDayRanking,
+    arenaGetRuleData,
+    competitionSignUp,
+} from '@app/view/pop/popSocket';
 import VoicePop from '@app/view/pop/voice';
 import GameView from '@app/view/scenes/arena/arenaView';
 import {
@@ -63,7 +66,7 @@ import { AddFishViewInfo } from '@app/view/scenes/game/gameView';
 import Loading from '@app/view/scenes/loadingView';
 
 import { AppCtrl } from '../../appCtrl';
-import { waitConnectGameArena } from '../../hall/arenaSocket';
+import { arenaErrHandler, waitConnectGameArena } from '../../hall/arenaSocket';
 import { offCommon } from '../../hall/commonSocket';
 import { WebSocketTrait } from '../../net/webSocketWrap';
 import { FishCtrl } from '../fishCtrl';
@@ -84,6 +87,7 @@ export class GameCtrl implements GameCtrlUtils {
     public view: GameView;
     private model: GameModel;
     public currency: string;
+    public isArena = true;
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
@@ -91,10 +95,7 @@ export class GameCtrl implements GameCtrlUtils {
         this.model.setGameMode(2);
     }
     private static instance: GameCtrl;
-    public static async preEnter(
-        data: Partial<RoomInRep>,
-        game_model: GameModel,
-    ) {
+    public static async preEnter(data: Partial<RoomInRep>) {
         if (this.instance) {
             return this.instance;
         }
@@ -110,10 +111,7 @@ export class GameCtrl implements GameCtrlUtils {
                     }
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
                     if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
-                        const lang = getLang();
-                        await AlertPop.alert(
-                            InternationalTip[lang].delayUpdateAccount,
-                        );
+                        await AlertPop.alert(tplIntr('delayUpdateAccount'));
                     }
                     tipExchange(data);
                 });
@@ -137,10 +135,12 @@ export class GameCtrl implements GameCtrlUtils {
                 Loading,
             );
 
+            const game_model = new GameModel();
             const ctrl = new GameCtrl(view as GameView, game_model);
             this.instance = ctrl;
             ctrl.init(data.currency, bg_num);
             setProps(ctrlState, { game: ctrl });
+            setProps(modelState, { game: game_model });
 
             return ctrl;
         }, this);
@@ -182,11 +182,8 @@ export class GameCtrl implements GameCtrlUtils {
         );
 
         btn_leave.on(CLICK, this, (e: Event) => {
-            const lang = getLang();
-            const { leaveTip } = InternationalTip[lang];
-
             e.stopPropagation();
-            AlertPop.alert(leaveTip).then((type) => {
+            AlertPop.alert(tplIntr('leaveTip')).then((type) => {
                 if (type === 'confirm') {
                     this.sendToGameSocket(ServerEvent.TableOut);
                 }
@@ -203,11 +200,15 @@ export class GameCtrl implements GameCtrlUtils {
         });
         onNodeWithAni(btn_rank, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaRankPop.preEnter();
+            arenaGetDayRanking().then((data) => {
+                ArenaRankPop.preEnter(data);
+            });
         });
         onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();
-            ArenaHelpPop.preEnter(this.currency);
+            arenaGetRuleData(1, this.currency).then((data) => {
+                ArenaHelpPop.preEnter(data);
+            });
         });
         onNodeWithAni(btn_music, CLICK, (e: Event) => {
             e.stopPropagation();
@@ -317,6 +318,11 @@ export class GameCtrl implements GameCtrlUtils {
             isFirstStart,
             currency,
         } = data;
+
+        this.isTrial = isTrial;
+        if (isTrial) {
+            this.view.setTrialStyle();
+        }
 
         if (isFirstStart) {
             ArenaGameStatus.start();
@@ -438,11 +444,14 @@ export class GameCtrl implements GameCtrlUtils {
     }
     public async GameSettle(data: SettleData) {
         await ArenaGameStatus.end();
+        this.reset();
         await ArenaSettlePop.preEnter(data).then((type) => {
             if (type === 'continue') {
                 competitionSignUp(data.currency).then((_data) => {
                     if (_data.code !== ARENA_OK_CODE) {
-                        this.leave();
+                        arenaErrHandler(this, _data.code).then(() => {
+                            this.leave();
+                        });
                     } else {
                         this?.model.destroy();
                         ctrlState.app.enterArenaGame({
@@ -487,5 +496,6 @@ export class GameCtrl implements GameCtrlUtils {
         this.model = undefined;
         GameCtrl.instance = undefined;
         setProps(ctrlState, { game: undefined });
+        setProps(modelState, { game: undefined });
     }
 }

@@ -5,15 +5,13 @@ import { getStringLength } from 'honor/utils/getStringLength';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in, fade_out, slide_down_in } from '@app/utils/animate';
+import { fade_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
 export default class ArenaTaskTipPop
     extends ui.pop.alert.arenaTaskTipUI
     implements HonorDialog
 {
-    public isShowEffect = false;
-    public isPopupCenter = true;
     public static instance: ArenaTaskTipPop;
     public zOrder = 100;
     constructor() {
@@ -21,9 +19,10 @@ export default class ArenaTaskTipPop
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(
-            ArenaTaskTipPop,
-        )) as ArenaTaskTipPop;
+        const tip_dialog = await honor.director.openDialog<ArenaTaskTipPop>(
+            'pop/alert/arenaTaskTip.scene',
+            { before_open_param: msg },
+        );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
     }
@@ -33,13 +32,18 @@ export default class ArenaTaskTipPop
             instance?.close();
         }
     }
+    public onBeforeOpen(msg: string) {
+        this.analysisSize(msg);
+    }
+
     /**显示提示信息
      * @param msg 提示的信息
      */
     public tip(msg: string, time: number) {
         return new Promise<void>((resolve, _reject) => {
             if (!msg) {
-                return resolve();
+                resolve();
+                return;
             }
 
             startCount(time, 1, (radio: number) => {
@@ -48,7 +52,7 @@ export default class ArenaTaskTipPop
                     resolve();
                 }
             });
-            this.analysisSize(msg);
+
             this.setTipText(msg);
         });
     }

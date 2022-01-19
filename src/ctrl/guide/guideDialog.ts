@@ -1,17 +1,15 @@
 import { Laya } from 'Laya';
-import Honor, { HonorDialog, HonorDialogConfig } from 'honor';
+import honor, { HonorDialog } from 'honor';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Rectangle } from 'laya/maths/Rectangle';
-import { Image } from 'laya/ui/Image';
 import { HitArea } from 'laya/utils/HitArea';
 
-import { onLangChange, offLangChange } from '@app/ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { ui } from '@app/ui/layaMaxUI';
 import { fade_in, fade_out } from '@app/utils/animate';
 import { getRectRadiusPath } from '@app/utils/layaUtils';
-import { callFunc } from '@app/utils/utils';
+import { callFunc, tplIntr } from '@app/utils/utils';
 
 import { NextType } from './core/guideUtils';
 import { guide_state, Shape } from './guideState';
@@ -25,7 +23,6 @@ export default class GuideDialog
     extends ui.pop.guide.GuideDialogUI
     implements HonorDialog
 {
-    public config: HonorDialogConfig = {};
     private mask_area: Sprite;
     private blank_area: Sprite;
     public blank_shape: Shape;
@@ -40,24 +37,20 @@ export default class GuideDialog
     constructor() {
         super();
         this.isShowEffect = undefined;
-        this.config = {
-            shadowAlpha: 0,
-        };
     }
     public onAwake() {
         this.init();
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
     }
-    private initLang(lang: Lang) {
-        const { tourSkip, tourStart } = InternationalTip[lang];
+    private initLang() {
         const { start_label, skip_label } = this;
-        skip_label.text = tourSkip;
-        start_label.text = tourStart;
+        skip_label.text = tplIntr('tourSkip');
+        start_label.text = tplIntr('tourStart');
     }
     public static async preEnter() {
-        const dialog = (await Honor.director.openDialog(
+        const dialog = (await honor.director.openDialog(
             'pop/guide/GuideDialog.scene',
         )) as GuideDialog;
         return dialog;
@@ -204,7 +197,7 @@ export default class GuideDialog
         type: NextType,
         then: Promise<any>,
     ) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             const { blank_area } = this;
             const { hit } = blank_area.hitArea;
             this.blank_shape = shape;

@@ -1,6 +1,6 @@
 import { sleep } from '@app/utils/animate';
 import { setItem } from '@app/utils/localStorage';
-import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import ArenaCompetitionPop from '@app/view/pop/arenaCompetition';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
@@ -23,18 +23,17 @@ import TopPlayerData from './topPlayer.json';
 
 export const arena_pop_test = {
     openCompetitionInfo: async () => {
-        const pop = await ArenaCompetitionPop.preEnter('BTC');
-        await sleep(2);
-        pop.initData(CompetitionInfoData);
+        const pop = await ArenaCompetitionPop.preEnter(
+            CompetitionInfoData,
+            'BTC',
+        );
     },
     openHelp: async () => {
         setItem(`arenaGetRuleData:mode${1}`, JSON.stringify(HelpData));
-        const pop = await ArenaHelpPop.preEnter('BTC');
+        const pop = await ArenaHelpPop.preEnter(HelpData);
     },
     openRank: async () => {
-        const pop = await ArenaRankPop.preEnter();
-        await sleep(1);
-        pop.initData(RankData);
+        const pop = await ArenaRankPop.preEnter(RankData);
 
         return pop;
     },
@@ -54,10 +53,14 @@ export const arena_pop_test = {
         return pop;
     },
     openTopPlayer: async () => {
-        const pop = await ArenaTopPlayerPop.preEnter();
+        const pop = await ArenaTopPlayerPop.preEnter(
+            TopPlayerData.slice(0, 2) as any,
+        );
         await sleep(1);
 
-        pop.initData(TopPlayerData);
+        await ArenaTopPlayerPop.preEnter(TopPlayerData as any);
+        await sleep(1);
+        await ArenaTopPlayerPop.preEnter(TopPlayerData.slice(0, 2) as any);
         return pop;
     },
     openRewardRecord: async () => {
@@ -83,8 +86,7 @@ export const arena_pop_test = {
         await ArenaGameStatus.end();
     },
     openShop: async () => {
-        const pop = await ArenaShopPop.preEnter();
-        console.log(`test:>`);
+        const pop = await ArenaShopPop.preEnter({ modeId: 1, currency: 'BTC' });
         await sleep(1);
         pop.initData(arenaGenShopInfo(ShopData as any));
     },

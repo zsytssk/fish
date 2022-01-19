@@ -31,7 +31,7 @@ export class FreezeModel extends ComponentManager implements SkillModel {
     public active(info: FreezeInfo) {
         const { skill_core } = this;
         const { used_time, fish_list, duration } = info;
-        const { game } = modelState.app;
+        const { game } = modelState;
         game.freezing_com.freezing(duration - used_time, fish_list);
         skill_core.active(info);
     }

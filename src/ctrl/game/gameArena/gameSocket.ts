@@ -163,6 +163,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             game.GameSettle(data);
         },
+
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
             if (code !== ARENA_OK_CODE) {
@@ -189,7 +190,7 @@ export type EnterGameData = {
 let items_template: ServerItemInfo[];
 export function convertEnterGame(data: EnterGameRep) {
     const {
-        isTrial,
+        isGuest,
         rate,
         users: users_source,
         items,
@@ -259,6 +260,7 @@ export function convertEnterGame(data: EnterGameRep) {
             }
             if (!fish_item.group) {
                 fish_list.push(fish_item.eid);
+                continue;
             }
             for (const group_item of fish_item.group) {
                 fish_list.push(group_item.eid);
@@ -267,7 +269,7 @@ export function convertEnterGame(data: EnterGameRep) {
     }
 
     return {
-        isTrial,
+        isTrial: isGuest,
         exchange_rate: rate,
         fish,
         users,

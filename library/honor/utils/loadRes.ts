@@ -1,8 +1,7 @@
 import { combineLatest, Observable, Subscriber } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { Laya, loader } from 'Laya';
-import { HonorDialog } from 'honor';
+import { loader } from 'Laya';
 import { Scene } from 'laya/display/Scene';
 import { Event } from 'laya/events/Event';
 import { HttpRequest } from 'laya/net/HttpRequest';
@@ -27,20 +26,6 @@ export type LoadingCtor = Ctor<LoadingView> & {
 
 export type ProgressFn = (radio: number) => void;
 
-export function openDialog(url: string, fn?: ProgressFn) {
-    return loadDialog(url, fn).then((view: HonorDialog) => {
-        view.open();
-        Laya.stage.on(Event.RESIZE, view, () => {
-            view.onResize?.(Laya.stage.width, Laya.stage.height);
-        });
-        view.onResize?.(Laya.stage.width, Laya.stage.height);
-        view.once(Event.UNDISPLAY, view, () => {
-            Laya.stage.offAllCaller(view);
-        });
-        return view;
-    });
-}
-
 export function loadScene(url: string, fn?: ProgressFn) {
     return new Promise<Scene>((resolve) => {
         Scene.load(
@@ -51,7 +36,7 @@ export function loadScene(url: string, fn?: ProgressFn) {
     });
 }
 export function loadDialog(url: string, fn?: ProgressFn) {
-    return new Promise<Scene>((resolve) => {
+    return new Promise<Dialog>((resolve) => {
         Dialog.load(
             url,
             Handler.create(this, resolve, null, true),

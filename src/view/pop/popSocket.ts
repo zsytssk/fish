@@ -1,4 +1,6 @@
 import {
+    ArenaAwardListReq,
+    ArenaAwardListRes,
     BuyGiftRep,
     BuyGoodsData,
     CompetitionInfo,
@@ -6,6 +8,7 @@ import {
     GetHallOfFameData,
     GetRuleData,
     GiftList,
+    MatchListRes,
     ShopListData,
     ShopListDataItem,
     SignUpReq,
@@ -251,15 +254,16 @@ export function getCompetitionInfo(currency: string) {
 export function competitionSignUp(currency?: string) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
+        currency = currency || modelState.app.user_info.cur_balance;
         socket.event.once(ArenaEvent.SignUp, (data: SignUpRes, code) => {
             resolve({
                 code,
-                currency: currency || modelState.app.user_info.cur_balance,
+                currency,
                 ...data,
             });
         });
         socket.send(ArenaEvent.SignUp, {
-            currency: modelState.app.user_info.cur_balance,
+            currency,
         } as SignUpReq);
     }) as Promise<SignUpRes>;
 }
@@ -312,6 +316,7 @@ export function arenaBuyGift() {
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
                 arenaErrHandler(null, code);
+                reject(code);
             } else {
                 const userId = getCurUserId(true);
                 const change_arr: ChangeUserNumInfo['change_arr'] = [];
@@ -331,7 +336,7 @@ export function arenaBuyGift() {
     });
 }
 /** Arena 礼包 giftList */
-export function arenaGetHallOfFame() {
+export function arenaGetHallOfFame(modeId: number) {
     return new Promise((resolve, reject) => {
         const socket = getSocket(ServerName.ArenaHall);
         if (!socket) {
@@ -348,7 +353,7 @@ export function arenaGetHallOfFame() {
                 }
             },
         );
-        socket.send(ArenaEvent.GetHallOfFame);
+        socket.send(ArenaEvent.GetHallOfFame, { modeId });
     }) as Promise<GetHallOfFameData>;
 }
 
@@ -445,7 +450,7 @@ export function arenaBuyItem(id: string, itemId: string, num = 1) {
         socket.event.once(ArenaEvent.BuyGoods, (data: BuyRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
                 arenaErrHandler(null, code, data, socket);
-                reject();
+                reject(code);
                 return;
             }
 
@@ -457,5 +462,42 @@ export function arenaBuyItem(id: string, itemId: string, num = 1) {
             resolve(true);
         });
         socket.send(ArenaEvent.BuyGoods, { id, num } as BuyGoodsData);
+    });
+}
+
+export function arenaAwardList(params: ArenaAwardListReq) {
+    return new Promise<ArenaAwardListRes>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(
+            ArenaEvent.AwardList,
+            (data: ArenaAwardListRes, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code, data, socket);
+                    reject();
+                    return;
+                }
+
+                resolve(data);
+            },
+        );
+        socket.send(ArenaEvent.AwardList, params);
+    });
+}
+export function arenaMatchList(modeId: number) {
+    return new Promise<MatchListRes>((resolve, reject) => {
+        const socket = getSocket(ServerName.ArenaHall);
+        socket.event.once(
+            ArenaEvent.MatchList,
+            (data: MatchListRes, code: number) => {
+                if (code !== ARENA_OK_CODE) {
+                    arenaErrHandler(null, code, data, socket);
+                    reject();
+                    return;
+                }
+
+                resolve(data);
+            },
+        );
+        socket.send(ArenaEvent.MatchList, { modeId });
     });
 }

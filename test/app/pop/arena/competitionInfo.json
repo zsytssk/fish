@@ -4,9 +4,10 @@
         "endTime": 1638892800000,
         "startPeriod": "11:11",
         "endPeriod": "12:12",
-        "fee": -1
+        "fee": 0
     },
-    "arenaStatus": 2,
+    "currency": "BTC",
+    "arenaStatus": 5,
     "champion": [
         {
             "amount": "1",
@@ -57,6 +58,6 @@
     "myself": {
         "score": 0,
         "ranking": 0,
-        "status": 1
+        "status": 7
     }
 }

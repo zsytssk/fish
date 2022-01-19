@@ -8,7 +8,6 @@ import { ui } from '@app/ui/layaMaxUI';
 import { slide_down_in } from '@app/utils/animate';
 import { startCount } from '@app/utils/count';
 
-const url = 'pop/alert/topTip.scene';
 export default class TopTipPop
     extends ui.pop.alert.topTipUI
     implements HonorDialog
@@ -22,7 +21,9 @@ export default class TopTipPop
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(url)) as TopTipPop;
+        const tip_dialog = await honor.director.openDialog<TopTipPop>(
+            'pop/alert/topTip.scene',
+        );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
     }

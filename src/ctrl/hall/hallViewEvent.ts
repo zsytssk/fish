@@ -9,8 +9,8 @@ import { modelState } from '@app/model/modelState';
 import { onNode, isClosest, onNodeWithAni } from '@app/utils/layaUtils';
 import { getItem, setItem } from '@app/utils/localStorage';
 import { error } from '@app/utils/log';
-import { playSkeleton, playSkeletonOnce } from '@app/utils/utils';
-import ArenaCompetitionPop from '@app/view/pop/arenaCompetotion';
+import { covertLang, playSkeleton, playSkeletonOnce } from '@app/utils/utils';
+import ArenaCompetitionPop from '@app/view/pop/arenaCompetition';
 import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import ArenaRewardRecordPop from '@app/view/pop/record/arenaRewardRecord';
 import GameRecord from '@app/view/pop/record/gameRecord';
@@ -74,26 +74,28 @@ export function hallViewEvent(hall: HallCtrl) {
     onNode(btn_normal_play, CLICK, async (event: Event) => {
         AudioCtrl.play(AudioRes.Click);
         const lang = getLang();
+        const ani_name = covertLang(lang);
         const ani = btn_normal_play.getChildByName('ani') as Skeleton;
-        const ani_play = playSkeletonOnce(normal_ani, `active_${lang}`);
-        const btn_play = playSkeletonOnce(ani, `active_${lang}`);
+        const ani_play = playSkeletonOnce(normal_ani, `active_${ani_name}`);
+        const btn_play = playSkeletonOnce(ani, `active_${ani_name}`);
 
         Promise.all([btn_play, ani_play]).then(() => {
             hall.roomIn({ roomId: 1, isTrial: 0 }, hall);
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
         });
     });
 
     onNode(btn_normal_try, CLICK, async () => {
         AudioCtrl.play(AudioRes.Click);
         const lang = getLang();
+        const ani_name = covertLang(lang);
         const ani = btn_normal_try.getChildByName('ani') as Skeleton;
-        const btn_play = playSkeletonOnce(ani, `active_${lang}`);
-        const ani_play = playSkeletonOnce(normal_ani, `active_${lang}`);
+        const btn_play = playSkeletonOnce(ani, `active_${ani_name}`);
+        const ani_play = playSkeletonOnce(normal_ani, `active_${ani_name}`);
 
         Promise.all([btn_play, ani_play]).then(() => {
             hall.roomIn({ roomId: 1, isTrial: 1 }, hall);
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
         });
     });
     onNode(btn_match_play, CLICK, async () => {
@@ -132,13 +134,14 @@ export function hallViewEvent(hall: HallCtrl) {
     });
     onNode(btn_play_now, CLICK, async () => {
         const lang = getLang();
+        const ani_name = covertLang(lang);
         const ani = btn_play_now.getChildByName('ani') as Skeleton;
         AudioCtrl.play(AudioRes.Click);
-        const ani_play = playSkeletonOnce(normal_ani, `active_${lang}`);
-        const btn_play = playSkeletonOnce(ani, `active_${lang}`);
+        const ani_play = playSkeletonOnce(normal_ani, `active_${ani_name}`);
+        const btn_play = playSkeletonOnce(ani, `active_${ani_name}`);
         Promise.all([btn_play, ani_play]).then(() => {
             hall.roomIn(getRoomInData(), hall);
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
         });
     });
     btn_coin_select.on(CLICK, hall, (event: Event) => {

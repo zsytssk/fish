@@ -1,23 +1,22 @@
-import { HonorDialog, HonorDialogConfig } from 'honor';
-import { openDialog } from 'honor/utils/loadRes';
+import honor, { HonorDialog } from 'honor';
+import { OpenDialogOpt } from 'honor/ui/dialogManager';
 import { Event } from 'laya/events/Event';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
+import { tplIntr } from '@app/utils/utils';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
     hide_cancel?: boolean;
     confirm_text?: string;
-} & HonorDialogConfig;
+} & OpenDialogOpt<AlertPop>;
+
 export default class AlertPop
     extends ui.pop.alert.alertUI
     implements HonorDialog
 {
-    public isModal = true;
     shadowAlpha: 0.1;
     public close_resolve: (type: CloseType) => void;
     public _zOrder = 1001;
@@ -28,8 +27,11 @@ export default class AlertPop
         this._zOrder = value;
     }
     public static async alert(msg: string, opt = {} as Opt) {
-        const { hide_cancel, confirm_text } = opt;
-        const alert = (await openDialog('pop/alert/alert.scene')) as AlertPop;
+        const { hide_cancel, confirm_text, ...otherOpt } = opt;
+        const alert = (await honor.director.openDialog(
+            'pop/alert/alert.scene',
+            { ...otherOpt, use_exist: false, stay_scene: false },
+        )) as AlertPop;
         AudioCtrl.play(AudioRes.PopShow);
         return await alert.alert(msg, { hide_cancel, confirm_text });
     }
@@ -78,11 +80,9 @@ export default class AlertPop
         this.close_resolve = undefined;
     }
     private initLang() {
-        const lang = getLang();
         const { title, btn_confirm_label, btn_cancel_label } = this;
-        const { tips, cancel, confirm } = InternationalTip[lang];
-        title.text = tips;
-        btn_confirm_label.text = confirm;
-        btn_cancel_label.text = cancel;
+        title.text = tplIntr('tips');
+        btn_confirm_label.text = tplIntr('confirm');
+        btn_cancel_label.text = tplIntr('cancel');
     }
 }

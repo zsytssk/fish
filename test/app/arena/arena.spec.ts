@@ -1,20 +1,21 @@
 import { testBuild } from 'testBuilder';
 
-import { injectAfter } from 'honor/utils/tool';
-
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { GameCtrl as ArenaCtrl } from '@app/ctrl/game/gameArena/gameCtrl';
-import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 import ArenaView from '@app/view/scenes/arena/arenaView';
 import { viewState } from '@app/view/viewState';
 
+import statusData from './data/statusData.json';
 import taskData from './data/taskData.json';
 
 export const arena_test = testBuild({
+    status: async () => {
+        modelState.app.arena_info.updateInfo(statusData.status1);
+    },
     enter: async () => {
-        if (modelState?.app?.game) {
+        if (modelState?.game) {
             return;
         }
 
@@ -22,8 +23,8 @@ export const arena_test = testBuild({
 
         await sleep(1);
 
-        if (modelState.app.game) {
-            modelState.app.game.setGameMode(2);
+        if (modelState.game) {
+            modelState.game.setGameMode(2);
         }
     },
     showTask: async () => {
@@ -31,15 +32,15 @@ export const arena_test = testBuild({
         const arena_ctrl = ctrlState.game as ArenaCtrl;
 
         arena_ctrl.triggerTask(taskData.triggerTask);
-        await sleep(3);
-        arena_ctrl.taskRefresh(taskData.taskRefresh1);
-        await sleep(3);
-        arena_ctrl.taskRefresh(taskData.taskRefresh2);
-        await sleep(3);
-        arena_ctrl.taskFinish({
-            ...taskData.taskFinish,
-            userId: modelState.app.arena_info.user_id,
-        });
+        // await sleep(3);
+        // arena_ctrl.taskRefresh(taskData.taskRefresh1);
+        // await sleep(3);
+        // arena_ctrl.taskRefresh(taskData.taskRefresh2);
+        // await sleep(3);
+        // arena_ctrl.taskFinish({
+        //     ...taskData.taskFinish,
+        //     userId: modelState.app.arena_info.user_id,
+        // });
     },
     setPlayerNum: async () => {
         const game = viewState.game as ArenaView;

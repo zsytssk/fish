@@ -42,9 +42,6 @@ export class GameModel extends ComponentManager {
     public setGameMode(mode: GameMode) {
         this.game_mode = mode;
     }
-    public setCurrency(currency: string) {
-        this.currency = currency;
-    }
     private initCom() {
         this.addCom(new EventCom(), new TimeoutCom());
     }
@@ -100,7 +97,10 @@ export class GameModel extends ComponentManager {
     public captureFish(info: HitRep) {
         const { userId, eid, backAmount } = info;
         const player = this.getPlayerById(userId);
-        const fish = this.getFishById(eid);
+
+        if (player.is_cur_player) {
+            console.log(`test:>bulletNum:>Hit`, info);
+        }
 
         if (!player) {
             error(`Game:>captureFish:> cant find player for ${userId}`);
@@ -111,7 +111,11 @@ export class GameModel extends ComponentManager {
                 bullet_num: player.bullet_num + backAmount,
             });
         }
+        if (!eid) {
+            return;
+        }
 
+        const fish = this.getFishById(eid);
         if (!fish) {
             error(`Game:>captureFish:> cant find fish for ${eid}`);
             return;
@@ -181,6 +185,9 @@ export class GameModel extends ComponentManager {
     }
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);
+        if (player.is_cur_player) {
+            console.log(`test:>bulletNum:>shoot`, data);
+        }
         if (!player) {
             error(`Game:>shoot:> cant find player:>${data.userId}`);
             return;

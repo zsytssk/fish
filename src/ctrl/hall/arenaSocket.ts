@@ -6,29 +6,39 @@ import {
 import { Config } from '@app/data/config';
 import { isProd } from '@app/data/env';
 import {
+    ArenaErrCode,
     ArenaEvent,
     ARENA_OK_CODE,
+    ErrorData,
     ServerErrCode,
+    ServerEvent,
     ServerName,
 } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { getItem, setItem } from '@app/utils/localStorage';
-import { log } from '@app/utils/log';
+import { error, log } from '@app/utils/log';
 import { getParams, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
-import { getCompetitionInfo } from '@app/view/pop/popSocket';
 import TipPop from '@app/view/pop/tip';
 
+import { getGameCurrency } from '../ctrlState';
 import { GameCtrl } from '../game/gameArena/gameCtrl';
-import { Config as SocketConfig, WebSocketTrait } from '../net/webSocketWrap';
+import {
+    Config as SocketConfig,
+    SocketEvent,
+    WebSocketTrait,
+} from '../net/webSocketWrap';
 import {
     bindSocketEvent,
     createSocket,
     getSocket,
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
-import { commonSocket, errorHandler } from './commonSocket';
+import { tipComeBack } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
+import { recharge } from './hallCtrlUtil';
+import { login } from './login';
 
 let arena_hall_socket: WebSocketTrait;
 export async function connectArenaHallSocket(checkReplay = false) {
@@ -49,32 +59,39 @@ export async function connectArenaHallSocket(checkReplay = false) {
         arena_hall_socket = socket;
 
         if (!socket) {
-            throw Error(`ConnectFailed:${ServerName.ArenaHall}}`);
+            error(`ConnectFailed:${ServerName.ArenaHall}`);
+            throw Error(ServerErrCode.NetError + '');
         }
     }
 
     if (checkReplay) {
-        const data = await new Promise<ArenaStatusData | void>((resolve) => {
-            arena_hall_socket.event.once(
-                ArenaEvent.ArenaStatus,
-                (data: ArenaStatusData, code: number) => {
-                    if (code !== ARENA_OK_CODE) {
-                        return resolve();
-                    }
-                    modelState.app.arena_info.updateInfo(data);
-                    resolve(data);
-                },
-            );
-            sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
-                currency: modelState.app.user_info.cur_balance,
-            });
-        });
+        const data = await new Promise<ArenaStatusData | void>(
+            (resolve, reject) => {
+                arena_hall_socket.event.once(
+                    ServerEvent.ErrCode,
+                    (res, code) => reject(res?.code || code),
+                    null,
+                );
+                arena_hall_socket.event.once(
+                    ArenaEvent.ArenaStatus,
+                    (data: ArenaStatusData, code: number) => {
+                        if (code !== ARENA_OK_CODE) {
+                            return resolve();
+                        }
+                        modelState.app.arena_info.updateInfo(data);
+                        resolve(data);
+                    },
+                );
+                sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
+                    currency: modelState.app.user_info.cur_balance,
+                });
+            },
+        );
 
         if (
             !data ||
-            data.roomStatus !== ArenaStatus.Open ||
-            (data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP &&
-                data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
+            data.roomStatus !== ArenaStatus.ROOM_STATUS_ENABLE ||
+            (data.userStatus !== ArenaGameStatus.GAME_STATUS_SIGNUP_OVER &&
                 data.userStatus !== ArenaGameStatus.GAME_STATUS_PLAYING)
         ) {
             return false;
@@ -90,6 +107,10 @@ export function sendToArenaHallSocket(
     arena_hall_socket.send(...params);
 }
 
+export function getArenaSocket() {
+    return arena_hall_socket;
+}
+
 /** 绑定ArenaSocket */
 export async function bindArenaHallSocket(hall: HallCtrl) {
     if (!arena_hall_socket) {
@@ -102,8 +123,42 @@ export async function bindArenaHallSocket(hall: HallCtrl) {
         },
     });
 
-    commonSocket(arena_hall_socket, hall);
+    commonArenaSocket(arena_hall_socket, hall);
 }
+
+export function commonArenaSocket(socket: WebSocketTrait, bindObj: any) {
+    bindSocketEvent(socket, bindObj, {
+        [ArenaEvent.ErrCode]: (res: ErrorData, code: number) => {
+            code = res?.code || code;
+            arenaErrHandler(null, code);
+        },
+        /** 重连 */
+        [SocketEvent.Reconnecting]: (try_index: number) => {
+            if (try_index === 0) {
+                TipPop.tip(tplIntr('NetError'), {
+                    count: 10,
+                    show_count: true,
+                    auto_hide: false,
+                    click_through: false,
+                    repeat: true,
+                });
+            }
+        },
+        /** 重连 */
+        [SocketEvent.Reconnected]: () => {
+            tipComeBack();
+        },
+        /** 断开连接 */
+        [SocketEvent.End]: () => {
+            AlertPop.alert(tplIntr('logoutTip'), {
+                hide_cancel: true,
+            }).then(() => {
+                location.reload();
+            });
+        },
+    });
+}
+
 /** 解除绑定ArenaSocket */
 export function offArenaHallSocket(hall: any) {
     if (arena_hall_socket) {
@@ -139,10 +194,7 @@ export async function connectArenaSocket(
         isProd() ? 3 : 1,
         isProd() ? 3 : 0,
     );
-    if (!socket && isProd()) {
-        AlertPop.alert(tplIntr(ServerErrCode.NetError)).then(() => {
-            location.reload();
-        });
+    if (!socket) {
         return;
     }
 
@@ -173,23 +225,71 @@ export function getArenaGuestToken(socket: WebSocketTrait) {
     }) as Promise<string>;
 }
 
-export function arenaErrHandler(
+export async function arenaErrHandler(
     ctrl: GameCtrl | any,
     code: number,
     data?: any,
     socket?: WebSocketTrait,
 ) {
-    if (code === ServerErrCode.Maintenance) {
-        if (ctrl instanceof GameCtrl) {
-            AlertPop.alert('游戏维护中，请退出游戏！', {
-                hide_cancel: true,
-            }).then(() => {
-                ctrl.leave();
+    if (code === ArenaErrCode.Maintenance) {
+        if (typeof ctrl.leave === 'function') {
+            asyncOnly('maintainQuitTipAlert', async () => {
+                return AlertPop.alert(tplIntr('maintainQuitTip'), {
+                    hide_cancel: true,
+                }).then(() => {
+                    ctrl.leave();
+                });
             });
         } else {
-            TipPop.tip('游戏维护中');
+            TipPop.tip(tplIntr('maintainTip'));
         }
         return true;
+    } else if (code === ArenaErrCode.NoMoney) {
+        const errMsg = tplIntr(ServerErrCode.NoMoney);
+
+        return AlertPop.alert(errMsg).then((type) => {
+            if (type === 'confirm') {
+                const currency =
+                    getGameCurrency() || modelState.app.user_info.cur_balance;
+                recharge(currency);
+            }
+        });
+    } else if (code === ArenaErrCode.NoOpen) {
+        TipPop.tip(tplIntr('gameNoOpen'));
+        socket?.send(ArenaEvent.ArenaStatus);
+    } else if (code === ArenaErrCode.GameEnded) {
+        TipPop.tip(tplIntr('GameEnded'));
+        socket?.send(ArenaEvent.ArenaStatus);
+    } else if (code === ArenaErrCode.SignUpFail) {
+        // @TODO
+        const errMsg = tplIntr('SignUpFail');
+        if (typeof ctrl?.leave === 'function') {
+            return AlertPop.alert(errMsg).then((type) => {
+                ctrl?.leave();
+            });
+        } else {
+            TipPop.tip(errMsg);
+        }
+    } else if (code === ArenaErrCode.GuestSignUpFail) {
+        const errMsg = tplIntr('GuestSignUpFail');
+        return AlertPop.alert(errMsg).then((type) => {
+            ctrl?.leave();
+            if (type === 'confirm') {
+                login();
+            }
+        });
+    } else if (code === ArenaErrCode.UserSignUpDeadline) {
+        TipPop.tip(tplIntr('UserSignUpDeadline'));
+    } else if (code === ArenaErrCode.BulletLack) {
+        TipPop.tip(tplIntr('BulletLack'));
+    } else if (
+        code === ArenaErrCode.BuyGiftFail ||
+        code === ArenaErrCode.BuyShopFail
+    ) {
+        TipPop.tip(tplIntr('BuyFail'));
+    } else if (code === ArenaErrCode.ItemNotExist) {
+        TipPop.tip(tplIntr('ItemNotExist'));
+    } else if (code === ArenaErrCode.GiftOnlyOnce) {
+        TipPop.tip(tplIntr('GiftOnlyOnce'));
     }
-    errorHandler(code, data, socket);
 }

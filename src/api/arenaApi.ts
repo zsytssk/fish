@@ -1,13 +1,32 @@
 /** 游戏状态 */
 export enum ArenaStatus {
     /** 维护中  */
-    Maintenance = 1,
+    ROOM_STATUS_MAINTAIN = 1,
     /** 未开启  */
-    NoOpen = 2,
-    /** 开启  */
-    Open = 3,
-    /** 结束  */
-    Settle = 4,
+    ROOM_STATUS_DISABLE = 2,
+    /** 预热开启  */
+    ROOM_STATUS_ENABLE_PREHEAT = 3,
+    /** 开启中  */
+    ROOM_STATUS_ENABLE = 4,
+    /** 已结算  */
+    ROOM_STATUS_SETTLEMENT = 5,
+}
+/** 游戏状态 */
+export enum ArenaGameStatus {
+    /** 时间段还未开放 */
+    GAME_STATUS_CLOSE = 1,
+    /** 首次免费玩 */
+    GAME_STATUS_FREE = 2,
+    /** 未报名 */
+    GAME_STATUS_NO_SIGNUP = 3,
+    /** 已报名 */
+    GAME_STATUS_SIGNUP_OVER = 4,
+    /** 游戏中 */
+    GAME_STATUS_PLAYING = 5,
+    /** 用户暂时离开 */
+    GAME_STATUS_TABLE_OUT = 6,
+    /** 已完成结算 */
+    GAME_STATUS_SETTLEMENT = 7,
 }
 
 export type ServerItemInfo = {
@@ -33,16 +52,6 @@ export type LockFishRep = {
     number: number;
 };
 
-/** 房间状态 */
-export enum ArenaRoomStatus {
-    /** 未开始  */
-    NoOpen = 1,
-    /** 开始  */
-    Open = 2,
-    /** 进行中  */
-    OnGoing = 3,
-}
-
 export type ArenaStatusData = {
     endDate: number;
     startDate: number;
@@ -50,24 +59,6 @@ export type ArenaStatusData = {
     roomStatus: ArenaStatus;
     userStatus: ArenaGameStatus;
 };
-
-/** 游戏状态 */
-export enum ArenaGameStatus {
-    /** 时间段还未开放 */
-    GAME_STATUS_CLOSE = 1,
-    /** 首次免费玩 */
-    GAME_STATUS_FREE = 2,
-    /** 比赛开始 */
-    GAME_STATUS_SIGNUP = 3,
-    /** 已报名 */
-    GAME_STATUS_SIGNUP_OVER = 4,
-    /** 游戏中 */
-    GAME_STATUS_PLAYING = 5,
-    /** 用户暂时离开 */
-    GAME_STATUS_TABLE_OUT = 6,
-    /** 已完成结算 */
-    GAME_STATUS_SETTLEMENT = 7,
-}
 
 export type CompetitionInfo = {
     match: {
@@ -110,7 +101,7 @@ export type ServerUserInfo = {
 
 /** 复盘 */
 export type EnterGameRep = {
-    isTrial: 0 | 1;
+    isGuest: 0 | 1;
     roomId: number;
     isFirstStart: boolean;
     rate: number;
@@ -140,6 +131,7 @@ export type GetDayRankingItem = {
     userId: number;
     score: number;
     award: number;
+    currency: string;
 };
 export type GetDayRanking = {
     today: GetDayRankingItem[];
@@ -180,8 +172,8 @@ export type SettleData = {
 
 export type GetHallOfFameDataItem = {
     userId: number | string;
-    startDate: string;
-    endDate: string;
+    startDate: number;
+    endDate: number;
     score: number;
 };
 export type GetHallOfFameData = GetHallOfFameDataItem[];
@@ -244,3 +236,30 @@ export type TaskFinishRes = {
     isComplete: boolean;
     award: number;
 };
+
+export type ArenaAwardListReq = {
+    modeId: number;
+    type: 1 | 2; //奖励类型 1日排行 2总冠军
+    dayId?: string; //日排行参数
+    matchId?: number; //总冠军参数 期数
+    pageNum: number; //当前页
+    pageSize: number; //每页显示数量
+};
+export type ArenaAwardListResItem = {
+    ranking: number;
+    time: number;
+    award: number;
+    currency: string;
+    userId: string;
+};
+export type ArenaAwardListRes = {
+    list: ArenaAwardListResItem[];
+    pageNum: number; //当前页
+    pageSize: number; //每页显示数量
+    pages: number; //总页
+    total: number;
+};
+
+export type MatchListRes = {
+    id: number;
+}[];

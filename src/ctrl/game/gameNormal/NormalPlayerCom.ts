@@ -1,5 +1,6 @@
 import { Component } from 'comMan/component';
 
+import { getGameCurrency } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { errorHandler } from '@app/ctrl/hall/commonSocket';
 import { AudioRes } from '@app/data/audioRes';
@@ -10,7 +11,6 @@ import {
     PlayerEvent,
     PlayerModel,
 } from '@app/model/game/playerModel';
-import { getGameCurrency } from '@app/model/modelState';
 import { showAwardCircle } from '@app/view/scenes/game/ani_wrap/award/awardBig';
 import { showAwardCoin } from '@app/view/scenes/game/ani_wrap/award/awardCoin';
 import { awardSkill } from '@app/view/scenes/game/ani_wrap/award/awardSkill';
@@ -27,10 +27,6 @@ export class NormalPlayerCom implements Component {
         const gun_event = model.gun.event;
         const view = game_ctrl.view;
 
-        event.on(PlayerEvent.UpdateInfo, () => {
-            const { bullet_num } = this.model;
-            view.setBulletNum(bullet_num);
-        });
         event.on(
             PlayerEvent.CaptureFish,
             (capture_info: CaptureInfo) => {
@@ -72,7 +68,12 @@ export class NormalPlayerCom implements Component {
         if (!model.is_cur_player) {
             return;
         }
+
         view.setBulletNum(model.bullet_num);
+        event.on(PlayerEvent.UpdateInfo, () => {
+            const { bullet_num } = this.model;
+            view.setBulletNum(bullet_num);
+        });
 
         gun_event.on(
             GunEvent.NotEnoughBulletNum,

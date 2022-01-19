@@ -21,6 +21,8 @@ export enum ServerErrCode {
     /** 余额不足 */
     NoMoney = 101,
     /** 重新带入 */
+    Maintaining = 111,
+    /** 重新带入 */
     ReExchange = 112,
     /** 需要登陆 */
     NeedLogin = 114,
@@ -40,8 +42,6 @@ export enum ServerErrCode {
     EnterGameError = 505,
     /** 网络异常 */
     NetError = 511,
-    /** 维护中 */
-    Maintenance = 601,
 }
 
 export type ErrorData = {
@@ -96,6 +96,8 @@ export const ServerEvent = {
     RoomIn: 'roomIn',
     RoomOut: 'roomOut',
     CheckReplay: 'checkReplay',
+    /** 获取Arena的socket地址 */
+    GetArenaWsUrl: 'getArenaWsUrl',
 
     /** 兑换子弹 */
     ExchangeBullet: 'exchangeBullet',
@@ -125,6 +127,36 @@ export const ServerEvent = {
     GetUserInfo: 'getUserInfo',
 };
 
+/** socket 错误码 */
+export enum ArenaErrCode {
+    /** 余额不足 */
+    NoMoney = 302,
+    /** 比赛暂未开启 */
+    TokenExpire = 11,
+    /** 比赛暂未开启 */
+    NoOpen = 201,
+    /** 比赛已结束 */
+    GameEnded = 202,
+    /** 用户报名失败 */
+    SignUpFail = 303,
+    /** 游客报名失败 */
+    GuestSignUpFail = 308,
+    /** 报名截止 */
+    UserSignUpDeadline = 309,
+    /** 用户子弹数不足 */
+    BulletLack = 304,
+    /** 用户礼包购买失败 */
+    BuyGiftFail = 305,
+    /** 用户商城购买失败 */
+    BuyShopFail = 306,
+    /** 礼包当天只能买一次 */
+    GiftOnlyOnce = 307,
+    /** 道具不存在 */
+    ItemNotExist = 401,
+    /** 维护中 */
+    Maintenance = 601,
+}
+
 export const ArenaEvent = {
     /** 大厅游客 */
     Guess: 'guest',
@@ -138,6 +170,10 @@ export const ArenaEvent = {
     GetHallOfFame: 'getHallOfFame',
     /**  总冠军 */
     MatchChampionList: 'matchChampionList',
+    /**  奖励查询 */
+    AwardList: 'awardList',
+    /**  奖励查询-期数 */
+    MatchList: 'matchList',
     /**  帮助信息 */
     GetRuleData: 'getRuleData',
     /**  报名 */
@@ -159,4 +195,7 @@ export const ArenaEvent = {
     /**  购买礼品 */
     BuyGift: 'buyGift',
     ...CommonGameEvent,
+
+    /** 其他部分 */
+    ErrCode: 'error',
 };

@@ -7,14 +7,12 @@ import {
     offLangChange,
     onLangChange,
 } from '@app/ctrl/hall/hallCtrlUtil';
-import { SkillMap } from '@app/data/config';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { getCurPlayer } from '@app/model/modelState';
 import { ui } from '@app/ui/layaMaxUI';
 import { addZeroToNum, tplIntr } from '@app/utils/utils';
 
 import AlertPop from './alert';
-import { buyItem } from './popSocket';
+import { getItemName } from './shop';
 import TipPop from './tip';
 
 type BuyInfo = {
@@ -34,20 +32,17 @@ export default class BuyBulletPop
     extends ui.pop.alert.buyBulletUI
     implements HonorDialog
 {
-    public isModal = true;
     private buy_info: BuyInfo;
     private resolve: (info: BuyResultData) => void;
     public static async preEnter(info: BuyInfo): Promise<BuyResultData> {
-        const dialog = (await honor.director.openDialog({
-            dialog: BuyBulletPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as BuyBulletPop;
+        const dialog = await honor.director.openDialog<BuyBulletPop>(
+            'pop/alert/buyBullet.scene',
+        );
         return dialog.buy(info);
     }
     public onAwake() {
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
         this.initEvent();
     }
@@ -76,6 +71,9 @@ export default class BuyBulletPop
                         this.setNum(Number(value));
                     }
                 },
+                nullMsg: tplIntr('keyboardEmpTip'),
+                delTxt: tplIntr('Delete'),
+                confirmTxt: tplIntr('confirm'),
             });
         });
     }
@@ -113,23 +111,20 @@ export default class BuyBulletPop
     private setIntro() {
         const lang = getLang();
         const { intro, buy_info } = this;
-        const { buyBulletCost, bullet } = InternationalTip[lang];
         const { price, num, currency } = buy_info;
 
-        const typename = currency || bullet;
+        const typename = currency || tplIntr('bullet');
         const cost = price * num;
         if (lang === 'en') {
-            intro.text = `${buyBulletCost} ${cost} ${typename}`;
+            intro.text = `${tplIntr('buyBulletCost')} ${cost} ${typename}`;
         } else {
-            intro.text = `${buyBulletCost}${cost}${typename}`;
+            intro.text = `${tplIntr('buyBulletCost')}${cost}${typename}`;
         }
     }
-    private initLang(lang: Lang) {
-        const { purchase } = InternationalTip[lang];
+    private initLang() {
         const { title, btn_label } = this;
 
-        title.text = purchase;
-        btn_label.text = purchase;
+        btn_label.text = title.text = tplIntr('purchase');
         this.setIntro();
     }
     public buy(info: BuyInfo) {
@@ -152,24 +147,13 @@ export default class BuyBulletPop
     }
 }
 
-export function getSkillName(id: string) {
-    switch (id) {
-        case SkillMap.Bomb:
-            return tplIntr('bomb');
-        case SkillMap.Freezing:
-            return tplIntr('freeze');
-        case SkillMap.LockFish:
-            return tplIntr('lock');
-    }
-}
-
 export function buyItemAlert(num: number, price: number, id: string) {
     return new Promise((resolve, reject) => {
         const tip = tplIntr('buyItemTip', {
             cost_num: num * price,
             cost_name: tplIntr('bullet'),
             num: num,
-            name: getSkillName(id),
+            name: getItemName(id + ''),
         });
 
         AlertPop.alert(tip).then((type) => {

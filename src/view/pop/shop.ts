@@ -6,15 +6,12 @@ import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
-import {
-    getLang,
-    offLangChange,
-    onLangChange,
-} from '@app/ctrl/hall/hallCtrlUtil';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
+import { SkillMap } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
-import { tplIntr } from '@app/utils/utils';
+import { covertLang, tplIntr, tplStr } from '@app/utils/utils';
 
 import BuyBulletPop, { buySkinAlert } from './buyBullet';
 import { buyItem, getShopInfo, useGunSkin } from './popSocket';
@@ -69,20 +66,16 @@ type ShopItemItemUI = ui.pop.shop.shopItemItemUI;
 
 /** 商城弹出层 */
 export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
-    public isModal = true;
     /** 是否初始化... */
     private is_init = false;
-    public static preEnter() {
+    public static async preEnter() {
         AudioCtrl.play(AudioRes.PopShow);
-        const shop_dialog = honor.director.openDialog({
-            dialog: ShopPop,
-            use_exist: true,
-            stay_scene: true,
-        }) as Promise<ShopPop>;
-        const shop_data = getShopInfo();
-        return Promise.all([shop_dialog, shop_data]).then(([dialog, data]) => {
-            dialog.initData(data);
-        });
+        const shop_dialog = await honor.director.openDialog<ShopPop>(
+            'pop/shop/shop.scene',
+        );
+        const shop_data = await getShopInfo();
+        shop_dialog.initData(shop_data);
+        return shop_dialog;
     }
     public static preLoad() {
         return loadRes('pop/shop/shop.scene');
@@ -163,8 +156,6 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
             index
         ] as GunRenderData;
         const { name_label, icon, stack_btn, icon_check, select_bd } = box;
-        const lang = getLang();
-        const { use, inUse } = InternationalTip[lang];
 
         name_label.text = gun_name;
         icon.skin = `image/pop/shop/icon/${gun_id}.png`;
@@ -188,14 +179,14 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
                 });
             });
         } else if (gun_status === GunSkinStatus.Have) {
-            cur_label.text = use;
+            cur_label.text = tplIntr('use');
             cur_btn.on(Event.CLICK, cur_btn, () => {
                 useGunSkin(gun_id).then(() => {
                     this.useGunSkin(gun_id);
                 });
             });
         } else if (gun_status === GunSkinStatus.Used) {
-            cur_label.text = inUse;
+            cur_label.text = tplIntr('inUse');
             icon_check.visible = true;
             select_bd.visible = true;
         }
@@ -254,11 +245,11 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
     private initLang(lang: Lang) {
         const { title, item_tag, skin_tag } = this;
-        const { skin, item } = InternationalTip[lang];
+        const ani_name = covertLang(lang);
 
-        title.skin = `image/international/title_shop_${lang}.png`;
-        item_tag.text = item;
-        skin_tag.text = skin;
+        title.skin = `image/international/title_shop_${ani_name}.png`;
+        item_tag.text = tplIntr('item');
+        skin_tag.text = tplIntr('skin');
     }
     public destroy() {
         offLangChange(this);
@@ -266,22 +257,22 @@ export default class ShopPop extends ui.pop.shop.shopUI implements HonorDialog {
     }
 }
 
-export function getItemName(id: string, name: string) {
-    const lang = getLang();
-    const { skin, bomb, freeze, lock } = InternationalTip[lang];
+export function getItemName(id: string, name?: string) {
     let suffer_prefix = '';
-    if (name.indexOf('皮肤') !== -1) {
+    if (name && name?.indexOf('皮肤') !== -1) {
         suffer_prefix = name.replace('皮肤', '');
     }
     let item_name = '';
-    if (id === '2001') {
-        item_name = lock;
-    } else if (id === '2002') {
-        item_name = freeze;
-    } else if (id === '2003') {
-        item_name = bomb;
+    if (id === SkillMap.LockFish) {
+        item_name = tplIntr('lock');
+    } else if (id === SkillMap.Freezing) {
+        item_name = tplIntr('freeze');
+    } else if (id === SkillMap.Bomb) {
+        item_name = tplIntr('bomb');
+    } else if (id === SkillMap.Bullet) {
+        item_name = tplIntr('bullet');
     } else {
-        item_name = skin;
+        item_name = tplIntr('skin');
     }
 
     return item_name + suffer_prefix;

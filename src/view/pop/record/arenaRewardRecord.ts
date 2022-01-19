@@ -2,21 +2,21 @@ import honor, { HonorDialog } from 'honor';
 import { loadRes } from 'honor/utils/loadRes';
 import { Label } from 'laya/ui/Label';
 
+import { ArenaAwardListReq, ArenaAwardListResItem } from '@app/api/arenaApi';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
-import { InternationalTip, Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
-import { getMonthDateList } from '@app/utils/dayjsUtil';
+import { formatUTC0DateTime, getMonthDateList } from '@app/utils/dayjsUtil';
+import { tplIntr } from '@app/utils/utils';
 
-import { getSkillName } from '../buyBullet';
-import { getItemList } from '../popSocket';
+import { arenaAwardList, arenaMatchList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
 
 type SelectItem = {
     label: string;
-    value: string;
+    value: string | number;
 };
 
 type SelectMenuUI = ui.pop.record.itemMenuUI;
@@ -26,23 +26,19 @@ export default class ArenaRewardRecordPop
     extends ui.pop.record.arenaRewardRecordUI
     implements HonorDialog
 {
-    public isModal = true;
     private select_ctrl1: SelectCtrl;
     private select_ctrl2: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
-    private all_list: GetItemListItemRep[];
     private isInit = false;
     public static async preEnter() {
-        const item_record = (await honor.director.openDialog({
-            dialog: ArenaRewardRecordPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as ArenaRewardRecordPop;
+        const item_record = (await honor.director.openDialog(
+            'pop/record/arenaRewardRecord.scene',
+        )) as ArenaRewardRecordPop;
         AudioCtrl.play(AudioRes.PopShow);
         return item_record;
     }
     public static preLoad() {
-        return loadRes('pop/record/itemRecord.scene');
+        return loadRes('pop/record/arenaRewardRecord.scene');
     }
     public onAwake() {
         const {
@@ -53,16 +49,16 @@ export default class ArenaRewardRecordPop
             btn_search,
         } = this;
 
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const select_ctrl1 = new SelectCtrl(select_item1, item_menu1);
         select_ctrl1.setRender(this.renderSelectedItem1, this.renderMenuItem1);
         select_ctrl1.init();
         const itemList1 = [
-            { label: '日排行奖励', value: 'date' },
-            { label: '每期总排行奖励', value: 'grade' },
+            { label: tplIntr('arenaAwardDayRank'), value: 1 },
+            { label: tplIntr('arenaAwardGradeRank'), value: 2 },
         ];
         select_ctrl1.setList(itemList1);
         select_ctrl1.setCurIndex(0);
@@ -72,21 +68,21 @@ export default class ArenaRewardRecordPop
         select_ctrl2.init();
 
         const pagination_ctrl = new PaginationCtrl(this.pagination);
-        pagination_ctrl.on(PaginationEvent.Change, ({ cur, range }) => {
-            const { all_list } = this;
-            const list: GetItemListItemRep[] = [];
-            for (let i = range[0]; i < range[1]; i++) {
-                list.push(all_list[i]);
+        pagination_ctrl.on(PaginationEvent.Change, (data: any) => {
+            if (data.trigger_change) {
+                this.search({
+                    pageNum: data.cur + 1,
+                    pageSize: data.page_size,
+                });
             }
-            this.renderRecordList(list);
         });
         this.pagination_ctrl = pagination_ctrl;
 
         btn_search.on('click', null, () => {
-            this.search();
+            this.search({ pageNum: 1, pageSize: 10 });
         });
         setTimeout(() => {
-            this.search();
+            this.search({ pageNum: 1, pageSize: 10 });
         });
 
         this.select_ctrl1 = select_ctrl1;
@@ -97,60 +93,55 @@ export default class ArenaRewardRecordPop
             this.isInit = true;
             return;
         }
-        const {
-            select_ctrl1: select_coin_ctrl,
-            select_ctrl2: select_item_ctrl,
-        } = this;
-        select_coin_ctrl.setCurIndex(0);
-        select_item_ctrl.setCurIndex(0);
-        setTimeout(() => {
-            this.search();
-        });
+        const { select_ctrl1, select_ctrl2 } = this;
+        select_ctrl1.setCurIndex(0);
+        select_ctrl2.setCurIndex(0);
     }
-    private initLang(lang: Lang) {
-        const {
-            itemListTitle,
-            search,
-            itemList1,
-            itemList2,
-            itemList3,
-            gameNo,
-            remainingNum,
-        } = InternationalTip[lang];
-        const { noData } = InternationalTip[lang];
+    private initLang() {
         const { title, title_box, btn_search_label, empty_tip } = this;
 
-        title.text = itemListTitle;
-        empty_tip.text = noData;
-        const arr = [itemList1, itemList2, itemList3, remainingNum, gameNo];
+        title.text = tplIntr('arenaAwardTitle');
+        empty_tip.text = tplIntr('noData');
+        const arr = [
+            tplIntr('arenaAwardItemTitle0'),
+            tplIntr('arenaAwardItemTitle1'),
+            tplIntr('arenaAwardItemTitle2'),
+            tplIntr('arenaAwardItemTitle3'),
+        ];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = search;
+        btn_search_label.text = tplIntr('search');
     }
-    private renderSelectedItem1 = (box: SelectItemUI, data: SelectItem) => {
+    private renderSelectedItem1 = async (
+        box: SelectItemUI,
+        data: SelectItem,
+    ) => {
         const { item_name: item_name_label } = box;
         const { label, value } = data;
         item_name_label.text = label;
 
-        const dayArr = getMonthDateList();
-        const arr = dayArr.map((item, index) => {
-            if (value === 'date') {
+        let arr: any;
+        if (value === 1) {
+            const dayArr = getMonthDateList();
+            arr = dayArr.map((item, _index) => {
                 return {
                     label: item.format('MM/DD'),
                     value: item.valueOf(),
                 };
-            } else {
+            });
+        } else {
+            const gradeList = await arenaMatchList(1);
+            arr = gradeList.map((item, _index) => {
                 return {
-                    label: `第${index + 1}期`,
-                    value: item.valueOf(),
+                    label: tplIntr('arenaRewardTpl', { grade: item.id }),
+                    value: item.id.valueOf(),
                 };
-            }
-        });
+            });
+        }
 
         this.select_ctrl2.setList(arr);
         this.select_ctrl2.setCurIndex(0);
-        // @TODO-需要切换select_ctrl2的数据
     };
     private renderSelectedItem2(box: SelectItemUI, data: SelectItem) {
         const { item_name: item_name_label } = box;
@@ -175,42 +166,40 @@ export default class ArenaRewardRecordPop
         item_name_label.text = label;
     };
 
-    private search() {
-        const {
-            empty_tip,
-            select_ctrl1: select_coin_ctrl,
-            select_ctrl2: select_item_ctrl,
-            pagination_ctrl,
-        } = this;
+    private search({
+        pageNum,
+        pageSize,
+    }: {
+        pageNum: number;
+        pageSize: number;
+    }) {
+        const { empty_tip, select_ctrl1, select_ctrl2, pagination_ctrl } = this;
 
-        const coin_data = select_coin_ctrl.getCurData() || {};
-        const item_data = select_item_ctrl.getCurData() || {};
-        const itemId = item_data.item_id;
-        const currency = coin_data.coin_id;
+        const type = select_ctrl1.getCurData()?.value || 1;
+        const data = { type, pageNum, pageSize } as ArenaAwardListReq;
+        const item_data = select_ctrl2.getCurData() || {};
+
+        if (type === 1) {
+            data.dayId = item_data.value;
+        } else {
+            data.matchId = item_data.value;
+        }
         this.renderRecordList([]);
-        getItemList({
-            itemId,
-            currency,
-        }).then((data) => {
-            this.all_list = data.list;
+        arenaAwardList(data).then((data) => {
             empty_tip.visible = !data.list.length;
-            pagination_ctrl.update(data.list.length, 10);
+            this.renderRecordList(data.list);
+            pagination_ctrl.update(data.total, data.pageSize);
         });
     }
-    public setList(data: GetItemListItemRep[]) {
-        this.all_list = data;
-        this.pagination_ctrl.update(data.length, 9);
-    }
-    private renderRecordList(data: GetItemListItemRep[]) {
+    private renderRecordList(data: ArenaAwardListResItem[]) {
         const { record_list } = this;
 
         record_list.array = data.map((item) => {
             return {
-                buy_total: item.buyNum,
-                remain: item.curNum,
-                type: getSkillName(item.itemId + ''),
-                give_total: item.prizeNum,
-                no: item.currency,
+                username: item.userId,
+                grade: item.ranking,
+                time: formatUTC0DateTime(item.time),
+                num: item.award + item.currency,
             };
         });
     }
