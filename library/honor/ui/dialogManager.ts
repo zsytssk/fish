@@ -19,6 +19,7 @@ import { HonorDialog } from './view';
  */
 const defaultPopupEffect = function (dialog: HonorDialog) {
     dialog.scale(1, 1);
+    dialog.alpha = 1;
     dialog._effectTween = Tween.from(
         dialog,
         {
@@ -30,11 +31,7 @@ const defaultPopupEffect = function (dialog: HonorDialog) {
         },
         300,
         Ease.backOut,
-        Handler.create(this, () => {
-            dialog.scale(1, 1);
-            dialog.alpha = 1;
-            this.doOpen(dialog);
-        }),
+        Handler.create(this, this.doOpen, [dialog]),
         0,
         false,
         false,
@@ -49,17 +46,13 @@ const defaultCloseEffect = function (dialog: HonorDialog) {
         {
             x: Laya.stage.width / 2,
             y: Laya.stage.height / 2,
-            scaleX: 0,
-            scaleY: 0,
+            scaleX: 0.2,
+            scaleY: 0.2,
             alpha: 0,
         },
         300,
-        Ease.backIn,
-        Handler.create(this, () => {
-            dialog.scale(1, 1);
-            dialog.alpha = 1;
-            this.doClose(dialog);
-        }),
+        Ease.backOut,
+        Handler.create(this, this.doClose, [dialog]),
         0,
         false,
         false,

@@ -15,16 +15,19 @@ export const alert_test = {
         }, 5 * 1000);
     },
     showTip: async (msg) => {
-        // TipPop.tip(msg || 'this is a test', {
-        //     count: 10,
-        //     show_count: true,
-        //     click_through: false,
-        //     auto_hide: false,
-        // });
-        // TipPop.tip(msg || 'this is a test');
-        // console.log(`2`);
+        TipPop.tip(msg || 'test msg1');
+        await sleep(1);
+        TipPop.tip(
+            msg || 'test msg2',
+            {
+                count: 10,
+                show_count: true,
+                click_through: false,
+                auto_hide: false,
+            },
+            { use_exist: false },
+        );
         tipExchange({ bringAmount: 100, bulletNum: 100, currency: 'BTC' });
-        // await sleep(5);
         // TipPop.hide();
     },
     showAlert: () => {
