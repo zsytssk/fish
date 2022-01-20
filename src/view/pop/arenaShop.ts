@@ -6,8 +6,10 @@ import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
 
 import { ShopListDataItem } from '@app/api/arenaApi';
+import { isTrial } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { login } from '@app/ctrl/hall/login';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
 import { ui } from '@app/ui/layaMaxUI';
@@ -95,6 +97,10 @@ export default class ArenaShopPop
         if (status === GunSkinStatus.NoHave) {
             cur_label.text = `${price}${currency}`;
             cur_btn.on(Event.CLICK, cur_btn, () => {
+                if (isTrial()) {
+                    login();
+                    return;
+                }
                 buySkinAlert(price, gun_name, currency).then((_status) => {
                     if (!_status) {
                         return;

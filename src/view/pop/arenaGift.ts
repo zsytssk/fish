@@ -3,8 +3,10 @@ import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
 
 import { GiftItem, GiftList } from '@app/api/arenaApi';
+import { isTrial } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { login } from '@app/ctrl/hall/login';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { ui } from '@app/ui/layaMaxUI';
@@ -48,6 +50,10 @@ export default class ArenaGiftPop
         onNodeWithAni(btn, Event.CLICK, () => {
             const id = this.data.id;
             if (id) {
+                if (isTrial()) {
+                    login();
+                    return;
+                }
                 arenaBuyGift()
                     .then(() => {
                         TipPop.tip(tplIntr('buySuccess'));

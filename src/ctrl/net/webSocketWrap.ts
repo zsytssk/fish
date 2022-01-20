@@ -74,6 +74,7 @@ export class WebSocketWrapCtrl
     public async connect() {
         const new_url = genUrl(this.config);
         const ws = new WebSocketCtrl({
+            name: this.config.name,
             url: new_url,
             handlers: {
                 onData: this.onData,

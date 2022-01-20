@@ -2,6 +2,7 @@
 import { sleep } from '../utils/tool';
 
 export type Config = {
+    name: string;
     url: string;
     handlers: Handlers;
     ping_pong_map?: PingPongMap;
@@ -29,6 +30,7 @@ export type Status = 'CONNECTING' | 'RECONNECTING' | 'OPEN' | 'CLOSED';
 
 /** webSocket 处理函数:> 连接+断线重连+心跳检测 */
 export class WebSocketCtrl {
+    private name: string;
     public url: string;
     public handlers = {} as Handlers;
     private ws: WebSocket;
@@ -48,6 +50,7 @@ export class WebSocketCtrl {
     public static log: (...params: any) => void;
     constructor(config: Config) {
         this.url = config.url;
+        this.name = config.name;
         this.handlers = config.handlers;
         this.ping_pong_map = config.ping_pong_map;
     }
@@ -73,7 +76,7 @@ export class WebSocketCtrl {
         });
     }
     public connect() {
-        WebSocketCtrl.log?.('WebSocket:> 连接:>', this.url);
+        WebSocketCtrl.log?.(`WebSocket:>${this.name}:>连接:>`, this.url);
         this.status = 'CONNECTING';
         return this.innerConnect();
     }
@@ -90,7 +93,7 @@ export class WebSocketCtrl {
         }
     }
     private onopen = () => {
-        WebSocketCtrl.log?.('WebSocket:> 连接上了');
+        WebSocketCtrl.log?.(`WebSocket:>${this.name}:>连接上了`);
 
         this.status = 'OPEN';
 
@@ -126,7 +129,7 @@ export class WebSocketCtrl {
      * 重连
      */
     public async reconnect() {
-        WebSocketCtrl.log?.('WebSocket:> 断线重连');
+        WebSocketCtrl.log?.(`WebSocket:>${this.name}:> 断线重连`);
         const { reconnect_max, handlers } = this;
 
         this.status = 'RECONNECTING';
@@ -185,7 +188,7 @@ export class WebSocketCtrl {
     }
     /** 真正的关闭 */
     private end() {
-        WebSocketCtrl.log?.('WebSocket:> 断开连接');
+        WebSocketCtrl.log?.(`WebSocket:>${this.name}:>断开连接`);
         this.reset();
         this.status = 'CLOSED';
         this.handlers.onEnd?.();

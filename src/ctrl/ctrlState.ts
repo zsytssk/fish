@@ -13,3 +13,7 @@ export const ctrlState = {} as CtrlState;
 export function getGameCurrency() {
     return ctrlState.game?.currency;
 }
+
+export function isTrial() {
+    return ctrlState.game?.isTrial;
+}

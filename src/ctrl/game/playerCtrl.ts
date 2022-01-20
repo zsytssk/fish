@@ -245,7 +245,7 @@ export class PlayerCtrl extends ComponentManager {
             this,
         );
 
-        getGameView().on(Event.CLICK, view, (e: Event) => {
+        getGameView().on(Event.CLICK, view, () => {
             const click_pos = getPoolMousePos();
             const _direction = new SAT.Vector(
                 click_pos.x - gun_pos.x,
@@ -265,7 +265,7 @@ export class PlayerCtrl extends ComponentManager {
     private handleAutoShoot(model: AutoShootModel, view: Sprite) {
         view.on(Event.CLICK, this.view, (e: Event) => {
             e.stopPropagation();
-            log('auto shoot');
+            log('test:>autoShoot:>click');
             model.toggle();
         });
     }
