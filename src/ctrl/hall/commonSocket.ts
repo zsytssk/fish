@@ -1,22 +1,10 @@
-import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
-import {
-    disableCurUserOperation,
-    waitGameExchangeOrLeave,
-} from '@app/ctrl/game/gameCtrlUtils';
+import { ctrlState } from '@app/ctrl/ctrlState';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import {
     bindSocketEvent,
     disconnectSocket,
-    getSocket,
 } from '@app/ctrl/net/webSocketWrapUtil';
-import {
-    ErrorData,
-    ServerErrCode,
-    ServerEvent,
-    ServerName,
-} from '@app/data/serverEvent';
-import { modelState } from '@app/model/modelState';
-import { asyncOnly } from '@app/utils/asyncQue';
+import { ErrorData, ServerErrCode, ServerEvent } from '@app/data/serverEvent';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { removeItem } from '@app/utils/localStorage';
 import { tplIntr } from '@app/utils/utils';
@@ -24,7 +12,6 @@ import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
 
 import { AppCtrl } from '../appCtrl';
-import { recharge } from './hallCtrlUtil';
 import { login } from './login';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
