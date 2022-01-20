@@ -497,6 +497,7 @@ export class GameCtrl implements GameCtrlUtils {
         const { view } = this;
         const player = this.model.getPlayerById(data.userId);
         if (player.is_cur_player) {
+            AudioCtrl.play(AudioRes.CoinShow);
             await view.taskFinish(data);
         }
         player.updateInfo({ score: player.score + data.award });

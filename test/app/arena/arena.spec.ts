@@ -1,7 +1,9 @@
 import { testBuild } from 'testBuilder';
 
 import { ctrlState } from '@app/ctrl/ctrlState';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { GameCtrl as ArenaCtrl } from '@app/ctrl/game/gameArena/gameCtrl';
+import { AudioRes } from '@app/data/audioRes';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 import ArenaView from '@app/view/scenes/arena/arenaView';
@@ -32,15 +34,15 @@ export const arena_test = testBuild({
         const arena_ctrl = ctrlState.game as ArenaCtrl;
 
         arena_ctrl.triggerTask(taskData.triggerTask);
-        // await sleep(3);
-        // arena_ctrl.taskRefresh(taskData.taskRefresh1);
-        // await sleep(3);
-        // arena_ctrl.taskRefresh(taskData.taskRefresh2);
-        // await sleep(3);
-        // arena_ctrl.taskFinish({
-        //     ...taskData.taskFinish,
-        //     userId: modelState.app.arena_info.user_id,
-        // });
+        await sleep(3);
+        arena_ctrl.taskRefresh(taskData.taskRefresh1);
+        await sleep(3);
+        arena_ctrl.taskRefresh(taskData.taskRefresh2);
+        await sleep(3);
+        arena_ctrl.taskFinish({
+            ...taskData.taskFinish,
+            userId: modelState.app.arena_info.user_id,
+        });
     },
     setPlayerNum: async () => {
         const game = viewState.game as ArenaView;

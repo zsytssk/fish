@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":55,
+    "selectedBox":11,
+    "selecteID":89,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -42,7 +42,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","runtime":"view/scenes/arena/arenaView.ts","height":750,"autoDestroyAtClosed":true},
     "nodeParent":-1,
-    "maxID":88,
+    "maxID":90,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -167,17 +167,16 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,left_box",
-                    "props":{"y":8,"x":0,"width":473,"var":"left_box","height":93},
+                    "props":{"y":8,"x":10,"width":473,"var":"left_box","height":93},
                     "nodeParent":11,
                     "label":"left_box",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":52,
                     "child":[
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_leave",
                             "props":{"y":43,"x":40,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png","anchorY":0.5,"anchorX":0.5},
@@ -191,7 +190,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_shop",
                             "props":{"y":43,"x":158,"var":"btn_shop","stateNum":"1","skin":"image/arena/btn_shop.png","anchorY":0.5,"anchorX":0.5},
@@ -205,7 +203,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_gift",
                             "props":{"y":43,"x":275,"var":"btn_gift","stateNum":"1","skin":"image/arena/btn_gift.png","anchorY":0.5,"anchorX":0.5},
@@ -219,7 +216,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_rank",
                             "props":{"y":42,"x":393,"var":"btn_rank","stateNum":"1","skin":"image/arena/btn_match.png","anchorY":0.5,"anchorX":0.5},
@@ -271,198 +267,6 @@
                             "isAniNode":true,
                             "hasChild":false,
                             "compId":54,
-                            "child":[
-                                ]
-                        }]
-                },
-                {
-                    "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite,task_panel",
-                    "props":{"y":578,"x":175,"width":350,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png","pivotY":66,"pivotX":175,"height":132},
-                    "nodeParent":11,
-                    "label":"task_panel",
-                    "isOpen":true,
-                    "isDirectory":true,
-                    "isAniNode":true,
-                    "hasChild":true,
-                    "compId":55,
-                    "child":[
-                        {
-                            "x":45,
-                            "type":"Sprite",
-                            "searchKey":"Sprite,task_item",
-                            "props":{"y":17,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
-                            "nodeParent":55,
-                            "label":"task_item",
-                            "isOpen":false,
-                            "isDirectory":true,
-                            "isAniNode":true,
-                            "hasChild":true,
-                            "compId":61,
-                            "child":[
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,task_name",
-                                    "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
-                                    "nodeParent":61,
-                                    "label":"task_name",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":85,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "type":"Label",
-                                    "searchKey":"Label,task_num",
-                                    "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
-                                    "nodeParent":61,
-                                    "label":"task_num",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":76,
-                                    "child":[
-                                        ]
-                                }]
-                        },
-                        {
-                            "x":45,
-                            "type":"Sprite",
-                            "searchKey":"Sprite,task_item",
-                            "props":{"y":54,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
-                            "nodeParent":55,
-                            "label":"task_item",
-                            "isOpen":false,
-                            "isDirectory":true,
-                            "isAniNode":true,
-                            "hasChild":true,
-                            "compId":62,
-                            "child":[
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,task_name",
-                                    "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
-                                    "nodeParent":62,
-                                    "label":"task_name",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":86,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "type":"Label",
-                                    "searchKey":"Label,task_num",
-                                    "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
-                                    "nodeParent":62,
-                                    "label":"task_num",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":78,
-                                    "child":[
-                                        ]
-                                }]
-                        },
-                        {
-                            "x":45,
-                            "type":"Sprite",
-                            "searchKey":"Sprite,task_item",
-                            "props":{"y":91,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
-                            "nodeParent":55,
-                            "label":"task_item",
-                            "isOpen":false,
-                            "isDirectory":true,
-                            "isAniNode":true,
-                            "hasChild":true,
-                            "compId":63,
-                            "child":[
-                                {
-                                    "type":"Image",
-                                    "searchKey":"Image,task_name",
-                                    "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
-                                    "nodeParent":63,
-                                    "label":"task_name",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":87,
-                                    "child":[
-                                        ]
-                                },
-                                {
-                                    "type":"Label",
-                                    "searchKey":"Label,task_num",
-                                    "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
-                                    "nodeParent":63,
-                                    "label":"task_num",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":80,
-                                    "child":[
-                                        ]
-                                }]
-                        },
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,task_award_name",
-                            "props":{"y":16,"x":11,"width":127,"var":"task_award_name","text":"积分奖励","strokeColor":"#333c68","stroke":2,"height":12,"fontSize":18,"color":"#ffea00","align":"center"},
-                            "nodeParent":55,
-                            "label":"task_award_name",
-                            "isOpen":true,
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":81,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,task_award_num",
-                            "props":{"y":42,"x":11,"width":122,"var":"task_award_num","text":"1500","height":12,"fontSize":18,"color":"#fff","align":"center"},
-                            "nodeParent":55,
-                            "label":"task_award_num",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":82,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,task_time_name",
-                            "props":{"y":79,"x":11,"width":127,"var":"task_time_name","text":"悬赏时间","strokeColor":"#333c68","stroke":2,"height":12,"fontSize":18,"color":"#ffea00","align":"center"},
-                            "nodeParent":55,
-                            "label":"task_time_name",
-                            "isOpen":true,
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":83,
-                            "child":[
-                                ]
-                        },
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,task_time_num",
-                            "props":{"y":100,"x":11,"width":122,"var":"task_time_num","text":"01:32","height":12,"fontSize":18,"color":"#fff","align":"center"},
-                            "nodeParent":55,
-                            "label":"task_time_num",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":84,
                             "child":[
                                 ]
                         }]
@@ -624,6 +428,203 @@
                     "compId":47,
                     "child":[
                         ]
+                },
+                {
+                    "x":30,
+                    "type":"Box",
+                    "searchKey":"Box",
+                    "props":{"y":512,"x":10},
+                    "nodeParent":11,
+                    "label":"Box",
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":89,
+                    "child":[
+                        {
+                            "type":"Sprite",
+                            "searchKey":"Sprite,task_panel",
+                            "props":{"width":350,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png","height":132},
+                            "nodeParent":89,
+                            "label":"task_panel",
+                            "isOpen":false,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":55,
+                            "child":[
+                                {
+                                    "type":"Sprite",
+                                    "searchKey":"Sprite,task_item",
+                                    "props":{"y":17,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
+                                    "nodeParent":55,
+                                    "label":"task_item",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":61,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,task_name",
+                                            "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
+                                            "nodeParent":61,
+                                            "label":"task_name",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":85,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label,task_num",
+                                            "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
+                                            "nodeParent":61,
+                                            "label":"task_num",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":76,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "type":"Sprite",
+                                    "searchKey":"Sprite,task_item",
+                                    "props":{"y":54,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
+                                    "nodeParent":55,
+                                    "label":"task_item",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":62,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,task_name",
+                                            "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
+                                            "nodeParent":62,
+                                            "label":"task_name",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":86,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label,task_num",
+                                            "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
+                                            "nodeParent":62,
+                                            "label":"task_num",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":78,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "type":"Sprite",
+                                    "searchKey":"Sprite,task_item",
+                                    "props":{"y":91,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
+                                    "nodeParent":55,
+                                    "label":"task_item",
+                                    "isOpen":false,
+                                    "isDirectory":true,
+                                    "isAniNode":true,
+                                    "hasChild":true,
+                                    "compId":63,
+                                    "child":[
+                                        {
+                                            "type":"Image",
+                                            "searchKey":"Image,task_name",
+                                            "props":{"y":-3,"x":9,"width":33,"skin":"image/pop/help/fish1.png","name":"task_name","height":34},
+                                            "nodeParent":63,
+                                            "label":"task_name",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":87,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label,task_num",
+                                            "props":{"y":6,"x":136,"text":"2/2","right":15,"name":"task_num","fontSize":18,"color":"#fff"},
+                                            "nodeParent":63,
+                                            "label":"task_num",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":80,
+                                            "child":[
+                                                ]
+                                        }]
+                                },
+                                {
+                                    "type":"Label",
+                                    "searchKey":"Label,task_award_name",
+                                    "props":{"y":16,"x":11,"width":127,"var":"task_award_name","text":"积分奖励","strokeColor":"#333c68","stroke":2,"height":12,"fontSize":18,"color":"#ffea00","align":"center"},
+                                    "nodeParent":55,
+                                    "label":"task_award_name",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":81,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Label",
+                                    "searchKey":"Label,task_award_num",
+                                    "props":{"y":42,"x":11,"width":122,"var":"task_award_num","text":"1500","height":12,"fontSize":18,"color":"#fff","align":"center"},
+                                    "nodeParent":55,
+                                    "label":"task_award_num",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":82,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Label",
+                                    "searchKey":"Label,task_time_name",
+                                    "props":{"y":79,"x":11,"width":127,"var":"task_time_name","text":"悬赏时间","strokeColor":"#333c68","stroke":2,"height":12,"fontSize":18,"color":"#ffea00","align":"center"},
+                                    "nodeParent":55,
+                                    "label":"task_time_name",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":83,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Label",
+                                    "searchKey":"Label,task_time_num",
+                                    "props":{"y":100,"x":11,"width":122,"var":"task_time_num","text":"01:32","height":12,"fontSize":18,"color":"#fff","align":"center"},
+                                    "nodeParent":55,
+                                    "label":"task_time_num",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":84,
+                                    "child":[
+                                        ]
+                                }]
+                        }]
                 }],
             "$LOCKED":false,
             "$HIDDEN":false
