@@ -120,6 +120,7 @@ export default class ArenaView
         task_award_num.text = taskInfo.award + '';
 
         task_time_num.text = formatTime(taskInfo.taskTime, 2);
+        clearCount(this.countId);
         this.countId = startCount(taskInfo.taskTime, 1, (radio) => {
             const count_now = Math.floor(taskInfo.taskTime * radio);
             task_time_num.text = formatTime(count_now, 2);
@@ -155,9 +156,8 @@ export default class ArenaView
         }
     }
     public async taskFinish(data: TaskFinishRes) {
-        clearCount(this.countId);
         const { task_panel, ani_wrap } = this;
-        fade_out(task_panel);
+        this.hideTaskPanel();
 
         const node_list = getChildrenByName(task_panel, 'task_item');
         for (const item_node of node_list) {
@@ -174,6 +174,11 @@ export default class ArenaView
         pos = ani_wrap.globalToLocal(pos, true);
         TipPop.tip(tplIntr('taskCompletedTip', { score: data.award }));
         await showAwardCircle(pos, data.award, true);
+    }
+    public hideTaskPanel() {
+        clearCount(this.countId);
+        const { task_panel } = this;
+        fade_out(task_panel);
     }
 
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */

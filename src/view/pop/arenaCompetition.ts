@@ -60,7 +60,7 @@ export default class ArenaCompetitionPop
             bindSocketEvent(socket, this, {
                 [ArenaEvent.CompetitionInfo]: (data, code) => {
                     if (code !== ARENA_OK_CODE) {
-                        return arenaErrHandler(this, code);
+                        return arenaErrHandler(code);
                     }
                     this.initData(data);
                 },
@@ -114,7 +114,7 @@ export default class ArenaCompetitionPop
                         data.status === ArenaGameStatus.GAME_STATUS_TABLE_OUT);
 
                 if (data.code !== ARENA_OK_CODE && !canEnter) {
-                    arenaErrHandler(null, data.code);
+                    arenaErrHandler(data.code);
                     const socket = getSocket(ServerName.ArenaHall);
                     socket.send(ArenaEvent.CompetitionInfo, {
                         currency: this.currency,

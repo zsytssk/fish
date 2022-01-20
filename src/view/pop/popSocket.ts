@@ -84,7 +84,7 @@ export function buyItem(itemId: string, num?: number, cost_bullet?: number) {
         const socket = getSocket(ServerName.Game);
         socket.event.once(ServerEvent.Buy, (data: BuyRep, code: number) => {
             if (code !== 200) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
 
             const userId = getCurUserId();
@@ -237,7 +237,7 @@ export function getCompetitionInfo(currency: string) {
             ArenaEvent.CompetitionInfo,
             (_data: CompetitionInfo, code: number) => {
                 if (code !== ARENA_OK_CODE) {
-                    arenaErrHandler(null, code);
+                    arenaErrHandler(code);
                     reject(code);
                     return;
                 }
@@ -278,7 +278,7 @@ export function arenaGetDayRanking() {
             ArenaEvent.GetDayRanking,
             (data: GetDayRanking, code) => {
                 if (code !== ARENA_OK_CODE) {
-                    arenaErrHandler(null, code);
+                    arenaErrHandler(code);
                     reject();
                 } else {
                     resolve(data);
@@ -297,7 +297,7 @@ export function arenaGiftList() {
         }
         socket.event.once(ArenaEvent.GiftList, (data: GiftList, code) => {
             if (code !== ARENA_OK_CODE) {
-                arenaErrHandler(null, code);
+                arenaErrHandler(code);
                 reject();
             } else {
                 resolve(data);
@@ -315,7 +315,7 @@ export function arenaBuyGift() {
         }
         socket.event.once(ArenaEvent.BuyGift, (data: BuyGiftRep, code) => {
             if (code !== ARENA_OK_CODE) {
-                arenaErrHandler(null, code);
+                arenaErrHandler(code);
                 reject(code);
             } else {
                 const userId = getCurUserId(true);
@@ -346,7 +346,7 @@ export function arenaGetHallOfFame(modeId: number) {
             ArenaEvent.GetHallOfFame,
             (data: GetHallOfFameData, code) => {
                 if (code !== ARENA_OK_CODE) {
-                    arenaErrHandler(null, code);
+                    arenaErrHandler(code);
                     reject();
                 } else {
                     resolve(data);
@@ -371,7 +371,7 @@ export function arenaGetRuleData(modeId: number, currency: string) {
         }
         socket.event.once(ArenaEvent.GetRuleData, (data: GetRuleData, code) => {
             if (code !== ARENA_OK_CODE) {
-                arenaErrHandler(null, code);
+                arenaErrHandler(code);
                 reject();
             } else {
                 setItem(
@@ -399,7 +399,7 @@ export function arenaShopList(data: ArenaShopPopInfo) {
         }
         socket.event.once(ArenaEvent.ShopList, (data: ShopListData, code) => {
             if (code !== ARENA_OK_CODE) {
-                arenaErrHandler(null, code);
+                arenaErrHandler(code);
                 reject();
             } else {
                 resolve(arenaGenShopInfo(data));
@@ -430,7 +430,7 @@ export function arenaUseGunSkin(skin: string) {
             ServerEvent.UseSkin,
             (data: UseSkinReq, code: number) => {
                 if (code !== ARENA_OK_CODE) {
-                    arenaErrHandler(null, code, data, socket);
+                    arenaErrHandler(code);
                     reject();
                     return;
                 }
@@ -449,7 +449,7 @@ export function arenaBuyItem(id: string, itemId: string, num = 1) {
         const socket = getSocket(ServerName.ArenaHall);
         socket.event.once(ArenaEvent.BuyGoods, (data: BuyRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                arenaErrHandler(null, code, data, socket);
+                arenaErrHandler(code);
                 reject(code);
                 return;
             }
@@ -472,7 +472,7 @@ export function arenaAwardList(params: ArenaAwardListReq) {
             ArenaEvent.AwardList,
             (data: ArenaAwardListRes, code: number) => {
                 if (code !== ARENA_OK_CODE) {
-                    arenaErrHandler(null, code, data, socket);
+                    arenaErrHandler(code);
                     reject();
                     return;
                 }
@@ -490,7 +490,7 @@ export function arenaMatchList(modeId: number) {
             ArenaEvent.MatchList,
             (data: MatchListRes, code: number) => {
                 if (code !== ARENA_OK_CODE) {
-                    arenaErrHandler(null, code, data, socket);
+                    arenaErrHandler(code);
                     reject();
                     return;
                 }

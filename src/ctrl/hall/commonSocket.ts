@@ -23,6 +23,7 @@ import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
 
+import { AppCtrl } from '../appCtrl';
 import { recharge } from './hallCtrlUtil';
 import { login } from './login';
 
@@ -94,54 +95,39 @@ export function offCommon(socket: WebSocketTrait, bindObj: any) {
     bg_monitor.event.offAllCaller(bindObj);
 }
 
-export function errorHandler(
-    code: number,
-    data?: any,
-    socket?: WebSocketTrait,
-) {
+export function errorHandler(code: number, data?: any) {
     const tip = tplIntr(code);
 
     if (code === ServerErrCode.Maintaining) {
         platform.hideLoading();
-
-        AlertPop.alert(tplIntr('maintainTip'), {
+        AppCtrl.event.emit(ServerErrCode.Maintaining, tplIntr('maintainTip'));
+        return AlertPop.alert(tplIntr('maintainTip'), {
             hide_cancel: true,
         }).then(() => {
-            if (socket.config.name === 'game') {
-                socket.send(ServerEvent.RoomOut);
-            }
             setTimeout(() => {
                 location.reload();
             });
         });
     } else if (code === ServerErrCode.ReExchange) {
-        return exChangeBullet(tplIntr(ServerErrCode.ReExchange), socket);
+        return AppCtrl.event.emit(
+            ServerErrCode.ReExchange,
+            tplIntr(ServerErrCode.ReExchange),
+        );
     } else if (code === ServerErrCode.NoMoney) {
         let errMsg = tplIntr(ServerErrCode.NoMoney);
+
         if (data?.minAmount) {
             const { minAmount, currency } = data as RoomInError;
             errMsg = tplIntr('NoMoneyAmount', { minAmount, currency });
         }
-        return AlertPop.alert(errMsg).then((type) => {
-            if (type === 'confirm') {
-                const currency =
-                    getGameCurrency() || modelState.app.user_info.cur_balance;
-                recharge(currency);
-            }
-            socket?.send(ServerEvent.RoomOut);
-        });
+        return AppCtrl.event.emit(ServerErrCode.NoMoney, errMsg);
     } else if (code === ServerErrCode.NeedLogin) {
         return login();
     } else if (
         code === ServerErrCode.TrialTimeGame ||
         code === ServerErrCode.TrialNotBullet
     ) {
-        return AlertPop.alert(tip, {
-            hide_cancel: true,
-        }).then(() => {
-            const socket = getSocket(ServerName.Game);
-            socket.send(ServerEvent.RoomOut);
-        });
+        return AppCtrl.event.emit(ServerErrCode.TrialTimeGame, tip);
     } else if (code === ServerErrCode.TrialTimeHall) {
         return TipPop.tip(tplIntr(ServerErrCode.TrialTimeGame));
     } else if (code === ServerErrCode.TrialClose) {
@@ -156,12 +142,10 @@ export function errorHandler(
             location.reload();
         });
     } else if (code === ServerErrCode.OverLimit) {
-        return AlertPop.alert(tplIntr(ServerErrCode.OverLimit), {
-            hide_cancel: true,
-        }).then(() => {
-            const socket = getSocket(ServerName.Game);
-            socket?.send(ServerEvent.RoomOut);
-        });
+        return AppCtrl.event.emit(
+            ServerErrCode.OverLimit,
+            tplIntr(ServerErrCode.OverLimit),
+        );
     }
     if (tip) {
         TipPop.tip(tip);
@@ -186,26 +170,5 @@ export function tipCount(msg: string, count: number) {
         show_count: true,
         auto_hide: false,
         click_through: false,
-    });
-}
-
-let onExchanging = false;
-export async function exChangeBullet(tip: string, socket: WebSocketTrait) {
-    disableCurUserOperation();
-    if (onExchanging) {
-        return;
-    }
-
-    onExchanging = true;
-    waitGameExchangeOrLeave().then(() => {
-        onExchanging = false;
-    });
-    return asyncOnly(tip, () => {
-        return AlertPop.alert(tip, { close_on_side: false }).then((type) => {
-            if (type === 'confirm') {
-                return socket.send(ServerEvent.ExchangeBullet);
-            }
-            socket.send(ServerEvent.RoomOut);
-        });
     });
 }

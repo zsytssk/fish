@@ -22,20 +22,20 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             game.onEnterGame(convertEnterGame(data));
         },
         [ServerEvent.TableIn]: (data: TableInRep, code) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
         [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep, code) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             if (!isCurUser(data.userId)) {
                 return;
@@ -45,20 +45,20 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             game.tableOut(data);
         },
         [ServerEvent.Shoot]: (data: ShootRep, code) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             game.onShoot(data);
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             // Todo
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             game.onHit(data);
         },
@@ -115,21 +115,21 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.ChangeTurret]: (data: ChangeTurretRep, code) => {
             // Todo
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             game.changeBulletCost(data);
         },
         [ServerEvent.UseSkin]: (data: UseSkinRep, code) => {
             // Todo
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             game.changeSkin(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();

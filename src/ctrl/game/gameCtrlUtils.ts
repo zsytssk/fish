@@ -42,7 +42,10 @@ export function disableCurUserOperation() {
 
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableAllUserOperation() {
-    const players = modelState.game.getPlayers();
+    if (!modelState.game) {
+        return;
+    }
+    const players = modelState.game?.getPlayers();
     for (const [_, player] of players) {
         if (!player.need_emit) {
             continue;
@@ -54,7 +57,8 @@ export function disableAllUserOperation() {
 }
 
 export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
-    return new Promise(async (resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, _reject) => {
         const game_socket = await waitCreateSocket(ServerName.Game);
         game_socket.event.once(
             ServerEvent.EnterGame,
@@ -69,7 +73,8 @@ export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
 }
 
 export async function waitGameExchangeOrLeave(): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async function (resolve, _reject) {
         const game_socket = await waitCreateSocket(ServerName.Game);
         game_socket.event.once(
             ServerEvent.ExchangeBullet,

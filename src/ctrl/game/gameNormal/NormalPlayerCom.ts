@@ -80,9 +80,9 @@ export class NormalPlayerCom implements Component {
             () => {
                 const socket = this.game_ctrl.getSocket();
                 if (this.game_ctrl.isTrial) {
-                    errorHandler(ServerErrCode.TrialNotBullet, null, socket);
+                    errorHandler(ServerErrCode.TrialNotBullet);
                 } else {
-                    errorHandler(ServerErrCode.ReExchange, null, socket);
+                    errorHandler(ServerErrCode.ReExchange);
                 }
             },
             this,

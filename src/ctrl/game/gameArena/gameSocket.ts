@@ -34,7 +34,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.reset();
             currency = data.currency;
@@ -42,14 +42,14 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.TableIn]: (data: TableInRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
         [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
 
             if (!isCurUser(data.userId, true)) {
@@ -59,25 +59,25 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.tableOut(data);
         },
         [ServerEvent.Shoot]: (data: ShootRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.onShoot(data);
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.onHit(data);
         },
         [ServerEvent.UseFreeze]: (data: UseFreezeRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                const result = arenaErrHandler(game, code, data, socket);
+                const result = arenaErrHandler(code);
                 if (result) {
                     return;
                 }
@@ -91,7 +91,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.autoShoot]: (data: AutoShootRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
 
             const { autoShoot } = data;
@@ -103,7 +103,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         },
         [ServerEvent.LockFish]: (data: LockFishRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
 
             if (code !== ARENA_OK_CODE) {
@@ -117,50 +117,50 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             code: number,
         ) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.addFish(data);
         },
         [ServerEvent.FishShoal]: (data: FishShoal, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.shoalComingTip(data.reverse);
             game.addFish(data.fish);
         },
         [ServerEvent.ChangeTurret]: (data: ChangeTurretRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.changeBulletCost(data);
         },
         [ServerEvent.UseSkin]: (data: UseSkinRep, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.changeSkin(data);
         },
         [ArenaEvent.TriggerTask]: (data: TaskTriggerRes, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.triggerTask(data);
         },
         [ArenaEvent.TaskRefresh]: (data: TaskRefreshRes, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.taskRefresh(data);
         },
         [ArenaEvent.TaskFinish]: (data: TaskFinishRes, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.taskFinish(data);
         },
         [ArenaEvent.GameSettle]: (data: SettleData, code: number) => {
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             game.GameSettle(data);
         },
@@ -168,7 +168,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
             if (code !== ARENA_OK_CODE) {
-                return arenaErrHandler(game, code, data, socket);
+                return arenaErrHandler(code);
             }
             const player = getCurPlayer();
             const cost = player.gun.getAllBulletCost();

@@ -22,7 +22,8 @@ import { getParams, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
 
-import { getGameCurrency } from '../ctrlState';
+import { AppCtrl } from '../appCtrl';
+import { ctrlState, getGameCurrency } from '../ctrlState';
 import { GameCtrl } from '../game/gameArena/gameCtrl';
 import {
     Config as SocketConfig,
@@ -130,7 +131,7 @@ export function commonArenaSocket(socket: WebSocketTrait, bindObj: any) {
     bindSocketEvent(socket, bindObj, {
         [ArenaEvent.ErrCode]: (res: ErrorData, code: number) => {
             code = res?.code || code;
-            arenaErrHandler(null, code);
+            arenaErrHandler(code);
         },
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
@@ -225,28 +226,15 @@ export function getArenaGuestToken(socket: WebSocketTrait) {
     }) as Promise<string>;
 }
 
-export async function arenaErrHandler(
-    ctrl: GameCtrl | any,
-    code: number,
-    data?: any,
-    socket?: WebSocketTrait,
-) {
+export async function arenaErrHandler(code: number) {
     if (code === ArenaErrCode.Maintenance) {
-        if (typeof ctrl.leave === 'function') {
-            asyncOnly('maintainQuitTipAlert', async () => {
-                return AlertPop.alert(tplIntr('maintainQuitTip'), {
-                    hide_cancel: true,
-                }).then(() => {
-                    ctrl.leave();
-                });
-            });
-        } else {
-            TipPop.tip(tplIntr('maintainTip'));
-        }
+        AppCtrl.event.emit(
+            ArenaErrCode.Maintenance,
+            tplIntr('maintainQuitTip'),
+        );
         return true;
     } else if (code === ArenaErrCode.NoMoney) {
         const errMsg = tplIntr(ServerErrCode.NoMoney);
-
         return AlertPop.alert(errMsg).then((type) => {
             if (type === 'confirm') {
                 const currency =
@@ -256,28 +244,14 @@ export async function arenaErrHandler(
         });
     } else if (code === ArenaErrCode.NoOpen) {
         TipPop.tip(tplIntr('gameNoOpen'));
-        socket?.send(ArenaEvent.ArenaStatus);
     } else if (code === ArenaErrCode.GameEnded) {
         TipPop.tip(tplIntr('GameEnded'));
-        socket?.send(ArenaEvent.ArenaStatus);
     } else if (code === ArenaErrCode.SignUpFail) {
-        // @TODO
         const errMsg = tplIntr('SignUpFail');
-        if (typeof ctrl?.leave === 'function') {
-            return AlertPop.alert(errMsg).then((type) => {
-                ctrl?.leave();
-            });
-        } else {
-            TipPop.tip(errMsg);
-        }
+        AppCtrl.event.emit(ArenaErrCode.SignUpFail, errMsg);
     } else if (code === ArenaErrCode.GuestSignUpFail) {
         const errMsg = tplIntr('GuestSignUpFail');
-        return AlertPop.alert(errMsg).then((type) => {
-            ctrl?.leave();
-            if (type === 'confirm') {
-                login();
-            }
-        });
+        AppCtrl.event.emit(ArenaErrCode.GuestSignUpFail, errMsg);
     } else if (code === ArenaErrCode.UserSignUpDeadline) {
         TipPop.tip(tplIntr('UserSignUpDeadline'));
     } else if (code === ArenaErrCode.BulletLack) {

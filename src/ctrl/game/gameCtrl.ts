@@ -11,16 +11,21 @@ import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
 import { Loader } from 'laya/net/Loader';
 
-import { ctrlState } from '@app/ctrl/ctrlState';
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
-import { getChannel } from '@app/ctrl/hall/hallCtrlUtil';
+import { getChannel, recharge } from '@app/ctrl/hall/hallCtrlUtil';
 import { waitConnectGame } from '@app/ctrl/hall/login';
 import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { res } from '@app/data/res';
-import { ServerErrCode, ServerEvent, ServerName } from '@app/data/serverEvent';
+import {
+    ArenaErrCode,
+    ServerErrCode,
+    ServerEvent,
+    ServerName,
+} from '@app/data/serverEvent';
 import { FreezingComEvent } from '@app/model/game/com/gameFreezeCom';
 import { ShoalEvent } from '@app/model/game/com/shoalCom';
 import { FishModel } from '@app/model/game/fish/fishModel';
@@ -29,6 +34,7 @@ import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
 import { isCurUser, modelState } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
@@ -207,6 +213,85 @@ export class GameCtrl implements GameCtrlUtils {
                 }
             });
         });
+
+        AppCtrl.event.on(
+            ServerErrCode.Maintaining,
+            () => {
+                this.getSocket()?.send(ServerEvent.RoomOut);
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ServerErrCode.ReExchange,
+            (msg) => {
+                disableCurUserOperation();
+
+                return asyncOnly(msg, async () => {
+                    return AlertPop.alert(msg, { close_on_side: false }).then(
+                        (type) => {
+                            if (type === 'confirm') {
+                                return this.getSocket()?.send(
+                                    ServerEvent.ExchangeBullet,
+                                );
+                            }
+                            this.getSocket()?.send(ServerEvent.RoomOut);
+                        },
+                    );
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.NoMoney,
+            (msg: string) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        const currency = getGameCurrency();
+                        recharge(currency);
+                    }
+                    this.getSocket()?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.NoMoney,
+            (msg: string) => {
+                return AlertPop.alert(msg, {
+                    hide_cancel: true,
+                }).then(() => {
+                    const socket = getSocket(ServerName.Game);
+                    socket?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ServerErrCode.OverLimit,
+            (msg: string) => {
+                return AlertPop.alert(msg, {
+                    hide_cancel: true,
+                }).then(() => {
+                    const socket = getSocket(ServerName.Game);
+                    socket?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ServerErrCode.TrialTimeGame,
+            (msg: string) => {
+                return AlertPop.alert(msg, {
+                    hide_cancel: true,
+                }).then(() => {
+                    const socket = getSocket(ServerName.Game);
+                    socket?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
     }
     public buySkillTip() {
         AlertPop.alert(tplIntr('buySkillTip')).then((type) => {
@@ -450,6 +535,7 @@ export class GameCtrl implements GameCtrlUtils {
         const { bg_monitor } = ctrlState.app;
         this.model?.event.offAllCaller(this);
         bg_monitor.event.offAllCaller(this);
+        AppCtrl.event.offAllCaller(this);
         this.view = undefined;
         this.model = undefined;
         GameCtrl.instance = undefined;

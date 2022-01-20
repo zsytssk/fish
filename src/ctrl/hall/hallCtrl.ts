@@ -11,10 +11,12 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { gotoGuide } from '@app/ctrl/guide/guideConfig';
 import { AudioRes } from '@app/data/audioRes';
 import { Lang } from '@app/data/internationalConfig';
-import { ArenaEvent } from '@app/data/serverEvent';
+import { ArenaErrCode, ArenaEvent, ServerErrCode } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { getItem } from '@app/utils/localStorage';
+import AlertPop from '@app/view/pop/alert';
+import TipPop from '@app/view/pop/tip';
 import HallView from '@app/view/scenes/hallView';
 import Loading from '@app/view/scenes/loadingView';
 
@@ -31,9 +33,11 @@ import {
     onCurBalanceChange,
     onLangChange,
     onNicknameChange,
+    recharge,
 } from './hallCtrlUtil';
 import { bindHallSocket, offHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
+import { login } from './login';
 
 export class HallCtrl {
     public view: HallView;
@@ -108,7 +112,49 @@ export class HallCtrl {
             return gotoGuide('1', '1');
         }
 
+        this.initEvent();
+
         hallViewEvent(this);
+    }
+    private initEvent() {
+        AppCtrl.event.on(
+            ArenaErrCode.Maintenance,
+            (msg) => {
+                TipPop.tip(msg);
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ArenaErrCode.SignUpFail,
+            (msg) => {
+                TipPop.tip(msg);
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ArenaErrCode.GuestSignUpFail,
+            (msg) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        login();
+                    }
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.NoMoney,
+            (msg: string) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        const currency = modelState.app.user_info.cur_balance;
+                        recharge(currency);
+                    }
+                });
+            },
+            this,
+        );
     }
     private initModelEvent() {
         const { view } = this;
@@ -164,6 +210,7 @@ export class HallCtrl {
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
         offHallSocket(this);
+        AppCtrl.event.offAllCaller(this);
         offArenaHallSocket(this);
         HallCtrl.leave();
     }

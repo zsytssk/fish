@@ -1,3 +1,4 @@
+import { EventCom } from 'comMan/eventCom';
 import honor from 'honor';
 import { loadRes, ProgressFn } from 'honor/utils/loadRes';
 
@@ -29,6 +30,7 @@ export class AppCtrl {
     public model: AppModel;
     public bg_monitor = new BgMonitor();
     public keyboard_number: KeyBoardNumber;
+    public static event = new EventCom();
     constructor() {
         this.startApp();
     }

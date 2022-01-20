@@ -17,17 +17,20 @@ import {
     TaskRefreshRes,
     TaskTriggerRes,
 } from '@app/api/arenaApi';
-import { ctrlState } from '@app/ctrl/ctrlState';
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
-import { getChannel } from '@app/ctrl/hall/hallCtrlUtil';
+import { getChannel, recharge } from '@app/ctrl/hall/hallCtrlUtil';
+import { login } from '@app/ctrl/hall/login';
 import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { SkillMap } from '@app/data/config';
 import { res } from '@app/data/res';
 import {
+    ArenaErrCode,
     ArenaEvent,
     ARENA_OK_CODE,
+    ServerErrCode,
     ServerEvent,
     ServerName,
 } from '@app/data/serverEvent';
@@ -39,6 +42,7 @@ import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
 import { SkillActiveData } from '@app/model/game/skill/skillModel';
 import { isCurUser, modelState } from '@app/model/modelState';
 import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
@@ -214,6 +218,61 @@ export class GameCtrl implements GameCtrlUtils {
             e.stopPropagation();
             VoicePop.preEnter();
         });
+
+        AppCtrl.event.on(
+            ArenaErrCode.Maintenance,
+            (msg: string) => {
+                return asyncOnly(msg + 'Alert', async () => {
+                    return AlertPop.alert(msg, {
+                        hide_cancel: true,
+                    }).then(() => {
+                        this.leave();
+                    });
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ArenaErrCode.SignUpFail,
+            (msg: string) => {
+                return asyncOnly(msg + 'Alert', async () => {
+                    return AlertPop.alert(msg, {
+                        hide_cancel: true,
+                    }).then(() => {
+                        this.leave();
+                    });
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ArenaErrCode.GuestSignUpFail,
+            (msg: string) => {
+                return asyncOnly(msg + 'Alert', async () => {
+                    return AlertPop.alert(msg).then((type) => {
+                        this.leave();
+                        if (type === 'confirm') {
+                            login();
+                        }
+                    });
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.NoMoney,
+            (msg: string) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        const currency = getGameCurrency();
+                        recharge(currency);
+                    }
+                    this.getSocket()?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
     }
     public needUpSideDown(server_index: number) {
         return server_index > 0;
@@ -449,9 +508,7 @@ export class GameCtrl implements GameCtrlUtils {
             if (type === 'continue') {
                 competitionSignUp(data.currency).then((_data) => {
                     if (_data.code !== ARENA_OK_CODE) {
-                        arenaErrHandler(this, _data.code).then(() => {
-                            this.leave();
-                        });
+                        arenaErrHandler(_data.code);
                     } else {
                         this?.model.destroy();
                         ctrlState.app.enterArenaGame({
@@ -486,11 +543,13 @@ export class GameCtrl implements GameCtrlUtils {
     }
     public reset() {
         this.model.clear();
+        this.view.hideTaskPanel();
     }
     public destroy() {
         const { bg_monitor } = ctrlState.app;
         this.model?.event.offAllCaller(this);
         bg_monitor.event.offAllCaller(this);
+        AppCtrl.event.offAllCaller(this);
         this.offGameSocket();
         this.view = undefined;
         this.model = undefined;

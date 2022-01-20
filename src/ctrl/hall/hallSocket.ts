@@ -53,7 +53,7 @@ export async function connectHallSocket(): Promise<[boolean, CheckReplayRep?]> {
         );
         hall_socket.event.once(ServerEvent.UserAccount, (data, code) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, socket);
+                return errorHandler(code, data);
             }
             modelState.app.initUserInfo(data);
             resolve(undefined);
@@ -96,7 +96,7 @@ export async function bindHallSocket(hall: HallCtrl) {
         },
         [ServerEvent.UserAccount]: (data, code) => {
             if (code !== OK_CODE) {
-                return errorHandler(code, data, hall_socket);
+                return errorHandler(code, data);
             }
             modelState.app.initUserInfo(data);
         },
@@ -151,7 +151,7 @@ export function roomIn(
                     }
                     return;
                 } else if (code !== 200) {
-                    return errorHandler(code, _data, socket);
+                    return errorHandler(code, _data);
                 }
                 resolve(_data);
             },
