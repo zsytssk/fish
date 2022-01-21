@@ -48,6 +48,7 @@ import { onNodeWithAni } from '@app/utils/layaUtils';
 import { error, log } from '@app/utils/log';
 import { setProps, tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
+import ArenaCompetitionPop from '@app/view/pop/arenaCompetition';
 import ArenaGameStatus from '@app/view/pop/arenaGameStatus';
 import ArenaGiftPop from '@app/view/pop/arenaGift';
 import ArenaHelpPop from '@app/view/pop/arenaHelp';
@@ -58,6 +59,7 @@ import {
     arenaGetDayRanking,
     arenaGetRuleData,
     competitionSignUp,
+    getCompetitionInfo,
 } from '@app/view/pop/popSocket';
 import VoicePop from '@app/view/pop/voice';
 import GameView from '@app/view/scenes/arena/arenaView';
@@ -204,9 +206,12 @@ export class GameCtrl implements GameCtrlUtils {
         });
         onNodeWithAni(btn_rank, CLICK, (e: Event) => {
             e.stopPropagation();
-            arenaGetDayRanking().then((data) => {
-                ArenaRankPop.preEnter(data);
+            getCompetitionInfo(this.currency).then((data) => {
+                ArenaCompetitionPop.preEnter(data, null, true);
             });
+            // arenaGetDayRanking().then((data) => {
+            //     ArenaRankPop.preEnter(data);
+            // });
         });
         onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();

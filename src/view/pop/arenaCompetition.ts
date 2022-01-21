@@ -44,12 +44,16 @@ export default class ArenaCompetitionPop
     public get zOrder() {
         return 100;
     }
-    public static async preEnter(data: CompetitionInfo, currency: string) {
+    public static async preEnter(
+        data: CompetitionInfo,
+        currency?: string,
+        hideSignUp = false,
+    ) {
         const pop = await honor.director.openDialog<ArenaCompetitionPop>(
             'pop/arenaCompetitionInfo/arenaCompetitionInfo.scene',
         );
         AudioCtrl.play(AudioRes.PopShow);
-        pop.onData(data, currency);
+        pop.onData(data, currency, hideSignUp);
         return pop;
     }
     public async onAwake() {
@@ -71,7 +75,11 @@ export default class ArenaCompetitionPop
         });
     }
 
-    public onData(data: CompetitionInfo, currency: string): void {
+    public onData(
+        data: CompetitionInfo,
+        currency?: string,
+        hideSignUp = false,
+    ): void {
         const status = data.myself.status;
         const fee = data.match.fee;
 
@@ -81,6 +89,11 @@ export default class ArenaCompetitionPop
             status,
             fee,
         );
+        this.btn_sign.visible = Boolean(!hideSignUp);
+
+        if (!currency) {
+            return;
+        }
 
         if (currency !== data.currency) {
             sleep(0.5).then(() => {
