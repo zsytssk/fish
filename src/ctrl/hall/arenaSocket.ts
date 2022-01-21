@@ -243,9 +243,9 @@ export async function arenaErrHandler(code: number) {
             }
         });
     } else if (code === ArenaErrCode.NoOpen) {
-        TipPop.tip(tplIntr('gameNoOpen'));
+        AppCtrl.event.emit(ArenaErrCode.NoOpen, tplIntr('gameNoOpen'));
     } else if (code === ArenaErrCode.GameEnded) {
-        TipPop.tip(tplIntr('GameEnded'));
+        AppCtrl.event.emit(ArenaErrCode.GameEnded, tplIntr('GameEnded'));
     } else if (code === ArenaErrCode.SignUpFail) {
         const errMsg = tplIntr('SignUpFail');
         AppCtrl.event.emit(ArenaErrCode.SignUpFail, errMsg);

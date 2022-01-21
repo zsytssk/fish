@@ -219,32 +219,16 @@ export class GameCtrl implements GameCtrlUtils {
             VoicePop.preEnter();
         });
 
-        AppCtrl.event.on(
-            ArenaErrCode.Maintenance,
-            (msg: string) => {
-                return asyncOnly(msg + 'Alert', async () => {
-                    return AlertPop.alert(msg, {
-                        hide_cancel: true,
-                    }).then(() => {
-                        this.leave();
-                    });
+        function alertLeave(msg: string) {
+            return asyncOnly(msg + 'Alert', async () => {
+                return AlertPop.alert(msg, {
+                    hide_cancel: true,
+                }).then(() => {
+                    this.leave();
                 });
-            },
-            this,
-        );
-        AppCtrl.event.on(
-            ArenaErrCode.SignUpFail,
-            (msg: string) => {
-                return asyncOnly(msg + 'Alert', async () => {
-                    return AlertPop.alert(msg, {
-                        hide_cancel: true,
-                    }).then(() => {
-                        this.leave();
-                    });
-                });
-            },
-            this,
-        );
+            });
+        }
+
         AppCtrl.event.on(
             ArenaErrCode.GuestSignUpFail,
             (msg: string) => {
@@ -273,15 +257,12 @@ export class GameCtrl implements GameCtrlUtils {
             },
             this,
         );
-        AppCtrl.event.on(
-            ArenaErrCode.UserSignUpDeadline,
-            (msg: string) => {
-                return AlertPop.alert(msg).then(() => {
-                    this.leave();
-                });
-            },
-            this,
-        );
+
+        AppCtrl.event.on(ArenaErrCode.Maintenance, alertLeave, this);
+        AppCtrl.event.on(ArenaErrCode.SignUpFail, alertLeave, this);
+        AppCtrl.event.on(ArenaErrCode.UserSignUpDeadline, alertLeave, this);
+        AppCtrl.event.on(ArenaErrCode.NoOpen, alertLeave, this);
+        AppCtrl.event.on(ArenaErrCode.GameEnded, alertLeave, this);
     }
     public needUpSideDown(server_index: number) {
         return server_index > 0;

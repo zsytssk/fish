@@ -117,20 +117,10 @@ export class HallCtrl {
         hallViewEvent(this);
     }
     private initEvent() {
-        AppCtrl.event.on(
-            ArenaErrCode.Maintenance,
-            (msg) => {
-                TipPop.tip(msg);
-            },
-            this,
-        );
-        AppCtrl.event.on(
-            ArenaErrCode.SignUpFail,
-            (msg) => {
-                TipPop.tip(msg);
-            },
-            this,
-        );
+        function tip(msg: string) {
+            TipPop.tip(msg);
+        }
+
         AppCtrl.event.on(
             ArenaErrCode.GuestSignUpFail,
             (msg) => {
@@ -155,14 +145,11 @@ export class HallCtrl {
             },
             this,
         );
-
-        AppCtrl.event.on(
-            ArenaErrCode.UserSignUpDeadline,
-            (msg: string) => {
-                TipPop.tip(msg);
-            },
-            this,
-        );
+        AppCtrl.event.on(ArenaErrCode.Maintenance, tip, this);
+        AppCtrl.event.on(ArenaErrCode.SignUpFail, tip, this);
+        AppCtrl.event.on(ArenaErrCode.UserSignUpDeadline, tip, this);
+        AppCtrl.event.on(ArenaErrCode.NoOpen, tip, this);
+        AppCtrl.event.on(ArenaErrCode.GameEnded, tip, this);
     }
     private initModelEvent() {
         const { view } = this;

@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { EventCom } from 'comMan/eventCom';
+
 import { Lang } from '@app/data/internationalConfig';
 import { ServerErrCode } from '@app/data/serverEvent';
 import { ArenaModel, ArenaModelEvent } from '@app/model/arena/arenaModel';
@@ -90,6 +92,16 @@ export function offBindEvent(item: any) {
     user_info_event.offAllCaller(item);
     setting_event.offAllCaller(item);
     arena_info.event.offAllCaller(item);
+}
+
+export function bindEvent(
+    event: EventCom,
+    bind_obj: any,
+    bind_info: { [key: string]: Func<void> },
+) {
+    for (const key in bind_info) {
+        event.on(key, bind_info[key], bind_obj);
+    }
 }
 
 export function getChannel() {
