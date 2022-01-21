@@ -6,6 +6,7 @@ import {
     Config,
     SocketEvent,
 } from '@app/ctrl/net/webSocketWrap';
+import { ARENA_OK_CODE, OK_CODE } from '@app/data/serverEvent';
 import { log } from '@app/utils/log';
 
 /** 本地测试数据的socket... */

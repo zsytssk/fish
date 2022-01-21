@@ -117,7 +117,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,btn_label",
-                    "props":{"y":15.5,"var":"btn_label","text":"重新参赛 1USDT","strokeColor":"#914516","stroke":2,"fontSize":20,"color":"#fff","centerX":0,"bold":true},
+                    "props":{"y":15.5,"var":"btn_label","text":"重新参赛 1USDT","strokeColor":"#914516","stroke":3,"fontSize":20,"color":"#fff","centerX":0,"bold":true},
                     "nodeParent":6,
                     "label":"btn_label",
                     "isDirectory":false,

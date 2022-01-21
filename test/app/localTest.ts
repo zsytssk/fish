@@ -22,10 +22,11 @@ import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 export async function localTest() {
     platform.hideLoading();
     commonTest();
-    await mock_web_socket_test.create();
+    await mock_web_socket_test.create(2);
     modelState.app.user_info.setUserId(test_data.userId);
     // (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
     (mock_web_socket_test[ServerEvent.UseFreeze] as () => void)();
+    (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
     await arena_test.enter();
 
     // fish_test.addFishGroup();

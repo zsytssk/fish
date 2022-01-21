@@ -1,8 +1,11 @@
 import { testBuild } from 'testBuilder';
 
+import { injectAfter } from 'honor/utils/tool';
+
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { GameCtrl as ArenaCtrl } from '@app/ctrl/game/gameArena/gameCtrl';
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
@@ -11,6 +14,7 @@ import { viewState } from '@app/view/viewState';
 
 import { game_test } from '../game/game.spec';
 import { player_test } from '../game/player.spec';
+import { afterHallEnter } from '../hall/hall.spec';
 import statusData from './data/statusData.json';
 import taskData from './data/taskData.json';
 
@@ -22,6 +26,8 @@ export const arena_test = testBuild({
         if (modelState?.game) {
             return;
         }
+
+        await afterHallEnter();
 
         await ctrlState.app.enterArenaGame({});
 

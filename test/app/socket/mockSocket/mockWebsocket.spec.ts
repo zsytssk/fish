@@ -7,7 +7,7 @@ import {
     mockSocketCtor,
 } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
-import { ServerEvent } from '@app/data/serverEvent';
+import { ARENA_OK_CODE, OK_CODE, ServerEvent } from '@app/data/serverEvent';
 import { getAimFish, modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 
@@ -16,14 +16,18 @@ import { createLineDisplaceFun } from '../../displace/displaceFun.spec';
 import { game_test } from '../../game/game.spec';
 import { player_test } from '../../game/player.spec';
 
+let game_socket_name = 'game';
 export const mock_web_socket_test = {
-    create: async () => {
+    create: async (mode = 1) => {
+        if (mode === 2) {
+            game_socket_name = 'arena_hall';
+        }
         mockSocketCtor(MockWebSocket);
         await createSocket({
             url: '',
             publicKey: '',
             code: '',
-            name: 'game',
+            name: game_socket_name,
             host: '',
         });
 
@@ -37,7 +41,9 @@ export const mock_web_socket_test = {
     },
 
     [ServerEvent.Hit]: () => {
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
         sendEvent.on(ServerEvent.Hit, (data: HitReq) => {
             sleep(1).then(() => {
                 event.emit(
@@ -59,22 +65,32 @@ export const mock_web_socket_test = {
     },
 
     [ServerEvent.Shoot]: () => {
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
         sendEvent.on(ServerEvent.Shoot, (data: ShootReq) => {
+            const gameMode = modelState.game.game_mode;
+            const code = gameMode === 2 ? ARENA_OK_CODE : OK_CODE;
             sleep(0.1).then(() => {
                 if (data.robotId) {
                     data.userId = data.robotId;
                 }
-                event.emit(ServerEvent.Shoot, {
-                    userId: data.userId,
-                    direction: data.direction,
-                } as ShootRep);
+                event.emit(
+                    ServerEvent.Shoot,
+                    {
+                        userId: data.userId,
+                        direction: data.direction,
+                    } as ShootRep,
+                    code,
+                );
             });
         });
     },
 
     [ServerEvent.UseBomb]: () => {
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
         sendEvent.on(ServerEvent.UseBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
                 const { bombPoint, fishList: eid } = data;
@@ -104,7 +120,9 @@ export const mock_web_socket_test = {
     },
 
     [ServerEvent.FishBomb]: () => {
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
         sendEvent.on(ServerEvent.FishBomb, (data: UseBombReq) => {
             sleep(0.1).then(() => {
                 const { bombPoint, fishList: eid } = data;
@@ -131,7 +149,9 @@ export const mock_web_socket_test = {
     },
 
     ['other' + ServerEvent.UseBomb]: async () => {
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
         player_test.add_cur_player();
 
         sendEvent.on(ServerEvent.UseBomb, (data: UseBombReq) => {
@@ -156,7 +176,9 @@ export const mock_web_socket_test = {
     },
 
     [ServerEvent.UseFreeze]: async () => {
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
 
         sendEvent.on(ServerEvent.UseFreeze, () => {
             sleep(0.1).then(() => {
@@ -181,7 +203,9 @@ export const mock_web_socket_test = {
 
     [ServerEvent.UseLock]: async () => {
         await game_test.enterGame();
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
 
         let needActive = true;
         sendEvent.on(ServerEvent.LockFish, (data: LockFishRep) => {
@@ -215,7 +239,9 @@ export const mock_web_socket_test = {
             await sleep(1);
         }
 
-        const { sendEvent, event } = getSocket('game') as MockWebSocket;
+        const { sendEvent, event } = getSocket(
+            game_socket_name,
+        ) as MockWebSocket;
         const fish = getAimFish();
         event.emit(
             ServerEvent.LockFish,
@@ -244,7 +270,7 @@ export const mock_web_socket_test = {
         await await game_test.enterGame();
         const other_id = test_data.otherUserId + '0';
 
-        const { event } = getSocket('game') as MockWebSocket;
+        const { event } = getSocket(game_socket_name) as MockWebSocket;
         const fish = getAimFish();
         event.emit(
             ServerEvent.LockFish,
@@ -258,7 +284,7 @@ export const mock_web_socket_test = {
     },
 
     [ServerEvent.FishShoal]: async (data: ServerFishInfo[]) => {
-        const { event } = getSocket('game') as MockWebSocket;
+        const { event } = getSocket(game_socket_name) as MockWebSocket;
 
         event.emit(ServerEvent.FishShoalWarn, {
             shoalId: '1',
@@ -277,7 +303,7 @@ export const mock_web_socket_test = {
         mock_web_socket_test.create();
         await game_test.enterGame();
         await sleep(3);
-        const { event } = getSocket('game') as MockWebSocket;
+        const { event } = getSocket(game_socket_name) as MockWebSocket;
 
         const fish_arr = [] as ServerFishInfo[];
         for (const i of range(1, 21)) {

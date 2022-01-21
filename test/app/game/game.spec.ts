@@ -7,11 +7,15 @@ import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 
+import { afterHallEnter } from '../hall/hall.spec';
+
 export const game_test = {
     enterGame: async (add_player?: boolean) => {
         if (modelState && modelState.app && modelState.game) {
             return;
         }
+
+        await afterHallEnter();
 
         ctrlState.app.enterGame({});
 
