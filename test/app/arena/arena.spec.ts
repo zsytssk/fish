@@ -9,6 +9,8 @@ import { sleep } from '@app/utils/animate';
 import ArenaView from '@app/view/scenes/arena/arenaView';
 import { viewState } from '@app/view/viewState';
 
+import { game_test } from '../game/game.spec';
+import { player_test } from '../game/player.spec';
 import statusData from './data/statusData.json';
 import taskData from './data/taskData.json';
 
@@ -33,11 +35,11 @@ export const arena_test = testBuild({
         await arena_test.enter();
         const arena_ctrl = ctrlState.game as ArenaCtrl;
 
-        arena_ctrl.triggerTask(taskData.triggerTask);
+        arena_ctrl.triggerTask(taskData.triggerTask as any);
         await sleep(3);
-        arena_ctrl.taskRefresh(taskData.taskRefresh1);
+        arena_ctrl.taskRefresh(taskData.taskRefresh1 as any);
         await sleep(3);
-        arena_ctrl.taskRefresh(taskData.taskRefresh2);
+        arena_ctrl.taskRefresh(taskData.taskRefresh2 as any);
         await sleep(3);
         arena_ctrl.taskFinish({
             ...taskData.taskFinish,

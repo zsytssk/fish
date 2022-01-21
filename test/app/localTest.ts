@@ -11,6 +11,7 @@ import { getParams } from '@app/utils/utils';
 import { test_data } from '../testData';
 import { sleep } from '../utils/testUtils';
 import { arena_test } from './arena/arena.spec';
+import { ani_wrap } from './game/aniWrap.spec';
 import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
@@ -27,14 +28,15 @@ export async function localTest() {
     (mock_web_socket_test[ServerEvent.UseFreeze] as () => void)();
     await arena_test.enter();
 
-    await sleep(2);
-    fish_test.addFishGroup();
+    // fish_test.addFishGroup();
     // skill_test.freezing();
     // shoal_test.addShoal1();
     // player_test.add_cur_player();
-
+    player_test.add_cur_player();
     // await sleep(0.5);
     // grand_prix_test.showTask();
+
+    ani_wrap.activeFreezing();
 }
 
 export async function localSocketTest() {

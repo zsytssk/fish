@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":11,
-    "selecteID":89,
+    "selectedBox":2,
+    "selecteID":55,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -436,15 +436,17 @@
                     "props":{"y":512,"x":10},
                     "nodeParent":11,
                     "label":"Box",
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":89,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,task_panel",
-                            "props":{"width":350,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png","height":132},
+                            "props":{"y":66,"x":175,"width":350,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png","pivotY":66,"pivotX":175,"height":132},
                             "nodeParent":89,
                             "label":"task_panel",
                             "isOpen":false,
