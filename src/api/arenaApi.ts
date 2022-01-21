@@ -148,6 +148,7 @@ export type GiftList = {
     typeId: number;
     giftId: number;
     giftName: number;
+    isGiftBuy: boolean;
     currency: 'BTC';
     price: number;
     list: GiftItem[];

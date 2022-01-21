@@ -255,7 +255,7 @@ export async function arenaErrHandler(code: number) {
     } else if (code === ArenaErrCode.UserSignUpDeadline) {
         AppCtrl.event.emit(
             ArenaErrCode.UserSignUpDeadline,
-            TipPop.tip(tplIntr('UserSignUpDeadline')),
+            tplIntr('UserSignUpDeadline'),
         );
     } else if (code === ArenaErrCode.BulletLack) {
         TipPop.tip(tplIntr('BulletLack'));

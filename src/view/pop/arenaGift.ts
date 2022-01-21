@@ -79,6 +79,7 @@ export default class ArenaGiftPop
         btn_label.text = `${data.price}${data.currency}`;
         const width = btn_label.width + 50;
         btn.width = width > 161 ? width : 161;
+        btn.disabled = Boolean(data.isGiftBuy);
 
         list.array = data.list;
         const num = data.list.length;
