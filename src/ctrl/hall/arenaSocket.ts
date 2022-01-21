@@ -253,7 +253,10 @@ export async function arenaErrHandler(code: number) {
         const errMsg = tplIntr('GuestSignUpFail');
         AppCtrl.event.emit(ArenaErrCode.GuestSignUpFail, errMsg);
     } else if (code === ArenaErrCode.UserSignUpDeadline) {
-        TipPop.tip(tplIntr('UserSignUpDeadline'));
+        AppCtrl.event.emit(
+            ArenaErrCode.UserSignUpDeadline,
+            TipPop.tip(tplIntr('UserSignUpDeadline')),
+        );
     } else if (code === ArenaErrCode.BulletLack) {
         TipPop.tip(tplIntr('BulletLack'));
     } else if (

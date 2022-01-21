@@ -155,6 +155,14 @@ export class HallCtrl {
             },
             this,
         );
+
+        AppCtrl.event.on(
+            ArenaErrCode.UserSignUpDeadline,
+            (msg: string) => {
+                TipPop.tip(msg);
+            },
+            this,
+        );
     }
     private initModelEvent() {
         const { view } = this;

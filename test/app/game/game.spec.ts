@@ -3,7 +3,6 @@ import { injectAfter } from 'honor/utils/tool';
 import { ctrlState } from '@app/ctrl/ctrlState';
 import { GameCtrl } from '@app/ctrl/game/gameCtrl';
 import { GameTestCtrl } from '@app/ctrl/game/gameTest/gameTestCtrl';
-import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
 import { modelState } from '@app/model/modelState';
 import { sleep } from '@app/utils/animate';
 

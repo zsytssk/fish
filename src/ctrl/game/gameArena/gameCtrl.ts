@@ -273,6 +273,15 @@ export class GameCtrl implements GameCtrlUtils {
             },
             this,
         );
+        AppCtrl.event.on(
+            ArenaErrCode.UserSignUpDeadline,
+            (msg: string) => {
+                return AlertPop.alert(msg).then(() => {
+                    this.leave();
+                });
+            },
+            this,
+        );
     }
     public needUpSideDown(server_index: number) {
         return server_index > 0;
