@@ -137,7 +137,7 @@ export default class GameView
         btn_gift.x = 120 * scale;
         btn_leave.x = 20 * scale;
         btn_help.right = 20 * scale;
-        btn_voice.right = 120 * scale + btn_voice.width / 2;
+        btn_voice.right = 120 * scale;
         btn_voice.y = 10 * scale + btn_voice.height / 2;
 
         bullet_box.scale(scale, scale);
