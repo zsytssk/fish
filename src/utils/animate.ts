@@ -394,8 +394,8 @@ export async function move(
 
 type TweenData<T extends Sprite> = {
     sprite: T;
-    start_props?: Props<Sprite>;
-    end_props: Props<Sprite>;
+    start_props?: Props<T>;
+    end_props: Props<T>;
     time: number;
     ease_fn?: EaseFn;
 };

@@ -62,7 +62,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
             this.instances.splice(index, 1);
         }
         this.instances.unshift(instance);
-        this.organizeInstance();
+        this.organizeInstance(instance);
     }
     public static instancesRemove(instance: TipPop) {
         const index = this.instances.indexOf(instance);
@@ -71,7 +71,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         }
         this.organizeInstance();
     }
-    public static async organizeInstance() {
+    public static async organizeInstance(cur_instance?: TipPop) {
         const { instances } = this;
         const space = 20;
 
@@ -92,11 +92,15 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                 }
                 y += item2.inner.height + space;
             }
-            tween({
-                sprite: item.inner,
-                end_props: { centerY: y - all_size / 2 } as any,
-                time: 200,
-            });
+            if (cur_instance === item) {
+                cur_instance.inner.centerY = y - all_size / 2;
+            } else {
+                tween({
+                    sprite: item.inner,
+                    end_props: { centerY: y - all_size / 2 },
+                    time: 200,
+                });
+            }
         }
     }
 
@@ -162,8 +166,8 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
 
             fn();
 
-            this.setTipText(msg, show_count ? `${count}` : '', true);
             this.show();
+            this.setTipText(msg, show_count ? `${count}` : '', true);
         });
     }
     public onClosed() {
@@ -177,7 +181,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     private setTipText(msg: Msg, count = '', organize = false) {
         const { html_div, bg, inner } = this;
         const html = this.jsonToHtml(msg);
-        html_div.innerHTML = html + count;
+        html_div.innerHTML = `${html} ${count}`;
 
         const width = html_div.contextWidth + 80;
         const height = html_div.contextHeight + 80;

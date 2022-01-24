@@ -15,22 +15,17 @@ export const alert_test = {
         }, 5 * 1000);
     },
     showTip: async (msg) => {
-        TipPop.tip(`this is a test1`, { auto_hide: false });
+        TipPop.tip(`this is a test1`, { count: 15 });
         await sleep(3);
         TipPop.tip(tplIntr('taskStartTip'), {
             count: 10,
             show_count: true,
             click_through: false,
-            auto_hide: false,
         });
         await sleep(3);
-        TipPop.tip(`this is a test2`, { auto_hide: false });
-        await sleep(3);
-        TipPop.tip(`this is a test3`, { auto_hide: false });
-        await sleep(3);
-        TipPop.tip(`this is a test4`, { auto_hide: false });
-        await sleep(3);
-        TipPop.tip(`this is a test5`, { auto_hide: false });
+        TipPop.tip(`this is a test2`, { count: 5 });
+        await sleep(1);
+        TipPop.tip(`this is a test3`, { count: 3 });
     },
     showAlert: () => {
         AlertPop.alert('this is a test', {
