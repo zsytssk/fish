@@ -147,7 +147,6 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                     if (radio === 0) {
                         this.task_len.pop();
                         if (auto_hide) {
-                            console.warn('test:>tipClose');
                             // 最后一个需要显示才隐藏
                             this.close();
                         }

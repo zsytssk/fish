@@ -117,9 +117,9 @@ export class HallCtrl {
         hallViewEvent(this);
     }
     private initEvent() {
-        function tip(msg: string) {
+        const tip = (msg: string) => {
             TipPop.tip(msg);
-        }
+        };
 
         AppCtrl.event.on(
             ArenaErrCode.GuestSignUpFail,

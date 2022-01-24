@@ -224,7 +224,7 @@ export class GameCtrl implements GameCtrlUtils {
             VoicePop.preEnter();
         });
 
-        function alertLeave(msg: string) {
+        const alertLeave = (msg: string) => {
             return asyncOnly(msg + 'Alert', async () => {
                 return AlertPop.alert(msg, {
                     hide_cancel: true,
@@ -232,7 +232,7 @@ export class GameCtrl implements GameCtrlUtils {
                     this.leave();
                 });
             });
-        }
+        };
 
         AppCtrl.event.on(
             ArenaErrCode.GuestSignUpFail,
