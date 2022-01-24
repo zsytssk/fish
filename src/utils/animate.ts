@@ -392,14 +392,14 @@ export async function move(
     });
 }
 
-type TweenData = {
-    sprite: Sprite;
+type TweenData<T extends Sprite> = {
+    sprite: T;
     start_props?: Props<Sprite>;
     end_props: Props<Sprite>;
     time: number;
     ease_fn?: EaseFn;
 };
-export async function tween(data: TweenData) {
+export async function tween<T extends Sprite>(data: TweenData<T>) {
     const { sprite, start_props, end_props } = data;
     if (sprite.destroyed) {
         return;

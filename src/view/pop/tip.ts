@@ -1,14 +1,14 @@
 import honor, { HonorDialog } from 'honor';
 import { OpenDialogOpt } from 'honor/ui/dialogManager';
-import { getStringLength } from 'honor/utils/getStringLength';
 
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
+import { tween } from '@app/utils/animate';
 import { clearCount, startCount } from '@app/utils/count';
 
 type TipPopOpt = {
-    count: number;
+    count?: number;
     show_count?: boolean;
     click_through?: boolean;
     auto_hide?: boolean;
@@ -30,7 +30,7 @@ const default_item_tpl = '<span style="color:{color};">{msg}</span>';
 
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     private count_id: number;
-    private static instance: TipPop;
+    private static instances: TipPop[] = [];
     private task_len: number[] = [];
     public _zOrder = 1001;
     public get zOrder() {
@@ -46,7 +46,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     ) {
         dialogOpt = dialogOpt || {};
         AudioCtrl.play(AudioRes.PopShow);
-        this.instance = await honor.director.openDialog<TipPop>(
+        const instance = await honor.director.openDialog<TipPop>(
             'pop/alert/tip.scene',
             {
                 stay_scene: false,
@@ -54,9 +54,52 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                 ...dialogOpt,
             },
         );
-
-        return this.instance.tip(msg, opt);
+        return instance.tip(msg, opt);
     }
+    public static instancesAdd(instance: TipPop) {
+        const index = this.instances.indexOf(instance);
+        if (index !== -1) {
+            this.instances.splice(index, 1);
+        }
+        this.instances.unshift(instance);
+        this.organizeInstance();
+    }
+    public static instancesRemove(instance: TipPop) {
+        const index = this.instances.indexOf(instance);
+        if (index !== -1) {
+            this.instances.splice(index, 1);
+        }
+        this.organizeInstance();
+    }
+    public static async organizeInstance() {
+        const { instances } = this;
+        const space = 20;
+
+        let all_size = 0;
+        for (const [index, item] of instances.entries()) {
+            all_size += item.inner.height;
+            if (index !== instances.length - 1) {
+                all_size += space;
+            }
+        }
+
+        for (const [index, item] of instances.entries()) {
+            let y = 0;
+            for (const [hIndex, item2] of instances.entries()) {
+                if (hIndex === index) {
+                    y += item2.inner.height / 2;
+                    break;
+                }
+                y += item2.inner.height + space;
+            }
+            tween({
+                sprite: item.inner,
+                end_props: { centerY: y - all_size / 2 } as any,
+                time: 200,
+            });
+        }
+    }
+
     public onAwake(): void {
         const { html_div } = this;
         html_div.style.fontSize = 24;
@@ -71,11 +114,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         html_div.y = 40;
         html_div.x = 40;
     }
-    public static async hide() {
-        if (this.instance) {
-            this.instance.close();
-        }
-    }
+
     public onResize(width: number, height: number) {
         this.width = width;
         this.height = height;
@@ -108,6 +147,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                     if (radio === 0) {
                         this.task_len.pop();
                         if (auto_hide) {
+                            console.warn('test:>tipClose');
                             // 最后一个需要显示才隐藏
                             this.close();
                         }
@@ -123,11 +163,19 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
 
             fn();
 
-            this.setTipText(msg, show_count ? `${count}` : '');
+            this.setTipText(msg, show_count ? `${count}` : '', true);
+            this.show();
         });
     }
+    public onClosed() {
+        const index = TipPop.instances.indexOf(this);
+        if (index !== -1) {
+            TipPop.instances.splice(index, 1);
+        }
+        TipPop.instancesRemove(this);
+    }
 
-    private setTipText(msg: Msg, count = '') {
+    private setTipText(msg: Msg, count = '', organize = false) {
         const { html_div, bg, inner } = this;
         const html = this.jsonToHtml(msg);
         html_div.innerHTML = html + count;
@@ -137,6 +185,9 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
 
         inner.width = bg.width = width;
         inner.height = bg.height = height;
+        if (organize) {
+            TipPop.instancesAdd(this);
+        }
     }
     /** 将提示的信息json转化为html */
     private jsonToHtml(tip_data: Msg) {

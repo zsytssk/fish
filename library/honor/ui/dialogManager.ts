@@ -117,10 +117,16 @@ export async function openDialog<T extends HonorDialog>(
     }
 
     if (!view_wait_open) {
-        view_wait_open = loading_map[url] = loadDialog(url, fn).then((view) => {
-            loading_map[url] = Promise.resolve(view);
+        view_wait_open = loadDialog(url, fn).then((view) => {
+            if (opt.use_exist) {
+                loading_map[url] = Promise.resolve(view);
+            }
             return view;
         }) as Promise<T>;
+
+        if (opt.use_exist) {
+            loading_map[url] = view_wait_open;
+        }
     }
 
     const view = await view_wait_open;

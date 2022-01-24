@@ -15,16 +15,22 @@ export const alert_test = {
         }, 5 * 1000);
     },
     showTip: async (msg) => {
-        TipPop.tip(tplIntr('taskStartTip'));
+        TipPop.tip(`this is a test1`, { auto_hide: false });
         await sleep(3);
         TipPop.tip(tplIntr('taskStartTip'), {
             count: 10,
             show_count: true,
             click_through: false,
+            auto_hide: false,
         });
         await sleep(3);
-        tipExchange({ bringAmount: 100, bulletNum: 100, currency: 'BTC' });
-        // TipPop.hide();
+        TipPop.tip(`this is a test2`, { auto_hide: false });
+        await sleep(3);
+        TipPop.tip(`this is a test3`, { auto_hide: false });
+        await sleep(3);
+        TipPop.tip(`this is a test4`, { auto_hide: false });
+        await sleep(3);
+        TipPop.tip(`this is a test5`, { auto_hide: false });
     },
     showAlert: () => {
         AlertPop.alert('this is a test', {
