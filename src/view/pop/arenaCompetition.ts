@@ -231,7 +231,7 @@ export default class ArenaCompetitionPop
             } else {
                 cost_label.text = tplIntr('feeStr', {
                     fee,
-                    currency: 'USDT',
+                    currency: this.currency,
                 });
             }
             (btn_sign as Button).label = tplIntr('sign');
