@@ -33,22 +33,12 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
             if (try_index === 0) {
-                TipPop.tip(
-                    tplIntr('NetError'),
-                    {
-                        count: 10,
-                        show_count: true,
-                        auto_hide: false,
-                        click_through: false,
-                        repeat: true,
-                    },
-                    { use_exist: false },
-                );
+                tipReconnect();
             }
         },
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
-            tipComeBack();
+            tipComeBack(true);
         },
         /** 断开连接 */
         [SocketEvent.End]: () => {
@@ -148,8 +138,23 @@ export function tokenExpireTip() {
     });
 }
 
-export function tipComeBack() {
-    TipPop.tip(tplIntr('NetComeBack'));
+let tip_pop: TipPop;
+export function tipReconnect() {
+    TipPop.tip(tplIntr('NetError'), {
+        count: 20,
+        show_count: true,
+        auto_hide: false,
+        click_through: false,
+        repeat: true,
+        on_instance_create: (pop) => (tip_pop = pop),
+    });
+}
+
+export function tipComeBack(stopReconnectTip = false) {
+    if (stopReconnectTip) {
+        tip_pop?.stopCountAndClose();
+    }
+    TipPop.tip(tplIntr('NetComeBack'), {}, { use_exist: true });
 }
 export function tipCount(msg: string, count: number) {
     TipPop.tip(msg, {

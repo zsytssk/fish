@@ -21,11 +21,12 @@ export const alert_test = {
             count: 10,
             show_count: true,
             click_through: false,
+            repeat: true,
         });
-        await sleep(3);
-        TipPop.tip(`this is a test2`, { count: 5 });
-        await sleep(1);
-        TipPop.tip(`this is a test3`, { count: 3 });
+        // await sleep(3);
+        // TipPop.tip(`this is a test2`, { count: 5 });
+        // await sleep(1);
+        // TipPop.tip(`this is a test3`, { count: 3 });
     },
     showAlert: () => {
         AlertPop.alert('this is a test', {

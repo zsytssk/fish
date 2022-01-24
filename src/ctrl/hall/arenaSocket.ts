@@ -36,7 +36,7 @@ import {
     getSocket,
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
-import { tipComeBack } from './commonSocket';
+import { tipComeBack, tipReconnect } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 import { recharge } from './hallCtrlUtil';
 import { login } from './login';
@@ -136,18 +136,12 @@ export function commonArenaSocket(socket: WebSocketTrait, bindObj: any) {
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
             if (try_index === 0) {
-                TipPop.tip(tplIntr('NetError'), {
-                    count: 10,
-                    show_count: true,
-                    auto_hide: false,
-                    click_through: false,
-                    repeat: true,
-                });
+                tipReconnect();
             }
         },
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
-            tipComeBack();
+            tipComeBack(true);
         },
         /** 断开连接 */
         [SocketEvent.End]: () => {

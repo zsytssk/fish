@@ -13,6 +13,7 @@ type TipPopOpt = {
     click_through?: boolean;
     auto_hide?: boolean;
     repeat?: boolean;
+    on_instance_create?: (pop: TipPop) => void;
 };
 const DefaultOpt = {
     count: 2,
@@ -31,7 +32,7 @@ const default_item_tpl = '<span style="color:{color};">{msg}</span>';
 export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
     private count_id: number;
     private static instances: TipPop[] = [];
-    private task_len: number[] = [];
+    private count_is_stop = false;
     public _zOrder = 1001;
     public get zOrder() {
         return this._zOrder;
@@ -54,6 +55,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                 ...dialogOpt,
             },
         );
+        opt?.on_instance_create?.(instance);
         return instance.tip(msg, opt);
     }
     public static instancesAdd(instance: TipPop) {
@@ -139,23 +141,25 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
             };
             const { count, show_count, click_through, auto_hide, repeat } = opt;
             this.mouseThrough = click_through;
-            this.task_len.push(1);
 
             const fn = () => {
                 clearCount(this.count_id, true);
                 this.count_id = startCount(count, 1, (radio: number) => {
+                    if (this.count_is_stop) {
+                        return;
+                    }
                     if (show_count) {
                         const count_now = Math.floor(count * radio);
                         this.setTipText(msg, `${count_now}`);
                     }
                     if (radio === 0) {
-                        this.task_len.pop();
-                        if (auto_hide) {
-                            // 最后一个需要显示才隐藏
-                            this.close();
-                        }
                         if (repeat) {
                             fn();
+                        } else {
+                            if (auto_hide) {
+                                // 最后一个需要显示才隐藏
+                                this.close();
+                            }
                         }
                         setTimeout(() => {
                             resolve();
@@ -169,6 +173,11 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
             this.show();
             this.setTipText(msg, show_count ? `${count}` : '', true);
         });
+    }
+    public stopCountAndClose() {
+        clearCount(this.count_id, true);
+        this.count_is_stop = true;
+        this.close();
     }
     public onClosed() {
         const index = TipPop.instances.indexOf(this);
