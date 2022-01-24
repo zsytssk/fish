@@ -15,18 +15,14 @@ export const alert_test = {
         }, 5 * 1000);
     },
     showTip: async (msg) => {
-        TipPop.tip(msg || 'test msg1');
-        await sleep(1);
-        TipPop.tip(
-            msg || 'test msg2',
-            {
-                count: 10,
-                show_count: true,
-                click_through: false,
-                auto_hide: false,
-            },
-            { use_exist: false },
-        );
+        TipPop.tip(tplIntr('taskStartTip'));
+        await sleep(3);
+        TipPop.tip(tplIntr('taskStartTip'), {
+            count: 10,
+            show_count: true,
+            click_through: false,
+        });
+        await sleep(3);
         tipExchange({ bringAmount: 100, bulletNum: 100, currency: 'BTC' });
         // TipPop.hide();
     },

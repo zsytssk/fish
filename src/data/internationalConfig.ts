@@ -761,7 +761,8 @@ export const International = {
         arenaTitle: '大奖赛',
         matchTitle: '大奖赛',
         maintaining: '维护中',
-        taskStartTip: '完成悬赏任务，有积分奖励！',
+        taskStartTip:
+            '完成悬赏任务，<span style="color: #ffffbb">有积分奖励</span>！',
         taskCompletedTip: '恭喜你完成悬赏任务，获得奖励{score}积分',
         arenaTopPlayerTitle: '捕鱼达人',
         arenaSettleTitle: '比赛结算',
@@ -966,7 +967,8 @@ export const International = {
         arenaTitle: '大獎賽',
         matchTitle: '大獎賽',
         maintaining: '維護中',
-        taskStartTip: '完成懸賞任務，有積分獎勵！',
+        taskStartTip:
+            '完成懸賞任務，<span style="color: #ffffbb">有積分獎勵</span>！',
         taskCompletedTip: '恭喜你完成懸賞任務，獲得獎勵{score}積分',
         arenaTopPlayerTitle: '捕魚達人',
         arenaSettleTitle: '比賽結算',

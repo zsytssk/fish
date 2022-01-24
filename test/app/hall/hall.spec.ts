@@ -10,12 +10,6 @@ export const hall_test = {
         HallCtrl.preEnter().then(() => {
             console.log(`enter:>`, 1);
         });
-
-        setTimeout(() => {
-            HallCtrl.preEnter().then(() => {
-                console.log(`enter:>`, 2);
-            });
-        }, 100);
     },
     userInfo: () => {
         const { setting, user_info } = modelState.app;

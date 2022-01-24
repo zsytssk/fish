@@ -117,5 +117,7 @@ export function tipExchange(data: Data) {
             bulletNum: data.bulletNum,
             currency: data.currency,
         }),
+        null,
+        { use_exist: false },
     );
 }

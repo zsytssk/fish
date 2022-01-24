@@ -33,11 +33,11 @@ export async function localTest() {
     // skill_test.freezing();
     // shoal_test.addShoal1();
     // player_test.add_cur_player();
-    player_test.add_cur_player();
+    // player_test.add_cur_player();
     // await sleep(0.5);
     // grand_prix_test.showTask();
 
-    ani_wrap.activeFreezing();
+    // ani_wrap.activeFreezing();
 }
 
 export async function localSocketTest() {
