@@ -222,9 +222,9 @@ export const International = {
             'It is not the registration time now, please try and register for the competition within the specified time period',
         GiftBulletTip:
             'It is only valid on the same day, it will expire at 0:00 the next day, and a maximum of 200 additional bullets will be added per match.',
-        scoreAward: '',
-        awardTime: '',
-        localScore: '',
+        scoreAward: 'Points Reward',
+        awardTime: 'Bounty time',
+        localScore: 'This score',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -443,9 +443,9 @@ export const International = {
             '지금은 신청 기간이 아니니, 정해진 기간 내에 시합에 신청하시기 바랍니다.',
         GiftBulletTip:
             '당일만 유효하고, 다음날 0시에 효력을 상실하며, 매회 최대 200발의 탄환을 추가 증정합니다.',
-        scoreAward: '',
-        awardTime: '',
-        localScore: '',
+        scoreAward: 'ポイント報酬',
+        awardTime: 'バウンティ時間',
+        localScore: 'このスコア',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -605,7 +605,7 @@ export const International = {
         thirdPlace: '3位',
         score: 'ポイント:{score}',
         openTime: 'イベント時間:{startTime}-{endTime}',
-        notInRank: 'いまのところランクインしておりません',
+        notInRank: 'リストにない',
         arenaNotEndCurrency:
             '未終了のゲームがあります。クリックしてゲームを続行してください',
         arenaNotSupportCurrency:
@@ -664,9 +664,9 @@ export const International = {
             '現在は申込時間ではありませんので、時間内にお申込みください',
         GiftBulletTip:
             '当日のみ有効、翌日の0時に無効になります、1回当たり最大200発の弾が追加されます',
-        scoreAward: '',
-        awardTime: '',
-        localScore: '',
+        scoreAward: '포인트 보상',
+        awardTime: '현상금 시간',
+        localScore: '이 게임의 포인트',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',

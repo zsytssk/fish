@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":69,
-    "selecteID":93,
+    "selectedBox":97,
+    "selecteID":82,
     "searchKey":"Dialog",
     "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/arenaRewardRecord.ts","isModal":true,"height":604},
     "nodeParent":-1,
-    "maxID":96,
+    "maxID":99,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -121,14 +121,13 @@
             "props":{"y":134,"x":30,"width":935,"var":"content","height":400},
             "nodeParent":2,
             "label":"content",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":53,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,con_bg",
                     "props":{"width":935,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","name":"con_bg","height":400},
@@ -144,7 +143,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,title_box",
                     "props":{"y":0,"x":0,"width":935,"var":"title_box","height":40},
@@ -157,7 +155,6 @@
                     "compId":62,
                     "child":[
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,username",
                             "props":{"y":0,"x":0,"width":200,"valign":"middle","text":"用户","name":"username","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -173,7 +170,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,grade",
                             "props":{"y":0,"x":245,"width":200,"valign":"middle","text":"名次","name":"grade","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -189,7 +185,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,time",
                             "props":{"y":0,"x":490,"width":200,"valign":"middle","text":"时间","name":"time","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -205,7 +200,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,num",
                             "props":{"y":0,"x":735,"width":200,"valign":"middle","text":"奖励","name":"num","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -222,7 +216,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"List",
                     "searchKey":"List,record_list",
                     "props":{"y":40,"x":5,"width":924,"var":"record_list","repeatY":10,"height":365},
@@ -235,7 +228,6 @@
                     "compId":68,
                     "child":[
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,item",
                             "props":{"y":0,"x":-6,"width":935,"renderType":"render","name":"item","height":35},
@@ -248,7 +240,6 @@
                             "compId":69,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,username",
                                     "props":{"y":0,"x":0,"width":200,"valign":"middle","text":"名次","name":"username","height":36,"fontSize":20,"color":"#fff","align":"center"},
@@ -264,7 +255,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,grade",
                                     "props":{"y":0,"x":245,"width":200,"valign":"middle","text":"名次","name":"grade","height":36,"fontSize":20,"color":"#fff","align":"center"},
@@ -280,7 +270,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,time",
                                     "props":{"y":0,"x":490,"width":200,"valign":"middle","text":"名次","name":"time","height":36,"fontSize":20,"color":"#fff","align":"center"},
@@ -296,7 +285,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,num",
                                     "props":{"y":0,"x":735,"width":200,"valign":"middle","text":"奖励","name":"num","height":36,"fontSize":20,"color":"#fff","align":"center"},
@@ -447,70 +435,6 @@
             "child":[
                 {
                     "x":30,
-                    "type":"UIView",
-                    "source":"pop/record/selectItemBox.scene",
-                    "searchKey":"UIView,select_item1",
-                    "props":{"y":0,"x":0,"var":"select_item1"},
-                    "nodeParent":56,
-                    "label":"select_item1",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":85,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
-                    "type":"UIView",
-                    "source":"pop/record/itemMenu.scene",
-                    "searchKey":"UIView,item_menu1",
-                    "props":{"y":39,"x":0,"visible":false,"var":"item_menu1"},
-                    "nodeParent":56,
-                    "label":"item_menu1",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":84,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
-                    "type":"UIView",
-                    "source":"pop/record/itemMenu.scene",
-                    "searchKey":"UIView,item_menu2",
-                    "props":{"y":39,"x":280,"visible":false,"var":"item_menu2"},
-                    "nodeParent":56,
-                    "label":"item_menu2",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":82,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
-                    "type":"UIView",
-                    "source":"pop/record/selectItemBox.scene",
-                    "searchKey":"UIView,select_item2",
-                    "props":{"y":0,"x":280,"var":"select_item2"},
-                    "nodeParent":56,
-                    "label":"select_item2",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":83,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
-                },
-                {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,btn_search",
                     "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
@@ -538,8 +462,114 @@
                             "$HIDDEN":false
                         }],
                     "$HIDDEN":false
+                },
+                {
+                    "x":30,
+                    "type":"HBox",
+                    "searchKey":"HBox",
+                    "props":{"y":0,"x":0,"space":20},
+                    "nodeParent":56,
+                    "label":"HBox",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":98,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Box",
+                            "searchKey":"Box",
+                            "props":{"y":0,"x":0},
+                            "nodeParent":98,
+                            "label":"Box",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":96,
+                            "child":[
+                                {
+                                    "x":60,
+                                    "type":"UIView",
+                                    "source":"pop/record/selectItemBox.scene",
+                                    "searchKey":"UIView,select_item1",
+                                    "props":{"y":0,"x":0,"var":"select_item1"},
+                                    "nodeParent":96,
+                                    "label":"select_item1",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":85,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                },
+                                {
+                                    "x":60,
+                                    "type":"UIView",
+                                    "source":"pop/record/itemMenu.scene",
+                                    "searchKey":"UIView,item_menu1",
+                                    "props":{"y":39,"visible":false,"var":"item_menu1"},
+                                    "nodeParent":96,
+                                    "label":"item_menu1",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":84,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                }]
+                        },
+                        {
+                            "x":45,
+                            "type":"Box",
+                            "searchKey":"Box",
+                            "props":{"y":0,"x":280},
+                            "nodeParent":98,
+                            "label":"Box",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":97,
+                            "child":[
+                                {
+                                    "x":60,
+                                    "type":"UIView",
+                                    "source":"pop/record/itemMenu.scene",
+                                    "searchKey":"UIView,item_menu2",
+                                    "props":{"y":39,"visible":false,"var":"item_menu2"},
+                                    "nodeParent":97,
+                                    "label":"item_menu2",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":82,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                },
+                                {
+                                    "x":60,
+                                    "type":"UIView",
+                                    "source":"pop/record/selectItemBox.scene",
+                                    "searchKey":"UIView,select_item2",
+                                    "props":{"var":"select_item2"},
+                                    "nodeParent":97,
+                                    "label":"select_item2",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":83,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
+                                }]
+                        }]
                 }],
-            "$HIDDEN":true
+            "$HIDDEN":false
         }],
     "animations":[
         {

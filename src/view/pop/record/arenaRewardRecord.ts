@@ -1,5 +1,6 @@
 import honor, { HonorDialog } from 'honor';
 import { loadRes } from 'honor/utils/loadRes';
+import { Event } from 'laya/events/Event';
 import { Label } from 'laya/ui/Label';
 
 import { ArenaAwardListReq, ArenaAwardListResItem } from '@app/api/arenaApi';
@@ -8,11 +9,12 @@ import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
 import { formatUTC0DateTime, getMonthDateList } from '@app/utils/dayjsUtil';
+import { resizeContain, resizeParent } from '@app/utils/layaUtils';
 import { tplIntr } from '@app/utils/utils';
 
 import { arenaAwardList, arenaMatchList } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
-import { SelectCtrl } from './selectCtrl';
+import { SelectCtrl, SelectCtrlEvent } from './selectCtrl';
 
 type SelectItem = {
     label: string;
@@ -117,9 +119,15 @@ export default class ArenaRewardRecordPop
         box: SelectItemUI,
         data: SelectItem,
     ) => {
-        const { item_name: item_name_label } = box;
+        const { item_name: item_name_label, content, bg } = box;
         const { label, value } = data;
         item_name_label.text = label;
+
+        item_name_label.text = label;
+        // 自适应宽高
+        resizeContain(content, 5);
+        box.width = bg.width = content.width + 30;
+        resizeParent(box, 20);
 
         let arr: any;
         if (value === 1) {
@@ -156,6 +164,10 @@ export default class ArenaRewardRecordPop
         const data = this.select_ctrl1.array[index];
         const { label } = data;
         item_name_label.text = label;
+
+        box.width = item_name_label.width + 30;
+
+        this.resizeMenu(this.item_menu1, item_name_label.width + 30);
     };
     private renderMenuItem2 = (box: SelectItemUI, index: number) => {
         if (!this.select_ctrl2?.array) {
@@ -165,6 +177,25 @@ export default class ArenaRewardRecordPop
         const { label } = this.select_ctrl2.array[index];
         item_name_label.text = label;
     };
+
+    public resizeMenu(menu_ui: SelectMenuUI, width: number) {
+        if (menu_ui.width >= width) {
+            return;
+        }
+        menu_ui.width = menu_ui.bg.width = width;
+        menu_ui.list.width = width;
+
+        // 触发list 重新定位item
+        this.item_menu1.on(
+            SelectCtrlEvent.VisibleChange,
+            this.select_item1,
+            (visible) => {
+                if (visible) {
+                    menu_ui.list.spaceY = menu_ui.list.spaceY === 0 ? 1 : 0;
+                }
+            },
+        );
+    }
 
     private search({
         pageNum,

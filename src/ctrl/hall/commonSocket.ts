@@ -5,6 +5,7 @@ import {
     disconnectSocket,
 } from '@app/ctrl/net/webSocketWrapUtil';
 import { ErrorData, ServerErrCode, ServerEvent } from '@app/data/serverEvent';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { removeItem } from '@app/utils/localStorage';
 import { tplIntr } from '@app/utils/utils';
@@ -78,13 +79,7 @@ export function errorHandler(code: number, data?: any) {
     if (code === ServerErrCode.Maintaining) {
         platform.hideLoading();
         AppCtrl.event.emit(ServerErrCode.Maintaining, tplIntr('maintainTip'));
-        return AlertPop.alert(tplIntr('maintainTip'), {
-            hide_cancel: true,
-        }).then(() => {
-            setTimeout(() => {
-                location.reload();
-            });
-        });
+        tipOtherLogin();
     } else if (code === ServerErrCode.ReExchange) {
         return AppCtrl.event.emit(
             ServerErrCode.ReExchange,
@@ -150,12 +145,23 @@ export function tipReconnect() {
     });
 }
 
+export function tipOtherLogin() {
+    asyncOnly('OtherLogin', () => {
+        return AlertPop.alert(tplIntr('OtherLogin'), {
+            hide_cancel: true,
+        }).then(() => {
+            location.reload();
+        });
+    });
+}
+
 export function tipComeBack(stopReconnectTip = false) {
     if (stopReconnectTip) {
         tip_pop?.stopCountAndClose();
     }
     TipPop.tip(tplIntr('NetComeBack'), { count: 2 }, { use_exist: true });
 }
+
 export function tipCount(msg: string, count: number) {
     TipPop.tip(msg, {
         count,

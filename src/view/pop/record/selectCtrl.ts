@@ -7,7 +7,12 @@ import { onStageClick } from '@app/utils/layaUtils';
 type SelectList = Sprite & {
     list: List;
 };
+
 type SelectedRender = (box: Sprite, data: any) => void;
+export const SelectCtrlEvent = {
+    VisibleChange: 'VisibleChange',
+};
+
 export class SelectCtrl {
     private select_box: Sprite;
     private select_list: SelectList;
@@ -22,8 +27,12 @@ export class SelectCtrl {
     public init() {
         const { select_box, select_list } = this;
 
-        select_box.on('click', null, () => {
+        select_box.on('click', select_box, () => {
             select_list.visible = !select_list.visible;
+            select_list.event(
+                SelectCtrlEvent.VisibleChange,
+                select_list.visible,
+            );
         });
         onStageClick(
             select_box,

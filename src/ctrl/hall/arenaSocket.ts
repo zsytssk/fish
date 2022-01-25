@@ -36,7 +36,7 @@ import {
     getSocket,
     offSocketEvent,
 } from '../net/webSocketWrapUtil';
-import { tipComeBack, tipReconnect } from './commonSocket';
+import { tipComeBack, tipOtherLogin, tipReconnect } from './commonSocket';
 import { HallCtrl } from './hallCtrl';
 import { recharge } from './hallCtrlUtil';
 import { login } from './login';
@@ -245,11 +245,7 @@ export async function arenaErrHandler(code: number) {
             }
         });
     } else if (code === ArenaErrCode.OtherLogin) {
-        AlertPop.alert(tplIntr('OtherLogin'), {
-            hide_cancel: true,
-        }).then(() => {
-            location.reload();
-        });
+        tipOtherLogin();
     } else if (code === ArenaErrCode.NoOpen) {
         AppCtrl.event.emit(ArenaErrCode.NoOpen, tplIntr('gameNoOpen'));
     } else if (code === ArenaErrCode.GameEnded) {

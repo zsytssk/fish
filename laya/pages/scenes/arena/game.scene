@@ -2,7 +2,7 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":55,
+    "selecteID":56,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -278,13 +278,14 @@
                     "props":{"y":651,"x":10,"visible":false,"var":"my_score_panel","skin":"image/arena/bullet_box_bg.png"},
                     "nodeParent":11,
                     "label":"my_score_panel",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":56,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":57.5,"x":15,"texture":"image/arena/bullet_num_bg.png"},
@@ -299,6 +300,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,score_name",
                             "props":{"y":20,"x":35,"var":"score_name","text":"本场积分","fontSize":20,"color":"#fff"},
@@ -313,6 +315,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,score_num",
                             "props":{"y":18,"x":247,"text":"0","right":35,"name":"score_num","fontSize":20,"font":"score_num","color":"#fff"},
@@ -326,6 +329,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,bullet_num",
                             "props":{"y":68,"x":45,"width":244,"text":"剩余子弹 ～","name":"bullet_num","height":20,"fontSize":20,"color":"#fdf7d3","align":"center"},
@@ -449,13 +453,14 @@
                             "props":{"y":66,"x":175,"width":350,"visible":false,"var":"task_panel","texture":"image/arena/task_panel_bg.png","pivotY":66,"pivotX":175,"height":132},
                             "nodeParent":89,
                             "label":"task_panel",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":55,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite,task_item",
                                     "props":{"y":17,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
@@ -495,6 +500,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite,task_item",
                                     "props":{"y":54,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
@@ -534,6 +540,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite,task_item",
                                     "props":{"y":91,"x":149,"visible":false,"texture":"image/arena/task_num_bg.png","name":"task_item"},
@@ -573,6 +580,7 @@
                                         }]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_award_name",
                                     "props":{"y":16,"x":11,"width":127,"var":"task_award_name","text":"积分奖励","strokeColor":"#333c68","stroke":2,"height":12,"fontSize":18,"color":"#ffea00","align":"center"},
@@ -587,6 +595,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_award_num",
                                     "props":{"y":42,"x":11,"width":122,"var":"task_award_num","text":"1500","height":12,"fontSize":18,"color":"#fff","align":"center"},
@@ -600,6 +609,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_time_name",
                                     "props":{"y":79,"x":11,"width":127,"var":"task_time_name","text":"悬赏时间","strokeColor":"#333c68","stroke":2,"height":12,"fontSize":18,"color":"#ffea00","align":"center"},
@@ -614,6 +624,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,task_time_num",
                                     "props":{"y":100,"x":11,"width":122,"var":"task_time_num","text":"01:32","height":12,"fontSize":18,"color":"#fff","align":"center"},
