@@ -21,5 +21,13 @@ export function init() {
         Config.arenaSocketUrl = testUrl;
     }
 
-    Config.lang = (getParams('lang') || platform_info.lang) as Lang;
+    Config.lang = convertLang(getParams('lang') || platform_info.lang) as Lang;
+}
+
+export function convertLang(lang: string) {
+    console.log(`test:>`, lang, Lang[lang]);
+    if (Lang[lang]) {
+        return lang;
+    }
+    return 'en';
 }

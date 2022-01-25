@@ -59,10 +59,7 @@ export default class ArenaView
     private fish_click_observer: Subscriber<FishViewClickInfo>;
     private pool_click_observer: Subscriber<Point>;
     private task_arr = [];
-    private resize_scale: number;
     private bg_num = 1;
-    private bullet_box_pos: number;
-    private bullet_box_dir: BulletBoxDir;
     public static async preEnter(progress: ProgressFn) {
         const game = (await honor.director.runScene(
             'scenes/arena/game.scene',
@@ -73,11 +70,17 @@ export default class ArenaView
         return game;
     }
     public onEnable() {
-        onLangChange(this, (lang) => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
     }
-    private initLang(lang: Lang) {}
+    private initLang() {
+        const { score_name, task_award_name, task_time_name } = this;
+
+        score_name.text = tplIntr('localScore');
+        task_award_name.text = tplIntr('scoreAward');
+        task_time_name.text = tplIntr('awardTime');
+    }
     /** 设置游客样式 */
     public setTrialStyle() {}
     public showBubbleRefresh(bg_num?: number) {

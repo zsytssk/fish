@@ -168,7 +168,7 @@ export const International = {
         arenaNotEndCurrency:
             'There is an unfinished game, please click to continue the game',
         arenaNotSupportCurrency:
-            'This mode does not support {currency1} currency, {currency2} has been automatically converted for you',
+            'This mode does not support {currency1} currency, {currency2} has been automatically converted for you.',
         maintainQuitTip: 'The game is under maintenance, please exit the game!',
         maintainTip: 'Game is under maintenance',
         keyboardEmpTip: 'The entered value cannot be empty',
@@ -201,7 +201,7 @@ export const International = {
         arenaHelpTab3: 'Bonus Points',
         arenaGiftTitle: 'Competitive Package',
         arenaCompetitionTitle: 'Grand Prix',
-        arenaCompetitionSmallTip1: 'Opening hours',
+        arenaCompetitionSmallTip1: 'Opening',
         arenaCompetitionSmallTip2: 'My scores',
         arenaCompetitionSmallTip3: 'My ranking',
         arenaCompetitionTip:
@@ -222,6 +222,9 @@ export const International = {
             'It is not the registration time now, please try and register for the competition within the specified time period',
         GiftBulletTip:
             'It is only valid on the same day, it will expire at 0:00 the next day, and a maximum of 200 additional bullets will be added per match.',
+        scoreAward: '',
+        awardTime: '',
+        localScore: '',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -440,6 +443,9 @@ export const International = {
             '지금은 신청 기간이 아니니, 정해진 기간 내에 시합에 신청하시기 바랍니다.',
         GiftBulletTip:
             '당일만 유효하고, 다음날 0시에 효력을 상실하며, 매회 최대 200발의 탄환을 추가 증정합니다.',
+        scoreAward: '',
+        awardTime: '',
+        localScore: '',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -658,6 +664,9 @@ export const International = {
             '現在は申込時間ではありませんので、時間内にお申込みください',
         GiftBulletTip:
             '当日のみ有効、翌日の0時に無効になります、1回当たり最大200発の弾が追加されます',
+        scoreAward: '',
+        awardTime: '',
+        localScore: '',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -867,6 +876,9 @@ export const International = {
         GiftOnlyOnce: '礼包当天只能买一次！',
         UserSignUpDeadline: '当前不是报名时间，请在规定时间内比赛报名',
         GiftBulletTip: '仅当日有效，次日0点失效，每场最多额外增加200发子弹',
+        scoreAward: '积分奖励',
+        awardTime: '悬赏时间',
+        localScore: '本场积分',
         [ServerErrCode.NoMoney]: '当前货币余额不足，请去充值或切换其他货币.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子弹不足是否继续兑换!',
@@ -1072,6 +1084,9 @@ export const International = {
         GiftOnlyOnce: '礼包当天只能买一次！',
         UserSignUpDeadline: '當前不是報名時間，請在規定時間內比賽報名',
         GiftBulletTip: '仅当日有效，次日0点失效，每场最多额外增加200发子弹',
+        scoreAward: '積分獎勵',
+        awardTime: '懸賞時間',
+        localScore: '本場積分',
         [ServerErrCode.NoMoney]: '當前貨幣餘額不足，請去充值或切換其他貨幣.',
         noMoneyConfirm: '去充值',
         [ServerErrCode.ReExchange]: '子彈不足是否繼續兌換!',
