@@ -25,8 +25,7 @@ export function init() {
 }
 
 export function convertLang(lang: string) {
-    console.log(`test:>`, lang, Lang[lang]);
-    if (Lang[lang]) {
+    if (Object.values(Lang).indexOf(lang as any) !== -1) {
         return lang;
     }
     return 'en';
