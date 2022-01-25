@@ -21,6 +21,7 @@ import { AudioRes } from '@app/data/audioRes';
 import { ArenaEvent, ARENA_OK_CODE, ServerName } from '@app/data/serverEvent';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { formatUTC0DateTime } from '@app/utils/dayjsUtil';
 import {
     onNodeWithAni,
@@ -102,19 +103,23 @@ export default class ArenaCompetitionPop
         if (currency !== data.currency) {
             sleep(0.5).then(() => {
                 if (sign_status === 'continue') {
-                    TipPop.tip(
-                        tplIntr('arenaNotEndCurrency', {
-                            currency1: currency,
-                            currency2: data.currency,
-                        }),
-                    );
+                    asyncOnly('arenaNotEndCurrency', () => {
+                        return TipPop.tip(
+                            tplIntr('arenaNotEndCurrency', {
+                                currency1: currency,
+                                currency2: data.currency,
+                            }),
+                        );
+                    });
                 } else if (sign_status === 'sign') {
-                    TipPop.tip(
-                        tplIntr('arenaNotSupportCurrency', {
-                            currency1: currency,
-                            currency2: data.currency,
-                        }),
-                    );
+                    asyncOnly('arenaNotSupportCurrency', () => {
+                        return TipPop.tip(
+                            tplIntr('arenaNotSupportCurrency', {
+                                currency1: currency,
+                                currency2: data.currency,
+                            }),
+                        );
+                    });
                 }
             });
         }

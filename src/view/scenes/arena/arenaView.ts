@@ -70,16 +70,20 @@ export default class ArenaView
         return game;
     }
     public onEnable() {
-        onLangChange(this, () => {
-            this.initLang();
+        onLangChange(this, (lang) => {
+            this.initLang(lang);
         });
     }
-    private initLang() {
+    private initLang(lang: Lang) {
         const { score_name, task_award_name, task_time_name } = this;
+        const { auto_shoot_txt } = this.skill_box;
 
         score_name.text = tplIntr('localScore');
         task_award_name.text = tplIntr('scoreAward');
         task_time_name.text = tplIntr('awardTime');
+        const ani_name = covertLang(lang);
+        const skin_name = `auto_${ani_name}`;
+        auto_shoot_txt.skin = `image/international/${skin_name}.png`;
     }
     /** 设置游客样式 */
     public setTrialStyle() {}
