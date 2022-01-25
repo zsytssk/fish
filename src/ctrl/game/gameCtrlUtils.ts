@@ -108,6 +108,7 @@ type Data = {
 };
 /** 提示带入 */
 export function tipExchange(data: Data) {
+    console.warn(`test:>tipExchange`);
     if (!data.currency) {
         return;
     }

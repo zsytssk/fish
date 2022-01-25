@@ -133,6 +133,7 @@ export enum ArenaErrCode {
     NoMoney = 302,
     /** 比赛暂未开启 */
     TokenExpire = 11,
+    OtherLogin = 12,
     /** 比赛暂未开启 */
     NoOpen = 201,
     /** 比赛已结束 */
@@ -198,4 +199,5 @@ export const ArenaEvent = {
 
     /** 其他部分 */
     ErrCode: 'error',
+    ErrCode2: 'conn::error',
 };

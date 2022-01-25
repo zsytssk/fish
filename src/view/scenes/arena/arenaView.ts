@@ -302,7 +302,6 @@ export default class ArenaView
             : this.other_score_panel;
 
         if (is_cur_player) {
-            console.log(`test:>setScorePanelVisible:>start`, visible);
             stopAni(panel).then(() => {
                 if (visible) {
                     fade_in(panel, 200);

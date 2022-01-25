@@ -109,28 +109,6 @@ export class GameCtrl implements GameCtrlUtils {
             const [bg_num, bg_res] = this.genBgNum();
             const other_res: ResItem[] = [bg_res, ...res.game];
 
-            /** 只有第一次进入时提示 */
-            if (data.currency) {
-                waitEnterGame().then(async ([status, _data]) => {
-                    if (!status) {
-                        return;
-                    }
-                    /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
-                    if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
-                        await AlertPop.alert(tplIntr('delayUpdateAccount'));
-                    }
-                    tipExchange(data);
-                });
-            } else {
-                /** 复盘提示 */
-                waitEnterGame().then(async ([status, _data]) => {
-                    if (!status || _data.isTrial || !_data.currency) {
-                        return;
-                    }
-                    tipPlatformCurrency(_data.currency);
-                });
-            }
-
             const [view] = await mergeProgressObserver(
                 [
                     toProgressObserver(GameView.preEnter)(),

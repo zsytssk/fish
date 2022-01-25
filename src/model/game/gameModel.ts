@@ -98,10 +98,6 @@ export class GameModel extends ComponentManager {
         const { userId, eid, backAmount } = info;
         const player = this.getPlayerById(userId);
 
-        if (player.is_cur_player) {
-            console.log(`test:>bulletNum:>Hit`, info);
-        }
-
         if (!player) {
             error(`Game:>captureFish:> cant find player for ${userId}`);
             return;
@@ -185,9 +181,6 @@ export class GameModel extends ComponentManager {
     }
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);
-        if (player.is_cur_player) {
-            console.log(`test:>bulletNum:>shoot`, data);
-        }
         if (!player) {
             error(`Game:>shoot:> cant find player:>${data.userId}`);
             return;

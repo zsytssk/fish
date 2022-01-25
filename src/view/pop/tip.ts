@@ -98,7 +98,6 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                 y += item2.inner.height + space;
             }
 
-            console.log(`test:>`, item.inner.centerY, y - all_size / 2);
             if (cur_instance === item) {
                 cur_instance.inner.centerY = y - all_size / 2;
             } else {

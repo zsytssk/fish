@@ -133,6 +133,14 @@ export function commonArenaSocket(socket: WebSocketTrait, bindObj: any) {
             code = res?.code || code;
             arenaErrHandler(code);
         },
+        [ArenaEvent.ErrCode2]: (res: ErrorData, code: number) => {
+            code = res?.code || code;
+
+            if (code === ArenaErrCode.OtherLogin) {
+                socket.disconnect();
+            }
+            arenaErrHandler(code);
+        },
         /** 重连 */
         [SocketEvent.Reconnecting]: (try_index: number) => {
             if (try_index === 0) {
@@ -235,6 +243,12 @@ export async function arenaErrHandler(code: number) {
                     getGameCurrency() || modelState.app.user_info.cur_balance;
                 recharge(currency);
             }
+        });
+    } else if (code === ArenaErrCode.OtherLogin) {
+        AlertPop.alert(tplIntr('OtherLogin'), {
+            hide_cancel: true,
+        }).then(() => {
+            location.reload();
         });
     } else if (code === ArenaErrCode.NoOpen) {
         AppCtrl.event.emit(ArenaErrCode.NoOpen, tplIntr('gameNoOpen'));

@@ -13,7 +13,6 @@ export class GunAutoShootCom extends ComponentManager {
     public active() {
         const { gun } = this;
         const { event } = gun;
-        console.log('test:>autoShoot:>GunAutoShootCom:>active');
         event.on(
             GunEvent.SwitchOn,
             () => {
@@ -38,7 +37,6 @@ export class GunAutoShootCom extends ComponentManager {
         gun.setStatus(GunStatus.Normal);
         event.offAllCaller(this);
         gun.event.emit(GunEvent.AutoShoot, false);
-        console.log('test:>autoShoot:>GunAutoShootCom:>clear');
     }
     public destroy() {
         this.clear();

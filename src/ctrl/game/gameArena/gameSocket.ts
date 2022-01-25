@@ -9,8 +9,7 @@ import {
     TaskTriggerRes,
     UseFreezeRep,
 } from '@app/api/arenaApi';
-import { arenaErrHandler } from '@app/ctrl/hall/arenaSocket';
-import { commonSocket } from '@app/ctrl/hall/commonSocket';
+import { arenaErrHandler, commonArenaSocket } from '@app/ctrl/hall/arenaSocket';
 import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
 import { SkillMap } from '@app/data/config';
@@ -30,7 +29,7 @@ import { GameCtrl } from './gameCtrl';
 
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
     let currency: string;
-    commonSocket(socket, game);
+    commonArenaSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
             if (code !== ARENA_OK_CODE) {

@@ -228,7 +228,6 @@ export class PlayerCtrl extends ComponentManager {
                     const skill_model = this.model.getSkill(
                         SkillMap.Auto,
                     ) as AutoShootModel;
-                    console.warn(`test:>NotEnoughBulletNum`);
                     this.time_out.createTimeout(() => {
                         skill_model.toggle();
                     }, 0);
