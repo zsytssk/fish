@@ -124,7 +124,8 @@ export default class GameRecord
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
         btn_search.label = tplIntr('search');
-        resizeContain(btn_search, 0, 'horizontal', 10);
+        btn_search.text.padding = [0, 13, 0, 10];
+        resizeContain(btn_search, 0);
 
         empty_tip.text = tplIntr('noData');
     }

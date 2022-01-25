@@ -121,7 +121,8 @@ export default class ItemRecord
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
         btn_search.label = tplIntr('search');
-        resizeContain(btn_search, 0, 'horizontal', 20);
+        btn_search.text.padding = [0, 13, 0, 10];
+        resizeContain(btn_search, 0);
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;

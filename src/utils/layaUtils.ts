@@ -208,9 +208,15 @@ export function resizeContain(
     }
 
     if (dir === 'horizontal') {
-        parent.width = dist + padding * 2;
+        const width = dist + padding * 2;
+        if (parent.width < width) {
+            parent.width = width;
+        }
     } else {
-        parent.height = dist + padding * 2;
+        const height = dist + padding * 2;
+        if (parent.height < height) {
+            parent.height = height;
+        }
     }
 }
 

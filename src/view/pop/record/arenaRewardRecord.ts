@@ -114,7 +114,8 @@ export default class ArenaRewardRecordPop
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
         btn_search.label = tplIntr('search');
-        resizeContain(btn_search, 0, 'horizontal', 20);
+        btn_search.text.padding = [0, 13, 0, 10];
+        resizeContain(btn_search, 0);
     }
     private renderSelectedItem1 = async (
         box: SelectItemUI,
