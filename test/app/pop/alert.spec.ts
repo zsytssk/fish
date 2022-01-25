@@ -15,8 +15,7 @@ export const alert_test = {
         }, 5 * 1000);
     },
     showTip: async (msg) => {
-        TipPop.tip(`this is a test1`, { count: 15 });
-        await sleep(3);
+        await TipPop.tip(`this is a test1`, { count: 3 });
         TipPop.tip(tplIntr('taskStartTip'), {
             count: 10,
             show_count: true,

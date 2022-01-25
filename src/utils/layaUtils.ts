@@ -165,6 +165,7 @@ export function resizeContain(
     parent: Sprite,
     space: number,
     dir = 'horizontal' as Dir,
+    padding = 0,
 ) {
     const { numChildren } = parent;
 
@@ -207,9 +208,9 @@ export function resizeContain(
     }
 
     if (dir === 'horizontal') {
-        parent.width = dist;
+        parent.width = dist + padding * 2;
     } else {
-        parent.height = dist;
+        parent.height = dist + padding * 2;
     }
 }
 

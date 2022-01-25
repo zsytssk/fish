@@ -4,7 +4,7 @@ import { OpenDialogOpt } from 'honor/ui/dialogManager';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
-import { tween } from '@app/utils/animate';
+import { stopAni, tween } from '@app/utils/animate';
 import { clearCount, startCount } from '@app/utils/count';
 
 type TipPopOpt = {
@@ -66,7 +66,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         this.instances.unshift(instance);
         this.organizeInstance(instance);
     }
-    public static instancesRemove(instance: TipPop) {
+    public static instancesRemove(instance?: TipPop) {
         const index = this.instances.indexOf(instance);
         if (index !== -1) {
             this.instances.splice(index, 1);
@@ -78,29 +78,34 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
         const space = 20;
 
         let all_size = 0;
-        for (const [index, item] of instances.entries()) {
+        const items = instances;
+        for (const [index, item] of items.entries()) {
+            await stopAni(item.inner);
+
             all_size += item.inner.height;
-            if (index !== instances.length - 1) {
+            if (index !== items.length - 1) {
                 all_size += space;
             }
         }
 
-        for (const [index, item] of instances.entries()) {
+        for (const [index, item] of items.entries()) {
             let y = 0;
-            for (const [hIndex, item2] of instances.entries()) {
+            for (const [hIndex, item2] of items.entries()) {
                 if (hIndex === index) {
                     y += item2.inner.height / 2;
                     break;
                 }
                 y += item2.inner.height + space;
             }
+
+            console.log(`test:>`, item.inner.centerY, y - all_size / 2);
             if (cur_instance === item) {
                 cur_instance.inner.centerY = y - all_size / 2;
             } else {
                 tween({
                     sprite: item.inner,
                     end_props: { centerY: y - all_size / 2 },
-                    time: 200,
+                    time: 300,
                 });
             }
         }
@@ -158,7 +163,7 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
                         } else {
                             if (auto_hide) {
                                 // 最后一个需要显示才隐藏
-                                this.close();
+                                this.closeStart();
                             }
                         }
                         setTimeout(() => {
@@ -170,21 +175,18 @@ export default class TipPop extends ui.pop.alert.tipUI implements HonorDialog {
 
             fn();
 
-            this.show();
             this.setTipText(msg, show_count ? `${count}` : '', true);
+            this.show();
         });
     }
     public stopCountAndClose() {
         clearCount(this.count_id, true);
         this.count_is_stop = true;
-        this.close();
+        this.closeStart();
     }
-    public onClosed() {
-        const index = TipPop.instances.indexOf(this);
-        if (index !== -1) {
-            TipPop.instances.splice(index, 1);
-        }
+    public closeStart() {
         TipPop.instancesRemove(this);
+        this.close();
     }
 
     private setTipText(msg: Msg, count = '', organize = false) {

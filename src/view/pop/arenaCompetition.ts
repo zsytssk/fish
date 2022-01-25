@@ -22,7 +22,11 @@ import { ArenaEvent, ARENA_OK_CODE, ServerName } from '@app/data/serverEvent';
 import { ui } from '@app/ui/layaMaxUI';
 import { sleep } from '@app/utils/animate';
 import { formatUTC0DateTime } from '@app/utils/dayjsUtil';
-import { onNodeWithAni } from '@app/utils/layaUtils';
+import {
+    onNodeWithAni,
+    resizeContain,
+    resizeParent,
+} from '@app/utils/layaUtils';
 import { createColorFilter, tplIntr } from '@app/utils/utils';
 
 import ArenaHelpPop from './arenaHelp';
@@ -306,6 +310,14 @@ export default class ArenaCompetitionPop
         btn_famous.label = tplIntr('arenaTopPlayerTitle');
         btn_help.label = tplIntr('arenaHelpTitle');
         btn_best.label = tplIntr('arenaRankTitle');
+
+        btn_help.text.width = null;
+        btn_best.text.width = null;
+        btn_famous.text.width = null;
+        resizeContain(btn_help, 0, 'horizontal', 20);
+        resizeContain(btn_best, 0, 'horizontal', 20);
+        resizeContain(btn_famous, 0, 'horizontal', 20);
+        resizeParent(btn_famous, 10);
     }
     public destroy(destroyChild?: boolean) {
         offArenaHallSocket(this);

@@ -30,12 +30,22 @@ export default class ArenaHelpPop
         this.initEvent();
     }
     private initLang() {
-        const { title, tab0, tab1, tab2, tab3 } = this;
+        const { tab, title, tab0, tab1, tab2, tab3 } = this;
         title.text = tplIntr('arenaHelpTitle');
         tab0.label = tplIntr('arenaHelpTab0');
         tab1.label = tplIntr('arenaHelpTab1');
         tab2.label = tplIntr('arenaHelpTab2');
         tab3.label = tplIntr('arenaHelpTab3');
+
+        tab0.text.width = null;
+        tab1.text.width = null;
+        tab2.text.width = null;
+        tab3.text.width = null;
+        resizeContain(tab0, 0, 'horizontal', 20);
+        resizeContain(tab1, 0, 'horizontal', 20);
+        resizeContain(tab2, 0, 'horizontal', 20);
+        resizeContain(tab3, 0, 'horizontal', 20);
+        resizeContain(tab, 0);
     }
     private initEvent() {
         const { tab, tabBody } = this;

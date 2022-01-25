@@ -24,7 +24,7 @@ import {
 import { Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in, fade_out, scale_in } from '@app/utils/animate';
+import { fade_in, fade_out, scale_in, stopAni } from '@app/utils/animate';
 import { clearCount, startCount } from '@app/utils/count';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
@@ -300,11 +300,13 @@ export default class ArenaView
 
         if (is_cur_player) {
             console.log(`test:>setScorePanelVisible:>start`, visible);
-        }
-        if (visible) {
-            fade_in(panel, 200);
-        } else {
-            fade_out(panel, 200);
+            stopAni(panel).then(() => {
+                if (visible) {
+                    fade_in(panel, 200);
+                } else {
+                    fade_out(panel, 200);
+                }
+            });
         }
     }
     public setBulletScoreNum(

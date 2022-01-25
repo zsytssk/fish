@@ -714,19 +714,19 @@ export const tweenProps = (() => {
     return tweenFun;
 })();
 export function stopAni(sprite: Sprite | FuncVoid) {
-    if (!sprite) {
-        return;
-    }
-    if (typeof sprite === 'function') {
-        return sprite();
-    }
-    if (sprite.time_out) {
-        return clearTimeout(sprite.time_out);
-    }
-    if (sprite.tween) {
-        sprite.tween.complete();
-        sprite.tween.clear();
-    }
+    return new Promise<void>((resolve, _reject) => {
+        if (typeof sprite === 'function') {
+            sprite();
+        } else if (sprite?.time_out) {
+            clearTimeout(sprite.time_out);
+        } else if (sprite?.tween) {
+            sprite.tween.complete();
+            sprite.tween.clear();
+        }
+        setTimeout(() => {
+            resolve();
+        });
+    });
 }
 export function completeAni(sprite: Sprite) {
     return new Promise((resolve, _reject) => {

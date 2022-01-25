@@ -154,7 +154,7 @@ export function tipComeBack(stopReconnectTip = false) {
     if (stopReconnectTip) {
         tip_pop?.stopCountAndClose();
     }
-    TipPop.tip(tplIntr('NetComeBack'), {}, { use_exist: true });
+    TipPop.tip(tplIntr('NetComeBack'), { count: 2 }, { use_exist: true });
 }
 export function tipCount(msg: string, count: number) {
     TipPop.tip(msg, {

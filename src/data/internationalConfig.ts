@@ -118,20 +118,33 @@ export const International = {
             'The current currency surplus is insufficient, the minimum requirement to enter the market is {minAmount}{currency}, please go to top up or switch to other currencies.',
         platformDiffCurrencyEnterGameErr:
             'You have unfinished games, the system will automatically repeat.',
-        arenaHelpRule11: 'The Fishing Grand Prix is open at designated time periods every day during the event (times shown in UTC-0), and registration will be closed 30 minutes before the end of each period）',
-        arenaHelpRule12: 'Every day the of the duration of the Grand Prix game, you can get {freeNum} free challenge (including guest players), and the number of free challenges does not accumulate',
-        arenaHelpRule13: 'Repeated challenges need to sign up to consume currency, and the amount of currency consumed is subject to the USDT exchange rate',
-        arenaHelpRule21: 'After successful registration, each player can shoot {initBulletNum} bullets. After killing the fish, they can get points corresponding to the fish multiplier, 1x = 1 point.',
-        arenaHelpRule22: 'The higher the turret multiplier in the Grand Prix, the higher the probability of killing fish.',
-        arenaHelpRule23: 'After the player fires the cannon, if the number of remaining bullets is less than or equal to 500, the bounty task will be triggered, and additional points will be awarded for completion.',
-        arenaHelpRule24: 'After all the bullets are fired, the challenge ends. The final points can be used for ranking',
-        arenaHelpRule31: 'Take the single highest score every day to enter the ranking (at least {rankingScoreDown} points are required to participate in the ranking)',
-        arenaHelpRule32: 'If the points are the same, the player who reaches it first will be ranked first.',
+        arenaHelpRule11:
+            'The Fishing Grand Prix is open at designated time periods every day during the event (times shown in UTC-0), and registration will be closed 30 minutes before the end of each period）',
+        arenaHelpRule12:
+            'Every day the of the duration of the Grand Prix game, you can get {freeNum} free challenge (including guest players), and the number of free challenges does not accumulate',
+        arenaHelpRule13:
+            'Repeated challenges need to sign up to consume currency, and the amount of currency consumed is subject to the USDT exchange rate',
+        arenaHelpRule21:
+            'After successful registration, each player can shoot {initBulletNum} bullets. After killing the fish, they can get points corresponding to the fish multiplier, 1x = 1 point.',
+        arenaHelpRule22:
+            'The higher the turret multiplier in the Grand Prix, the higher the probability of killing fish.',
+        arenaHelpRule23:
+            'After the player fires the cannon, if the number of remaining bullets is less than or equal to 500, the bounty task will be triggered, and additional points will be awarded for completion.',
+        arenaHelpRule24:
+            'After all the bullets are fired, the challenge ends. The final points can be used for ranking',
+        arenaHelpRule31:
+            'Take the single highest score every day to enter the ranking (at least {rankingScoreDown} points are required to participate in the ranking)',
+        arenaHelpRule32:
+            'If the points are the same, the player who reaches it first will be ranked first.',
         arenaHelpRule33: 'Daily ranking rewards will be issued the next day',
-        arenaHelpRule34: 'The championship reward will be issued on the next day after each event. The player with the highest points in a single event will be the overall champion and will receive additional prizes.',
-        arenaHelpRule35: 'The rewards of the competition will be distributed directly to the account, and players can view the rewards distribution record of the Grand Prix in the lobby interface',
-        arenaHelpRule41: 'Turret bonus Use different turret skins, the hit rate bonus is different in the game, and the hit rate is not accumulated',
-        arenaHelpRule42: 'Turret skin     hit bonus \n Turret skin1           {gun1001}%\n Turret skin2           {gun1002}%\n Turret skin3           {gun1003}%\n Turret skin4           {gun1004}%\n Turret skin5           {gun1005}%\n',
+        arenaHelpRule34:
+            'The championship reward will be issued on the next day after each event. The player with the highest points in a single event will be the overall champion and will receive additional prizes.',
+        arenaHelpRule35:
+            'The rewards of the competition will be distributed directly to the account, and players can view the rewards distribution record of the Grand Prix in the lobby interface',
+        arenaHelpRule41:
+            'Turret bonus Use different turret skins, the hit rate bonus is different in the game, and the hit rate is not accumulated',
+        arenaHelpRule42:
+            'Turret skin     hit bonus \n Turret skin1           {gun1001}%\n Turret skin2           {gun1002}%\n Turret skin3           {gun1003}%\n Turret skin4           {gun1004}%\n Turret skin5           {gun1005}%\n',
         arenaAwardTitle: 'Reward query',
         arenaAwardItemTitle0: 'user',
         arenaAwardItemTitle1: 'ranking',
@@ -152,18 +165,22 @@ export const International = {
         score: 'Points: {score}',
         openTime: 'Event time: {startTime}-{endTime}',
         notInRank: 'Not yet on the list',
-        arenaNotEndCurrency: 'There is an unfinished game, please click to continue the game',
-        arenaNotSupportCurrency: 'This mode does not support {currency1} currency, {currency2} has been automatically converted for you',
+        arenaNotEndCurrency:
+            'There is an unfinished game, please click to continue the game',
+        arenaNotSupportCurrency:
+            'This mode does not support {currency1} currency, {currency2} has been automatically converted for you',
         maintainQuitTip: 'The game is under maintenance, please exit the game!',
         maintainTip: 'Game is under maintenance',
         keyboardEmpTip: 'The entered value cannot be empty',
         arenaAwardDayRank: 'Daily ranking reward',
         arenaAwardGradeRank: 'Total ranking reward for each issue',
         arenaTitle: 'Grand Prix',
-        matchTitle: 'Grand Prix',
+        matchTitle: 'Arena',
         maintaining: 'In maintenance',
-        taskStartTip: 'Complete the bounty task, <span style="color: #ffffbb">there are points rewards!</span>',
-        taskCompletedTip: 'Congratulations on completing the bounty task and getting rewarded {score} points',
+        taskStartTip:
+            'Complete the bounty task, <span style="color: #ffffbb">there are points rewards!</span>',
+        taskCompletedTip:
+            'Congratulations on completing the bounty task and getting rewarded {score} points',
         arenaTopPlayerTitle: 'fishing expert',
         arenaSettleTitle: 'match settlement',
         arenaSettleReSign: 'Re-enter {fee}{currency}',
@@ -187,19 +204,24 @@ export const International = {
         arenaCompetitionSmallTip1: 'Opening hours',
         arenaCompetitionSmallTip2: 'My scores',
         arenaCompetitionSmallTip3: 'My ranking',
-        arenaCompetitionTip: 'The ranking is refreshed every 5 minutes, and the daily ranking reward will be distributed the next day',
+        arenaCompetitionTip:
+            'The ranking is refreshed every 5 minutes, and the daily ranking reward will be distributed the next day',
         arenaRewardTpl: 'Issue {grade}',
         gameNoOpen: 'The game has not started yet',
         GameEnded: 'game is over',
         SignUpFail: 'Registration failed',
-        GuestSignUpFail: 'Registration failed, please log in to your account to register again',
+        GuestSignUpFail:
+            'Registration failed, please log in to your account to register again',
         BulletLack: 'Not enough bullets',
         BuyFail: 'Failed purchase',
         ItemNotExist: 'prop does not exist',
-        NotEnoughBulletNumChangeTurretTip: 'If the number of bullets is insufficient, please switch the turret multiplier',
+        NotEnoughBulletNumChangeTurretTip:
+            'If the number of bullets is insufficient, please switch the turret multiplier',
         GiftOnlyOnce: 'Gift packs can only be purchased once a day!',
-        UserSignUpDeadline: 'It is not the registration time now, please try and register for the competition within the specified time period',
-        GiftBulletTip: 'It is only valid on the same day, it will expire at 0:00 the next day, and a maximum of 200 additional bullets will be added per match.',
+        UserSignUpDeadline:
+            'It is not the registration time now, please try and register for the competition within the specified time period',
+        GiftBulletTip:
+            'It is only valid on the same day, it will expire at 0:00 the next day, and a maximum of 200 additional bullets will be added per match.',
         [ServerErrCode.NoMoney]:
             'Insufficient funds, please add funds or change to another currency.',
         noMoneyConfirm: 'Add funds',
@@ -314,20 +336,33 @@ export const International = {
             '현재 화폐 잔액이 부족합니다. 최소{minAmount}{currency} 소유해야 입장이 가능합니다. 충전하시거나 다른 화폐로 교환해주세요.',
         platformDiffCurrencyEnterGameErr:
             '완료되지 않은 게임이 있으면 시스템이 자동으로 반복됩니다.',
-        arenaHelpRule11: 'a) 최고의 낚시꾼 이벤트,이벤트 형식으로 시간대를 지정하여 개방(개방시간은 UTC+0시간 기준), 매 시간 종료 전 {deadlineTime}분까지 접수하며 이후 시간은 서비스가 중지됩니다.',
-        arenaHelpRule12: 'b) 그랑프리는 하루 오픈 시 {freeNum}회 무료 도전 횟수(관광객 플레이어 포함)를 증정하며 무료 도전 횟수는 적립되지 않습니다.',
-        arenaHelpRule13: 'c) 화폐를 소모하기 위해서는 반복적인 챌린지가 필요하며, 소모되는 화폐의 양은 USDT 환율에 따릅니다.',
-        arenaHelpRule21: 'a) 등록이 완료되면 각 플레이어들은 {initBulletNum}발의 총알을 발사할 수 있으며, 물고기를 죽이면 포획률에 해당하는 포인트를 받을 수 있습니다.',
-        arenaHelpRule22: 'b) 그랑프리에서 포대의 배율이 높을수록 물고기를 격살할 확률도 그만큼 높아집니다.',
-        arenaHelpRule23: 'c) 플레이어가 포를 쏜 후 남은 총알 수가 500보다 작을 경우 현상금 과업을 유발하면, 추가 포인트 보상을 받을 수 있습니다.',
-        arenaHelpRule24: 'd) 총알을 모두 쏘고 나면 이번 도전은 끝나며 최종 포인트로 순위 참여에 가능합니다.(주의: 총알 미완료 성적은 순위 참여 제외)',
-        arenaHelpRule31: 'a) 1일 1회 최고 포인트를 획득하여 순위 진입이 가능합니다.(최소 {rankingScoreDown}점수가 있어야 순위 참여 가능)',
-        arenaHelpRule32: 'b) 승점이 같은 경우, 먼저 포인트에 도달한  플레이어의 순위가 상위권입니다.',
+        arenaHelpRule11:
+            'a) 최고의 낚시꾼 이벤트,이벤트 형식으로 시간대를 지정하여 개방(개방시간은 UTC+0시간 기준), 매 시간 종료 전 {deadlineTime}분까지 접수하며 이후 시간은 서비스가 중지됩니다.',
+        arenaHelpRule12:
+            'b) 그랑프리는 하루 오픈 시 {freeNum}회 무료 도전 횟수(관광객 플레이어 포함)를 증정하며 무료 도전 횟수는 적립되지 않습니다.',
+        arenaHelpRule13:
+            'c) 화폐를 소모하기 위해서는 반복적인 챌린지가 필요하며, 소모되는 화폐의 양은 USDT 환율에 따릅니다.',
+        arenaHelpRule21:
+            'a) 등록이 완료되면 각 플레이어들은 {initBulletNum}발의 총알을 발사할 수 있으며, 물고기를 죽이면 포획률에 해당하는 포인트를 받을 수 있습니다.',
+        arenaHelpRule22:
+            'b) 그랑프리에서 포대의 배율이 높을수록 물고기를 격살할 확률도 그만큼 높아집니다.',
+        arenaHelpRule23:
+            'c) 플레이어가 포를 쏜 후 남은 총알 수가 500보다 작을 경우 현상금 과업을 유발하면, 추가 포인트 보상을 받을 수 있습니다.',
+        arenaHelpRule24:
+            'd) 총알을 모두 쏘고 나면 이번 도전은 끝나며 최종 포인트로 순위 참여에 가능합니다.(주의: 총알 미완료 성적은 순위 참여 제외)',
+        arenaHelpRule31:
+            'a) 1일 1회 최고 포인트를 획득하여 순위 진입이 가능합니다.(최소 {rankingScoreDown}점수가 있어야 순위 참여 가능)',
+        arenaHelpRule32:
+            'b) 승점이 같은 경우, 먼저 포인트에 도달한  플레이어의 순위가 상위권입니다.',
         arenaHelpRule33: 'c) 일일 보너스 지급기간은 다음날입니다.',
-        arenaHelpRule34: 'd) 총 우승자 보상 지급 시간은 매 이벤트 종료 후 다음날이며, 1회 승점이 가장 높은 플레이어는 총 우승자로 추가 대상을 받습니다.',
-        arenaHelpRule35: 'e) 경기의 보상은 바로 계정으로 지급되며, 플레이어는 메인 화면에서 그랑프리 보상 지급 기록을 확인할 수 있습니다.',
-        arenaHelpRule41: 'a) 포대를 더하면 서로 다른 포대 스킨을 사용하므로, 경기 중 명중률이 서로 달라 누차 명중하지 않습니다.',
-        arenaHelpRule42: '포대 스킨 적중 \n 스킨 1{gun1001}%\n 스킨 2{gun1002}%\n스킨3{gun1003}%\n스킨4{gun1004}%\n스킨5{gun1005}%\n',
+        arenaHelpRule34:
+            'd) 총 우승자 보상 지급 시간은 매 이벤트 종료 후 다음날이며, 1회 승점이 가장 높은 플레이어는 총 우승자로 추가 대상을 받습니다.',
+        arenaHelpRule35:
+            'e) 경기의 보상은 바로 계정으로 지급되며, 플레이어는 메인 화면에서 그랑프리 보상 지급 기록을 확인할 수 있습니다.',
+        arenaHelpRule41:
+            'a) 포대를 더하면 서로 다른 포대 스킨을 사용하므로, 경기 중 명중률이 서로 달라 누차 명중하지 않습니다.',
+        arenaHelpRule42:
+            '포대 스킨 적중 \n 스킨 1{gun1001}%\n 스킨 2{gun1002}%\n스킨3{gun1003}%\n스킨4{gun1004}%\n스킨5{gun1005}%\n',
         arenaAwardTitle: '인센티브 조회',
         arenaAwardItemTitle0: '사용자',
         arenaAwardItemTitle1: '순위',
@@ -348,23 +383,28 @@ export const International = {
         score: '포인트: {score}',
         openTime: '이벤트 시간: {startTime}-{endTime}',
         notInRank: '순위 축정중 ',
-        arenaNotEndCurrency: '종료되지 않은 게임이 있으면, 계속 게임을 진행하세요',
-        arenaNotSupportCurrency: '이 모드는 {currency1}을( 를) 지원하지 않습니다. 자동으로 {currency2} {currency2}전환됩니다',
+        arenaNotEndCurrency:
+            '종료되지 않은 게임이 있으면, 계속 게임을 진행하세요',
+        arenaNotSupportCurrency:
+            '이 모드는 {currency1}을( 를) 지원하지 않습니다. 자동으로 {currency2} {currency2}전환됩니다',
         maintainQuitTip: '게임 유지 중, 게임을 종료하세요!',
         maintainTip: '게임 유지 중',
         keyboardEmpTip: '모든 입력창애 기입해주세요 ',
         arenaAwardDayRank: '일일 순위 포상',
         arenaAwardGradeRank: '매회 총순위 인센티브',
         arenaTitle: '그랑프리',
-        matchTitle: '그랑프리',
+        matchTitle: '투기장',
         maintaining: '유지 보수 중',
-        taskStartTip: '현상금 작업, <span style="color: #ffffbb">포인트로 보상</span>을 완료하세요!',
-        taskCompletedTip: '현상금 미션 완료, 보상 {score} 포인트 획득 축하합니다',
+        taskStartTip:
+            '현상금 작업, <span style="color: #ffffbb">포인트로 보상</span>을 완료하세요!',
+        taskCompletedTip:
+            '현상금 미션 완료, 보상 {score} 포인트 획득 축하합니다',
         arenaTopPlayerTitle: '고기잡이의 달인',
         arenaSettleTitle: '경기결산',
         arenaSettleReSign: '재경기{fee}{currency}',
         arenaSettleReStatic: '이 캡쳐 점수: {score}',
-        arenaSettleTpl: '{userId}\n 현재 순위: {ranking}\n 오늘의 최고 캡처 점수: {maxDayScore}\n 이 캡처 점수: {score}',
+        arenaSettleTpl:
+            '{userId}\n 현재 순위: {ranking}\n 오늘의 최고 캡처 점수: {maxDayScore}\n 이 캡처 점수: {score}',
         arenaSettle1: '* 경기 종료 전 보상에 변화가 있을 수 있음',
         arenaSettle2: '순위상여',
         arenaRankScore: '포인트 획득: {score}',
@@ -383,7 +423,8 @@ export const International = {
         arenaCompetitionSmallTip1: '오픈 타임',
         arenaCompetitionSmallTip2: '마이 포인트',
         arenaCompetitionSmallTip3: '내 순위',
-        arenaCompetitionTip: '순위 5분 경신 1일차 순위 보상은 다음날 지급됩니다.',
+        arenaCompetitionTip:
+            '순위 5분 경신 1일차 순위 보상은 다음날 지급됩니다.',
         arenaRewardTpl: '제{grade}회',
         gameNoOpen: '경기가 아직 열리지 않았습니다.',
         GameEnded: '경기가 이미 끝났습니다.',
@@ -392,10 +433,13 @@ export const International = {
         BulletLack: '탄수가 부족하다.',
         BuyFail: '구매실패',
         ItemNotExist: '아이템이 존재하지 않습니다',
-        NotEnoughBulletNumChangeTurretTip: '총알 수가 부족합니다 포대 배수를 전환하십시오',
+        NotEnoughBulletNumChangeTurretTip:
+            '총알 수가 부족합니다 포대 배수를 전환하십시오',
         GiftOnlyOnce: '선물꾸러미는 하루에 한 번만 살 수 있어요!',
-        UserSignUpDeadline: '지금은 신청 기간이 아니니, 정해진 기간 내에 시합에 신청하시기 바랍니다.',
-        GiftBulletTip: '당일만 유효하고, 다음날 0시에 효력을 상실하며, 매회 최대 200발의 탄환을 추가 증정합니다.',
+        UserSignUpDeadline:
+            '지금은 신청 기간이 아니니, 정해진 기간 내에 시합에 신청하시기 바랍니다.',
+        GiftBulletTip:
+            '당일만 유효하고, 다음날 0시에 효력을 상실하며, 매회 최대 200발의 탄환을 추가 증정합니다.',
         [ServerErrCode.NoMoney]:
             '현재 보유 중인 화폐 수량이 부족합니다. 입금 또는 다른 화폐를 환전해주세요.',
         noMoneyConfirm: '충전하기',
@@ -509,20 +553,33 @@ export const International = {
             '現在の残高が不足しており、参加には最低{minAmount}{currency}を保有する必要があります。入金または他のトークンに切り替えてください。',
         platformDiffCurrencyEnterGameErr:
             'まだ終わっていないゲームがありますので、システムは自動的にリセットして差し上げます。',
-        arenaHelpRule11: 'a）漁グランプリ。イベントの形式で期間を指定して開催（UTC+0時間で開催）し、各期間の終了前{deadlineTime}分前に申込みが終了します',
-        arenaHelpRule12: 'b）グランプリが開催される日に{freeNum}回の無料チャレンジ回数（ビジタープレイヤーを含む）が付与され、無料チャレンジ回数は累積されません',
-        arenaHelpRule13: 'c）繰り返されるチャレンジは通貨を消費するためにサインアップする必要があり、消費される通貨の量はUSDTの為替レートの影響を受けます',
-        arenaHelpRule21: 'a）応募に成功すると、各プレイヤーは{initBulletNum}の弾を撃つことができ、魚を撃ち殺すと倍率に応じたポイントが獲得できます。1倍=1ポイント。',
-        arenaHelpRule22: 'b）グランプリにおいて砲台倍率が高いほど、魚を殺す確率も高くなります。',
-        arenaHelpRule23: 'c）プレイヤーが発砲した後、残弾数が500以下であれば、懸賞任務が発動され、完成するとボーナスポイントを獲得することができます。',
-        arenaHelpRule24: 'd）すべての弾を打ち終わると、今回のチャレンジが終了します。最終ポイントはランキングに参加できます（注意：弾が打ち終わっていないとランキングには参加できません）',
-        arenaHelpRule31: 'a）当日の最高ポイントがランキングに参加します（ランキングに参加するには少なくとも{rankingScoreDown}ポイントが必要となります）',
-        arenaHelpRule32: 'b）ポイントが同じ場合は、先に到達したプレイヤーが上位にランクインします。',
+        arenaHelpRule11:
+            'a）漁グランプリ。イベントの形式で期間を指定して開催（UTC+0時間で開催）し、各期間の終了前{deadlineTime}分前に申込みが終了します',
+        arenaHelpRule12:
+            'b）グランプリが開催される日に{freeNum}回の無料チャレンジ回数（ビジタープレイヤーを含む）が付与され、無料チャレンジ回数は累積されません',
+        arenaHelpRule13:
+            'c）繰り返されるチャレンジは通貨を消費するためにサインアップする必要があり、消費される通貨の量はUSDTの為替レートの影響を受けます',
+        arenaHelpRule21:
+            'a）応募に成功すると、各プレイヤーは{initBulletNum}の弾を撃つことができ、魚を撃ち殺すと倍率に応じたポイントが獲得できます。1倍=1ポイント。',
+        arenaHelpRule22:
+            'b）グランプリにおいて砲台倍率が高いほど、魚を殺す確率も高くなります。',
+        arenaHelpRule23:
+            'c）プレイヤーが発砲した後、残弾数が500以下であれば、懸賞任務が発動され、完成するとボーナスポイントを獲得することができます。',
+        arenaHelpRule24:
+            'd）すべての弾を打ち終わると、今回のチャレンジが終了します。最終ポイントはランキングに参加できます（注意：弾が打ち終わっていないとランキングには参加できません）',
+        arenaHelpRule31:
+            'a）当日の最高ポイントがランキングに参加します（ランキングに参加するには少なくとも{rankingScoreDown}ポイントが必要となります）',
+        arenaHelpRule32:
+            'b）ポイントが同じ場合は、先に到達したプレイヤーが上位にランクインします。',
         arenaHelpRule33: 'c）日ランキングボーナスの支給時間は翌日になります',
-        arenaHelpRule34: 'd）総合優勝ボーナスの支給時間はイベント終了後の翌日で、1回のポイントが最も高いプレイヤーが総合チャンピオンとなり、追加ボーナスが支給されます。',
-        arenaHelpRule35: 'e）グランプリのボーナスはアカウントに直接配布され、プレイヤーはロビーインターフェースでグランプリボーナスの配布記録を見ることができます',
-        arenaHelpRule41: 'a）砲台のbuff 砲台のスキンによって、命中率のbuffが異なります。追加命中はできません。',
-        arenaHelpRule42: '砲台スキン　命中buff\nスキン1　　{gun1001}%\nスキン2　　{gun1002}%\nスキン3　　{gun1003}%\nスキン4　　{gun1004}%\nスキン5　　{gun1005}%\n',
+        arenaHelpRule34:
+            'd）総合優勝ボーナスの支給時間はイベント終了後の翌日で、1回のポイントが最も高いプレイヤーが総合チャンピオンとなり、追加ボーナスが支給されます。',
+        arenaHelpRule35:
+            'e）グランプリのボーナスはアカウントに直接配布され、プレイヤーはロビーインターフェースでグランプリボーナスの配布記録を見ることができます',
+        arenaHelpRule41:
+            'a）砲台のbuff 砲台のスキンによって、命中率のbuffが異なります。追加命中はできません。',
+        arenaHelpRule42:
+            '砲台スキン　命中buff\nスキン1　　{gun1001}%\nスキン2　　{gun1002}%\nスキン3　　{gun1003}%\nスキン4　　{gun1004}%\nスキン5　　{gun1005}%\n',
         arenaAwardTitle: 'ボーナス照会',
         arenaAwardItemTitle0: 'ユーザー',
         arenaAwardItemTitle1: '順位',
@@ -543,23 +600,28 @@ export const International = {
         score: 'ポイント:{score}',
         openTime: 'イベント時間:{startTime}-{endTime}',
         notInRank: 'いまのところランクインしておりません',
-        arenaNotEndCurrency: '未終了のゲームがあります。クリックしてゲームを続行してください',
-        arenaNotSupportCurrency: 'このモードでは{currency1}通貨はご利用できません。{currency2}に自動的に換算されました',
+        arenaNotEndCurrency:
+            '未終了のゲームがあります。クリックしてゲームを続行してください',
+        arenaNotSupportCurrency:
+            'このモードでは{currency1}通貨はご利用できません。{currency2}に自動的に換算されました',
         maintainQuitTip: 'ゲームメンテナンス中、ゲームを終了してください！',
         maintainTip: 'ゲームメンテナンス中',
         keyboardEmpTip: '空の値は入力できません',
         arenaAwardDayRank: '日別ボーナス',
         arenaAwardGradeRank: '毎号総合ランキングボーナス',
         arenaTitle: 'グランプリ',
-        matchTitle: 'グランプリ',
+        matchTitle: 'アリーナ',
         maintaining: 'メンテナンス中',
-        taskStartTip: '懸賞任務を達成すると、<span style = "color：#ffffbb">ポイントボーナスがあります</span>！',
-        taskCompletedTip: '懸賞の任務完了おめでとうございます、ボーナス{score}ポイントを獲得しました',
+        taskStartTip:
+            '懸賞任務を達成すると、<span style = "color：#ffffbb">ポイントボーナスがあります</span>！',
+        taskCompletedTip:
+            '懸賞の任務完了おめでとうございます、ボーナス{score}ポイントを獲得しました',
         arenaTopPlayerTitle: '漁の達人',
         arenaSettleTitle: '試合決算',
         arenaSettleReSign: '再参加{fee}{currency}',
         arenaSettleReStatic: '今回の獲得ポイント:{score}',
-        arenaSettleTpl: '{userId}\n現在のランキング:{ranking}\n今日の最高獲得ポイント:{maxDayScore}\n今回の獲得ポイント:{score}',
+        arenaSettleTpl:
+            '{userId}\n現在のランキング:{ranking}\n今日の最高獲得ポイント:{maxDayScore}\n今回の獲得ポイント:{score}',
         arenaSettle1: '※試合終了前に、ボーナスに変更が生じる場合があります',
         arenaSettle2: 'ランキングボーナス',
         arenaRankScore: '獲得ポイント:{score}',
@@ -578,19 +640,24 @@ export const International = {
         arenaCompetitionSmallTip1: 'オープンタイム',
         arenaCompetitionSmallTip2: 'マイポイント',
         arenaCompetitionSmallTip3: 'マイランキング',
-        arenaCompetitionTip: 'ランキングは5分でに1回更新されます　ランクインボーナスは翌日に支給されます',
+        arenaCompetitionTip:
+            'ランキングは5分でに1回更新されます　ランクインボーナスは翌日に支給されます',
         arenaRewardTpl: '第{grade}期',
         gameNoOpen: '試合はまだオープンになっておりません',
         GameEnded: '試合終了',
         SignUpFail: '申し込みに失敗しました',
-        GuestSignUpFail: '申し込みに失敗しましたので、アカウントにログインしてから再申込してください',
+        GuestSignUpFail:
+            '申し込みに失敗しましたので、アカウントにログインしてから再申込してください',
         BulletLack: '弾の数が足りません',
         BuyFail: '購入失敗',
         ItemNotExist: 'アイテムが存在しません',
-        NotEnoughBulletNumChangeTurretTip: '弾が足りません　砲台の倍数を切り替えてください',
+        NotEnoughBulletNumChangeTurretTip:
+            '弾が足りません　砲台の倍数を切り替えてください',
         GiftOnlyOnce: 'プレゼントバッグは一日1回しか買えません！',
-        UserSignUpDeadline: '現在は申込時間ではありませんので、時間内にお申込みください',
-        GiftBulletTip: '当日のみ有効、翌日の0時に無効になります、1回当たり最大200発の弾が追加されます',
+        UserSignUpDeadline:
+            '現在は申込時間ではありませんので、時間内にお申込みください',
+        GiftBulletTip:
+            '当日のみ有効、翌日の0時に無効になります、1回当たり最大200発の弾が追加されます',
         [ServerErrCode.NoMoney]:
             '現在の通貨残高が不足しています。再チャージするか、他の通貨に切り替えてください。',
         noMoneyConfirm: 'チャージ',
@@ -704,20 +771,31 @@ export const International = {
             '当前货币余额不足，最小需携带{minAmount}{currency}才可进场，请去充值或者切换其他货币。',
         platformDiffCurrencyEnterGameErr:
             '您还有未完成的游戏，系统自动帮您复盘。',
-        arenaHelpRule11: 'a) 捕鱼大奖赛，以活动形式指定时间段开放（开放时间以UTC+0时间为准），每个时段结束前{deadlineTime}分钟停止报名',
-        arenaHelpRule12: 'b)大奖赛每天开放均可获赠{freeNum}次免费挑战的次数（包括游客玩家），免费挑战次数不累积',
-        arenaHelpRule13: 'c) 重复挑战需要报名消耗货币，消耗的货币数量以USDT汇率为准',
-        arenaHelpRule21: 'a) 报名成功后，每个玩家可以射击{initBulletNum}发子弹，击杀鱼后可以获得鱼倍率对应的积分，1倍=1积分。',
+        arenaHelpRule11:
+            'a) 捕鱼大奖赛，以活动形式指定时间段开放（开放时间以UTC+0时间为准），每个时段结束前{deadlineTime}分钟停止报名',
+        arenaHelpRule12:
+            'b)大奖赛每天开放均可获赠{freeNum}次免费挑战的次数（包括游客玩家），免费挑战次数不累积',
+        arenaHelpRule13:
+            'c) 重复挑战需要报名消耗货币，消耗的货币数量以USDT汇率为准',
+        arenaHelpRule21:
+            'a) 报名成功后，每个玩家可以射击{initBulletNum}发子弹，击杀鱼后可以获得鱼倍率对应的积分，1倍=1积分。',
         arenaHelpRule22: 'b) 大奖赛中炮台倍率越高，击杀鱼的概率也相应增加',
-        arenaHelpRule23: 'c) 玩家开炮后，若剩余子弹数小于等于500，触发悬赏任务，完成可获得额外积分奖励',
-        arenaHelpRule24: 'd) 所有子弹打完后，本次挑战结束。最终积分可以参与排名(注意:子弹未打完的成绩不参与排名)',
-        arenaHelpRule31: 'a)每日取单次最高积分进入排名(至少需要{rankingScoreDown}分才可参与排名)',
+        arenaHelpRule23:
+            'c) 玩家开炮后，若剩余子弹数小于等于500，触发悬赏任务，完成可获得额外积分奖励',
+        arenaHelpRule24:
+            'd) 所有子弹打完后，本次挑战结束。最终积分可以参与排名(注意:子弹未打完的成绩不参与排名)',
+        arenaHelpRule31:
+            'a)每日取单次最高积分进入排名(至少需要{rankingScoreDown}分才可参与排名)',
         arenaHelpRule32: 'b)积分相同的情况下，先达到的玩家排名在前',
         arenaHelpRule33: 'c)日排行奖励发放时间为次日',
-        arenaHelpRule34: 'd) 总冠军奖励发放时间为每次活动结束后次日，单次积分最高的玩家为总冠军，获得额外的大奖',
-        arenaHelpRule35: 'e) 比赛的奖励直接发放到账号上，玩家可以在大厅界面查看大奖赛奖励发放记录',
-        arenaHelpRule41: 'a) 炮台加成 使用不同炮台皮肤，比赛中命中率加成不一样，不累加命中',
-        arenaHelpRule42: '炮台皮肤      命中加成 \n 皮肤1           {gun1001}%\n 皮肤2           {gun1002}%\n 皮肤3           {gun1003}%\n 皮肤4           {gun1004}%\n 皮肤5           {gun1005}%\n',
+        arenaHelpRule34:
+            'd) 总冠军奖励发放时间为每次活动结束后次日，单次积分最高的玩家为总冠军，获得额外的大奖',
+        arenaHelpRule35:
+            'e) 比赛的奖励直接发放到账号上，玩家可以在大厅界面查看大奖赛奖励发放记录',
+        arenaHelpRule41:
+            'a) 炮台加成 使用不同炮台皮肤，比赛中命中率加成不一样，不累加命中',
+        arenaHelpRule42:
+            '炮台皮肤      命中加成 \n 皮肤1           {gun1001}%\n 皮肤2           {gun1002}%\n 皮肤3           {gun1003}%\n 皮肤4           {gun1004}%\n 皮肤5           {gun1005}%\n',
         arenaAwardTitle: '奖励查询',
         arenaAwardItemTitle0: '用户',
         arenaAwardItemTitle1: '名次',
@@ -739,22 +817,25 @@ export const International = {
         openTime: '活动时间：{startTime}-{endTime}',
         notInRank: '暂未上榜',
         arenaNotEndCurrency: '有未结束比赛，请点击继续游戏',
-        arenaNotSupportCurrency: '本模式不支持{currency1}货币，已为你自动转换{currency2}',
+        arenaNotSupportCurrency:
+            '本模式不支持{currency1}货币，已为你自动转换{currency2}',
         maintainQuitTip: '游戏维护中，请退出游戏！',
         maintainTip: '游戏维护中',
         keyboardEmpTip: '输入的值不能为空',
         arenaAwardDayRank: '日排行奖励',
         arenaAwardGradeRank: '每期总排行奖励',
         arenaTitle: '大奖赛',
-        matchTitle: '大奖赛',
+        matchTitle: '竞技场',
         maintaining: '维护中',
-        taskStartTip: '完成悬赏任务，<span style="color: #ffffbb">有积分奖励</span>！',
+        taskStartTip:
+            '完成悬赏任务，<span style="color: #ffffbb">有积分奖励</span>！',
         taskCompletedTip: '恭喜你完成悬赏任务，获得奖励{score}积分',
         arenaTopPlayerTitle: '捕鱼达人',
         arenaSettleTitle: '比赛结算',
         arenaSettleReSign: '重新参赛 {fee}{currency}',
         arenaSettleReStatic: '本次捕获分数：{score}',
-        arenaSettleTpl: '{userId}\n当前排名：{ranking}\n今日最高捕获分数： {maxDayScore}\n本次捕获分数：{score}',
+        arenaSettleTpl:
+            '{userId}\n当前排名：{ranking}\n今日最高捕获分数： {maxDayScore}\n本次捕获分数：{score}',
         arenaSettle1: '*比赛结束前，奖励可能产生变化',
         arenaSettle2: '排行奖励',
         arenaRankScore: '获得积分：{score}',
@@ -895,20 +976,31 @@ export const International = {
             '當前貨幣餘額不足，最小需攜帶{minAmount}{currency}才可進場，請去充值或者切換其他貨幣。',
         platformDiffCurrencyEnterGameErr:
             '您還有未完成的遊戲，係統自動幫您複盤。',
-        arenaHelpRule11: 'a) 捕魚大獎賽，以活動形式指定時間段開放（開放時間以UTC+0時間為準），每個時段結束前{deadlineTime}分鍾停止報名',
-        arenaHelpRule12: 'b)大獎賽每天開放均可獲贈{freeNum}次免費挑戰的次數（包括遊客玩家），免費挑戰次數不纍積',
-        arenaHelpRule13: 'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量以USDT匯率為準',
-        arenaHelpRule21: 'a) 報名成功後，每個玩家可以射擊{initBulletNum}發子彈，擊殺魚後可以獲得魚倍率對應的積分，1倍=1積分。',
+        arenaHelpRule11:
+            'a) 捕魚大獎賽，以活動形式指定時間段開放（開放時間以UTC+0時間為準），每個時段結束前{deadlineTime}分鍾停止報名',
+        arenaHelpRule12:
+            'b)大獎賽每天開放均可獲贈{freeNum}次免費挑戰的次數（包括遊客玩家），免費挑戰次數不纍積',
+        arenaHelpRule13:
+            'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量以USDT匯率為準',
+        arenaHelpRule21:
+            'a) 報名成功後，每個玩家可以射擊{initBulletNum}發子彈，擊殺魚後可以獲得魚倍率對應的積分，1倍=1積分。',
         arenaHelpRule22: 'b) 大獎賽中炮臺倍率越高，擊殺魚的概率也相應增加',
-        arenaHelpRule23: 'c) 玩家開炮後，若剩餘子彈數小於等於500，觸發懸賞任務，完成可獲得額外積分獎勵',
-        arenaHelpRule24: 'd) 所有子彈打完後，本次挑戰結束。最終積分可以參與排名(註意:子彈未打完的成績不參與排名)',
-        arenaHelpRule31: 'a)每日取單次最高積分進入排名(至少需要{rankingScoreDown}分才可參與排名)',
+        arenaHelpRule23:
+            'c) 玩家開炮後，若剩餘子彈數小於等於500，觸發懸賞任務，完成可獲得額外積分獎勵',
+        arenaHelpRule24:
+            'd) 所有子彈打完後，本次挑戰結束。最終積分可以參與排名(註意:子彈未打完的成績不參與排名)',
+        arenaHelpRule31:
+            'a)每日取單次最高積分進入排名(至少需要{rankingScoreDown}分才可參與排名)',
         arenaHelpRule32: 'b)積分相同的情況下，先達到的玩家排名在前',
         arenaHelpRule33: 'c)日排行獎勵發放時間為次日',
-        arenaHelpRule34: 'd) 總冠軍獎勵發放時間為每次活動結束後次日，單次積分最高的玩家為總冠軍，獲得額外的大獎',
-        arenaHelpRule35: 'e) 比賽的獎勵直接發放到賬號上，玩家可以在大廳界麵查看大獎賽獎勵發放記錄',
-        arenaHelpRule41: 'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
-        arenaHelpRule42: '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
+        arenaHelpRule34:
+            'd) 總冠軍獎勵發放時間為每次活動結束後次日，單次積分最高的玩家為總冠軍，獲得額外的大獎',
+        arenaHelpRule35:
+            'e) 比賽的獎勵直接發放到賬號上，玩家可以在大廳界麵查看大獎賽獎勵發放記錄',
+        arenaHelpRule41:
+            'a) 炮臺加成 使用不同炮臺皮膚，比賽中命中率加成不一樣，不纍加命中',
+        arenaHelpRule42:
+            '炮臺皮膚      命中加成 \n 皮膚1           {gun1001}%\n 皮膚2           {gun1002}%\n 皮膚3           {gun1003}%\n 皮膚4           {gun1004}%\n 皮膚5           {gun1005}%\n',
         arenaAwardTitle: '獎勵查詢',
         arenaAwardItemTitle0: '用户',
         arenaAwardItemTitle1: '名次',
@@ -930,22 +1022,25 @@ export const International = {
         openTime: '活動時間：{startTime}-{endTime}',
         notInRank: '暫未上榜',
         arenaNotEndCurrency: '有未结束比赛，请点击继续游戏',
-        arenaNotSupportCurrency: '本模式不支持{currency1}貨幣，已為你自動轉換{currency2}',
+        arenaNotSupportCurrency:
+            '本模式不支持{currency1}貨幣，已為你自動轉換{currency2}',
         maintainQuitTip: '遊戲維護中，請退出遊戲！',
         maintainTip: '遊戲維護中',
         keyboardEmpTip: '輸入的值不能為空',
         arenaAwardDayRank: '日排行獎勵',
         arenaAwardGradeRank: '每期總排行獎勵',
         arenaTitle: '大獎賽',
-        matchTitle: '大獎賽',
+        matchTitle: '競技場',
         maintaining: '維護中',
-        taskStartTip: '完成懸賞任務，<span style="color: #ffffbb">有積分獎勵</span>！',
+        taskStartTip:
+            '完成懸賞任務，<span style="color: #ffffbb">有積分獎勵</span>！',
         taskCompletedTip: '恭喜你完成懸賞任務，獲得獎勵{score}積分',
         arenaTopPlayerTitle: '捕魚達人',
         arenaSettleTitle: '比賽結算',
         arenaSettleReSign: '重新參賽 {fee}{currency}',
         arenaSettleReStatic: '本次捕獲分數：{score}',
-        arenaSettleTpl: '{userId}\n當前排名：{ranking}\n今日最高捕獲分數： {maxDayScore}\n本次捕獲分數：{score}',
+        arenaSettleTpl:
+            '{userId}\n當前排名：{ranking}\n今日最高捕獲分數： {maxDayScore}\n本次捕獲分數：{score}',
         arenaSettle1: '*比賽結束前，獎勵可能産生變化',
         arenaSettle2: '排行獎勵',
         arenaRankScore: '獲得積分：{score}',

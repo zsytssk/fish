@@ -9,6 +9,7 @@ import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
 import { AudioRes } from '@app/data/audioRes';
 import { ui } from '@app/ui/layaMaxUI';
+import { resizeContain } from '@app/utils/layaUtils';
 import { tplIntr } from '@app/utils/utils';
 
 export default class ArenaRankPop
@@ -32,11 +33,17 @@ export default class ArenaRankPop
         this.initEvent();
     }
     private initLang() {
-        const { tab0, title, tab1, today_empty_tip, yes_empty_tip } = this;
+        const { tab, tab0, title, tab1, today_empty_tip, yes_empty_tip } = this;
         title.text = tplIntr('arenaRankTitle');
         tab0.label = tplIntr('arenaRankTab0');
         tab1.label = tplIntr('arenaRankTab1');
         today_empty_tip.text = yes_empty_tip.text = tplIntr('noData');
+
+        tab0.text.width = null;
+        tab1.text.width = null;
+        resizeContain(tab0, 0, 'horizontal', 20);
+        resizeContain(tab1, 0, 'horizontal', 20);
+        resizeContain(tab, 0);
     }
     private initEvent() {
         const { tab, tabBody, today_list, yes_list } = this;
