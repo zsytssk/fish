@@ -1,11 +1,12 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":2,
+    "selectedBox":3,
+    "selecteID":12,
     "searchKey":"Dialog",
-    "props":{"width":725,"sceneColor":"#000000","runtime":"view/pop/record/gameRecord.ts","isModal":true,"height":604},
+    "props":{"width":800,"sceneColor":"#000000","runtime":"view/pop/record/gameRecord.ts","isModal":true,"height":604},
     "nodeParent":-1,
-    "maxID":43,
+    "maxID":44,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -28,11 +29,11 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite",
-                    "props":{"y":0,"x":9,"width":746,"texture":"image/pop/record/bg-top.png","height":150},
+                    "type":"Image",
+                    "searchKey":"Image",
+                    "props":{"y":0,"x":9,"width":820,"skin":"image/pop/record/bg-top.png","sizeGrid":"0,380,0,380","height":150},
                     "nodeParent":3,
-                    "label":"Sprite",
+                    "label":"Image",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
@@ -60,7 +61,7 @@
                     "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
-                    "props":{"y":150,"x":658,"texture":"image/pop/record/bg-right.png"},
+                    "props":{"y":150,"x":732,"texture":"image/pop/record/bg-right.png"},
                     "nodeParent":3,
                     "label":"Sprite",
                     "isDirectory":false,
@@ -75,7 +76,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"y":144,"x":75,"width":584,"skin":"image/pop/record/bg-con.png","sizeGrid":"6,2,2,14,1","height":488},
+                    "props":{"y":144,"x":75,"width":660,"skin":"image/pop/record/bg-con.png","sizeGrid":"6,2,2,14,1","height":488},
                     "nodeParent":3,
                     "label":"Image",
                     "isDirectory":false,
@@ -92,7 +93,7 @@
             "x":15,
             "type":"Label",
             "searchKey":"Label,title",
-            "props":{"y":0,"width":277,"var":"title","valign":"middle","text":"游戏存量1","strokeColor":"#024b7d","stroke":2,"height":76,"fontSize":36,"color":"#ffffff","centerX":0,"align":"center"},
+            "props":{"y":0,"x":261,"width":277,"var":"title","valign":"middle","text":"游戏存量1","strokeColor":"#024b7d","stroke":2,"height":76,"fontSize":36,"color":"#ffffff","centerX":0,"align":"center"},
             "nodeParent":2,
             "label":"title",
             "isDirectory":false,
@@ -107,7 +108,7 @@
             "x":15,
             "type":"Button",
             "searchKey":"Button,close",
-            "props":{"y":-4,"x":669.5,"stateNum":"1","skin":"image/pop/record/close.png","name":"close"},
+            "props":{"y":-3,"x":734,"stateNum":"1","skin":"image/pop/record/close.png","name":"close"},
             "nodeParent":2,
             "label":"close",
             "isDirectory":false,
@@ -121,7 +122,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,content",
-            "props":{"y":127,"x":27,"width":672,"var":"content","height":400},
+            "props":{"y":127,"x":27,"width":749,"var":"content","height":400},
             "nodeParent":2,
             "label":"content",
             "isOpen":true,
@@ -134,7 +135,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image,con_bg",
-                    "props":{"y":0,"x":0,"width":672,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","name":"con_bg","height":400},
+                    "props":{"y":0,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","right":0,"name":"con_bg","left":0,"height":400},
                     "nodeParent":6,
                     "label":"con_bg",
                     "isOpen":true,
@@ -150,7 +151,7 @@
                     "x":30,
                     "type":"Box",
                     "searchKey":"Box,title_box",
-                    "props":{"y":0,"x":107,"width":458,"var":"title_box","height":40},
+                    "props":{"y":0,"x":80,"width":588,"var":"title_box","height":40},
                     "nodeParent":6,
                     "label":"title_box",
                     "isOpen":true,
@@ -179,7 +180,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label,prize",
-                            "props":{"y":2,"x":268,"width":190,"valign":"middle","text":"收益","name":"prize","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
+                            "props":{"y":0,"x":398,"width":190,"valign":"middle","text":"收益","name":"prize","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
                             "nodeParent":14,
                             "label":"prize",
                             "isDirectory":false,
@@ -195,19 +196,20 @@
                     "x":30,
                     "type":"List",
                     "searchKey":"List,record_list",
-                    "props":{"y":40,"x":5,"width":666,"var":"record_list","rotation":0,"repeatY":10,"repeatX":1,"height":361},
+                    "props":{"y":40,"x":5,"width":742,"var":"record_list","rotation":0,"repeatY":10,"repeatX":1,"height":361},
                     "nodeParent":6,
                     "label":"record_list",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":20,
                     "child":[
                         {
+                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,item",
-                            "props":{"y":0,"x":104,"width":458,"renderType":"render","name":"item","height":35},
+                            "props":{"y":0,"x":80,"width":588,"renderType":"render","name":"item","height":35},
                             "nodeParent":20,
                             "label":"item",
                             "isOpen":true,
@@ -217,6 +219,7 @@
                             "compId":21,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,cost",
                                     "props":{"y":1,"x":0,"width":190,"valign":"middle","text":"道具类型","name":"cost","height":34,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -231,9 +234,10 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,prize",
-                                    "props":{"y":1,"x":268,"width":190,"valign":"middle","text":"剩余数量","name":"prize","height":34,"fontSize":20,"color":"#fff","align":"center"},
+                                    "props":{"y":0,"x":398,"width":190,"valign":"middle","text":"剩余数量","name":"prize","height":34,"fontSize":20,"color":"#fff","align":"center"},
                                     "nodeParent":21,
                                     "label":"prize",
                                     "isOpen":true,
@@ -246,6 +250,7 @@
                                     "$HIDDEN":false
                                 },
                                 {
+                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite",
                                     "props":{"y":35,"x":-71,"width":600,"texture":"image/pop/record/list-line.png"},
@@ -285,16 +290,17 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,pagination",
-            "props":{"y":532,"width":643,"var":"pagination","height":47,"centerX":0},
+            "props":{"y":532,"x":78,"width":643,"var":"pagination","height":47,"centerX":0},
             "nodeParent":2,
             "label":"pagination",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":7,
             "child":[
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_prev",
                     "props":{"y":4,"x":0,"var":"btn_prev","stateNum":"1","skin":"image/pop/record/btn_pagination1.png"},
@@ -307,6 +313,7 @@
                     "compId":28,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":8,"x":23,"texture":"image/pop/record/left.png"},
@@ -323,6 +330,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_next",
                     "props":{"y":4,"x":434,"var":"btn_next","stateNum":"1","skin":"image/pop/record/btn_pagination1.png"},
@@ -335,6 +343,7 @@
                     "compId":30,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":6,"x":26,"texture":"image/pop/record/next.png"},
@@ -351,6 +360,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button",
                     "props":{"y":1,"x":71,"stateNum":"1","skin":"image/pop/record/btn_pagination2.png"},
@@ -363,6 +373,7 @@
                     "compId":32,
                     "child":[
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":5,"x":8,"width":54,"valign":"middle","text":"1","height":29,"fontSize":25,"color":"#06684a","bold":true,"align":"center"},
@@ -384,7 +395,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,search_box",
-            "props":{"y":71,"x":29,"var":"search_box"},
+            "props":{"y":71,"x":29,"width":754,"var":"search_box","height":45},
             "nodeParent":2,
             "label":"search_box",
             "isOpen":true,
@@ -395,32 +406,18 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite,btn_search",
-                    "props":{"y":0,"x":550,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
+                    "type":"Button",
+                    "searchKey":"Button,btn_search",
+                    "props":{"y":-2,"x":550,"var":"btn_search","stateNum":"1","skin":"image/pop/record/btn-bg.png","sizeGrid":"0,56,0,56","right":0,"labelSize":22,"labelPadding":"0,2,0,0","labelColors":"#255a85","labelBold":true,"label":"查询"},
                     "nodeParent":8,
                     "label":"btn_search",
                     "isOpen":true,
-                    "isDirectory":true,
+                    "isDirectory":false,
                     "isAniNode":true,
-                    "hasChild":true,
-                    "compId":34,
+                    "hasChild":false,
+                    "compId":43,
                     "child":[
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,btn_search_label",
-                            "props":{"y":6,"x":5,"width":114,"var":"btn_search_label","valign":"middle","text":"查询","height":34,"fontSize":22,"color":"#255a85","bold":true,"align":"center"},
-                            "nodeParent":34,
-                            "label":"btn_search_label",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":35,
-                            "child":[
-                                ],
-                            "$HIDDEN":false
-                        }],
+                        ],
                     "$HIDDEN":false
                 },
                 {

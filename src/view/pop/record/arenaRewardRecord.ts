@@ -100,7 +100,7 @@ export default class ArenaRewardRecordPop
         select_ctrl2.setCurIndex(0);
     }
     private initLang() {
-        const { title, title_box, btn_search_label, empty_tip } = this;
+        const { title, title_box, btn_search, empty_tip } = this;
 
         title.text = tplIntr('arenaAwardTitle');
         empty_tip.text = tplIntr('noData');
@@ -113,7 +113,8 @@ export default class ArenaRewardRecordPop
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = tplIntr('search');
+        btn_search.label = tplIntr('search');
+        resizeContain(btn_search, 0, 'horizontal', 20);
     }
     private renderSelectedItem1 = async (
         box: SelectItemUI,

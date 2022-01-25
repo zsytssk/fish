@@ -9,7 +9,7 @@ import {
 } from '@app/ctrl/hall/hallCtrlUtil';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { ui } from '@app/ui/layaMaxUI';
-import { onNode } from '@app/utils/layaUtils';
+import { onNode, resizeContain } from '@app/utils/layaUtils';
 import { getDateFromNow, tplIntr } from '@app/utils/utils';
 
 import { getBulletList, getRecentBullet } from '../popSocket';
@@ -116,14 +116,16 @@ export default class GameRecord
         });
     }
     private initLang() {
-        const { title, title_box, btn_search_label, empty_tip } = this;
+        const { title, title_box, btn_search, empty_tip } = this;
 
         title.text = tplIntr('gameListTitle');
         const arr = [tplIntr('cost'), tplIntr('prize')];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = tplIntr('search');
+        btn_search.label = tplIntr('search');
+        resizeContain(btn_search, 0, 'horizontal', 10);
+
         empty_tip.text = tplIntr('noData');
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {

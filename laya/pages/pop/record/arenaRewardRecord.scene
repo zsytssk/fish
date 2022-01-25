@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":97,
-    "selecteID":82,
+    "selectedBox":56,
+    "selecteID":86,
     "searchKey":"Dialog",
     "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/arenaRewardRecord.ts","isModal":true,"height":604},
     "nodeParent":-1,
@@ -435,32 +435,18 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite,btn_search",
-                    "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
+                    "type":"Button",
+                    "searchKey":"Button,btn_search",
+                    "props":{"y":-2,"var":"btn_search","stateNum":"1","skin":"image/pop/record/btn-bg.png","sizeGrid":"0,56,0,56","right":0,"labelSize":22,"labelPadding":"0,2,0,0","labelColors":"#255a85","labelBold":true,"label":"查询"},
                     "nodeParent":56,
                     "label":"btn_search",
                     "isOpen":true,
-                    "isDirectory":true,
+                    "isDirectory":false,
                     "isAniNode":true,
-                    "hasChild":true,
+                    "hasChild":false,
                     "compId":86,
                     "child":[
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,btn_search_label",
-                            "props":{"y":6,"x":5,"width":114,"var":"btn_search_label","valign":"middle","text":"查询","height":34,"fontSize":22,"color":"#255a85","bold":true,"align":"center"},
-                            "nodeParent":86,
-                            "label":"btn_search_label",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":87,
-                            "child":[
-                                ],
-                            "$HIDDEN":false
-                        }],
+                        ],
                     "$HIDDEN":false
                 },
                 {
