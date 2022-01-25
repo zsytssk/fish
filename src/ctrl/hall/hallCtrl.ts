@@ -14,6 +14,7 @@ import { Lang } from '@app/data/internationalConfig';
 import { ArenaErrCode, ArenaEvent, ServerErrCode } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { asyncOnly } from '@app/utils/asyncQue';
 import { getItem } from '@app/utils/localStorage';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
@@ -118,7 +119,9 @@ export class HallCtrl {
     }
     private initEvent() {
         const tip = (msg: string) => {
-            TipPop.tip(msg);
+            asyncOnly(msg, () => {
+                return TipPop.tip(msg);
+            });
         };
 
         AppCtrl.event.on(
