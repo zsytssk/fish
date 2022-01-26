@@ -56,8 +56,9 @@ export default class ArenaShopPop
         });
     }
     private initLang(lang: Lang) {
-        const { title } = this;
+        const { title, skin_tag } = this;
         const ani_name = covertLang(lang);
+        skin_tag.text = tplIntr('skin');
         title.skin = `image/international/title_shop_${ani_name}.png`;
     }
     public init() {
