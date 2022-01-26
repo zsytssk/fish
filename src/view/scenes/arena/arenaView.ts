@@ -24,7 +24,13 @@ import {
 import { Lang } from '@app/data/internationalConfig';
 import { SpriteInfo } from '@app/data/sprite';
 import { ui } from '@app/ui/layaMaxUI';
-import { fade_in, fade_out, scale_in, stopAni } from '@app/utils/animate';
+import {
+    fade_in,
+    fade_out,
+    scale_in,
+    scale_out,
+    stopAni,
+} from '@app/utils/animate';
 import { clearCount, startCount } from '@app/utils/count';
 import { getSpriteInfo } from '@app/utils/dataUtil';
 import { formatTime, getChildrenByName } from '@app/utils/layaQueryElements';
@@ -117,13 +123,12 @@ export default class ArenaView
     }
 
     private countId: number;
-    public showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
+    public async showTaskPanel(taskInfo: TaskTriggerRes, showTip = true) {
         if (showTip) {
             TipPop.tip(tplIntr('taskStartTip'));
         }
         const { task_panel, task_award_num, task_time_num } = this;
         scale_in(task_panel, 300, Ease.bounceOut);
-        task_panel.visible = true;
         task_award_num.text = taskInfo.award + '';
 
         task_time_num.text = formatTime(taskInfo.taskTime, 2);
@@ -182,10 +187,12 @@ export default class ArenaView
         TipPop.tip(tplIntr('taskCompletedTip', { score: data.award }));
         await showAwardCircle(pos, data.award, true);
     }
-    public hideTaskPanel() {
+    public async hideTaskPanel() {
         clearCount(this.countId);
         const { task_panel } = this;
-        fade_out(task_panel);
+        if (task_panel.visible) {
+            scale_out(task_panel, 300, Ease.bounceOut);
+        }
     }
 
     /** 玩家index>2就会在上面, 页面需要上下颠倒过来... */

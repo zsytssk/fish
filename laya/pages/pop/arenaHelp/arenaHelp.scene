@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":5,
-    "selecteID":20,
+    "selectedBox":2,
+    "selecteID":21,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaHelp/arenaHelp.png","runtime":"view/pop/arenaHelp.ts","isModal":true,"height":634},
     "nodeParent":-1,

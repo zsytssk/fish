@@ -37,6 +37,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
             game.reset();
             currency = data.currency;
+
             game.onEnterGame(convertEnterGame(data));
         },
         [ServerEvent.TableIn]: (data: TableInRep, code: number) => {
