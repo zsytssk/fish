@@ -6,7 +6,7 @@ import {
 } from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 
-import { ctrlState } from '@app/ctrl/ctrlState';
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
 import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
 import { gotoGuide } from '@app/ctrl/guide/guideConfig';
 import { AudioRes } from '@app/data/audioRes';
@@ -14,6 +14,7 @@ import { Lang } from '@app/data/internationalConfig';
 import { ArenaErrCode, ArenaEvent, ServerErrCode } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { getCacheCurrency } from '@app/model/userInfo/userInfoUtils';
 import { asyncOnly } from '@app/utils/asyncQue';
 import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { getItem } from '@app/utils/localStorage';
@@ -162,6 +163,17 @@ export class HallCtrl {
                     if (type === 'confirm') {
                         const currency = modelState.app.user_info.cur_balance;
                         recharge(currency);
+                    }
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ArenaErrCode.NoMoney,
+            (msg: string, data: any) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        recharge(data.currency);
                     }
                 });
             },

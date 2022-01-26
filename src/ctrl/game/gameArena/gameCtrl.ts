@@ -235,14 +235,16 @@ export class GameCtrl implements GameCtrlUtils {
         );
 
         AppCtrl.event.on(
-            ServerErrCode.NoMoney,
-            (msg: string) => {
+            ArenaErrCode.NoMoney,
+            (msg: string, data: any) => {
                 return AlertPop.alert(msg).then((type) => {
                     if (type === 'confirm') {
                         const currency = getGameCurrency();
                         recharge(currency);
                     }
-                    this.getSocket()?.send(ServerEvent.RoomOut);
+                    if (data?.source === ArenaEvent.SignUp) {
+                        this.leave();
+                    }
                 });
             },
             this,
@@ -489,7 +491,9 @@ export class GameCtrl implements GameCtrlUtils {
             if (type === 'continue') {
                 competitionSignUp(data.currency).then((_data) => {
                     if (_data.code !== ARENA_OK_CODE) {
-                        arenaErrHandler(_data.code);
+                        arenaErrHandler(_data.code, {
+                            source: ArenaEvent.SignUp,
+                        });
                     } else {
                         this?.model.destroy();
                         ctrlState.app.enterArenaGame({

@@ -136,7 +136,7 @@ export default class ArenaCompetitionPop
                         data.status === ArenaGameStatus.GAME_STATUS_TABLE_OUT);
 
                 if (data.code !== ARENA_OK_CODE && !canEnter) {
-                    arenaErrHandler(data.code);
+                    arenaErrHandler(data.code, { currency: this.currency });
                     const socket = getSocket(ServerName.ArenaHall);
                     socket.send(ArenaEvent.CompetitionInfo, {
                         currency: this.currency,

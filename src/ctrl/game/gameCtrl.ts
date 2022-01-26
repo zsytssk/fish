@@ -264,18 +264,6 @@ export class GameCtrl implements GameCtrlUtils {
         );
 
         AppCtrl.event.on(
-            ServerErrCode.NoMoney,
-            (msg: string) => {
-                return AlertPop.alert(msg, {
-                    hide_cancel: true,
-                }).then(() => {
-                    const socket = getSocket(ServerName.Game);
-                    socket?.send(ServerEvent.RoomOut);
-                });
-            },
-            this,
-        );
-        AppCtrl.event.on(
             ServerErrCode.OverLimit,
             (msg: string) => {
                 return AlertPop.alert(msg, {

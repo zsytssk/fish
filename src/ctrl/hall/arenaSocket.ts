@@ -228,7 +228,7 @@ export function getArenaGuestToken(socket: WebSocketTrait) {
     }) as Promise<string>;
 }
 
-export async function arenaErrHandler(code: number) {
+export async function arenaErrHandler(code: number, data?: any) {
     if (code === ArenaErrCode.Maintenance) {
         AppCtrl.event.emit(
             ArenaErrCode.Maintenance,
@@ -236,14 +236,11 @@ export async function arenaErrHandler(code: number) {
         );
         return true;
     } else if (code === ArenaErrCode.NoMoney) {
-        const errMsg = tplIntr(ServerErrCode.NoMoney);
-        return AlertPop.alert(errMsg).then((type) => {
-            if (type === 'confirm') {
-                const currency =
-                    getGameCurrency() || modelState.app.user_info.cur_balance;
-                recharge(currency);
-            }
-        });
+        AppCtrl.event.emit(
+            ArenaErrCode.NoMoney,
+            tplIntr(ServerErrCode.NoMoney),
+            data,
+        );
     } else if (code === ArenaErrCode.OtherLogin) {
         tipOtherLogin();
     } else if (code === ArenaErrCode.NoOpen) {
