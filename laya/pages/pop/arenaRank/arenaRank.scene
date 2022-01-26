@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Dialog",
-    "selectedBox":28,
-    "selecteID":37,
+    "selectedBox":2,
+    "selecteID":9,
     "searchKey":"Dialog",
     "props":{"width":1061,"sceneColor":"#000000","sceneBg":"laya/views/pop/arenaRank/arenaRank.png","runtime":"view/pop/arenaRank.ts","isModal":true,"height":634},
     "nodeParent":-1,
@@ -73,7 +73,7 @@
                     "x":30,
                     "type":"Label",
                     "searchKey":"Label,title",
-                    "props":{"y":16,"x":153,"width":754,"var":"title","valign":"middle","text":"每日排行","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":43,"color":"#ffffff","align":"center"},
+                    "props":{"y":16,"x":153,"width":754,"var":"title","valign":"middle","text":"每日排行","strokeColor":"#024b7d","stroke":3,"height":76,"fontSize":36,"color":"#ffffff","align":"center"},
                     "nodeParent":10,
                     "label":"title",
                     "isDirectory":false,
@@ -112,7 +112,7 @@
                     "child":[
                         ]
                 }],
-            "$HIDDEN":true
+            "$HIDDEN":false
         },
         {
             "x":15,
