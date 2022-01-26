@@ -93,7 +93,12 @@ export async function scale_in(
         scaleX: 1,
         scaleY: 1,
     };
-    return tween({ sprite, start_props, end_props, time, ease_fn });
+    return tween({ sprite, start_props, end_props, time, ease_fn }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
+        setStyle(sprite, { visible: true, scaleX: 1, scaleY: 1, alpha: 1 });
+    });
 }
 export async function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
     await completeAni(sprite);
@@ -728,6 +733,7 @@ export function stopAni(sprite: Sprite | FuncVoid) {
         });
     });
 }
+
 export function completeAni(sprite: Sprite) {
     return new Promise((resolve, _reject) => {
         if (!sprite) {
