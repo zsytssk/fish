@@ -46,27 +46,10 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
             });
         },
     });
-
-    const { bg_monitor } = ctrlState.app;
-    bg_monitor.event.on(
-        BgMonitorEvent.VisibleChange,
-        (status) => {
-            if (status) {
-                if (socket.status === 'OPEN') {
-                    tipComeBack();
-                } else {
-                    socket.reconnect();
-                }
-            }
-        },
-        bindObj,
-    );
 }
 
 export function offCommon(socket: WebSocketTrait, bindObj: any) {
     socket?.event.offAllCaller(bindObj);
-    const { bg_monitor } = ctrlState.app;
-    bg_monitor.event.offAllCaller(bindObj);
 }
 
 export function errorHandler(code: number, data?: any) {

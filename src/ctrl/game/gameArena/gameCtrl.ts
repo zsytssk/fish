@@ -73,7 +73,7 @@ import Loading from '@app/view/scenes/loadingView';
 
 import { AppCtrl } from '../../appCtrl';
 import { arenaErrHandler, waitConnectGameArena } from '../../hall/arenaSocket';
-import { offCommon } from '../../hall/commonSocket';
+import { offCommon, tipComeBack } from '../../hall/commonSocket';
 import { WebSocketTrait } from '../../net/webSocketWrap';
 import { FishCtrl } from '../fishCtrl';
 import { ChangeUserNumInfo, GameCtrlUtils } from '../gameCtrl';
@@ -154,11 +154,18 @@ export class GameCtrl implements GameCtrlUtils {
         this.onModel();
 
         const { bg_monitor } = ctrlState.app;
-        /** 切换到后台禁用自动开炮 */
         bg_monitor.event.on(
             BgMonitorEvent.VisibleChange,
-            (isVisible: boolean) => {
-                if (!isVisible) {
+            (visible) => {
+                const socket = this.getSocket();
+                if (visible) {
+                    if (socket?.status === 'OPEN') {
+                        tipComeBack();
+                    } else {
+                        socket?.reconnect();
+                    }
+                }
+                if (!visible) {
                     disableCurUserOperation();
                 }
             },

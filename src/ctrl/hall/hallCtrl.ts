@@ -15,6 +15,7 @@ import { ArenaErrCode, ArenaEvent, ServerErrCode } from '@app/data/serverEvent';
 import { modelState } from '@app/model/modelState';
 import { AccountMap } from '@app/model/userInfo/userInfoModel';
 import { asyncOnly } from '@app/utils/asyncQue';
+import { BgMonitorEvent } from '@app/utils/bgMonitor';
 import { getItem } from '@app/utils/localStorage';
 import AlertPop from '@app/view/pop/alert';
 import TipPop from '@app/view/pop/tip';
@@ -22,11 +23,13 @@ import HallView from '@app/view/scenes/hallView';
 import Loading from '@app/view/scenes/loadingView';
 
 import { AppCtrl } from '../appCtrl';
+import { getSocket } from '../net/webSocketWrapUtil';
 import {
     bindArenaHallSocket,
     offArenaHallSocket,
     sendToArenaHallSocket,
 } from './arenaSocket';
+import { tipComeBack } from './commonSocket';
 import {
     offBindEvent,
     onAccountChange,
@@ -118,6 +121,22 @@ export class HallCtrl {
         hallViewEvent(this);
     }
     private initEvent() {
+        const { bg_monitor } = ctrlState.app;
+        bg_monitor.event.on(
+            BgMonitorEvent.VisibleChange,
+            (visible) => {
+                const socket = getSocket('hall');
+                if (visible) {
+                    if (socket?.status === 'OPEN') {
+                        tipComeBack();
+                    } else {
+                        socket?.reconnect();
+                    }
+                }
+            },
+            this,
+        );
+
         const tip = (msg: string) => {
             asyncOnly(msg, () => {
                 return TipPop.tip(msg);
@@ -205,6 +224,8 @@ export class HallCtrl {
     }; // tslint:disable-line
 
     public destroy() {
+        const { bg_monitor } = ctrlState.app;
+        bg_monitor.event.offAllCaller(this);
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
         offHallSocket(this);
