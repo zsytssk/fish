@@ -334,7 +334,7 @@ export const International = {
         delayUpdateAccount:
             '잔고에 변동이 생겼습니다. 블록체인에 문제가 생김으로  다소 지연이 될 수 있으니 양해 부탁드립니다.',
         enterGameCostTip:
-            '시스템이 {bringAmount}{currency}를 {bulletNum}개의 총알로 바꿔드립니다.\n 게임을 나가실때 남은 총알은 {currency}로 바꿔드립니다.',
+            '시스템이 {bringAmount}{currency}를 {bulletNum}개의 총알로 바꿔드립니다.<br/> 게임을 나가실때 남은 총알은 {currency}로 바꿔드립니다.',
         NoMoneyAmount:
             '현재 화폐 잔액이 부족합니다. 최소{minAmount}{currency} 소유해야 입장이 가능합니다. 충전하시거나 다른 화폐로 교환해주세요.',
         platformDiffCurrencyEnterGameErr:
@@ -554,7 +554,7 @@ export const International = {
         delayUpdateAccount:
             'チェーンのブロック確認により、資金の変更が遅れる場合があります。しばらくお待ちください',
         enterGameCostTip:
-            'システムで{bringAmount}{currency}を{bulletNum}弾に変換します。\n部屋を出る時、残りの弾丸を{currency}に交換されます',
+            'システムで{bringAmount}{currency}を{bulletNum}弾に変換します。<br/>部屋を出る時、残りの弾丸を{currency}に交換されます',
         NoMoneyAmount:
             '現在の残高が不足しており、参加には最低{minAmount}{currency}を保有する必要があります。入金または他のトークンに切り替えてください。',
         platformDiffCurrencyEnterGameErr:
@@ -775,7 +775,7 @@ export const International = {
         delayUpdateAccount:
             '您的余额变动因链上区块确认可能有所延迟，请耐心等待。',
         enterGameCostTip:
-            '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
+            '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，<br/>離開房間時，會將剩餘子彈兌換成您的{currency}。',
         NoMoneyAmount:
             '当前货币余额不足，最小需携带{minAmount}{currency}才可进场，请去充值或者切换其他货币。',
         platformDiffCurrencyEnterGameErr:
@@ -983,7 +983,7 @@ export const International = {
         delayUpdateAccount:
             '您的餘額變動因鏈上區塊確認可能有所延遲，請耐心等待。',
         enterGameCostTip:
-            '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，\n離開房間時，會將剩餘子彈兌換成您的{currency}。',
+            '系統將{bringAmount}{currency}兌換成{bulletNum}子彈，<br/>離開房間時，會將剩餘子彈兌換成您的{currency}。',
         NoMoneyAmount:
             '當前貨幣餘額不足，最小需攜帶{minAmount}{currency}才可進場，請去充值或者切換其他貨幣。',
         platformDiffCurrencyEnterGameErr:
