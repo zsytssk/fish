@@ -24,11 +24,7 @@ export function commonSocket(socket: WebSocketTrait, bindObj: any) {
                 tokenExpireTip();
             } else if (code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(tplIntr('OtherLogin'), {
-                    hide_cancel: true,
-                }).then(() => {
-                    location.reload();
-                });
+                tipOtherLogin();
             }
         },
         /** 重连 */
