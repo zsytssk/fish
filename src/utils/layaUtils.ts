@@ -5,6 +5,7 @@ import { Laya } from 'Laya';
 import { Node } from 'laya/display/Node';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Box } from 'laya/ui/Box';
 import { Image } from 'laya/ui/Image';
 
 import { blink, buttonClick, scale_in } from './animate';
@@ -209,14 +210,10 @@ export function resizeContain(
 
     if (dir === 'horizontal') {
         const width = dist + padding * 2;
-        if (parent.width < width) {
-            parent.width = width;
-        }
+        parent.width = width;
     } else {
         const height = dist + padding * 2;
-        if (parent.height < height) {
-            parent.height = height;
-        }
+        parent.height = height;
     }
 }
 

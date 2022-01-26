@@ -7,7 +7,7 @@
         "fee": 0
     },
     "currency": "BTC",
-    "arenaStatus": 5,
+    "arenaStatus": 2,
     "champion": [
         {
             "amount": "1",
@@ -58,6 +58,6 @@
     "myself": {
         "score": 0,
         "ranking": 0,
-        "status": 7
+        "status": 1
     }
 }

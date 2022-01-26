@@ -28,7 +28,7 @@ import {
     resizeContain,
     resizeParent,
 } from '@app/utils/layaUtils';
-import { createColorFilter, tplIntr } from '@app/utils/utils';
+import { tplIntr } from '@app/utils/utils';
 
 import ArenaHelpPop from './arenaHelp';
 import ArenaRankPop from './arenaRank';
@@ -207,6 +207,7 @@ export default class ArenaCompetitionPop
         const { btn_sign, cost_label } = this;
         const status = calcUserStatus(arena_status, user_status);
 
+        let game_status = '';
         if (
             status === ArenaGameStatus.GAME_STATUS_SIGNUP_OVER ||
             status === ArenaGameStatus.GAME_STATUS_PLAYING ||
@@ -216,19 +217,19 @@ export default class ArenaCompetitionPop
             (btn_sign as Button).label = tplIntr('continueGame');
             cost_label.visible = false;
             btn_sign.labelPadding = '0,0,5,0';
-            return 'continue';
+            game_status = 'continue';
         } else if (status === ArenaGameStatus.GAME_STATUS_CLOSE) {
             (btn_sign as Button).label = tplIntr('noStart');
             cost_label.visible = false;
             (btn_sign as Button).disabled = true;
             btn_sign.labelPadding = '0,0,5,0';
-            return 'not_open';
+            game_status = 'not_open';
         } else if (status === ArenaGameStatus.GAME_STATUS_SETTLEMENT) {
             (btn_sign as Button).label = tplIntr('GameEnded');
             cost_label.visible = false;
             (btn_sign as Button).disabled = true;
             btn_sign.labelPadding = '0,0,5,0';
-            return 'not_open';
+            game_status = 'not_open';
         } else if (
             status === ArenaGameStatus.GAME_STATUS_FREE ||
             status === ArenaGameStatus.GAME_STATUS_NO_SIGNUP
@@ -245,8 +246,13 @@ export default class ArenaCompetitionPop
             }
             (btn_sign as Button).label = tplIntr('sign');
             btn_sign.labelPadding = '0,0,15,0';
-            return 'sign';
+            game_status = 'sign';
         }
+
+        btn_sign.text.width = null;
+        const width = btn_sign.text.width + 50;
+        btn_sign.width = width > 239 ? width : 239;
+        return game_status;
     }
     private rankListRender(
         box: ui.pop.arenaCompetitionInfo.rankItemUI,
@@ -306,6 +312,7 @@ export default class ArenaCompetitionPop
             btn_famous,
             btn_help,
             btn_best,
+            btn_sign,
         } = this;
         title.text = tplIntr('arenaCompetitionTitle');
         openTimeLabel.text = tplIntr('arenaCompetitionSmallTip1');
@@ -319,10 +326,11 @@ export default class ArenaCompetitionPop
         btn_help.text.width = null;
         btn_best.text.width = null;
         btn_famous.text.width = null;
+
+        resizeContain(btn_famous, 0, 'horizontal', 20);
         resizeContain(btn_help, 0, 'horizontal', 20);
         resizeContain(btn_best, 0, 'horizontal', 20);
-        resizeContain(btn_famous, 0, 'horizontal', 20);
-        resizeParent(btn_famous, 10);
+        resizeParent(btn_famous, 5);
     }
     public destroy(destroyChild?: boolean) {
         offArenaHallSocket(this);
