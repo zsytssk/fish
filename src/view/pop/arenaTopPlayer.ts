@@ -28,8 +28,9 @@ export default class ArenaTopPlayerPop
         this.initEvent();
     }
     private initLang() {
-        const { title } = this;
+        const { title, empty_tip } = this;
         title.text = tplIntr('arenaTopPlayerTitle');
+        empty_tip.text = tplIntr('noData');
     }
     private initEvent() {
         const { list } = this;

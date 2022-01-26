@@ -312,15 +312,13 @@ export default class ArenaView
             ? this.my_score_panel
             : this.other_score_panel;
 
-        if (is_cur_player) {
-            stopAni(panel).then(() => {
-                if (visible) {
-                    fade_in(panel, 200);
-                } else {
-                    fade_out(panel, 200);
-                }
-            });
-        }
+        stopAni(panel).then(() => {
+            if (visible) {
+                fade_in(panel, 200);
+            } else {
+                fade_out(panel, 200);
+            }
+        });
     }
     public setBulletScoreNum(
         is_cur_player: boolean,
