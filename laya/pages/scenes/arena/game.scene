@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":56,
+    "selectedBox":58,
+    "selecteID":68,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -360,10 +360,10 @@
                         {
                             "x":45,
                             "type":"Label",
-                            "searchKey":"Label,score_name",
-                            "props":{"y":55,"x":35,"text":"本场积分","name":"score_name","fontSize":20,"color":"#fff"},
+                            "searchKey":"Label,other_score_name",
+                            "props":{"y":55,"x":35,"var":"other_score_name","text":"本场积分","fontSize":20,"color":"#fff"},
                             "nodeParent":58,
-                            "label":"score_name",
+                            "label":"other_score_name",
                             "isOpen":true,
                             "isDirectory":false,
                             "isAniNode":true,

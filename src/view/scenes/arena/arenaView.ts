@@ -81,10 +81,15 @@ export default class ArenaView
         });
     }
     private initLang(lang: Lang) {
-        const { score_name, task_award_name, task_time_name } = this;
+        const {
+            score_name,
+            other_score_name,
+            task_award_name,
+            task_time_name,
+        } = this;
         const { auto_shoot_txt } = this.skill_box;
 
-        score_name.text = tplIntr('localScore');
+        other_score_name.text = score_name.text = tplIntr('localScore');
         task_award_name.text = tplIntr('scoreAward');
         task_time_name.text = tplIntr('awardTime');
         const ani_name = covertLang(lang);
