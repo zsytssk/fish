@@ -221,7 +221,7 @@ export const International = {
         UserSignUpDeadline:
             'It is not the registration time now, please try and register for the competition within the specified time period',
         GiftBulletTip:
-            'It is only valid on the same day, it will expire at 0:00 the next day, and a maximum of 200 additional bullets will be added per match.',
+            'It is only valid on the same day, it will expire at 0:00 the next day,<br/> and a maximum of 200 additional bullets will be added per match.',
         scoreAward: 'Points Reward',
         awardTime: 'Bounty time',
         localScore: 'This score',
