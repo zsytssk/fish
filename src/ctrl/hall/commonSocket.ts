@@ -58,7 +58,6 @@ export function errorHandler(code: number, data?: any) {
     if (code === ServerErrCode.Maintaining) {
         platform.hideLoading();
         AppCtrl.event.emit(ServerErrCode.Maintaining, tplIntr('maintainTip'));
-        tipOtherLogin();
     } else if (code === ServerErrCode.ReExchange) {
         return AppCtrl.event.emit(
             ServerErrCode.ReExchange,

@@ -43,6 +43,7 @@ import AlertPop from '@app/view/pop/alert';
 import HelpPop from '@app/view/pop/help';
 import LotteryPop from '@app/view/pop/lottery';
 import ShopPop from '@app/view/pop/shop';
+import TipPop from '@app/view/pop/tip';
 import VoicePop from '@app/view/pop/voice';
 import {
     activeFreeze,
@@ -223,7 +224,8 @@ export class GameCtrl implements GameCtrlUtils {
 
         AppCtrl.event.on(
             ServerErrCode.Maintaining,
-            () => {
+            (msg) => {
+                TipPop.tip(msg);
                 this.getSocket()?.send(ServerEvent.RoomOut);
             },
             this,

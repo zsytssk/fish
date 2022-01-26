@@ -179,6 +179,7 @@ export class HallCtrl {
             },
             this,
         );
+        AppCtrl.event.on(ServerErrCode.Maintaining, tip, this);
         AppCtrl.event.on(ArenaErrCode.Maintenance, tip, this);
         AppCtrl.event.on(ArenaErrCode.SignUpFail, tip, this);
         AppCtrl.event.on(ArenaErrCode.UserSignUpDeadline, tip, this);

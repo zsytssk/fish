@@ -20,7 +20,7 @@ export enum ServerErrCode {
     AlreadyInRoom = 109,
     /** 余额不足 */
     NoMoney = 101,
-    /** 重新带入 */
+    /** 维护中 */
     Maintaining = 111,
     /** 重新带入 */
     ReExchange = 112,
@@ -30,7 +30,7 @@ export enum ServerErrCode {
     TrialTimeGame = 117,
     /** 投币超过上限 */
     OverLimit = 121,
-    /** 重新带入 */
+    /** 退出 */
     ToQuick = 122,
     /** TrialNotBullet */
     TrialNotBullet = 116,
