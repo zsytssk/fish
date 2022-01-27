@@ -1,9 +1,10 @@
+import { Laya } from 'Laya';
+import { Sprite } from 'laya/display/Sprite';
+import { Rectangle } from 'laya/maths/Rectangle';
+
 import { PointerGuide } from './core/pointer';
 import { PromptGuide } from './core/prompt';
 import GuideDialog from './guideDialog';
-import { Rectangle } from 'laya/maths/Rectangle';
-import { Laya } from 'Laya';
-import { Sprite } from 'laya/display/Sprite';
 
 export type Circle = {
     x;

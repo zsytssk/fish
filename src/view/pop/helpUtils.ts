@@ -1,5 +1,5 @@
-import { SkillMap } from 'data/config';
-import { Lang, InternationalTip } from 'data/internationalConfig';
+import { SkillMap } from '@app/data/config';
+import { tplIntr } from '@app/utils/utils';
 
 export const test_fish_list = [
     { id: 1, num: 2, is_special: 300 },
@@ -24,21 +24,19 @@ export const test_fish_list = [
     { id: 9, num: 0, is_special: 300 },
 ];
 
-export function getSkillIntroList(lang: Lang) {
-    const { help2Freeze, help2Lock, help2Bomb } = InternationalTip[lang];
-
+export function getSkillIntroList() {
     return [
         {
             id: SkillMap.Bomb,
-            intro: help2Bomb,
+            intro: tplIntr('help2Bomb'),
         },
         {
             id: SkillMap.Freezing,
-            intro: help2Freeze,
+            intro: tplIntr('help2Freeze'),
         },
         {
             id: SkillMap.LockFish,
-            intro: help2Lock,
+            intro: tplIntr('help2Lock'),
         },
         // {
         //     id: SkillMap.Super,

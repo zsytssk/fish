@@ -1,20 +1,31 @@
+import * as SAT from 'sat';
+
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
 import { TimeoutCom } from 'comMan/timeoutCom';
-import { Config } from 'data/config';
-import * as SAT from 'sat';
-import { getBulletStartPos, getGunLevelSkinInfo } from 'utils/dataUtil';
+
+import { Config } from '@app/data/config';
+import {
+    getBulletStartPos,
+    getGunLevelSkinInfo,
+    getGunPos,
+} from '@app/utils/dataUtil';
+
 import { GunAutoShootCom } from '../com/gunAutoShootCom';
-import { FishModel } from '../fish/fishModel';
-import { PlayerModel } from '../playerModel';
-import { BulletGroup, BulletGroupInfo } from './bulletGroup';
 import { LockTarget } from '../com/moveCom/lockMoveCom';
+import { FishModel } from '../fish/fishModel';
+import { DetectUpsideDownFn, PlayerModel } from '../playerModel';
+import { BulletGroup, BulletGroupInfo } from './bulletGroup';
 
 export const GunEvent = {
     /** 通知ctrl添加子弹 -> 发送给服务端... */
     WillAddBullet: 'will_add_bullet',
     /** 添加子弹 */
     AddBullet: 'add_bullet',
+    /** 最大子弹数量 */
+    MaxBulletNum: 'max_bullet_num',
+    /** 销毁子弹 */
+    RemoveBullet: 'remove_bullet',
     /** 方向改变 */
     DirectionChange: 'direction_change',
     /** 开关 */
@@ -55,7 +66,7 @@ export class GunModel extends ComponentManager {
     /** 炮口的方向 */
     public direction = new SAT.Vector(0, -1);
     /** 位置 */
-    public readonly pos: Point;
+    public pos: Point;
     /** 炮等级 */
     public bullet_cost: number;
     /** 炮皮肤 */
@@ -64,6 +75,8 @@ export class GunModel extends ComponentManager {
     public skin_level: string;
     /** 炮皮肤 */
     public hole_num: number;
+    /** 最大子弹 */
+    private max_bullet_num = 25;
     /** 子弹列表 */
     private bullet_map: Map<string, BulletGroup> = new Map();
     /** 所属的玩家 */
@@ -82,12 +95,12 @@ export class GunModel extends ComponentManager {
     public rage = false;
     public event: EventCom;
     public timeout: TimeoutCom;
-    constructor(pos: Point, skin: string, player: PlayerModel) {
+    constructor(skin: string, player: PlayerModel) {
         super();
 
-        this.pos = pos;
         this.skin = skin;
         this.player = player;
+
         this.initCom();
     }
     private initCom() {
@@ -102,14 +115,39 @@ export class GunModel extends ComponentManager {
         this.setBulletCost(this.player.bullet_cost);
     }
 
-    private initDirection() {
-        const { server_index } = this.player;
-        if (server_index < 2) {
-            this.setDirection(new SAT.Vector(0, -1));
-            /** 炮台在下面, 方向为向上 */
-        } else {
-            this.setDirection(new SAT.Vector(0, 1));
+    public setClientInfo(detectUpsideDownFn: DetectUpsideDownFn) {
+        const { server_index, game } = this.player;
+        const pos = getGunPos(server_index, game.game_mode);
+        const needUpsideDownFn = detectUpsideDownFn(server_index);
+        this.pos = pos;
+
+        if (needUpsideDownFn) {
             /** 炮台在下面, 方向为向下 */
+            this.setDirection(new SAT.Vector(0, 1));
+        } else {
+            /** 炮台在下面, 方向为向上 */
+            this.setDirection(new SAT.Vector(0, -1));
+        }
+    }
+
+    private initDirection() {
+        const { server_index, game } = this.player;
+        if (game.game_mode === 2) {
+            if (server_index < 1) {
+                this.setDirection(new SAT.Vector(0, -1));
+                /** 炮台在下面, 方向为向上 */
+            } else {
+                this.setDirection(new SAT.Vector(0, 1));
+                /** 炮台在下面, 方向为向下 */
+            }
+        } else {
+            if (server_index < 2) {
+                this.setDirection(new SAT.Vector(0, -1));
+                /** 炮台在下面, 方向为向上 */
+            } else {
+                this.setDirection(new SAT.Vector(0, 1));
+                /** 炮台在下面, 方向为向下 */
+            }
         }
     }
     public setDirection(direction: SAT.Vector) {
@@ -127,7 +165,7 @@ export class GunModel extends ComponentManager {
         this.setBulletCost(this.bullet_cost, true);
         // this.event.emit(GunEvent.ChangeSkin, skinId);
     }
-    public setBulletCost(bullet_cost: number, force: boolean = false) {
+    public setBulletCost(bullet_cost: number, force = false) {
         if (bullet_cost === this.bullet_cost && !force) {
             return;
         }
@@ -180,9 +218,19 @@ export class GunModel extends ComponentManager {
         const { status, is_on, event, shoot_space, player, bullet_cost } = this;
 
         /** 当前用户的特殊处理 */
-        if (player.is_cur_player) {
+        if (
+            player.is_cur_player ||
+            // 大奖赛模式机器人显示子弹数需要处理
+            (player.game.game_mode === 2 && player.need_emit)
+        ) {
             if (player.bullet_num - bullet_cost < 0) {
-                event.emit(GunEvent.NotEnoughBulletNum);
+                if (player.is_cur_player) {
+                    event.emit(GunEvent.NotEnoughBulletNum);
+                }
+                return;
+            }
+            if (this.bullet_map.size >= this.max_bullet_num) {
+                event.emit(GunEvent.MaxBulletNum);
                 return;
             }
         }
@@ -210,7 +258,7 @@ export class GunModel extends ComponentManager {
         }, shoot_space);
     }
     /** 为了防止网络延迟导致炮台抖动, 本人的炮台角度 不跟随服务端 */
-    public addBullet(direction: Point, syncDirec = true) {
+    public addBullet(direction: Point, syncDirection = true) {
         const {
             bullet_cost,
             skin,
@@ -227,11 +275,12 @@ export class GunModel extends ComponentManager {
         if (player.bullet_num < bullet_cost && player.is_cur_player) {
             return;
         }
-        if (syncDirec) {
+        if (syncDirection) {
             this.setDirection(velocity);
         }
         const bullets_pos = getBulletStartPos(
             player.server_index,
+            player.game.game_mode,
             velocity.clone(),
             `${skin}${level_skin}`,
         );
@@ -265,6 +314,7 @@ export class GunModel extends ComponentManager {
     public removeBullet(bullet: BulletGroup) {
         const { bullet_map } = this;
         bullet_map.delete(bullet.id);
+        this.event.emit(GunEvent.RemoveBullet);
     }
     public destroy() {
         const { bullet_map } = this;

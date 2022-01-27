@@ -1,40 +1,43 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { AudioRes } from 'data/audioRes';
-import { Config } from 'data/config';
-import { InternationalTip } from 'data/internationalConfig';
-import { ServerEvent } from 'data/serverEvent';
-import { getBeBombFishIds } from 'model/game/fish/fishModelUtils';
-import { BombModel } from 'model/game/skill/bombModel';
-import { FreezeModel } from 'model/game/skill/freezeModel';
-import { LockActiveData, LockFishModel } from 'model/game/skill/lockFishModel';
-import { SkillStatus } from 'model/game/skill/skillCoreCom';
-import { SkillModel } from 'model/game/skill/skillModel';
-import { getAimFish, modelState } from 'model/modelState';
-import { offMouseMove, onMouseMove, onNode } from 'utils/layaUtils';
-import AlertPop from 'view/pop/alert';
-import ShopPop from 'view/pop/shop';
-import TopTipPop from 'view/pop/topTip';
+import { merge } from 'rxjs';
+
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { Config } from '@app/data/config';
+import { ServerEvent } from '@app/data/serverEvent';
+import { getBeBombFishIds } from '@app/model/game/fish/fishModelUtils';
+import { PlayerModel } from '@app/model/game/playerModel';
+import { BombModel } from '@app/model/game/skill/bombModel';
+import { FreezeModel } from '@app/model/game/skill/freezeModel';
+import {
+    LockActiveData,
+    LockFishModel,
+} from '@app/model/game/skill/lockFishModel';
+import { SkillStatus } from '@app/model/game/skill/skillCoreCom';
+import { SkillModel } from '@app/model/game/skill/skillModel';
+import { getAimFish, modelState } from '@app/model/modelState';
+import { offMouseMove, onMouseMove } from '@app/utils/layaUtils';
+import { debug } from '@app/utils/log';
+import { onKeyBoardEvent, onNodeEvent } from '@app/utils/rxUtils';
+import { tplIntr } from '@app/utils/utils';
+import TopTipPop from '@app/view/pop/topTip';
 import {
     activeAim,
     activeAimFish,
     stopAim,
-} from 'view/scenes/game/ani_wrap/aim';
-import { activeExploding } from 'view/scenes/game/ani_wrap/exploding';
+} from '@app/view/scenes/game/ani_wrap/aim';
+import { activeExploding } from '@app/view/scenes/game/ani_wrap/exploding';
 import {
     offFishClick,
+    offPoolClick,
     onFishClick,
     onPoolClick,
-    offPoolClick,
     viewState,
-} from 'view/viewState';
-import { sendToGameSocket } from '../gameSocket';
-import { onKeyBoardEvent, onNodeEvent } from 'utils/rxUtils';
-import { Sprite } from 'laya/display/Sprite';
-import { Event } from 'laya/events/Event';
-import { merge } from 'rxjs';
-import { PlayerModel } from 'model/game/playerModel';
-import { debug } from 'utils/log';
+} from '@app/view/viewState';
+
+import { GameCtrlUtils } from '../gameCtrl';
 
 /** 二次点击取消激活状态 */
 export function skillNormalActiveHandler(model: SkillModel) {
@@ -57,16 +60,12 @@ export function skillNormalActiveHandler(model: SkillModel) {
     }
 }
 /** 技能的激活前的处理 */
-export function skillPreActiveHandler(model: SkillModel) {
-    const lang = getLang();
-    const { buySkillTip, posBombTip, aimFish } = InternationalTip[lang];
+export function skillPreActiveHandler(
+    model: SkillModel,
+    game_ctrl: GameCtrlUtils,
+) {
     if (model.skill_core.num <= 0) {
-        AlertPop.alert(buySkillTip).then(type => {
-            if (type === 'confirm') {
-                ShopPop.preEnter();
-            }
-        });
-        return;
+        return game_ctrl.buySkillTip();
     }
     /** 二次点击取消激活状态 */
     if (model.skill_core.status !== SkillStatus.Normal) {
@@ -76,20 +75,20 @@ export function skillPreActiveHandler(model: SkillModel) {
 
     if (model instanceof FreezeModel) {
         // 冰冻
-        sendToGameSocket(ServerEvent.UseFreeze);
+        game_ctrl.sendToGameSocket(ServerEvent.UseFreeze);
     } else if (model instanceof BombModel) {
-        TopTipPop.tip(posBombTip, 2);
+        TopTipPop.tip(tplIntr('posBombTip'), 2);
         const { pool } = viewState.game;
         const { PoolWidth, PoolHeight } = Config;
         activeAim({ x: PoolWidth / 2, y: PoolHeight / 2 });
-        onMouseMove(pool, pos => activeAim(pos));
+        onMouseMove(pool, (pos) => activeAim(pos));
 
         // 炸弹
         onPoolClick(true).subscribe((pos: Point) => {
             offMouseMove(pool);
             stopAim('aim_big');
             const fish_list = getBeBombFishIds(pos);
-            sendToGameSocket(ServerEvent.UseBomb, {
+            game_ctrl.sendToGameSocket(ServerEvent.UseBomb, {
                 bombPoint: pos,
                 fishList: fish_list,
             } as UseBombReq);
@@ -102,23 +101,20 @@ export function skillPreActiveHandler(model: SkillModel) {
         } = model.skill_core.player;
         const fish = getAimFish();
         if (!is_cur && need_emit) {
-            // sendToGameSocket(ServerEvent.LockFish, {
-            //     robotId: user_id,
-            //     eid: fish.id,
-            // } as LockFishReq);
             return;
         }
 
-        const player = modelState.app.game.getCurPlayer();
+        const player = modelState.game.getCurPlayer();
 
-        TopTipPop.tip(aimFish, 2);
+        TopTipPop.tip(tplIntr('aimFish'), 2);
         activeAimFish(fish, false, player.gun.pos);
         // 选中鱼
-        onFishClick(true).subscribe((fish_id: string) => {
-            sendToGameSocket(ServerEvent.LockFish, {
-                eid: fish_id,
-                needActive: true,
-            } as LockFishRep);
+        onFishClick(true).subscribe(({ id, group_id }) => {
+            const data = { eid: id, needActive: true } as LockFishReq;
+            if (group_id) {
+                data.gid = group_id;
+            }
+            game_ctrl.sendToGameSocket(ServerEvent.LockFish, data);
         });
     }
 }
@@ -127,36 +123,42 @@ export function skillPreActiveHandler(model: SkillModel) {
 export function skillActiveHandler(
     model: SkillModel,
     info: any,
-    player_model?: PlayerModel,
+    player_model: PlayerModel,
+    game_ctrl: GameCtrlUtils,
 ) {
-    return new Promise((resolve, reject) => {
-        const lang = getLang();
-        const { aimFish } = InternationalTip[lang];
+    return new Promise((resolve, _reject) => {
         if (model instanceof LockFishModel) {
             const { fish, is_tip, gun_pos } = info as LockActiveData;
             if (!player_model.is_cur_player) {
                 debug(`lock:>skill:>skillActiveHandler`, is_tip);
                 if (player_model.need_emit && is_tip && fish) {
-                    sendToGameSocket(ServerEvent.LockFish, {
-                        robotId: player_model.user_id,
+                    const data = {
                         eid: fish.id,
-                    } as LockFishReq);
+                        robotId: player_model.user_id,
+                    } as LockFishReq;
+
+                    if (fish.group_id) {
+                        data.gid = fish.group_id;
+                    }
+                    game_ctrl.sendToGameSocket(ServerEvent.LockFish, data);
                 }
                 return;
             }
 
             if (is_tip) {
                 // 激活锁定之后 提示选中鱼 选中之后发给服务器...
-                TopTipPop.tip(aimFish, 2);
+                TopTipPop.tip(tplIntr('aimFish'), 2);
             }
             const fire = !is_tip;
             activeAimFish(fish, fire, gun_pos);
 
             // 选中鱼
-            onFishClick().subscribe((fish_id: string) => {
-                sendToGameSocket(ServerEvent.LockFish, {
-                    eid: fish_id,
-                } as LockFishRep);
+            onFishClick().subscribe(({ id, group_id }) => {
+                const data = { eid: id } as LockFishReq;
+                if (group_id) {
+                    data.gid = group_id;
+                }
+                game_ctrl.sendToGameSocket(ServerEvent.LockFish, data);
             });
             // ...
         } else if (model instanceof BombModel) {
@@ -164,21 +166,21 @@ export function skillActiveHandler(
             activeExploding(info as Point);
             offMouseMove(pool);
             AudioCtrl.play(AudioRes.Bomb);
-            resolve();
+            resolve(undefined);
         }
     });
 }
 
 /** 技能的disabled处理 */
 export function skillDisableHandler(model: SkillModel) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         if (model instanceof LockFishModel) {
             stopAim('aim');
             offFishClick();
         } else if (model instanceof BombModel) {
             offPoolClick();
         } else {
-            resolve();
+            resolve(undefined);
         }
     });
 }

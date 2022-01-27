@@ -1,12 +1,14 @@
+import * as SAT from 'sat';
+
 import { createImg } from 'honor/utils/createSkeleton';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Image } from 'laya/ui/Image';
-import { FishEvent, FishModel } from 'model/game/fish/fishModel';
-import * as SAT from 'sat';
-import { createSprite } from 'utils/dataUtil';
-import { playSkeleton, stopSkeleton } from 'utils/utils';
-import { viewState } from 'view/viewState';
-import { log } from 'utils/log';
+
+import { FishEvent, FishModel } from '@app/model/game/fish/fishModel';
+import { createSprite } from '@app/utils/dataUtil';
+import { log } from '@app/utils/log';
+import { playSkeleton, stopSkeleton } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
 
 /** 追踪子弹的动画 */
 type AimState = {

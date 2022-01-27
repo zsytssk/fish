@@ -1,11 +1,13 @@
-import { fromEvent, Subscriber, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+
+import { fromEvent, Subscriber, Observable } from 'rxjs';
+
 import { Sprite } from 'laya/display/Sprite';
 
 export function onKeyBoardEvent(code: number) {
     return fromEvent(document.body, 'keydown').pipe(
         filter((e: KeyboardEvent) => e.keyCode === code),
-        map(e => {
+        map((e) => {
             e.preventDefault();
             return e;
         }),

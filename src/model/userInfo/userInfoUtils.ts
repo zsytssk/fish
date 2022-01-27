@@ -1,9 +1,9 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { getCurUserId, getUserInfo } from 'model/modelState';
-import { getItem, setItem } from 'utils/localStorage';
-import TipPop from 'view/pop/tip';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { getCurUserId, getUserInfo } from '@app/model/modelState';
+import { getItem, setItem } from '@app/utils/localStorage';
+import { tplIntr } from '@app/utils/utils';
+import TipPop from '@app/view/pop/tip';
+
 import { AccountMap } from './userInfoModel';
 
 export function getCacheCurrency(account_map: AccountMap) {
@@ -31,10 +31,9 @@ export function setCacheBalance(name: string, balance: any) {
 }
 
 export function tipPlatformCurrency(currency: string) {
-    const lang = getLang();
     const platform_currency = paladin.getCurrency();
     if (currency !== platform_currency) {
-        TipPop.tip(InternationalTip[lang].platformDiffCurrencyEnterGameErr);
+        TipPop.tip(tplIntr('platformDiffCurrencyEnterGameErr'));
     }
 }
 

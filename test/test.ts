@@ -1,7 +1,11 @@
-import { ctrlState } from 'ctrl/ctrlState';
 import honor from 'honor';
-import { modelState } from 'model/modelState';
-import { viewState } from 'view/viewState';
+
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { modelState } from '@app/model/modelState';
+import { getParams } from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
+
 import { localSocketTest, localTest, commonTest } from './app/localTest';
 import { test } from './testBuilder';
 import {
@@ -11,8 +15,6 @@ import {
     showNodeZone,
     stageClick,
 } from './utils/testUtils';
-import { getParams } from 'utils/utils';
-import { getSocket } from 'ctrl/net/webSocketWrapUtil';
 
 const testUtils = {
     showNodeZone,

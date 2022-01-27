@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Laya } from 'Laya';
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
+import { HTMLDivElement } from 'laya/html/dom/HTMLDivElement';
+
 import {
     slide_down_in,
     slide_left_in,
     slide_up_in,
     slide_right_in,
-} from 'utils/animate';
-import { callFunc } from 'utils/utils';
-import { Sprite } from 'laya/display/Sprite';
-import { HTMLDivElement } from 'laya/html/dom/HTMLDivElement';
-import { Event } from 'laya/events/Event';
-import { Laya } from 'Laya';
+} from '@app/utils/animate';
+import { callFunc } from '@app/utils/utils';
 
 export type TipJsonItem = {
     color: string;
@@ -62,7 +64,7 @@ const default_style = {
 /** 提示弹出层 */
 export class PromptGuide {
     private tip_msg: TipItem[];
-    private complete_resolve: FuncVoid;
+    private complete_resolve: () => void;
     /** 自动隐藏 */
     private auto_hide = true;
     /** 记录当前显示的位置 */
@@ -99,7 +101,7 @@ export class PromptGuide {
      * @param auto_hide 显示完整提示之后是否自动关闭
      */
     public prompt(location: PromptLocation, tip: TipData, auto_hide = true) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             this.reset();
             this.view.pos(location.pos.x, location.pos.y);
 
@@ -110,7 +112,7 @@ export class PromptGuide {
                 this.tip_msg = tip as TipItem[];
             }
 
-            this.complete_resolve = resolve;
+            this.complete_resolve = resolve as () => void;
             this.auto_hide = auto_hide;
             this.is_going = true;
             this.step_map = this.analysisTip(this.tip_msg);
@@ -182,12 +184,8 @@ export class PromptGuide {
         step = step || 0;
 
         this.step = step;
-        const {
-            level_index,
-            level_step_index,
-            is_last,
-            is_level_last,
-        } = this.getStepInfo(step);
+        const { level_index, level_step_index, is_last, is_level_last } =
+            this.getStepInfo(step);
 
         const { html_div } = this.view;
         /** 单个文字显示的时间间隔  */
@@ -197,7 +195,6 @@ export class PromptGuide {
 
         const tip_item = tip_msg[level_index];
         html_div.innerHTML = this.getTipByLen(tip_item, level_step_index + 1);
-
         clearTimeout(this.timeout);
         /** 到达最后一条信息, 完成显示 */
         if (is_last) {
@@ -233,15 +230,15 @@ export class PromptGuide {
             /** [{color: .., msg:...}, ...]截取数组item+最后一个item中截取字符 */
             for (const item of tip) {
                 // tslint:disable-next-line: prefer-const
-                let { msg, ...props } = item;
+                const { msg, ...props } = item;
                 const [msg_arr, new_len] = spliceStr(msg, len);
                 len = new_len;
-                props = {
+                const newProps = {
                     ...style,
                     ...props,
                 };
                 for (const msg_item of msg_arr) {
-                    result.push({ ...props, msg: msg_item });
+                    result.push({ ...newProps, msg: msg_item });
                 }
                 if (len <= 0) {
                     break;
@@ -250,6 +247,7 @@ export class PromptGuide {
         }
 
         const result_html = this.jsonToHtml(result);
+
         return result_html;
     }
     /** 将提示的信息json转化为html */
@@ -260,9 +258,6 @@ export class PromptGuide {
             /** 当个item生成的span */
             let html_item = default_tpl;
             for (const key in tip_item) {
-                if (!tip_item.hasOwnProperty(key)) {
-                    continue;
-                }
                 const str = tip_item[key];
                 if (str === '<br/>') {
                     html_item = '<br/>';
@@ -273,7 +268,6 @@ export class PromptGuide {
             }
             html += html_item;
         }
-
         return html;
     }
     public show(dir: PromptPos) {

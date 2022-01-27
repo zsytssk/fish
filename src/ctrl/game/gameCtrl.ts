@@ -1,37 +1,64 @@
-import { ctrlState } from 'ctrl/ctrlState';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
-import { getChannel, getLang } from 'ctrl/hall/hallCtrlUtil';
-import { waitConnectGame } from 'ctrl/hall/login';
-import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { AudioRes } from 'data/audioRes';
-import { SkillMap } from 'data/config';
-import { InternationalTip } from 'data/internationalConfig';
-import { res } from 'data/res';
-import { ServerErrCode, ServerEvent, ServerName } from 'data/serverEvent';
-import honor from 'honor';
-import { ResItem } from 'honor/utils/loadRes';
+import { default as random } from 'lodash/random';
+
+import {
+    fakeLoad,
+    loadRes,
+    mergeProgressObserver,
+    ResItem,
+    toProgressObserver,
+} from 'honor/utils/loadRes';
 import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
 import { Event } from 'laya/events/Event';
-import { FreezingComEvent } from 'model/game/com/gameFreezeCom';
-import { FishModel } from 'model/game/fish/fishModel';
-import { GameEvent, GameModel } from 'model/game/gameModel';
-import { PlayerInfo, PlayerModel } from 'model/game/playerModel';
-import { getUserInfo, isCurUser } from 'model/modelState';
-import { BgMonitorEvent } from 'utils/bgMonitor';
-import { log, error } from 'utils/log';
-import { setProps } from 'utils/utils';
-import AlertPop from 'view/pop/alert';
-import HelpPop from 'view/pop/help';
-import LotteryPop from 'view/pop/lottery';
-import ShopPop from 'view/pop/shop';
-import VoicePop from 'view/pop/voice';
-import { default as random } from 'lodash/random';
-import { activeFreeze, stopFreeze } from 'view/scenes/game/ani_wrap/freeze';
+import { Loader } from 'laya/net/Loader';
+
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
+import { getChannel, recharge } from '@app/ctrl/hall/hallCtrlUtil';
+import { waitConnectGame } from '@app/ctrl/hall/login';
+import { disconnectSocket, getSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { SkillMap } from '@app/data/config';
+import { res } from '@app/data/res';
+import {
+    ArenaErrCode,
+    ServerErrCode,
+    ServerEvent,
+    ServerName,
+} from '@app/data/serverEvent';
+import { FreezingComEvent } from '@app/model/game/com/gameFreezeCom';
+import { ShoalEvent } from '@app/model/game/com/shoalCom';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import { GameEvent, GameModel } from '@app/model/game/gameModel';
+import { PlayerInfo, PlayerModel } from '@app/model/game/playerModel';
+import { SkillActiveData } from '@app/model/game/skill/skillModel';
+import { isCurUser, modelState } from '@app/model/modelState';
+import { tipPlatformCurrency } from '@app/model/userInfo/userInfoUtils';
+import { asyncOnly } from '@app/utils/asyncQue';
+import { BgMonitorEvent } from '@app/utils/bgMonitor';
+import { onNodeWithAni } from '@app/utils/layaUtils';
+import { error, log } from '@app/utils/log';
+import { setProps, tplIntr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
+import HelpPop from '@app/view/pop/help';
+import LotteryPop from '@app/view/pop/lottery';
+import ShopPop from '@app/view/pop/shop';
+import TipPop from '@app/view/pop/tip';
+import VoicePop from '@app/view/pop/voice';
+import {
+    activeFreeze,
+    stopFreeze,
+} from '@app/view/scenes/game/ani_wrap/freeze';
+import { activeShoalWave } from '@app/view/scenes/game/ani_wrap/shoalWave';
 import GameView, {
     AddFishViewInfo,
     BulletBoxDir,
-} from 'view/scenes/game/gameView';
+} from '@app/view/scenes/game/gameView';
+import Loading from '@app/view/scenes/loadingView';
+
+import { AppCtrl } from '../appCtrl';
+import { offCommon, tipComeBack } from '../hall/commonSocket';
+import { WebSocketTrait } from '../net/webSocketWrap';
 import { FishCtrl } from './fishCtrl';
 import {
     disableAllUserOperation,
@@ -39,55 +66,51 @@ import {
     tipExchange,
     waitEnterGame,
 } from './gameCtrlUtils';
-import {
-    convertEnterGame,
-    offGameSocket,
-    onGameSocket,
-    sendToGameSocket,
-} from './gameSocket';
+import { NormalPlayerCom } from './gameNormal/NormalPlayerCom';
+import { convertEnterGame, onGameSocket } from './gameSocket';
 import { PlayerCtrl } from './playerCtrl';
-import { ShoalEvent } from 'model/game/com/shoalCom';
-import { activeShoalWave } from 'view/scenes/game/ani_wrap/shoalWave';
-import { Laya } from 'Laya';
-import { Loader } from 'laya/net/Loader';
-import TipPop from 'view/pop/tip';
-import { tipPlatformCurrency } from 'model/userInfo/userInfoUtils';
 
 export type ChangeUserNumInfo = {
     userId: string;
     change_arr: Array<{
         id?: string;
         num: number;
-        type: 'skill' | 'bullet';
+        type?: 'skill' | 'bullet';
     }>;
 };
 
+export type GameCtrlUtils = {
+    sendToGameSocket(...params: Parameters<WebSocketTrait['send']>): void;
+    offGameSocket(): void;
+    needUpSideDown(index: number): boolean;
+    calcClientIndex(index: number): number;
+    getSocket: () => WebSocketTrait;
+    buySkillTip: () => void;
+    changeUserNumInfo: (data: ChangeUserNumInfo) => void;
+    isTrial: EnterGameRep['isTrial'];
+    isArena: boolean;
+    currency: string;
+};
+
 /** 游戏ctrl */
-export class GameCtrl {
+export class GameCtrl implements GameCtrlUtils {
     public isTrial: EnterGameRep['isTrial'];
     public view: GameView;
     private model: GameModel;
+    public currency = '';
+    public isArena = false;
     public player_list: Set<PlayerCtrl> = new Set();
     constructor(view: GameView, model: GameModel) {
         this.view = view;
         this.model = model;
     }
     private static instance: GameCtrl;
-    public static async preEnter(
-        data: Partial<RoomInRep>,
-        game_model: GameModel,
-    ) {
+    public static async preEnter(data: Partial<RoomInRep>) {
         if (this.instance) {
             return this.instance;
         }
-        return runAsyncTask(() => {
-            const wait_view = GameView.preEnter() as Promise<GameView>;
-            const [bg_num, bg_res] = this.genBgNum();
-            const other_res: ResItem[] = [bg_res, ...res.game];
-            const wait_load_res = honor.director.load(other_res, 'Scene');
-
+        return runAsyncTask(async () => {
             /** 只有第一次进入时提示 */
-            console.log(`test:>1`, data);
             if (data.currency) {
                 waitEnterGame().then(async ([status, _data]) => {
                     if (!status) {
@@ -95,10 +118,7 @@ export class GameCtrl {
                     }
                     /** 提示 - 您的余额变动因链上区块确认可能有所延迟，请耐心等待。 */
                     if (getChannel() === 'YOUCHAIN' && !_data.isTrial) {
-                        const lang = getLang();
-                        await AlertPop.alert(
-                            InternationalTip[lang].delayUpdateAccount,
-                        );
+                        await AlertPop.alert(tplIntr('delayUpdateAccount'));
                     }
                     tipExchange(data);
                 });
@@ -112,14 +132,27 @@ export class GameCtrl {
                 });
             }
 
-            return Promise.all([wait_view, wait_load_res]).then(([view]) => {
-                const ctrl = new GameCtrl(view as GameView, game_model);
-                this.instance = ctrl;
-                ctrl.init(data.socketUrl, bg_num);
-                setProps(ctrlState, { game: ctrl });
+            const [bg_num, bg_res] = this.genBgNum();
+            const other_res: ResItem[] = [bg_res, ...res.game];
+            const [view] = await mergeProgressObserver(
+                [
+                    toProgressObserver(GameView.preEnter)(),
+                    toProgressObserver(fakeLoad)(0.5),
+                    toProgressObserver(AppCtrl.commonLoad)(),
+                    toProgressObserver(loadRes)(other_res),
+                ],
+                Loading,
+            );
 
-                return ctrl;
-            });
+            const game_model = new GameModel();
+            const ctrl = new GameCtrl(view as GameView, game_model);
+            ctrl.currency = data.currency;
+            this.instance = ctrl;
+            ctrl.init(data.socketUrl, bg_num);
+            setProps(ctrlState, { game: ctrl });
+            setProps(modelState, { game: game_model });
+
+            return ctrl;
         }, this);
     }
     public static genBgNum() {
@@ -137,6 +170,7 @@ export class GameCtrl {
             onGameSocket(getSocket(ServerName.Game), this);
         });
     }
+
     private initEvent() {
         const { view } = this;
         const { btn_help, btn_gift, btn_voice, btn_leave, btn_shop } = view;
@@ -145,44 +179,126 @@ export class GameCtrl {
         this.onModel();
 
         const { bg_monitor } = ctrlState.app;
-        /** 切换到后台禁用自动开炮 */
         bg_monitor.event.on(
             BgMonitorEvent.VisibleChange,
-            (isVisible: boolean) => {
-                if (!isVisible) {
+            (visible) => {
+                const socket = this.getSocket();
+                if (visible) {
+                    if (socket?.status === 'OPEN') {
+                        tipComeBack();
+                    } else {
+                        socket?.reconnect();
+                    }
+                }
+                if (!visible) {
                     disableCurUserOperation();
                 }
             },
             this,
         );
 
-        btn_help.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_help, CLICK, (e: Event) => {
             e.stopPropagation();
             HelpPop.preEnter();
         });
-        btn_gift.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_gift, CLICK, (e: Event) => {
             e.stopPropagation();
             LotteryPop.preEnter();
         });
-        btn_voice.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_voice, CLICK, (e: Event) => {
             e.stopPropagation();
             VoicePop.preEnter();
         });
-        btn_shop.on(CLICK, this, (e: Event) => {
+        onNodeWithAni(btn_shop, CLICK, (e: Event) => {
             e.stopPropagation();
             ShopPop.preEnter();
         });
-        btn_leave.on(CLICK, this, (e: Event) => {
-            const lang = getLang();
-            const { leaveTip } = InternationalTip[lang];
-
+        onNodeWithAni(btn_leave, CLICK, (e: Event) => {
             e.stopPropagation();
-            AlertPop.alert(leaveTip).then(type => {
+            AlertPop.alert(tplIntr('leaveTip')).then((type) => {
                 if (type === 'confirm') {
-                    sendToGameSocket(ServerEvent.RoomOut);
+                    this.sendToGameSocket(ServerEvent.RoomOut);
                 }
             });
         });
+
+        AppCtrl.event.on(
+            ServerErrCode.Maintaining,
+            (msg) => {
+                TipPop.tip(msg);
+                this.getSocket()?.send(ServerEvent.RoomOut);
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ServerErrCode.ReExchange,
+            (msg) => {
+                disableCurUserOperation();
+
+                return asyncOnly(msg, async () => {
+                    return AlertPop.alert(msg, { close_on_side: false }).then(
+                        (type) => {
+                            if (type === 'confirm') {
+                                return this.getSocket()?.send(
+                                    ServerEvent.ExchangeBullet,
+                                );
+                            }
+                            this.getSocket()?.send(ServerEvent.RoomOut);
+                        },
+                    );
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.NoMoney,
+            (msg: string) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        const currency = getGameCurrency();
+                        recharge(currency);
+                    }
+                    this.getSocket()?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.OverLimit,
+            (msg: string) => {
+                return AlertPop.alert(msg, {
+                    hide_cancel: true,
+                }).then(() => {
+                    const socket = getSocket(ServerName.Game);
+                    socket?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ServerErrCode.TrialTimeGame,
+            (msg: string) => {
+                return AlertPop.alert(msg, {
+                    hide_cancel: true,
+                }).then(() => {
+                    const socket = getSocket(ServerName.Game);
+                    socket?.send(ServerEvent.RoomOut);
+                });
+            },
+            this,
+        );
+    }
+    public buySkillTip() {
+        AlertPop.alert(tplIntr('buySkillTip')).then((type) => {
+            if (type === 'confirm') {
+                ShopPop.preEnter();
+            }
+        });
+    }
+    public needUpSideDown(server_index: number) {
+        return server_index > 1;
     }
     private onModel() {
         const { event } = this.model;
@@ -190,15 +306,16 @@ export class GameCtrl {
         event.on(
             GameEvent.AddFish,
             (fish: FishModel) => {
-                const { type, id, horizon_turn, currency } = fish;
+                const { type, group_id, id, horizon_turn, currency } = fish;
                 const fish_view_info: AddFishViewInfo = {
                     type,
+                    group_id,
                     currency,
                     id,
                     horizon_turn,
                 };
                 const fish_view = view.addFish(fish_view_info);
-                const ctrl = new FishCtrl(fish_view, fish);
+                new FishCtrl(fish_view, fish, this);
             },
             this,
         );
@@ -207,7 +324,7 @@ export class GameCtrl {
             (player: PlayerModel) => {
                 const { server_index, is_cur_player } = player;
                 if (is_cur_player) {
-                    if (server_index > 1) {
+                    if (this.needUpSideDown(server_index)) {
                         view.upSideDown();
                     }
                     let pos = 'left' as BulletBoxDir;
@@ -219,6 +336,8 @@ export class GameCtrl {
 
                 const player_view = view.addGun();
                 const ctrl = new PlayerCtrl(player_view, player, this);
+                const normal_player_com = new NormalPlayerCom(player, this);
+                ctrl.addCom(normal_player_com);
                 this.player_list.add(ctrl);
             },
             this,
@@ -240,7 +359,7 @@ export class GameCtrl {
         );
         event.on(
             ShoalEvent.PreAddShoal,
-            reverse => {
+            (reverse) => {
                 AudioCtrl.play(AudioRes.ShoalComing);
                 activeShoalWave(reverse);
             },
@@ -253,6 +372,17 @@ export class GameCtrl {
             },
             this,
         );
+    }
+    public sendToGameSocket(...params: Parameters<WebSocketTrait['send']>) {
+        const socket = getSocket(ServerName.Game);
+        socket?.send(...params);
+    }
+    public offGameSocket() {
+        const socket = getSocket(ServerName.Game);
+        offCommon(socket, this);
+    }
+    public getSocket() {
+        return getSocket(ServerName.Game);
     }
     public onEnterGame(data: ReturnType<typeof convertEnterGame>) {
         const { model, view } = this;
@@ -303,10 +433,10 @@ export class GameCtrl {
     public shoalComingTip(reverse: boolean) {
         this.model.shoalComingTip(reverse);
     }
-    public activeSkill(skill: SkillMap, data: any) {
+    public activeSkill(skill: SkillMap, data: SkillActiveData) {
         this.model.activeSkill(skill, data);
     }
-    public disableSkill(skill: SkillMap, user_id: any) {
+    public disableSkill(skill: SkillMap, user_id: string) {
         this.model.disableSkill(skill, user_id);
     }
     public resetSkill(skill: SkillMap, user_id: string) {
@@ -319,7 +449,7 @@ export class GameCtrl {
     }
     public addPlayers(player_list: PlayerInfo[]) {
         for (const player of player_list) {
-            this.model.addPlayer(player);
+            this.model.addPlayer(player, this.needUpSideDown);
         }
     }
     public setPlayersEmit(ids: string[]) {
@@ -344,7 +474,7 @@ export class GameCtrl {
             const { type, num, id } = item;
             if (type === 'skill') {
                 player.addSkillNum(id, num);
-            } else {
+            } else if (type === 'bullet') {
                 player.updateInfo({
                     bullet_num: player.bullet_num + num,
                 });
@@ -364,13 +494,11 @@ export class GameCtrl {
         const { model } = this;
         const { userId, isTimeOut } = data;
         if (isCurUser(userId)) {
-            const lang = getLang();
-            const { kickedTip } = InternationalTip[lang];
-            const timeout_tip =
-                InternationalTip[lang][ServerErrCode.TrialTimeGame];
-            const tip = isTimeOut ? timeout_tip : kickedTip;
+            const tip = isTimeOut
+                ? tplIntr(ServerErrCode.TrialTimeGame)
+                : tplIntr('kickedTip');
             disableAllUserOperation();
-            offGameSocket(this);
+            this.offGameSocket();
             disconnectSocket(ServerName.Game);
             AlertPop.alert(tip, {
                 hide_cancel: true,
@@ -391,7 +519,7 @@ export class GameCtrl {
         const { model } = this;
         const { userId } = data;
         if (isCurUser(userId)) {
-            offGameSocket(this);
+            this.offGameSocket();
             disconnectSocket(ServerName.Game);
             model.destroy();
             HallCtrl.preEnter();
@@ -404,10 +532,11 @@ export class GameCtrl {
         const { bg_monitor } = ctrlState.app;
         this.model?.event.offAllCaller(this);
         bg_monitor.event.offAllCaller(this);
+        AppCtrl.event.offAllCaller(this);
         this.view = undefined;
         this.model = undefined;
         GameCtrl.instance = undefined;
-        honor.director.closeAllDialogs();
         setProps(ctrlState, { game: undefined });
+        setProps(modelState, { game: undefined });
     }
 }

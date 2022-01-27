@@ -1,14 +1,18 @@
-import { ctrlState } from 'ctrl/ctrlState';
-import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { SkillMap } from 'data/config';
-import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
 import { Event } from 'laya/events/Event';
-import { getCurPlayer } from 'model/modelState';
-import { ui } from 'ui/layaMaxUI';
-import { addZeroToNum } from 'utils/utils';
+
+import { ctrlState } from '@app/ctrl/ctrlState';
+import {
+    getLang,
+    offLangChange,
+    onLangChange,
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { getCurPlayer } from '@app/model/modelState';
+import { ui } from '@app/ui/layaMaxUI';
+import { addZeroToNum, tplIntr } from '@app/utils/utils';
+
 import AlertPop from './alert';
-import { buyItem } from './popSocket';
+import { getItemName } from './shop';
 import TipPop from './tip';
 
 type BuyInfo = {
@@ -16,23 +20,29 @@ type BuyInfo = {
     id: string;
     num: number;
     price: number;
+    currency?: string;
+};
+
+export type BuyResultData = {
+    id: string;
+    num: number;
+    price: number;
 };
 export default class BuyBulletPop
     extends ui.pop.alert.buyBulletUI
-    implements HonorDialog {
-    public isModal = true;
+    implements HonorDialog
+{
     private buy_info: BuyInfo;
-    public static async preEnter(info: BuyInfo) {
-        const dialog = (await honor.director.openDialog({
-            dialog: BuyBulletPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as BuyBulletPop;
-        dialog.buy(info);
+    private resolve: (info: BuyResultData) => void;
+    public static async preEnter(info: BuyInfo): Promise<BuyResultData> {
+        const dialog = await honor.director.openDialog<BuyBulletPop>(
+            'pop/alert/buyBullet.scene',
+        );
+        return dialog.buy(info);
     }
     public onAwake() {
-        onLangChange(this, lang => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
         this.initEvent();
     }
@@ -47,15 +57,10 @@ export default class BuyBulletPop
             this.changeNum('add');
         });
         btn_buy.on(CLICK, this, () => {
-            const lang = getLang();
-            const { buySuccess } = InternationalTip[lang];
             const { id, num, price } = this.buy_info;
-            buyItemAlert(num, price, id).then(status => {
+            buyItemAlert(num, price, id).then((status) => {
                 if (status) {
-                    buyItem(id, num, price).then(() => {
-                        TipPop.tip(buySuccess);
-                        this.close();
-                    });
+                    this.resolve({ id, num, price });
                 }
             });
         });
@@ -66,16 +71,17 @@ export default class BuyBulletPop
                         this.setNum(Number(value));
                     }
                 },
+                nullMsg: tplIntr('keyboardEmpTip'),
+                delTxt: tplIntr('Delete'),
+                confirmTxt: tplIntr('confirm'),
             });
         });
     }
     private setNum(num: number) {
         const { price } = this.buy_info;
-        const lang = getLang();
-        const { beyondBulletNum } = InternationalTip[lang];
         const user = getCurPlayer();
         if (num * price > user.bullet_num) {
-            TipPop.tip(beyondBulletNum);
+            TipPop.tip(tplIntr('beyondBulletNum'));
             num = Math.floor(user.bullet_num / price);
         }
         this.buy_info.num = num;
@@ -105,32 +111,35 @@ export default class BuyBulletPop
     private setIntro() {
         const lang = getLang();
         const { intro, buy_info } = this;
-        const { purchase, buyBulletCost, bullet } = InternationalTip[lang];
-        const { price, num } = buy_info;
+        const { price, num, currency } = buy_info;
+
+        const typename = currency || tplIntr('bullet');
+        const cost = price * num;
         if (lang === 'en') {
-            intro.text = `${buyBulletCost} ${price * num} ${bullet}`;
+            intro.text = `${tplIntr('buyBulletCost')} ${cost} ${typename}`;
         } else {
-            intro.text = `${buyBulletCost}${price * num}${bullet}`;
+            intro.text = `${tplIntr('buyBulletCost')}${cost}${typename}`;
         }
     }
-    private initLang(lang: Lang) {
-        const { purchase } = InternationalTip[lang];
+    private initLang() {
         const { title, btn_label } = this;
 
-        title.text = purchase;
-        btn_label.text = purchase;
+        btn_label.text = title.text = tplIntr('purchase');
         this.setIntro();
     }
     public buy(info: BuyInfo) {
-        const { num_label, icon } = this;
-        const { num, id } = info;
+        return new Promise<BuyResultData>((resolve, _reject) => {
+            const { num_label, icon } = this;
+            const { num, id } = info;
 
-        const num_str = num + '';
-        num_label.text = num_str;
+            const num_str = num + '';
+            num_label.text = num_str;
 
-        icon.skin = `image/pop/shop/icon/${id}.png`;
-        this.buy_info = info;
-        this.setIntro();
+            icon.skin = `image/pop/shop/icon/${id}.png`;
+            this.buy_info = info;
+            this.setIntro();
+            this.resolve = resolve;
+        });
     }
     public destroy() {
         offLangChange(this);
@@ -138,32 +147,16 @@ export default class BuyBulletPop
     }
 }
 
-export function getSkillName(id: string) {
-    const lang = getLang();
-    const { bomb, lock, freeze } = InternationalTip[lang];
-
-    switch (id) {
-        case SkillMap.Bomb:
-            return bomb;
-        case SkillMap.Freezing:
-            return freeze;
-        case SkillMap.LockFish:
-            return lock;
-    }
-}
-
 export function buyItemAlert(num: number, price: number, id: string) {
     return new Promise((resolve, reject) => {
-        const lang = getLang();
-        const { bullet, buySuccess } = InternationalTip[lang];
-        const { buyItemTip: buyTip } = InternationalTip[lang];
-        const tip = buyTip
-            .replace(`$1`, num * price + '')
-            .replace(`$2`, bullet)
-            .replace(`$3`, num + '')
-            .replace(`$4`, getSkillName(id));
+        const tip = tplIntr('buyItemTip', {
+            cost_num: num * price,
+            cost_name: tplIntr('bullet'),
+            num: num,
+            name: getItemName(id + ''),
+        });
 
-        AlertPop.alert(tip).then(type => {
+        AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {
                 resolve(true);
             } else {
@@ -172,17 +165,16 @@ export function buyItemAlert(num: number, price: number, id: string) {
         });
     });
 }
-export function buySkinAlert(price: number, name: string) {
+export function buySkinAlert(num: number, item: string, name?: string) {
     return new Promise((resolve, reject) => {
-        const lang = getLang();
-        const { bullet } = InternationalTip[lang];
-        const { buySkinTip } = InternationalTip[lang];
-        const tip = buySkinTip
-            .replace(`$1`, price + '')
-            .replace(`$2`, bullet)
-            .replace(`$3`, name);
+        name = name || tplIntr('bullet');
+        const tip = tplIntr('buySkinTip', {
+            num,
+            name,
+            item,
+        });
 
-        AlertPop.alert(tip).then(type => {
+        AlertPop.alert(tip).then((type) => {
             if (type === 'confirm') {
                 resolve(true);
             } else {

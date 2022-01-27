@@ -52,7 +52,7 @@ export type ShapeOriType = 'fish' | 'bullet' | 'net';
  * img 里面是图片的地址+pivot
  * shape 里面是形状+pivot
  */
-export let SHAPE: ShapeOriData = {
+export const SHAPE: ShapeOriData = {
     bullet: {
         shape_list: [
             {

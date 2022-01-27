@@ -14,8 +14,10 @@ import { Vector3 } from "./math/Vector3";
 import { Viewport } from "./math/Viewport";
 import { HitResult } from "./physics/HitResult";
 import { PhysicsSimulation } from "./physics/PhysicsSimulation";
-import { Physics3D } from "./physics/Physics3D";
 import { ILaya } from "../../ILaya";
+import { Config3D } from "../../Config3D";
+import { Physics3D } from "./Physics3D";
+import { Laya } from "../../Laya";
 
 /**
  * <code>Input3D</code> 类用于实现3D输入。
@@ -28,7 +30,7 @@ export class Input3D {
 	/**@internal */
 	private static _tempRay0: Ray = new Ray(new Vector3(), new Vector3());
 	/**@internal */
-	private static _tempHitResult0: HitResult = new HitResult();
+	private static _tempHitResult0: HitResult;// = new HitResult();
 
 	/**@internal */
 	private _scene: Scene3D;
@@ -48,6 +50,8 @@ export class Input3D {
 	 */
 	__init__(canvas: any, scene: Scene3D): void {
 		this._scene = scene;
+		Physics3D._bullet && (Input3D._tempHitResult0 = new HitResult());
+		//@ts-ignore
 		canvas.oncontextmenu = function (e: any): any {
 			return false;
 		}
@@ -125,8 +129,14 @@ export class Input3D {
 	/**
 	 * @internal
 	 */
-	private _getTouch(touchID: number): Touch {
+	private _getTouch(touchID: number,type:number): Touch {
 		var touch: Touch = this._touchPool[touchID];
+		if((type==0&&touch&&touch._getIndexInList()!=-1))
+			return null;
+
+		if(type == 1&&touch&&(touch._getIndexInList()==-1))
+			return null;
+			
 		if (!touch) {
 			touch = new Touch();
 			this._touchPool[touchID] = touch;
@@ -185,6 +195,8 @@ export class Input3D {
 	 * @internal
 	 */
 	private _mouseTouchRayCast(cameras: BaseCamera[]): void {
+		if(!Physics3D._bullet && !Physics3D._cannon)
+		return;
 		var touchHitResult: HitResult = Input3D._tempHitResult0;
 		var touchPos: Vector2 = Input3D._tempVector20;
 		var touchRay: Ray = Input3D._tempRay0;
@@ -241,10 +253,14 @@ export class Input3D {
 		for (var j: number = 0, m: number = changedTouches.length; j < m; j++) {
 			var nativeTouch: any = changedTouches[j];
 			var identifier: number = nativeTouch.identifier;
-			if (!this._multiTouchEnabled && identifier !== 0)
+			if (!this._multiTouchEnabled && this._touches.length !== 0 && flag==0)
 				continue;
-			var touch: Touch = this._getTouch(identifier);
-			var pos: Vector2 = touch._position;
+			var touch: Touch = this._getTouch(identifier,flag);
+			
+			if(flag==1 && !touch)
+				continue;
+
+			var pos: Vector2 = this._touchPool[identifier]._position;
 			var mousePoint: Point = Input3D._tempPoint;
 			mousePoint.setTo(nativeTouch.pageX, nativeTouch.pageY);
 			ILaya.stage._canvasTransform.invertTransformPoint(mousePoint);//考虑画布缩放	
@@ -252,12 +268,14 @@ export class Input3D {
 			var posY: number = mousePoint.y;
 			switch (flag) {
 				case 0://add 
-					this._touches.add(touch);
+					if(!!touch)
+						this._touches.add(touch);
 					offsetX += posX;
 					offsetY += posY;
 					break;
-				case 1://remove 
-					this._touches.remove(touch);
+				case 1://remove
+					 if(!!touch)
+						this._touches.remove(touch);
 					offsetX -= posX;
 					offsetY -= posY;
 					break;
@@ -311,7 +329,8 @@ export class Input3D {
 						var lastLength: number = this._touches.length;//需要在_changeTouches()之前获取
 						this._changeTouches((<TouchEvent>e).changedTouches, 0);
 						if (enablePhysics) {
-							rayCast = true;//触摸点击时touchMove不会触发,需要调用_touchRayCast()函数
+							//rayCast = true;//触摸点击时touchMove不会触发,需要调用_touchRayCast()函数
+							(!Config3D._config.isUseCannonPhysicsEngine) && (this._mouseTouchRayCast(cameras));
 							(lastLength === 0) && (this._mouseTouchDown());
 						}
 						break;
@@ -328,7 +347,7 @@ export class Input3D {
 						throw "Input3D:unkonwn event type.";
 				}
 			}
-			(rayCast) && (this._mouseTouchRayCast(cameras));//延迟射线检测,否则mouseMove每帧可能触发多次
+			(rayCast)&&(!Config3D._config.isUseCannonPhysicsEngine) && (this._mouseTouchRayCast(cameras));//延迟射线检测,否则mouseMove每帧可能触发多次
 			this._eventList.length = 0;
 		}
 

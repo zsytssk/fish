@@ -2,10 +2,11 @@
     "x":0,
     "type":"Dialog",
     "selectedBox":2,
+    "selecteID":41,
     "searchKey":"Dialog",
-    "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/itemRecord.ts","height":604},
+    "props":{"width":994,"sceneColor":"#000000","runtime":"view/pop/record/itemRecord.ts","isModal":true,"height":604},
     "nodeParent":-1,
-    "maxID":48,
+    "maxID":51,
     "label":"Dialog",
     "isOpen":true,
     "isDirectory":true,
@@ -20,14 +21,13 @@
             "props":{"y":-15,"x":-24,"var":"bg"},
             "nodeParent":2,
             "label":"bg",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":9,
             "child":[
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":0,"x":0,"texture":"image/pop/record/bg-top-1.png"},
@@ -42,7 +42,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":150,"x":0,"texture":"image/pop/record/bg-left.png"},
@@ -57,7 +56,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite",
                     "props":{"y":150,"x":929,"texture":"image/pop/record/bg-right.png"},
@@ -72,7 +70,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image",
                     "props":{"y":144,"x":75,"width":856,"skin":"image/pop/record/bg-con.png","sizeGrid":"0,5,0,5,1","height":484},
@@ -124,14 +121,13 @@
             "props":{"y":134,"x":30,"width":935,"var":"content","height":400},
             "nodeParent":2,
             "label":"content",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":15,
             "child":[
                 {
-                    "x":30,
                     "type":"Image",
                     "searchKey":"Image,con_bg",
                     "props":{"width":935,"skin":"image/pop/record/list-bg.png","sizeGrid":"48,16,13,19","name":"con_bg","height":400},
@@ -147,7 +143,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,title_box",
                     "props":{"y":0,"x":0,"width":935,"var":"title_box","height":40},
@@ -160,7 +155,6 @@
                     "compId":44,
                     "child":[
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,type",
                             "props":{"y":2,"x":0,"width":190,"valign":"middle","text":"道具类型1","name":"type","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -176,7 +170,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,buy_total",
                             "props":{"y":2,"x":186,"width":190,"valign":"middle","text":"购买数量总和1","name":"buy_total","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -192,7 +185,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,give_total",
                             "props":{"y":2,"x":373,"width":190,"valign":"middle","text":"游戏赠送总和1","name":"give_total","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -208,7 +200,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,remain",
                             "props":{"y":2,"x":559,"width":190,"valign":"middle","text":"剩余数量1","name":"remain","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -224,7 +215,6 @@
                             "$HIDDEN":false
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label,no",
                             "props":{"y":2,"x":745,"width":190,"valign":"middle","text":"场次1","name":"no","height":36,"fontSize":20,"color":"#ffea7b","align":"center"},
@@ -240,7 +230,6 @@
                         }]
                 },
                 {
-                    "x":30,
                     "type":"List",
                     "searchKey":"List,record_list",
                     "props":{"y":40,"x":5,"width":924,"var":"record_list","repeatY":10,"height":365},
@@ -253,7 +242,6 @@
                     "compId":21,
                     "child":[
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,item",
                             "props":{"y":0,"x":-6,"width":935,"renderType":"render","name":"item","height":35},
@@ -266,7 +254,6 @@
                             "compId":22,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,type",
                                     "props":{"y":-1,"x":0,"width":190,"valign":"middle","text":"道具类型","name":"type","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -282,7 +269,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,buy_total",
                                     "props":{"y":0,"x":186,"width":190,"valign":"middle","text":"道具类型","name":"buy_total","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -298,7 +284,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,give_total",
                                     "props":{"y":0,"x":373,"width":190,"valign":"middle","text":"道具类型","name":"give_total","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -314,7 +299,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,remain",
                                     "props":{"y":0,"x":559,"width":190,"valign":"middle","text":"道具类型","name":"remain","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -330,7 +314,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,no",
                                     "props":{"y":0,"x":745,"width":190,"valign":"middle","text":"道具类型","name":"no","height":35,"fontSize":20,"color":"#fff1c5","align":"center"},
@@ -345,7 +328,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Sprite",
                                     "searchKey":"Sprite",
                                     "props":{"y":35,"x":1,"texture":"image/pop/record/list-line.png"},
@@ -484,7 +466,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,search_box",
-            "props":{"y":83,"x":32,"var":"search_box"},
+            "props":{"y":83,"x":31,"width":934,"var":"search_box","height":239},
             "nodeParent":2,
             "label":"search_box",
             "isOpen":true,
@@ -559,32 +541,18 @@
                 },
                 {
                     "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite,btn_search",
-                    "props":{"y":-2,"x":793,"var":"btn_search","texture":"image/pop/record/btn-bg.png"},
+                    "type":"Button",
+                    "searchKey":"Button,btn_search",
+                    "props":{"y":-2.5,"var":"btn_search","stateNum":"1","skin":"image/pop/record/btn-bg.png","sizeGrid":"0,56,0,56","right":0,"labelSize":22,"labelPadding":"0,2,0,0","labelColors":"#255a85","labelBold":true,"label":"查询"},
                     "nodeParent":41,
                     "label":"btn_search",
                     "isOpen":true,
-                    "isDirectory":true,
+                    "isDirectory":false,
                     "isAniNode":true,
-                    "hasChild":true,
-                    "compId":45,
+                    "hasChild":false,
+                    "compId":50,
                     "child":[
-                        {
-                            "x":45,
-                            "type":"Label",
-                            "searchKey":"Label,btn_search_label",
-                            "props":{"y":6,"x":5,"width":114,"var":"btn_search_label","valign":"middle","text":"查询","height":34,"fontSize":22,"color":"#255a85","bold":true,"align":"center"},
-                            "nodeParent":45,
-                            "label":"btn_search_label",
-                            "isDirectory":false,
-                            "isAniNode":true,
-                            "hasChild":false,
-                            "compId":46,
-                            "child":[
-                                ],
-                            "$HIDDEN":false
-                        }],
+                        ],
                     "$HIDDEN":false
                 }],
             "$HIDDEN":false

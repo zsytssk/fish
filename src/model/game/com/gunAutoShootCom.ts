@@ -1,5 +1,6 @@
 import { ComponentManager } from 'comMan/component';
-import { GunEvent, GunModel, GunStatus } from 'model/game/gun/gunModel';
+
+import { GunEvent, GunModel, GunStatus } from '@app/model/game/gun/gunModel';
 
 /** 自动攻击 */
 export class GunAutoShootCom extends ComponentManager {
@@ -14,6 +15,13 @@ export class GunAutoShootCom extends ComponentManager {
         const { event } = gun;
         event.on(
             GunEvent.SwitchOn,
+            () => {
+                gun.preAddBullet(gun.direction, true);
+            },
+            this,
+        );
+        event.on(
+            GunEvent.RemoveBullet,
             () => {
                 gun.preAddBullet(gun.direction, true);
             },

@@ -1,22 +1,25 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { changeBulletNum } from 'ctrl/game/gameCtrlUtils';
-import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { AudioRes } from 'data/audioRes';
-import { InternationalTip, Lang } from 'data/internationalConfig';
 import honor, { HonorDialog } from 'honor';
+import { loadRes } from 'honor/utils/loadRes';
 import { Event } from 'laya/events/Event';
 import { Handler } from 'laya/utils/Handler';
-import { ui } from 'ui/layaMaxUI';
-import { tween } from 'utils/layaTween';
-import { onNode, resizeParent } from 'utils/layaUtils';
-import { playSkeletonOnce } from 'utils/utils';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { changeUserAccount } from '@app/ctrl/game/gameCtrlUtils';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { Lang } from '@app/data/internationalConfig';
+import { getCurUserId } from '@app/model/modelState';
+import { ui } from '@app/ui/layaMaxUI';
+import { sleep } from '@app/utils/animate';
+import { tween } from '@app/utils/layaTween';
+import { onNode, resizeParent } from '@app/utils/layaUtils';
+import { log } from '@app/utils/log';
+import { covertLang, playSkeletonOnce, tplIntr } from '@app/utils/utils';
+
+import HelpPop from './help';
 import { LotteryExchangeCtrl } from './lotteryExchangeCtrl';
 import { getLotteryData, runLottery } from './popSocket';
 import RewardPop from './reward';
-import { sleep } from 'utils/animate';
-import HelpPop from './help';
-import { loaderManager } from 'honor/state';
-import { log } from 'utils/log';
 
 type LotteryData = {
     lottery_id: string;
@@ -47,9 +50,9 @@ type LotteryItemUI = ui.pop.lottery.itemUI;
 /** 抽奖弹出层 */
 export default class LotteryPop
     extends ui.pop.lottery.lotteryUI
-    implements HonorDialog {
+    implements HonorDialog
+{
     private is_init = false;
-    public isModal = true;
     private lottery_interval: number;
     private lottery_exchange_ctrl: LotteryExchangeCtrl;
     private remain_info: {
@@ -57,19 +60,18 @@ export default class LotteryPop
         lottery_cost: number;
     };
     public static preEnter() {
-        const pop = honor.director.openDialog({
-            dialog: LotteryPop,
-            use_exist: true,
-            stay_scene: true,
-        }) as Promise<LotteryPop>;
+        const pop = honor.director.openDialog<LotteryPop>(
+            'pop/lottery/lottery.scene',
+        );
         const exchange_data = getLotteryData();
 
         return Promise.all([pop, exchange_data]).then(([dialog, data]) => {
             dialog.initData(data);
+            return dialog;
         });
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/lottery/lottery.scene');
+        return loadRes('pop/lottery/lottery.scene');
     }
     public async reloadData() {
         const exchange_data = await getLotteryData();
@@ -120,7 +122,6 @@ export default class LotteryPop
 
         const len = lottery_arr.length;
         if (len < 5) {
-            log(`test:>lottery:>0`, lottery_arr);
             for (let i = 0; i < 5 - len; i++) {
                 lottery_arr.push({
                     lottery_id: 'xx',
@@ -136,7 +137,6 @@ export default class LotteryPop
         progress.value = val > 1 ? 1 : val;
         lottery_remain.text = `${lottery_num}/${lottery_cost}`;
         lottery_list.array = lottery_arr;
-        log(`test:>lottery:>1`, val, lottery_arr);
         btn_lottery.disabled = val < 1;
         lottery_exchange_ctrl.renderData([...exchange]);
 
@@ -181,7 +181,7 @@ export default class LotteryPop
             return;
         }
 
-        runLottery().then(async id => {
+        runLottery().then(async (id) => {
             await this.runLotteryAni(id);
             lottery_num = lottery_num - lottery_cost;
             progress.value = lottery_num / lottery_cost;
@@ -192,18 +192,18 @@ export default class LotteryPop
     }
     /** 抽奖动画 */
     public runLotteryAni(id: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, _reject) => {
             const { lottery_list, btn_lottery } = this;
             const arr = lottery_list.array as LotteryRenderData[];
 
             btn_lottery.disabled = true;
-            const dist_index = arr.findIndex(item => {
+            const dist_index = arr.findIndex((item) => {
                 return item.lottery_id === id;
             });
 
             const dist_num = dist_index + 20;
             let end = false;
-            tween(3000, radio => {
+            tween(3000, (radio) => {
                 const cur_index = Math.round(radio * dist_num);
                 const round_index = cur_index % 5;
                 if (end) {
@@ -244,7 +244,9 @@ export default class LotteryPop
         const is_bullet = lottery_type === 'bullet';
 
         if (is_bullet) {
-            changeBulletNum(lottery_num);
+            changeUserAccount(getCurUserId(), [
+                { type: 'bullet', num: lottery_num },
+            ]);
         }
         RewardPop.preEnter({ type: lottery_type, num: lottery_num }).then(
             () => {
@@ -263,7 +265,7 @@ export default class LotteryPop
     }
     public onAwake() {
         const { btn_help } = this;
-        onLangChange(this, lang => {
+        onLangChange(this, (lang) => {
             this.initLang(lang);
         });
         btn_help.on(Event.CLICK, this, () => {
@@ -272,12 +274,12 @@ export default class LotteryPop
     }
     private initLang(lang: Lang) {
         const { title, btn_label, sub_title, lottery_exchange_ctrl } = this;
-        const { luckyDraw, redemption } = InternationalTip[lang];
-        btn_label.text = luckyDraw;
-        sub_title.text = redemption;
+        const ani_name = covertLang(lang);
+        btn_label.text = tplIntr('luckyDraw');
+        sub_title.text = tplIntr('redemption');
         lottery_exchange_ctrl.refresh();
         resizeParent(btn_label, 30, 142);
 
-        title.skin = `image/international/txt_lottery_${lang}.png`;
+        title.skin = `image/international/txt_lottery_${ani_name}.png`;
     }
 }

@@ -26,7 +26,6 @@ import { Input3D } from "../../Input3D";
 import { Vector3 } from "../../math/Vector3";
 import { Vector4 } from "../../math/Vector4";
 import { Viewport } from "../../math/Viewport";
-import { Physics3D } from "../../physics/Physics3D";
 import { PhysicsComponent } from "../../physics/PhysicsComponent";
 import { PhysicsSettings } from "../../physics/PhysicsSettings";
 import { PhysicsSimulation } from "../../physics/PhysicsSimulation";
@@ -41,7 +40,7 @@ import { Utils3D } from "../../utils/Utils3D";
 import { BaseCamera } from "../BaseCamera";
 import { Camera, CameraClearFlags } from "../Camera";
 import { DirectionLight } from "../light/DirectionLight";
-import { AlternateLightQueue, DirectionLightQueue, LightQueue } from "../light/LightQueue";
+import { AlternateLightQueue, LightQueue } from "../light/LightQueue";
 import { PointLight } from "../light/PointLight";
 import { SpotLight } from "../light/SpotLight";
 import { Material } from "../material/Material";
@@ -54,12 +53,23 @@ import { BaseRender } from "../render/BaseRender";
 import { RenderContext3D } from "../render/RenderContext3D";
 import { RenderElement } from "../render/RenderElement";
 import { RenderQueue } from "../render/RenderQueue";
-import { BoundsOctree } from "./BoundsOctree";
 import { Lightmap } from "./Lightmap";
 import { Scene3DShaderDeclaration } from "./Scene3DShaderDeclaration";
 import { ShadowCasterPass } from "../../shadowMap/ShadowCasterPass";
 import { DefineDatas } from "../../shader/DefineDatas";
-
+import { StaticBatchManager } from "../../graphics/StaticBatchManager";
+import { DynamicBatchManager } from "../../graphics/DynamicBatchManager";
+import { CannonPhysicsSimulation } from "../../physicsCannon/CannonPhysicsSimulation";
+import { CannonPhysicsSettings } from "../../physicsCannon/CannonPhysicsSettings";
+import { CannonPhysicsComponent } from "../../physicsCannon/CannonPhysicsComponent";
+import { VideoTexture } from "../../../resource/VideoTexture";
+import { ReflectionProbeManager } from "../reflectionProbe/ReflectionProbeManager";
+import { ShaderDataType } from "../../core/render/command/SetShaderDataCMD"
+import { Physics3D } from "../../Physics3D";
+import { PerformancePlugin } from "../../../utils/Performance";
+import { Sprite3D } from "../Sprite3D";
+import { ISceneRenderManager } from "./SceneRenderManager/ISceneRenderManager";
+import { BoundsOctree } from "./BoundsOctree";
 /**
  * 环境光模式
  */
@@ -69,6 +79,7 @@ export enum AmbientMode {
 	/** 球谐光照,例如通过天空盒生成的球谐数据。 */
 	SphericalHarmonics
 }
+
 
 /**
  * 用于实现3D场景。
@@ -84,7 +95,9 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/**Hierarchy资源。*/
 	static HIERARCHY: string = "HIERARCHY";
 	/**@internal */
-	static physicsSettings: PhysicsSettings = new PhysicsSettings();
+	static physicsSettings: PhysicsSettings;
+	/**@internal */
+	static cannonPhysicsSettings:CannonPhysicsSettings;
 	/** 是否开启八叉树裁剪。*/
 	static octreeCulling: boolean = false;
 	/** 八叉树初始化尺寸。*/
@@ -99,47 +112,81 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	static REFLECTIONMODE_SKYBOX: number = 0;
 	static REFLECTIONMODE_CUSTOM: number = 1;
 
+	static SCENERENDERFLAG_RENDERQPAQUE = 0;
+	static SCENERENDERFLAG_SKYBOX = 1;
+	static SCENERENDERFLAG_RENDERTRANSPARENT = 2;
+	/** @internal */
 	static FOGCOLOR: number = Shader3D.propertyNameToID("u_FogColor");
+	/** @internal */
 	static FOGSTART: number = Shader3D.propertyNameToID("u_FogStart");
+	/** @internal */
 	static FOGRANGE: number = Shader3D.propertyNameToID("u_FogRange");
-
+	/** @internal */
 	static DIRECTIONLIGHTCOUNT: number = Shader3D.propertyNameToID("u_DirationLightCount");
+	/** @internal */
 	static LIGHTBUFFER: number = Shader3D.propertyNameToID("u_LightBuffer");
+	/** @internal */
 	static CLUSTERBUFFER: number = Shader3D.propertyNameToID("u_LightClusterBuffer");
+	/** @internal */
 	static SUNLIGHTDIRECTION: number = Shader3D.propertyNameToID("u_SunLight.direction");
+	/** @internal */
 	static SUNLIGHTDIRCOLOR: number = Shader3D.propertyNameToID("u_SunLight.color");
+	/** @internal */
 	static AMBIENTSHAR: number = Shader3D.propertyNameToID("u_AmbientSHAr");
+	/** @internal */
 	static AMBIENTSHAG: number = Shader3D.propertyNameToID("u_AmbientSHAg");
+	/** @internal */
 	static AMBIENTSHAB: number = Shader3D.propertyNameToID("u_AmbientSHAb");
+	/** @internal */
 	static AMBIENTSHBR: number = Shader3D.propertyNameToID("u_AmbientSHBr");
+	/** @internal */
 	static AMBIENTSHBG: number = Shader3D.propertyNameToID("u_AmbientSHBg");
+	/** @internal */
 	static AMBIENTSHBB: number = Shader3D.propertyNameToID("u_AmbientSHBb");
+	/** @internal */
 	static AMBIENTSHC: number = Shader3D.propertyNameToID("u_AmbientSHC");
-	static REFLECTIONPROBE: number = Shader3D.propertyNameToID("u_ReflectionProbe");
-	static REFLECTIONCUBE_HDR_PARAMS: number = Shader3D.propertyNameToID("u_ReflectCubeHDRParams");
 
 	//------------------legacy lighting-------------------------------
+	/** @internal */
 	static LIGHTDIRECTION: number = Shader3D.propertyNameToID("u_DirectionLight.direction");
+	/** @internal */
 	static LIGHTDIRCOLOR: number = Shader3D.propertyNameToID("u_DirectionLight.color");
+	/** @internal */
 	static POINTLIGHTPOS: number = Shader3D.propertyNameToID("u_PointLight.position");
+	/** @internal */
 	static POINTLIGHTRANGE: number = Shader3D.propertyNameToID("u_PointLight.range");
+	/** @internal */
 	static POINTLIGHTATTENUATION: number = Shader3D.propertyNameToID("u_PointLight.attenuation");
+	/** @internal */
 	static POINTLIGHTCOLOR: number = Shader3D.propertyNameToID("u_PointLight.color");
+	/** @internal */
 	static SPOTLIGHTPOS: number = Shader3D.propertyNameToID("u_SpotLight.position");
+	/** @internal */
 	static SPOTLIGHTDIRECTION: number = Shader3D.propertyNameToID("u_SpotLight.direction");
+	/** @internal */
 	static SPOTLIGHTSPOTANGLE: number = Shader3D.propertyNameToID("u_SpotLight.spot");
+	/** @internal */
 	static SPOTLIGHTRANGE: number = Shader3D.propertyNameToID("u_SpotLight.range");
+	/** @internal */
 	static SPOTLIGHTCOLOR: number = Shader3D.propertyNameToID("u_SpotLight.color");
 	//------------------legacy lighting-------------------------------
-
+	/** @internal */
 	static AMBIENTCOLOR: number = Shader3D.propertyNameToID("u_AmbientColor");
-	static REFLECTIONTEXTURE: number = Shader3D.propertyNameToID("u_ReflectTexture");
+	/** @internal */
 	static TIME: number = Shader3D.propertyNameToID("u_Time");
 
 	/** @internal */
 	static _configDefineValues: DefineDatas = new DefineDatas();
 
+	/** @internal 场景更新标记*/
+	static __updateMark: number = 0;
+	static set _updateMark(value: number) {
+		Scene3D.__updateMark = value;
+	}
 
+	static get _updateMark(): number {
+		return Scene3D.__updateMark;
+	}
 	/**
 	 * @internal
 	 */
@@ -165,7 +212,9 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SOFT_SHADOW_LOW = Shader3D.getDefineByName("SHADOW_SOFT_SHADOW_LOW");
 		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SOFT_SHADOW_HIGH = Shader3D.getDefineByName("SHADOW_SOFT_SHADOW_HIGH");
 		Scene3DShaderDeclaration.SHADERDEFINE_GI_AMBIENT_SH = Shader3D.getDefineByName("GI_AMBIENT_SH");
-
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SPOT = Shader3D.getDefineByName("SHADOW_SPOT");
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SPOT_SOFT_SHADOW_LOW = Shader3D.getDefineByName("SHADOW_SPOT_SOFT_SHADOW_LOW");
+		Scene3DShaderDeclaration.SHADERDEFINE_SHADOW_SPOT_SOFT_SHADOW_HIGH = Shader3D.getDefineByName("SHADOW_SPOT_SOFT_SHADOW_HIGH");
 
 		var config: Config3D = Config3D._config;
 		var configShaderValue: DefineDatas = Scene3D._configDefineValues;
@@ -184,6 +233,11 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			default:
 				throw "Scene3D:unknown shader quality.";
 		}
+		if (config.isUseCannonPhysicsEngine) {
+			Physics3D._cannon && (Scene3D.cannonPhysicsSettings = new CannonPhysicsSettings());
+		} else {
+			Physics3D._bullet && (Scene3D.physicsSettings = new PhysicsSettings());
+		}
 	}
 
 
@@ -195,7 +249,6 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	static load(url: string, complete: Handler): void {
 		ILaya.loader.create(url, complete, null, Scene3D.HIERARCHY);
 	}
-
 	/** @internal */
 	private _url: string;
 	/** @internal */
@@ -207,7 +260,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** @internal */
 	public _spotLights: LightQueue<SpotLight> = new LightQueue();
 	/** @internal */
-	public _directionLights: DirectionLightQueue = new DirectionLightQueue();
+	public _directionLights: LightQueue<DirectionLight> = new LightQueue();
 	/** @internal */
 	public _alternateLights: AlternateLightQueue = new AlternateLightQueue();
 
@@ -239,11 +292,17 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	private _reflectionIntensity: number = 1.0;
 
 	/** @internal */
-	_mainLight: DirectionLight;
+	_mainDirectionLight: DirectionLight;
+	/** @internal */
+	_mainSpotLight: SpotLight;
+	/** @internal */
+	_mainPointLight: PointLight;//TODO
 	/** @internal */
 	_physicsSimulation: PhysicsSimulation;
 	/** @internal */
-	_octree: BoundsOctree;
+	_cannonPhysicsSimulation: CannonPhysicsSimulation;
+	/** @internal */
+	_octree: ISceneRenderManager;
 	/** @internal 只读,不允许修改。*/
 	_collsionTestList: number[] = [];
 
@@ -260,13 +319,26 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	/** @internal */
 	_animatorPool: SimpleSingletonList = new SimpleSingletonList();
 	/** @internal */
-	_scriptPool: Script3D[] = new Array<Script3D>();
+	_updateScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_lateUpdateScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_preRenderScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_postRenderScriptPool: Script3D[] = new Array<Script3D>();
+	/** @internal */
+	_scriptPool:Script3D[] = new Array<Script3D>();
+
 	/** @internal */
 	_tempScriptPool: Script3D[] = new Array<Script3D>();
 	/** @internal */
 	_needClearScriptPool: boolean = false;
 	/**	@internal */
 	_reflectionCubeHDRParams: Vector4 = new Vector4();
+	/** @internal */
+	_reflectionProbeManager: ReflectionProbeManager = new ReflectionProbeManager();
+
+
 
 	/** 当前创建精灵所属遮罩层。*/
 	currentCreationLayer: number = Math.pow(2, 0);
@@ -292,6 +364,15 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	get url(): string {
 		return this._url;
+	}
+
+	set sceneRenderableManager(manager:ISceneRenderManager){
+		this._octree = manager;
+		for(let i = 0,n = this._renders.length;i<n;i++) {
+			let render = <BaseRender>this._renders.elements[i];
+			this._renders.remove(render);
+			this._addRenderObject(render);
+		}
 	}
 
 	/**
@@ -417,9 +498,13 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	}
 
 	set reflection(value: TextureCube) {
+		value = value ? value : TextureCube.blackTexture;
 		if (this._reflection != value) {
-			this._shaderValues.setTexture(Scene3D.REFLECTIONTEXTURE, value || TextureCube.blackTexture);
-			this._reflection = value;
+			value._addReference();
+			this._reflectionProbeManager.sceneReflectionProbe = value;
+			this._reflection = value
+			this._reflectionProbeManager._needUpdateAllRender = true;
+
 		}
 	}
 
@@ -436,6 +521,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			if (this._reflectionDecodeFormat == TextureDecodeFormat.RGBM)
 				this._reflectionCubeHDRParams.x *= 5.0;//5.0 is RGBM param
 			this._reflectionDecodeFormat = value;
+			this._reflectionProbeManager.sceneReflectionCubeHDRParam = this._reflectionCubeHDRParams;
 		}
 	}
 
@@ -452,6 +538,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		if (this._reflectionDecodeFormat == TextureDecodeFormat.RGBM)
 			this._reflectionCubeHDRParams.x *= 5.0;//5.0 is RGBM param
 		this._reflectionIntensity = value;
+		this._reflectionProbeManager.sceneReflectionCubeHDRParam = this._reflectionCubeHDRParams;
 	}
 
 	/**
@@ -468,6 +555,9 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		return this._physicsSimulation;
 	}
 
+	get cannonPhysicsSimulation(): CannonPhysicsSimulation {
+		return this._cannonPhysicsSimulation;
+	}
 	/**
 	 * 场景时钟。
 	 * @override
@@ -522,8 +612,12 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	constructor() {
 		super();
-		if (Physics3D._enablePhysics)
+		if (!Config3D._config.isUseCannonPhysicsEngine && Physics3D._bullet)
 			this._physicsSimulation = new PhysicsSimulation(Scene3D.physicsSettings);
+		else if (Physics3D._cannon) {
+			this._cannonPhysicsSimulation = new CannonPhysicsSimulation(Scene3D.cannonPhysicsSettings);
+		}
+
 
 		this._shaderValues = new ShaderData(null);
 
@@ -537,12 +631,8 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		for (var i: number = 0; i < 7; i++)
 			this._shCoefficients[i] = new Vector4();
 
-		this._shaderValues.setVector(Scene3D.REFLECTIONCUBE_HDR_PARAMS, this._reflectionCubeHDRParams);
+		this._reflectionProbeManager.sceneReflectionCubeHDRParam = this._reflectionCubeHDRParams;
 
-		if (Render.supportWebGLPlusCulling) {//[NATIVE]
-			this._cullingBufferIndices = new Int32Array(1024);
-			this._cullingBufferResult = new Int32Array(1024);
-		}
 
 		//this._shaderValues.setTexture(Scene3D.RANGEATTENUATIONTEXTURE, ShaderInit3D._rangeAttenTex);//TODO:
 
@@ -596,32 +686,58 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 *@internal
 	 */
 	private _update(): void {
+		PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D);
 		var delta: number = this.timer._delta / 1000;
 		this._time += delta;
 		this._shaderValues.setNumber(Scene3D.TIME, this._time);
-
+		//Physics
+		PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS);
 		var simulation: PhysicsSimulation = this._physicsSimulation;
-		if (Physics3D._enablePhysics && !PhysicsSimulation.disableSimulation) {
+		if (Physics3D._enablePhysics && !PhysicsSimulation.disableSimulation && !Config3D._config.isUseCannonPhysicsEngine) {
 			simulation._updatePhysicsTransformFromRender();
 			PhysicsComponent._addUpdateList = false;//物理模拟器会触发_updateTransformComponent函数,不加入更新队列
 			//simulate physics
+			PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS_SIMULATE);
 			simulation._simulate(delta);
+			PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS_SIMULATE);
 			//update character sprite3D transforms from physics engine simulation
+			PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS_CHARACTORCOLLISION);
 			simulation._updateCharacters();
 			PhysicsComponent._addUpdateList = true;
-
 			//handle frame contacts
 			simulation._updateCollisions();
-
+			PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS_CHARACTORCOLLISION);
+			
+			PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS_EVENTSCRIPTS);
 			//send contact events
 			simulation._eventScripts();
+			PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS_EVENTSCRIPTS);
 		}
+		if (Physics3D._cannon && Config3D._config.isUseCannonPhysicsEngine) {
+			var cannonSimulation: CannonPhysicsSimulation = this._cannonPhysicsSimulation;
+			cannonSimulation._updatePhysicsTransformFromRender();
+			CannonPhysicsComponent._addUpdateList = false;
+			cannonSimulation._simulate(delta);
+			CannonPhysicsComponent._addUpdateList = true;
+			cannonSimulation._updateCollisions();
+			cannonSimulation._eventScripts();
+		}
+		PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D_PHYSICS);
+		//update Scripts
+		PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_UPDATESCRIPT);
 		this._input._update();
 
 		this._clearScript();
 		this._updateScript();
 		Animator._update(this);
+		VideoTexture._update();
+		if (this._reflectionProbeManager._needUpdateAllRender)
+			this._reflectionProbeManager.updateAllRenderObjects(this._renders);
+		else
+			this._reflectionProbeManager.update();
 		this._lateUpdateScript();
+		PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D_UPDATESCRIPT);
+		PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D);
 	}
 
 	/**
@@ -689,6 +805,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	}
 
 	/**
+	 * @param url 路径
 	 */
 	_setCreateURL(url: string): void {
 		this._url = URL.formatURL(url);
@@ -723,6 +840,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			}
 			this._scriptPool = this._tempScriptPool;
 			scripts.length = 0;
+
 			this._tempScriptPool = scripts;
 
 			this._needClearScriptPool = false;
@@ -733,7 +851,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	private _updateScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._updateScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = scripts[i];
 			(script && script.enabled) && (script.onUpdate());
@@ -744,7 +862,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	private _lateUpdateScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._lateUpdateScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = (<Script3D>scripts[i]);
 			(script && script.enabled) && (script.onLateUpdate());
@@ -785,9 +903,10 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			var dirCount: number = this._directionLights._length;
 			var dirElements: DirectionLight[] = this._directionLights._elements;
 			if (dirCount > 0) {
-				var sunLightIndex: number = this._directionLights.getSunLight();//get the brightest light as sun
-				this._mainLight = dirElements[sunLightIndex];
-				for (var i: number = 0; i < dirCount; i++ , curCount++) {
+				var sunLightIndex: number = this._directionLights.getBrightestLight();//get the brightest light as sun
+				this._mainDirectionLight = dirElements[sunLightIndex];
+				this._directionLights.normalLightOrdering(sunLightIndex);
+				for (var i: number = 0; i < dirCount; i++, curCount++) {
 					var dirLight: DirectionLight = dirElements[i];
 					var dir: Vector3 = dirLight._direction;
 					var intCor: Vector3 = dirLight._intensityColor;
@@ -801,7 +920,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 					ligPix[off + 4] = dir.x;
 					ligPix[off + 5] = dir.y;
 					ligPix[off + 6] = dir.z;
-					if (i == sunLightIndex) {
+					if (i == 0) {
 						shaderValues.setVector3(Scene3D.SUNLIGHTDIRCOLOR, intCor);
 						shaderValues.setVector3(Scene3D.SUNLIGHTDIRECTION, dir);
 					}
@@ -815,7 +934,10 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			var poiCount: number = this._pointLights._length;
 			if (poiCount > 0) {
 				var poiElements: PointLight[] = this._pointLights._elements;
-				for (var i: number = 0; i < poiCount; i++ , curCount++) {
+				var mainPointLightIndex: number = this._pointLights.getBrightestLight();
+				this._mainPointLight = poiElements[mainPointLightIndex];
+				this._pointLights.normalLightOrdering(mainPointLightIndex);
+				for (var i: number = 0; i < poiCount; i++, curCount++) {
 					var poiLight: PointLight = poiElements[i];
 					var pos: Vector3 = poiLight.transform.position;
 					var intCor: Vector3 = poiLight._intensityColor;
@@ -838,7 +960,10 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			var spoCount: number = this._spotLights._length;
 			if (spoCount > 0) {
 				var spoElements: SpotLight[] = this._spotLights._elements;
-				for (var i: number = 0; i < spoCount; i++ , curCount++) {
+				var mainSpotLightIndex: number = this._spotLights.getBrightestLight();
+				this._mainSpotLight = spoElements[mainSpotLightIndex];
+				this._spotLights.normalLightOrdering(mainSpotLightIndex)
+				for (var i: number = 0; i < spoCount; i++, curCount++) {
 					var spoLight: SpotLight = spoElements[i];
 					var dir: Vector3 = spoLight._direction;
 					var pos: Vector3 = spoLight.transform.position;
@@ -873,7 +998,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		else {
 			if (this._directionLights._length > 0) {
 				var dirLight: DirectionLight = this._directionLights._elements[0];
-				this._mainLight = dirLight;
+				this._mainDirectionLight = dirLight;
 				Vector3.scale(dirLight.color, dirLight._intensity, dirLight._intensityColor);
 
 				dirLight.transform.worldMatrix.getForward(dirLight._direction);
@@ -889,6 +1014,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			}
 			if (this._pointLights._length > 0) {
 				var poiLight: PointLight = this._pointLights._elements[0];
+				this._mainPointLight = poiLight;
 				Vector3.scale(poiLight.color, poiLight._intensity, poiLight._intensityColor);
 				shaderValues.setVector3(Scene3D.POINTLIGHTCOLOR, poiLight._intensityColor);
 				shaderValues.setVector3(Scene3D.POINTLIGHTPOS, poiLight.transform.position);
@@ -900,6 +1026,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			}
 			if (this._spotLights._length > 0) {
 				var spotLight: SpotLight = this._spotLights._elements[0];
+				this._mainSpotLight = spotLight;
 				Vector3.scale(spotLight.color, spotLight._intensity, spotLight._intensityColor);
 				shaderValues.setVector3(Scene3D.SPOTLIGHTCOLOR, spotLight._intensityColor);
 				shaderValues.setVector3(Scene3D.SPOTLIGHTPOS, spotLight.transform.position);
@@ -916,29 +1043,55 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		}
 	}
 
+	private _removeScriptInPool(scriptPool:Script3D[],script:Script3D){
+		let index = scriptPool.indexOf(script);
+		if(index!=-1){
+			scriptPool.splice(index,1);
+		}
+	}
+
 	/**
 	 * @internal
 	 */
 	_addScript(script: Script3D): void {
+		if(script._indexInPool!=-1)
+			return;
 		var scripts: Script3D[] = this._scriptPool;
 		script._indexInPool = scripts.length;
 		scripts.push(script);
+		if(script.onUpdate!==Script3D.prototype.onUpdate)
+			this._updateScriptPool.push(script);
+		if(script.onLateUpdate!==Script3D.prototype.onLateUpdate)
+			this._lateUpdateScriptPool.push(script);
+		if(script.onPreRender!==Script3D.prototype.onPreRender)
+			this._preRenderScriptPool.push(script);
+		if(script.onPostRender!==Script3D.prototype.onPostRender)
+			this._postRenderScriptPool.push(script);
+		
 	}
 
 	/**
 	 * @internal
 	 */
 	_removeScript(script: Script3D): void {
-		this._scriptPool[script._indexInPool] = null;
+		if(script._indexInPool==-1)
+			return;
+		this._scriptPool[script._indexInPool]=null;
 		script._indexInPool = -1;
 		this._needClearScriptPool = true;
+		this._removeScriptInPool(this._updateScriptPool,script);
+		this._removeScriptInPool(this._lateUpdateScriptPool,script);
+		this._removeScriptInPool(this._preRenderScriptPool,script);
+		this._removeScriptInPool(this._postRenderScriptPool,script);
 	}
+
+	
 
 	/**
 	 * @internal
 	 */
 	_preRenderScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._preRenderScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = scripts[i];
 			(script && script.enabled) && (script.onPreRender());
@@ -949,7 +1102,7 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @internal
 	 */
 	_postRenderScript(): void {
-		var scripts: Script3D[] = this._scriptPool;
+		var scripts: Script3D[] = this._postRenderScriptPool;
 		for (var i: number = 0, n: number = scripts.length; i < n; i++) {
 			var script: Script3D = scripts[i];
 			(script && script.enabled) && (script.onPostRender());
@@ -1073,26 +1226,32 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	}
 
 	/**
-	 * @internal
+	 * @internal 渲染Scene的各个管线
 	 */
-	_renderScene(context: RenderContext3D): void {
+	_renderScene(context: RenderContext3D, renderFlag: number): void {
 		var camera: Camera = <Camera>context.camera;
-
-		this._opaqueQueue._render(context);//非透明队列
-		if (camera.clearFlag === CameraClearFlags.Sky) {
-			if (camera.skyRenderer._isAvailable())
-				camera.skyRenderer._render(context);
-			else if (this._skyRenderer._isAvailable())
-				this._skyRenderer._render(context);
-		}
-		this._transparentQueue._render(context);//透明队列
-
-		if (FrustumCulling.debugFrustumCulling) {
-			var renderElements: RenderElement[] = this._debugTool._render._renderElements;
-			for (var i: number = 0, n: number = renderElements.length; i < n; i++) {
-				renderElements[i]._update(this, context, null, null);
-				renderElements[i]._render(context);
-			}
+		switch (renderFlag) {
+			case Scene3D.SCENERENDERFLAG_RENDERQPAQUE:
+				this._opaqueQueue._render(context);//非透明队列
+				break;
+			case Scene3D.SCENERENDERFLAG_SKYBOX:
+				if (camera.clearFlag === CameraClearFlags.Sky) {
+					if (camera.skyRenderer._isAvailable())
+						camera.skyRenderer._render(context);
+					else if (this._skyRenderer._isAvailable())
+						this._skyRenderer._render(context);
+				}
+				break;
+			case Scene3D.SCENERENDERFLAG_RENDERTRANSPARENT:
+				this._transparentQueue._render(context);//透明队列
+				if (FrustumCulling.debugFrustumCulling) {
+					var renderElements: RenderElement[] = this._debugTool._render._renderElements;
+					for (var i: number = 0, n: number = renderElements.length; i < n; i++) {
+						renderElements[i]._update(this, context, null, null);
+						renderElements[i]._render(context);
+					}
+				}
+				break;
 		}
 	}
 
@@ -1164,7 +1323,17 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 			this.ambientSphericalHarmonics = ambientSH;
 		}
 		var reflectionData: string = data.reflection;
-		(reflectionData != undefined) && (this.reflection = Loader.getRes(reflectionData));
+		if(reflectionData != undefined){
+			let tex = Loader.getRes(reflectionData);
+			if(tex){
+				this.reflection = tex;
+			}else{
+				let h = Handler.create(this,()=>{
+					this.reflection = Loader.getRes(reflectionData);
+				})
+				ILaya.loader.create(reflectionData, h);
+			}
+		}
 
 		var reflectionDecodingFormatData: number = data.reflectionDecodingFormat;
 		(reflectionDecodingFormatData != undefined) && (this.reflectionDecodingFormat = reflectionDecodingFormatData);
@@ -1184,23 +1353,11 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	_addRenderObject(render: BaseRender): void {
 		if (this._octree && render._supportOctree) {
-			this._octree.add(render);
+			this._octree.addRender(render);
 		} else {
 			this._renders.add(render);
-			if (Render.supportWebGLPlusCulling) {//[NATIVE]
-				var indexInList: number = render._getIndexInList();
-				var length: number = this._cullingBufferIndices.length;
-				if (indexInList >= length) {
-					var tempIndices: Int32Array = this._cullingBufferIndices;
-					var tempResult: Int32Array = this._cullingBufferResult;
-					this._cullingBufferIndices = new Int32Array(length + 1024);
-					this._cullingBufferResult = new Int32Array(length + 1024);
-					this._cullingBufferIndices.set(tempIndices, 0);
-					this._cullingBufferResult.set(tempResult, 0);
-				}
-				this._cullingBufferIndices[indexInList] = render._cullingBufferIndex;
-			}
 		}
+		render._addReflectionProbeUpdate();
 	}
 
 	/**
@@ -1208,16 +1365,9 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 */
 	_removeRenderObject(render: BaseRender): void {
 		if (this._octree && render._supportOctree) {
-			this._octree.remove(render);
+			this._octree.removeRender(render);
 		} else {
-			var endRender: BaseRender;
-			if (Render.supportWebGLPlusCulling) {//[NATIVE]
-				endRender = (<BaseRender>this._renders.elements[this._renders.length - 1]);
-			}
 			this._renders.remove(render);
-			if (Render.supportWebGLPlusCulling) {//[NATIVE]
-				this._cullingBufferIndices[endRender._getIndexInList()] = endRender._cullingBufferIndex;
-			}
 		}
 	}
 
@@ -1232,8 +1382,23 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	}
 
 	/**
+	 * @internal
+	 */
+	_clearRenderQueue(): void {
+		this._opaqueQueue.clear();
+		this._transparentQueue.clear();
+		var staticBatchManagers: StaticBatchManager[] = StaticBatchManager._managers;
+		for (var i: number = 0, n: number = staticBatchManagers.length; i < n; i++)
+			staticBatchManagers[i]._clear();
+		var dynamicBatchManagers: DynamicBatchManager[] = DynamicBatchManager._managers;
+		for (var i: number = 0, n: number = dynamicBatchManagers.length; i < n; i++)
+			dynamicBatchManagers[i]._clear();
+	}
+
+	/**
 	 * @inheritDoc
 	 * @override
+	 * 删除资源
 	 */
 	destroy(destroyChild: boolean = true): void {
 		if (this.destroyed)
@@ -1245,12 +1410,26 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 		this._pointLights = null;
 		this._spotLights = null;
 		this._alternateLights = null;
-		this._lightmaps = null;
 		this._shaderValues = null;
+		this._renders.clearElement();
+		this._animatorPool.clearElement();
 		this._renders = null;
+		this._animatorPool = null;
 		this._cameraPool = null;
 		this._octree = null;
 		this._physicsSimulation && this._physicsSimulation._destroy();
+		this._reflection._removeReference();
+		this._reflection = null;
+		var maps: Lightmap[] = this._lightmaps;
+		if (maps) {
+			for (var i: number = 0, n: number = maps.length; i < n; i++) {
+				var map: Lightmap = maps[i];
+				map.lightmapColor && map.lightmapColor._removeReference();
+				map.lightmapDirection && map.lightmapDirection._removeReference();
+			}
+		}
+		this._lightmaps = null;
+		this._reflectionProbeManager.destroy();
 		Loader.clearRes(this.url);
 	}
 
@@ -1259,47 +1438,94 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 	 * @override
 	 * @internal
 	 */
-	render(ctx: Context, x: number, y: number): void {
+	render(ctx: Context): void {
 		//TODO:外层应该设计为接口调用
 		ctx._curSubmit = SubmitBase.RENDERBASE;//打断2D合并的renderKey
 		this._children.length > 0 && ctx.addRenderObject(this);
 	}
 
 	/**
-	 * 
+	 * 渲染入口
 	 */
 	renderSubmit(): number {
-		var gl: any = LayaGL.instance;
+		PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D);
 		this._prepareSceneToRender();
 		var i: number, n: number, n1: number;
+		PerformancePlugin.begainSample(PerformancePlugin.PERFORMANCE_LAYA_3D_RENDER);
+		Scene3D._updateMark++;
 		for (i = 0, n = this._cameraPool.length, n1 = n - 1; i < n; i++) {
 			if (Render.supportWebGLPlusRendering)
 				ShaderData.setRuntimeValueMode((i == n1) ? true : false);
 			var camera: Camera = (<Camera>this._cameraPool[i]);
 			camera.enableRender && camera.render();
 		}
+		PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D_RENDER);
 		Context.set2DRenderConfig();//还原2D配置
+		PerformancePlugin.endSample(PerformancePlugin.PERFORMANCE_LAYA_3D);
 		return 1;
 	}
 
 	/**
-	 * 
+	 * 获得渲染类型
 	 */
 	getRenderType(): number {
 		return 0;
 	}
 
 	/**
-	 * 
+	 * 删除渲染
 	 */
 	releaseRender(): void {
 	}
 
 	/**
-	 * 
+	 * @internal
 	 */
 	reUse(context: Context, pos: number): number {
 		return 0;
+	}
+
+	/**
+	 * 设置全局渲染数据
+	 * @param name 数据对应着色器名字
+	 * @param shaderDataType 渲染数据类型
+	 * @param value 渲染数据值
+	 */
+	setGlobalShaderValue(name: string, shaderDataType: ShaderDataType, value: any) {
+		var shaderOffset = Shader3D.propertyNameToID(name);
+		switch (shaderDataType) {
+			case ShaderDataType.Int:
+				this._shaderValues.setInt(shaderOffset, value);
+				break;
+			case ShaderDataType.Number:
+				this._shaderValues.setNumber(shaderOffset, value);
+				break;
+			case ShaderDataType.Bool:
+				this._shaderValues.setBool(shaderOffset, value);
+				break;
+			case ShaderDataType.Matrix4x4:
+				this._shaderValues.setMatrix4x4(shaderOffset, value);
+				break;
+			case ShaderDataType.Quaternion:
+				this._shaderValues.setQuaternion(shaderOffset, value);
+				break;
+			case ShaderDataType.Texture:
+				this._shaderValues.setTexture(shaderOffset, value);
+				break;
+			case ShaderDataType.Vector4:
+				this._shaderValues.setVector(shaderOffset, value);
+				break;
+			case ShaderDataType.Vector2:
+				this._shaderValues.setVector2(shaderOffset, value);
+				break;
+			case ShaderDataType.Vector3:
+				this._shaderValues.setVector3(shaderOffset, value);
+				break;
+			case ShaderDataType.Buffer:
+				this._shaderValues.setBuffer(shaderOffset, value);
+				break;
+		}
+
 	}
 
 
@@ -1313,7 +1539,8 @@ export class Scene3D extends Sprite implements ISubmit, ICreateResource {
 
 	set customReflection(value: TextureCube) {
 		if (this._reflection != value) {
-			this._shaderValues.setTexture(Scene3D.REFLECTIONTEXTURE, value || TextureCube.blackTexture);
+			value._addReference();
+			this._reflectionProbeManager.sceneReflectionProbe = value;
 			this._reflection = value;
 		}
 	}

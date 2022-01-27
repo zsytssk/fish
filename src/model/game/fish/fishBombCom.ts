@@ -1,6 +1,7 @@
+import { PlayerModel } from '../playerModel';
 import { FishModel } from './fishModel';
 import { getBeBombFish } from './fishModelUtils';
-import { PlayerModel } from '../playerModel';
+
 export const FishBombEvent = {
     FishBomb: 'fish_bomb',
 };
@@ -22,7 +23,7 @@ export class FishBombCom {
             player,
         } as FishBombInfo;
         if (player.need_emit) {
-            data.fish_list = getBeBombFish(pos).filter(item => {
+            data.fish_list = getBeBombFish(pos).filter((item) => {
                 return item.id !== id;
             });
         }

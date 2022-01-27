@@ -1,8 +1,8 @@
-import { Templet } from 'laya/ani/bone/Templet';
 import { loader } from 'Laya';
+import { Templet } from 'laya/ani/bone/Templet';
 import { Animation } from 'laya/display/Animation';
-import { Image } from 'laya/ui/Image';
 import { Sprite } from 'laya/display/Sprite';
+import { Image } from 'laya/ui/Image';
 import { Handler } from 'laya/utils/Handler';
 
 const temple_pool: {

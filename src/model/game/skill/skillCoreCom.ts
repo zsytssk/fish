@@ -1,9 +1,10 @@
-import { setProps, callFunc } from 'utils/utils';
-import { clearCount, startCount } from 'utils/count';
-import { PlayerModel } from 'model/game/playerModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { debug } from 'utils/log';
+
+import { PlayerModel } from '@app/model/game/playerModel';
+import { clearCount, startCount } from '@app/utils/count';
+import { debug, error } from '@app/utils/log';
+import { setProps, callFunc } from '@app/utils/utils';
 
 /** 技能的状态 */
 export enum SkillStatus {
@@ -53,9 +54,9 @@ export class SkillCoreCom extends ComponentManager {
     /** 数目 */
     public num: number;
     /** 冷却时间 */
-    public cool_time: number = 10;
+    public cool_time = 10;
     /** 冷却已经使用的时间 */
-    public used_time: number = 0;
+    public used_time = 0;
     /** 冷却 count index */
     public count_index: number;
     /** 技能的状态 */
@@ -150,7 +151,6 @@ export class SkillCoreCom extends ComponentManager {
         if (this.status === SkillStatus.Active) {
             return;
         }
-        debug(`SkillCoreCom:>reset:>`);
         this.setStatus(SkillStatus.Normal);
         clearCount(this.count_index);
     }

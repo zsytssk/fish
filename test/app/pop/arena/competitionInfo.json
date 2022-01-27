@@ -1,0 +1,63 @@
+{
+    "match": {
+        "startTime": 1638892800000,
+        "endTime": 1638892800000,
+        "startPeriod": "11:11",
+        "endPeriod": "12:12",
+        "fee": 0
+    },
+    "currency": "BTC",
+    "arenaStatus": 2,
+    "champion": [
+        {
+            "amount": "1",
+            "endRanking": 1,
+            "currency": "USDT",
+            "startRanking": 1,
+            "userId": "zsy"
+        },
+        {
+            "score": 3,
+            "amount": "1",
+            "endRanking": 1,
+            "currency": "USDT",
+            "startRanking": 1,
+            "userId": 3
+        },
+        {
+            "score": 2,
+            "amount": "2",
+            "endRanking": 2,
+            "currency": "USDT",
+            "startRanking": 2,
+            "userId": 2
+        },
+        {
+            "score": 1,
+            "amount": "3",
+            "endRanking": 3,
+            "currency": "USDT",
+            "startRanking": 3,
+            "userId": 4
+        },
+        {
+            "score": 1,
+            "amount": "4",
+            "endRanking": 10,
+            "currency": "USDT",
+            "startRanking": 4,
+            "userId": 1
+        },
+        {
+            "amount": "5",
+            "endRanking": 20,
+            "currency": "USDT",
+            "startRanking": 11
+        }
+    ],
+    "myself": {
+        "score": 0,
+        "ranking": 0,
+        "status": 1
+    }
+}

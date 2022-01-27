@@ -1,4 +1,4 @@
-import Bezier from 'bezier-js';
+import { Bezier } from 'bezier-js';
 import { PATH } from '../../src/data/path';
 import { write } from '../zutil/ls/write';
 import { stringify } from '../zutil/utils/stringify';

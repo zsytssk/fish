@@ -1,30 +1,37 @@
-import { modelState, getCurPlayer, isCurUser } from 'model/modelState';
-import { ctrlState } from 'ctrl/ctrlState';
-import { SkillMap } from 'data/config';
-import { LockFishModel } from 'model/game/skill/lockFishModel';
-import { waitCreateSocket } from 'ctrl/net/webSocketWrapUtil';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { InternationalTip } from 'data/internationalConfig';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import TipPop from 'view/pop/tip';
-import { tplStr } from 'utils/utils';
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { waitCreateSocket } from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { ServerEvent, ServerName } from '@app/data/serverEvent';
+import { LockFishModel } from '@app/model/game/skill/lockFishModel';
+import { isCurUser, modelState } from '@app/model/modelState';
+import { tplIntr } from '@app/utils/utils';
+import TipPop from '@app/view/pop/tip';
 
-export function changeBulletNum(num: number) {
-    const userId = modelState.app.user_info.user_id;
+import { ChangeUserNumInfo } from './gameCtrl';
+
+export function changeUserAccount(
+    userId: string,
+    arr: ChangeUserNumInfo['change_arr'],
+) {
     ctrlState.game.changeUserNumInfo({
         userId,
-        change_arr: [
-            {
-                num,
-                type: 'bullet',
-            },
-        ],
+        change_arr: arr,
     });
+}
+
+export function getItemType(itemId: string) {
+    if (itemId === '3001') {
+        return 'bullet';
+    }
+    if (itemId.indexOf('200') === 0) {
+        return 'skill';
+    }
+    return;
 }
 
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableCurUserOperation() {
-    const cur_player = modelState.app.game.getCurPlayer();
+    const cur_player = modelState.game.getCurPlayer();
     if (!cur_player) {
         return;
     }
@@ -35,7 +42,10 @@ export function disableCurUserOperation() {
 
 /** 禁用当前用户的自动操作行为:> 自动开炮 锁定 */
 export function disableAllUserOperation() {
-    const players = modelState.app.game.getPlayers();
+    if (!modelState.game) {
+        return;
+    }
+    const players = modelState.game?.getPlayers();
     for (const [_, player] of players) {
         if (!player.need_emit) {
             continue;
@@ -47,7 +57,8 @@ export function disableAllUserOperation() {
 }
 
 export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
-    return new Promise(async (resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, _reject) => {
         const game_socket = await waitCreateSocket(ServerName.Game);
         game_socket.event.once(
             ServerEvent.EnterGame,
@@ -62,7 +73,8 @@ export async function waitEnterGame(): Promise<[boolean, EnterGameRep?]> {
 }
 
 export async function waitGameExchangeOrLeave(): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async function (resolve, _reject) {
         const game_socket = await waitCreateSocket(ServerName.Game);
         game_socket.event.once(
             ServerEvent.ExchangeBullet,
@@ -91,7 +103,7 @@ export async function waitGameExchangeOrLeave(): Promise<boolean> {
 
 type Data = {
     bulletNum?: number;
-    bringAmount?: Number;
+    bringAmount?: number;
     currency?: string;
 };
 /** 提示带入 */
@@ -99,12 +111,13 @@ export function tipExchange(data: Data) {
     if (!data.currency) {
         return;
     }
-    const lang = getLang();
-    let tip = InternationalTip[lang].enterGameCostTip;
-    tip = tplStr(tip, {
-        bringAmount: data.bringAmount,
-        bulletNum: data.bulletNum,
-        currency: data.currency,
-    });
-    TipPop.tip(tip);
+    TipPop.tip(
+        tplIntr('enterGameCostTip', {
+            bringAmount: data.bringAmount,
+            bulletNum: data.bulletNum,
+            currency: data.currency,
+        }),
+        null,
+        { use_exist: false },
+    );
 }

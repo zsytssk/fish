@@ -1,23 +1,17 @@
+import { Laya, loader } from 'Laya';
+import { Stage } from 'laya/display/Stage';
+import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
+import { URL } from 'laya/net/URL';
+import { Handler } from 'laya/utils/Handler';
+import { Stat } from 'laya/utils/Stat';
+import { Utils } from 'laya/utils/Utils';
+import { WebGL } from 'laya/webgl/WebGL';
+
 import { initState, director } from './state';
 import { utils } from './utils/index';
 import { loadRes } from './utils/loadRes';
-import { Laya, loader } from 'Laya';
-// import { Laya3D } from 'Laya3D';
-import { Stat } from 'laya/utils/Stat';
-import { AtlasInfoManager } from 'laya/net/AtlasInfoManager';
-import { Handler } from 'laya/utils/Handler';
-import { WebGL } from 'laya/webgl/WebGL';
-import { Stage } from 'laya/display/Stage';
-import { Utils } from 'laya/utils/Utils';
-import { URL } from 'laya/net/URL';
-import { Config } from 'Config';
-import { isSafari } from './utils/isSafari';
-export type {
-    HonorDialog,
-    HonorDialogConfig,
-    HonorScene,
-    HonorLoadScene,
-} from './ui/view';
+
+export type { HonorDialog, HonorScene } from './ui/view';
 
 export type GameConfig = any;
 export type HonorExternConfig = {
@@ -44,8 +38,8 @@ async function run(
     extern_config: HonorExternConfig = {},
 ) {
     Laya.Config.isAntialias = true;
-    Laya.Config.useRetinalCanvas = true;
 
+    Laya.Config.useRetinalCanvas = true;
     if (/apple/i.test(navigator.vendor)) {
         Laya.Config.useRetinalCanvas = false;
         Laya.Config.useWebGL2 = false;
@@ -70,6 +64,7 @@ async function run(
     } else {
         DEBUG_MODE = false;
     }
+
     if (game_config.stat) {
         Stat.show(0, 0);
     }
@@ -93,7 +88,7 @@ async function run(
 
     const start_task: Array<Promise<any>> = [];
     // 激活大小图映射，加载小图的时候，如果发现小图在大图合集里面，则优先加载大图合集，而不是小图
-    const fileconfig_task = new Promise((resolve, reject) => {
+    const fileconfig_task = new Promise<void>((resolve, reject) => {
         AtlasInfoManager.enable(
             'fileconfig.json',
             Handler.create(null, async () => {

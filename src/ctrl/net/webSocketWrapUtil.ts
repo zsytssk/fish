@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CryptoJS from 'crypto-js';
 import { JSEncrypt } from 'jsencrypt';
-import {
-    Config,
-    WebSocketTrait,
-    WebSocketWrapCtrl,
-    SocketEvent,
-} from './webSocketWrap';
-import { EventCom } from 'comMan/eventCom';
-import { Utils } from 'laya/utils/Utils';
 import { Observable, Subscriber } from 'rxjs';
-import { error } from 'utils/log';
+
+import { EventCom } from 'comMan/eventCom';
+
+import { sleep } from '@app/utils/animate';
+import { log, error } from '@app/utils/log';
+
+import { Config, WebSocketTrait, WebSocketWrapCtrl } from './webSocketWrap';
 
 /** socket 的工具函数 */
 const common_key_map: Map<string, string> = new Map();
@@ -23,20 +22,27 @@ const SocketMapEvent = {
     Disconnect: 'disconnect',
 };
 
-export function createSocket(config: Config) {
-    return new Promise((resolve, reject) => {
+/** 重试三次 */
+export async function createSocket(config: Config, retry = 3, wait = 3) {
+    for (let i = 0; i < retry; i++) {
         const { name } = config;
         const ctor = socket_ctor || WebSocketWrapCtrl;
         const socket = new ctor(config);
-        socket.event.once(SocketEvent.Init, () => {
+        const status = await socket.connect();
+
+        log(`test:>createSocket:>${name}:>${i + 1}=${status}`);
+        if (status) {
             socket_map_event.emit(SocketMapEvent.Create, name, socket);
             socket_map.set(name, socket);
-            resolve(socket);
-        });
-    }) as Promise<WebSocketTrait>;
+            return socket;
+        } else {
+            await sleep(wait);
+            continue;
+        }
+    }
 }
 export function waitCreateSocket(name: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         const socket = socket_map.get(name);
         if (socket) {
             return resolve(socket);
@@ -153,6 +159,26 @@ export function encrypt(name: string, msg: string) {
     return encryptData.toString();
 }
 
+export function socketEventToPromise(
+    socket: WebSocketTrait,
+    event: string,
+    OK_CODE: number,
+) {
+    return <T>(data: any) => {
+        return new Promise<T>((resolve, reject) => {
+            socket.event.once(event, (_data: T, code: number) => {
+                if (code !== OK_CODE) {
+                    reject({ code, data: _data });
+                    return;
+                }
+
+                resolve(_data);
+            });
+            socket.send(event, data);
+        });
+    };
+}
+
 export function bindSocketEvent(
     socket: WebSocketTrait,
     bind_obj: any,
@@ -160,9 +186,6 @@ export function bindSocketEvent(
 ) {
     const { event } = socket;
     for (const key in bind_info) {
-        if (!bind_info.hasOwnProperty(key)) {
-            continue;
-        }
         event.on(key, bind_info[key], bind_obj);
     }
 }

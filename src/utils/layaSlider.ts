@@ -1,10 +1,10 @@
+import { Sprite } from 'laya/display/Sprite';
+import { Event } from 'laya/events/Event';
+import { Rectangle } from 'laya/maths/Rectangle';
 import { Box } from 'laya/ui/Box';
 import { Tab } from 'laya/ui/Tab';
-import { Rectangle } from 'laya/maths/Rectangle';
-import { Event } from 'laya/events/Event';
-import { Handler } from 'laya/utils/Handler';
 import { ViewStack } from 'laya/ui/ViewStack';
-import { Sprite } from 'laya/display/Sprite';
+import { Handler } from 'laya/utils/Handler';
 import { Tween } from 'laya/utils/Tween';
 
 const default_config = {

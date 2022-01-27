@@ -3,31 +3,33 @@ import {
     createImg,
     createSprite,
 } from 'honor/utils/createSkeleton';
-import { getSpriteInfo, getShadowInfo } from 'utils/dataUtil';
-import { FishSpriteInfo } from 'data/sprite';
+import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Sprite } from 'laya/display/Sprite';
+import { Texture } from 'laya/resource/Texture';
+
+import { ShadowItemInfo } from '@app/data/coordinate';
+import { FishSpriteInfo } from '@app/data/sprite';
+import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
+import { getSpriteInfo, getShadowInfo } from '@app/utils/dataUtil';
+import { vectorToDegree } from '@app/utils/mathUtils';
 import {
     createRedFilter,
     playSkeleton,
     stopSkeleton,
     createColorFilter,
-} from 'utils/utils';
-import { vectorToDegree } from 'utils/mathUtils';
-import { Sprite } from 'laya/display/Sprite';
-import { Skeleton } from 'laya/ani/bone/Skeleton';
+} from '@app/utils/utils';
+import { viewState } from '@app/view/viewState';
 import {
     createSkeletonPool,
     recoverSkeletonPool,
     createImgPool,
     recoverImgPool,
-} from 'view/viewStateUtils';
-import { ShadowItemInfo } from 'data/coordinate';
-import { viewState } from 'view/viewState';
-import { Texture } from 'laya/resource/Texture';
-import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
+} from '@app/view/viewStateUtils';
 
 export type FishViewInfo = {
     type: string;
     id: string;
+    group_id?: string;
     currency: string;
 };
 export class FishView extends Sprite {
@@ -107,7 +109,7 @@ export class FishView extends Sprite {
 
             const fish_icon = getCurrencyIcon(currency);
             if (fish_icon) {
-                createSprite(fish_icon).then(img => {
+                createSprite(fish_icon).then((img) => {
                     img.filters = [createColorFilter(coin_color)];
                     const texture = img.drawToTexture(
                         img.width,
@@ -180,9 +182,10 @@ export class FishView extends Sprite {
     public syncPos(pos: Point, velocity: SAT.Vector, horizon_turn: boolean) {
         const { turn_ani, fish_ani, visible, shadow_node, shadow_info } = this;
 
-        if (!visible) {
+        if (!visible || !shadow_node) {
             return;
         }
+
         const angle = vectorToDegree(velocity) + 90;
         if (horizon_turn) {
             /** angle(-90 - 90) + 90 = 0-180 */
@@ -220,7 +223,7 @@ export class FishView extends Sprite {
                     return;
                 }
                 fish_ani.filters = [];
-                resolve();
+                resolve(undefined);
             }, 500) as any;
         });
     }
@@ -230,12 +233,15 @@ export class FishView extends Sprite {
         if (this?.fish_ani?.filters) {
             this.fish_ani.filters = [];
         }
-        if (this.shadow_node) {
-            this.shadow_node.rotation = 0;
+
+        if (!this.destroyed) {
+            if (this.shadow_node?.displayedInStage) {
+                this.shadow_node.rotation = 0;
+            }
+            recoverSkeletonPool('fish', type, this.fish_ani);
+            recoverSkeletonPool('other', 'coin_light', this.coin_light);
+            recoverImgPool(`image/game/shadow`, this.shadow_node);
         }
-        recoverSkeletonPool('other', 'coin_light', this.coin_light);
-        recoverSkeletonPool('fish', type, this.fish_ani);
-        recoverImgPool(`image/game/shadow`, this.shadow_node);
 
         this.fish_ani = undefined;
         this.shadow_node = undefined;

@@ -1,0 +1,14 @@
+{
+    "currency": "BTC",
+    "isGiftBuy": true,
+    "id": 1,
+    "list": [
+        { "itemId": "3001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 },
+        { "itemId": "1001", "num": 1 }
+    ],
+    "price": "0.000000000001"
+}

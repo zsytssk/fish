@@ -1,14 +1,17 @@
-import { FishSpriteInfo } from 'data/sprite';
 import * as SAT from 'sat';
-import { DisplaceInfo } from 'utils/displace/displace';
-import { BodyCom } from '../com/bodyCom';
-import { getShapes } from '../com/bodyComUtil';
-import { GameModel } from '../gameModel';
-import { ModelEvent } from '../../modelEvent';
-import { setProps } from 'utils/utils';
+
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { getSpriteInfo } from 'utils/dataUtil';
+
+import { FishSpriteInfo } from '@app/data/sprite';
+import { getSpriteInfo } from '@app/utils/dataUtil';
+import { DisplaceInfo } from '@app/utils/displace/displace';
+import { getShapes } from '@app/utils/shapeUtil';
+import { setProps } from '@app/utils/utils';
+
+import { ModelEvent } from '../../modelEvent';
+import { BodyCom } from '../com/bodyCom';
+import { GameModel } from '../gameModel';
 
 export const FishEvent = {
     Destroy: ModelEvent.Destroy,
@@ -31,6 +34,7 @@ export type FishMoveData = {
 export type FishData = {
     type: string;
     id: string;
+    group_id?: string;
     score: number;
     currency: string;
 };
@@ -44,6 +48,8 @@ export enum FishStatus {
 export class FishModel extends ComponentManager {
     /** 唯一标示 */
     public id: string;
+    /* 鱼组id */
+    public group_id?: string;
     /** 鱼的类型 */
     public type: string;
     /** 位置 */
@@ -72,11 +78,11 @@ export class FishModel extends ComponentManager {
         this.initCom(data);
     }
     private initCom(data: FishData) {
-        const { type, id, score, currency } = data;
+        const { type, group_id, id, score, currency } = data;
 
         setProps(
             this as FishModel,
-            { type, id, score: score || 0, currency } as FishData,
+            { type, id, group_id, score: score || 0, currency } as FishData,
         );
         const sprite_info = getSpriteInfo('fish', type) as FishSpriteInfo;
         let horizon_turn = false;
@@ -108,6 +114,7 @@ export class FishModel extends ComponentManager {
     private onMoveChange = (displace_info: DisplaceInfo) => {
         const { body } = this;
         const { pos, velocity, is_complete, visible } = displace_info;
+
         if (is_complete) {
             return this.destroy();
         }
@@ -117,6 +124,7 @@ export class FishModel extends ComponentManager {
             this.velocity = velocity;
 
             body.update(pos, velocity);
+
             this.event.emit(FishEvent.Move, {
                 pos,
                 velocity,

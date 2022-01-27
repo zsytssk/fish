@@ -1,0 +1,19 @@
+{
+    "eid": "F:Nty01fz.9",
+    "fishId": 2,
+    "score": 3,
+    "displaceType": "path",
+    "displaceLen": "",
+    "pathNo": "66",
+    "currencyFish": "",
+    "usedTime": 53709,
+    "totalTime": 59540,
+    "funList": [],
+    "pathList": [],
+    "reverse": false,
+    "frozen": false,
+    "group": [
+        { "eid": "F:Nty01fz.A", "index": 0 },
+        { "eid": "F:Nty01fz.B", "index": 1 }
+    ]
+}

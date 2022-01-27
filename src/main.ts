@@ -1,8 +1,9 @@
-import { Config } from 'data/config';
-import { Lang } from 'data/internationalConfig';
-import { AppCtrl } from './ctrl/appCtrl';
+import { Config } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
 
+import { AppCtrl } from './ctrl/appCtrl';
 import './polyfill';
+import { getParams } from './utils/utils';
 
 function main() {
     init();
@@ -15,22 +16,17 @@ export function init() {
     Config.token = platform_info.token;
     Config.isLogin = platform_info.isLogin;
     Config.cndUrl = platform_info.cdn;
-    Config.lang = covertLang(platform_info.lang);
+    const testUrl = getParams('arenaSocket');
+    if (testUrl) {
+        Config.arenaSocketUrl = testUrl;
+    }
+
+    Config.lang = convertLang(getParams('lang') || platform_info.lang) as Lang;
 }
 
-export function covertLang(ori_lang: string) {
-    const save_lang = ori_lang;
-    let lang: Lang = Lang.En;
-    if (save_lang === 'en') {
-        lang = 'en' as Lang;
-    } else if (save_lang === 'zh-Hant') {
-        lang = 'hk' as Lang;
-    } else if (save_lang === 'zh-Hans') {
-        lang = 'zh' as Lang;
-    } else if (save_lang === 'ja') {
-        lang = 'jp' as Lang;
-    } else if (save_lang === 'ko') {
-        lang = 'kor' as Lang;
+export function convertLang(lang: string) {
+    if (Object.values(Lang).indexOf(lang as any) !== -1) {
+        return lang;
     }
-    return lang;
+    return 'en';
 }

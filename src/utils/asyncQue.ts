@@ -103,11 +103,11 @@ export function asyncOnly<T>(
             let wait = async_fn();
             if (!temp) {
                 wait = wait
-                    .then(data => {
+                    .then((data) => {
                         await_only_map.delete(async_id);
                         return data;
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         await_only_map.delete(async_id);
                         throw error;
                     });
@@ -120,10 +120,10 @@ export function asyncOnly<T>(
             await_only_map.set(async_id, await_item);
         }
         await_item.wait
-            .then(data => {
+            .then((data) => {
                 resolve(data);
             })
-            .catch(error => {
+            .catch((error) => {
                 reject(error);
             });
     });

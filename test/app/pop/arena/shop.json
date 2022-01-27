@@ -1,0 +1,93 @@
+[
+    {
+        "currency": "BTC",
+        "itemId": "1001",
+        "itemName": "皮肤1",
+        "itemType": 1,
+        "price": "0.00000001",
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "1002",
+        "itemName": "皮肤2",
+        "itemType": 1,
+        "price": "0.0000001",
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "1003",
+        "itemName": "皮肤3",
+        "itemType": 1,
+        "price": 0.000001,
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "1004",
+        "itemName": "皮肤3",
+        "itemType": 1,
+        "price": 1,
+        "num": 10,
+        "status": 2
+    },
+    {
+        "currency": "BTC",
+        "itemId": "1005",
+        "itemName": "皮肤3",
+        "itemType": 1,
+        "price": 1,
+        "num": 10,
+        "status": 2
+    },
+
+    {
+        "currency": "BTC",
+        "itemId": "2001",
+        "itemName": "BTC",
+        "itemType": 10,
+        "price": 1,
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "2001",
+        "itemName": "BTC",
+        "itemType": 10,
+        "price": 1,
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "2001",
+        "itemName": "BTC",
+        "itemType": 10,
+        "price": 1,
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "2001",
+        "itemName": "BTC",
+        "itemType": 10,
+        "price": 1,
+        "num": 10,
+        "status": 0
+    },
+    {
+        "currency": "BTC",
+        "itemId": "2001",
+        "itemName": "BTC",
+        "itemType": 10,
+        "price": 1,
+        "num": 10,
+        "status": 0
+    }
+]

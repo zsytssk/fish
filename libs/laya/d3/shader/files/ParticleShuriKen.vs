@@ -1,6 +1,18 @@
-#include "Lighting.glsl";
+// #include "Lighting.glsl";
 
-#ifdef GL_FRAGMENT_PRECISION_HIGH
+//修改这里剔除没有用到的光照函数，增加粒子的编译速度
+vec2 TransformUV(vec2 texcoord,vec4 tilingOffset) {
+	vec2 transTexcoord=vec2(texcoord.x,texcoord.y-1.0)*tilingOffset.xy+vec2(tilingOffset.z,-tilingOffset.w);
+	transTexcoord.y+=1.0;
+	return transTexcoord;
+}
+
+vec4 remapGLPositionZ(vec4 position) {
+	position.z=position.z * 2.0 - position.w;
+	return position;
+}
+
+#if defined(GL_FRAGMENT_PRECISION_HIGH)
   precision highp float;
 #else
   precision mediump float;
@@ -33,6 +45,7 @@ attribute vec4 a_SimulationWorldRotation;
 
 varying vec4 v_Color;
 #ifdef DIFFUSEMAP
+	attribute vec4 a_SimulationUV;
 	varying vec2 v_TextureCoordinate;
 #endif
 
@@ -151,9 +164,7 @@ uniform int u_SimulationSpace;
   uniform  vec2 u_TSAMaxGradientUVs[4];//x为key,y为frame
 #endif
 
-#ifdef TILINGOFFSET
-	uniform vec4 u_TilingOffset;
-#endif
+uniform vec4 u_TilingOffset;
 
 vec3 rotationByEuler(in vec3 vector,in vec3 rot)
 {
@@ -502,7 +513,7 @@ float computeParticleRotationFloat(in float rotation,in float age,in float norma
 	        rotation+=ageRot;
 	    #endif
 		#ifdef ROTATIONOVERLIFETIMERANDOMCURVES
-			rotation+=mix(getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientZ,normalizedAge),getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientMaxZ,normalizedAge),a_Random0.w));
+			rotation+=mix(getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientZ,normalizedAge),getTotalValueFromGradientFloat(u_ROLAngularVelocityGradientMaxZ,normalizedAge),a_Random0.w);
 		#endif
 	#endif
 	return rotation;
@@ -743,17 +754,18 @@ void main()
 	
 		gl_Position=u_Projection*u_View*vec4(center,1.0);
 		v_Color = computeParticleColor(a_StartColor, normalizedAge);
+		
 		#ifdef DIFFUSEMAP
+			vec2 simulateUV;
 			#if defined(SPHERHBILLBOARD)||defined(STRETCHEDBILLBOARD)||defined(HORIZONTALBILLBOARD)||defined(VERTICALBILLBOARD)
-				v_TextureCoordinate =computeParticleUV(a_CornerTextureCoordinate.zw, normalizedAge);
+				simulateUV =a_SimulationUV.xy + a_CornerTextureCoordinate.zw*a_SimulationUV.zw;
+				v_TextureCoordinate =computeParticleUV(simulateUV, normalizedAge);
 			#endif
 			#ifdef RENDERMODE_MESH
-				v_TextureCoordinate =computeParticleUV(a_MeshTextureCoordinate, normalizedAge);
+				simulateUV =a_SimulationUV.xy + a_MeshTextureCoordinate*a_SimulationUV.zw;
+				v_TextureCoordinate =computeParticleUV(simulateUV, normalizedAge);
 			#endif
-			
-			#ifdef TILINGOFFSET
-				v_TextureCoordinate=TransformUV(v_TextureCoordinate,u_TilingOffset);
-			#endif
+			v_TextureCoordinate=TransformUV(v_TextureCoordinate,u_TilingOffset);
 		#endif
    	}
    	else

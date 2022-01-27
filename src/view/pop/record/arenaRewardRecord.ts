@@ -1,0 +1,246 @@
+import honor, { HonorDialog } from 'honor';
+import { loadRes } from 'honor/utils/loadRes';
+import { Event } from 'laya/events/Event';
+import { Label } from 'laya/ui/Label';
+
+import { ArenaAwardListReq, ArenaAwardListResItem } from '@app/api/arenaApi';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { ui } from '@app/ui/layaMaxUI';
+import { formatUTC0DateTime, getMonthDateList } from '@app/utils/dayjsUtil';
+import { resizeContain, resizeParent } from '@app/utils/layaUtils';
+import { tplIntr } from '@app/utils/utils';
+
+import { arenaAwardList, arenaMatchList } from '../popSocket';
+import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
+import { SelectCtrl, SelectCtrlEvent } from './selectCtrl';
+
+type SelectItem = {
+    label: string;
+    value: string | number;
+};
+
+type SelectMenuUI = ui.pop.record.itemMenuUI;
+type SelectItemUI = ui.pop.record.selectItemBoxUI;
+
+export default class ArenaRewardRecordPop
+    extends ui.pop.record.arenaRewardRecordUI
+    implements HonorDialog
+{
+    private select_ctrl1: SelectCtrl;
+    private select_ctrl2: SelectCtrl;
+    private pagination_ctrl: PaginationCtrl;
+    private isInit = false;
+    public static async preEnter() {
+        const item_record = (await honor.director.openDialog(
+            'pop/record/arenaRewardRecord.scene',
+        )) as ArenaRewardRecordPop;
+        AudioCtrl.play(AudioRes.PopShow);
+        return item_record;
+    }
+    public static preLoad() {
+        return loadRes('pop/record/arenaRewardRecord.scene');
+    }
+    public onAwake() {
+        const {
+            select_item2,
+            select_item1,
+            item_menu2,
+            item_menu1,
+            btn_search,
+        } = this;
+
+        onLangChange(this, () => {
+            this.initLang();
+        });
+
+        const select_ctrl1 = new SelectCtrl(select_item1, item_menu1);
+        select_ctrl1.setRender(this.renderSelectedItem1, this.renderMenuItem1);
+        select_ctrl1.init();
+        const itemList1 = [
+            { label: tplIntr('arenaAwardDayRank'), value: 1 },
+            { label: tplIntr('arenaAwardGradeRank'), value: 2 },
+        ];
+        select_ctrl1.setList(itemList1);
+        select_ctrl1.setCurIndex(0);
+
+        const select_ctrl2 = new SelectCtrl(select_item2, item_menu2);
+        select_ctrl2.setRender(this.renderSelectedItem2, this.renderMenuItem2);
+        select_ctrl2.init();
+
+        const pagination_ctrl = new PaginationCtrl(this.pagination);
+        pagination_ctrl.on(PaginationEvent.Change, (data: any) => {
+            if (data.trigger_change) {
+                this.search({
+                    pageNum: data.cur + 1,
+                    pageSize: data.page_size,
+                });
+            }
+        });
+        this.pagination_ctrl = pagination_ctrl;
+
+        btn_search.on('click', null, () => {
+            this.search({ pageNum: 1, pageSize: 10 });
+        });
+        setTimeout(() => {
+            this.search({ pageNum: 1, pageSize: 10 });
+        });
+
+        this.select_ctrl1 = select_ctrl1;
+        this.select_ctrl2 = select_ctrl2;
+    }
+    public onEnable() {
+        if (!this.isInit) {
+            this.isInit = true;
+            return;
+        }
+        const { select_ctrl1, select_ctrl2 } = this;
+        select_ctrl1.setCurIndex(0);
+        select_ctrl2.setCurIndex(0);
+    }
+    private initLang() {
+        const { title, title_box, btn_search, empty_tip } = this;
+
+        title.text = tplIntr('arenaAwardTitle');
+        empty_tip.text = tplIntr('noData');
+        const arr = [
+            tplIntr('arenaAwardItemTitle0'),
+            tplIntr('arenaAwardItemTitle1'),
+            tplIntr('arenaAwardItemTitle2'),
+            tplIntr('arenaAwardItemTitle3'),
+        ];
+        for (let i = 0; i < title_box.numChildren; i++) {
+            (title_box.getChildAt(i) as Label).text = arr[i];
+        }
+        btn_search.label = tplIntr('search');
+        btn_search.text.padding = [0, 13, 0, 10];
+        resizeContain(btn_search, 0);
+    }
+    private renderSelectedItem1 = async (
+        box: SelectItemUI,
+        data: SelectItem,
+    ) => {
+        const { item_name: item_name_label, content, bg } = box;
+        const { label, value } = data;
+        item_name_label.text = label;
+
+        item_name_label.text = label;
+        // 自适应宽高
+        resizeContain(content, 5);
+        box.width = bg.width = content.width + 30;
+        resizeParent(box, 20);
+
+        let arr: any;
+        if (value === 1) {
+            const dayArr = getMonthDateList();
+            arr = dayArr.map((item, _index) => {
+                return {
+                    label: item.format('MM/DD'),
+                    value: item.valueOf(),
+                };
+            });
+        } else {
+            const gradeList = await arenaMatchList(1);
+            arr = gradeList.map((item, _index) => {
+                return {
+                    label: tplIntr('arenaRewardTpl', { grade: item.id }),
+                    value: item.id.valueOf(),
+                };
+            });
+        }
+
+        this.select_ctrl2.setList(arr);
+        this.select_ctrl2.setCurIndex(0);
+    };
+    private renderSelectedItem2(box: SelectItemUI, data: SelectItem) {
+        const { item_name: item_name_label } = box;
+        const { label } = data;
+        item_name_label.text = label;
+    }
+    private renderMenuItem1 = (box: SelectItemUI, index: number) => {
+        if (!this.select_ctrl1?.array) {
+            return;
+        }
+        const item_name_label = box.getChildByName('item_name') as Label;
+        const data = this.select_ctrl1.array[index];
+        const { label } = data;
+        item_name_label.text = label;
+
+        box.width = item_name_label.width + 30;
+
+        this.resizeMenu(this.item_menu1, item_name_label.width + 30);
+    };
+    private renderMenuItem2 = (box: SelectItemUI, index: number) => {
+        if (!this.select_ctrl2?.array) {
+            return;
+        }
+        const item_name_label = box.getChildByName('item_name') as Label;
+        const { label } = this.select_ctrl2.array[index];
+        item_name_label.text = label;
+    };
+
+    public resizeMenu(menu_ui: SelectMenuUI, width: number) {
+        if (menu_ui.width >= width) {
+            return;
+        }
+        menu_ui.width = menu_ui.bg.width = width;
+        menu_ui.list.width = width;
+
+        // 触发list 重新定位item
+        this.item_menu1.on(
+            SelectCtrlEvent.VisibleChange,
+            this.select_item1,
+            (visible) => {
+                if (visible) {
+                    menu_ui.list.spaceY = menu_ui.list.spaceY === 0 ? 1 : 0;
+                }
+            },
+        );
+    }
+
+    private search({
+        pageNum,
+        pageSize,
+    }: {
+        pageNum: number;
+        pageSize: number;
+    }) {
+        const { empty_tip, select_ctrl1, select_ctrl2, pagination_ctrl } = this;
+
+        const type = select_ctrl1.getCurData()?.value || 1;
+        const data = { type, pageNum, pageSize } as ArenaAwardListReq;
+        const item_data = select_ctrl2.getCurData() || {};
+
+        if (type === 1) {
+            data.dayId = item_data.value;
+        } else {
+            data.matchId = item_data.value;
+        }
+        this.renderRecordList([]);
+        arenaAwardList(data).then((data) => {
+            empty_tip.visible = !data.list.length;
+            this.renderRecordList(data.list);
+            pagination_ctrl.update(data.total, data.pageSize);
+        });
+    }
+    private renderRecordList(data: ArenaAwardListResItem[]) {
+        const { record_list } = this;
+
+        record_list.array = data.map((item) => {
+            return {
+                username: item.userId,
+                grade: item.ranking,
+                time: formatUTC0DateTime(item.time),
+                num: item.award + item.currency,
+            };
+        });
+    }
+    public destroy() {
+        this.select_ctrl1.destroy();
+        this.select_ctrl2.destroy();
+        this.select_ctrl1 = undefined;
+        this.select_ctrl2 = undefined;
+        super.destroy();
+    }
+}

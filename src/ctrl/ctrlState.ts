@@ -1,10 +1,19 @@
 import { AppCtrl } from './appCtrl';
+import { GameCtrl as ArenaCtrl } from './game/gameArena/gameCtrl';
 import { GameCtrl } from './game/gameCtrl';
 import { HallCtrl } from './hall/hallCtrl';
 
 type CtrlState = {
     app: AppCtrl;
-    game: GameCtrl;
+    game: GameCtrl | ArenaCtrl;
     hall: HallCtrl;
 };
 export const ctrlState = {} as CtrlState;
+
+export function getGameCurrency() {
+    return ctrlState.game?.currency;
+}
+
+export function isTrial() {
+    return ctrlState.game?.isTrial;
+}

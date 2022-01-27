@@ -5,7 +5,7 @@ type Point = {
 };
 
 type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <
-    T
+    T,
 >() => T extends Y ? 1 : 2
     ? A
     : B;
@@ -31,6 +31,8 @@ type NoReadOnlyProps<T> = Pick<T, WritableKeys<T>>;
 type B<T> = Readonly<T>;
 
 declare let ENV: string;
+
+type LocalRange = [number, number];
 
 type Without<T, K> = {
     [L in Exclude<keyof T, K>]: T[L];

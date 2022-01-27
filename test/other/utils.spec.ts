@@ -1,8 +1,9 @@
 import { Test } from 'testBuilder';
-import { vectorToDegree } from 'utils/mathUtils';
-import { setItem, getItem } from 'utils/localStorage';
 
-export const utils_test = new Test('utils', runner => {
+import { setItem, getItem } from '@app/utils/localStorage';
+import { vectorToDegree } from '@app/utils/mathUtils';
+
+export const utils_test = new Test('utils', (runner) => {
     runner.describe(
         'vector_to_degree',
         (...params: Parameters<typeof vectorToDegree>) => {

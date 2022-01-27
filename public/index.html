@@ -110,6 +110,20 @@
                 script.src = url;
                 document.body.appendChild(script);
             }
+            if (
+                location.href.indexOf('localhost') !== -1 ||
+                location.href.indexOf('172.16.5.24') !== -1
+            ) {
+                var localFiles = [
+                    'js/bundle.js?v=<%= Date.now() %>',
+                    'js/laya.js?v=<%= Date.now() %>',
+                    'js/libs.js?v=<%= Date.now() %>',
+                ];
+
+                for (var i = 0; i < localFiles.length; i++) {
+                    loadLib(localFiles[i]);
+                }
+            }
 
             // prettier-ignore
             var interval = setInterval(function () {
@@ -213,6 +227,7 @@
             type="text/javascript"
             src="bitgame/paladin.min.js?v=<%= Date.now() %>"
         ></script>
+
         <script type="text/javascript">
             var version = '<%= Date.now() %>';
             function loadLib(url) {
@@ -220,6 +235,20 @@
                 script.async = false;
                 script.src = url;
                 document.body.appendChild(script);
+            }
+            if (
+                location.href.indexOf('localhost') !== -1 ||
+                location.href.indexOf('172.16.5.24') !== -1
+            ) {
+                var localFiles = [
+                    'js/bundle.js?v=<%= Date.now() %>',
+                    'js/laya.js?v=<%= Date.now() %>',
+                    'js/libs.js?v=<%= Date.now() %>',
+                ];
+
+                for (var i = 0; i < localFiles.length; i++) {
+                    loadLib(localFiles[i]);
+                }
             }
 
             // prettier-ignore

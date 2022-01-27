@@ -1,5 +1,20 @@
 /**
  * @public
+ * 将时间错转换为 YYYY/MM/DD HH:mm 的格式
+ * @return 格式化后的字符串
+ */
+export function formatTimestamp(timestamp: number): string {
+    const date = new Date(timestamp);
+    const arr1 = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(
+        formatTimeZone,
+    );
+    const arr2 = [date.getHours(), date.getMinutes()].map(formatTimeZone);
+
+    return `${arr1.join('/')} ${arr2.join(':')}`;
+}
+
+/**
+ * @public
  * 将毫秒转换为`{h}小时{m}分钟{s}秒`的格式
  * @param total 秒数
  * @param min 是否是精简模式, 会将无用的部分去掉
@@ -47,9 +62,9 @@ export function formatTime(
  *
  * @return 格式化后的字符串
  */
-export function formatTimeLight(seconds: number){
-    let time = ''
-    let [d, h, m, s] = [0, 0, 0, seconds%60];
+export function formatTimeLight(seconds: number) {
+    let time = '';
+    let [d, h, m, s] = [0, 0, 0, seconds % 60];
     if (seconds > 60) {
         m = (seconds / 60) | 0;
     }

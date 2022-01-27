@@ -1,0 +1,90 @@
+{
+    "today": [
+        {
+            "userId": 1,
+            "score": 1,
+            "award": 1,
+            "currency": "BTC"
+        },
+        {
+            "userId": 1,
+            "score": 1,
+            "award": 1,
+            "currency": "BTC"
+        },
+        {
+            "userId": 1,
+            "score": 1,
+            "award": 1,
+            "currency": "BTC"
+        }
+    ],
+    "yesterday": [
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        },
+        {
+            "userId": 2,
+            "score": 2,
+            "award": 2,
+            "currency": "BTC"
+        }
+    ]
+}

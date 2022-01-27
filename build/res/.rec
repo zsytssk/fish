@@ -52,6 +52,18 @@ R A60F29B9 skill_border_light.sk
 D ani/test
 P A5543C11 test.png
 R AE3C9C5D test.sk
+D image/arena
+P 08321065 btn_gift.png
+P 3DC9A92D btn_help.png
+P 0EF74B07 btn_match.png
+P D67CA55C btn_music.png
+P EE50320A btn_shop.png
+P 52F615E3 bullet_box_bg.png
+P D32FCF83 bullet_num_bg.png
+P DDFA578D other_bullet_box_bg.png
+P FB9B9E6A other_bullet_num_bg.png
+P 2F136CD6 task_num_bg.png
+P DA96D738 task_panel_bg.png
 D image/common
 P 1A923A60 lite_tip_bg.png
 D image/game
@@ -84,10 +96,16 @@ P D4B50E18 skill_overlay.png
 P 72CDDB82 time_bg.png
 R 19E106F4 wave.png
 R 4DFE4675 wave.sk
+D image/gameArena
+P 40CD1C45 arenaTaskTipBg.png
+P 00696B7D end.png
+P B9FB92B6 start.png
 D image/hall
 P 89B592A5 avatar.png
 R D5C38E4F bg.jpg
 P 015356EB btn_app.png
+P 1C35DED1 btn_blue.png
+P 73F77FFE btn_blue_gray.png
 P 5F625195 btn_buy.png
 P 33B0DDEB btn_coin_type.png
 P 4ECBD9AA btn_down.png
@@ -98,8 +116,13 @@ P ACCA81CF btn_item_record.png
 P 8C4DC800 btn_leave.png
 P 6B519EF9 btn_login.png
 P 3384A924 btn_recharge.png
+P 4F56BC4B btn_record.png
 P 12DC7D1E btn_voice.png
 P 26207CA9 btn_withdraw.png
+P 7507E94D btn_yellow_gray.png
+P 4F04EDF5 btn_yellowpng.png
+P B5A56034 clickLight.png
+R 455E34EB clickLight.sk
 P 8D9DAFAB coin_menu_bg.png
 P 71996B18 coin_menu_line.png
 P 69892AE0 flag_bg.png
@@ -239,7 +262,56 @@ P B98DC719 progress_voice$bar.png
 P 459ACF62 progress_voice.png
 P DFFFA89D split_line.png
 D image/pop/arenaCompetitionInfo
+R 995032B9 bg_bottom.png
+P C0115050 bg_line.png
+R 32EF8725 bg_top.png
+P 4CFBFAFB bgInner1.png
+P FDDFCC43 bgInner2.png
+P E5744E4E bgInner3.png
+P 32EAD9AB bgNum.png
+P F14553A2 btn_green.png
+P 3AAB226B btn_yellow.png
+P E39E27C3 rank_bg.png
+P FFCDC15F shadow.png
+P 74ABD93E sign1.png
+P CDD41ECA sign2.png
+P AEA52FB4 sign3.png
+P A91FCB8A signBg1.png
+P E3981FEE signBg2.png
+P F2775A88 signBg3.png
+P C4709285 signBg4.png
+P 7B2FD5E8 signBgTop.png
+P 77195BC2 signTop.png
+D image/pop/arenaGift
+R 36ECC937 banner.png
+R 200FF6AD bg.png
+P 6959C356 btn.png
+P A645299E icon-close.png
+P 413425D7 itemBg.png
 D image/pop/arenaRank
+P 4F538D32 bgBottom.png
+P 2E8421C0 bgInner1.png
+P 5B1BB74F bgInner2.png
+R 7CA83DA0 bgTop.png
+P CBC7CD50 btn.png
+P A3864BD8 btn_cur.png
+P A0370F2F btnClip.png
+P F16DF32E icon-close.png
+P EDBA382E iconRank.png
+D image/pop/arenaSettle
+R 34F217BE bg.png
+P 2B7C243E btn.png
+P 7A69FBFC icon-close.png
+P E002B4CB itemBg.png
+R 65E1C11A ribbon.png
+D image/pop/arenaTopPlayer
+P F4363FBC bgBottom.png
+R A06FA43D bgTop.png
+P F16DF32E icon-close.png
+P CD29B565 innerBg.png
+P 98413A1F innerShadow.png
+P D43766F8 itemBg.png
+P BDA676B1 sign-trophy.png
 D image/pop/guide
 P 1778398D btn_next.png
 P AE3378D7 btn_skip.png
@@ -381,3 +453,4 @@ P BFD0B4F4 1005.png
 P 223B1320 2001.png
 P ED3A283D 2002.png
 P 4E08B651 2003.png
+P DA15C77D 3001.png

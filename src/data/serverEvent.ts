@@ -4,8 +4,12 @@ export const ServerName = {
     Game: 'game',
     /** 大厅的 socket */
     Hall: 'hall',
+    /**  Arena 大厅的 socket */
+    ArenaHall: 'arena_hall',
 };
 
+export const OK_CODE = 200;
+export const ARENA_OK_CODE = 0;
 /** socket 错误码 */
 export enum ServerErrCode {
     /** token过期 */
@@ -16,6 +20,8 @@ export enum ServerErrCode {
     AlreadyInRoom = 109,
     /** 余额不足 */
     NoMoney = 101,
+    /** 维护中 */
+    Maintaining = 111,
     /** 重新带入 */
     ReExchange = 112,
     /** 需要登陆 */
@@ -24,7 +30,7 @@ export enum ServerErrCode {
     TrialTimeGame = 117,
     /** 投币超过上限 */
     OverLimit = 121,
-    /** 重新带入 */
+    /** 退出 */
     ToQuick = 122,
     /** TrialNotBullet */
     TrialNotBullet = 116,
@@ -43,20 +49,20 @@ export type ErrorData = {
     error: string;
 };
 
-/** 服务器端的接口 */
-export const ServerEvent = {
-    /** 游戏部分 */
-    RoomIn: 'roomIn',
-    RoomOut: 'roomOut',
-    CheckReplay: 'checkReplay',
+const CommonGameEvent = {
     /** 进入桌子 */
     TableIn: 'tableIn',
     /** 离开桌子 */
     TableOut: 'tableOut',
+    /** 进入游戏 */
     EnterGame: 'enterGame',
+    /** 发射子弹 */
     Shoot: 'shoot',
+    /** 击中鱼 */
     Hit: 'hit',
+    /** 机器人HIT */
     RobotHit: 'robotHit',
+    /** 修改炮台倍数 */
     ChangeTurret: 'changeTurret',
     /** 添加鱼 */
     AddFish: 'addFish',
@@ -68,17 +74,40 @@ export const ServerEvent = {
     UseLock: 'useLock',
     /** 锁定<鱼> */
     LockFish: 'lockFish',
+    /** 使用炸弹 */
     UseBomb: 'useBomb',
+    /** 鱼炸弹 */
     FishBomb: 'fishBomb',
-    PowerUp: 'powerUp',
-    autoShoot: 'autoShoot',
-    SetRobotReport: 'setRobotReport',
+    /** 使用冰冻 */
     UseFreeze: 'useFreeze',
+    /** 冰冻结束 */
     FreezeOver: 'freezeOver',
+    /** ？？？ */
+    PowerUp: 'powerUp',
+    /** 自动开炮 */
+    autoShoot: 'autoShoot',
+    /** 设置机器人发射命令状态 */
+    SetRobotReport: 'setRobotReport',
+};
+
+/** 服务器端的接口 */
+export const ServerEvent = {
+    /** 游戏部分 */
+    RoomIn: 'roomIn',
+    RoomOut: 'roomOut',
+    CheckReplay: 'checkReplay',
+    /** 获取Arena的socket地址 */
+    GetArenaWsUrl: 'getArenaWsUrl',
+
+    /** 兑换子弹 */
     ExchangeBullet: 'exchangeBullet',
+    /** 获取 */
     GetItemList: 'getItemList',
+    /** 获取子弹列表 */
     GetBulletList: 'getBulletList',
     GetRecentBullet: 'getRecentBullet',
+
+    ...CommonGameEvent,
 
     /** 其他部分 */
     ErrCode: 'conn::error',
@@ -96,4 +125,79 @@ export const ServerEvent = {
     GetGuestToken: 'getRequestId',
     /** 获取用户信息 */
     GetUserInfo: 'getUserInfo',
+};
+
+/** socket 错误码 */
+export enum ArenaErrCode {
+    /** 余额不足 */
+    NoMoney = 302,
+    /** 比赛暂未开启 */
+    TokenExpire = 11,
+    OtherLogin = 12,
+    /** 比赛暂未开启 */
+    NoOpen = 201,
+    /** 比赛已结束 */
+    GameEnded = 202,
+    /** 用户报名失败 */
+    SignUpFail = 303,
+    /** 游客报名失败 */
+    GuestSignUpFail = 308,
+    /** 报名截止 */
+    UserSignUpDeadline = 309,
+    /** 用户子弹数不足 */
+    BulletLack = 304,
+    /** 用户礼包购买失败 */
+    BuyGiftFail = 305,
+    /** 用户商城购买失败 */
+    BuyShopFail = 306,
+    /** 礼包当天只能买一次 */
+    GiftOnlyOnce = 307,
+    /** 道具不存在 */
+    ItemNotExist = 401,
+    /** 维护中 */
+    Maintenance = 601,
+}
+
+export const ArenaEvent = {
+    /** 大厅游客 */
+    Guess: 'guest',
+    /** 房间状态 */
+    ArenaStatus: 'arenaStatus',
+    /** 赛事信息 */
+    CompetitionInfo: 'competitionInfo',
+    /**  排名 */
+    GetDayRanking: 'getDayRanking',
+    /**  名人堂 */
+    GetHallOfFame: 'getHallOfFame',
+    /**  总冠军 */
+    MatchChampionList: 'matchChampionList',
+    /**  奖励查询 */
+    AwardList: 'awardList',
+    /**  奖励查询-期数 */
+    MatchList: 'matchList',
+    /**  帮助信息 */
+    GetRuleData: 'getRuleData',
+    /**  报名 */
+    SignUp: 'signUp',
+    /**  结算 */
+    GameSettle: 'gameSettle',
+    /**  触发任务 */
+    TriggerTask: 'triggerTask',
+    /** 任务刷新 */
+    TaskRefresh: 'taskRefresh',
+    /** 任务完成 */
+    TaskFinish: 'taskFinish',
+    /**  商品列表 */
+    ShopList: 'shopList',
+    /**  购买商品 */
+    BuyGoods: 'buyGoods',
+    /**  礼品列表 */
+    GiftList: 'giftList',
+    /**  购买礼品 */
+    BuyGift: 'buyGift',
+    ...CommonGameEvent,
+
+    /** 其他部分 */
+    ErrCode: 'error',
+    ErrCode2: 'conn::error',
 };

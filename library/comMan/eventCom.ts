@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type Fun<T> = (...params: any[]) => T;
 
 /** 每一个event的数据 */
@@ -8,11 +9,12 @@ export type EventData = Set<{
     off?: () => void;
 }>;
 
+type EventType = string | number;
 /**
  * 事件订阅发布构造函数
  */
 export class EventCom {
-    protected events: Map<string, EventData> = new Map();
+    protected events: Map<EventType, EventData> = new Map();
 
     /**
      * 注册监听
@@ -20,7 +22,12 @@ export class EventCom {
      * @param callback
      * @param caller
      */
-    public on(event: string, callback: Fun<any>, caller?: any, once?: boolean) {
+    public on(
+        event: EventType,
+        callback: Fun<any>,
+        caller?: any,
+        once?: boolean,
+    ) {
         let events: EventData;
         if (this.events.has(event)) {
             events = this.events.get(event);
@@ -40,10 +47,10 @@ export class EventCom {
 
         events.add({ caller, callback, once, off });
     }
-    public once(event: string, callback?: Fun<any>, caller?: any) {
+    public once(event: EventType, callback?: Fun<any>, caller?: any) {
         return this.on(event, callback, caller, true);
     }
-    public getBind(event: string) {
+    public getBind(event: EventType) {
         return this.events.get(event);
     }
 
@@ -53,7 +60,7 @@ export class EventCom {
      * @param callback
      * @param caller
      */
-    public off(event: string, callback: Fun<any>, caller?: any) {
+    public off(event: EventType, callback: Fun<any>, caller?: any) {
         if (!this.events.has(event)) {
             return;
         }
@@ -79,7 +86,7 @@ export class EventCom {
      * @param event
      * @param data
      */
-    public emit(event: string, ...params: any[]) {
+    public emit(event: EventType, ...params: any[]) {
         if (this.events.has(event)) {
             const events = this.events.get(event);
             for (const item of [...events]) {

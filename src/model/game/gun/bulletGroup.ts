@@ -1,11 +1,13 @@
-import { LockTarget } from 'model/game/com/moveCom/lockMoveCom';
-import { FishModel } from 'model/game/fish/fishModel';
-import { BulletInfo, BulletModel } from './bulletModel';
-import { GunModel } from './gunModel';
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { ModelEvent } from 'model/modelEvent';
-import { genRandomStr } from 'utils/utils';
+
+import { LockTarget } from '@app/model/game/com/moveCom/lockMoveCom';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import { ModelEvent } from '@app/model/modelEvent';
+import { genRandomStr } from '@app/utils/utils';
+
+import { BulletInfo, BulletModel } from './bulletModel';
+import { GunModel } from './gunModel';
 
 export type BulletGroupInfo = {
     bullets_pos: Point[];

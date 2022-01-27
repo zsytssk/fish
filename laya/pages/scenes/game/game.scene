@@ -1,8 +1,8 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":41,
-    "selecteID":31,
+    "selectedBox":2,
+    "selecteID":11,
     "searchKey":"Scene",
     "referenceLines":[
         {
@@ -147,7 +147,8 @@
             "hasChild":false,
             "compId":36,
             "child":[
-                ]
+                ],
+            "$HIDDEN":false
         },
         {
             "x":15,
@@ -162,7 +163,8 @@
             "hasChild":false,
             "compId":32,
             "child":[
-                ]
+                ],
+            "$HIDDEN":false
         },
         {
             "x":15,
@@ -181,7 +183,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_leave",
-                    "props":{"y":10,"x":20,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png"},
+                    "props":{"y":53,"var":"btn_leave","stateNum":"1","skin":"image/game/btn_quit.png","left":20,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":11,
                     "label":"btn_leave",
                     "isDirectory":false,
@@ -195,7 +197,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_gift",
-                    "props":{"y":10,"x":120,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png"},
+                    "props":{"y":53,"var":"btn_gift","stateNum":"1","skin":"image/game/btn_gift.png","left":120,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":11,
                     "label":"btn_gift",
                     "isDirectory":false,
@@ -209,7 +211,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_voice",
-                    "props":{"y":10,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":120},
+                    "props":{"y":53,"width":80,"var":"btn_voice","stateNum":"1","skin":"image/game/btn_music.png","right":120,"height":87,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":11,
                     "label":"btn_voice",
                     "isDirectory":false,
@@ -223,7 +225,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_help",
-                    "props":{"y":10,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":20},
+                    "props":{"y":53,"x":1274,"var":"btn_help","stateNum":"1","skin":"image/game/btn_help.png","right":20,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":11,
                     "label":"btn_help",
                     "isDirectory":false,
@@ -237,7 +239,7 @@
                     "x":30,
                     "type":"Button",
                     "searchKey":"Button,btn_shop",
-                    "props":{"y":10,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png","centerX":0},
+                    "props":{"y":53,"x":667,"var":"btn_shop","stateNum":"1","skin":"image/game/btn_shop.png","centerX":0,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":11,
                     "label":"btn_shop",
                     "isDirectory":false,

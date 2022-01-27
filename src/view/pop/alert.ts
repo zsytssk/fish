@@ -1,30 +1,38 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { AudioRes } from 'data/audioRes';
-import { InternationalTip } from 'data/internationalConfig';
-import honor, { HonorDialog, HonorDialogConfig } from 'honor';
+import honor, { HonorDialog } from 'honor';
+import { OpenDialogOpt } from 'honor/ui/dialogManager';
 import { Event } from 'laya/events/Event';
-import { ui } from 'ui/layaMaxUI';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { ui } from '@app/ui/layaMaxUI';
+import { tplIntr } from '@app/utils/utils';
 
 type CloseType = 'close' | 'confirm' | 'cancel';
 type Opt = {
     hide_cancel?: boolean;
     confirm_text?: string;
-} & HonorDialogConfig;
+} & OpenDialogOpt<AlertPop>;
+
 export default class AlertPop
     extends ui.pop.alert.alertUI
-    implements HonorDialog {
-    public isModal = true;
+    implements HonorDialog
+{
+    shadowAlpha: 0.1;
     public close_resolve: (type: CloseType) => void;
+    public _zOrder = 1001;
     public get zOrder() {
-        return 100;
+        return this._zOrder;
+    }
+    public set zOrder(value) {
+        this._zOrder = value;
     }
     public static async alert(msg: string, opt = {} as Opt) {
-        const { hide_cancel, confirm_text, ...dialogConfig } = opt;
+        const { hide_cancel, confirm_text, ...otherOpt } = opt;
+        const alert = (await honor.director.openDialog(
+            'pop/alert/alert.scene',
+            { ...otherOpt, use_exist: false, stay_scene: false },
+        )) as AlertPop;
         AudioCtrl.play(AudioRes.PopShow);
-        const alert = (await honor.director.openDialog(AlertPop, {
-            ...dialogConfig,
-        })) as AlertPop;
         return await alert.alert(msg, { hide_cancel, confirm_text });
     }
     public onAwake() {
@@ -44,7 +52,7 @@ export default class AlertPop
     public alert(msg: string, opt = {} as Opt) {
         this.initLang();
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             const { hide_cancel, confirm_text } = opt;
             const { label, btn_cancel, btn_confirm, btn_confirm_label } = this;
             label.text = msg;
@@ -72,21 +80,9 @@ export default class AlertPop
         this.close_resolve = undefined;
     }
     private initLang() {
-        const lang = getLang();
         const { title, btn_confirm_label, btn_cancel_label } = this;
-        const { tips, cancel, confirm } = InternationalTip[lang];
-        title.text = tips;
-        btn_confirm_label.text = confirm;
-        btn_cancel_label.text = cancel;
+        title.text = tplIntr('tips');
+        btn_confirm_label.text = tplIntr('confirm');
+        btn_cancel_label.text = tplIntr('cancel');
     }
 }
-
-export const AlertRes = [
-    'pop/alert/alert.json',
-    'image/pop/alert/alert_bg_01.png',
-    'image/pop/alert/alert_bg_02.png',
-    'image/pop/alert/btn_close.png',
-    'image/pop/alert/alert_con_bg.png',
-    'image/pop/alert/btn_cancel.png',
-    'image/pop/alert/btn_confirm.png',
-];

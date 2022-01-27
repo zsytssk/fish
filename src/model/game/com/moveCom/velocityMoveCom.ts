@@ -1,6 +1,8 @@
 import SAT from 'sat';
+
+import { Config } from '@app/data/config';
+
 import { clearTick, createTick } from '../../../../utils/tick';
-import { Config } from 'data/config';
 
 /** 速度 移动控制 */
 export class VelocityMoveCom implements MoveCom {

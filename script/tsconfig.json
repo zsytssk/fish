@@ -13,7 +13,7 @@
         "sourceMap": true,
         "watch": true,
         "esModuleInterop": true,
-        "lib": ["es2019"]
-    },
-    "include": ["./"]
+        "lib": ["es2019", "es2021"]
+    }
+    // "include": ["./"]
 }

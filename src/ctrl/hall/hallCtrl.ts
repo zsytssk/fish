@@ -1,30 +1,48 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { disconnectSocket, getSocket } from 'ctrl/net/webSocketWrapUtil';
-import { AudioRes } from 'data/audioRes';
-import { Lang } from 'data/internationalConfig';
-import { ServerName } from 'data/serverEvent';
-import { modelState } from 'model/modelState';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import HallView from 'view/scenes/hallView';
+import honor from 'honor';
 import {
-    getAllLangList,
+    fakeLoad,
+    mergeProgressObserver,
+    toProgressObserver,
+} from 'honor/utils/loadRes';
+import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
+
+import { ctrlState, getGameCurrency } from '@app/ctrl/ctrlState';
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { gotoGuide } from '@app/ctrl/guide/guideConfig';
+import { AudioRes } from '@app/data/audioRes';
+import { Lang } from '@app/data/internationalConfig';
+import { ArenaErrCode, ArenaEvent, ServerErrCode } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { getCacheCurrency } from '@app/model/userInfo/userInfoUtils';
+import { asyncOnly } from '@app/utils/asyncQue';
+import { BgMonitorEvent } from '@app/utils/bgMonitor';
+import { getItem } from '@app/utils/localStorage';
+import AlertPop from '@app/view/pop/alert';
+import TipPop from '@app/view/pop/tip';
+import HallView from '@app/view/scenes/hallView';
+import Loading from '@app/view/scenes/loadingView';
+
+import { AppCtrl } from '../appCtrl';
+import { getSocket } from '../net/webSocketWrapUtil';
+import {
+    bindArenaHallSocket,
+    offArenaHallSocket,
+    sendToArenaHallSocket,
+} from './arenaSocket';
+import { tipComeBack } from './commonSocket';
+import {
     offBindEvent,
     onAccountChange,
+    onArenaInfoChange,
     onCurBalanceChange,
     onLangChange,
     onNicknameChange,
-    offLangChange,
+    recharge,
 } from './hallCtrlUtil';
-import { onHallSocket, roomIn, offHallSocket } from './hallSocket';
+import { bindHallSocket, offHallSocket, roomIn } from './hallSocket';
 import { hallViewEvent, setRoomInData } from './hallViewEvent';
-import { ctrlState } from 'ctrl/ctrlState';
-import { runAsyncTask } from 'honor/utils/tmpAsyncTask';
-import { getItem } from 'utils/localStorage';
-import honor from 'honor';
-import GameRecord from 'view/pop/record/gameRecord';
-import ItemRecord from 'view/pop/record/itemRecord';
-import { gotoGuide } from 'ctrl/guide/guideConfig';
-import { sleep } from 'utils/animate';
+import { login } from './login';
 
 export class HallCtrl {
     public view: HallView;
@@ -37,12 +55,23 @@ export class HallCtrl {
         if (this.instance) {
             return this.instance;
         }
-        return runAsyncTask(() => {
-            return HallView.preEnter().then((view: HallView) => {
-                const ctrl = new HallCtrl(view);
-                this.instance = ctrl;
-                return ctrl;
-            });
+
+        const arr = [
+            toProgressObserver(HallView.preEnter)(),
+            toProgressObserver(fakeLoad)(0.5),
+            toProgressObserver(AppCtrl.commonLoad)(),
+            toProgressObserver(AppCtrl.commonLoad)(),
+        ] as const;
+
+        return runAsyncTask(async () => {
+            const [view] = await mergeProgressObserver(
+                arr as Mutable<typeof arr>,
+                Loading,
+            );
+
+            const ctrl = new HallCtrl(view as HallView);
+            this.instance = ctrl;
+            return ctrl;
         }, this);
     }
 
@@ -61,25 +90,105 @@ export class HallCtrl {
             return this.enterGame(enterData);
         });
     }
+    public enterArena(data) {
+        this.destroy();
+        return ctrlState.app.enterArenaGame(data);
+    }
     private async init() {
-        await onHallSocket(this).then(async enter_game => {
-            if (enter_game) {
-                return this.destroy();
-            } else {
-                AudioCtrl.playBg(AudioRes.HallBg);
-            }
+        try {
+            await bindHallSocket(this);
+        } catch {
+            //
+        }
 
-            this.initModelEvent();
-            if (getItem('guide') !== 'end') {
-                return gotoGuide('1', '1');
-            }
+        try {
+            await bindArenaHallSocket(this);
+            sendToArenaHallSocket(ArenaEvent.ArenaStatus, {
+                currency: modelState.app.user_info.cur_balance,
+            });
+        } catch {
+            //
+        }
 
-            hallViewEvent(this);
-        });
+        AudioCtrl.playBg(AudioRes.HallBg);
+
+        this.initModelEvent();
+        if (getItem('guide') !== 'end') {
+            return gotoGuide('1', '1');
+        }
+
+        this.initEvent();
+
+        hallViewEvent(this);
+    }
+    private initEvent() {
+        const { bg_monitor } = ctrlState.app;
+        bg_monitor.event.on(
+            BgMonitorEvent.VisibleChange,
+            (visible) => {
+                const socket = getSocket('hall');
+                if (visible) {
+                    if (socket?.status === 'OPEN') {
+                        tipComeBack();
+                    } else {
+                        socket?.reconnect();
+                    }
+                }
+            },
+            this,
+        );
+
+        const tip = (msg: string) => {
+            asyncOnly(msg, () => {
+                return TipPop.tip(msg);
+            });
+        };
+
+        AppCtrl.event.on(
+            ArenaErrCode.GuestSignUpFail,
+            (msg) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        login();
+                    }
+                });
+            },
+            this,
+        );
+
+        AppCtrl.event.on(
+            ServerErrCode.NoMoney,
+            (msg: string) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        const currency = modelState.app.user_info.cur_balance;
+                        recharge(currency);
+                    }
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(
+            ArenaErrCode.NoMoney,
+            (msg: string, data: any) => {
+                return AlertPop.alert(msg).then((type) => {
+                    if (type === 'confirm') {
+                        recharge(data.currency);
+                    }
+                });
+            },
+            this,
+        );
+        AppCtrl.event.on(ServerErrCode.Maintaining, tip, this);
+        AppCtrl.event.on(ArenaErrCode.Maintenance, tip, this);
+        AppCtrl.event.on(ArenaErrCode.SignUpFail, tip, this);
+        AppCtrl.event.on(ArenaErrCode.UserSignUpDeadline, tip, this);
+        AppCtrl.event.on(ArenaErrCode.NoOpen, tip, this);
+        AppCtrl.event.on(ArenaErrCode.GameEnded, tip, this);
     }
     private initModelEvent() {
         const { view } = this;
-        const { user_info } = modelState.app;
+        const { user_info, arena_info } = modelState.app;
         onCurBalanceChange(this, (type: string) => {
             const { account_map } = user_info;
             const { num, icon, hide } = account_map.get(type);
@@ -95,7 +204,9 @@ export class HallCtrl {
         onNicknameChange(this, (nickname: string) => {
             view.setNickname(nickname);
         });
-        view.setFlagData(getAllLangList());
+        onArenaInfoChange(this, (info) => {
+            view.updateArenaInfo(info);
+        });
     }
     public selectCoin = (index: number) => {
         if (index === -1) {
@@ -125,16 +236,14 @@ export class HallCtrl {
         view.toggleFlagMenu(false);
     }; // tslint:disable-line
 
-    public onUserAccount() {
-        this.view.onResize();
-    }
     public destroy() {
+        const { bg_monitor } = ctrlState.app;
+        bg_monitor.event.offAllCaller(this);
         AudioCtrl.stop(AudioRes.HallBg);
         offBindEvent(this);
-        offLangChange(this);
         offHallSocket(this);
-        disconnectSocket(ServerName.Hall);
-        honor.director.closeAllDialogs();
+        AppCtrl.event.offAllCaller(this);
+        offArenaHallSocket(this);
         HallCtrl.leave();
     }
 }

@@ -1,5 +1,5 @@
-import { BitmapFont } from 'laya/display/BitmapFont';
 import { Laya, loader } from 'Laya';
+import { BitmapFont } from 'laya/display/BitmapFont';
 import { Text } from 'laya/display/Text';
 
 export function registerFontSize(url_list: string[]) {

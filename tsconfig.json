@@ -14,7 +14,8 @@
         "baseUrl": "./",
         "noEmit": true,
         "paths": {
-            "*": ["node_modules/*", "libs/*", "library/*", "src/*"]
+            "*": ["node_modules/*", "libs/*", "library/*"],
+            "@app/*": ["src/*"]
         }
     },
     "include": [

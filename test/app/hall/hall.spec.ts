@@ -1,21 +1,26 @@
 import { Test } from 'testBuilder';
-import { modelState } from 'model/modelState';
-import { HallCtrl } from 'ctrl/hall/hallCtrl';
 
-export const hall_test = new Test('hall', runner => {
-    runner.describe('enter', () => {
+import { injectAfter } from 'honor/utils/tool';
+
+import { HallCtrl } from '@app/ctrl/hall/hallCtrl';
+import { modelState } from '@app/model/modelState';
+
+export const hall_test = {
+    enter: () => {
         HallCtrl.preEnter().then(() => {
             console.log(`enter:>`, 1);
         });
-
-        setTimeout(() => {
-            HallCtrl.preEnter().then(() => {
-                console.log(`enter:>`, 2);
-            });
-        }, 100);
-    });
-    runner.describe('user_info', () => {
+    },
+    userInfo: () => {
         const { setting, user_info } = modelState.app;
         user_info.setNickname('zsytssk@gmail.com');
-    });
-});
+    },
+};
+
+export async function afterHallEnter() {
+    if (HallCtrl.instance) {
+        return true;
+    }
+
+    await injectAfter(HallCtrl, 'preEnter');
+}

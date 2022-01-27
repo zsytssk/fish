@@ -1,10 +1,12 @@
 import { Test } from 'testBuilder';
-import { createTick, clearTick } from 'utils/tick';
-import { tween } from 'utils/layaTween';
-import LotteryPop from 'view/pop/lottery';
+
 import { timer } from 'Laya';
 
-export const laya_test = new Test('laya', runner => {
+import { tween } from '@app/utils/layaTween';
+import { createTick, clearTick } from '@app/utils/tick';
+import LotteryPop from '@app/view/pop/lottery';
+
+export const laya_test = new Test('laya', (runner) => {
     const duration = 300000;
     // loop 会掉帧
     runner.describe('loop', () => {
@@ -25,7 +27,7 @@ export const laya_test = new Test('laya', runner => {
     runner.describe('tick', () => {
         let i = 0;
         const start = Date.now();
-        const tick_id = createTick(t => {
+        const tick_id = createTick((t) => {
             i += t;
             const time = Date.now() - start;
             if (time >= duration) {
@@ -37,7 +39,7 @@ export const laya_test = new Test('laya', runner => {
     // tick 不掉帧
     runner.describe('tween', async () => {
         const lottery = await LotteryPop.preEnter();
-        await tween(5000, radio => {
+        await tween(5000, (radio) => {
             console.log(`tween:>`, radio);
         });
         console.log(`tween:>end`);

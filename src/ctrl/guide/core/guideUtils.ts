@@ -1,13 +1,15 @@
 import { Laya } from 'Laya';
+import { getStringLength } from 'honor/utils/getStringLength';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
 import { Point as LayaPoint } from 'laya/maths/Point';
 import { Rectangle } from 'laya/maths/Rectangle';
+
+import { sleep } from '@app/utils/animate';
+import { log } from '@app/utils/log';
+
 import { guide_state, Shape } from '../guideState';
 import { PromptPos, TipData } from './prompt';
-import { getStringLength } from 'honor/utils/getStringLength';
-import { sleep } from 'utils/animate';
-import { log } from 'utils/log';
 
 export type NextType = 'point' | 'btn' | 'start';
 export function getBoundsOfNode(
@@ -123,7 +125,6 @@ async function setPromptSize(msg: string[]) {
         return max;
     }, 0);
     prompt.setSize(size.width, line_num * 35);
-    log(`test:>`, line_num);
     await sleep(0.5);
 }
 
@@ -131,7 +132,7 @@ export function triggerClick(node: Sprite) {
     node.event(Event.CLICK, { type: Event.CLICK });
 }
 export function awaitStageClick() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, _reject) => {
         Laya.stage.on(Event.CLICK, this, () => {
             resolve();
         });

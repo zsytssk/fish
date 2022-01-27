@@ -1,8 +1,13 @@
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { ServerErrCode } from 'data/serverEvent';
-import { modelState } from 'model/modelState';
-import { AccountMap, UserInfoEvent } from 'model/userInfo/userInfoModel';
-import AlertPop from 'view/pop/alert';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { EventCom } from 'comMan/eventCom';
+
+import { Lang } from '@app/data/internationalConfig';
+import { ServerErrCode } from '@app/data/serverEvent';
+import { ArenaModel, ArenaModelEvent } from '@app/model/arena/arenaModel';
+import { modelState } from '@app/model/modelState';
+import { AccountMap, UserInfoEvent } from '@app/model/userInfo/userInfoModel';
+import { tplIntr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
 
 export function onLangChange(item: any, callback: (lang: Lang) => void) {
     const { user_info } = modelState.app;
@@ -14,6 +19,7 @@ export function onLangChange(item: any, callback: (lang: Lang) => void) {
         }
     });
 }
+
 export function getLang() {
     return modelState.app?.user_info?.lang;
 }
@@ -22,6 +28,7 @@ export function offLangChange(item: any) {
     const { event } = modelState.app.user_info;
     event.offAllCaller(item);
 }
+
 export function onCurBalanceChange(
     item: any,
     callback: (type: string) => void,
@@ -44,14 +51,26 @@ export function onNicknameChange(
     let { nickname } = user_info;
     event.on(UserInfoEvent.NicknameChange, callback, item);
     setTimeout(() => {
-        const lang = getLang();
-        const { guest } = InternationalTip[lang];
         if (!nickname) {
-            nickname = guest;
+            nickname = tplIntr('guest');
         }
         callback(nickname);
     });
 }
+
+export function onArenaInfoChange(
+    item: any,
+    callback: (info: ArenaModel) => void,
+) {
+    const { arena_info } = modelState.app;
+    const { event } = arena_info;
+    event.on(ArenaModelEvent.UpdateInfo, callback, item);
+
+    setTimeout(() => {
+        callback(arena_info);
+    });
+}
+
 export function onAccountChange(
     item: any,
     callback: (info: AccountMap) => void,
@@ -67,31 +86,32 @@ export function onAccountChange(
 }
 
 export function offBindEvent(item: any) {
-    const { user_info, setting } = modelState.app;
+    const { user_info, setting, arena_info } = modelState.app;
     const { event: user_info_event } = user_info;
     const { event: setting_event } = setting;
     user_info_event.offAllCaller(item);
     setting_event.offAllCaller(item);
+    arena_info.event.offAllCaller(item);
 }
 
-export function getAllLangList() {
-    const result = [];
-    for (const key in Lang) {
-        if (!Lang.hasOwnProperty(key)) {
-            continue;
-        }
-        result.push(Lang[key]);
+export function bindEvent(
+    event: EventCom,
+    bind_obj: any,
+    bind_info: { [key: string]: Func<void> },
+) {
+    for (const key in bind_info) {
+        event.on(key, bind_info[key], bind_obj);
     }
-    return result;
 }
 
 export function getChannel() {
     return (window as any).paladin?.sys?.config?.channel;
 }
-export function recharge() {
+export function recharge(currency?: string) {
     const app = modelState.app;
     const { account_map, cur_balance } = app.user_info;
-    if (account_map.get(cur_balance).hide) {
+    currency = currency || cur_balance;
+    if (account_map.get(currency).hide) {
         return;
     }
     if (!paladin.sys.config.isLogin) {
@@ -99,7 +119,7 @@ export function recharge() {
     }
     (window as any)?.paladin.pay.recharge({
         data: {
-            currency: cur_balance,
+            currency: currency,
             gameNo: (window as any)?.paladin.sys.config.gameId,
             isHorizontal: true, // 横屏游戏需要传递该参数，竖屏游戏可以不传递或者传递false
         },
@@ -122,8 +142,7 @@ export function withdraw() {
 }
 /** 提示刷新页面 */
 export function alertNetErrRefresh() {
-    const lang = getLang();
-    return AlertPop.alert(InternationalTip[lang][ServerErrCode.NetError], {
+    return AlertPop.alert(tplIntr(ServerErrCode.NetError), {
         hide_cancel: true,
     }).then(() => {
         location.reload();

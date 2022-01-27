@@ -7,7 +7,7 @@ export type ShadowItemInfo = {
     scaleY: number;
 };
 /** 坐标 */
-export let Coordinates = {
+export const Coordinates = {
     /** 桌面上四个炮的坐标坐标, 用来计算每一个炮的子弹的发射点 */
     gun_global_pos: {
         '0': {
@@ -24,6 +24,16 @@ export let Coordinates = {
         },
         '3': {
             x: 670,
+            y: 54,
+        },
+    } as GunGlobalPos,
+    grand_prix_gun_global_pos: {
+        '0': {
+            x: 960,
+            y: 696,
+        },
+        '1': {
+            x: 960,
             y: 54,
         },
     } as GunGlobalPos,

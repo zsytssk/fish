@@ -1,16 +1,18 @@
-import { Config } from 'data/config';
 import SAT from 'sat';
-import { FishSpriteInfo } from 'data/sprite';
-import { getCollisionAllFish, getFishById } from 'model/modelState';
-import { getSpriteInfo, isBombFish } from 'utils/dataUtil';
-import { createFishDisplace } from 'utils/displace/displaceUtil';
+
+import { Config } from '@app/data/config';
+import { FishSpriteInfo } from '@app/data/sprite';
+import { getCollisionAllFish, getFishById } from '@app/model/modelState';
+import { getSpriteInfo, isBombFish } from '@app/utils/dataUtil';
+import { createFishDisplace } from '@app/utils/displace/displaceUtil';
+import { error } from '@app/utils/log';
+
 import { BodyCom } from '../com/bodyCom';
 import { DisplaceMoveCom } from '../com/moveCom/displaceMoveCom';
 import { GameModel } from '../gameModel';
 import { PlayerModel, CaptureGain } from '../playerModel';
 import { FishBombCom } from './fishBombCom';
 import { FishModel, FishData, FishEvent } from './fishModel';
-import { error } from 'utils/log';
 
 /** 创建鱼 move_com在外面创建 */
 export function createFish(data: ServerFishInfo, game: GameModel): FishModel {
@@ -45,7 +47,13 @@ export function createFishGroup(
     data: ServerFishInfo,
     game: GameModel,
 ): FishModel[] {
-    const { fishId: groupType, group, score, currencyFish } = data;
+    const {
+        eid: group_id,
+        fishId: groupType,
+        group,
+        score,
+        currencyFish,
+    } = data;
     const result = [] as FishModel[];
     const { group: sprite_group } = getSpriteInfo(
         'fish',
@@ -56,7 +64,7 @@ export function createFishGroup(
     }
     const displace = createFishDisplace(data);
     const move_com = new DisplaceMoveCom(displace);
-
+    const size = group.length;
     /**  onUpdate + destroy 需要提前处理,
      * onUpdate 在原来的update基础上需要加上相对的 pos
      * destroy 只有所有的鱼个都 destroy 就把原来的 move_com destroy
@@ -72,7 +80,7 @@ export function createFishGroup(
                         sub_fn(_move_info);
                     },
                     id: index,
-                    isStop: false,
+                    isStop: undefined,
                 });
             },
             () => {
@@ -86,8 +94,9 @@ export function createFishGroup(
                 // start
                 update_fn_map.get(index).isStop = false;
                 const hasStopItem = [...update_fn_map.values()].find(
-                    item => item.isStop === true,
+                    (item) => item.isStop === true,
                 );
+
                 if (!hasStopItem) {
                     move_com.start();
                 }
@@ -96,7 +105,7 @@ export function createFishGroup(
                 // stop
                 update_fn_map.get(index).isStop = true;
                 const hasMoveItem = [...update_fn_map.values()].find(
-                    item => item.isStop === false,
+                    (item) => item.isStop === false,
                 );
                 if (!hasMoveItem) {
                     move_com.stop();
@@ -105,7 +114,7 @@ export function createFishGroup(
         ];
     };
 
-    move_com.onUpdate(move_info => {
+    move_com.onUpdate((move_info) => {
         for (const [, fn_item] of update_fn_map) {
             const { update_fn } = fn_item;
             update_fn(move_info);
@@ -138,6 +147,7 @@ export function createFishGroup(
         } as MoveCom;
         const fish_data: FishData = {
             id,
+            group_id,
             type,
             score,
             currency: currencyFish,
@@ -154,7 +164,7 @@ export function createFishGroup(
 
 /** 获取被炸弹炸到的鱼 */
 export function getBeBombFishIds(pos: Point): string[] {
-    return getBeBombFish(pos).map(item => {
+    return getBeBombFish(pos).map((item) => {
         return item.id;
     });
 }
@@ -187,11 +197,11 @@ export async function playerCaptureFish(
         fish_bomb_com.active(player);
     }
     const pos = await fish.beCapture();
-    const { drop, win } = info;
+    const { drop, win, winScore } = info;
     if (!pos) {
         error(`cant find fish pos`);
     }
-    player.captureFish(pos, { win, drop } as CaptureGain);
+    player.captureFish(pos, { win, winScore, drop } as CaptureGain);
 }
 
 export function waitFishDestroy(fish: FishModel) {

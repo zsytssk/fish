@@ -1,6 +1,7 @@
-import { GuideMain } from './guideMain';
+import { setItem } from '@app/utils/localStorage';
+
 import { NewUserGuide } from './guideList/newUser';
-import { setItem } from 'utils/localStorage';
+import { GuideMain } from './guideMain';
 
 /**
  * @author zhangshiyang
@@ -8,7 +9,7 @@ import { setItem } from 'utils/localStorage';
  */
 let guide: GuideMain;
 type GuideInfo = { group_id: string; functionId: string };
-export let guide_arr: GuideInfo[] = [];
+export const guide_arr: GuideInfo[] = [];
 let running = false;
 /** 跳转到特定的新手引导 */
 export async function gotoGuide(group_id: string, functionId: string) {

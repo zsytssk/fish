@@ -1,49 +1,43 @@
-import { Config } from 'data/config';
-import { Lang } from 'data/internationalConfig';
-import { ServerEvent } from 'data/serverEvent';
+import { Laya } from 'Laya';
 import honor from 'honor';
 import { injectAfter } from 'honor/utils/tool';
-import { Laya } from 'Laya';
-import { modelState } from 'model/modelState';
-import { getParams } from 'utils/utils';
+
+import { Config } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
+import { ServerEvent } from '@app/data/serverEvent';
+import { modelState } from '@app/model/modelState';
+import { getParams } from '@app/utils/utils';
+
 import { test_data } from '../testData';
-import { body_test } from './game/body.spec';
+import { sleep } from '../utils/testUtils';
+import { arena_test } from './arena/arena.spec';
+import { ani_wrap } from './game/aniWrap.spec';
 import { fish_test } from './game/fish.spec';
 import { game_test } from './game/game.spec';
 import { player_test } from './game/player.spec';
-import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
-import { sleep } from '../utils/testUtils';
 import { shoal_test } from './game/shoal/shoal.spec';
 import { skill_test } from './game/skill.spec';
+import { mock_web_socket_test } from './socket/mockSocket/mockWebsocket.spec';
 
 export async function localTest() {
+    platform.hideLoading();
     commonTest();
-    await mock_web_socket_test.runTest('create');
+    await mock_web_socket_test.create(2);
     modelState.app.user_info.setUserId(test_data.userId);
-    mock_web_socket_test.runTest(ServerEvent.Shoot);
-    // mock_web_socket_test.runTest(ServerEvent.Hit);
-    // mock_web_socket_test.runTest(ServerEvent.FishBomb);
-    // mock_web_socket_test.runTest(ServerEvent.UseBomb);
-    // mock_web_socket_test.runTest(ServerEvent.UseLock);
-    // mock_web_socket_test.runTest(ServerEvent.UseFreeze);
-    game_test.runTest('enter_game', [true]).then(() => {
-        // fish_test.runTest('add_fish');
-        // sleep(0.5).then(() => {
-        //     player_test.runTest('add_cur_player');
-        // });
-        // player_test.runTest('add_other_player', [2]);
-        // player_test.runTest('add_other_player', [3]);
-        // fish_test.runTest('fish_view');
-        // fish_test.runTest('fish_shadow');
-        // fish_test.runTest('add_fish_group');
-        // body_test.runTest('show_shape');
+    // (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
+    (mock_web_socket_test[ServerEvent.UseFreeze] as () => void)();
+    (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
+    await arena_test.enter();
 
-        sleep(0.5).then(() => {
-            shoal_test.runTest('add_shoal1');
-            player_test.runTest('add_cur_player');
-        });
-        // skill_test.runTest('track_fish');
-    });
+    // fish_test.addFishGroup();
+    // skill_test.freezing();
+    // shoal_test.addShoal1();
+    // player_test.add_cur_player();
+    // player_test.add_cur_player();
+    // await sleep(0.5);
+    // grand_prix_test.showTask();
+
+    // ani_wrap.activeFreezing();
 }
 
 export async function localSocketTest() {

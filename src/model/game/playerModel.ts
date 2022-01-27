@@ -1,15 +1,16 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { SkillMap } from 'data/config';
-import { ModelEvent } from 'model/modelEvent';
-import { getGunInfo } from 'utils/dataUtil';
-import { setProps } from 'utils/utils';
-import { FishEvent, FishModel } from './fish/fishModel';
+
+import { SkillMap } from '@app/data/config';
+import { ModelEvent } from '@app/model/modelEvent';
+import { error } from '@app/utils/log';
+import { setProps } from '@app/utils/utils';
+
+import { FishEvent } from './fish/fishModel';
 import { GameModel } from './gameModel';
 import { GunModel } from './gun/gunModel';
 import { SkillInfo } from './skill/skillCoreCom';
-import { SkillCtorMap, SkillModel } from './skill/skillModel';
-import { error } from 'utils/log';
+import { SkillActiveData, SkillCtorMap, SkillModel } from './skill/skillModel';
 
 type SkillInfoMap = {
     [key: string]: SkillInfo;
@@ -17,6 +18,7 @@ type SkillInfoMap = {
 
 export type CaptureGain = {
     win: number;
+    winScore: number;
     drop: HitDrop[];
 };
 export type CaptureInfo = {
@@ -30,6 +32,7 @@ export type PlayerInfo = {
     server_index: number;
     bullet_cost: number;
     bullet_num: number;
+    score?: number;
     gun_skin: string;
     nickname: string;
     avatar: string;
@@ -41,6 +44,7 @@ export const PlayerEvent = {
     UpdateInfo: 'update_info',
     Destroy: ModelEvent.Destroy,
 };
+export type DetectUpsideDownFn = (server_index: number) => boolean;
 
 /** 玩家的数据类 */
 export class PlayerModel extends ComponentManager {
@@ -56,6 +60,8 @@ export class PlayerModel extends ComponentManager {
     public bullet_cost: number;
     /** 金币数量 */
     public bullet_num: number;
+    /** 积分数量 */
+    public score = 0;
     /** 用户名 */
     public nickname: string;
     /** 图像地址 */
@@ -78,8 +84,7 @@ export class PlayerModel extends ComponentManager {
     private createGun(player_info: PlayerInfo) {
         const { gun_skin, skills, server_index, ...other } = player_info;
 
-        const { pos } = getGunInfo(server_index);
-        const gun = new GunModel(pos, gun_skin, this);
+        const gun = new GunModel(gun_skin, this);
         this.gun = gun;
 
         this.updateInfo({
@@ -88,6 +93,9 @@ export class PlayerModel extends ComponentManager {
         });
 
         this.initSkill(skills);
+    }
+    public setClientInfo(detectUpsideDownFn: DetectUpsideDownFn) {
+        this.gun.setClientInfo(detectUpsideDownFn);
     }
     public init() {
         const { skill_map, gun } = this;
@@ -112,10 +120,10 @@ export class PlayerModel extends ComponentManager {
     private initSkill(skills: SkillInfoMap) {
         const { skill_map } = this;
         for (const key in SkillCtorMap) {
-            if (!SkillCtorMap.hasOwnProperty(key)) {
+            const ctor = SkillCtorMap[key];
+            if (!ctor) {
                 continue;
             }
-            const ctor = SkillCtorMap[key];
             const data = skills[key] || {};
             const info = {
                 player: this,
@@ -125,7 +133,7 @@ export class PlayerModel extends ComponentManager {
         }
     }
     /** 激活技能 */
-    public activeSkill(skill: SkillMap, data = {} as any) {
+    public activeSkill(skill: SkillMap, data = {} as SkillActiveData) {
         const skill_model = this.skill_map.get(skill);
         skill_model.active(data);
     }
@@ -153,12 +161,9 @@ export class PlayerModel extends ComponentManager {
         num = skill_model.skill_core.num + num;
         skill_model.skill_core.setNum(num);
     }
-    public async captureFish(
-        pos: Point,
-        data: { win: number; drop: HitDrop[] },
-    ) {
+    public async captureFish(pos: Point, data: CaptureGain) {
         /** 掉落的金币+item动画 */
-        await new Promise((resolve, reject) => {
+        await new Promise((resolve, _reject) => {
             this.event?.emit(PlayerEvent.CaptureFish, {
                 pos,
                 data,
@@ -170,10 +175,11 @@ export class PlayerModel extends ComponentManager {
             return;
         }
 
-        const { win, drop } = data;
-        const { bullet_num } = this;
+        const { win, winScore, drop } = data;
+        const { bullet_num, score } = this;
         this.updateInfo({
-            bullet_num: bullet_num + win,
+            bullet_num: bullet_num + (win || 0),
+            score: score + (winScore || 0),
         });
 
         if (drop) {

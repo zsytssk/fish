@@ -1,42 +1,42 @@
-import { commonSocket, errorHandler, offCommon } from 'ctrl/hall/commonSocket';
-import { WebSocketTrait, SocketEvent } from 'ctrl/net/webSocketWrap';
-import { bindSocketEvent } from 'ctrl/net/webSocketWrapUtil';
-import { SkillMap } from 'data/config';
-import { ServerEvent } from 'data/serverEvent';
-import { PlayerInfo } from 'model/game/playerModel';
-import { AutoShootInfo } from 'model/game/skill/autoShootModel';
-import { BombInfo } from 'model/game/skill/bombModel';
-import { FreezeInfo } from 'model/game/skill/freezeModel';
+import { commonSocket, errorHandler } from '@app/ctrl/hall/commonSocket';
+import { WebSocketTrait, SocketEvent } from '@app/ctrl/net/webSocketWrap';
+import { bindSocketEvent } from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { OK_CODE, ServerEvent } from '@app/data/serverEvent';
+import { PlayerInfo } from '@app/model/game/playerModel';
+import { AutoShootInfo } from '@app/model/game/skill/autoShootModel';
+import { BombInfo } from '@app/model/game/skill/bombModel';
+import { FreezeInfo } from '@app/model/game/skill/freezeModel';
 import {
     LockFishActiveInfo,
     LockFishInitInfo,
-} from 'model/game/skill/lockFishModel';
-import { SkillInfo } from 'model/game/skill/skillCoreCom';
-import {
-    getCurUserId,
-    isCurUser,
-    getCurPlayer,
-    getUserInfo,
-} from 'model/modelState';
-import { GameCtrl } from './gameCtrl';
-import { changeBulletNum, tipExchange } from './gameCtrlUtils';
+} from '@app/model/game/skill/lockFishModel';
+import { SkillInfo } from '@app/model/game/skill/skillCoreCom';
+import { getCurUserId, isCurUser, getCurPlayer } from '@app/model/modelState';
 
-let game_socket: WebSocketTrait;
+import { GameCtrl } from './gameCtrl';
+import { tipExchange } from './gameCtrlUtils';
+
 export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
-    game_socket = socket;
     commonSocket(socket, game);
     bindSocketEvent(socket, game, {
         [ServerEvent.EnterGame]: (data: EnterGameRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data);
             }
             game.onEnterGame(convertEnterGame(data));
         },
-        [ServerEvent.TableIn]: (data: TableInRep) => {
+        [ServerEvent.TableIn]: (data: TableInRep, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data);
+            }
             const user = convertTableInData(data);
             game.addPlayers([user]);
         },
-        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep) => {
+        [ServerEvent.NeedEmitUser]: (data: NeedEmitUserRep, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data);
+            }
             if (!isCurUser(data.userId)) {
                 return;
             }
@@ -44,30 +44,33 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.setPlayersEmit(data.robotIds);
         },
         [ServerEvent.TableOut]: (data: TableOutRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data);
             }
             game.tableOut(data);
         },
-        [ServerEvent.Shoot]: (data: ShootRep) => {
+        [ServerEvent.Shoot]: (data: ShootRep, code) => {
+            if (code !== OK_CODE) {
+                return errorHandler(code, data);
+            }
             game.onShoot(data);
         },
         [ServerEvent.Hit]: (data: HitRep, code: number) => {
             // Todo
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data);
             }
             game.onHit(data);
         },
         [ServerEvent.FishBomb]: (data: UseBombRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Bomb, getCurUserId());
                 return;
             }
             game.activeSkill(SkillMap.Bomb, convertBombData(data));
         },
         [ServerEvent.UseBomb]: (data: UseBombRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Bomb, getCurUserId());
                 return;
             }
@@ -78,7 +81,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             } as BombInfo);
         },
         [ServerEvent.UseFreeze]: (data: UseFreezeRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
@@ -93,7 +96,7 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             }
         },
         [ServerEvent.LockFish]: (data: LockFishRep, code: number) => {
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 game.resetSkill(SkillMap.Freezing, getCurUserId());
                 return;
             }
@@ -106,19 +109,26 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             game.shoalComingTip(data.reverse);
             game.addFish(data.fish);
         },
-        [ServerEvent.FishShoalWarn]: (data: FishShoalWarnRep) => {},
         [ServerEvent.RoomOut]: (data: RoomOutRep) => {
             game.roomOut(data);
         },
-        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep) => {
+        [ServerEvent.ChangeTurret]: (data: ChangeTurretRep, code) => {
+            // Todo
+            if (code !== OK_CODE) {
+                return errorHandler(code, data);
+            }
             game.changeBulletCost(data);
         },
-        [ServerEvent.UseSkin]: (data: UseSkinRep) => {
+        [ServerEvent.UseSkin]: (data: UseSkinRep, code) => {
+            // Todo
+            if (code !== OK_CODE) {
+                return errorHandler(code, data);
+            }
             game.changeSkin(data);
         },
         [ServerEvent.ExchangeBullet]: (data: ExchangeBullet, code: number) => {
             // Todo
-            if (code !== 200) {
+            if (code !== OK_CODE) {
                 return errorHandler(code, data);
             }
             const player = getCurPlayer();
@@ -133,16 +143,6 @@ export function onGameSocket(socket: WebSocketTrait, game: GameCtrl) {
             socket.send(ServerEvent.EnterGame, { replay: true });
         },
     });
-}
-
-export function offGameSocket(game: GameCtrl) {
-    offCommon(game_socket, game);
-    game_socket = undefined;
-}
-export function sendToGameSocket(
-    ...params: Parameters<WebSocketTrait['send']>
-) {
-    game_socket?.send(...params);
 }
 
 export type EnterGameData = {

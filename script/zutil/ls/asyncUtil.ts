@@ -23,7 +23,7 @@ export async function readFile(file_path: string): Promise<string> {
 
 export function exists(path: string) {
     return new Promise((resolve, reject) => {
-        fs.exists(path, exist => {
+        fs.exists(path, (exist) => {
             resolve(exist);
         });
     });
@@ -41,11 +41,11 @@ export function lstatFile(path: string): Promise<fs.Stats> {
 
 export function rmdir(path: string) {
     return new Promise((resolve, reject) => {
-        fs.rmdir(path, err => {
+        fs.rmdir(path, (err) => {
             if (err) {
                 return reject(err);
             }
-            resolve();
+            resolve(undefined);
         });
     });
 }
@@ -60,7 +60,7 @@ export function unlink(file_path: string) {
         // });
         try {
             fs.unlinkSync(file_path);
-            resolve();
+            resolve(undefined);
         } catch (err) {
             reject(err);
         }
@@ -69,11 +69,11 @@ export function unlink(file_path: string) {
 
 export function mkdir(path: string) {
     return new Promise((resolve, reject) => {
-        fs.mkdir(path, e => {
+        fs.mkdir(path, (e) => {
             if (!e || (e && e.code === 'EEXIST')) {
-                resolve();
+                resolve(undefined);
             } else {
-                resolve();
+                resolve(undefined);
             }
         });
     });
@@ -82,7 +82,7 @@ export function mkdir(path: string) {
 export function sleep(time: number) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve();
+            resolve(undefined);
         }, time);
     });
 }

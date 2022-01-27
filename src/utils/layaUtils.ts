@@ -1,9 +1,14 @@
-import { Laya } from 'Laya';
-import { Node } from 'laya/display/Node';
 import { Observable, Subscriber } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
+
+import { Laya } from 'Laya';
+import { Node } from 'laya/display/Node';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
+import { Box } from 'laya/ui/Box';
+import { Image } from 'laya/ui/Image';
+
+import { blink, buttonClick, scale_in } from './animate';
 
 export function onStageClick(
     node: Node,
@@ -46,7 +51,7 @@ export function onStageClick(
     });
 }
 
-type ClickNode = Sprite & {
+export type ClickNode = Sprite & {
     is_disable: boolean;
 };
 /**
@@ -63,6 +68,7 @@ export function onNode(
     callback: (event?: Event) => void,
     once?: boolean,
     throttle = 1000,
+    ani = false,
 ) {
     let once_observer: Subscriber<Event>;
     const observer = new Observable((subscriber: Subscriber<Event>) => {
@@ -72,6 +78,10 @@ export function onNode(
                 return;
             }
             (node as ClickNode).is_disable = true;
+
+            if (ani) {
+                buttonClick(node);
+            }
             setTimeout(() => {
                 if (node && node.destroyed) {
                     return;
@@ -103,13 +113,22 @@ export function onNode(
     });
 }
 
+export const onNodeWithAni = (
+    node: Sprite,
+    event: string,
+    callback: (event?: Event) => void,
+    once?: boolean,
+    throttle = 1000,
+) => {
+    onNode(node, event, callback, once, throttle, true);
+};
 const bind_arr = [] as Array<{
     item: Sprite;
     off: () => void;
 }>;
 export function onMouseMove(view: Sprite, callback: (pos: Point) => void) {
     const { MOUSE_MOVE } = Event;
-    const fn = e => {
+    const fn = (e) => {
         const { x, y } = view.getMousePoint();
         callback({ x, y });
     };
@@ -147,13 +166,14 @@ export function resizeContain(
     parent: Sprite,
     space: number,
     dir = 'horizontal' as Dir,
+    padding = 0,
 ) {
     const { numChildren } = parent;
 
-    const children = [];
+    const children: Image[] = [];
     let dist = 0;
     for (let i = 0; i < numChildren; i++) {
-        const item = parent.getChildAt(i) as Sprite;
+        const item = parent.getChildAt(i) as Image;
         if (!item.visible) {
             continue;
         }
@@ -163,8 +183,14 @@ export function resizeContain(
         const item = children[i];
         if (dir === 'horizontal') {
             item.x = dist;
+            if (item.anchorX) {
+                item.x += item.width / 2;
+            }
         } else {
             item.y = dist;
+            if (item.anchorY) {
+                item.y += item.height / 2;
+            }
         }
 
         if (dir === 'horizontal') {
@@ -183,9 +209,11 @@ export function resizeContain(
     }
 
     if (dir === 'horizontal') {
-        parent.width = dist;
+        const width = dist + padding * 2;
+        parent.width = width;
     } else {
-        parent.height = dist;
+        const height = dist + padding * 2;
+        parent.height = height;
     }
 }
 

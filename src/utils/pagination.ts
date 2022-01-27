@@ -1,5 +1,3 @@
-type Range = [number, number];
-
 export type PaginationItem =
     | 'prev'
     | 'next'
@@ -12,7 +10,7 @@ export class Pagination {
     /** 一页有多少item */
     public item_page_num: number;
     /** i当前页 item 的范围 */
-    public item_range: Range;
+    public item_range: LocalRange;
     /** page数目 */
     public page_num: number;
     /** 当前分页 */
@@ -24,7 +22,7 @@ export class Pagination {
     /** pagination 的大小 */
     public pagination_num: number;
     /** pagination 范围 */
-    public pagination_range: Range;
+    public pagination_range: LocalRange;
     /** pagination 有左 spread */
     public has_left_spread: boolean;
     /** pagination 有右 spread */
@@ -100,12 +98,8 @@ export class Pagination {
         this.analyse();
     }
     private analyse() {
-        const {
-            item_total_num,
-            item_page_num,
-            cur_page,
-            pagination_num,
-        } = this;
+        const { item_total_num, item_page_num, cur_page, pagination_num } =
+            this;
         const page_num = Math.ceil(item_total_num / item_page_num);
         this.page_num = page_num;
 
@@ -116,7 +110,7 @@ export class Pagination {
         }
 
         /** 当前页的item范围 */
-        const item_range: Range = [item_range_start, item_range_end];
+        const item_range: LocalRange = [item_range_start, item_range_end];
         this.item_range = item_range;
 
         const has_prev = cur_page > 0;
@@ -137,7 +131,7 @@ export class Pagination {
                 pagination_range_start = 0;
             }
         }
-        const pagination_range: Range = [
+        const pagination_range: LocalRange = [
             pagination_range_start,
             pagination_range_end,
         ];
@@ -159,6 +153,7 @@ export class Pagination {
             has_left_spread,
             has_right_spread,
             page_num,
+            item_page_num,
         } = this;
 
         const pagination_arr = [] as PaginationItem[];
@@ -190,6 +185,7 @@ export class Pagination {
             has_prev,
             pagination_arr,
             pagination_range,
+            page_size: item_page_num,
             page_num,
         };
     }

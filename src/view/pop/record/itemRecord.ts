@@ -1,18 +1,21 @@
+import honor, { HonorDialog } from 'honor';
+import { loadRes } from 'honor/utils/loadRes';
+import { Label } from 'laya/ui/Label';
+
 import {
     offBindEvent,
     onAccountChange,
     onLangChange,
-} from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
-import honor, { HonorDialog } from 'honor';
-import { Label } from 'laya/ui/Label';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import { ui } from 'ui/layaMaxUI';
-import { getSkillName } from '../buyBullet';
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { ui } from '@app/ui/layaMaxUI';
+import { resizeContain } from '@app/utils/layaUtils';
+import { tplIntr } from '@app/utils/utils';
+
 import { getItemList } from '../popSocket';
+import { getItemName } from '../shop';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
-import { loaderManager } from 'honor/state';
 
 type CoinData = {
     coin_icon: string;
@@ -28,32 +31,25 @@ type SelectItem = InstanceType<typeof ItemRecord>['select_item'];
 
 export default class ItemRecord
     extends ui.pop.record.itemRecordUI
-    implements HonorDialog {
-    public isModal = true;
+    implements HonorDialog
+{
     private select_coin_ctrl: SelectCtrl;
     private select_item_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
     private all_list: GetItemListItemRep[];
     private isInit = false;
     public static async preEnter() {
-        const item_record = (await honor.director.openDialog({
-            dialog: ItemRecord,
-            use_exist: true,
-            stay_scene: true,
-        })) as ItemRecord;
+        const item_record = await honor.director.openDialog<ItemRecord>(
+            'pop/record/itemRecord.scene',
+        );
         return item_record;
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/record/itemRecord.scene');
+        return loadRes('pop/record/itemRecord.scene');
     }
     public onAwake() {
-        const {
-            select_item,
-            select_coin,
-            item_menu,
-            coin_menu,
-            btn_search,
-        } = this;
+        const { select_item, select_coin, item_menu, coin_menu, btn_search } =
+            this;
 
         const select_coin_ctrl = new SelectCtrl(select_coin, coin_menu);
         select_coin_ctrl.setRender(this.renderSelectCoin);
@@ -62,15 +58,15 @@ export default class ItemRecord
         });
         select_coin_ctrl.init();
 
-        onLangChange(this, lang => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const select_item_ctrl = new SelectCtrl(select_item, item_menu);
         select_item_ctrl.setRender(this.renderSelectItem);
         select_item_ctrl.init();
-        const ItemList = ['2001', '2002', '2003'].map(item => {
-            return { item_name: getSkillName(item), item_id: item };
+        const ItemList = ['2001', '2002', '2003'].map((item) => {
+            return { item_name: getItemName(item), item_id: item };
         });
         ItemList.unshift({ item_name: 'ALL', item_id: undefined });
         select_item_ctrl.setList(ItemList);
@@ -109,26 +105,24 @@ export default class ItemRecord
             this.search();
         });
     }
-    private initLang(lang: Lang) {
-        const {
-            itemListTitle,
-            search,
-            itemList1,
-            itemList2,
-            itemList3,
-            gameNo,
-            remainingNum,
-        } = InternationalTip[lang];
-        const { noData } = InternationalTip[lang];
-        const { title, title_box, btn_search_label, empty_tip } = this;
+    private initLang() {
+        const { title, title_box, btn_search, empty_tip } = this;
 
-        title.text = itemListTitle;
-        empty_tip.text = noData;
-        const arr = [itemList1, itemList2, itemList3, remainingNum, gameNo];
+        title.text = tplIntr('itemListTitle');
+        empty_tip.text = tplIntr('noData');
+        const arr = [
+            tplIntr('itemList1'),
+            tplIntr('itemList2'),
+            tplIntr('itemList3'),
+            tplIntr('remainingNum'),
+            tplIntr('gameNo'),
+        ];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = search;
+        btn_search.label = tplIntr('search');
+        btn_search.text.padding = [0, 13, 0, 10];
+        resizeContain(btn_search, 0);
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;
@@ -183,7 +177,7 @@ export default class ItemRecord
         getItemList({
             itemId,
             currency,
-        }).then(data => {
+        }).then((data) => {
             this.all_list = data.list;
             empty_tip.visible = !data.list.length;
             pagination_ctrl.update(data.list.length, 10);
@@ -196,11 +190,11 @@ export default class ItemRecord
     private renderRecordList(data: GetItemListItemRep[]) {
         const { record_list } = this;
 
-        record_list.array = data.map(item => {
+        record_list.array = data.map((item) => {
             return {
                 buy_total: item.buyNum,
                 remain: item.curNum,
-                type: getSkillName(item.itemId + ''),
+                type: getItemName(item.itemId + ''),
                 give_total: item.prizeNum,
                 no: item.currency,
             };

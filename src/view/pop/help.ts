@@ -1,15 +1,17 @@
 import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { LayaSlider } from 'utils/layaSlider';
-import { Handler } from 'laya/utils/Handler';
-import { test_fish_list, getSkillIntroList } from './helpUtils';
-import { SkillNameMap, SkillMap } from 'data/config';
-import { onLangChange, offLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { resizeContain } from 'utils/layaUtils';
+import { loadRes } from 'honor/utils/loadRes';
 import { Box } from 'laya/ui/Box';
-import { Laya } from 'Laya';
-import { loaderManager } from 'honor/state';
+import { Handler } from 'laya/utils/Handler';
+
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { SkillMap, SkillNameMap } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
+import { ui } from '@app/ui/layaMaxUI';
+import { LayaSlider } from '@app/utils/layaSlider';
+import { resizeContain } from '@app/utils/layaUtils';
+import { tplIntr } from '@app/utils/utils';
+
+import { getSkillIntroList, test_fish_list } from './helpUtils';
 
 type FishItemData = {
     id: string;
@@ -22,24 +24,21 @@ type SkillItemData = {
 };
 
 export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
-    public isModal = true;
     private slider_glr: LayaSlider;
     private times_tpl: string;
     public static async preEnter(index = 0) {
-        const help_pop = (await honor.director.openDialog({
-            dialog: HelpPop,
-            use_exist: true,
-            stay_scene: true,
-        })) as HelpPop;
+        const help_pop = await honor.director.openDialog<HelpPop>(
+            'pop/help/help.scene',
+        );
 
         help_pop.goto(index);
     }
     public static async preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/help/help.scene');
+        return loadRes('pop/help/help.scene');
     }
     public onAwake() {
-        onLangChange(this, lang => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
         this.slider_glr = new LayaSlider(this.glr);
         const { skill_list, fish_list } = this;
@@ -91,40 +90,26 @@ export default class HelpPop extends ui.pop.help.helpUI implements HonorDialog {
             intro_label.width = (intro_label.parent as Box).width;
         }
     }
-    private initLang(lang: Lang) {
-        const {
-            help,
-            help1,
-            help2,
-            help3,
-            help31,
-            help4,
-            help41,
-            help42,
-            help43,
-            times,
-        } = InternationalTip[lang];
-        const {
-            title,
-            intro1,
-            intro2,
-            intro3,
-            intro31,
-            intro4,
-            intro41,
-        } = this;
+    private initLang() {
+        const { title, intro1, intro2, intro3, intro31, intro4, intro41 } =
+            this;
 
-        this.times_tpl = times;
+        this.times_tpl = tplIntr('times');
         this.fish_list.refresh();
-        title.text = help;
-        intro1.text = help1;
-        intro2.text = help2;
+        title.text = tplIntr('help');
+        intro1.text = tplIntr('help1');
+        intro2.text = tplIntr('help2');
 
-        intro3.text = help3;
-        intro31.text = help31;
-        intro4.text = help4;
-        intro41.text = help41 + `\n` + help42 + `\n` + help43;
-        this.skill_list.array = getSkillIntroList(lang);
+        intro3.text = tplIntr('help3');
+        intro31.text = tplIntr('help31');
+        intro4.text = tplIntr('help4');
+        intro41.text =
+            tplIntr('help41') +
+            `\n` +
+            tplIntr('help42') +
+            `\n` +
+            tplIntr('help43');
+        this.skill_list.array = getSkillIntroList();
         resizeContain(this.item0_wrap, 10, 'vertical');
         resizeContain(this.item1_wrap, 10, 'vertical');
         resizeContain(this.item2_wrap, 10, 'vertical');

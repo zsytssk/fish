@@ -1,9 +1,11 @@
 import { ComponentManager } from 'comMan/component';
 import { EventCom } from 'comMan/eventCom';
-import { Lang } from 'data/internationalConfig';
+
+import { Config } from '@app/data/config';
+import { Lang } from '@app/data/internationalConfig';
+import { setItem } from '@app/utils/localStorage';
+
 import { getCacheCurrency, setCacheBalance } from './userInfoUtils';
-import { Config } from 'data/config';
-import { setItem } from 'utils/localStorage';
 
 /** 账户信息修改 */
 export const UserInfoEvent = {
@@ -19,9 +21,9 @@ export type AccountMap = Map<
 /** 当前用户信息.. */
 export class UserInfoModel extends ComponentManager {
     /** 语言 */
-    public lang: Lang;
+    public lang = 'en' as Lang;
     /** 当前钱币类型 */
-    public cur_balance: string;
+    public cur_balance = 'BTC';
     /** 用户id */
     public user_id: string;
     /** 用户名 */
@@ -63,7 +65,6 @@ export class UserInfoModel extends ComponentManager {
             return;
         }
         this.lang = lang;
-        setItem('local_lang', lang);
         this.event.emit(UserInfoEvent.LangChange, lang);
     }
     public setUserId(name: string) {
@@ -77,9 +78,6 @@ export class UserInfoModel extends ComponentManager {
     public setAccount(data: UserAccountRep['balances']) {
         let first_balance: string;
         for (const key in data) {
-            if (!data.hasOwnProperty(key)) {
-                continue;
-            }
             if (!first_balance) {
                 first_balance = key;
             }

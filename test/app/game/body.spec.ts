@@ -1,15 +1,17 @@
-import { injectProto } from 'honor/utils/tool';
-import { BodyCom, ShapeInfo } from 'model/game/com/bodyCom';
 import * as SAT from 'sat';
 import { Test } from 'testBuilder';
-import GameView from 'view/scenes/game/gameView';
-import honor from 'honor';
-import { Sprite } from 'laya/display/Sprite';
-import { FishView } from 'view/scenes/game/fishView';
 
-export const body_test = new Test('body', runner => {
-    let init_show_shape = false;
-    runner.describe('show_shape', () => {
+import honor from 'honor';
+import { injectProto } from 'honor/utils/tool';
+import { Sprite } from 'laya/display/Sprite';
+
+import { BodyCom, ShapeInfo } from '@app/model/game/com/bodyCom';
+import { FishView } from '@app/view/scenes/game/fishView';
+import GameView from '@app/view/scenes/game/gameView';
+
+let init_show_shape = false;
+export const body_test = {
+    showShape: () => {
         if (!init_show_shape) {
             init_show_shape = true;
             const sprite_map = new Map() as Map<BodyCom, Sprite>;
@@ -41,21 +43,21 @@ export const body_test = new Test('body', runner => {
             //     obj.graphics.drawRect(0, 0, obj.width, obj.height, '#fff');
             // });
         }
-    });
+    },
 
-    runner.describe('test_sat', () => {
+    testSat: () => {
         const a = new SAT.Box(new SAT.Vector(100, 100), 300, 300).toPolygon();
         const b = new SAT.Box(new SAT.Vector(0, 0), 300, 300).toPolygon();
         b.translate(100, 100);
         console.log(`test:>`, a, b);
-    });
-    runner.describe('test_sat', () => {
+    },
+    testSat2: () => {
         const a = new SAT.Box(new SAT.Vector(100, 100), 300, 300).toPolygon();
         const b = new SAT.Box(new SAT.Vector(0, 0), 300, 300).toPolygon();
         b.translate(100, 100);
         console.log(`test:>`, a, b);
-    });
-});
+    },
+};
 
 /** 绘制形状 */
 function drawShape(node: Sprite, shapes: ShapeInfo[]) {

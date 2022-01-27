@@ -1,6 +1,7 @@
-import { fade_in, move, stopAni } from 'utils/animate';
-import { Sprite } from 'laya/display/Sprite';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
+import { Sprite } from 'laya/display/Sprite';
+
+import { fade_in, move, stopAni } from '@app/utils/animate';
 
 export type PointerType = 'static' | 'circle' | 'target';
 

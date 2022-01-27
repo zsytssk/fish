@@ -1,0 +1,58 @@
+{
+    "triggerTask": {
+        "taskId": 1001,
+        "name": "击杀大鱼",
+        "award": 11,
+        "duration": 120,
+        "list": [
+            {
+                "index": 0,
+                "type": 1,
+                "killNumber": 10
+            },
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10
+            },
+            {
+                "index": 2,
+                "type": 3,
+                "killNumber": 10
+            }
+        ]
+    },
+    "taskRefresh1": {
+        "list": [
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            },
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            }
+        ]
+    },
+    "taskRefresh2": {
+        "list": [
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            },
+            {
+                "index": 1,
+                "type": 2,
+                "killNumber": 10,
+                "reachNumber": 1
+            }
+        ]
+    },
+    "taskFinish": { "taskId": 1001, "isComplete": true, "award": 100 }
+}

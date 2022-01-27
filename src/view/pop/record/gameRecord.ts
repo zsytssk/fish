@@ -1,19 +1,20 @@
+import honor, { HonorDialog } from 'honor';
+import { loadRes } from 'honor/utils/loadRes';
+import { Label } from 'laya/ui/Label';
+
 import {
     offBindEvent,
     onAccountChange,
     onLangChange,
-} from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
-import honor, { HonorDialog } from 'honor';
-import { Label } from 'laya/ui/Label';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import { ui } from 'ui/layaMaxUI';
-import { getDateFromNow } from 'utils/utils';
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { ui } from '@app/ui/layaMaxUI';
+import { onNode, resizeContain } from '@app/utils/layaUtils';
+import { getDateFromNow, tplIntr } from '@app/utils/utils';
+
 import { getBulletList, getRecentBullet } from '../popSocket';
 import { PaginationCtrl, PaginationEvent } from './paginationCtrl';
 import { SelectCtrl } from './selectCtrl';
-import { onNode } from 'utils/layaUtils';
-import { loaderManager } from 'honor/state';
 
 type CoinData = {
     coin_icon: string;
@@ -30,21 +31,19 @@ for (let i = 0; i >= -7; i--) {
 
 export default class GameRecord
     extends ui.pop.record.gameRecordUI
-    implements HonorDialog {
-    public isModal = true;
+    implements HonorDialog
+{
     private select_coin_ctrl: SelectCtrl;
     private select_date_ctrl: SelectCtrl;
     private pagination_ctrl: PaginationCtrl;
     public static async preEnter() {
-        const game_record = (await honor.director.openDialog({
-            dialog: GameRecord,
-            use_exist: true,
-            stay_scene: true,
-        })) as GameRecord;
+        const game_record = await honor.director.openDialog(
+            'pop/record/gameRecord.scene',
+        );
         return game_record;
     }
     public static preLoad() {
-        return loaderManager.preLoad('Dialog', 'pop/record/gameRecord.scene');
+        return loadRes('pop/record/gameRecord.scene');
     }
     public onAwake() {
         const {
@@ -89,19 +88,19 @@ export default class GameRecord
         this.select_coin_ctrl = select_coin_ctrl;
         this.select_date_ctrl = select_date_ctrl;
 
-        onLangChange(this, lang => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
     }
     public onEnable() {
         const { select_coin_ctrl, select_date_ctrl } = this;
-        getRecentBullet().then(data => {
+        getRecentBullet().then((data) => {
             const coin_list = select_coin_ctrl.getList() as CoinData[];
             const date_list = select_date_ctrl.getList() as DateData[];
-            let coin_index = coin_list.findIndex(item => {
+            let coin_index = coin_list.findIndex((item) => {
                 return item.coin_name === data.currency;
             });
-            let date_index = date_list.findIndex(item => {
+            let date_index = date_list.findIndex((item) => {
                 return item.start < data.time && item.end > data.time;
             });
             if (coin_index === -1) {
@@ -116,18 +115,19 @@ export default class GameRecord
             this.search(1);
         });
     }
-    private initLang(lang: Lang) {
-        const { gameListTitle, search, prize, cost } = InternationalTip[lang];
-        const { noData } = InternationalTip[lang];
-        const { title, title_box, btn_search_label, empty_tip } = this;
+    private initLang() {
+        const { title, title_box, btn_search, empty_tip } = this;
 
-        title.text = gameListTitle;
-        const arr = [cost, prize];
+        title.text = tplIntr('gameListTitle');
+        const arr = [tplIntr('cost'), tplIntr('prize')];
         for (let i = 0; i < title_box.numChildren; i++) {
             (title_box.getChildAt(i) as Label).text = arr[i];
         }
-        btn_search_label.text = search;
-        empty_tip.text = noData;
+        btn_search.label = tplIntr('search');
+        btn_search.text.padding = [0, 13, 0, 10];
+        resizeContain(btn_search, 0);
+
+        empty_tip.text = tplIntr('noData');
     }
     private renderSelectCoin(box: SelectCoin, data: CoinData) {
         const { coin_icon, coin_name } = box;
@@ -169,7 +169,7 @@ export default class GameRecord
             endTime: date_data.end,
             pageNum,
             pageSize,
-        }).then(data => {
+        }).then((data) => {
             pagination_ctrl.update(data.total, pageSize);
             this.renderRecordList(data.list);
             empty_tip.visible = !data.list.length;
@@ -177,7 +177,7 @@ export default class GameRecord
     }
     private renderRecordList(data: GetBulletItemRep[]) {
         const { record_list } = this;
-        record_list.array = data.map(item => {
+        record_list.array = data.map((item) => {
             return {
                 prize: item.prize ? `${item.prize}  ${item.currency}` : 0,
                 cost: item.cost ? `${item.cost}  ${item.currency}` : 0,

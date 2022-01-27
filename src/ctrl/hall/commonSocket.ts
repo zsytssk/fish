@@ -1,196 +1,150 @@
-import { ctrlState } from 'ctrl/ctrlState';
-import {
-    disableCurUserOperation,
-    waitGameExchangeOrLeave,
-} from 'ctrl/game/gameCtrlUtils';
-import { sendToGameSocket } from 'ctrl/game/gameSocket';
-import { SocketEvent, WebSocketTrait } from 'ctrl/net/webSocketWrap';
+import { ctrlState } from '@app/ctrl/ctrlState';
+import { SocketEvent, WebSocketTrait } from '@app/ctrl/net/webSocketWrap';
 import {
     bindSocketEvent,
     disconnectSocket,
-    getSocket,
-} from 'ctrl/net/webSocketWrapUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import {
-    ErrorData,
-    ServerErrCode,
-    ServerEvent,
-    ServerName,
-} from 'data/serverEvent';
-import { BgMonitorEvent } from 'utils/bgMonitor';
-import AlertPop from 'view/pop/alert';
-import TipPop from 'view/pop/tip';
-import { getLang, recharge } from './hallCtrlUtil';
-import { asyncOnly } from 'utils/asyncQue';
-import { removeItem } from 'utils/localStorage';
-import { debug } from 'utils/log';
+} from '@app/ctrl/net/webSocketWrapUtil';
+import { ErrorData, ServerErrCode, ServerEvent } from '@app/data/serverEvent';
+import { asyncOnly } from '@app/utils/asyncQue';
+import { BgMonitorEvent } from '@app/utils/bgMonitor';
+import { removeItem } from '@app/utils/localStorage';
+import { tplIntr } from '@app/utils/utils';
+import AlertPop from '@app/view/pop/alert';
+import TipPop from '@app/view/pop/tip';
+
+import { AppCtrl } from '../appCtrl';
 import { login } from './login';
-import { tplStr } from 'utils/utils';
-import { sleep } from 'utils/animate';
 
 export function commonSocket(socket: WebSocketTrait, bindObj: any) {
-    const { ErrCode } = ServerEvent;
     bindSocketEvent(socket, bindObj, {
-        [ErrCode]: (res: ErrorData) => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-            const { OtherLogin } = InternationalTip[lang];
-            if (res.code === ServerErrCode.TokenExpire) {
-                removeItem('local_token');
+        [ServerEvent.ErrCode]: (res: ErrorData, code: number) => {
+            code = res?.code || code;
+            if (code === ServerErrCode.TokenExpire) {
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(logoutTip, { hide_cancel: true }).then(type => {
-                    location.reload();
-                });
-            } else if (res.code === ServerErrCode.OtherLogin) {
+                tokenExpireTip();
+            } else if (code === ServerErrCode.OtherLogin) {
                 disconnectSocket(socket.config.name);
-                AlertPop.alert(OtherLogin, {
-                    hide_cancel: true,
-                }).then(() => {
-                    location.reload();
-                });
+                tipOtherLogin();
             }
         },
         /** 重连 */
-        [SocketEvent.Reconnecting]: (try_no: number) => {
-            const lang = getLang();
-            if (try_no !== 0) {
-                return;
+        [SocketEvent.Reconnecting]: (try_index: number) => {
+            if (try_index === 0) {
+                tipReconnect();
             }
-            const { NetError } = InternationalTip[lang];
-            TipPop.tip(NetError, {
-                count: 20,
-                show_count: true,
-                auto_hide: false,
-                click_through: false,
-            });
         },
         /** 重连 */
         [SocketEvent.Reconnected]: () => {
-            tipComeBack();
+            tipComeBack(true);
         },
         /** 断开连接 */
         [SocketEvent.End]: () => {
-            const lang = getLang();
-            const { logoutTip } = InternationalTip[lang];
-
-            AlertPop.alert(logoutTip, {
+            AlertPop.alert(tplIntr('logoutTip'), {
                 hide_cancel: true,
-            }).then(type => {
+            }).then(() => {
                 location.reload();
             });
         },
     });
-
-    const { bg_monitor } = ctrlState.app;
-    bg_monitor.event.on(
-        BgMonitorEvent.VisibleChange,
-        status => {
-            if (status) {
-                if (socket.status === 'OPEN') {
-                    tipComeBack();
-                } else {
-                    socket.reconnect();
-                }
-            }
-        },
-        bindObj,
-    );
 }
 
 export function offCommon(socket: WebSocketTrait, bindObj: any) {
     socket?.event.offAllCaller(bindObj);
-    const { bg_monitor } = ctrlState.app;
-    bg_monitor.event.offAllCaller(bindObj);
 }
 
 export function errorHandler(code: number, data?: any) {
-    const lang = getLang();
-    const tip = InternationalTip[lang][code];
+    const tip = tplIntr(code);
 
-    if (code === ServerErrCode.ReExchange) {
-        return exChangeBullet(tip);
+    if (code === ServerErrCode.Maintaining) {
+        platform.hideLoading();
+        AppCtrl.event.emit(ServerErrCode.Maintaining, tplIntr('maintainTip'));
+    } else if (code === ServerErrCode.ReExchange) {
+        return AppCtrl.event.emit(
+            ServerErrCode.ReExchange,
+            tplIntr(ServerErrCode.ReExchange),
+        );
     } else if (code === ServerErrCode.NoMoney) {
-        let errMsg = tip;
-        if (data && data.minAmount) {
-            const msg = InternationalTip[lang].NoMoneyAmount;
+        let errMsg = tplIntr(ServerErrCode.NoMoney);
+
+        if (data?.minAmount) {
             const { minAmount, currency } = data as RoomInError;
-            errMsg = tplStr(msg, { minAmount, currency });
+            errMsg = tplIntr('NoMoneyAmount', { minAmount, currency });
         }
-        return AlertPop.alert(errMsg).then(type => {
-            if (type === 'confirm') {
-                recharge();
-            }
-            sendToGameSocket(ServerEvent.RoomOut);
-        });
+        return AppCtrl.event.emit(ServerErrCode.NoMoney, errMsg);
     } else if (code === ServerErrCode.NeedLogin) {
         return login();
     } else if (
         code === ServerErrCode.TrialTimeGame ||
         code === ServerErrCode.TrialNotBullet
     ) {
-        return AlertPop.alert(InternationalTip[lang][code], {
-            hide_cancel: true,
-        }).then(() => {
-            const socket = getSocket(ServerName.Game);
-            socket.send(ServerEvent.RoomOut);
-        });
+        return AppCtrl.event.emit(ServerErrCode.TrialTimeGame, tip);
     } else if (code === ServerErrCode.TrialTimeHall) {
-        return TipPop.tip(InternationalTip[lang][ServerErrCode.TrialTimeGame]);
+        return TipPop.tip(tplIntr(ServerErrCode.TrialTimeGame));
     } else if (code === ServerErrCode.TrialClose) {
-        return TipPop.tip(InternationalTip[lang][ServerErrCode.TrialClose]);
+        return TipPop.tip(tplIntr(ServerErrCode.TrialClose));
     } else if (
         code === ServerErrCode.NetError ||
         code === ServerErrCode.EnterGameError
     ) {
-        return AlertPop.alert(InternationalTip[lang][ServerErrCode.NetError], {
+        return AlertPop.alert(tplIntr(ServerErrCode.NetError), {
             hide_cancel: true,
         }).then(() => {
             location.reload();
         });
     } else if (code === ServerErrCode.OverLimit) {
-        return AlertPop.alert(InternationalTip[lang][code], {
-            hide_cancel: true,
-        }).then(() => {
-            const socket = getSocket(ServerName.Game);
-            socket?.send(ServerEvent.RoomOut);
-        });
+        return AppCtrl.event.emit(
+            ServerErrCode.OverLimit,
+            tplIntr(ServerErrCode.OverLimit),
+        );
     }
     if (tip) {
         TipPop.tip(tip);
     }
 }
 
-export function tipComeBack() {
-    const lang = getLang();
-    const { NetComeBack } = InternationalTip[lang];
-    TipPop.tip(NetComeBack);
+export function tokenExpireTip() {
+    removeItem('local_token');
+    AlertPop.alert(tplIntr('logoutTip'), {
+        hide_cancel: true,
+    }).then(() => {
+        location.reload();
+    });
 }
+
+let tip_pop: TipPop;
+export function tipReconnect() {
+    TipPop.tip(tplIntr('NetError'), {
+        count: 20,
+        show_count: true,
+        auto_hide: false,
+        click_through: false,
+        repeat: true,
+        on_instance_create: (pop) => (tip_pop = pop),
+    });
+}
+
+export function tipOtherLogin() {
+    asyncOnly('OtherLogin', () => {
+        return AlertPop.alert(tplIntr('OtherLogin'), {
+            hide_cancel: true,
+        }).then(() => {
+            location.reload();
+        });
+    });
+}
+
+export function tipComeBack(stopReconnectTip = false) {
+    if (stopReconnectTip) {
+        tip_pop?.stopCountAndClose();
+    }
+    TipPop.tip(tplIntr('NetComeBack'), { count: 2 }, { use_exist: true });
+}
+
 export function tipCount(msg: string, count: number) {
     TipPop.tip(msg, {
         count,
         show_count: true,
         auto_hide: false,
         click_through: false,
-    });
-}
-
-let onExchanging = false;
-export async function exChangeBullet(tip: string) {
-    disableCurUserOperation();
-    if (onExchanging) {
-        return;
-    }
-
-    onExchanging = true;
-    waitGameExchangeOrLeave().then(() => {
-        onExchanging = false;
-    });
-    return asyncOnly(tip, () => {
-        return AlertPop.alert(tip, { closeOnSide: false }).then(type => {
-            if (type === 'confirm') {
-                return sendToGameSocket(ServerEvent.ExchangeBullet);
-            }
-            sendToGameSocket(ServerEvent.RoomOut);
-        });
     });
 }

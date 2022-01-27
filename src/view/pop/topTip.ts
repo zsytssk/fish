@@ -1,15 +1,17 @@
-import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import { startCount } from 'utils/count';
-import { getStringLength } from 'honor/utils/getStringLength';
-import { slide_down_in } from 'utils/animate';
-import { AudioRes } from 'data/audioRes';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
 import { Laya } from 'Laya';
+import honor, { HonorDialog } from 'honor';
+import { getStringLength } from 'honor/utils/getStringLength';
 
-const url = 'pop/alert/topTip.scene';
-export default class TopTipPop extends ui.pop.alert.topTipUI
-    implements HonorDialog {
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { ui } from '@app/ui/layaMaxUI';
+import { slide_down_in } from '@app/utils/animate';
+import { startCount } from '@app/utils/count';
+
+export default class TopTipPop
+    extends ui.pop.alert.topTipUI
+    implements HonorDialog
+{
     public isShowEffect = false;
     public isPopupCenter = false;
     public static instance: TopTipPop;
@@ -19,7 +21,9 @@ export default class TopTipPop extends ui.pop.alert.topTipUI
     }
     public static async tip(msg: string, time = 3) {
         AudioCtrl.play(AudioRes.PopShow);
-        const tip_dialog = (await honor.director.openDialog(url)) as TopTipPop;
+        const tip_dialog = await honor.director.openDialog<TopTipPop>(
+            'pop/alert/topTip.scene',
+        );
         this.instance = tip_dialog;
         await tip_dialog.tip(msg, time);
     }
@@ -33,7 +37,7 @@ export default class TopTipPop extends ui.pop.alert.topTipUI
      * @param msg 提示的信息
      */
     public tip(msg: string, time: number) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, _reject) => {
             if (!msg) {
                 return resolve();
             }

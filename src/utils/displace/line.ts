@@ -1,4 +1,5 @@
 import * as SAT from 'sat';
+
 /** 直线方程 */
 export class Line {
     /** 方向 */

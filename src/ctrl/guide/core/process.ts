@@ -1,4 +1,4 @@
-import { log } from 'utils/log';
+import { log } from '@app/utils/log';
 
 type SubProcessItem = Process | Func<Promise<any>>;
 
@@ -17,9 +17,10 @@ export abstract class Process {
         }
         this.sub_process_list = list;
     }
-    private findProcess(
-        path: number | string,
-    ): { process: SubProcessItem; index: number } {
+    private findProcess(path: number | string): {
+        process: SubProcessItem;
+        index: number;
+    } {
         let process: SubProcessItem;
         let index: number;
         if (typeof path === 'number') {

@@ -1,18 +1,21 @@
+import { ComponentManager } from 'comMan/component';
+import { EventCom } from 'comMan/eventCom';
+import { TimeoutCom } from 'comMan/timeoutCom';
+
+import { SkillMap } from '@app/data/config';
+import { ModelEvent } from '@app/model/modelEvent';
+import { error } from '@app/utils/log';
+
 import { GameFreezeCom } from './com/gameFreezeCom';
 import { ShoalCom } from './com/shoalCom';
 import { FishModel } from './fish/fishModel';
-import { PlayerInfo, PlayerModel } from './playerModel';
-import { ComponentManager } from 'comMan/component';
-import { TimeoutCom } from 'comMan/timeoutCom';
-import { EventCom } from 'comMan/eventCom';
-import { SkillMap } from 'data/config';
 import {
     createFish,
     createFishGroup,
     playerCaptureFish,
 } from './fish/fishModelUtils';
-import { ModelEvent } from 'model/modelEvent';
-import { error } from 'utils/log';
+import { DetectUpsideDownFn, PlayerInfo, PlayerModel } from './playerModel';
+import { SkillActiveData } from './skill/skillModel';
 
 export const GameEvent = {
     /** 添加鱼 */
@@ -24,7 +27,11 @@ export const GameEvent = {
     Destroy: ModelEvent.Destroy,
 };
 
+/** 游戏模式 普通场 ｜ 大奖赛 ｜ 竞技场 */
+export type GameMode = 1 | 2 | 3;
+
 export class GameModel extends ComponentManager {
+    public game_mode: GameMode = 1;
     public currency = '';
     public fish_map: Map<string, FishModel> = new Map();
     private player_map: Map<string, PlayerModel> = new Map();
@@ -32,8 +39,8 @@ export class GameModel extends ComponentManager {
         super();
         this.initCom();
     }
-    public setCurrency(currency: string) {
-        this.currency = currency;
+    public setGameMode(mode: GameMode) {
+        this.game_mode = mode;
     }
     private initCom() {
         this.addCom(new EventCom(), new TimeoutCom());
@@ -53,6 +60,7 @@ export class GameModel extends ComponentManager {
     public addFish(fish_info: ServerFishInfo) {
         const { group } = fish_info;
         const { fish_map } = this;
+
         if (!group) {
             /** 创建单个鱼 */
             const fish = createFish(fish_info, this);
@@ -66,6 +74,7 @@ export class GameModel extends ComponentManager {
         } else {
             /** 创建鱼组 */
             const fish_arr = createFishGroup(fish_info, this);
+
             for (const fish of fish_arr) {
                 fish_map.set(fish.id, fish);
                 this.event.emit(GameEvent.AddFish, fish);
@@ -88,7 +97,6 @@ export class GameModel extends ComponentManager {
     public captureFish(info: HitRep) {
         const { userId, eid, backAmount } = info;
         const player = this.getPlayerById(userId);
-        const fish = this.getFishById(eid);
 
         if (!player) {
             error(`Game:>captureFish:> cant find player for ${userId}`);
@@ -99,7 +107,11 @@ export class GameModel extends ComponentManager {
                 bullet_num: player.bullet_num + backAmount,
             });
         }
+        if (!eid) {
+            return;
+        }
 
+        const fish = this.getFishById(eid);
         if (!fish) {
             error(`Game:>captureFish:> cant find fish for ${eid}`);
             return;
@@ -116,11 +128,13 @@ export class GameModel extends ComponentManager {
         return shoal_com;
     }
     /** 添加用户 */
-    public addPlayer(data: PlayerInfo) {
+    public addPlayer(data: PlayerInfo, detectUpsideDownFn: DetectUpsideDownFn) {
         const player = new PlayerModel(data, this);
+        player.setClientInfo(detectUpsideDownFn);
         this.player_map.set(data.user_id, player);
         this.event.emit(GameEvent.AddPlayer, player);
         player.init();
+
         return player;
     }
     public getCurPlayer() {
@@ -141,7 +155,7 @@ export class GameModel extends ComponentManager {
     public removePlayer(player: PlayerModel) {
         this.player_map.delete(player.user_id);
     }
-    public activeSkill(skill: SkillMap, data: { user_id: string }) {
+    public activeSkill(skill: SkillMap, data: SkillActiveData) {
         const player = this.getPlayerById(data.user_id);
         if (!player) {
             error(`Game:>activeSkill:> cant find player:>${data.user_id}`);
@@ -168,7 +182,7 @@ export class GameModel extends ComponentManager {
     public shoot(data: ShootRep) {
         const player = this.getPlayerById(data.userId);
         if (!player) {
-            error(`Game:>resetSkill:> cant find player:>${data.userId}`);
+            error(`Game:>shoot:> cant find player:>${data.userId}`);
             return;
         }
         player.gun.addBullet(data.direction, !player.is_cur_player);

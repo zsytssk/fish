@@ -1,29 +1,32 @@
 import honor, { HonorDialog } from 'honor';
-import { ui } from 'ui/layaMaxUI';
-import LayaProgressCtrl from 'utils/layaProgressCtrl';
-import { modelState } from 'model/modelState';
-import { AudioRes } from 'data/audioRes';
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { Lang, InternationalTip } from 'data/internationalConfig';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { offLangChange, onLangChange } from '@app/ctrl/hall/hallCtrlUtil';
+import { AudioRes } from '@app/data/audioRes';
+import { modelState } from '@app/model/modelState';
+import { ui } from '@app/ui/layaMaxUI';
+import { formatDateTime } from '@app/utils/dayjsUtil';
+import LayaProgressCtrl from '@app/utils/layaProgressCtrl';
+import { tplIntr } from '@app/utils/utils';
 
 /** 声音的弹出层 */
-export default class VoicePop extends ui.pop.alert.voiceUI
-    implements HonorDialog {
-    public isModal = true;
+export default class VoicePop
+    extends ui.pop.alert.voiceUI
+    implements HonorDialog
+{
     private music_ctrl: LayaProgressCtrl;
     private voice_ctrl: LayaProgressCtrl;
     public static preEnter() {
+        honor.director.openDialog('pop/alert/voice.scene', { use_exist: true });
         AudioCtrl.play(AudioRes.PopShow);
-        honor.director.openDialog({ dialog: VoicePop, use_exist: true });
     }
     public onAwake() {
-        onLangChange(this, lang => {
-            this.initLang(lang);
+        onLangChange(this, () => {
+            this.initLang();
         });
 
         const { voice, music } = modelState.app.setting;
-        const { music_progress, voice_progress } = this;
+        const { music_progress, voice_progress, version } = this;
         const music_ctrl = new LayaProgressCtrl(
             music_progress,
             this.onMusicChange,
@@ -37,6 +40,11 @@ export default class VoicePop extends ui.pop.alert.voiceUI
         music_ctrl.setProgress(music);
         this.music_ctrl = music_ctrl;
         this.voice_ctrl = voice_ctrl;
+
+        version.text = formatDateTime(
+            Number((window as any).version),
+            'YYYY/MM/DD HH:mm',
+        );
     }
     private onMusicChange = (radio: number) => {
         const { setting } = modelState.app;
@@ -57,12 +65,11 @@ export default class VoicePop extends ui.pop.alert.voiceUI
         super.destroy();
     }
 
-    private initLang(lang: Lang) {
+    private initLang() {
         const { sound_label, music_label, title } = this;
-        const { music, soundEffects, volumeSetting } = InternationalTip[lang];
 
-        title.text = volumeSetting;
-        sound_label.text = soundEffects;
-        music_label.text = music;
+        title.text = tplIntr('volumeSetting');
+        sound_label.text = tplIntr('soundEffects');
+        music_label.text = tplIntr('music');
     }
 }

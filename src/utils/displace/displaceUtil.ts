@@ -1,16 +1,15 @@
-import Bezier from 'bezier-js';
-import { PATH } from 'data/path';
-import { FishSpriteInfo } from 'data/sprite';
-import GameConfig from 'GameConfig';
+import { Bezier } from 'bezier-js';
 import SAT from 'sat';
-import { getSpriteInfo } from 'utils/dataUtil';
+
+import GameConfig from '@app/GameConfig';
+import { PATH } from '@app/data/path';
+import { FishSpriteInfo } from '@app/data/sprite';
+import { getSpriteInfo } from '@app/utils/dataUtil';
+import { error } from '@app/utils/log';
+
 import { Curve, CurveInfo, Displace } from './displace';
 import { FUNCTION } from './function';
 import { Line } from './line';
-import { error } from 'utils/log';
-
-export const stage_width = GameConfig.width;
-export const stage_height = GameConfig.height;
 
 /** 寻找屏幕中一个点的朝着一个方向的直线 离开屏幕的点 */
 export function getLineOutPoint(point: Point, derivative: SAT.Vector) {
@@ -19,30 +18,27 @@ export function getLineOutPoint(point: Point, derivative: SAT.Vector) {
 
     /** x = 0 | 1334 和直线的交点 */
     let x1 = 0;
-    let y1: number;
     let dx1: number;
-    let dy1: number;
     dx1 = x1 - point.x;
     /** 如果两个 */
     if (dx1 * derivative.x < 0) {
         x1 = GameConfig.width;
         dx1 = x1 - point.x;
     }
-    dy1 = (dx1 * derivative.y) / derivative.x;
-    y1 = dy1 + point.y;
+    const dy1 = (dx1 * derivative.y) / derivative.x;
+    const y1 = dy1 + point.y;
 
     const d1 = x1 * x1 + y1 * y1;
     /** y = 0 | 750 和直线的交点 */
     let x2 = 0;
     let y2: number;
-    let dx2: number;
     let dy2: number;
     dy2 = y2 - point.y;
     if (dy2 * derivative.y < 0) {
         y2 = GameConfig.height;
         dy2 = y2 - point.y;
     }
-    dx2 = (dy2 * derivative.x) / derivative.y;
+    const dx2 = (dy2 * derivative.x) / derivative.y;
     x2 = dx2 + point.x;
     const d2 = x2 * x2 + y2 * y2;
 
@@ -128,6 +124,8 @@ export function calcNormalLen(position: OffsetPos, fish_type: string) {
 }
 /** 直立行走鱼的边缘路径直接垂直与边框就可以了 */
 export function calcFixLen(start_pos: Point, fish_type: string) {
+    const stage_width = GameConfig.width;
+    const stage_height = GameConfig.height;
     const sprite_info = getSpriteInfo('fish', fish_type) as FishSpriteInfo;
 
     let fish_len: number;
@@ -362,17 +360,19 @@ export function createFishDisplace(data: ServerFishInfo) {
     let curve_list: CurveInfo[];
     switch (displaceType) {
         case 'path':
-            let path_arr: number[][];
-            if (pathNo) {
-                path_arr = PATH[pathNo];
-            } else if (pathList) {
-                path_arr = pathList;
+            {
+                let path_arr: number[][];
+                if (pathNo) {
+                    path_arr = PATH[pathNo];
+                } else if (pathList) {
+                    path_arr = pathList;
+                }
+                if (!path_arr) {
+                    error(`cant find path for no:${pathNo}`);
+                    return;
+                }
+                curve_list = createCurvesByPath(path_arr, fishId);
             }
-            if (!path_arr) {
-                error(`cant find path for no:${pathNo}`);
-                return;
-            }
-            curve_list = createCurvesByPath(path_arr, fishId);
             break;
         default:
             curve_list = createCurvesByFun(funList, fishId, displaceLen);

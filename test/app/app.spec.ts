@@ -1,17 +1,18 @@
-import { Test } from 'testBuilder';
-import { modelState } from 'model/modelState';
-import { Lang, InternationalTip } from 'data/internationalConfig';
-import { KeyBoardNumber } from 'utils/layaKeyboard';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
+import { getLang } from '@app/ctrl/hall/hallCtrlUtil';
+import { Lang, InternationalTip } from '@app/data/internationalConfig';
+import { modelState } from '@app/model/modelState';
+import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
+import { KeyBoardNumber } from '@app/utils/layaKeyboard';
 
-export const app_test = new Test('app', runner => {
-    runner.describe('enter_game', () => {});
-    runner.describe('set_lang', (lang: Lang) => {
+export const app_test = {
+    enter_game: () => {
+        //
+    },
+    set_lang: (lang: Lang) => {
         modelState.app.user_info.setLang(lang);
-    });
-    runner.describe('set_local_storage', (lang: Lang) => {
-        var fn1 = localStorage.clear;
+    },
+    set_local_storage: (lang: Lang) => {
+        const fn1 = localStorage.clear;
         localStorage.clear = function (...params) {
             console.error(`test:>`, ...params);
             fn1.bind(localStorage, ...params);
@@ -19,8 +20,8 @@ export const app_test = new Test('app', runner => {
         setTimeout(() => {
             localStorage.clear();
         }, 5000);
-    });
-    runner.describe('keyboard', () => {
+    },
+    keyboard: () => {
         const lang = getLang();
         const { confirm } = InternationalTip[lang];
         const { InputEmptyWarn, Delete } = InternationalTip[lang];
@@ -36,9 +37,9 @@ export const app_test = new Test('app', runner => {
                 },
             });
         }, 3000);
-    });
+    },
 
-    runner.describe('test', (lang: Lang) => {
+    test: (lang: Lang) => {
         getCurrencyIcon();
-    });
-});
+    },
+};

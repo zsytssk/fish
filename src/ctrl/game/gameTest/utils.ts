@@ -1,16 +1,17 @@
-import { GameTestCtrl } from './gameTestCtrl';
-import { modelState } from 'model/modelState';
+import { MockWebSocket } from '@app/ctrl/net/mockWebSocket';
 import {
     mockSocketCtor,
     createSocket,
     getSocket,
     disconnectSocket,
-} from 'ctrl/net/webSocketWrapUtil';
-import { MockWebSocket } from 'ctrl/net/mockWebSocket';
-import { ServerEvent, ServerName } from 'data/serverEvent';
-import { sleep } from 'utils/animate';
-import { SkillMap } from 'data/config';
-import { PlayerInfo } from 'model/game/playerModel';
+} from '@app/ctrl/net/webSocketWrapUtil';
+import { SkillMap } from '@app/data/config';
+import { ServerEvent, ServerName } from '@app/data/serverEvent';
+import { PlayerInfo } from '@app/model/game/playerModel';
+import { modelState } from '@app/model/modelState';
+import { sleep } from '@app/utils/animate';
+
+import { GameTestCtrl } from './gameTestCtrl';
 
 export function genFishInfo(game_ctrl: GameTestCtrl) {
     const typeId = 1;
@@ -62,7 +63,7 @@ export function genUserInfo(game_ctrl: GameTestCtrl) {
             },
         },
     } as PlayerInfo;
-    model.addPlayer(player_data);
+    model.addPlayer(player_data, game_ctrl.needUpSideDown);
 }
 
 export async function mockSocket() {
@@ -111,10 +112,14 @@ export async function mockShoot() {
     const user_id = modelState.app.user_info.user_id;
     const { event } = getSocket(ServerName.Game) as MockWebSocket;
 
-    event.emit(ServerEvent.Shoot, {
-        userId: user_id,
-        direction: { x: 1.3, y: -1 },
-    } as ShootRep);
+    event.emit(
+        ServerEvent.Shoot,
+        {
+            userId: user_id,
+            direction: { x: 1.3, y: -1 },
+        } as ShootRep,
+        200,
+    );
 
     return sleep(2);
 }

@@ -1,8 +1,9 @@
-import * as zTimer from './zTimer';
 import { Sprite as LayaSprite } from 'laya/display/Sprite';
-import { Tween } from 'laya/utils/Tween';
 import { Ease } from 'laya/utils/Ease';
 import { Handler } from 'laya/utils/Handler';
+import { Tween } from 'laya/utils/Tween';
+
+import * as zTimer from './zTimer';
 
 export type EaseFn = Func<void> | string;
 export type Sprite = LayaSprite & {
@@ -41,6 +42,12 @@ export async function fade_in(
         sprite,
         start_props,
         time,
+    }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
+        sprite.visible = true;
+        sprite.alpha = 1;
     });
 }
 export async function fade_out(
@@ -86,7 +93,12 @@ export async function scale_in(
         scaleX: 1,
         scaleY: 1,
     };
-    return tween({ sprite, start_props, end_props, time, ease_fn });
+    return tween({ sprite, start_props, end_props, time, ease_fn }).then(() => {
+        if (sprite.destroyed) {
+            return;
+        }
+        setStyle(sprite, { visible: true, scaleX: 1, scaleY: 1, alpha: 1 });
+    });
 }
 export async function scale_out(sprite: Sprite, time: number, ease_fn: EaseFn) {
     await completeAni(sprite);
@@ -190,21 +202,21 @@ export async function slide_down_in(
     };
     await tween({ sprite, start_props, end_props, time, ease_fn });
 }
-export function slide_down_out(
+export async function slide_down_out(
     sprite: Sprite,
     time?: number,
     ease_fn?: string,
     space?: number,
 ) {
-    return new Promise(async (resolve, reject) => {
-        if (!space) {
-            const height = sprite.getBounds().height;
-            space = height > 50 ? 50 : height;
-        }
-        await completeAni(sprite);
-        /** 因为completeAni 导致的动画完成函数要异步执行
-         * 所以为了等待原来的函数执行完成 所以他自己必须异步执行
-         */
+    if (!space) {
+        const height = sprite.getBounds().height;
+        space = height > 50 ? 50 : height;
+    }
+    await completeAni(sprite);
+    /** 因为completeAni 导致的动画完成函数要异步执行
+     * 所以为了等待原来的函数执行完成 所以他自己必须异步执行
+     */
+    return new Promise((resolve, _reject) => {
         setTimeout(() => {
             ease_fn = ease_fn || 'circleIn';
             time = time || 200;
@@ -218,7 +230,7 @@ export function slide_down_out(
                     return;
                 }
                 setStyle(sprite, { visible: false, alpha: 1, y: ori_y });
-                resolve();
+                resolve(undefined);
             });
         });
     });
@@ -353,6 +365,20 @@ export function blink(sprite: Sprite, time: number) {
         time: time || 300,
     });
 }
+export function buttonClick(sprite: Sprite) {
+    tweenLoop({
+        sprite,
+        props_arr: [
+            { scaleX: 1, scaleY: 1 },
+            { scaleX: 0.8, scaleY: 0.8 },
+            { scaleX: 1, scaleY: 1 },
+        ],
+        time: 100,
+        step_fn: (index) => {
+            return index > 2;
+        },
+    });
+}
 export async function move(
     sprite: Sprite,
     start_pos: Point,
@@ -371,53 +397,52 @@ export async function move(
     });
 }
 
-type TweenData = {
-    sprite: Sprite;
-    start_props?: Props<Sprite>;
-    end_props: Props<Sprite>;
+type TweenData<T extends Sprite> = {
+    sprite: T;
+    start_props?: Props<T>;
+    end_props: Props<T>;
     time: number;
     ease_fn?: EaseFn;
 };
-export function tween(data: TweenData) {
-    return new Promise(async (resolve, reject) => {
-        const { sprite, start_props, end_props } = data;
-        if (sprite.destroyed) {
-            return reject();
+export async function tween<T extends Sprite>(data: TweenData<T>) {
+    const { sprite, start_props, end_props } = data;
+    if (sprite.destroyed) {
+        return;
+    }
+    await completeAni(sprite);
+    let { ease_fn } = data;
+    let { time } = data;
+    const laya_Tween = new Tween();
+    ease_fn = ease_fn || Ease.linearNone;
+    if (typeof ease_fn === 'string') {
+        ease_fn = Ease[ease_fn as keyof typeof Ease] as Func<void>;
+    }
+    setStyle(sprite, start_props);
+    if (time === 0 || sprite.is_stop) {
+        setStyle(sprite, end_props);
+        return;
+    }
+    time = time || 300;
+    /** 如果本身已经是那个属性就不做任何处理 */
+    for (const key in end_props) {
+        if (sprite[key] === end_props[key]) {
+            delete end_props[key];
         }
-        await completeAni(sprite);
-        let { ease_fn } = data;
-        let { time } = data;
-        const laya_Tween = new Tween();
-        ease_fn = ease_fn || Ease.linearNone;
-        if (typeof ease_fn === 'string') {
-            ease_fn = Ease[ease_fn as keyof typeof Ease] as Func<void>;
-        }
-        setStyle(sprite, start_props);
-        if (time === 0 || sprite.is_stop) {
-            setStyle(sprite, end_props);
-            resolve();
-            return;
-        }
-        time = time || 300;
-        /** 如果本身已经是那个属性就不做任何处理 */
-        for (const key in end_props) {
-            if (sprite[key] === end_props[key]) {
-                delete end_props[key];
-            }
-        }
-        if (!Object.keys(end_props).length) {
-            resolve();
-        }
+    }
+    if (!Object.keys(end_props).length) {
+        return;
+    }
+    return new Promise((resolve, reject) => {
         sprite.tween = laya_Tween.to(
             sprite,
             end_props,
             time,
-            ease_fn,
+            ease_fn as any,
             Handler.create(sprite, () => {
                 if (!sprite.destroyed) {
-                    resolve();
+                    resolve(undefined);
                 } else {
-                    reject();
+                    reject(undefined);
                 }
             }),
         );
@@ -428,17 +453,14 @@ export function setStyle<T>(obj: Partial<T>, props: Partial<T>) {
         return;
     }
     for (const key in props) {
-        if (!props.hasOwnProperty(key)) {
-            continue;
-        }
         obj[key] = props[key];
     }
 }
-function jump(sprite: Sprite, props: {}, time_num: number) {
-    return new Promise((resolve, reject) => {
+function jump(sprite: Sprite, props: any, time_num: number) {
+    return new Promise((resolve, _reject) => {
         setTimeout(() => {
-            setStyle(sprite, props);
-            resolve();
+            setStyle(sprite as any, props);
+            resolve(undefined);
         }, time_num);
     });
 }
@@ -466,7 +488,7 @@ export function stepAni({
             await new Promise((resolve, reject) => {
                 time_out = setTimeout(() => {
                     step_fn(props_arr[i]);
-                    resolve();
+                    resolve(undefined);
                 }, time) as any;
             });
             if (loop && i >= len - 1) {
@@ -489,7 +511,7 @@ type TweenLoopParam = {
     ease_fn?: EaseFn;
     is_jump?: boolean;
     end_jump?: boolean;
-    step_fn?: (index: number) => void;
+    step_fn?: (index: number) => boolean | void;
 };
 export function tweenLoop({
     sprite,
@@ -530,8 +552,10 @@ export function tweenLoop({
                 start_props,
                 time,
             }).then(() => {
-                step_fn(n);
-                setTimeout(runItem, 0);
+                const stop = step_fn?.(n);
+                if (!stop) {
+                    setTimeout(runItem, 0);
+                }
             });
         }
         i++;
@@ -682,9 +706,6 @@ export const tweenProps = (() => {
                 step_fun(temp_obj, times);
             } else {
                 for (const key in temp_obj) {
-                    if (!temp_obj.hasOwnProperty(key)) {
-                        continue;
-                    }
                     temp_obj[key] = getVal(start_props[key], end_props[key], t);
                 }
             }
@@ -698,22 +719,23 @@ export const tweenProps = (() => {
     return tweenFun;
 })();
 export function stopAni(sprite: Sprite | FuncVoid) {
-    if (!sprite) {
-        return;
-    }
-    if (typeof sprite === 'function') {
-        return sprite();
-    }
-    if (sprite.time_out) {
-        return clearTimeout(sprite.time_out);
-    }
-    if (sprite.tween) {
-        sprite.tween.complete();
-        sprite.tween.clear();
-    }
+    return new Promise<void>((resolve, _reject) => {
+        if (typeof sprite === 'function') {
+            sprite();
+        } else if (sprite?.time_out) {
+            clearTimeout(sprite.time_out);
+        } else if (sprite?.tween) {
+            sprite.tween.complete();
+            sprite.tween.clear();
+        }
+        setTimeout(() => {
+            resolve();
+        });
+    });
 }
+
 export function completeAni(sprite: Sprite) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         if (!sprite) {
             return;
         }
@@ -723,7 +745,7 @@ export function completeAni(sprite: Sprite) {
             sprite.tween = undefined;
         }
         setTimeout(() => {
-            resolve();
+            resolve(undefined);
         });
     });
 }

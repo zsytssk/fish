@@ -1,18 +1,28 @@
-import { getLang, offLangChange, onLangChange } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip, Lang } from 'data/internationalConfig';
+import { ArenaStatus } from '@app/api/arenaApi';
+import {
+    getLang,
+    offLangChange,
+    onLangChange
+} from '@app/ctrl/hall/hallCtrlUtil';
+import { Lang } from '@app/data/internationalConfig';
+import { type ArenaModel } from '@app/model/arena/arenaModel';
+import { AccountMap } from '@app/model/userInfo/userInfoModel';
+import { fade_in, fade_out } from '@app/utils/animate';
+import { formatDateRange, formatUTC0DateTime } from '@app/utils/dayjsUtil';
+import { ClickNode, onStageClick, resizeContain } from '@app/utils/layaUtils';
+import { error } from '@app/utils/log';
+import { covertLang, playSkeleton, tplIntr } from '@app/utils/utils';
 import honor, { HonorScene } from 'honor';
+import { ProgressFn } from 'honor/utils/loadRes';
 import { Laya } from 'Laya';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Box } from 'laya/ui/Box';
 import { Image } from 'laya/ui/Image';
 import { Label } from 'laya/ui/Label';
 import { Handler } from 'laya/utils/Handler';
-import { AccountMap } from 'model/userInfo/userInfoModel';
-import { fade_in, fade_out } from 'utils/animate';
-import { onStageClick, resizeContain } from 'utils/layaUtils';
-import { playSkeleton } from 'utils/utils';
 import { ui } from '../../ui/layaMaxUI';
-import { error } from 'utils/log';
+
+
 
 export type CoinData = {
     type: string;
@@ -23,9 +33,50 @@ export default class HallView
     extends ui.scenes.hall.hallUI
     implements HonorScene
 {
-    public static preEnter() {
-        return honor.director.runScene('scenes/hall/hall.scene');
+    public static async preEnter(progress: ProgressFn) {
+        return honor.director.runScene('scenes/hall/hall.scene', progress);
     }
+
+    public onOpened() {
+
+        const { coin_menu, flag_menu } = this.header;
+        coin_menu.list.array = [];
+        // coin_menu.list.vScrollBarSkin = '';
+        flag_menu.list.array = [];
+        this.activeAni('normal');
+        coin_menu.list.renderHandler = new Handler(
+            this,
+            this.coinMenuRender,
+            undefined,
+            false,
+        );
+
+        this.initEvent();
+    }
+    private initEvent() {
+        const { flag_menu, btn_coin_select, flag_box } = this.header;
+        onLangChange(this, (lang) => {
+            this.initLang(lang);
+        });
+        onStageClick(
+            this,
+            () => {
+                this.toggleCoinMenu(false);
+            },
+            [btn_coin_select],
+        );
+
+        onStageClick(
+            this,
+            () => {
+                this.toggleFlagMenu(false);
+            },
+            [flag_menu, flag_box],
+        );
+
+
+    }
+
     public onResize(width?: number, height?: number) {
         if (!width) {
             width = Laya.stage.width;
@@ -59,73 +110,39 @@ export default class HallView
         resizeContain(middle_btn_wrap, space);
         resizeContain(right_wrap, space);
     }
-
-    public onOpened() {
-        const { coin_menu, flag_menu } = this.header;
-        coin_menu.list.array = [];
-        // coin_menu.list.vScrollBarSkin = '';
-        flag_menu.list.array = [];
-        this.activeAni('normal');
-        coin_menu.list.renderHandler = new Handler(
-            this,
-            this.coinMenuRender,
-            undefined,
-            false,
-        );
-
-        this.initEvent();
-    }
-    private initEvent() {
-        const { flag_menu, btn_coin_select, flag_box } = this.header;
-        onLangChange(this, lang => {
-            this.initLang(lang);
-        });
-        onStageClick(
-            this,
-            () => {
-                this.toggleCoinMenu(false);
-            },
-            [btn_coin_select],
-        );
-
-        onStageClick(
-            this,
-            () => {
-                this.toggleFlagMenu(false);
-            },
-            [flag_menu, flag_box],
-        );
-    }
     private initLang(lang: Lang) {
-        const { match_status, match_box, normal_box, btn_play_now } = this;
+        const { arena_status, match_status,match_timezone,match_box, normal_box, btn_play_now } = this;
         const { btn_get, btn_charge, middle_btn_wrap } = this.header;
-        const { stayTuned } = InternationalTip[lang];
+        const ani_name = covertLang(lang);
+
         const map = [
             ['normal', normal_box],
             ['match', match_box],
         ] as Array<[string, Box]>;
 
-        match_status.text = stayTuned;
+        match_timezone.text = tplIntr('stayTuned');
+        arena_status.text = tplIntr('arenaTitle');
+        match_status.text = tplIntr('matchTitle');
 
         const btn_arr = ['btn_play', 'btn_try'];
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
             for (const btn_item of btn_arr) {
                 const btn = item.getChildByName(btn_item);
                 const item_ani = btn.getChildByName('ani') as Skeleton;
-                playSkeleton(item_ani, `standby_${lang}`, true);
+                playSkeleton(item_ani, `standby_${ani_name}`, true);
             }
         }
         const play_now_ani = btn_play_now.getChildByName('ani') as Skeleton;
-        playSkeleton(play_now_ani, `standby_${lang}`, true);
+        playSkeleton(play_now_ani, `standby_${ani_name}`, true);
 
         (
             btn_charge.getChildByName('txt_label') as Image
-        ).skin = `image/international/charge_${lang}.png`;
+        ).skin = `image/international/charge_${ani_name}.png`;
         (
             btn_get.getChildByName('txt_label') as Image
-        ).skin = `image/international/withdraw_${lang}.png`;
+        ).skin = `image/international/withdraw_${ani_name}.png`;
         resizeContain(middle_btn_wrap, 10);
         this.activeAni('normal');
     }
@@ -139,6 +156,8 @@ export default class HallView
     public activeAni(type: string) {
         const { normal_box, match_box } = this;
         const lang = getLang();
+        const ani_name = covertLang(lang);
+
         const map = [
             ['normal', normal_box],
             ['match', match_box],
@@ -146,7 +165,7 @@ export default class HallView
 
         for (const [key, item] of map) {
             const ani = item.getChildByName('ani') as Skeleton;
-            playSkeleton(ani, `standby_${lang}`, true);
+            playSkeleton(ani, `standby_${ani_name}`, true);
         }
     }
     public setNickname(nickname_str: string) {
@@ -159,11 +178,37 @@ export default class HallView
         }
         user_box.visible = true;
 
-        onLangChange(this, lang => {
-            const { guest } = InternationalTip[lang];
-            nickname.text = guest;
+        onLangChange(this, () => {
+            nickname.text = tplIntr('guest');
         });
         resizeContain(left_wrap, space);
+    }
+    public updateArenaInfo(info?: ArenaModel) {
+        const {arena_timezone,  btn_competition} = this;
+        const gray = btn_competition.getChildByName('gray') as Image;
+
+        if (!info?.room_status || info?.room_status === ArenaStatus.ROOM_STATUS_MAINTAIN) {
+            (btn_competition as unknown as ClickNode).is_disable = true;
+            arena_timezone.text = tplIntr('maintaining')
+            gray.visible = true;
+            return;
+        }
+
+        const {room_status, open_timezone} = info;
+
+
+        const notOpen =  room_status === ArenaStatus.ROOM_STATUS_DISABLE;
+        gray.visible = notOpen;
+        if (notOpen) {
+            arena_timezone.text = tplIntr('noOpen');
+        } else if (room_status === ArenaStatus.ROOM_STATUS_ENABLE_PREHEAT) {
+            arena_timezone.text = tplIntr('preStartTime', {time: formatUTC0DateTime(open_timezone[0], 'MM/DD')})
+        } else {
+            arena_timezone.text = formatDateRange(open_timezone)
+        }
+        (btn_competition as unknown as ClickNode).is_disable = notOpen;
+
+
     }
     public coinMenuRender(box: Box, index: number) {
         const origin_width = 148;
@@ -258,7 +303,8 @@ export default class HallView
 
     public setFlag(type: string) {
         const { flag } = this.header;
-        flag.skin = `image/common/flag/flag_${type}.png`;
+
+        flag.skin = `image/common/flag/flag_${covertLang(type)}.png`;
     }
     public destroy() {
         /** 在游戏中 突然修改代码 无法避免会报错（大厅骨骼动画销毁报错， 应该是还没有初始化）

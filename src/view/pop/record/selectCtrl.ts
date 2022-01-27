@@ -1,18 +1,25 @@
 import { Sprite } from 'laya/display/Sprite';
 import { List } from 'laya/ui/List';
 import { Handler } from 'laya/utils/Handler';
-import { onStageClick } from 'utils/layaUtils';
+
+import { onStageClick } from '@app/utils/layaUtils';
 
 type SelectList = Sprite & {
     list: List;
 };
+
 type SelectedRender = (box: Sprite, data: any) => void;
+export const SelectCtrlEvent = {
+    VisibleChange: 'VisibleChange',
+};
+
 export class SelectCtrl {
     private select_box: Sprite;
     private select_list: SelectList;
+    public array: any[];
     private selected_render: SelectedRender;
     private list_render: SelectedRender;
-    public select_index: number = -1;
+    public select_index = -1;
     constructor(select_box: Sprite, select_list: SelectList) {
         this.select_box = select_box;
         this.select_list = select_list;
@@ -20,8 +27,12 @@ export class SelectCtrl {
     public init() {
         const { select_box, select_list } = this;
 
-        select_box.on('click', null, () => {
+        select_box.on('click', select_box, () => {
             select_list.visible = !select_list.visible;
+            select_list.event(
+                SelectCtrlEvent.VisibleChange,
+                select_list.visible,
+            );
         });
         onStageClick(
             select_box,
@@ -30,6 +41,7 @@ export class SelectCtrl {
             },
             [select_box, select_list],
         );
+        select_list.list.vScrollBarSkin = '';
         select_list.list.selectHandler = Handler.create(
             null,
             (index: number) => {
@@ -71,19 +83,23 @@ export class SelectCtrl {
     }
     public setList(list: any[]) {
         const { select_list } = this;
+        this.array = list;
         select_list.list.array = list;
     }
     public getList() {
-        return this.select_list.list.array;
+        return this.array;
     }
     public getCurIndex() {
         return this.select_index;
     }
     public setCurIndex(index: number) {
-        this.select_list.list.selectedIndex = index;
+        this.select_index = index;
+        setTimeout(() => {
+            this.select_list.list.selectedIndex = index;
+        });
     }
     public getCurData() {
-        return this.select_list.list.array[this.select_index];
+        return this.array[this.select_index];
     }
     public destroy() {
         this.select_box = undefined;

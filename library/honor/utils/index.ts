@@ -1,7 +1,7 @@
 import { createSkeleton } from './createSkeleton';
 import { cutStr } from './cutStr';
+import { formatTime, formatTimeLight, formatTimestamp } from './formatTime';
 import { getStringLength } from './getStringLength';
-import { formatTime, formatTimeLight } from './formatTime';
 import { loadRes } from './loadRes';
 import { registerFontSize } from './registerFont';
 
@@ -11,6 +11,7 @@ export const utils = {
     getStringLength,
     formatTime,
     formatTimeLight,
+    formatTimestamp,
     loadRes,
     registerFontSize,
 };

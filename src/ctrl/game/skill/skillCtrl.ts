@@ -1,8 +1,13 @@
-import { BombModel } from 'model/game/skill/bombModel';
-import { SkillEvent, SkillStatus } from 'model/game/skill/skillCoreCom';
-import { SkillModel } from 'model/game/skill/skillModel';
 import { Subscription } from 'rxjs';
-import SkillItemView from 'view/scenes/game/skillItemView';
+
+import { BombModel } from '@app/model/game/skill/bombModel';
+import { LockFishModel } from '@app/model/game/skill/lockFishModel';
+import { SkillEvent, SkillStatus } from '@app/model/game/skill/skillCoreCom';
+import { SkillModel } from '@app/model/game/skill/skillModel';
+import SkillItemView from '@app/view/scenes/game/skillItemView';
+
+import { GameCtrlUtils } from '../gameCtrl';
+import { PlayerCtrl } from '../playerCtrl';
 import {
     onTrigger,
     skillActiveHandler,
@@ -10,14 +15,13 @@ import {
     skillNormalActiveHandler,
     skillPreActiveHandler,
 } from './skillCtrlUtils';
-import { LockFishModel } from 'model/game/skill/lockFishModel';
-import { PlayerCtrl } from '../playerCtrl';
 
 export class SkillCtrl {
     private view: SkillItemView;
     private model: SkillModel;
     private player: PlayerCtrl;
     private bindTrigger: Subscription;
+    private game_ctrl: GameCtrlUtils;
     /**
      * @param view 对应的动画
      * @param model 对应的model
@@ -26,6 +30,7 @@ export class SkillCtrl {
         this.view = view;
         this.model = model;
         this.player = player;
+        this.game_ctrl = player.game_ctrl;
         this.initEvent();
         this.setInfo();
     }
@@ -35,7 +40,7 @@ export class SkillCtrl {
         event.on(
             SkillEvent.ActiveSkill,
             (info: any) => {
-                skillActiveHandler(model, info, player.model);
+                skillActiveHandler(model, info, player.model, this.game_ctrl);
             },
             this,
         );
@@ -102,7 +107,7 @@ export class SkillCtrl {
         // view.setShortcut(getShortcut(model));
         this.bindTrigger = onTrigger(model, view).subscribe(() => {
             if (model.skill_core.status === SkillStatus.Normal) {
-                skillPreActiveHandler(model);
+                skillPreActiveHandler(model, this.game_ctrl);
             } else if (model.skill_core.status === SkillStatus.PreActive) {
                 skillNormalActiveHandler(model);
             }

@@ -1,51 +1,60 @@
-import { AudioCtrl } from 'ctrl/ctrlUtils/audioCtrl';
-import { errorHandler } from 'ctrl/hall/commonSocket';
-import { AudioRes } from 'data/audioRes';
-import { ServerErrCode, ServerEvent } from 'data/serverEvent';
+import SAT from 'sat';
+
 import { Laya } from 'Laya';
+import { ComponentManager } from 'comMan/component';
+import { TimeoutCom } from 'comMan/timeoutCom';
 import { Skeleton } from 'laya/ani/bone/Skeleton';
 import { Sprite } from 'laya/display/Sprite';
 import { Event } from 'laya/events/Event';
-import { FishModel } from 'model/game/fish/fishModel';
-import { AddBulletInfo, GunEvent, LevelInfo } from 'model/game/gun/gunModel';
-import { CaptureInfo, PlayerEvent, PlayerModel } from 'model/game/playerModel';
-import { AutoShootModel } from 'model/game/skill/autoShootModel';
-import { getUserInfo, getCurPlayer, getGameCurrency } from 'model/modelState';
-import SAT from 'sat';
-import { log } from 'utils/log';
-import { darkNode, unDarkNode } from 'utils/utils';
-import { showAwardCircle } from 'view/scenes/game/ani_wrap/award/awardBig';
-import { showAwardCoin } from 'view/scenes/game/ani_wrap/award/awardCoin';
-import { awardSkill } from 'view/scenes/game/ani_wrap/award/awardSkill';
-import GunBoxView from 'view/scenes/game/gunBoxView';
+
+import { AudioCtrl } from '@app/ctrl/ctrlUtils/audioCtrl';
+import { AudioRes } from '@app/data/audioRes';
+import { SkillMap } from '@app/data/config';
+import { ServerEvent } from '@app/data/serverEvent';
+import { FishModel } from '@app/model/game/fish/fishModel';
+import {
+    AddBulletInfo,
+    GunEvent,
+    GunStatus,
+    LevelInfo,
+} from '@app/model/game/gun/gunModel';
+import { PlayerEvent, PlayerModel } from '@app/model/game/playerModel';
+import { AutoShootModel } from '@app/model/game/skill/autoShootModel';
+import { getCurPlayer, getCurUserId } from '@app/model/modelState';
+import { getItem, setItem } from '@app/utils/localStorage';
+import { log } from '@app/utils/log';
+import { darkNode, unDarkNode } from '@app/utils/utils';
+import GunBoxView from '@app/view/scenes/game/gunBoxView';
 import {
     getAutoShootSkillItem,
     getGameView,
     getPoolMousePos,
     getSkillItemByIndex,
     setAutoShootLight,
-    setBulletNum,
-} from 'view/viewState';
+} from '@app/view/viewState';
+
+import { getGameCurrency } from '../ctrlState';
 import { BulletCtrl } from './bulletCtrl';
-import { GameCtrl } from './gameCtrl';
-import { sendToGameSocket } from './gameSocket';
+import { GameCtrlUtils } from './gameCtrl';
 import { SkillCtrl } from './skill/skillCtrl';
-import { getItem, setItem } from 'utils/localStorage';
 
 // prettier-ignore
 const bullet_cost_arr  =
          [1, 2, 3, 4, 5, 10, 15, 20];
 /** 玩家的控制器 */
-export class PlayerCtrl {
+export class PlayerCtrl extends ComponentManager {
     /**
      * @param view 玩家对应的动画
      * @param model 玩家对应的model
      */
+    private time_out = new TimeoutCom();
     constructor(
         public view: GunBoxView,
         public model: PlayerModel,
-        private game_ctrl: GameCtrl,
+        public game_ctrl: GameCtrlUtils,
     ) {
+        super();
+        this.addCom(this.time_out);
         this.init();
     }
     private init() {
@@ -54,19 +63,16 @@ export class PlayerCtrl {
     }
     private initGun() {
         const { view, model, game_ctrl } = this;
-        const { server_index, gun, bullet_num, is_cur_player } = model;
+        const { server_index, gun } = model;
         const { pos } = gun;
-        if (server_index >= 2) {
+        if (game_ctrl.needUpSideDown(server_index)) {
             view.fixServerTopPos();
         }
         const client_index = game_ctrl.calcClientIndex(server_index);
-        if (client_index >= 2) {
+        if (game_ctrl.needUpSideDown(client_index)) {
             view.fixClientTopPos();
         }
         view.setPos(pos.x, pos.y);
-        if (is_cur_player) {
-            setBulletNum(bullet_num);
-        }
     }
     private initEvent() {
         const {
@@ -83,41 +89,6 @@ export class PlayerCtrl {
         const { btn_minus, btn_add } = view;
 
         player_event.on(
-            PlayerEvent.CaptureFish,
-            (capture_info: CaptureInfo) => {
-                const {
-                    pos,
-                    data: { win, drop },
-                    resolve,
-                } = capture_info;
-                const { pos: end_pos } = gun;
-                if (!pos) {
-                    resolve();
-                }
-                if (is_cur_player) {
-                    /** 飞行技能 */
-                    if (drop) {
-                        const cur_balance = getGameCurrency();
-                        awardSkill(pos, end_pos, drop, cur_balance);
-                    }
-                    AudioCtrl.play(AudioRes.FlySkill);
-                }
-
-                if (!win) {
-                    resolve();
-                } else if (is_cur_player && win > 1000) {
-                    /** 奖励圆环 */
-                    showAwardCircle(pos, win, is_cur_player).then(resolve);
-                } else {
-                    /** 奖励金币动画 */
-                    showAwardCoin(pos, end_pos, win, is_cur_player).then(
-                        resolve,
-                    );
-                }
-            },
-            this,
-        );
-        player_event.on(
             PlayerEvent.Destroy,
             () => {
                 this.destroy();
@@ -132,7 +103,9 @@ export class PlayerCtrl {
                 view.fire(velocity, user_id);
                 if (is_cur_player) {
                     view.stopPosTip();
+                    AudioCtrl.play(AudioRes.Fire);
                 }
+
                 for (const [, bullet] of bullet_group.bullet_map) {
                     const bullet_view = view.addBullet(
                         bullet.skin,
@@ -191,28 +164,21 @@ export class PlayerCtrl {
                 if (!this.model) {
                     return;
                 }
-                const {
-                    need_emit,
-                    user_id,
-                    is_cur_player: is_cur,
-                } = this.model;
+                const { need_emit, user_id, is_cur_player } = this.model;
                 if (!need_emit) {
                     return;
                 }
                 const { x, y } = velocity;
-                if (is_cur) {
-                    AudioCtrl.play(AudioRes.Fire);
-                }
                 const data = {
                     direction: { x, y },
                     userId: user_id,
                 } as ShootReq;
 
-                if (!is_cur) {
+                if (!is_cur_player) {
                     data.robotId = user_id;
                     data.userId = getCurPlayer().user_id;
                 }
-                sendToGameSocket(ServerEvent.Shoot, data);
+                this.game_ctrl.sendToGameSocket(ServerEvent.Shoot, data);
             },
             this,
         );
@@ -221,7 +187,7 @@ export class PlayerCtrl {
             GunEvent.CastFish,
             (data: { fish: FishModel; level: number }) => {
                 const {
-                    fish: { id: eid },
+                    fish: { id: eid, group_id: gid },
                     level: multiple,
                 } = data;
                 const { user_id, is_cur_player: is_cur } = this.model;
@@ -230,11 +196,21 @@ export class PlayerCtrl {
                     eid,
                     multiple,
                 };
+                if (gid) {
+                    _data.gid = gid;
+                }
                 if (!is_cur) {
                     _data.robotId = user_id;
                 }
 
-                sendToGameSocket(ServerEvent.Hit, _data);
+                if (!_data.eid) {
+                    this.model.updateInfo({
+                        bullet_num: this.model.bullet_num + multiple,
+                    });
+                    return;
+                }
+
+                this.game_ctrl.sendToGameSocket(ServerEvent.Hit, _data);
             },
             this,
         );
@@ -245,25 +221,21 @@ export class PlayerCtrl {
         view.setMySelfStyle();
         this.resetGetBulletCost();
 
-        player_event.on(
-            PlayerEvent.UpdateInfo,
-            () => {
-                const { bullet_num } = this.model;
-                setBulletNum(bullet_num);
-            },
-            this,
-        );
         gun_event.on(
             GunEvent.NotEnoughBulletNum,
             () => {
-                if (this.game_ctrl.isTrial) {
-                    errorHandler(ServerErrCode.TrialNotBullet);
-                } else {
-                    errorHandler(ServerErrCode.ReExchange);
+                if (gun.status === GunStatus.AutoShoot) {
+                    const skill_model = this.model.getSkill(
+                        SkillMap.Auto,
+                    ) as AutoShootModel;
+                    this.time_out.createTimeout(() => {
+                        skill_model.toggle();
+                    }, 0);
                 }
             },
             this,
         );
+
         gun_event.on(
             GunEvent.AutoShoot,
             (is_active: boolean) => {
@@ -272,7 +244,7 @@ export class PlayerCtrl {
             this,
         );
 
-        getGameView().on(Event.CLICK, view, (e: Event) => {
+        getGameView().on(Event.CLICK, view, () => {
             const click_pos = getPoolMousePos();
             const _direction = new SAT.Vector(
                 click_pos.x - gun_pos.x,
@@ -290,9 +262,9 @@ export class PlayerCtrl {
         });
     }
     private handleAutoShoot(model: AutoShootModel, view: Sprite) {
-        view.on(Event.CLICK, view, (e: Event) => {
+        view.on(Event.CLICK, this.view, (e: Event) => {
             e.stopPropagation();
-            log('auto shoot');
+            log('test:>autoShoot:>click');
             model.toggle();
         });
     }
@@ -311,13 +283,20 @@ export class PlayerCtrl {
     private resetGetBulletCost() {
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
         const { isTrial } = this.game_ctrl;
-        const { user_id } = getUserInfo();
+        const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         const bullet_cost = getItem(`${user_id}:${cur_balance}:${isTrial}`);
-        if (bullet_cost) {
-            sendToGameSocket(ServerEvent.ChangeTurret, {
-                multiple: Number(bullet_cost),
-            } as ChangeTurretReq);
+
+        if (
+            bullet_cost !== this.model.bullet_cost + '' &&
+            Number(bullet_cost)
+        ) {
+            // Arena 的enterGame和tableIn的时间差，差这么多
+            this.time_out.createTimeout(() => {
+                this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
+                    multiple: Number(bullet_cost),
+                } as ChangeTurretReq);
+            }, 800);
         }
     }
     private sendChangeBulletCost(type: 'add' | 'minus') {
@@ -334,12 +313,12 @@ export class PlayerCtrl {
         AudioCtrl.play(AudioRes.Click);
         const next = bullet_cost_arr[next_index];
         this.detectDisableChangeBulletCost(next);
-        sendToGameSocket(ServerEvent.ChangeTurret, {
+        this.game_ctrl.sendToGameSocket(ServerEvent.ChangeTurret, {
             multiple: next,
         } as ChangeTurretReq);
 
         /** 将炮台倍数保存到本地, 等下次登陆在重新设置 */
-        const { user_id } = getUserInfo();
+        const user_id = getCurUserId(this.game_ctrl.isArena);
         const cur_balance = getGameCurrency();
         setItem(`${user_id}:${cur_balance}:${isTrial}`, next + '');
     }
@@ -356,10 +335,13 @@ export class PlayerCtrl {
         Laya.stage.offAllCaller(view);
         player_event.offAllCaller(this);
         gun_event.offAllCaller(this);
+        getAutoShootSkillItem().offAllCaller(this.view);
 
         view.destroy();
         this.view = undefined;
         this.game_ctrl = undefined;
         this.model = undefined;
+
+        super.destroy();
     }
 }

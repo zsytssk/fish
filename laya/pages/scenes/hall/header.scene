@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":22,
-    "selecteID":67,
+    "selecteID":68,
     "searchKey":"View",
     "referenceLines":[
         {
@@ -12,7 +12,7 @@
         }],
     "props":{"width":1920,"sceneColor":"#000000","mouseThrough":true,"mouseEnabled":true,"height":750},
     "nodeParent":-1,
-    "maxID":68,
+    "maxID":69,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -68,14 +68,13 @@
                     "props":{"y":-1,"var":"left_wrap","left":30},
                     "nodeParent":47,
                     "label":"left_wrap",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":56,
                     "child":[
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,user_box",
                             "props":{"y":14,"width":185,"visible":false,"var":"user_box","mouseThrough":false,"mouseEnabled":true,"left":0,"height":37},
@@ -115,7 +114,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,btn_coin_select",
                             "props":{"y":9,"x":225,"width":271,"var":"btn_coin_select","height":56},
@@ -222,10 +220,9 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Button",
                             "searchKey":"Button,btn_recharge",
-                            "props":{"y":14,"x":508,"visible":false,"var":"btn_recharge","stateNum":"1","skin":"image/hall/btn_recharge.png"},
+                            "props":{"y":37,"x":536,"visible":false,"var":"btn_recharge","stateNum":"1","skin":"image/hall/btn_recharge.png","anchorY":0.5,"anchorX":0.5},
                             "nodeParent":56,
                             "label":"btn_recharge",
                             "isDirectory":false,
@@ -236,13 +233,12 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Box",
                             "searchKey":"Box,middle_btn_wrap",
                             "props":{"y":0,"x":575,"width":183,"visible":false,"var":"middle_btn_wrap","height":71},
                             "nodeParent":56,
                             "label":"middle_btn_wrap",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -251,7 +247,7 @@
                                 {
                                     "type":"Button",
                                     "searchKey":"Button,btn_charge",
-                                    "props":{"y":0,"x":0,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png","sizeGrid":"0,36,0,37"},
+                                    "props":{"y":35,"x":42,"var":"btn_charge","stateNum":"1","skin":"image/hall/btn_get.png","sizeGrid":"0,36,0,37","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":20,
                                     "label":"btn_charge",
                                     "isOpen":true,
@@ -277,7 +273,7 @@
                                 {
                                     "type":"Button",
                                     "searchKey":"Button,btn_get",
-                                    "props":{"y":0,"x":98,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png"},
+                                    "props":{"y":35,"x":140,"var":"btn_get","stateNum":"1","skin":"image/hall/btn_get.png","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":20,
                                     "label":"btn_get",
                                     "isOpen":true,
@@ -331,8 +327,22 @@
                                 {
                                     "x":60,
                                     "type":"Button",
+                                    "searchKey":"Button,btn_arena_record",
+                                    "props":{"y":24,"x":-249,"var":"btn_arena_record","stateNum":"1","skin":"image/hall/btn_record.png","anchorY":0.5,"anchorX":0.5},
+                                    "nodeParent":22,
+                                    "label":"btn_arena_record",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":68,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
                                     "searchKey":"Button,btn_withdraw",
-                                    "props":{"y":5,"x":-197,"visible":false,"var":"btn_withdraw","stateNum":"1","skin":"image/hall/btn_withdraw.png"},
+                                    "props":{"y":25,"x":-174,"visible":false,"var":"btn_withdraw","stateNum":"1","skin":"image/hall/btn_withdraw.png","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_withdraw",
                                     "isDirectory":false,
@@ -346,7 +356,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_game_record",
-                                    "props":{"y":1,"x":-120,"var":"btn_game_record","stateNum":"1","skin":"image/hall/btn_game_record.png"},
+                                    "props":{"y":24,"x":-99,"var":"btn_game_record","stateNum":"1","skin":"image/hall/btn_game_record.png","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_game_record",
                                     "isDirectory":false,
@@ -360,7 +370,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_item_record",
-                                    "props":{"y":2,"x":-47,"var":"btn_item_record","stateNum":"1","skin":"image/hall/btn_item_record.png"},
+                                    "props":{"y":23,"x":-26,"var":"btn_item_record","stateNum":"1","skin":"image/hall/btn_item_record.png","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_item_record",
                                     "isDirectory":false,
@@ -374,7 +384,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_home",
-                                    "props":{"y":0,"x":27,"visible":false,"var":"btn_home","stateNum":"1","skin":"image/hall/btn_home.png","name":""},
+                                    "props":{"y":23,"x":52,"visible":false,"var":"btn_home","stateNum":"1","skin":"image/hall/btn_home.png","name":"","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_home",
                                     "isDirectory":false,
@@ -388,7 +398,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_app",
-                                    "props":{"y":1,"x":109,"visible":false,"var":"btn_app","stateNum":"1","skin":"image/hall/btn_app.png","name":""},
+                                    "props":{"y":24,"x":132,"visible":false,"var":"btn_app","stateNum":"1","skin":"image/hall/btn_app.png","name":"","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_app",
                                     "isDirectory":false,
@@ -402,7 +412,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_leave",
-                                    "props":{"y":2,"x":188,"visible":false,"var":"btn_leave","stateNum":"1","skin":"image/hall/btn_leave.png"},
+                                    "props":{"y":26,"x":211,"visible":false,"var":"btn_leave","stateNum":"1","skin":"image/hall/btn_leave.png","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_leave",
                                     "isOpen":true,
@@ -417,7 +427,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_login",
-                                    "props":{"y":0,"x":186,"visible":false,"var":"btn_login","stateNum":"1","skin":"image/hall/btn_login.png","name":""},
+                                    "props":{"y":24,"x":210,"visible":false,"var":"btn_login","stateNum":"1","skin":"image/hall/btn_login.png","name":"","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_login",
                                     "isDirectory":false,
@@ -431,7 +441,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,btn_voice",
-                                    "props":{"y":2,"x":265,"var":"btn_voice","stateNum":"1","skin":"image/hall/btn_voice.png","name":""},
+                                    "props":{"y":24,"x":289,"var":"btn_voice","stateNum":"1","skin":"image/hall/btn_voice.png","name":"","anchorY":0.5,"anchorX":0.5},
                                     "nodeParent":22,
                                     "label":"btn_voice",
                                     "isDirectory":false,
@@ -449,13 +459,14 @@
                             "props":{"y":2,"x":353,"width":77,"visible":false,"var":"flag_box","height":253},
                             "nodeParent":58,
                             "label":"flag_box",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":24,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,flag_triangle",
                                     "props":{"y":21,"x":60,"width":29,"var":"flag_triangle","stateNum":"1","skin":"image/hall/btn_down.png","pivotY":14,"pivotX":15,"height":27},
@@ -469,6 +480,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image,flag",
                                     "props":{"var":"flag","skin":"image/common/flag/flag_zh.png"},
@@ -482,6 +494,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"UIView",
                                     "source":"scenes/hall/flagMenu.scene",
                                     "searchKey":"UIView,flag_menu",

@@ -1,15 +1,15 @@
-import { Box } from 'laya/ui/Box';
-import { ExchangeData } from './lottery';
-import { ui } from 'ui/layaMaxUI';
-import { getLang } from 'ctrl/hall/hallCtrlUtil';
-import { InternationalTip } from 'data/internationalConfig';
-import { ItemMap } from 'data/config';
-import { createDarkFilter, createColorFilter } from 'utils/utils';
+import { afterActive } from 'honor/utils/tool';
 import { Event } from 'laya/events/Event';
+import { Box } from 'laya/ui/Box';
+
+import { ItemMap } from '@app/data/config';
+import { getCurrencyIcon } from '@app/model/userInfo/userInfoUtils';
+import { ui } from '@app/ui/layaMaxUI';
+import { createColorFilter, createDarkFilter, tplIntr } from '@app/utils/utils';
+
+import { ExchangeData } from './lottery';
 import { runTicketExchange } from './popSocket';
 import RewardPop from './reward';
-import { afterActive } from 'honor/utils/tool';
-import { getCurrencyIcon } from 'model/userInfo/userInfoUtils';
 
 type Item =
     | ui.pop.lottery.item2oneUI
@@ -75,16 +75,9 @@ export class LotteryExchangeCtrl {
             btn_buy,
             item_type,
         } = item;
-        const lang = getLang();
-        const { Num } = InternationalTip[lang];
 
-        const {
-            exchange_type,
-            exchange_id,
-            exchange_num,
-            cost_num,
-            cur_num,
-        } = item_data;
+        const { exchange_type, exchange_id, exchange_num, cost_num, cur_num } =
+            item_data;
 
         let tag = ItemMap[exchange_id] as string;
         tag = tag ? tag.toLowerCase() : tag;
@@ -97,7 +90,7 @@ export class LotteryExchangeCtrl {
         coin_icon.filters = [createColorFilter('#64280e')];
         num_label.text = num_str;
         item_type.text = exchange_type.toUpperCase();
-        remain_label.text = `${Num}: ${cur_num}/${cost_num}`;
+        remain_label.text = `${tplIntr('Num')}: ${cur_num}/${cost_num}`;
 
         let scale = 1 / (num_str.length / 3);
         let scale2 = 1 / (exchange_type.length / 4);

@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
+    "selectedBox":7,
     "selecteID":6,
     "searchKey":"Scene",
     "props":{"width":268,"sceneColor":"#000000","height":42},
     "nodeParent":-1,
-    "maxID":7,
+    "maxID":8,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -16,11 +16,11 @@
     "child":[
         {
             "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite",
-            "props":{"y":0,"x":-3,"texture":"image/pop/record/select-bg.png"},
+            "type":"Image",
+            "searchKey":"Image,bg",
+            "props":{"y":0,"x":-3,"var":"bg","skin":"image/pop/record/select-bg.png","sizeGrid":"0,138,0,117"},
             "nodeParent":2,
-            "label":"Sprite",
+            "label":"bg",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
@@ -30,45 +30,59 @@
         },
         {
             "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite",
-            "props":{"y":11.5,"x":231,"texture":"image/pop/record/triangle.png"},
+            "type":"Box",
+            "searchKey":"Box,content",
+            "props":{"y":0,"x":15,"var":"content"},
             "nodeParent":2,
-            "label":"Sprite",
-            "isDirectory":false,
+            "label":"content",
+            "isOpen":true,
+            "isDirectory":true,
             "isAniNode":true,
-            "hasChild":false,
-            "compId":4,
+            "hasChild":true,
+            "compId":7,
             "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite",
-            "props":{"y":0,"x":221,"texture":"image/pop/record/selectLine.png"},
-            "nodeParent":2,
-            "label":"Sprite",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":5,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"Label",
-            "searchKey":"Label,item_name",
-            "props":{"y":11,"x":15,"width":193,"var":"item_name","valign":"middle","height":20,"fontSize":20,"color":"#fff392"},
-            "nodeParent":2,
-            "label":"item_name",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":6,
-            "child":[
-                ]
+                {
+                    "x":30,
+                    "type":"Label",
+                    "searchKey":"Label,item_name",
+                    "props":{"y":11,"x":0,"var":"item_name","valign":"middle","height":20,"fontSize":20,"color":"#fff392"},
+                    "nodeParent":7,
+                    "label":"item_name",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":6,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"x":206,"texture":"image/pop/record/selectLine.png"},
+                    "nodeParent":7,
+                    "label":"Sprite",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":5,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite",
+                    "props":{"y":11,"x":216,"texture":"image/pop/record/triangle.png"},
+                    "nodeParent":7,
+                    "label":"Sprite",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":4,
+                    "child":[
+                        ]
+                }]
         }],
     "animations":[
         {
