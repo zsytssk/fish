@@ -27,7 +27,7 @@ export async function localTest() {
     // (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
     (mock_web_socket_test[ServerEvent.UseFreeze] as () => void)();
     (mock_web_socket_test[ServerEvent.Shoot] as () => void)();
-    await arena_test.enter();
+    await game_test.enter();
 
     // fish_test.addFishGroup();
     // skill_test.freezing();

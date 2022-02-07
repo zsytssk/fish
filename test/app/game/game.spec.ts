@@ -9,7 +9,7 @@ import { sleep } from '@app/utils/animate';
 import { afterHallEnter } from '../hall/hall.spec';
 
 export const game_test = {
-    enterGame: async (add_player?: boolean) => {
+    enter: async (add_player?: boolean) => {
         if (modelState && modelState.app && modelState.game) {
             return;
         }
