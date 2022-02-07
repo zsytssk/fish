@@ -1,4 +1,5 @@
 import { tipExchange } from '@app/ctrl/game/gameCtrlUtils';
+import { tipComeBack, tipReconnect } from '@app/ctrl/hall/commonSocket';
 import { asyncOnly, clearAsyncOnly } from '@app/utils/asyncQue';
 import { tplIntr } from '@app/utils/utils';
 import AlertPop from '@app/view/pop/alert';
@@ -36,6 +37,15 @@ export const alert_test = {
         sleep(3).then(() => {
             AlertPop.alert('this is a test');
         });
+    },
+
+    tipNetError: async () => {
+        tipReconnect();
+        tipReconnect();
+        await sleep(1);
+        tipComeBack(true);
+        await sleep(3);
+        tipComeBack(true);
     },
 
     showAlertOnly: async (name?: string, msg?: string) => {

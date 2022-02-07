@@ -111,15 +111,26 @@ export function tokenExpireTip() {
     });
 }
 
-let tip_pop: TipPop;
+const tip_info = {
+    pop: null as TipPop,
+    task: [] as number[],
+};
 export function tipReconnect() {
-    TipPop.tip(tplIntr('NetError'), {
-        count: 20,
-        show_count: true,
-        auto_hide: false,
-        click_through: false,
-        repeat: true,
-        on_instance_create: (pop) => (tip_pop = pop),
+    tip_info.task.push(1);
+    if (tip_info.pop) {
+        return;
+    }
+    asyncOnly('NetError', () => {
+        return TipPop.tip(tplIntr('NetError'), {
+            count: 20,
+            show_count: true,
+            auto_hide: false,
+            click_through: false,
+            repeat: true,
+            on_instance_create: (pop) => {
+                tip_info.pop = pop;
+            },
+        });
     });
 }
 
@@ -135,7 +146,13 @@ export function tipOtherLogin() {
 
 export function tipComeBack(stopReconnectTip = false) {
     if (stopReconnectTip) {
-        tip_pop?.stopCountAndClose();
+        tip_info.task.pop();
+        if (tip_info.task.length === 0) {
+            tip_info.pop?.stopCountAndClose();
+            tip_info.pop = null;
+        } else {
+            return;
+        }
     }
     TipPop.tip(tplIntr('NetComeBack'), { count: 2 }, { use_exist: true });
 }
