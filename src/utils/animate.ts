@@ -366,12 +366,13 @@ export function blink(sprite: Sprite, time: number) {
     });
 }
 export function buttonClick(sprite: Sprite) {
+    const { scaleX, scaleY } = sprite;
     tweenLoop({
         sprite,
         props_arr: [
-            { scaleX: 1, scaleY: 1 },
-            { scaleX: 0.8, scaleY: 0.8 },
-            { scaleX: 1, scaleY: 1 },
+            { scaleX: scaleX, scaleY: scaleY },
+            { scaleX: 0.8 * scaleX, scaleY: 0.8 * scaleY },
+            { scaleX: scaleX, scaleY: scaleY },
         ],
         time: 100,
         step_fn: (index) => {
