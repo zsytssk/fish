@@ -121,7 +121,7 @@ export const International = {
         arenaHelpRule11:
             'The Fishing Grand Prix is open at designated time periods every day during the event (times shown in UTC-0), and registration will be closed 30 minutes before the end of each period）',
         arenaHelpRule12:
-            'Every day the of the duration of the Grand Prix game, you can get {freeNum} free challenge (including guest players), and the number of free challenges does not accumulate',
+            'When the Grand Prix is ​​open, you can get {freeNum} times of free challenges (including tourist players), and the number of free challenges will not be accumulated',
         arenaHelpRule13:
             'Repeated challenges need to sign up to consume currency, and the amount of currency consumed is subject to the USDT exchange rate',
         arenaHelpRule21:
@@ -342,7 +342,7 @@ export const International = {
         arenaHelpRule11:
             'a) 최고의 낚시꾼 이벤트,이벤트 형식으로 시간대를 지정하여 개방(개방시간은 UTC+0시간 기준), 매 시간 종료 전 {deadlineTime}분까지 접수하며 이후 시간은 서비스가 중지됩니다.',
         arenaHelpRule12:
-            'b) 그랑프리는 하루 오픈 시 {freeNum}회 무료 도전 횟수(관광객 플레이어 포함)를 증정하며 무료 도전 횟수는 적립되지 않습니다.',
+            'b）グランプリが開催されると、{freeNum}回の無料チャレンジ（観光客を含む）を獲得でき、無料チャレンジの数は累積されません',
         arenaHelpRule13:
             'c) 화폐를 소모하기 위해서는 반복적인 챌린지가 필요하며, 소모되는 화폐의 양은 USDT 환율에 따릅니다.',
         arenaHelpRule21:
@@ -562,7 +562,7 @@ export const International = {
         arenaHelpRule11:
             'a）漁グランプリ。イベントの形式で期間を指定して開催（UTC+0時間で開催）し、各期間の終了前{deadlineTime}分前に申込みが終了します',
         arenaHelpRule12:
-            'b）グランプリが開催される日に{freeNum}回の無料チャレンジ回数（ビジタープレイヤーを含む）が付与され、無料チャレンジ回数は累積されません',
+            'b) 그랑프리가 열리면 {freeNum}번의 무료 챌린지(관광객 포함)를 받을 수 있으며, 무료 챌린지 횟수는 누적되지 않습니다.',
         arenaHelpRule13:
             'c）繰り返されるチャレンジは通貨を消費するためにサインアップする必要があり、消費される通貨の量はUSDTの為替レートの影響を受けます',
         arenaHelpRule21:
@@ -783,7 +783,7 @@ export const International = {
         arenaHelpRule11:
             'a) 捕鱼大奖赛，以活动形式指定时间段开放（开放时间以UTC+0时间为准），每个时段结束前{deadlineTime}分钟停止报名',
         arenaHelpRule12:
-            'b)大奖赛每天开放均可获赠{freeNum}次免费挑战的次数（包括游客玩家），免费挑战次数不累积',
+            'b)大奖赛开放可获赠{freeNum}次免费挑战的次数（包括游客玩家），免费挑战次数不累积',
         arenaHelpRule13:
             'c) 重复挑战需要报名消耗货币，消耗的货币数量以USDT汇率为准',
         arenaHelpRule21:
@@ -991,7 +991,7 @@ export const International = {
         arenaHelpRule11:
             'a) 捕魚大獎賽，以活動形式指定時間段開放（開放時間以UTC+0時間為準），每個時段結束前{deadlineTime}分鍾停止報名',
         arenaHelpRule12:
-            'b)大獎賽每天開放均可獲贈{freeNum}次免費挑戰的次數（包括遊客玩家），免費挑戰次數不纍積',
+            'b)大獎賽開放可獲贈{freeNum}次免費挑戰的次數（包括遊客玩家），免費挑戰次數不纍積',
         arenaHelpRule13:
             'c) 重複挑戰需要報名消耗貨幣，消耗的貨幣數量以USDT匯率為準',
         arenaHelpRule21:
